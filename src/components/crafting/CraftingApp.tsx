@@ -47,10 +47,13 @@ export function CraftingApp() {
 
   const categoryItems = useMemo(() => {
     if (selectedCategory === "character") {
+      if (selectedCharacter === "all") {
+        return getItemsByCategory("character");
+      }
       if (selectedCharacter) {
         return getCharacterItems(selectedCharacter);
       }
-      return getItemsByCategory("character");
+      return []; // No character selected yet - show picker only
     }
     return getItemsByCategory(selectedCategory);
   }, [selectedCategory, selectedCharacter]);
@@ -143,21 +146,21 @@ export function CraftingApp() {
 
       {/* Scrollable content area */}
       <div className="flex-1 min-h-0 overflow-y-auto">
-        {/* Character selector (when character category selected and not searching) */}
-        {selectedCategory === "character" && !isSearching && (
+        {/* Character selector (only when no character selected yet) */}
+        {selectedCategory === "character" && !selectedCharacter && !isSearching ? (
           <CharacterSelector
             characters={characters}
             selectedCharacter={selectedCharacter}
             onSelectCharacter={setCharacter}
           />
+        ) : (
+          /* Item grid */
+          <ItemGrid
+            items={displayItems}
+            selectedItem={selectedItem}
+            onSelectItem={setItem}
+          />
         )}
-
-        {/* Item grid */}
-        <ItemGrid
-          items={displayItems}
-          selectedItem={selectedItem}
-          onSelectItem={setItem}
-        />
       </div>
 
       {/* Desktop: fixed bottom detail panel */}

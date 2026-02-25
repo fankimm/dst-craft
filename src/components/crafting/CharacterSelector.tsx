@@ -69,13 +69,8 @@ export function CharacterSelector({
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4">
       {/* All option */}
       <button
-        onClick={() => onSelectCharacter(null)}
-        className={cn(
-          "flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover",
-          selectedCharacter === null
-            ? "border-amber-500 ring-1 ring-amber-500/50"
-            : "border-border hover:border-ring"
-        )}
+        onClick={() => onSelectCharacter("all")}
+        className="flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover border-border hover:border-ring"
       >
         <div className="flex items-center justify-center size-12 sm:size-14">
           <span className="text-lg sm:text-xl font-bold text-foreground/80">ALL</span>
@@ -89,7 +84,7 @@ export function CharacterSelector({
         <CharacterAvatar
           key={character.id}
           character={character}
-          isSelected={selectedCharacter === character.id}
+          isSelected={false}
           onClick={() => onSelectCharacter(character.id)}
           locale={resolvedLocale}
         />

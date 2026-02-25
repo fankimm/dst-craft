@@ -40,18 +40,19 @@ export function SettingsButton() {
     if (!open) return;
     updatePosition();
 
-    function handleClick(e: MouseEvent) {
+    function handleClick(e: Event) {
+      const target = e.target as Node;
       if (
         panelRef.current &&
-        !panelRef.current.contains(e.target as Node) &&
+        !panelRef.current.contains(target) &&
         buttonRef.current &&
-        !buttonRef.current.contains(e.target as Node)
+        !buttonRef.current.contains(target)
       ) {
         setOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("pointerdown", handleClick);
+    return () => document.removeEventListener("pointerdown", handleClick);
   }, [open, updatePosition]);
 
   const panel = open
@@ -73,9 +74,9 @@ export function SettingsButton() {
                 return (
                   <button
                     key={opt.value}
-                    onClick={() => setTheme(opt.value)}
+                    onPointerDown={(e) => { e.stopPropagation(); setTheme(opt.value); }}
                     className={cn(
-                      "w-full flex items-center gap-2 rounded-md px-2.5 py-1.5 text-xs transition-colors",
+                      "w-full flex items-center gap-2 rounded-md px-2.5 py-1.5 text-xs transition-colors touch-manipulation",
                       isActive
                         ? "bg-surface-hover text-foreground font-medium"
                         : "text-muted-foreground hover:bg-surface-hover/50"
@@ -101,9 +102,9 @@ export function SettingsButton() {
                 return (
                   <button
                     key={opt.value}
-                    onClick={() => setLocale(opt.value)}
+                    onPointerDown={(e) => { e.stopPropagation(); setLocale(opt.value); }}
                     className={cn(
-                      "w-full flex items-center gap-2 rounded-md px-2.5 py-1.5 text-xs transition-colors",
+                      "w-full flex items-center gap-2 rounded-md px-2.5 py-1.5 text-xs transition-colors touch-manipulation",
                       isActive
                         ? "bg-surface-hover text-foreground font-medium"
                         : "text-muted-foreground hover:bg-surface-hover/50"

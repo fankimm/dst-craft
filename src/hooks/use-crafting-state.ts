@@ -70,6 +70,7 @@ export function useCraftingState() {
 
   const setCharacter = useCallback((characterId: string | null) => {
     const params = getParams();
+    const hadChar = params.has("char");
     if (characterId) {
       params.set("char", characterId);
     } else {
@@ -77,8 +78,13 @@ export function useCraftingState() {
     }
     params.delete("item");
     const url = `${window.location.pathname}?${params.toString()}`;
-    // Always replace - character selection is part of the same category page
-    window.history.replaceState({}, "", url);
+    if (hadChar) {
+      // Switching characters: replace current entry
+      window.history.replaceState({}, "", url);
+    } else {
+      // First character selection: push new entry
+      window.history.pushState({}, "", url);
+    }
     setUrlState((prev) => ({ ...prev, char: characterId, item: null }));
   }, []);
 
