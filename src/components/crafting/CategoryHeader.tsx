@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import type { Category } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
-import { t, localName } from "@/lib/i18n";
+import { t, categoryName } from "@/lib/i18n";
 import { SettingsButton } from "./SettingsButton";
 import type { ReactNode } from "react";
 
@@ -42,7 +42,7 @@ export function CategoryHeader({
         {category ? (
           <div className="flex items-baseline gap-2">
             <h2 className="text-base font-semibold text-foreground truncate">
-              {localName(category, resolvedLocale)}
+              {categoryName(category, resolvedLocale)}
             </h2>
           </div>
         ) : (

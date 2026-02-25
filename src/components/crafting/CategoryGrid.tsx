@@ -2,7 +2,7 @@
 
 import type { Category, CategoryId } from "@/lib/types";
 import { useSettings } from "@/hooks/use-settings";
-import { localName } from "@/lib/i18n";
+import { categoryName } from "@/lib/i18n";
 
 interface CategoryGridProps {
   categories: Category[];
@@ -25,12 +25,12 @@ export function CategoryGrid({
         >
           <img
             src={`/images/category-icons/${cat.id}.png`}
-            alt={localName(cat, resolvedLocale)}
+            alt={categoryName(cat, resolvedLocale)}
             className="size-12 sm:size-14 object-contain"
             draggable={false}
           />
           <span className="text-xs sm:text-sm text-foreground/80 font-medium">
-            {localName(cat, resolvedLocale)}
+            {categoryName(cat, resolvedLocale)}
           </span>
         </button>
       ))}

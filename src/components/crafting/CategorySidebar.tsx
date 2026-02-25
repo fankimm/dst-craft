@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
-import { localName } from "@/lib/i18n";
+import { categoryName } from "@/lib/i18n";
 
 interface CategorySidebarProps {
   categories: Category[];
@@ -41,14 +41,14 @@ export function CategorySidebar({
               >
                 <img
                   src={`/images/category-icons/${cat.id}.png`}
-                  alt={localName(cat, resolvedLocale)}
+                  alt={categoryName(cat, resolvedLocale)}
                   className="size-full object-contain"
                   draggable={false}
                 />
               </button>
             </TooltipTrigger>
             <TooltipContent side="right">
-              <p>{localName(cat, resolvedLocale)}</p>
+              <p>{categoryName(cat, resolvedLocale)}</p>
             </TooltipContent>
           </Tooltip>
         );

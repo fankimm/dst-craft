@@ -4,7 +4,7 @@ import type { Character } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
-import { t, localName } from "@/lib/i18n";
+import { t, characterName } from "@/lib/i18n";
 
 interface CharacterSelectorProps {
   characters: Character[];
@@ -38,13 +38,13 @@ function CharacterAvatar({
       {imgError ? (
         <div className="flex items-center justify-center size-12 sm:size-14">
           <span className="text-sm text-muted-foreground font-medium">
-            {localName(character, locale).charAt(0)}
+            {characterName(character, locale).charAt(0)}
           </span>
         </div>
       ) : (
         <img
           src={`/images/category-icons/characters/${character.portrait}.png`}
-          alt={localName(character, locale)}
+          alt={characterName(character, locale)}
           className="size-12 sm:size-14 object-contain"
           onError={() => setImgError(true)}
           loading="lazy"
@@ -52,7 +52,7 @@ function CharacterAvatar({
         />
       )}
       <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
-        {localName(character, locale)}
+        {characterName(character, locale)}
       </span>
     </button>
   );

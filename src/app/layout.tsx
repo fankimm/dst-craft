@@ -40,6 +40,8 @@ const themeScript = `
     var d = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (d) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', d ? '#09090b' : '#fafafa');
   } catch(e) {
     document.documentElement.classList.add('dark');
   }

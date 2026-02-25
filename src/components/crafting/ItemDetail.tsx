@@ -6,7 +6,7 @@ import { MaterialSlot } from "./MaterialSlot";
 import { getCategoryById } from "@/lib/crafting-data";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
-import { t, localName } from "@/lib/i18n";
+import { t, itemName, itemAltName, itemDesc, categoryName } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 
 const stationKeys: Record<CraftingStation, TranslationKey> = {
@@ -47,12 +47,12 @@ export function ItemDetail({ item }: ItemDetailProps) {
         <div className="flex items-center justify-center size-16 rounded-md border border-input bg-surface">
           {imgError ? (
             <span className="text-xs text-muted-foreground text-center px-1">
-              {localName(item, resolvedLocale)}
+              {itemName(item, resolvedLocale)}
             </span>
           ) : (
             <img
               src={`/images/items/${item.image}`}
-              alt={localName(item, resolvedLocale)}
+              alt={itemName(item, resolvedLocale)}
               className="size-14 object-contain"
               onError={() => setImgError(true)}
             />
@@ -64,15 +64,15 @@ export function ItemDetail({ item }: ItemDetailProps) {
       <div className="flex-1 min-w-0 space-y-2">
         <div>
           <h3 className="text-sm font-semibold text-foreground">
-            {localName(item, resolvedLocale)}
+            {itemName(item, resolvedLocale)}
           </h3>
           <p className="text-xs text-muted-foreground">
-            {resolvedLocale === "ko" ? item.nameEn : item.nameKo}
+            {itemAltName(item, resolvedLocale)}
           </p>
         </div>
 
         <p className="text-xs text-dim leading-relaxed line-clamp-2">
-          {resolvedLocale === "ko" && item.descriptionKo ? item.descriptionKo : item.description}
+          {itemDesc(item, resolvedLocale)}
         </p>
 
         {/* Station + character badges */}
@@ -109,7 +109,7 @@ export function ItemDetail({ item }: ItemDetailProps) {
                   alt=""
                   className="size-3.5 object-contain"
                 />
-                {localName(cat, resolvedLocale)}
+                {categoryName(cat, resolvedLocale)}
               </Badge>
             );
           })}

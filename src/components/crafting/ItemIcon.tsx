@@ -4,7 +4,7 @@ import type { CraftingItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
-import { localName } from "@/lib/i18n";
+import { itemName } from "@/lib/i18n";
 
 interface ItemIconProps {
   item: CraftingItem;
@@ -29,20 +29,20 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
       {imgError ? (
         <div className="flex items-center justify-center size-12 sm:size-14">
           <span className="text-xs text-muted-foreground text-center leading-tight">
-            {localName(item, resolvedLocale)}
+            {itemName(item, resolvedLocale)}
           </span>
         </div>
       ) : (
         <img
           src={`/images/items/${item.image}`}
-          alt={localName(item, resolvedLocale)}
+          alt={itemName(item, resolvedLocale)}
           className="size-12 sm:size-14 object-contain"
           onError={() => setImgError(true)}
           loading="lazy"
         />
       )}
       <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight line-clamp-2">
-        {localName(item, resolvedLocale)}
+        {itemName(item, resolvedLocale)}
       </span>
     </button>
   );

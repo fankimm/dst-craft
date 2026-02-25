@@ -37,10 +37,8 @@ export type CategoryId =
 
 export interface CraftingItem {
   id: string;
-  nameEn: string;
-  nameKo: string;
+  name: string;
   description: string;
-  descriptionKo?: string;
   image: string;
   category: CategoryId[];
   station: CraftingStation;
@@ -51,22 +49,19 @@ export interface CraftingItem {
 
 export interface Category {
   id: CategoryId;
-  nameEn: string;
-  nameKo: string;
+  name: string;
   icon: string;
   order: number;
 }
 
 export interface Material {
   id: string;
-  nameEn: string;
-  nameKo: string;
+  name: string;
   image: string;
 }
 
 export interface Character {
   id: string;
-  nameEn: string;
-  nameKo: string;
+  name: string;
   portrait: string;
 }

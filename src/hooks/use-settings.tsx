@@ -25,6 +25,12 @@ interface SettingsContextValue {
 
 const SettingsContext = createContext<SettingsContextValue | null>(null);
 
+// SSR-safe defaults: must match on server and client initial render
+const DEFAULT_THEME: ThemeSetting = "dark";
+const DEFAULT_LOCALE: LocaleSetting = "system";
+const SSR_RESOLVED_THEME: ResolvedTheme = "dark";
+const SSR_RESOLVED_LOCALE: Locale = "ko";
+
 function getSystemTheme(): ResolvedTheme {
   if (typeof window === "undefined") return "dark";
   return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -49,21 +55,27 @@ function applyTheme(resolved: ResolvedTheme) {
   } else {
     root.classList.remove("dark");
   }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) {
+    meta.setAttribute("content", resolved === "dark" ? "#09090b" : "#fafafa");
+  }
 }
 
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeSetting>(() => {
-    if (typeof window === "undefined") return "dark";
-    return (localStorage.getItem("dst-theme") as ThemeSetting) || "dark";
-  });
+  // Always initialize with fixed defaults to match SSR output
+  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<ThemeSetting>(DEFAULT_THEME);
+  const [locale, setLocaleState] = useState<LocaleSetting>(DEFAULT_LOCALE);
 
-  const [locale, setLocaleState] = useState<LocaleSetting>(() => {
-    if (typeof window === "undefined") return "system";
-    return (localStorage.getItem("dst-locale") as LocaleSetting) || "system";
-  });
-
-  const resolvedTheme = useMemo(() => resolveTheme(theme), [theme]);
-  const resolvedLocale = useMemo(() => resolveLocale(locale), [locale]);
+  // Before mount, use SSR-safe resolved values to prevent hydration mismatch
+  const resolvedTheme = useMemo(
+    () => (mounted ? resolveTheme(theme) : SSR_RESOLVED_THEME),
+    [theme, mounted]
+  );
+  const resolvedLocale = useMemo(
+    () => (mounted ? resolveLocale(locale) : SSR_RESOLVED_LOCALE),
+    [locale, mounted]
+  );
 
   const setTheme = useCallback((t: ThemeSetting) => {
     setThemeState(t);
@@ -76,22 +88,32 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("dst-locale", l);
   }, []);
 
-  // Apply theme on mount and listen for system preference changes
+  // Read saved preferences after mount (hydration-safe)
   useEffect(() => {
-    applyTheme(resolveTheme(theme));
+    const savedTheme =
+      (localStorage.getItem("dst-theme") as ThemeSetting) || DEFAULT_THEME;
+    const savedLocale =
+      (localStorage.getItem("dst-locale") as LocaleSetting) || DEFAULT_LOCALE;
+    setThemeState(savedTheme);
+    setLocaleState(savedLocale);
+    applyTheme(resolveTheme(savedTheme));
+    setMounted(true);
+  }, []);
 
-    if (theme === "system") {
-      const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      const handler = () => applyTheme(getSystemTheme());
-      mq.addEventListener("change", handler);
-      return () => mq.removeEventListener("change", handler);
-    }
-  }, [theme]);
+  // Listen for system preference changes when theme is "system"
+  useEffect(() => {
+    if (!mounted || theme !== "system") return;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = () => applyTheme(getSystemTheme());
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [theme, mounted]);
 
   // Update html lang attribute
   useEffect(() => {
+    if (!mounted) return;
     document.documentElement.lang = resolvedLocale;
-  }, [resolvedLocale]);
+  }, [resolvedLocale, mounted]);
 
   const value = useMemo(
     () => ({

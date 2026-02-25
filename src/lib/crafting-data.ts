@@ -2,6 +2,7 @@ import type { CategoryId, CraftingItem, Material, Category } from "@/lib/types";
 import { categories } from "@/data/categories";
 import { materials } from "@/data/materials";
 import { allItems } from "@/data/items";
+import { ko } from "@/data/locales/ko";
 
 export function getItemsByCategory(categoryId: CategoryId): CraftingItem[] {
   return allItems
@@ -26,8 +27,8 @@ export function searchItems(query: string): CraftingItem[] {
   if (!lowerQuery) return [];
   return allItems.filter(
     (item) =>
-      item.nameEn.toLowerCase().includes(lowerQuery) ||
-      item.nameKo.toLowerCase().includes(lowerQuery) ||
+      item.name.toLowerCase().includes(lowerQuery) ||
+      (ko.items[item.id]?.name?.toLowerCase().includes(lowerQuery) ?? false) ||
       item.description.toLowerCase().includes(lowerQuery)
   );
 }

@@ -1,3 +1,7 @@
+import type { CraftingItem, Material, Category, Character } from "@/lib/types";
+import { ko } from "@/data/locales/ko";
+import type { LocaleData } from "@/data/locales/types";
+
 export type Locale = "ko" | "en";
 export type LocaleSetting = Locale | "system";
 
@@ -64,15 +68,41 @@ const translations = {
 
 export type TranslationKey = keyof (typeof translations)["ko"];
 
+// Locale registry — add new locales here
+const locales: Record<string, LocaleData> = { ko };
+
 export function t(locale: Locale, key: TranslationKey): string {
   return translations[locale][key];
 }
 
-export function localName(
-  obj: { nameKo: string; nameEn: string },
-  locale: Locale
-): string {
-  return locale === "ko" ? obj.nameKo : obj.nameEn;
+// Domain-specific localized name helpers (fallback to English name)
+
+export function itemName(item: Pick<CraftingItem, "id" | "name">, locale: string): string {
+  return locales[locale]?.items[item.id]?.name ?? item.name;
+}
+
+export function itemDesc(item: Pick<CraftingItem, "id" | "description">, locale: string): string {
+  return locales[locale]?.items[item.id]?.desc ?? item.description;
+}
+
+export function materialName(mat: Pick<Material, "id" | "name">, locale: string): string {
+  return locales[locale]?.materials[mat.id]?.name ?? mat.name;
+}
+
+export function categoryName(cat: Pick<Category, "id" | "name">, locale: string): string {
+  return locales[locale]?.categories[cat.id]?.name ?? cat.name;
+}
+
+export function characterName(char: Pick<Character, "id" | "name">, locale: string): string {
+  return locales[locale]?.characters[char.id]?.name ?? char.name;
+}
+
+/** Get the "other language" name for display (e.g. show English when locale is Korean) */
+export function itemAltName(item: Pick<CraftingItem, "id" | "name">, locale: string): string {
+  if (locale === "en") {
+    return locales.ko?.items[item.id]?.name ?? item.name;
+  }
+  return item.name;
 }
 
 export function detectLocale(): Locale {

@@ -3,7 +3,7 @@
 import { getMaterialById } from "@/lib/crafting-data";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
-import { localName } from "@/lib/i18n";
+import { materialName } from "@/lib/i18n";
 
 interface MaterialSlotProps {
   materialId: string;
@@ -21,7 +21,7 @@ export function MaterialSlot({ materialId, quantity }: MaterialSlotProps) {
         {material && !imgError ? (
           <img
             src={`/images/materials/${material.image}`}
-            alt={localName(material, resolvedLocale)}
+            alt={materialName(material, resolvedLocale)}
             className="size-6 object-contain"
             onError={() => setImgError(true)}
             loading="lazy"
@@ -34,7 +34,7 @@ export function MaterialSlot({ materialId, quantity }: MaterialSlotProps) {
         </span>
       </div>
       <span className="text-[10px] text-muted-foreground text-center leading-tight max-w-[48px] truncate">
-        {material ? localName(material, resolvedLocale) : materialId}
+        {material ? materialName(material, resolvedLocale) : materialId}
       </span>
     </div>
   );

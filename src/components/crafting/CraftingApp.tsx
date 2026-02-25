@@ -8,7 +8,7 @@ import { getCategoryById } from "@/lib/crafting-data";
 import { useCraftingState } from "@/hooks/use-crafting-state";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
-import { t, localName } from "@/lib/i18n";
+import { t, itemName } from "@/lib/i18n";
 import { CategoryGrid } from "./CategoryGrid";
 import { CategoryHeader } from "./CategoryHeader";
 import { SearchBar } from "./SearchBar";
@@ -115,7 +115,7 @@ export function CraftingApp() {
               <SheetHeader className="p-0">
                 <SheetTitle className="sr-only">
                   {selectedItem
-                    ? localName(selectedItem, resolvedLocale)
+                    ? itemName(selectedItem, resolvedLocale)
                     : t(resolvedLocale, "itemDetail")}
                 </SheetTitle>
               </SheetHeader>
@@ -181,7 +181,7 @@ export function CraftingApp() {
           <SheetHeader className="p-0">
             <SheetTitle className="sr-only">
               {selectedItem
-                ? localName(selectedItem, resolvedLocale)
+                ? itemName(selectedItem, resolvedLocale)
                 : t(resolvedLocale, "itemDetail")}
             </SheetTitle>
           </SheetHeader>
