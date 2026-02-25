@@ -3,21 +3,25 @@
 import type { CraftingItem, CraftingStation } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { MaterialSlot } from "./MaterialSlot";
+import { getCategoryById } from "@/lib/crafting-data";
 import { useState } from "react";
+import { useSettings } from "@/hooks/use-settings";
+import { t, localName } from "@/lib/i18n";
+import type { TranslationKey } from "@/lib/i18n";
 
-const stationNames: Record<CraftingStation, string> = {
-  none: "손 제작",
-  science_1: "과학 기계",
-  science_2: "연금술 엔진",
-  magic_1: "프레스티해티테이터",
-  magic_2: "그림자 조종기",
-  ancient: "고대",
-  celestial: "천상",
-  think_tank: "씽크 탱크",
-  cartography: "지도 제작대",
-  tackle_station: "낚시 도구 제작대",
-  potter_wheel: "도자기 물레",
-  character: "캐릭터 고유",
+const stationKeys: Record<CraftingStation, TranslationKey> = {
+  none: "station_none",
+  science_1: "station_science_1",
+  science_2: "station_science_2",
+  magic_1: "station_magic_1",
+  magic_2: "station_magic_2",
+  ancient: "station_ancient",
+  celestial: "station_celestial",
+  think_tank: "station_think_tank",
+  cartography: "station_cartography",
+  tackle_station: "station_tackle_station",
+  potter_wheel: "station_potter_wheel",
+  character: "station_character",
 };
 
 interface ItemDetailProps {
@@ -26,11 +30,12 @@ interface ItemDetailProps {
 
 export function ItemDetail({ item }: ItemDetailProps) {
   const [imgError, setImgError] = useState(false);
+  const { resolvedLocale } = useSettings();
 
   if (!item) {
     return (
-      <div className="flex items-center justify-center py-6 text-zinc-500 text-sm">
-        아이템을 선택하세요
+      <div className="flex items-center justify-center py-6 text-muted-foreground text-sm">
+        {t(resolvedLocale, "selectItem")}
       </div>
     );
   }
@@ -39,15 +44,15 @@ export function ItemDetail({ item }: ItemDetailProps) {
     <div className="flex gap-4 p-4">
       {/* Item image */}
       <div className="flex items-start justify-center shrink-0">
-        <div className="flex items-center justify-center size-16 rounded-md border border-zinc-700 bg-zinc-900">
+        <div className="flex items-center justify-center size-16 rounded-md border border-input bg-surface">
           {imgError ? (
-            <span className="text-xs text-zinc-500 text-center px-1">
-              {item.nameKo}
+            <span className="text-xs text-muted-foreground text-center px-1">
+              {localName(item, resolvedLocale)}
             </span>
           ) : (
             <img
               src={`/images/items/${item.image}`}
-              alt={item.nameKo}
+              alt={localName(item, resolvedLocale)}
               className="size-14 object-contain"
               onError={() => setImgError(true)}
             />
@@ -58,20 +63,25 @@ export function ItemDetail({ item }: ItemDetailProps) {
       {/* Item info */}
       <div className="flex-1 min-w-0 space-y-2">
         <div>
-          <h3 className="text-sm font-semibold text-zinc-100">{item.nameKo}</h3>
-          <p className="text-xs text-zinc-500">{item.nameEn}</p>
+          <h3 className="text-sm font-semibold text-foreground">
+            {localName(item, resolvedLocale)}
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            {resolvedLocale === "ko" ? item.nameEn : item.nameKo}
+          </p>
         </div>
 
-        <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+        <p className="text-xs text-dim leading-relaxed line-clamp-2">
           {item.description}
         </p>
 
-        <div className="flex items-center gap-2">
+        {/* Station + character badges */}
+        <div className="flex items-center gap-2 flex-wrap">
           <Badge
             variant="secondary"
-            className="text-[10px] bg-zinc-800 text-zinc-300 border-zinc-700"
+            className="text-[10px] bg-surface-hover text-foreground/80 border-border"
           >
-            {stationNames[item.station]}
+            {t(resolvedLocale, stationKeys[item.station])}
           </Badge>
           {item.characterOnly && (
             <Badge
@@ -81,6 +91,28 @@ export function ItemDetail({ item }: ItemDetailProps) {
               {item.characterOnly}
             </Badge>
           )}
+        </div>
+
+        {/* Category badges with icons */}
+        <div className="flex flex-wrap gap-1.5">
+          {item.category.map((catId) => {
+            const cat = getCategoryById(catId);
+            if (!cat) return null;
+            return (
+              <Badge
+                key={catId}
+                variant="outline"
+                className="text-[10px] gap-1 pl-1 pr-1.5 py-0.5 border-border text-muted-foreground"
+              >
+                <img
+                  src={`/images/category-icons/${catId}.png`}
+                  alt=""
+                  className="size-3.5 object-contain"
+                />
+                {localName(cat, resolvedLocale)}
+              </Badge>
+            );
+          })}
         </div>
 
         {/* Materials */}

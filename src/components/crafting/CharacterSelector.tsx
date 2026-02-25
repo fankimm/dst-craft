@@ -1,13 +1,10 @@
 "use client";
 
 import type { Character } from "@/lib/types";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useSettings } from "@/hooks/use-settings";
+import { t, localName } from "@/lib/i18n";
 
 interface CharacterSelectorProps {
   characters: Character[];
@@ -19,44 +16,45 @@ function CharacterAvatar({
   character,
   isSelected,
   onClick,
+  locale,
 }: {
   character: Character;
   isSelected: boolean;
   onClick: () => void;
+  locale: "ko" | "en";
 }) {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <button
-          onClick={onClick}
-          className={cn(
-            "relative flex items-center justify-center size-12 rounded-full border-2 transition-colors overflow-hidden bg-zinc-900 hover:border-zinc-500",
-            isSelected
-              ? "border-amber-500 ring-1 ring-amber-500/50"
-              : "border-zinc-700"
-          )}
-        >
-          {imgError ? (
-            <span className="text-[10px] text-zinc-400">
-              {character.nameKo.charAt(0)}
-            </span>
-          ) : (
-            <img
-              src={`/images/characters/${character.portrait}.png`}
-              alt={character.nameKo}
-              className="size-10 object-cover rounded-full"
-              onError={() => setImgError(true)}
-              loading="lazy"
-            />
-          )}
-        </button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>{character.nameKo}</p>
-      </TooltipContent>
-    </Tooltip>
+    <button
+      onClick={onClick}
+      className={cn(
+        "flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover",
+        isSelected
+          ? "border-amber-500 ring-1 ring-amber-500/50"
+          : "border-border hover:border-ring"
+      )}
+    >
+      {imgError ? (
+        <div className="flex items-center justify-center size-12 sm:size-14">
+          <span className="text-sm text-muted-foreground font-medium">
+            {localName(character, locale).charAt(0)}
+          </span>
+        </div>
+      ) : (
+        <img
+          src={`/images/category-icons/characters/${character.portrait}.png`}
+          alt={localName(character, locale)}
+          className="size-12 sm:size-14 object-contain"
+          onError={() => setImgError(true)}
+          loading="lazy"
+          draggable={false}
+        />
+      )}
+      <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
+        {localName(character, locale)}
+      </span>
+    </button>
   );
 }
 
@@ -65,38 +63,37 @@ export function CharacterSelector({
   selectedCharacter,
   onSelectCharacter,
 }: CharacterSelectorProps) {
-  return (
-    <div className="p-3">
-      <div className="flex flex-wrap gap-2">
-        {/* All option */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              onClick={() => onSelectCharacter(null)}
-              className={cn(
-                "flex items-center justify-center size-12 rounded-full border-2 transition-colors bg-zinc-900 hover:border-zinc-500 text-xs font-medium",
-                selectedCharacter === null
-                  ? "border-amber-500 ring-1 ring-amber-500/50 text-amber-400"
-                  : "border-zinc-700 text-zinc-400"
-              )}
-            >
-              ALL
-            </button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>전체 캐릭터</p>
-          </TooltipContent>
-        </Tooltip>
+  const { resolvedLocale } = useSettings();
 
-        {characters.map((character) => (
-          <CharacterAvatar
-            key={character.id}
-            character={character}
-            isSelected={selectedCharacter === character.id}
-            onClick={() => onSelectCharacter(character.id)}
-          />
-        ))}
-      </div>
+  return (
+    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4">
+      {/* All option */}
+      <button
+        onClick={() => onSelectCharacter(null)}
+        className={cn(
+          "flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover",
+          selectedCharacter === null
+            ? "border-amber-500 ring-1 ring-amber-500/50"
+            : "border-border hover:border-ring"
+        )}
+      >
+        <div className="flex items-center justify-center size-12 sm:size-14">
+          <span className="text-lg sm:text-xl font-bold text-foreground/80">ALL</span>
+        </div>
+        <span className="text-xs sm:text-sm text-foreground/80 font-medium">
+          {t(resolvedLocale, "all")}
+        </span>
+      </button>
+
+      {characters.map((character) => (
+        <CharacterAvatar
+          key={character.id}
+          character={character}
+          isSelected={selectedCharacter === character.id}
+          onClick={() => onSelectCharacter(character.id)}
+          locale={resolvedLocale}
+        />
+      ))}
     </div>
   );
 }

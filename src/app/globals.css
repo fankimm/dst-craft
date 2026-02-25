@@ -45,11 +45,58 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  /* Custom semantic tokens */
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-dim: var(--dim);
+  --color-subtle: var(--subtle);
 }
 
-/* DST dark theme - always dark */
+/* Light theme */
 :root {
   --radius: 0.75rem;
+  --background: #fafafa;
+  --foreground: #18181b;
+  --card: #ffffff;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #ef4444;
+  --border: #e4e4e7;
+  --input: #d4d4d8;
+  --ring: #a1a1aa;
+  --chart-1: #e11d48;
+  --chart-2: #2563eb;
+  --chart-3: #16a34a;
+  --chart-4: #f59e0b;
+  --chart-5: #8b5cf6;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #18181b;
+  --sidebar-primary: #18181b;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #f4f4f5;
+  --sidebar-accent-foreground: #18181b;
+  --sidebar-border: #e4e4e7;
+  --sidebar-ring: #a1a1aa;
+  /* Custom */
+  --surface: #f4f4f5;
+  --surface-hover: #e4e4e7;
+  --surface-active: #d4d4d8;
+  --dim: #71717a;
+  --subtle: #a1a1aa;
+}
+
+/* Dark theme */
+.dark {
   --background: #09090b;
   --foreground: #fafafa;
   --card: #18181b;
@@ -66,7 +113,7 @@
   --accent-foreground: #fafafa;
   --destructive: #ef4444;
   --border: #27272a;
-  --input: #27272a;
+  --input: #3f3f46;
   --ring: #3f3f46;
   --chart-1: #e11d48;
   --chart-2: #2563eb;
@@ -81,6 +128,12 @@
   --sidebar-accent-foreground: #fafafa;
   --sidebar-border: #27272a;
   --sidebar-ring: #3f3f46;
+  /* Custom */
+  --surface: #18181b;
+  --surface-hover: #27272a;
+  --surface-active: #3f3f46;
+  --dim: #a1a1aa;
+  --subtle: #71717a;
 }
 
 @layer base {
@@ -103,10 +156,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
+  background: var(--subtle);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
+  background: var(--dim);
 }

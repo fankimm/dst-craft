@@ -7,12 +7,15 @@ import { getItemsByCategory, getCharacterItems } from "@/lib/crafting-data";
 import { getCategoryById } from "@/lib/crafting-data";
 import { useCraftingState } from "@/hooks/use-crafting-state";
 import { useSearch } from "@/hooks/use-search";
-import { CategorySidebar } from "./CategorySidebar";
+import { useSettings } from "@/hooks/use-settings";
+import { t, localName } from "@/lib/i18n";
+import { CategoryGrid } from "./CategoryGrid";
 import { CategoryHeader } from "./CategoryHeader";
 import { SearchBar } from "./SearchBar";
 import { ItemGrid } from "./ItemGrid";
 import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
+import { SettingsButton } from "./SettingsButton";
 import {
   Sheet,
   SheetContent,
@@ -27,12 +30,16 @@ export function CraftingApp() {
     selectedCharacter,
     searchQuery,
     isSearching,
+    showCategoryGrid,
     setCategory,
     setItem,
     setCharacter,
     setSearchQuery,
     clearSearch,
+    goBack,
   } = useCraftingState();
+
+  const { resolvedLocale } = useSettings();
 
   const { results: searchResults } = useSearch(searchQuery);
 
@@ -43,8 +50,6 @@ export function CraftingApp() {
       if (selectedCharacter) {
         return getCharacterItems(selectedCharacter);
       }
-      // When "character" category is selected and no specific character,
-      // show all character-only items
       return getItemsByCategory("character");
     }
     return getItemsByCategory(selectedCategory);
@@ -60,69 +65,88 @@ export function CraftingApp() {
     />
   );
 
+  // Category grid view (initial state)
+  if (showCategoryGrid) {
+    return (
+      <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
+        <div className="flex items-center gap-4 border-b border-border bg-background/80 px-4 py-2.5">
+          <h2 className="text-base font-semibold text-foreground">
+            {t(resolvedLocale, "craftingGuide")}
+          </h2>
+          <div className="flex-1 max-w-sm ml-auto flex items-center gap-2">
+            {searchBar}
+            <SettingsButton />
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto">
+          <CategoryGrid
+            categories={categories}
+            onSelectCategory={setCategory}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Item list view (after category selection or searching)
   return (
-    <div className="flex flex-col sm:flex-row h-dvh bg-zinc-950 text-zinc-100 overflow-hidden">
-      {/* Category sidebar */}
-      <CategorySidebar
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onSelectCategory={setCategory}
+    <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
+      {/* Header */}
+      <CategoryHeader
+        category={isSearching ? undefined : currentCategory}
+        searchBar={searchBar}
+        onBack={isSearching ? undefined : goBack}
       />
 
-      {/* Main content area */}
-      <div className="flex flex-col flex-1 min-w-0 min-h-0">
-        {/* Header */}
-        <CategoryHeader
-          category={isSearching ? undefined : currentCategory}
-          searchBar={searchBar}
-        />
+      {/* Mobile search bar */}
+      <div className="sm:hidden px-3 py-2 border-b border-border bg-background">
+        {searchBar}
+      </div>
 
-        {/* Mobile search bar */}
-        <div className="sm:hidden px-3 py-2 border-b border-zinc-800 bg-zinc-950">
-          {searchBar}
+      {/* Character selector (when character category selected and not searching) */}
+      {selectedCategory === "character" && !isSearching && (
+        <CharacterSelector
+          characters={characters}
+          selectedCharacter={selectedCharacter}
+          onSelectCharacter={setCharacter}
+        />
+      )}
+
+      {/* Item grid */}
+      <ItemGrid
+        items={displayItems}
+        selectedItem={selectedItem}
+        onSelectItem={setItem}
+        className="flex-1 min-h-0"
+      />
+
+      {/* Desktop: fixed bottom detail panel */}
+      {selectedItem && (
+        <div className="hidden sm:block border-t border-border bg-card/80 shrink-0">
+          <ItemDetail item={selectedItem} />
         </div>
+      )}
 
-        {/* Character selector (when character category selected and not searching) */}
-        {selectedCategory === "character" && !isSearching && (
-          <CharacterSelector
-            characters={characters}
-            selectedCharacter={selectedCharacter}
-            onSelectCharacter={setCharacter}
-          />
-        )}
-
-        {/* Item grid */}
-        <ItemGrid
-          items={displayItems}
-          selectedItem={selectedItem}
-          onSelectItem={setItem}
-          className="flex-1 min-h-0"
-        />
-
-        {/* Desktop: fixed bottom detail panel */}
-        {selectedItem && (
-          <div className="hidden sm:block border-t border-zinc-800 bg-zinc-900/80 shrink-0">
+      {/* Mobile: bottom sheet for item detail */}
+      <Sheet
+        open={selectedItem !== null}
+        onOpenChange={(open) => {
+          if (!open) setItem(null);
+        }}
+      >
+        <SheetContent side="bottom" className="sm:hidden max-h-[70dvh] rounded-t-xl">
+          <SheetHeader className="p-0">
+            <SheetTitle className="sr-only">
+              {selectedItem
+                ? localName(selectedItem, resolvedLocale)
+                : t(resolvedLocale, "itemDetail")}
+            </SheetTitle>
+          </SheetHeader>
+          <div className="overflow-y-auto">
             <ItemDetail item={selectedItem} />
           </div>
-        )}
-
-        {/* Mobile: bottom sheet for item detail */}
-        <Sheet
-          open={selectedItem !== null}
-          onOpenChange={(open) => {
-            if (!open) setItem(null);
-          }}
-        >
-          <SheetContent side="bottom" className="sm:hidden max-h-[60dvh] rounded-t-xl">
-            <SheetHeader className="pb-0">
-              <SheetTitle className="sr-only">
-                {selectedItem?.nameKo ?? "아이템 상세"}
-              </SheetTitle>
-            </SheetHeader>
-            <ItemDetail item={selectedItem} />
-          </SheetContent>
-        </Sheet>
-      </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

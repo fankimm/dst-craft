@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Sans_KR } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { SettingsProvider } from "@/hooks/use-settings";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,9 +15,41 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "DST 크래프팅 가이드",
-  description: "Don't Starve Together 크래프팅 레시피 가이드",
+  title: "DST Crafting Guide",
+  description: "Don't Starve Together Crafting Recipe Guide",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "DST Crafting",
+  },
+  icons: {
+    icon: "/icons/icon-192.png",
+    apple: "/icons/icon-192.png",
+  },
 };
+
+export const viewport: Viewport = {
+  themeColor: "#09090b",
+};
+
+const themeScript = `
+(function(){
+  try {
+    var t = localStorage.getItem('dst-theme') || 'dark';
+    var d = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (d) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  } catch(e) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+`;
 
 export default function RootLayout({
   children,
@@ -24,11 +57,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="dark">
+    <html lang="ko" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
         className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased`}
       >
-        <TooltipProvider>{children}</TooltipProvider>
+        <SettingsProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </SettingsProvider>
       </body>
     </html>
   );

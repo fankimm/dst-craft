@@ -4,6 +4,8 @@ import type { CraftingItem } from "@/lib/types";
 import { ItemIcon } from "./ItemIcon";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { useSettings } from "@/hooks/use-settings";
+import { t } from "@/lib/i18n";
 
 interface ItemGridProps {
   items: CraftingItem[];
@@ -18,22 +20,24 @@ export function ItemGrid({
   onSelectItem,
   className,
 }: ItemGridProps) {
+  const { resolvedLocale } = useSettings();
+
   if (items.length === 0) {
     return (
       <div
         className={cn(
-          "flex items-center justify-center py-12 text-zinc-500 text-sm",
+          "flex items-center justify-center py-12 text-muted-foreground text-sm",
           className
         )}
       >
-        아이템이 없습니다
+        {t(resolvedLocale, "noItems")}
       </div>
     );
   }
 
   return (
     <ScrollArea className={cn("flex-1", className)}>
-      <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-1.5 p-3">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4">
         {items.map((item) => (
           <ItemIcon
             key={item.id}

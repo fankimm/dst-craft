@@ -22,7 +22,7 @@ export const clothingItems: CraftingItem[] = [
     nameKo: "밀짚모자",
     description: "A basic hat that provides minor rain and sun protection.",
     image: "Straw_Hat.png",
-    category: ["clothing"],
+    category: ["clothing", "rain", "summer"],
     station: "none",
     materials: [
       { materialId: "cutgrass", quantity: 12 },
@@ -35,7 +35,7 @@ export const clothingItems: CraftingItem[] = [
     nameKo: "비팔로 모자",
     description: "A warm hat that also prevents beefalo aggression during mating season.",
     image: "Beefalo_Hat.png",
-    category: ["clothing"],
+    category: ["clothing", "winter", "beefalo"],
     station: "science_1",
     materials: [
       { materialId: "beefalo_horn", quantity: 1 },
@@ -90,7 +90,7 @@ export const clothingItems: CraftingItem[] = [
     nameKo: "시원한 조끼",
     description: "A light vest that provides moderate insulation.",
     image: "Breezy_Vest.png",
-    category: ["clothing"],
+    category: ["clothing", "winter"],
     station: "science_2",
     materials: [
       { materialId: "koalefant_trunk", quantity: 1 },
@@ -104,7 +104,7 @@ export const clothingItems: CraftingItem[] = [
     nameKo: "푹신한 조끼",
     description: "A warm vest that provides high insulation against cold.",
     image: "Puffy_Vest.png",
-    category: ["clothing"],
+    category: ["clothing", "winter"],
     station: "science_2",
     materials: [
       { materialId: "winter_koalefant_trunk", quantity: 1 },
@@ -119,7 +119,7 @@ export const clothingItems: CraftingItem[] = [
     nameKo: "비옷",
     description: "A waterproof coat that provides excellent rain protection.",
     image: "Rain_Coat.png",
-    category: ["clothing"],
+    category: ["clothing", "rain"],
     station: "science_2",
     materials: [
       { materialId: "tentacle_spots", quantity: 2 },
@@ -131,10 +131,10 @@ export const clothingItems: CraftingItem[] = [
   {
     id: "rain_hat",
     nameEn: "Rain Hat",
-    nameKo: "방우 모자",
+    nameKo: "방수 모자",
     description: "A waterproof hat that keeps the wearer dry.",
     image: "Rain_Hat.png",
-    category: ["clothing"],
+    category: ["clothing", "rain"],
     station: "science_2",
     materials: [
       { materialId: "moleworm", quantity: 1 },
@@ -149,7 +149,7 @@ export const clothingItems: CraftingItem[] = [
     nameKo: "고양이 모자",
     description: "A cozy hat that provides warmth and restores sanity.",
     image: "Cat_Cap.png",
-    category: ["clothing"],
+    category: ["clothing", "winter"],
     station: "science_2",
     materials: [
       { materialId: "silk", quantity: 4 },

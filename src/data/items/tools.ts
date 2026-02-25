@@ -107,7 +107,7 @@ export const toolItems: CraftingItem[] = [
     nameKo: "안장 뿔",
     description: "A tool used to remove saddles from beefalo.",
     image: "Saddle_Horn.png",
-    category: ["tools"],
+    category: ["tools", "beefalo"],
     station: "science_2",
     materials: [
       { materialId: "flint", quantity: 2 },
@@ -121,7 +121,7 @@ export const toolItems: CraftingItem[] = [
     nameKo: "빗",
     description: "A grooming tool for beefalo to increase domestication.",
     image: "Brush.png",
-    category: ["tools"],
+    category: ["tools", "beefalo"],
     station: "science_2",
     materials: [
       { materialId: "steel_wool", quantity: 1 },

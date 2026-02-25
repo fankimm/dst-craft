@@ -14,7 +14,6 @@ export type CraftingStation =
 
 export type CategoryId =
   | "character"
-  | "survivor"
   | "tools"
   | "light"
   | "prototypers"

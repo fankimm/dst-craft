@@ -5,7 +5,7 @@ export const characters: Character[] = [
   { id: "willow", nameEn: "Willow", nameKo: "윌로우", portrait: "willow" },
   { id: "wolfgang", nameEn: "Wolfgang", nameKo: "볼프강", portrait: "wolfgang" },
   { id: "wendy", nameEn: "Wendy", nameKo: "웬디", portrait: "wendy" },
-  { id: "wx-78", nameEn: "WX-78", nameKo: "WX-78", portrait: "wx-78" },
+  { id: "wx-78", nameEn: "WX-78", nameKo: "WX-78", portrait: "wx78" },
   { id: "wickerbottom", nameEn: "Wickerbottom", nameKo: "위커바텀", portrait: "wickerbottom" },
   { id: "woodie", nameEn: "Woodie", nameKo: "우디", portrait: "woodie" },
   { id: "wes", nameEn: "Wes", nameKo: "웨스", portrait: "wes" },

@@ -1,55 +1,92 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { CategoryId, CraftingItem } from "@/lib/types";
+import { getItemById } from "@/lib/crafting-data";
 
-export interface CraftingState {
-  selectedCategory: CategoryId;
-  selectedItem: CraftingItem | null;
-  selectedCharacter: string | null;
-  searchQuery: string;
-  isSearching: boolean;
+function getParams(): URLSearchParams {
+  if (typeof window === "undefined") return new URLSearchParams();
+  return new URLSearchParams(window.location.search);
 }
 
-export interface CraftingActions {
-  setCategory: (category: CategoryId) => void;
-  setItem: (item: CraftingItem | null) => void;
-  setCharacter: (characterId: string | null) => void;
-  setSearchQuery: (query: string) => void;
-  clearSearch: () => void;
+function readUrlState() {
+  const params = getParams();
+  return {
+    cat: (params.get("cat") as CategoryId) || null,
+    item: params.get("item"),
+    char: params.get("char"),
+  };
 }
 
-export function useCraftingState(): CraftingState & CraftingActions {
-  const [selectedCategory, setSelectedCategory] = useState<CategoryId>("tools");
-  const [selectedItem, setSelectedItem] = useState<CraftingItem | null>(null);
-  const [selectedCharacter, setSelectedCharacter] = useState<string | null>(
-    null
-  );
+export function useCraftingState() {
+  const [urlState, setUrlState] = useState(readUrlState);
   const [searchQuery, setSearchQueryState] = useState("");
 
   const isSearching = searchQuery.trim().length > 0;
+  const showCategoryGrid = !urlState.cat && !isSearching;
+  const selectedCategory: CategoryId = urlState.cat || "tools";
+  const selectedItem = urlState.item ? (getItemById(urlState.item) ?? null) : null;
+  const selectedCharacter = urlState.char;
+
+  // Listen to popstate (browser back/forward)
+  useEffect(() => {
+    const handler = () => setUrlState(readUrlState());
+    window.addEventListener("popstate", handler);
+    return () => window.removeEventListener("popstate", handler);
+  }, []);
 
   const setCategory = useCallback((category: CategoryId) => {
-    setSelectedCategory(category);
-    setSelectedItem(null);
-    setSelectedCharacter(null);
+    const url = new URL(window.location.href);
+    url.search = `?cat=${category}`;
+    window.history.pushState({}, "", url.toString());
+    setUrlState({ cat: category, item: null, char: null });
     setSearchQueryState("");
   }, []);
 
   const setItem = useCallback((item: CraftingItem | null) => {
-    setSelectedItem(item);
+    if (item === null) {
+      // Deselecting: go back if item was in URL
+      const params = getParams();
+      if (params.has("item")) {
+        window.history.back();
+      }
+      return;
+    }
+
+    const params = getParams();
+    const hadItem = params.has("item");
+    params.set("item", item.id);
+    const url = `${window.location.pathname}?${params.toString()}`;
+
+    if (hadItem) {
+      // Switching items: replace current entry
+      window.history.replaceState({}, "", url);
+    } else {
+      // First item selection: push new entry
+      window.history.pushState({}, "", url);
+    }
+    setUrlState((prev) => ({ ...prev, item: item.id }));
   }, []);
 
   const setCharacter = useCallback((characterId: string | null) => {
-    setSelectedCharacter(characterId);
-    setSelectedItem(null);
+    const params = getParams();
+    if (characterId) {
+      params.set("char", characterId);
+    } else {
+      params.delete("char");
+    }
+    params.delete("item");
+    const url = `${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({}, "", url);
+    setUrlState((prev) => ({ ...prev, char: characterId, item: null }));
+  }, []);
+
+  const goBack = useCallback(() => {
+    window.history.back();
   }, []);
 
   const setSearchQuery = useCallback((query: string) => {
     setSearchQueryState(query);
-    if (query.trim().length > 0) {
-      setSelectedItem(null);
-    }
   }, []);
 
   const clearSearch = useCallback(() => {
@@ -62,10 +99,12 @@ export function useCraftingState(): CraftingState & CraftingActions {
     selectedCharacter,
     searchQuery,
     isSearching,
+    showCategoryGrid,
     setCategory,
     setItem,
     setCharacter,
     setSearchQuery,
     clearSearch,
+    goBack,
   };
 }
