@@ -40,6 +40,7 @@ export interface CraftingItem {
   nameEn: string;
   nameKo: string;
   description: string;
+  descriptionKo?: string;
   image: string;
   category: CategoryId[];
   station: CraftingStation;

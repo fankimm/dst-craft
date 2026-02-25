@@ -72,7 +72,7 @@ export function ItemDetail({ item }: ItemDetailProps) {
         </div>
 
         <p className="text-xs text-dim leading-relaxed line-clamp-2">
-          {item.description}
+          {resolvedLocale === "ko" && item.descriptionKo ? item.descriptionKo : item.description}
         </p>
 
         {/* Station + character badges */}

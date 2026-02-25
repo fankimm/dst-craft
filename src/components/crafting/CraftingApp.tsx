@@ -65,25 +65,63 @@ export function CraftingApp() {
     />
   );
 
-  // Category grid view (initial state)
+  // Category grid view (initial state - no category selected)
   if (showCategoryGrid) {
     return (
       <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
         <div className="flex items-center gap-4 border-b border-border bg-background/80 px-4 py-2.5">
           <h2 className="text-base font-semibold text-foreground">
-            {t(resolvedLocale, "craftingGuide")}
+            {isSearching ? t(resolvedLocale, "searchResults") : t(resolvedLocale, "craftingGuide")}
           </h2>
           <div className="flex-1 max-w-sm ml-auto flex items-center gap-2">
             {searchBar}
             <SettingsButton />
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto">
-          <CategoryGrid
-            categories={categories}
-            onSelectCategory={setCategory}
-          />
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          {isSearching ? (
+            <ItemGrid
+              items={searchResults}
+              selectedItem={selectedItem}
+              onSelectItem={setItem}
+            />
+          ) : (
+            <CategoryGrid
+              categories={categories}
+              onSelectCategory={setCategory}
+            />
+          )}
         </div>
+
+        {/* Desktop: fixed bottom detail panel (for search results) */}
+        {isSearching && selectedItem && (
+          <div className="hidden sm:block border-t border-border bg-card/80 shrink-0">
+            <ItemDetail item={selectedItem} />
+          </div>
+        )}
+
+        {/* Mobile: bottom sheet for item detail (for search results) */}
+        {isSearching && (
+          <Sheet
+            open={selectedItem !== null}
+            onOpenChange={(open) => {
+              if (!open) setItem(null);
+            }}
+          >
+            <SheetContent side="bottom" className="sm:hidden max-h-[70dvh] rounded-t-xl">
+              <SheetHeader className="p-0">
+                <SheetTitle className="sr-only">
+                  {selectedItem
+                    ? localName(selectedItem, resolvedLocale)
+                    : t(resolvedLocale, "itemDetail")}
+                </SheetTitle>
+              </SheetHeader>
+              <div className="overflow-y-auto">
+                <ItemDetail item={selectedItem} />
+              </div>
+            </SheetContent>
+          </Sheet>
+        )}
       </div>
     );
   }
@@ -103,22 +141,24 @@ export function CraftingApp() {
         {searchBar}
       </div>
 
-      {/* Character selector (when character category selected and not searching) */}
-      {selectedCategory === "character" && !isSearching && (
-        <CharacterSelector
-          characters={characters}
-          selectedCharacter={selectedCharacter}
-          onSelectCharacter={setCharacter}
-        />
-      )}
+      {/* Scrollable content area */}
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        {/* Character selector (when character category selected and not searching) */}
+        {selectedCategory === "character" && !isSearching && (
+          <CharacterSelector
+            characters={characters}
+            selectedCharacter={selectedCharacter}
+            onSelectCharacter={setCharacter}
+          />
+        )}
 
-      {/* Item grid */}
-      <ItemGrid
-        items={displayItems}
-        selectedItem={selectedItem}
-        onSelectItem={setItem}
-        className="flex-1 min-h-0"
-      />
+        {/* Item grid */}
+        <ItemGrid
+          items={displayItems}
+          selectedItem={selectedItem}
+          onSelectItem={setItem}
+        />
+      </div>
 
       {/* Desktop: fixed bottom detail panel */}
       {selectedItem && (

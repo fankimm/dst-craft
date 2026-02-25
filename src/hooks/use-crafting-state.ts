@@ -23,7 +23,7 @@ export function useCraftingState() {
   const [searchQuery, setSearchQueryState] = useState("");
 
   const isSearching = searchQuery.trim().length > 0;
-  const showCategoryGrid = !urlState.cat && !isSearching;
+  const showCategoryGrid = !urlState.cat;
   const selectedCategory: CategoryId = urlState.cat || "tools";
   const selectedItem = urlState.item ? (getItemById(urlState.item) ?? null) : null;
   const selectedCharacter = urlState.char;
@@ -77,7 +77,8 @@ export function useCraftingState() {
     }
     params.delete("item");
     const url = `${window.location.pathname}?${params.toString()}`;
-    window.history.pushState({}, "", url);
+    // Always replace - character selection is part of the same category page
+    window.history.replaceState({}, "", url);
     setUrlState((prev) => ({ ...prev, char: characterId, item: null }));
   }, []);
 
