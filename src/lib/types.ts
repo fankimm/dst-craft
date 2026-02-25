@@ -10,6 +10,12 @@ export type CraftingStation =
   | "cartography"
   | "tackle_station"
   | "potter_wheel"
+  | "bookstation"
+  | "portableblender"
+  | "lunar_forge"
+  | "shadow_forge"
+  | "carpentry_station"
+  | "critter_lab"
   | "character";
 
 export type CategoryId =

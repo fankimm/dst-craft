@@ -21,6 +21,12 @@ const stationKeys: Record<CraftingStation, TranslationKey> = {
   cartography: "station_cartography",
   tackle_station: "station_tackle_station",
   potter_wheel: "station_potter_wheel",
+  bookstation: "station_bookstation",
+  portableblender: "station_portableblender",
+  lunar_forge: "station_lunar_forge",
+  shadow_forge: "station_shadow_forge",
+  carpentry_station: "station_carpentry_station",
+  critter_lab: "station_critter_lab",
   character: "station_character",
 };
 
@@ -36,6 +42,12 @@ const stationIcons: Record<CraftingStation, string | null> = {
   cartography: "tools",
   tackle_station: "fishing",
   potter_wheel: "tools",
+  bookstation: "magic",
+  portableblender: "cooking",
+  lunar_forge: "magic",
+  shadow_forge: "magic",
+  carpentry_station: "tools",
+  critter_lab: "decorations",
   character: "character",
 };
 

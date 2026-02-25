@@ -143,25 +143,23 @@ export function useCraftingState() {
   }, []);
 
   const goBack = useCallback(() => {
-    if (window.history.state?._appNav) {
-      window.history.back();
-    } else {
-      // Direct URL access — navigate to logical parent
-      const params = getParams();
-      if (params.has("char")) {
-        params.delete("char");
-        params.delete("item");
-      } else if (params.has("cat")) {
-        params.delete("cat");
-        params.delete("item");
-      }
-      const search = params.toString();
-      const url = search
-        ? `${window.location.pathname}?${search}`
-        : window.location.pathname;
-      window.history.replaceState({}, "", url);
-      setUrlState(readUrlState());
+    // Always navigate to logical parent depth (hierarchical navigation)
+    const params = getParams();
+    if (params.has("item")) {
+      params.delete("item");
+    } else if (params.has("char")) {
+      params.delete("char");
+      params.delete("item");
+    } else if (params.has("cat")) {
+      params.delete("cat");
+      params.delete("item");
     }
+    const search = params.toString();
+    const url = search
+      ? `${window.location.pathname}?${search}`
+      : window.location.pathname;
+    window.history.replaceState({ _appNav: true }, "", url);
+    setUrlState(readUrlState());
   }, []);
 
   const setSearchQuery = useCallback((query: string) => {
