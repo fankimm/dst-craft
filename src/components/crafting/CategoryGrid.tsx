@@ -3,6 +3,7 @@
 import type { Category, CategoryId } from "@/lib/types";
 import { useSettings } from "@/hooks/use-settings";
 import { categoryName } from "@/lib/i18n";
+import { assetPath } from "@/lib/asset-path";
 
 interface CategoryGridProps {
   categories: Category[];
@@ -24,7 +25,7 @@ export function CategoryGrid({
           onClick={() => onSelectCategory(cat.id)}
         >
           <img
-            src={`/images/category-icons/${cat.id}.png`}
+            src={assetPath(`/images/category-icons/${cat.id}.png`)}
             alt={categoryName(cat, resolvedLocale)}
             className="size-12 sm:size-14 object-contain"
             draggable={false}

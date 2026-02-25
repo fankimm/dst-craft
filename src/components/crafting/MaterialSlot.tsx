@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { materialName } from "@/lib/i18n";
 import type { CraftingItem } from "@/lib/types";
+import { assetPath } from "@/lib/asset-path";
 
 interface MaterialSlotProps {
   materialId: string;
@@ -37,7 +38,7 @@ export function MaterialSlot({ materialId, quantity, onMaterialClick }: Material
       <div className={`relative flex items-center justify-center size-10 rounded border bg-surface ${isClickable ? "border-primary/50 hover:border-primary hover:bg-primary/10 transition-colors" : "border-input"}`}>
         {material && !imgError ? (
           <img
-            src={`/images/materials/${material.image}`}
+            src={assetPath(`/images/materials/${material.image}`)}
             alt={materialName(material, resolvedLocale)}
             className="size-8 object-contain"
             onError={() => setImgError(true)}

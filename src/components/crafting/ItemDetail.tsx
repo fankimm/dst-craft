@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { t, itemName, itemAltName, itemDesc, categoryName } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
+import { assetPath } from "@/lib/asset-path";
 
 const stationKeys: Record<CraftingStation, TranslationKey> = {
   none: "station_none",
@@ -81,7 +82,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             </span>
           ) : (
             <img
-              src={`/images/items/${item.image}`}
+              src={assetPath(`/images/items/${item.image}`)}
               alt={itemName(item, resolvedLocale)}
               className="size-14 object-contain"
               onError={() => setImgError(true)}
@@ -115,7 +116,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             >
               {stationIcons[item.station] && (
                 <img
-                  src={`/images/category-icons/${stationIcons[item.station]}.png`}
+                  src={assetPath(`/images/category-icons/${stationIcons[item.station]}.png`)}
                   alt=""
                   className="size-5 object-contain"
                 />
@@ -132,7 +133,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               role={onCharacterClick ? "button" : undefined}
             >
               <img
-                src={`/images/characters/${item.characterOnly}.png`}
+                src={assetPath(`/images/characters/${item.characterOnly}.png`)}
                 alt={item.characterOnly}
                 className="size-5 rounded-full object-cover object-[center_25%] border border-amber-700/50"
               />
@@ -155,7 +156,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
                   role={clickable ? "button" : undefined}
                 >
                   <img
-                    src={`/images/category-icons/${catId}.png`}
+                    src={assetPath(`/images/category-icons/${catId}.png`)}
                     alt=""
                     className="size-5 object-contain"
                   />

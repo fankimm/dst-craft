@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
 import { categoryName } from "@/lib/i18n";
+import { assetPath } from "@/lib/asset-path";
 
 interface CategorySidebarProps {
   categories: Category[];
@@ -40,7 +41,7 @@ export function CategorySidebar({
                 onClick={() => onSelectCategory(cat.id)}
               >
                 <img
-                  src={`/images/category-icons/${cat.id}.png`}
+                  src={assetPath(`/images/category-icons/${cat.id}.png`)}
                   alt={categoryName(cat, resolvedLocale)}
                   className="size-full object-contain"
                   draggable={false}

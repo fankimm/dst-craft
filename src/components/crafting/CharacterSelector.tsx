@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { t, characterName } from "@/lib/i18n";
+import { assetPath } from "@/lib/asset-path";
 
 interface CharacterSelectorProps {
   characters: Character[];
@@ -43,7 +44,7 @@ function CharacterAvatar({
         </div>
       ) : (
         <img
-          src={`/images/category-icons/characters/${character.portrait}.png`}
+          src={assetPath(`/images/category-icons/characters/${character.portrait}.png`)}
           alt={characterName(character, locale)}
           className="size-12 sm:size-14 object-contain"
           onError={() => setImgError(true)}

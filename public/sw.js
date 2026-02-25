@@ -26,7 +26,7 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
   // Images: cache-first, never re-fetch once cached
-  if (url.pathname.startsWith("/images/")) {
+  if (url.pathname.startsWith("/images/") || url.pathname.startsWith("/dst-craft/images/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) return cached;

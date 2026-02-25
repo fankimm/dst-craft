@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { itemName } from "@/lib/i18n";
+import { assetPath } from "@/lib/asset-path";
 
 interface ItemIconProps {
   item: CraftingItem;
@@ -28,7 +29,7 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
     >
       {item.characterOnly && (
         <img
-          src={`/images/characters/${item.characterOnly}.png`}
+          src={assetPath(`/images/characters/${item.characterOnly}.png`)}
           alt={item.characterOnly}
           className="absolute top-1 right-1 size-5 sm:size-6 rounded-full border border-border bg-surface object-cover object-[center_25%]"
         />
@@ -41,7 +42,7 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
         </div>
       ) : (
         <img
-          src={`/images/items/${item.image}`}
+          src={assetPath(`/images/items/${item.image}`)}
           alt={itemName(item, resolvedLocale)}
           className="size-12 sm:size-14 object-contain"
           onError={() => setImgError(true)}
