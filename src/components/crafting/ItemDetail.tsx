@@ -1,6 +1,6 @@
 "use client";
 
-import type { CraftingItem, CraftingStation } from "@/lib/types";
+import type { CraftingItem, CraftingStation, CategoryId } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { MaterialSlot } from "./MaterialSlot";
 import { getCategoryById } from "@/lib/crafting-data";
@@ -24,11 +24,29 @@ const stationKeys: Record<CraftingStation, TranslationKey> = {
   character: "station_character",
 };
 
+const stationIcons: Record<CraftingStation, string | null> = {
+  none: null,
+  science_1: "prototypers",
+  science_2: "prototypers",
+  magic_1: "magic",
+  magic_2: "magic",
+  ancient: "magic",
+  celestial: "magic",
+  think_tank: "prototypers",
+  cartography: "tools",
+  tackle_station: "fishing",
+  potter_wheel: "tools",
+  character: "character",
+};
+
 interface ItemDetailProps {
   item: CraftingItem | null;
+  onMaterialClick?: (item: CraftingItem) => void;
+  onCategoryClick?: (categoryId: CategoryId) => void;
+  onCharacterClick?: (characterId: string) => void;
 }
 
-export function ItemDetail({ item }: ItemDetailProps) {
+export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick }: ItemDetailProps) {
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
 
@@ -75,53 +93,74 @@ export function ItemDetail({ item }: ItemDetailProps) {
           {itemDesc(item, resolvedLocale)}
         </p>
 
-        {/* Station + character badges */}
+        {/* Badges: station, character, categories */}
         <div className="flex items-center gap-2 flex-wrap">
-          <Badge
-            variant="secondary"
-            className="text-[10px] bg-surface-hover text-foreground/80 border-border"
-          >
-            {t(resolvedLocale, stationKeys[item.station])}
-          </Badge>
+          {/* Station badge (hidden for character-only items since character badge conveys this) */}
+          {!item.characterOnly && (
+            <Badge
+              variant="secondary"
+              className="text-xs gap-1 pl-1 pr-2 py-1 bg-surface-hover text-foreground/80 border-border"
+            >
+              {stationIcons[item.station] && (
+                <img
+                  src={`/images/category-icons/${stationIcons[item.station]}.png`}
+                  alt=""
+                  className="size-5 object-contain"
+                />
+              )}
+              {t(resolvedLocale, stationKeys[item.station])}
+            </Badge>
+          )}
+          {/* Character badge (clickable) */}
           {item.characterOnly && (
             <Badge
               variant="secondary"
-              className="text-[10px] bg-amber-900/40 text-amber-400 border-amber-700/50"
+              className={`text-xs gap-1 pl-0.5 pr-2 py-1 bg-amber-900/40 text-amber-400 border-amber-700/50 ${onCharacterClick ? "cursor-pointer hover:bg-amber-900/60 transition-colors" : ""}`}
+              onClick={onCharacterClick ? () => onCharacterClick(item.characterOnly!) : undefined}
+              role={onCharacterClick ? "button" : undefined}
             >
+              <img
+                src={`/images/characters/${item.characterOnly}.png`}
+                alt={item.characterOnly}
+                className="size-5 rounded-full object-cover object-[center_25%] border border-amber-700/50"
+              />
               {item.characterOnly}
             </Badge>
           )}
-        </div>
-
-        {/* Category badges with icons */}
-        <div className="flex flex-wrap gap-1.5">
-          {item.category.map((catId) => {
-            const cat = getCategoryById(catId);
-            if (!cat) return null;
-            return (
-              <Badge
-                key={catId}
-                variant="outline"
-                className="text-[10px] gap-1 pl-1 pr-1.5 py-0.5 border-border text-muted-foreground"
-              >
-                <img
-                  src={`/images/category-icons/${catId}.png`}
-                  alt=""
-                  className="size-3.5 object-contain"
-                />
-                {categoryName(cat, resolvedLocale)}
-              </Badge>
-            );
-          })}
+          {/* Category badges (exclude "character" when characterOnly is set) */}
+          {item.category
+            .filter((catId) => !(item.characterOnly && catId === "character"))
+            .map((catId) => {
+              const cat = getCategoryById(catId);
+              if (!cat) return null;
+              const clickable = !!onCategoryClick;
+              return (
+                <Badge
+                  key={catId}
+                  variant="outline"
+                  className={`text-xs gap-1 pl-1 pr-2 py-1 border-border text-muted-foreground ${clickable ? "cursor-pointer hover:border-primary hover:text-primary transition-colors" : ""}`}
+                  onClick={clickable ? () => onCategoryClick(catId) : undefined}
+                  role={clickable ? "button" : undefined}
+                >
+                  <img
+                    src={`/images/category-icons/${catId}.png`}
+                    alt=""
+                    className="size-5 object-contain"
+                  />
+                  {categoryName(cat, resolvedLocale)}
+                </Badge>
+              );
+            })}
         </div>
 
         {/* Materials */}
-        <div className="flex flex-wrap gap-3 pt-1">
+        <div className="flex flex-wrap gap-4 pt-1">
           {item.materials.map((mat) => (
             <MaterialSlot
               key={mat.materialId}
               materialId={mat.materialId}
               quantity={mat.quantity}
+              onMaterialClick={onMaterialClick}
             />
           ))}
         </div>

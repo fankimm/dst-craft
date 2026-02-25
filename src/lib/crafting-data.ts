@@ -38,3 +38,8 @@ export function getCharacterItems(characterId: string): CraftingItem[] {
     .filter((item) => item.characterOnly === characterId)
     .sort((a, b) => a.sortOrder - b.sortOrder);
 }
+
+/** Find a craftable item whose id matches the given material id */
+export function getItemByMaterialId(materialId: string): CraftingItem | undefined {
+  return allItems.find((item) => item.id === materialId);
+}

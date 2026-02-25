@@ -18,8 +18,11 @@ function readUrlState() {
   };
 }
 
+// SSR-safe default: always start empty to match server render
+const SSR_DEFAULT = { cat: null as CategoryId | null, item: null as string | null, char: null as string | null };
+
 export function useCraftingState() {
-  const [urlState, setUrlState] = useState(readUrlState);
+  const [urlState, setUrlState] = useState(SSR_DEFAULT);
   const [searchQuery, setSearchQueryState] = useState("");
 
   const isSearching = searchQuery.trim().length > 0;
@@ -27,6 +30,11 @@ export function useCraftingState() {
   const selectedCategory: CategoryId = urlState.cat || "tools";
   const selectedItem = urlState.item ? (getItemById(urlState.item) ?? null) : null;
   const selectedCharacter = urlState.char;
+
+  // Sync from URL after mount (hydration-safe)
+  useEffect(() => {
+    setUrlState(readUrlState());
+  }, []);
 
   // Listen to popstate (browser back/forward)
   useEffect(() => {
@@ -38,7 +46,7 @@ export function useCraftingState() {
   const setCategory = useCallback((category: CategoryId) => {
     const url = new URL(window.location.href);
     url.search = `?cat=${category}`;
-    window.history.pushState({}, "", url.toString());
+    window.history.pushState({ _appNav: true }, "", url.toString());
     setUrlState({ cat: category, item: null, char: null });
     setSearchQueryState("");
   }, []);
@@ -48,7 +56,27 @@ export function useCraftingState() {
       // Deselecting: go back if item was in URL
       const params = getParams();
       if (params.has("item")) {
-        window.history.back();
+        if (window.history.state?._jump) {
+          // Navigated here via material/item jump — just remove item param
+          params.delete("item");
+          const search = params.toString();
+          const url = search
+            ? `${window.location.pathname}?${search}`
+            : window.location.pathname;
+          window.history.replaceState({ _appNav: true }, "", url);
+          setUrlState(readUrlState());
+        } else if (window.history.state?._appNav) {
+          window.history.back();
+        } else {
+          // Direct URL access — navigate to parent
+          params.delete("item");
+          const search = params.toString();
+          const url = search
+            ? `${window.location.pathname}?${search}`
+            : window.location.pathname;
+          window.history.replaceState({}, "", url);
+          setUrlState(readUrlState());
+        }
       }
       return;
     }
@@ -60,10 +88,10 @@ export function useCraftingState() {
 
     if (hadItem) {
       // Switching items: replace current entry
-      window.history.replaceState({}, "", url);
+      window.history.replaceState({ _appNav: true }, "", url);
     } else {
       // First item selection: push new entry
-      window.history.pushState({}, "", url);
+      window.history.pushState({ _appNav: true }, "", url);
     }
     setUrlState((prev) => ({ ...prev, item: item.id }));
   }, []);
@@ -80,16 +108,60 @@ export function useCraftingState() {
     const url = `${window.location.pathname}?${params.toString()}`;
     if (hadChar) {
       // Switching characters: replace current entry
-      window.history.replaceState({}, "", url);
+      window.history.replaceState({ _appNav: true }, "", url);
     } else {
       // First character selection: push new entry
-      window.history.pushState({}, "", url);
+      window.history.pushState({ _appNav: true }, "", url);
     }
     setUrlState((prev) => ({ ...prev, char: characterId, item: null }));
   }, []);
 
+  // Navigate to a character's items by replacing current history entry
+  const jumpToCharacter = useCallback((characterId: string) => {
+    const url = `${window.location.pathname}?cat=character&char=${characterId}`;
+    window.history.replaceState({ _appNav: true }, "", url);
+    setUrlState({ cat: "character", item: null, char: characterId });
+    setSearchQueryState("");
+  }, []);
+
+  // Navigate to a category by replacing current history entry
+  // Used when jumping from item detail to a different category
+  const jumpToCategory = useCallback((category: CategoryId) => {
+    const url = new URL(window.location.href);
+    url.search = `?cat=${category}`;
+    window.history.replaceState({ _appNav: true }, "", url.toString());
+    setUrlState({ cat: category, item: null, char: null });
+    setSearchQueryState("");
+  }, []);
+
+  const navigateToItem = useCallback((item: CraftingItem) => {
+    const category = item.category[0] || "tools";
+    const url = `${window.location.pathname}?cat=${category}&item=${item.id}`;
+    window.history.pushState({ _appNav: true, _jump: true }, "", url);
+    setUrlState({ cat: category, item: item.id, char: null });
+    setSearchQueryState("");
+  }, []);
+
   const goBack = useCallback(() => {
-    window.history.back();
+    if (window.history.state?._appNav) {
+      window.history.back();
+    } else {
+      // Direct URL access — navigate to logical parent
+      const params = getParams();
+      if (params.has("char")) {
+        params.delete("char");
+        params.delete("item");
+      } else if (params.has("cat")) {
+        params.delete("cat");
+        params.delete("item");
+      }
+      const search = params.toString();
+      const url = search
+        ? `${window.location.pathname}?${search}`
+        : window.location.pathname;
+      window.history.replaceState({}, "", url);
+      setUrlState(readUrlState());
+    }
   }, []);
 
   const setSearchQuery = useCallback((query: string) => {
@@ -113,5 +185,8 @@ export function useCraftingState() {
     setSearchQuery,
     clearSearch,
     goBack,
+    navigateToItem,
+    jumpToCategory,
+    jumpToCharacter,
   };
 }

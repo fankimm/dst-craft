@@ -25,7 +25,7 @@ export function SearchBar({ value, onChange, onClear, className }: SearchBarProp
         placeholder={t(resolvedLocale, "searchPlaceholder")}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-8 pl-8 pr-8 bg-surface border-input text-sm placeholder:text-muted-foreground"
+        className="h-8 pl-8 pr-8 bg-surface border-input text-base sm:text-sm placeholder:text-muted-foreground"
       />
       {value.length > 0 && (
         <Button

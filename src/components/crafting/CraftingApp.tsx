@@ -37,6 +37,9 @@ export function CraftingApp() {
     setSearchQuery,
     clearSearch,
     goBack,
+    navigateToItem,
+    jumpToCategory,
+    jumpToCharacter,
   } = useCraftingState();
 
   const { resolvedLocale } = useSettings();
@@ -99,7 +102,7 @@ export function CraftingApp() {
         {/* Desktop: fixed bottom detail panel (for search results) */}
         {isSearching && selectedItem && (
           <div className="hidden sm:block border-t border-border bg-card/80 shrink-0">
-            <ItemDetail item={selectedItem} />
+            <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} />
           </div>
         )}
 
@@ -120,7 +123,7 @@ export function CraftingApp() {
                 </SheetTitle>
               </SheetHeader>
               <div className="overflow-y-auto">
-                <ItemDetail item={selectedItem} />
+                <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} />
               </div>
             </SheetContent>
           </Sheet>
@@ -166,7 +169,7 @@ export function CraftingApp() {
       {/* Desktop: fixed bottom detail panel */}
       {selectedItem && (
         <div className="hidden sm:block border-t border-border bg-card/80 shrink-0">
-          <ItemDetail item={selectedItem} />
+          <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} />
         </div>
       )}
 
@@ -186,7 +189,7 @@ export function CraftingApp() {
             </SheetTitle>
           </SheetHeader>
           <div className="overflow-y-auto">
-            <ItemDetail item={selectedItem} />
+            <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} />
           </div>
         </SheetContent>
       </Sheet>
