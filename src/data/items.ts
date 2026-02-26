@@ -46,12 +46,11 @@ export const allItems: CraftingItem[] = [
     name: "Rope",
     description: "Tightly woven coils of usefulness.",
     image: "Rope.png",
-    category: ["character", "refined"],
+    category: ["refined"],
     station: "science_1",
     materials: [
       { materialId: "cutgrass", quantity: 3 },
     ],
-    characterOnly: "walter",
     sortOrder: 0,
   },
   {
