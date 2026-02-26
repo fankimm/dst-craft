@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState, useRef, useEffect } from "react";
 import { categories } from "@/data/categories";
 import { characters } from "@/data/characters";
 import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
@@ -53,6 +53,27 @@ export function CraftingApp() {
     isSearching,
   } = useSearch();
 
+  // --- Slide transition ---
+  const [slideDir, setSlideDir] = useState<"right" | "left" | null>(null);
+  const prevGrid = useRef(showCategoryGrid);
+
+  // Detect view change and apply animation
+  useEffect(() => {
+    if (prevGrid.current !== showCategoryGrid) {
+      setSlideDir(showCategoryGrid ? "left" : "right");
+      prevGrid.current = showCategoryGrid;
+    }
+  }, [showCategoryGrid]);
+
+  // Clear animation class after it finishes
+  useEffect(() => {
+    if (!slideDir) return;
+    const timer = setTimeout(() => setSlideDir(null), 260);
+    return () => clearTimeout(timer);
+  }, [slideDir]);
+
+  const slideClass = slideDir === "right" ? "animate-slide-right" : slideDir === "left" ? "animate-slide-left" : "";
+
   const handleStationClick = useCallback((stationLabel: string, station?: string) => {
     const image = station ? (stationImages[station as keyof typeof stationImages] ?? undefined) : undefined;
     addSearchTag({ text: stationLabel, type: "station", image });
@@ -91,7 +112,7 @@ export function CraftingApp() {
   // Category grid view (initial state - no category selected)
   if (showCategoryGrid) {
     return (
-      <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
+      <div className={`flex flex-col h-dvh bg-background text-foreground overflow-hidden ${slideClass}`}>
         <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2 min-w-0">
@@ -159,7 +180,7 @@ export function CraftingApp() {
 
   // Item list view (after category selection or searching)
   return (
-    <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
+    <div className={`flex flex-col h-dvh bg-background text-foreground overflow-hidden ${slideClass}`}>
       {/* Header */}
       <CategoryHeader
         category={isSearching ? undefined : currentCategory}
