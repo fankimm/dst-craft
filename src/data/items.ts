@@ -6759,7 +6759,7 @@ export const allItems: CraftingItem[] = [
     id: "multitool_axe_pickaxe",
     name: "Pick/Axe",
     description: "Doubly useful.",
-    image: "Pick/Axe.png",
+    image: "Pick_Axe.png",
     category: [],
     station: "ancient",
     materials: [
