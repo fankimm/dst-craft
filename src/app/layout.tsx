@@ -3,6 +3,7 @@ import { Inter, Noto_Sans_KR } from "next/font/google";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SettingsProvider } from "@/hooks/use-settings";
+import { APP_VERSION } from "@/lib/version";
 import "./globals.css";
 
 const inter = Inter({
@@ -122,6 +123,24 @@ const themeScript = `
       : l.toLowerCase().startsWith('it') ? 'it'
       : 'en';
     document.documentElement.lang = lang;
+  } catch(e) {}
+  try {
+    var CV = '${APP_VERSION}';
+    var PV = localStorage.getItem('dst-version');
+    if (PV !== CV) {
+      localStorage.setItem('dst-version', CV);
+      if (PV && 'caches' in window) {
+        caches.keys().then(function(keys) {
+          keys.forEach(function(k) { caches.delete(k); });
+        });
+        if (navigator.serviceWorker) {
+          navigator.serviceWorker.getRegistrations().then(function(regs) {
+            regs.forEach(function(r) { r.unregister(); });
+          });
+        }
+        window.location.reload();
+      }
+    }
   } catch(e) {}
 })();
 if ('serviceWorker' in navigator) {
