@@ -113,6 +113,7 @@ export const materials: Material[] = [
   { id: "moonglass", name: "Moon Shard", image: "moonglass.png" },
   { id: "moonglass_charged", name: "Infused Moon Shard", image: "moonglass_charged.png" },
   { id: "moonrocknugget", name: "Moon Rock", image: "moonrocknugget.png" },
+  { id: "moonstorm_static_item", name: "Restrained Static", image: "moonstorm_static_item.png" },
   { id: "mosquito", name: "Mosquito", image: "mosquito.png" },
   { id: "mosquitosack", name: "Mosquito Sack", image: "mosquitosack.png" },
   { id: "nightmare_timepiece", name: "Thulecite Medallion", image: "nightmare_timepiece.png" },

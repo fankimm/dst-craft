@@ -4175,7 +4175,7 @@ export const allItems: CraftingItem[] = [
     station: "character",
     materials: [
       { materialId: "spear_wathgrithr_lightning", quantity: 1 },
-      { materialId: "lightninggoathorn", quantity: 1 },
+      { materialId: "moonstorm_static_item", quantity: 1 },
     ],
     characterOnly: "wigfrid",
     sortOrder: 80,

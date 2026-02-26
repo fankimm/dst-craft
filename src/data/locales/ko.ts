@@ -748,6 +748,7 @@ export const ko: LocaleData = {
     "moonglass": { name: "달조각" },
     "moonglass_charged": { name: "충전된 달 파편" },
     "moonrocknugget": { name: "월석" },
+    "moonstorm_static_item": { name: "억제된 정제" },
     "mosquito": { name: "모기" },
     "mosquitosack": { name: "모기 주머니" },
     "nightmare_timepiece": { name: "툴레사이트 메달리언" },
