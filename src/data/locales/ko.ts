@@ -876,7 +876,7 @@ export const ko: LocaleData = {
     "structures": { name: "건축물" },
     "storage": { name: "저장" },
     "cooking": { name: "요리" },
-    "food_gardening": { name: "식량/원예" },
+    "food_gardening": { name: "음식 & 원예" },
     "fishing": { name: "낚시" },
     "seafaring": { name: "항해" },
     "beefalo": { name: "비팔로" },

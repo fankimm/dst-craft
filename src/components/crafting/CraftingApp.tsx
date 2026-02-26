@@ -7,7 +7,8 @@ import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterByI
 import { useCraftingState } from "@/hooks/use-crafting-state";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
-import { t, itemName } from "@/lib/i18n";
+import { t, itemName, categoryName } from "@/lib/i18n";
+import type { CategoryId } from "@/lib/types";
 import { CategoryGrid } from "./CategoryGrid";
 import { CategoryHeader } from "./CategoryHeader";
 import { Breadcrumb } from "./Breadcrumb";
@@ -105,6 +106,14 @@ export function CraftingApp() {
     setItem(null);
   }, [addSearchTag, setItem]);
 
+  const handleCategoryClick = useCallback((catId: CategoryId) => {
+    const cat = getCategoryById(catId);
+    if (!cat) return;
+    const label = categoryName(cat, resolvedLocale);
+    addSearchTag({ text: label, type: "category", image: `category-icons/${catId}.png` });
+    setItem(null);
+  }, [addSearchTag, setItem, resolvedLocale]);
+
   const currentCategory = getCategoryById(selectedCategory);
   const currentCharacter = selectedCharacter ? getCharacterById(selectedCharacter) : null;
 
@@ -176,7 +185,7 @@ export function CraftingApp() {
         {/* Desktop: fixed bottom detail panel (for search results) */}
         {isSearching && selectedItem && (
           <div className="hidden sm:block border-t border-border bg-card/80 shrink-0">
-            <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
+            <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
           </div>
         )}
 
@@ -197,7 +206,7 @@ export function CraftingApp() {
                 </SheetTitle>
               </SheetHeader>
               <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
-                <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
+                <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
               </div>
             </SheetContent>
           </Sheet>
@@ -250,7 +259,7 @@ export function CraftingApp() {
       {/* Desktop: fixed bottom detail panel */}
       {selectedItem && (
         <div className="hidden sm:block border-t border-border bg-card/80 shrink-0">
-          <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
+          <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
         </div>
       )}
 
@@ -270,7 +279,7 @@ export function CraftingApp() {
             </SheetTitle>
           </SheetHeader>
           <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
-            <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
+            <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
           </div>
         </SheetContent>
       </Sheet>
