@@ -151,19 +151,21 @@ export function CraftingApp() {
           {searchBar}
         </div>
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
-          {isSearching ? (
-            <ItemGrid
-              items={searchResults}
-              selectedItem={selectedItem}
-              onSelectItem={setItem}
-            />
-          ) : (
-            <CategoryGrid
-              categories={categories}
-              onSelectCategory={setCategory}
-            />
-          )}
-          <Footer />
+          <div className="flex flex-col min-h-full">
+            {isSearching ? (
+              <ItemGrid
+                items={searchResults}
+                selectedItem={selectedItem}
+                onSelectItem={setItem}
+              />
+            ) : (
+              <CategoryGrid
+                categories={categories}
+                onSelectCategory={setCategory}
+              />
+            )}
+            <Footer />
+          </div>
         </div>
 
         {/* Desktop: fixed bottom detail panel (for search results) */}
@@ -220,22 +222,24 @@ export function CraftingApp() {
 
       {/* Scrollable content area */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
-        {/* Character selector (only when no character selected yet) */}
-        {selectedCategory === "character" && !selectedCharacter && !isSearching ? (
-          <CharacterSelector
-            characters={characters}
-            selectedCharacter={selectedCharacter}
-            onSelectCharacter={setCharacter}
-          />
-        ) : (
-          /* Item grid */
-          <ItemGrid
-            items={displayItems}
-            selectedItem={selectedItem}
-            onSelectItem={setItem}
-          />
-        )}
-        <Footer />
+        <div className="flex flex-col min-h-full">
+          {/* Character selector (only when no character selected yet) */}
+          {selectedCategory === "character" && !selectedCharacter && !isSearching ? (
+            <CharacterSelector
+              characters={characters}
+              selectedCharacter={selectedCharacter}
+              onSelectCharacter={setCharacter}
+            />
+          ) : (
+            /* Item grid */
+            <ItemGrid
+              items={displayItems}
+              selectedItem={selectedItem}
+              onSelectItem={setItem}
+            />
+          )}
+          <Footer />
+        </div>
       </div>
 
       {/* Desktop: fixed bottom detail panel */}
