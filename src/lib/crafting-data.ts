@@ -24,6 +24,29 @@ export function getCategoryById(id: string): Category | undefined {
   return categories.find((category) => category.id === id);
 }
 
+// Station image paths (shared between ItemDetail and search suggestions)
+export const stationImages: Record<CraftingStation, string | null> = {
+  none: null,
+  science_1: "items/Science_Machine.png",
+  science_2: "items/Alchemy_Engine.png",
+  magic_1: "items/Prestihatitator.png",
+  magic_2: "items/Shadow_Manipulator.png",
+  ancient: "items/Ancient_Pseudoscience_Station.png",
+  celestial: "items/Celestial_Altar.png",
+  think_tank: "items/Think_Tank.png",
+  cartography: "items/Cartography_Desk.png",
+  tackle_station: "items/Tackle_Receptacle.png",
+  potter_wheel: "items/Potter's_Wheel.png",
+  bookstation: "items/Bookcase.png",
+  portableblender: "items/Portable_Grinding_Mill.png",
+  lunar_forge: "category-icons/magic.png",
+  shadow_forge: "category-icons/magic.png",
+  carpentry_station: "items/Carpentry_Station.png",
+  turfcraftingstation: "items/Turfcraftingstation.png",
+  critter_lab: "category-icons/decorations.png",
+  character: null,
+};
+
 // Build material name lookup for search (lazy-initialized)
 let _materialNameMap: Map<string, string[]> | null = null;
 function getMaterialNameMap(): Map<string, string[]> {
@@ -175,6 +198,8 @@ export interface Suggestion {
   text: string;
   type: TagType;
   portrait?: string;
+  /** Image path relative to /images/ */
+  image?: string;
 }
 
 const MAX_SUGGESTIONS = 6;
@@ -196,6 +221,7 @@ export function getSuggestions(query: string): Suggestion[] {
         text: koName || char.name,
         type: "character",
         portrait: char.portrait,
+        image: `category-icons/characters/${char.portrait}.png`,
       });
     }
     if (results.length >= MAX_SUGGESTIONS) return results;
@@ -211,6 +237,7 @@ export function getSuggestions(query: string): Suggestion[] {
       results.push({
         text: koName || cat.name,
         type: "category",
+        image: `category-icons/${cat.id}.png`,
       });
     }
     if (results.length >= MAX_SUGGESTIONS) return results;
@@ -222,7 +249,11 @@ export function getSuggestions(query: string): Suggestion[] {
       const label = stationName(stationId, "ko");
       // Avoid duplicate if station name matches a category already added
       if (!results.some((r) => r.text === label)) {
-        results.push({ text: label, type: "station" });
+        results.push({
+          text: label,
+          type: "station",
+          image: stationImages[stationId] ?? undefined,
+        });
       }
     }
     if (results.length >= MAX_SUGGESTIONS) return results;
@@ -237,6 +268,7 @@ export function getSuggestions(query: string): Suggestion[] {
       results.push({
         text: koName || mat.name,
         type: "material",
+        image: `items/${mat.image}`,
       });
     }
     if (results.length >= MAX_SUGGESTIONS) return results;

@@ -166,24 +166,22 @@ export function SearchBar({
                   selectSuggestion(s);
                 }}
                 className={cn(
-                  "flex items-center gap-2.5 w-full px-3 py-2.5 sm:py-1.5 text-sm sm:text-xs text-left transition-colors",
+                  "flex items-center gap-2 w-full px-2 h-8 text-sm sm:text-xs text-left transition-colors",
                   i === selectedIndex
                     ? "bg-accent text-accent-foreground"
                     : "hover:bg-accent/50"
                 )}
               >
-                {s.type === "character" && s.portrait ? (
+                {s.image ? (
                   <img
-                    src={assetPath(
-                      `/images/category-icons/characters/${s.portrait}.png`
-                    )}
+                    src={assetPath(`/images/${s.image}`)}
                     alt=""
-                    className="size-5 sm:size-4 object-contain shrink-0"
+                    className="size-5 object-contain shrink-0"
                   />
                 ) : (
                   <span
                     className={cn(
-                      "size-2.5 sm:size-2 rounded-full shrink-0",
+                      "size-2 rounded-full shrink-0 mx-1.5",
                       suggestionDotStyles[s.type]
                     )}
                   />

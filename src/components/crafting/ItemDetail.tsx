@@ -3,35 +3,12 @@
 import type { CraftingItem, CraftingStation, CategoryId } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { MaterialSlot } from "./MaterialSlot";
-import { getCategoryById, getCharacterById } from "@/lib/crafting-data";
+import { getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { t, itemName, itemAltName, itemDesc, categoryName, characterName, stationName } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
-
-// Use actual item images for station badges
-const stationImages: Record<CraftingStation, string | null> = {
-  none: null,
-  science_1: "items/Science_Machine.png",
-  science_2: "items/Alchemy_Engine.png",
-  magic_1: "items/Prestihatitator.png",
-  magic_2: "items/Shadow_Manipulator.png",
-  ancient: "items/Ancient_Pseudoscience_Station.png",
-  celestial: "items/Celestial_Altar.png",
-  think_tank: "items/Think_Tank.png",
-  cartography: "items/Cartography_Desk.png",
-  tackle_station: "items/Tackle_Receptacle.png",
-  potter_wheel: "items/Potter's_Wheel.png",
-  bookstation: "items/Bookcase.png",
-  portableblender: "items/Portable_Grinding_Mill.png",
-  lunar_forge: "category-icons/magic.png",
-  shadow_forge: "category-icons/magic.png",
-  carpentry_station: "items/Carpentry_Station.png",
-  turfcraftingstation: "items/Turfcraftingstation.png",
-  critter_lab: "category-icons/decorations.png",
-  character: null,
-};
 
 // Higher-tier stations that can also craft items of the base station
 const stationUpgrades: Partial<Record<CraftingStation, CraftingStation[]>> = {
