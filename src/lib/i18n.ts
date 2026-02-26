@@ -114,9 +114,7 @@ export function characterName(char: Pick<Character, "id" | "name">, locale: stri
 
 /** Get the "other language" name for display (e.g. show English when locale is Korean) */
 export function itemAltName(item: Pick<CraftingItem, "id" | "name">, locale: string): string {
-  if (locale === "en") {
-    return locales.ko?.items[item.id]?.name ?? item.name;
-  }
+  if (locale === "en") return "";
   return item.name;
 }
 

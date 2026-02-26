@@ -62,9 +62,11 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
           <h3 className="text-sm font-semibold text-foreground">
             {itemName(item, resolvedLocale)}
           </h3>
-          <p className="text-xs text-muted-foreground">
-            {itemAltName(item, resolvedLocale)}
-          </p>
+          {itemAltName(item, resolvedLocale) && (
+            <p className="text-xs text-muted-foreground">
+              {itemAltName(item, resolvedLocale)}
+            </p>
+          )}
         </div>
 
         <p className="text-xs text-dim leading-relaxed line-clamp-2">
