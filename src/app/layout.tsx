@@ -143,11 +143,20 @@ const themeScript = `
     }
   } catch(e) {}
 })();
-if ('serviceWorker' in navigator) {
+${process.env.NODE_ENV === "production" ? `if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('${process.env.NODE_ENV === "production" ? "/dst-craft" : ""}/sw.js');
+    navigator.serviceWorker.register('/dst-craft/sw.js');
   });
-}
+}` : `if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    regs.forEach(function(r) { r.unregister(); });
+  });
+  if ('caches' in window) {
+    caches.keys().then(function(keys) {
+      keys.forEach(function(k) { caches.delete(k); });
+    });
+  }
+}`}
 `;
 
 export default function RootLayout({

@@ -20,6 +20,7 @@ export type CraftingStation =
   | "character";
 
 export type CategoryId =
+  | "all"
   | "character"
   | "tools"
   | "light"

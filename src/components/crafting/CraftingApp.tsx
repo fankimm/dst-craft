@@ -18,13 +18,8 @@ import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
 import { SettingsButton } from "./SettingsButton";
 import { Footer } from "./Footer";
+import { X } from "lucide-react";
 import { trackVisit, initDurationTracking, trackEvent } from "@/lib/analytics";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
 
 export function CraftingApp() {
   const {
@@ -115,18 +110,37 @@ export function CraftingApp() {
 
   const slideClass = slideDir === "right" ? "animate-slide-right" : slideDir === "left" ? "animate-slide-left" : "";
 
-  // Sync theme-color meta tag with sheet overlay (fixes iPhone Dynamic Island timing)
+  // --- Detail panel animation ---
+  const [panelItem, setPanelItem] = useState<typeof selectedItem>(null);
+  const [panelOpen, setPanelOpen] = useState(false);
+
+  useEffect(() => {
+    if (selectedItem) {
+      setPanelItem(selectedItem);
+      requestAnimationFrame(() => setPanelOpen(true));
+    } else {
+      setPanelOpen(false);
+      const timer = setTimeout(() => setPanelItem(null), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedItem]);
+
+  // Sync theme-color with overlay (iPhone Dynamic Island)
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) return;
     const isDark = document.documentElement.classList.contains("dark");
-    if (selectedItem) {
-      // Sheet overlay is bg-black/50 — darken theme-color to match
+    if (panelOpen) {
       meta.setAttribute("content", isDark ? "#050506" : "#7d7d7d");
     } else {
       meta.setAttribute("content", isDark ? "#09090b" : "#fafafa");
     }
-  }, [selectedItem]);
+  }, [panelOpen]);
+
+  const handleGoHome = useCallback(() => {
+    clearSearch();
+    goHome();
+  }, [clearSearch, goHome]);
 
   const handleStationClick = useCallback((stationLabel: string, station?: string) => {
     const image = station ? (stationImages[station as keyof typeof stationImages] ?? undefined) : undefined;
@@ -160,6 +174,21 @@ export function CraftingApp() {
 
   const displayItems = isSearching ? searchResults : categoryItems;
 
+  const detailPanel = panelItem && (
+    <>
+      <div
+        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${panelOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        onClick={() => setItem(null)}
+      />
+      <div className={`fixed inset-x-0 bottom-0 z-50 rounded-t-xl border-t border-border bg-card max-h-[80dvh] overflow-y-auto overscroll-contain transition-transform duration-300 ease-out ${panelOpen ? "translate-y-0" : "translate-y-full"}`}>
+        <button onClick={() => setItem(null)} className="absolute top-2 right-2 z-10 p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors">
+          <X className="size-4" />
+        </button>
+        <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
+      </div>
+    </>
+  );
+
   const searchBar = (
     <SearchBar
       inputValue={searchInput}
@@ -182,10 +211,10 @@ export function CraftingApp() {
                 <Breadcrumb
                   isSearching
                   searchLabel={t(resolvedLocale, "searchResults")}
-                  onHomeClick={goHome}
+                  onHomeClick={handleGoHome}
                 />
               ) : (
-                <Breadcrumb onHomeClick={goHome} onTitleClick={handleTitleTap} />
+                <Breadcrumb onHomeClick={handleGoHome} onTitleClick={handleTitleTap} />
               )}
             </div>
             <SettingsButton />
@@ -210,35 +239,7 @@ export function CraftingApp() {
           </div>
         </div>
 
-        {/* Desktop: fixed bottom detail panel (for search results) */}
-        {isSearching && selectedItem && (
-          <div className="hidden sm:block border-t border-border bg-card/80 shrink-0">
-            <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
-          </div>
-        )}
-
-        {/* Mobile: bottom sheet for item detail (for search results) */}
-        {isSearching && (
-          <Sheet
-            open={selectedItem !== null}
-            onOpenChange={(open) => {
-              if (!open) setItem(null);
-            }}
-          >
-            <SheetContent side="bottom" className="sm:hidden max-h-[80dvh] rounded-t-xl">
-              <SheetHeader className="p-0 shrink-0">
-                <SheetTitle className="sr-only">
-                  {selectedItem
-                    ? itemName(selectedItem, resolvedLocale)
-                    : t(resolvedLocale, "itemDetail")}
-                </SheetTitle>
-              </SheetHeader>
-              <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
-                <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
-              </div>
-            </SheetContent>
-          </Sheet>
-        )}
+        {detailPanel}
       </div>
     );
   }
@@ -253,7 +254,7 @@ export function CraftingApp() {
         characterId={selectedCharacter}
         searchBar={searchBar}
         isSearching={isSearching}
-        onHomeClick={goHome}
+        onHomeClick={handleGoHome}
         onCategoryClick={selectedCharacter ? goToCategory : undefined}
       />
 
@@ -284,33 +285,7 @@ export function CraftingApp() {
         </div>
       </div>
 
-      {/* Desktop: fixed bottom detail panel */}
-      {selectedItem && (
-        <div className="hidden sm:block border-t border-border bg-card/80 shrink-0">
-          <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
-        </div>
-      )}
-
-      {/* Mobile: bottom sheet for item detail */}
-      <Sheet
-        open={selectedItem !== null}
-        onOpenChange={(open) => {
-          if (!open) setItem(null);
-        }}
-      >
-        <SheetContent side="bottom" className="sm:hidden max-h-[80dvh] rounded-t-xl">
-          <SheetHeader className="p-0 shrink-0">
-            <SheetTitle className="sr-only">
-              {selectedItem
-                ? itemName(selectedItem, resolvedLocale)
-                : t(resolvedLocale, "itemDetail")}
-            </SheetTitle>
-          </SheetHeader>
-          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
-            <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
-          </div>
-        </SheetContent>
-      </Sheet>
+      {detailPanel}
     </div>
   );
 }

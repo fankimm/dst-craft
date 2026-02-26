@@ -38,7 +38,7 @@ export function MaterialSlot({ materialId, quantity, onMaterialClick }: Material
       <div className={`relative flex items-center justify-center size-10 rounded border bg-surface ${isClickable ? "border-primary/50 hover:border-primary hover:bg-primary/10 transition-colors" : "border-input"}`}>
         {material && !imgError ? (
           <img
-            src={assetPath(`/images/materials/${material.image}`)}
+            src={assetPath(`/images/game-items/${material.image}`)}
             alt={materialName(material, resolvedLocale)}
             className="size-8 object-contain"
             onError={() => setImgError(true)}

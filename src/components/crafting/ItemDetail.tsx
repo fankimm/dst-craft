@@ -47,7 +47,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             </span>
           ) : (
             <img
-              src={assetPath(`/images/items/${item.image}`)}
+              src={assetPath(`/images/game-items/${item.image}`)}
               alt={itemName(item, resolvedLocale)}
               className="size-14 object-contain"
               onError={() => setImgError(true)}
@@ -87,14 +87,12 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
                 onClick={clickable ? () => onStationClick(label, station) : undefined}
                 role={clickable ? "button" : undefined}
               >
-                {stationImages[station] ? (
+                {stationImages[station] && (
                   <img
                     src={assetPath(`/images/${stationImages[station]}`)}
                     alt=""
                     className="size-5 object-contain"
                   />
-                ) : (
-                  <span className="size-5" />
                 )}
                 {label}
               </Badge>

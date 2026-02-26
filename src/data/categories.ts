@@ -1,6 +1,7 @@
 import type { Category } from "@/lib/types";
 
 export const categories: Category[] = [
+  { id: "all", name: "All Items", icon: "grid", order: -1 },
   { id: "character", name: "Survivor Items", icon: "user", order: 0 },
   { id: "tools", name: "Tools", icon: "wrench", order: 1 },
   { id: "light", name: "Light Sources", icon: "lightbulb", order: 2 },

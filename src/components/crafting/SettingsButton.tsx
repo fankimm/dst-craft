@@ -45,12 +45,9 @@ export function SettingsButton() {
         <>
           {/* Backdrop: captures outside taps to close menu without passing through */}
           <div
-            className="fixed inset-0 z-40"
-            onPointerDown={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setOpen(false);
-            }}
+            className="fixed inset-0 z-40 bg-black/50"
+            onPointerDown={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setOpen(false); }}
           />
           <div
             ref={panelRef}

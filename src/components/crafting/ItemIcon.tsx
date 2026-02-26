@@ -34,7 +34,7 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
           <img
             src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
             alt={item.characterOnly}
-            className="absolute top-1 right-1 size-5 sm:size-6 object-contain"
+            className="absolute top-1 right-1 size-6.5 sm:size-8 object-contain"
           />
         ) : null;
       })()}
@@ -46,7 +46,7 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
         </div>
       ) : (
         <img
-          src={assetPath(`/images/items/${item.image}`)}
+          src={assetPath(`/images/game-items/${item.image}`)}
           alt={itemName(item, resolvedLocale)}
           className="size-12 sm:size-14 object-contain"
           onError={() => setImgError(true)}

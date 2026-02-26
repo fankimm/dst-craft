@@ -7,6 +7,9 @@ import { allLocales } from "@/data/locales";
 import { stationName, supportedLocales, itemName, materialName, categoryName, characterName } from "@/lib/i18n";
 
 export function getItemsByCategory(categoryId: CategoryId): CraftingItem[] {
+  if (categoryId === "all") {
+    return [...allItems].sort((a, b) => a.sortOrder - b.sortOrder);
+  }
   return allItems
     .filter((item) => item.category.includes(categoryId))
     .sort((a, b) => a.sortOrder - b.sortOrder);
@@ -27,22 +30,22 @@ export function getCategoryById(id: string): Category | undefined {
 // Station image paths (shared between ItemDetail and search suggestions)
 export const stationImages: Record<CraftingStation, string | null> = {
   none: null,
-  science_1: "items/Science_Machine.png",
-  science_2: "items/Alchemy_Engine.png",
-  magic_1: "items/Prestihatitator.png",
-  magic_2: "items/Shadow_Manipulator.png",
-  ancient: "items/Ancient_Pseudoscience_Station.png",
-  celestial: "items/Celestial_Altar.png",
-  think_tank: "items/Think_Tank.png",
-  cartography: "items/Cartography_Desk.png",
-  tackle_station: "items/Tackle_Receptacle.png",
-  potter_wheel: "items/Potter's_Wheel.png",
-  bookstation: "items/Bookcase.png",
-  portableblender: "items/Portable_Grinding_Mill.png",
+  science_1: "game-items/Science_Machine.png",
+  science_2: "game-items/Alchemy_Engine.png",
+  magic_1: "game-items/Prestihatitator.png",
+  magic_2: "game-items/Shadow_Manipulator.png",
+  ancient: "game-items/Ancient_Pseudoscience_Station.png",
+  celestial: "game-items/Celestial_Altar.png",
+  think_tank: "game-items/Think_Tank.png",
+  cartography: "game-items/Cartography_Desk.png",
+  tackle_station: "game-items/Tackle_Receptacle.png",
+  potter_wheel: "game-items/Potter's_Wheel.png",
+  bookstation: "game-items/Bookcase.png",
+  portableblender: "game-items/Portable_Grinding_Mill.png",
   lunar_forge: "category-icons/magic.png",
   shadow_forge: "category-icons/magic.png",
-  carpentry_station: "items/Carpentry_Station.png",
-  turfcraftingstation: "items/Turfcraftingstation.png",
+  carpentry_station: "game-items/carpentry_station.png",
+  turfcraftingstation: "game-items/turfcraftingstation.png",
   critter_lab: "category-icons/decorations.png",
   character: null,
 };
@@ -203,7 +206,7 @@ export function classifyTag(text: string): SearchTag {
   for (const mat of materials) {
     const names = matNameMap.get(mat.id) || [];
     if (names.some((n) => n.includes(lower))) {
-      return { text, type: "material", image: `materials/${mat.image}` };
+      return { text, type: "material", image: `game-items/${mat.image}` };
     }
   }
 
@@ -225,9 +228,11 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
   const lower = query.toLowerCase().trim();
   if (!lower) return [];
 
+  const limit = MAX_SUGGESTIONS;
+
   const results: Suggestion[] = [];
 
-  // Characters — match English + all locales, display in current locale
+  // Characters
   for (const char of characters) {
     let matched = char.name.toLowerCase().includes(lower);
     if (!matched) {
@@ -246,10 +251,10 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
         image: `category-icons/characters/${char.portrait}.png`,
       });
     }
-    if (results.length >= MAX_SUGGESTIONS) return results;
+    if (results.length >= limit) return results;
   }
 
-  // Categories — match English + all locales, display in current locale
+  // Categories
   for (const cat of categories) {
     let matched = cat.name.toLowerCase().includes(lower);
     if (!matched) {
@@ -267,10 +272,10 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
         image: `category-icons/${cat.id}.png`,
       });
     }
-    if (results.length >= MAX_SUGGESTIONS) return results;
+    if (results.length >= limit) return results;
   }
 
-  // Items — match English + all locales, display in current locale
+  // Items
   for (const item of allItems) {
     let matched = item.name.toLowerCase().includes(lower);
     if (!matched) {
@@ -285,15 +290,15 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
       results.push({
         text: itemName(item, locale),
         type: "item",
-        image: `items/${item.image}`,
+        image: `game-items/${item.image}`,
       });
     }
-    if (results.length >= MAX_SUGGESTIONS) return results;
+    if (results.length >= limit) return results;
   }
 
-  // Stations — all locale names already in the map, display in current locale
-  for (const [stationId, names] of getStationNameMap()) {
-    if (names.some((n) => n.includes(lower))) {
+  // Stations
+  for (const [stationId, stNames] of getStationNameMap()) {
+    if (stNames.some((n) => n.includes(lower))) {
       const label = stationName(stationId, locale);
       if (!results.some((r) => r.text === label)) {
         results.push({
@@ -303,21 +308,21 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
         });
       }
     }
-    if (results.length >= MAX_SUGGESTIONS) return results;
+    if (results.length >= limit) return results;
   }
 
-  // Materials — all locale names already in the map, display in current locale
+  // Materials
   const matNameMap = getMaterialNameMap();
   for (const mat of materials) {
-    const names = matNameMap.get(mat.id) || [];
-    if (names.some((n) => n.includes(lower))) {
+    const mNames = matNameMap.get(mat.id) || [];
+    if (mNames.some((n) => n.includes(lower))) {
       results.push({
         text: materialName(mat, locale),
         type: "material",
-        image: `materials/${mat.image}`,
+        image: `game-items/${mat.image}`,
       });
     }
-    if (results.length >= MAX_SUGGESTIONS) return results;
+    if (results.length >= limit) return results;
   }
 
   return results;
