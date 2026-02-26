@@ -39,29 +39,18 @@ export function SettingsButton() {
   useEffect(() => {
     if (!open) return;
     updatePosition();
-
-    function handleClick(e: Event) {
-      const target = e.target as Node;
-      if (
-        panelRef.current &&
-        !panelRef.current.contains(target) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(target)
-      ) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("pointerdown", handleClick);
-    return () => document.removeEventListener("pointerdown", handleClick);
   }, [open, updatePosition]);
 
   const panel = open
     ? createPortal(
-        <div
-          ref={panelRef}
-          className="fixed z-50 w-48 rounded-lg border border-border bg-card shadow-lg p-3 space-y-3"
-          style={{ top: pos.top, right: pos.right }}
-        >
+        <>
+          {/* Backdrop: captures outside clicks to close menu without passing through */}
+          <div className="fixed inset-0 z-40" onPointerDown={() => setOpen(false)} />
+          <div
+            ref={panelRef}
+            className="fixed z-50 w-48 rounded-lg border border-border bg-card shadow-lg p-3 space-y-3"
+            style={{ top: pos.top, right: pos.right }}
+          >
           {/* Theme */}
           <div>
             <p className="text-xs font-medium text-muted-foreground mb-1.5">
@@ -117,7 +106,8 @@ export function SettingsButton() {
               })}
             </div>
           </div>
-        </div>,
+        </div>
+        </>,
         document.body
       )
     : null;
