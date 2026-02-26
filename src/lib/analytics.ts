@@ -53,17 +53,17 @@ interface GeoInfo {
 
 async function getGeoInfo(): Promise<GeoInfo | null> {
   try {
-    const res = await fetch("https://ip-api.com/json/?fields=query,country,countryCode,regionName,city,lat,lon");
+    const res = await fetch("https://ipapi.co/json/");
     if (!res.ok) return null;
     const data = await res.json();
     return {
-      ip: data.query,
-      country: data.country,
-      countryCode: data.countryCode,
+      ip: data.ip,
+      country: data.country_name,
+      countryCode: data.country_code,
       city: data.city,
-      region: data.regionName,
-      lat: data.lat,
-      lon: data.lon,
+      region: data.region,
+      lat: data.latitude,
+      lon: data.longitude,
     };
   } catch {
     return null;
