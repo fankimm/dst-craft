@@ -1,5 +1,9 @@
 const WORKER_URL = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
 
+function isAdmin(): boolean {
+  try { return localStorage.getItem("dst:admin") === "1"; } catch { return false; }
+}
+
 export interface AnalyticsData {
   totalPageViews: number;
   totalUniqueVisitors: number;
@@ -28,7 +32,7 @@ export interface AnalyticsData {
 
 /** Track a page visit — call once on app load */
 export async function trackVisit() {
-  if (!WORKER_URL) return;
+  if (!WORKER_URL || isAdmin()) return;
 
   // Prevent duplicate tracking in the same session
   if (sessionStorage.getItem("dst:tracked")) return;
@@ -54,7 +58,7 @@ export async function trackVisit() {
 
 /** Track session duration — call on visibility change / unload */
 export function initDurationTracking() {
-  if (!WORKER_URL) return;
+  if (!WORKER_URL || isAdmin()) return;
 
   const start = Date.now();
 
@@ -77,7 +81,7 @@ export function initDurationTracking() {
 
 /** Track a generic event */
 export function trackEvent(type: "search" | "pwa_install") {
-  if (!WORKER_URL) return;
+  if (!WORKER_URL || isAdmin()) return;
   // Use sendBeacon to avoid blocking
   navigator.sendBeacon(
     `${WORKER_URL}/event`,
