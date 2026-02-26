@@ -43,8 +43,15 @@ export function SettingsButton() {
   const panel = open
     ? createPortal(
         <>
-          {/* Backdrop: captures outside clicks to close menu without passing through */}
-          <div className="fixed inset-0 z-40" onPointerDown={() => setOpen(false)} />
+          {/* Backdrop: captures outside taps to close menu without passing through */}
+          <div
+            className="fixed inset-0 z-40"
+            onPointerDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpen(false);
+            }}
+          />
           <div
             ref={panelRef}
             className="fixed z-50 w-48 rounded-lg border border-border bg-card shadow-lg p-3 space-y-3"
