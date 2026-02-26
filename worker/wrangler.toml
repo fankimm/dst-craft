@@ -1,0 +1,6 @@
+name = "dst-analytics"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://fankimm.github.io"
