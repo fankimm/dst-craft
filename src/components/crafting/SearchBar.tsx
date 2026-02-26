@@ -24,31 +24,32 @@ function suggestionTypeLabel(type: TagType, locale: Locale): string {
   return typeLabels[locale]?.[type] ?? typeLabels.en[type];
 }
 
+// DST-inspired muted earth-tone tag colors
 const tagStyles = {
   character:
-    "border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700/60 dark:bg-amber-950/40 dark:text-amber-300",
+    "border-[#c9a865] bg-[#faf3de] text-[#6b4a14] dark:border-[#8b6914]/60 dark:bg-[#3a2e14]/50 dark:text-[#dab44a]",
   category:
-    "border-blue-300 bg-blue-50 text-blue-800 dark:border-blue-700/60 dark:bg-blue-950/40 dark:text-blue-300",
+    "border-[#a08060] bg-[#f5ece2] text-[#5a3820] dark:border-[#8b6040]/60 dark:bg-[#3c2418]/50 dark:text-[#c9965a]",
   station:
-    "border-violet-300 bg-violet-50 text-violet-800 dark:border-violet-700/60 dark:bg-violet-950/40 dark:text-violet-300",
+    "border-[#a8584f] bg-[#f5e6e2] text-[#6a2e22] dark:border-[#8b4a40]/60 dark:bg-[#421915]/50 dark:text-[#c07060]",
   material:
-    "border-green-300 bg-green-50 text-green-800 dark:border-green-700/60 dark:bg-green-950/40 dark:text-green-300",
-  text: "bg-primary/10 text-primary border-primary/20",
+    "border-[#8a8050] bg-[#f0edde] text-[#4a4520] dark:border-[#6b6234]/60 dark:bg-[#2a2810]/50 dark:text-[#b0a860]",
+  text: "border-[#b8b0a0] bg-[#f0ece4] text-[#5a5040] dark:border-[#6a6458]/60 dark:bg-[#2e2c24]/50 dark:text-[#a09880]",
 } as const;
 
 const tagHoverStyles = {
-  character: "hover:bg-amber-200 dark:hover:bg-amber-800/50",
-  category: "hover:bg-blue-200 dark:hover:bg-blue-800/50",
-  station: "hover:bg-violet-200 dark:hover:bg-violet-800/50",
-  material: "hover:bg-green-200 dark:hover:bg-green-800/50",
-  text: "hover:bg-primary/20",
+  character: "hover:bg-[#f0e4c0] dark:hover:bg-[#4a3e1a]/60",
+  category: "hover:bg-[#ecdcc8] dark:hover:bg-[#4c3020]/60",
+  station: "hover:bg-[#ecd4cc] dark:hover:bg-[#5a2820]/60",
+  material: "hover:bg-[#e4e0c8] dark:hover:bg-[#3a3818]/60",
+  text: "hover:bg-[#e4ddd0] dark:hover:bg-[#3e3c30]/60",
 } as const;
 
 const suggestionDotStyles = {
-  character: "bg-amber-500",
-  category: "bg-blue-500",
-  station: "bg-violet-500",
-  material: "bg-green-500",
+  character: "bg-[#c9a865]",
+  category: "bg-[#a08060]",
+  station: "bg-[#a8584f]",
+  material: "bg-[#8a8050]",
   text: "bg-muted-foreground",
 } as const;
 
@@ -214,17 +215,15 @@ export function SearchBar({
             <span
               key={i}
               className={cn(
-                "inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium border",
+                "inline-flex items-center gap-1 pl-1.5 pr-2 py-1 rounded-md text-xs font-medium border h-7",
                 tagStyles[tag.type]
               )}
             >
-              {tag.type === "character" && tag.portrait && (
+              {tag.image && (
                 <img
-                  src={assetPath(
-                    `/images/category-icons/characters/${tag.portrait}.png`
-                  )}
+                  src={assetPath(`/images/${tag.image}`)}
                   alt=""
-                  className="size-4 object-contain"
+                  className="size-4.5 object-contain shrink-0"
                 />
               )}
               {tag.text}

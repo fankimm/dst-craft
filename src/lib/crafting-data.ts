@@ -160,6 +160,8 @@ export interface SearchTag {
   text: string;
   type: TagType;
   portrait?: string; // character portrait id
+  /** Image path relative to /images/ */
+  image?: string;
 }
 
 export function classifyTag(text: string): SearchTag {
@@ -168,11 +170,11 @@ export function classifyTag(text: string): SearchTag {
   // Check characters (English + all locales) — partial match
   for (const char of characters) {
     if (char.name.toLowerCase().includes(lower)) {
-      return { text, type: "character", portrait: char.portrait };
+      return { text, type: "character", portrait: char.portrait, image: `category-icons/characters/${char.portrait}.png` };
     }
     for (const localeData of Object.values(allLocales)) {
       if (localeData.characters[char.id]?.name?.toLowerCase().includes(lower)) {
-        return { text, type: "character", portrait: char.portrait };
+        return { text, type: "character", portrait: char.portrait, image: `category-icons/characters/${char.portrait}.png` };
       }
     }
   }
@@ -180,27 +182,28 @@ export function classifyTag(text: string): SearchTag {
   // Check categories (English + all locales) — partial match
   for (const cat of categories) {
     if (cat.name.toLowerCase().includes(lower)) {
-      return { text, type: "category" };
+      return { text, type: "category", image: `category-icons/${cat.id}.png` };
     }
     for (const localeData of Object.values(allLocales)) {
       if (localeData.categories[cat.id]?.name?.toLowerCase().includes(lower)) {
-        return { text, type: "category" };
+        return { text, type: "category", image: `category-icons/${cat.id}.png` };
       }
     }
   }
 
   // Check stations (all locales already in the map) — partial match
-  for (const [, names] of getStationNameMap()) {
+  for (const [stationId, names] of getStationNameMap()) {
     if (names.some((n) => n.includes(lower))) {
-      return { text, type: "station" };
+      return { text, type: "station", image: stationImages[stationId] ?? undefined };
     }
   }
 
   // Check materials (all locales already in the map) — partial match
   const matNameMap = getMaterialNameMap();
-  for (const [, names] of matNameMap) {
+  for (const mat of materials) {
+    const names = matNameMap.get(mat.id) || [];
     if (names.some((n) => n.includes(lower))) {
-      return { text, type: "material" };
+      return { text, type: "material", image: `items/${mat.image}` };
     }
   }
 
