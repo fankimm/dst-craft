@@ -3,14 +3,14 @@
 import { useMemo } from "react";
 import { categories } from "@/data/categories";
 import { characters } from "@/data/characters";
-import { getItemsByCategory, getCharacterItems } from "@/lib/crafting-data";
-import { getCategoryById } from "@/lib/crafting-data";
+import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById } from "@/lib/crafting-data";
 import { useCraftingState } from "@/hooks/use-crafting-state";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
 import { t, itemName } from "@/lib/i18n";
 import { CategoryGrid } from "./CategoryGrid";
 import { CategoryHeader } from "./CategoryHeader";
+import { Breadcrumb } from "./Breadcrumb";
 import { SearchBar } from "./SearchBar";
 import { ItemGrid } from "./ItemGrid";
 import { ItemDetail } from "./ItemDetail";
@@ -37,6 +37,8 @@ export function CraftingApp() {
     setSearchQuery,
     clearSearch,
     goBack,
+    goHome,
+    goToCategory,
     navigateToItem,
     jumpToCategory,
     jumpToCharacter,
@@ -47,6 +49,7 @@ export function CraftingApp() {
   const { results: searchResults } = useSearch(searchQuery);
 
   const currentCategory = getCategoryById(selectedCategory);
+  const currentCharacter = selectedCharacter ? getCharacterById(selectedCharacter) : null;
 
   const categoryItems = useMemo(() => {
     if (selectedCategory === "character") {
@@ -76,9 +79,17 @@ export function CraftingApp() {
     return (
       <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
         <div className="flex items-center gap-4 border-b border-border bg-background/80 px-4 py-2.5">
-          <h2 className="text-base font-semibold text-foreground">
-            {isSearching ? t(resolvedLocale, "searchResults") : t(resolvedLocale, "craftingGuide")}
-          </h2>
+          <div className="flex items-center gap-2 min-w-0">
+            {isSearching ? (
+              <Breadcrumb
+                isSearching
+                searchLabel={t(resolvedLocale, "searchResults")}
+                onHomeClick={goHome}
+              />
+            ) : (
+              <Breadcrumb onHomeClick={goHome} />
+            )}
+          </div>
           <div className="flex-1 max-w-sm ml-auto flex items-center gap-2">
             {searchBar}
             <SettingsButton />
@@ -138,8 +149,12 @@ export function CraftingApp() {
       {/* Header */}
       <CategoryHeader
         category={isSearching ? undefined : currentCategory}
+        character={currentCharacter}
+        characterId={selectedCharacter}
         searchBar={searchBar}
-        onBack={isSearching ? undefined : goBack}
+        isSearching={isSearching}
+        onHomeClick={goHome}
+        onCategoryClick={selectedCharacter ? goToCategory : undefined}
       />
 
       {/* Mobile search bar */}

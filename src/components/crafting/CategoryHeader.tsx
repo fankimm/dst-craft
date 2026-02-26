@@ -1,24 +1,32 @@
 "use client";
 
-import { ArrowLeft } from "lucide-react";
-import type { Category } from "@/lib/types";
+import type { Category, Character } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
-import { t, categoryName } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
 import { SettingsButton } from "./SettingsButton";
+import { Breadcrumb } from "./Breadcrumb";
 import type { ReactNode } from "react";
 
 interface CategoryHeaderProps {
   category: Category | undefined;
+  character?: Character | null;
+  characterId?: string | null;
   searchBar: ReactNode;
-  onBack?: () => void;
+  isSearching?: boolean;
+  onHomeClick: () => void;
+  onCategoryClick?: () => void;
   className?: string;
 }
 
 export function CategoryHeader({
   category,
+  character,
+  characterId,
   searchBar,
-  onBack,
+  isSearching,
+  onHomeClick,
+  onCategoryClick,
   className,
 }: CategoryHeaderProps) {
   const { resolvedLocale } = useSettings();
@@ -31,25 +39,15 @@ export function CategoryHeader({
       )}
     >
       <div className="flex items-center gap-2 min-w-0">
-        {onBack && (
-          <button
-            className="shrink-0 p-1 -ml-1 rounded-md text-muted-foreground hover:bg-surface-hover active:bg-surface-hover transition-colors"
-            onClick={onBack}
-          >
-            <ArrowLeft className="size-5" />
-          </button>
-        )}
-        {category ? (
-          <div className="flex items-baseline gap-2">
-            <h2 className="text-base font-semibold text-foreground truncate">
-              {categoryName(category, resolvedLocale)}
-            </h2>
-          </div>
-        ) : (
-          <h2 className="text-base font-semibold text-foreground">
-            {t(resolvedLocale, "searchResults")}
-          </h2>
-        )}
+        <Breadcrumb
+          category={category}
+          character={character}
+          characterId={characterId}
+          isSearching={isSearching}
+          searchLabel={t(resolvedLocale, "searchResults")}
+          onHomeClick={onHomeClick}
+          onCategoryClick={onCategoryClick}
+        />
       </div>
       <div className="flex items-center gap-2 shrink-0">
         <div className="hidden sm:block w-56">{searchBar}</div>

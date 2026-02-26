@@ -162,6 +162,26 @@ export function useCraftingState() {
     setUrlState(readUrlState());
   }, []);
 
+  const goHome = useCallback(() => {
+    const url = window.location.pathname;
+    window.history.replaceState({ _appNav: true }, "", url);
+    setUrlState({ cat: null, item: null, char: null });
+    setSearchQueryState("");
+  }, []);
+
+  const goToCategory = useCallback(() => {
+    // Navigate to category level (remove char and item)
+    const params = getParams();
+    params.delete("char");
+    params.delete("item");
+    const search = params.toString();
+    const url = search
+      ? `${window.location.pathname}?${search}`
+      : window.location.pathname;
+    window.history.replaceState({ _appNav: true }, "", url);
+    setUrlState(readUrlState());
+  }, []);
+
   const setSearchQuery = useCallback((query: string) => {
     setSearchQueryState(query);
   }, []);
@@ -183,6 +203,8 @@ export function useCraftingState() {
     setSearchQuery,
     clearSearch,
     goBack,
+    goHome,
+    goToCategory,
     navigateToItem,
     jumpToCategory,
     jumpToCharacter,
