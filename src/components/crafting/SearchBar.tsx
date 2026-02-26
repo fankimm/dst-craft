@@ -162,7 +162,7 @@ export function SearchBar({
                   selectSuggestion(s);
                 }}
                 className={cn(
-                  "flex items-center gap-2 w-full px-3 py-1.5 text-xs text-left transition-colors",
+                  "flex items-center gap-2.5 w-full px-3 py-2.5 sm:py-1.5 text-sm sm:text-xs text-left transition-colors",
                   i === selectedIndex
                     ? "bg-accent text-accent-foreground"
                     : "hover:bg-accent/50"
@@ -174,18 +174,18 @@ export function SearchBar({
                       `/images/category-icons/characters/${s.portrait}.png`
                     )}
                     alt=""
-                    className="size-4 object-contain shrink-0"
+                    className="size-5 sm:size-4 object-contain shrink-0"
                   />
                 ) : (
                   <span
                     className={cn(
-                      "size-2 rounded-full shrink-0",
+                      "size-2.5 sm:size-2 rounded-full shrink-0",
                       suggestionDotStyles[s.type]
                     )}
                   />
                 )}
                 <span className="truncate">{s.text}</span>
-                <span className="ml-auto text-[10px] text-muted-foreground shrink-0">
+                <span className="ml-auto text-xs sm:text-[10px] text-muted-foreground shrink-0">
                   {s.type === "character"
                     ? "캐릭터"
                     : s.type === "category"

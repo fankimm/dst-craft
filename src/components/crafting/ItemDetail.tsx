@@ -114,14 +114,16 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
           {!item.characterOnly && (
             <Badge
               variant="secondary"
-              className="text-xs gap-1 pl-1 pr-2 py-1 bg-surface-hover text-foreground/80 border-border"
+              className="text-xs gap-1 pl-1 pr-2 py-1 h-7 bg-surface-hover text-foreground/80 border-border"
             >
-              {stationIcons[item.station] && (
+              {stationIcons[item.station] ? (
                 <img
                   src={assetPath(`/images/category-icons/${stationIcons[item.station]}.png`)}
                   alt=""
                   className="size-5 object-contain"
                 />
+              ) : (
+                <span className="size-5" />
               )}
               {t(resolvedLocale, stationKeys[item.station])}
             </Badge>
@@ -158,7 +160,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
                 <Badge
                   key={catId}
                   variant="outline"
-                  className={`text-xs gap-1 pl-1 pr-2 py-1 border-border text-muted-foreground ${clickable ? "cursor-pointer hover:border-primary hover:text-primary transition-colors" : ""}`}
+                  className={`text-xs gap-1 pl-1 pr-2 py-1 h-7 border-border text-muted-foreground ${clickable ? "cursor-pointer hover:border-primary hover:text-primary transition-colors" : ""}`}
                   onClick={clickable ? () => onCategoryClick(catId) : undefined}
                   role={clickable ? "button" : undefined}
                 >

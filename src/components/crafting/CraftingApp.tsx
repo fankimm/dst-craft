@@ -86,22 +86,22 @@ export function CraftingApp() {
   if (showCategoryGrid) {
     return (
       <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
-        <div className="flex items-center gap-4 border-b border-border bg-background/80 px-4 py-2.5">
-          <div className="flex items-center gap-2 min-w-0">
-            {isSearching ? (
-              <Breadcrumb
-                isSearching
-                searchLabel={t(resolvedLocale, "searchResults")}
-                onHomeClick={goHome}
-              />
-            ) : (
-              <Breadcrumb onHomeClick={goHome} />
-            )}
-          </div>
-          <div className="flex-1 max-w-sm ml-auto flex items-center gap-2">
-            {searchBar}
+        <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 min-w-0">
+              {isSearching ? (
+                <Breadcrumb
+                  isSearching
+                  searchLabel={t(resolvedLocale, "searchResults")}
+                  onHomeClick={goHome}
+                />
+              ) : (
+                <Breadcrumb onHomeClick={goHome} />
+              )}
+            </div>
             <SettingsButton />
           </div>
+          {searchBar}
         </div>
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
           {isSearching ? (
