@@ -4167,6 +4167,20 @@ export const allItems: CraftingItem[] = [
     sortOrder: 79,
   },
   {
+    id: "spear_wathgrithr_lightning_charged",
+    name: "Charged Elding Spear",
+    description: "It crackles with the might of the storm.",
+    image: "Charged_Elding_Spear.png",
+    category: ["character", "weapons"],
+    station: "character",
+    materials: [
+      { materialId: "spear_wathgrithr_lightning", quantity: 1 },
+      { materialId: "lightninggoathorn", quantity: 1 },
+    ],
+    characterOnly: "wigfrid",
+    sortOrder: 80,
+  },
+  {
     id: "wall_hay_item",
     name: "Hay Wall",
     description: "Hay wall segments. Not very sturdy.",
@@ -6400,7 +6414,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "scandata", quantity: 2 },
       { materialId: "spidergland", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 220,
   },
   {
@@ -6415,7 +6429,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "spidergland", quantity: 2 },
       { materialId: "wx78module_maxhealth", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 221,
   },
   {
@@ -6429,7 +6443,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "scandata", quantity: 1 },
       { materialId: "petals", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 222,
   },
   {
@@ -6444,7 +6458,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "nightmarefuel", quantity: 1 },
       { materialId: "wx78module_maxsanity1", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 223,
   },
   {
@@ -6459,7 +6473,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "royal_jelly", quantity: 1 },
       { materialId: "wx78module_maxsanity", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 224,
   },
   {
@@ -6473,7 +6487,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "scandata", quantity: 4 },
       { materialId: "singingshell_octave3", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 225,
   },
   {
@@ -6487,7 +6501,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "scandata", quantity: 2 },
       { materialId: "houndstooth", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 226,
   },
   {
@@ -6502,7 +6516,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "slurper_pelt", quantity: 1 },
       { materialId: "wx78module_maxhunger1", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 227,
   },
   {
@@ -6516,7 +6530,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "scandata", quantity: 2 },
       { materialId: "rabbit", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 228,
   },
   {
@@ -6531,7 +6545,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "gears", quantity: 1 },
       { materialId: "wx78module_movespeed", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 229,
   },
   {
@@ -6545,7 +6559,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "scandata", quantity: 4 },
       { materialId: "redgem", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 230,
   },
   {
@@ -6559,7 +6573,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "scandata", quantity: 4 },
       { materialId: "bluegem", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 231,
   },
   {
@@ -6573,7 +6587,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "scandata", quantity: 5 },
       { materialId: "goatmilk", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 232,
   },
   {
@@ -6588,7 +6602,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "mole", quantity: 1 },
       { materialId: "fireflies", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 233,
   },
   {
@@ -6602,7 +6616,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "scandata", quantity: 6 },
       { materialId: "lightbulb", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 234,
   },
   {
@@ -6616,7 +6630,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "twigs", quantity: 2 },
       { materialId: "rocks", quantity: 2 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 235,
   },
   {
@@ -6630,7 +6644,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "transistor", quantity: 1 },
       { materialId: "silk", quantity: 1 },
     ],
-    characterOnly: "wx78",
+    characterOnly: "wx-78",
     sortOrder: 236,
   },
   {

@@ -152,6 +152,7 @@ export const materials: Material[] = [
   { id: "scandata", name: "Bio Data", image: "scandata.png" },
   { id: "security_pulse_cage_full", name: "Spark Ark", image: "security_pulse_cage_full.png" },
   { id: "seeds", name: "Seeds", image: "seeds.png" },
+  { id: "spear_wathgrithr_lightning", name: "Elding Spear", image: "spear_wathgrithr_lightning.png" },
   { id: "sewing_kit", name: "Sewing Kit", image: "sewing_kit.png" },
   { id: "sewing_tape", name: "Trusty Tape", image: "sewing_tape.png" },
   { id: "shadowheart_infused", name: "Possessed Shadow Atrium", image: "shadowheart_infused.png" },
