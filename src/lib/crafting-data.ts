@@ -155,7 +155,7 @@ export function getCharacterById(characterId: string): Character | undefined {
 }
 
 // --- Tag classification ---
-export type TagType = "character" | "category" | "station" | "material" | "text";
+export type TagType = "character" | "category" | "station" | "material" | "item" | "text";
 export interface SearchTag {
   text: string;
   type: TagType;
@@ -203,7 +203,7 @@ export function classifyTag(text: string): SearchTag {
   for (const mat of materials) {
     const names = matNameMap.get(mat.id) || [];
     if (names.some((n) => n.includes(lower))) {
-      return { text, type: "material", image: `items/${mat.image}` };
+      return { text, type: "material", image: `materials/${mat.image}` };
     }
   }
 
@@ -270,6 +270,27 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
     if (results.length >= MAX_SUGGESTIONS) return results;
   }
 
+  // Items — match English + all locales, display in current locale
+  for (const item of allItems) {
+    let matched = item.name.toLowerCase().includes(lower);
+    if (!matched) {
+      for (const localeData of Object.values(allLocales)) {
+        if (localeData.items[item.id]?.name?.toLowerCase().includes(lower)) {
+          matched = true;
+          break;
+        }
+      }
+    }
+    if (matched && !results.some((r) => r.text === itemName(item, locale))) {
+      results.push({
+        text: itemName(item, locale),
+        type: "item",
+        image: `items/${item.image}`,
+      });
+    }
+    if (results.length >= MAX_SUGGESTIONS) return results;
+  }
+
   // Stations — all locale names already in the map, display in current locale
   for (const [stationId, names] of getStationNameMap()) {
     if (names.some((n) => n.includes(lower))) {
@@ -293,7 +314,7 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
       results.push({
         text: materialName(mat, locale),
         type: "material",
-        image: `items/${mat.image}`,
+        image: `materials/${mat.image}`,
       });
     }
     if (results.length >= MAX_SUGGESTIONS) return results;

@@ -13,11 +13,11 @@ import type { SearchTag } from "@/hooks/use-search";
 import type { Suggestion, TagType } from "@/lib/crafting-data";
 
 const typeLabels: Record<string, Record<TagType, string>> = {
-  ko: { character: "캐릭터", category: "카테고리", station: "제작소", material: "재료", text: "텍스트" },
-  en: { character: "Character", category: "Category", station: "Station", material: "Material", text: "Text" },
-  ja: { character: "キャラ", category: "カテゴリ", station: "製造所", material: "素材", text: "テキスト" },
-  zh_CN: { character: "角色", category: "分类", station: "制作站", material: "材料", text: "文本" },
-  zh_TW: { character: "角色", category: "分類", station: "製作站", material: "材料", text: "文字" },
+  ko: { character: "캐릭터", category: "카테고리", station: "제작소", material: "재료", item: "아이템", text: "텍스트" },
+  en: { character: "Character", category: "Category", station: "Station", material: "Material", item: "Item", text: "Text" },
+  ja: { character: "キャラ", category: "カテゴリ", station: "製造所", material: "素材", item: "アイテム", text: "テキスト" },
+  zh_CN: { character: "角色", category: "分类", station: "制作站", material: "材料", item: "物品", text: "文本" },
+  zh_TW: { character: "角色", category: "分類", station: "製作站", material: "材料", item: "物品", text: "文字" },
 };
 
 function suggestionTypeLabel(type: TagType, locale: Locale): string {
@@ -34,6 +34,8 @@ const tagStyles = {
     "border-[#a8584f] bg-[#f5e6e2] text-[#6a2e22] dark:border-[#8b4a40]/60 dark:bg-[#421915]/50 dark:text-[#c07060]",
   material:
     "border-[#8a8050] bg-[#f0edde] text-[#4a4520] dark:border-[#6b6234]/60 dark:bg-[#2a2810]/50 dark:text-[#b0a860]",
+  item:
+    "border-[#6a8a6a] bg-[#e8f0e8] text-[#2a4a2a] dark:border-[#4a7a4a]/60 dark:bg-[#1a2e1a]/50 dark:text-[#80b080]",
   text: "border-[#b8b0a0] bg-[#f0ece4] text-[#5a5040] dark:border-[#6a6458]/60 dark:bg-[#2e2c24]/50 dark:text-[#a09880]",
 } as const;
 
@@ -42,6 +44,7 @@ const tagHoverStyles = {
   category: "hover:bg-[#ecdcc8] dark:hover:bg-[#4c3020]/60",
   station: "hover:bg-[#ecd4cc] dark:hover:bg-[#5a2820]/60",
   material: "hover:bg-[#e4e0c8] dark:hover:bg-[#3a3818]/60",
+  item: "hover:bg-[#d8e8d8] dark:hover:bg-[#2a3e2a]/60",
   text: "hover:bg-[#e4ddd0] dark:hover:bg-[#3e3c30]/60",
 } as const;
 
@@ -50,6 +53,7 @@ const suggestionDotStyles = {
   category: "bg-[#a08060]",
   station: "bg-[#a8584f]",
   material: "bg-[#8a8050]",
+  item: "bg-[#6a8a6a]",
   text: "bg-muted-foreground",
 } as const;
 
