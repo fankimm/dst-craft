@@ -74,6 +74,19 @@ export function CraftingApp() {
 
   const slideClass = slideDir === "right" ? "animate-slide-right" : slideDir === "left" ? "animate-slide-left" : "";
 
+  // Sync theme-color meta tag with sheet overlay (fixes iPhone Dynamic Island timing)
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) return;
+    const isDark = document.documentElement.classList.contains("dark");
+    if (selectedItem) {
+      // Sheet overlay is bg-black/50 — darken theme-color to match
+      meta.setAttribute("content", isDark ? "#050506" : "#7d7d7d");
+    } else {
+      meta.setAttribute("content", isDark ? "#09090b" : "#fafafa");
+    }
+  }, [selectedItem]);
+
   const handleStationClick = useCallback((stationLabel: string, station?: string) => {
     const image = station ? (stationImages[station as keyof typeof stationImages] ?? undefined) : undefined;
     addSearchTag({ text: stationLabel, type: "station", image });
