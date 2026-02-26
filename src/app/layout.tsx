@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Noto_Sans_KR } from "next/font/google";
+import { Inter, Noto_Sans_KR, Creepster } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SettingsProvider } from "@/hooks/use-settings";
 import "./globals.css";
@@ -14,8 +14,14 @@ const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
 });
 
+const creepster = Creepster({
+  weight: "400",
+  variable: "--font-display-var",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "DST Crafting Guide",
+  title: "StarveCraft - Don't Starve Together Crafting Guide",
   description: "Don't Starve Together Crafting Recipe Guide",
   manifest: "/manifest.json",
   appleWebApp: {
@@ -66,7 +72,8 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased`}
+        className={`${inter.variable} ${notoSansKR.variable} ${creepster.variable} font-sans antialiased`}
+
       >
         <SettingsProvider>
           <TooltipProvider>{children}</TooltipProvider>
