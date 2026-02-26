@@ -112,7 +112,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   // Update html lang attribute
   useEffect(() => {
     if (!mounted) return;
-    document.documentElement.lang = resolvedLocale;
+    document.documentElement.lang = resolvedLocale.replace("_", "-");
   }, [resolvedLocale, mounted]);
 
   const value = useMemo(

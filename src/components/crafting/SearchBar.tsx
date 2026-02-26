@@ -6,10 +6,23 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
 import { t } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
 import { getSuggestions } from "@/lib/crafting-data";
 import type { SearchTag } from "@/hooks/use-search";
-import type { Suggestion } from "@/lib/crafting-data";
+import type { Suggestion, TagType } from "@/lib/crafting-data";
+
+const typeLabels: Record<string, Record<TagType, string>> = {
+  ko: { character: "캐릭터", category: "카테고리", station: "제작소", material: "재료", text: "텍스트" },
+  en: { character: "Character", category: "Category", station: "Station", material: "Material", text: "Text" },
+  ja: { character: "キャラ", category: "カテゴリ", station: "製造所", material: "素材", text: "テキスト" },
+  zh_CN: { character: "角色", category: "分类", station: "制作站", material: "材料", text: "文本" },
+  zh_TW: { character: "角色", category: "分類", station: "製作站", material: "材料", text: "文字" },
+};
+
+function suggestionTypeLabel(type: TagType, locale: Locale): string {
+  return typeLabels[locale]?.[type] ?? typeLabels.en[type];
+}
 
 const tagStyles = {
   character:
@@ -65,7 +78,7 @@ export function SearchBar({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const suggestions =
-    inputValue.trim().length > 0 ? getSuggestions(inputValue) : [];
+    inputValue.trim().length > 0 ? getSuggestions(inputValue, resolvedLocale) : [];
 
   // Close suggestions on outside click
   useEffect(() => {
@@ -188,13 +201,7 @@ export function SearchBar({
                 )}
                 <span className="truncate">{s.text}</span>
                 <span className="ml-auto text-xs sm:text-[10px] text-muted-foreground shrink-0">
-                  {s.type === "character"
-                    ? "캐릭터"
-                    : s.type === "category"
-                      ? "카테고리"
-                      : s.type === "station"
-                        ? "제작소"
-                        : "재료"}
+                  {suggestionTypeLabel(s.type, resolvedLocale)}
                 </span>
               </button>
             ))}

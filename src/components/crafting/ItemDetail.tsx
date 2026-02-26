@@ -7,7 +7,7 @@ import { getCategoryById, getCharacterById, stationImages } from "@/lib/crafting
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { t, itemName, itemAltName, itemDesc, categoryName, characterName, stationName } from "@/lib/i18n";
-import type { Locale } from "@/lib/i18n";
+
 import { assetPath } from "@/lib/asset-path";
 
 // Higher-tier stations that can also craft items of the base station
@@ -77,7 +77,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
         <div className="flex items-center gap-2 flex-wrap">
           {/* Station badges (hidden for character-only items since character badge conveys this) */}
           {!item.characterOnly && [item.station, ...(stationUpgrades[item.station] ?? [])].map((station) => {
-            const label = stationName(station, resolvedLocale as Locale);
+            const label = stationName(station, resolvedLocale);
             const clickable = !!onStationClick;
             return (
               <Badge

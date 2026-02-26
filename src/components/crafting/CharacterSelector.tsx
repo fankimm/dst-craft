@@ -22,7 +22,7 @@ function CharacterAvatar({
   character: Character;
   isSelected: boolean;
   onClick: () => void;
-  locale: "ko" | "en";
+  locale: string;
 }) {
   const [imgError, setImgError] = useState(false);
 

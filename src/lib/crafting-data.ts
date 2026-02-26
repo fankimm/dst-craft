@@ -3,8 +3,8 @@ import { categories } from "@/data/categories";
 import { characters } from "@/data/characters";
 import { materials } from "@/data/materials";
 import { allItems } from "@/data/items";
-import { ko } from "@/data/locales/ko";
-import { stationName } from "@/lib/i18n";
+import { allLocales } from "@/data/locales";
+import { stationName, supportedLocales, itemName, materialName, categoryName, characterName } from "@/lib/i18n";
 
 export function getItemsByCategory(categoryId: CategoryId): CraftingItem[] {
   return allItems
@@ -47,21 +47,24 @@ export const stationImages: Record<CraftingStation, string | null> = {
   character: null,
 };
 
-// Build material name lookup for search (lazy-initialized)
+// Build material name lookup for search (lazy-initialized, all locales)
 let _materialNameMap: Map<string, string[]> | null = null;
 function getMaterialNameMap(): Map<string, string[]> {
   if (_materialNameMap) return _materialNameMap;
   _materialNameMap = new Map();
   for (const mat of materials) {
-    const names = [mat.name.toLowerCase()];
-    const koName = ko.materials[mat.id]?.name;
-    if (koName) names.push(koName.toLowerCase());
-    _materialNameMap.set(mat.id, names);
+    const nameSet = new Set<string>();
+    nameSet.add(mat.name.toLowerCase());
+    for (const localeData of Object.values(allLocales)) {
+      const n = localeData.materials[mat.id]?.name;
+      if (n) nameSet.add(n.toLowerCase());
+    }
+    _materialNameMap.set(mat.id, [...nameSet]);
   }
   return _materialNameMap;
 }
 
-// Build station name lookup for search (lazy-initialized)
+// Build station name lookup for search (lazy-initialized, all locales)
 let _stationNameMap: Map<CraftingStation, string[]> | null = null;
 function getStationNameMap(): Map<CraftingStation, string[]> {
   if (_stationNameMap) return _stationNameMap;
@@ -70,40 +73,47 @@ function getStationNameMap(): Map<CraftingStation, string[]> {
     (s) => s !== "none" && s !== "character"
   ) as CraftingStation[];
   for (const id of stationIds) {
-    const names = new Set<string>();
-    names.add(stationName(id, "en").toLowerCase());
-    names.add(stationName(id, "ko").toLowerCase());
-    _stationNameMap.set(id, [...names]);
+    const nameSet = new Set<string>();
+    for (const locale of supportedLocales) {
+      nameSet.add(stationName(id, locale).toLowerCase());
+    }
+    _stationNameMap.set(id, [...nameSet]);
   }
   return _stationNameMap;
 }
 
 function itemMatchesQuery(item: CraftingItem, lowerQuery: string, matNameMap: Map<string, string[]>): boolean {
-  // Check item name (en + ko)
+  // Check item name (English + all locales)
   if (item.name.toLowerCase().includes(lowerQuery)) return true;
-  if (ko.items[item.id]?.name?.toLowerCase().includes(lowerQuery)) return true;
-  // Check description
+  for (const localeData of Object.values(allLocales)) {
+    if (localeData.items[item.id]?.name?.toLowerCase().includes(lowerQuery)) return true;
+  }
+  // Check description (English only — locale descriptions are for display, not search)
   if (item.description.toLowerCase().includes(lowerQuery)) return true;
-  // Check station name
+  // Check station name (all locales already in the map)
   const stationNames = getStationNameMap().get(item.station);
   if (stationNames?.some((n) => n.includes(lowerQuery))) return true;
-  // Check character name
+  // Check character name (English + all locales)
   if (item.characterOnly) {
     const char = characters.find(c => c.id === item.characterOnly);
     if (char) {
       if (char.name.toLowerCase().includes(lowerQuery)) return true;
-      if (ko.characters[char.id]?.name?.toLowerCase().includes(lowerQuery)) return true;
+      for (const localeData of Object.values(allLocales)) {
+        if (localeData.characters[char.id]?.name?.toLowerCase().includes(lowerQuery)) return true;
+      }
     }
   }
-  // Check category name
+  // Check category name (English + all locales)
   for (const catId of item.category) {
     const cat = categories.find(c => c.id === catId);
     if (cat) {
       if (cat.name.toLowerCase().includes(lowerQuery)) return true;
-      if (ko.categories[catId]?.name?.toLowerCase().includes(lowerQuery)) return true;
+      for (const localeData of Object.values(allLocales)) {
+        if (localeData.categories[catId]?.name?.toLowerCase().includes(lowerQuery)) return true;
+      }
     }
   }
-  // Check materials
+  // Check materials (all locales already in the map)
   for (const m of item.materials) {
     for (const name of (matNameMap.get(m.materialId) || [])) {
       if (name.includes(lowerQuery)) return true;
@@ -155,34 +165,38 @@ export interface SearchTag {
 export function classifyTag(text: string): SearchTag {
   const lower = text.toLowerCase().trim();
 
-  // Check characters (en + ko) — partial match
+  // Check characters (English + all locales) — partial match
   for (const char of characters) {
-    if (
-      char.name.toLowerCase().includes(lower) ||
-      ko.characters[char.id]?.name?.toLowerCase().includes(lower)
-    ) {
+    if (char.name.toLowerCase().includes(lower)) {
       return { text, type: "character", portrait: char.portrait };
     }
-  }
-
-  // Check categories (en + ko) — partial match
-  for (const cat of categories) {
-    if (
-      cat.name.toLowerCase().includes(lower) ||
-      ko.categories[cat.id]?.name?.toLowerCase().includes(lower)
-    ) {
-      return { text, type: "category" };
+    for (const localeData of Object.values(allLocales)) {
+      if (localeData.characters[char.id]?.name?.toLowerCase().includes(lower)) {
+        return { text, type: "character", portrait: char.portrait };
+      }
     }
   }
 
-  // Check stations (en + ko) — partial match
+  // Check categories (English + all locales) — partial match
+  for (const cat of categories) {
+    if (cat.name.toLowerCase().includes(lower)) {
+      return { text, type: "category" };
+    }
+    for (const localeData of Object.values(allLocales)) {
+      if (localeData.categories[cat.id]?.name?.toLowerCase().includes(lower)) {
+        return { text, type: "category" };
+      }
+    }
+  }
+
+  // Check stations (all locales already in the map) — partial match
   for (const [, names] of getStationNameMap()) {
     if (names.some((n) => n.includes(lower))) {
       return { text, type: "station" };
     }
   }
 
-  // Check materials (en + ko) — partial match
+  // Check materials (all locales already in the map) — partial match
   const matNameMap = getMaterialNameMap();
   for (const [, names] of matNameMap) {
     if (names.some((n) => n.includes(lower))) {
@@ -204,21 +218,26 @@ export interface Suggestion {
 
 const MAX_SUGGESTIONS = 6;
 
-export function getSuggestions(query: string): Suggestion[] {
+export function getSuggestions(query: string, locale: string = "ko"): Suggestion[] {
   const lower = query.toLowerCase().trim();
   if (!lower) return [];
 
   const results: Suggestion[] = [];
 
-  // Characters
+  // Characters — match English + all locales, display in current locale
   for (const char of characters) {
-    const koName = ko.characters[char.id]?.name;
-    if (
-      char.name.toLowerCase().includes(lower) ||
-      koName?.toLowerCase().includes(lower)
-    ) {
+    let matched = char.name.toLowerCase().includes(lower);
+    if (!matched) {
+      for (const localeData of Object.values(allLocales)) {
+        if (localeData.characters[char.id]?.name?.toLowerCase().includes(lower)) {
+          matched = true;
+          break;
+        }
+      }
+    }
+    if (matched) {
       results.push({
-        text: koName || char.name,
+        text: characterName(char, locale),
         type: "character",
         portrait: char.portrait,
         image: `category-icons/characters/${char.portrait}.png`,
@@ -227,15 +246,20 @@ export function getSuggestions(query: string): Suggestion[] {
     if (results.length >= MAX_SUGGESTIONS) return results;
   }
 
-  // Categories
+  // Categories — match English + all locales, display in current locale
   for (const cat of categories) {
-    const koName = ko.categories[cat.id]?.name;
-    if (
-      cat.name.toLowerCase().includes(lower) ||
-      koName?.toLowerCase().includes(lower)
-    ) {
+    let matched = cat.name.toLowerCase().includes(lower);
+    if (!matched) {
+      for (const localeData of Object.values(allLocales)) {
+        if (localeData.categories[cat.id]?.name?.toLowerCase().includes(lower)) {
+          matched = true;
+          break;
+        }
+      }
+    }
+    if (matched) {
       results.push({
-        text: koName || cat.name,
+        text: categoryName(cat, locale),
         type: "category",
         image: `category-icons/${cat.id}.png`,
       });
@@ -243,11 +267,10 @@ export function getSuggestions(query: string): Suggestion[] {
     if (results.length >= MAX_SUGGESTIONS) return results;
   }
 
-  // Stations
+  // Stations — all locale names already in the map, display in current locale
   for (const [stationId, names] of getStationNameMap()) {
     if (names.some((n) => n.includes(lower))) {
-      const label = stationName(stationId, "ko");
-      // Avoid duplicate if station name matches a category already added
+      const label = stationName(stationId, locale);
       if (!results.some((r) => r.text === label)) {
         results.push({
           text: label,
@@ -259,14 +282,13 @@ export function getSuggestions(query: string): Suggestion[] {
     if (results.length >= MAX_SUGGESTIONS) return results;
   }
 
-  // Materials
+  // Materials — all locale names already in the map, display in current locale
   const matNameMap = getMaterialNameMap();
   for (const mat of materials) {
     const names = matNameMap.get(mat.id) || [];
     if (names.some((n) => n.includes(lower))) {
-      const koName = ko.materials[mat.id]?.name;
       results.push({
-        text: koName || mat.name,
+        text: materialName(mat, locale),
         type: "material",
         image: `items/${mat.image}`,
       });

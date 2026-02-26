@@ -1,9 +1,14 @@
 import type { CraftingItem, CraftingStation, Material, Category, Character } from "@/lib/types";
-import { ko } from "@/data/locales/ko";
+import { allLocales } from "@/data/locales";
 import type { LocaleData } from "@/data/locales/types";
 import { allItems } from "@/data/items";
 
-export type Locale = "ko" | "en";
+export type Locale =
+  | "ko" | "en"
+  | "zh_CN" | "zh_TW"
+  | "fr" | "de" | "it" | "ja"
+  | "pl" | "pt_BR" | "ru"
+  | "es" | "es_MX";
 export type LocaleSetting = Locale | "system";
 
 const translations = {
@@ -83,11 +88,35 @@ const translations = {
 
 export type TranslationKey = keyof (typeof translations)["ko"];
 
-// Locale registry — add new locales here
-const locales: Record<string, LocaleData> = { ko };
+// Locale registry — all generated + hand-curated locales
+const locales: Record<string, LocaleData> = allLocales;
+
+/** All supported locale codes (for UI dropdowns etc.) */
+export const supportedLocales: Locale[] = [
+  "ko", "en", "ja", "zh_CN", "zh_TW",
+  "fr", "de", "it", "pl", "pt_BR", "ru", "es", "es_MX",
+];
+
+/** Human-readable locale labels (always displayed in native language) */
+export const localeLabels: Record<Locale, string> = {
+  ko: "한국어",
+  en: "English",
+  ja: "日本語",
+  zh_CN: "简体中文",
+  zh_TW: "繁體中文",
+  fr: "Français",
+  de: "Deutsch",
+  it: "Italiano",
+  pl: "Polski",
+  pt_BR: "Português (BR)",
+  ru: "Русский",
+  es: "Español",
+  es_MX: "Español (MX)",
+};
 
 export function t(locale: Locale, key: TranslationKey): string {
-  return translations[locale][key];
+  if (locale === "ko") return translations.ko[key];
+  return translations.en[key];
 }
 
 // Domain-specific localized name helpers (fallback to English name)
@@ -122,6 +151,18 @@ export function detectLocale(): Locale {
   if (typeof navigator === "undefined") return "ko";
   const lang = navigator.language.toLowerCase();
   if (lang.startsWith("ko")) return "ko";
+  if (lang.startsWith("ja")) return "ja";
+  if (lang === "zh-cn" || lang === "zh-hans" || lang === "zh-sg") return "zh_CN";
+  if (lang.startsWith("zh")) return "zh_TW";
+  if (lang.startsWith("fr")) return "fr";
+  if (lang.startsWith("de")) return "de";
+  if (lang.startsWith("it")) return "it";
+  if (lang.startsWith("pl")) return "pl";
+  if (lang === "pt-br") return "pt_BR";
+  if (lang.startsWith("pt")) return "pt_BR";
+  if (lang.startsWith("ru")) return "ru";
+  if (lang === "es-mx") return "es_MX";
+  if (lang.startsWith("es")) return "es";
   return "en";
 }
 
@@ -154,7 +195,7 @@ function getItemEnName(itemId: string): string | undefined {
  * Get localized station name.
  * Priority: locale stations section → item name (for stations with items) → English fallback.
  */
-export function stationName(station: CraftingStation, locale: Locale): string {
+export function stationName(station: CraftingStation, locale: string): string {
   // 1. Check locale stations section (ko.ts stations)
   const stationLabel = locales[locale]?.stations?.[station]?.name;
   if (stationLabel) return stationLabel;
@@ -167,7 +208,7 @@ export function stationName(station: CraftingStation, locale: Locale): string {
     return getItemEnName(itemId) ?? station;
   }
 
-  // 3. English fallback
+  // 3. English fallback from translations
   const key = `station_${station}` as TranslationKey;
-  return translations[locale][key] ?? station;
+  return translations.en[key] ?? station;
 }

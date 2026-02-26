@@ -5,7 +5,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
 import type { LocaleSetting } from "@/lib/i18n";
-import { t } from "@/lib/i18n";
+import { t, supportedLocales, localeLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const themeOptions: { value: ThemeSetting; icon: typeof Sun; labelKey: "light" | "dark" | "system" }[] = [
@@ -14,10 +14,9 @@ const themeOptions: { value: ThemeSetting; icon: typeof Sun; labelKey: "light" |
   { value: "system", icon: Monitor, labelKey: "system" },
 ];
 
-const localeOptions: { value: LocaleSetting; labelKey: "korean" | "english" | "system" }[] = [
-  { value: "ko", labelKey: "korean" },
-  { value: "en", labelKey: "english" },
-  { value: "system", labelKey: "system" },
+const localeOptions: { value: LocaleSetting; label: string }[] = [
+  { value: "system", label: "System" },
+  ...supportedLocales.map((code) => ({ value: code as LocaleSetting, label: localeLabels[code] })),
 ];
 
 export function SettingsButton() {
@@ -85,7 +84,7 @@ export function SettingsButton() {
             <p className="text-xs font-medium text-muted-foreground mb-1.5">
               {t(resolvedLocale, "language")}
             </p>
-            <div className="space-y-0.5">
+            <div className="space-y-0.5 max-h-52 overflow-y-auto">
               {localeOptions.map((opt) => {
                 const isActive = locale === opt.value;
                 return (
@@ -99,7 +98,7 @@ export function SettingsButton() {
                         : "text-muted-foreground hover:bg-surface-hover/50"
                     )}
                   >
-                    {t(resolvedLocale, opt.labelKey)}
+                    {opt.value === "system" ? t(resolvedLocale, "system") : opt.label}
                     {isActive && <Check className="size-3.5 ml-auto shrink-0" />}
                   </button>
                 );
