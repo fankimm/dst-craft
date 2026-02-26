@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Sans_KR } from "next/font/google";
-import localFont from "next/font/local";
+
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SettingsProvider } from "@/hooks/use-settings";
 import "./globals.css";
@@ -15,14 +15,8 @@ const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
 });
 
-const bigDonstarve = localFont({
-  src: "../../public/fonts/BigDonstarve.ttf",
-  variable: "--font-display-var",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "StarveCraft - Don't Starve Together Crafting Guide",
+  title: "DST Crafting Guide",
   description: "Don't Starve Together Crafting Recipe Guide",
   manifest: "/manifest.json",
   appleWebApp: {
@@ -32,7 +26,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.ico", sizes: "48x48" },
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
@@ -73,7 +67,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className={`${inter.variable} ${notoSansKR.variable} ${bigDonstarve.variable} font-sans antialiased`}
+        className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased`}
       >
         <SettingsProvider>
           <TooltipProvider>{children}</TooltipProvider>
