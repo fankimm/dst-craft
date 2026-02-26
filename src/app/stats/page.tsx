@@ -8,13 +8,14 @@ import {
   RotateCcw, TrendingUp,
 } from "lucide-react";
 
-const countryFlags: Record<string, string> = {
-  KR: "🇰🇷", US: "🇺🇸", JP: "🇯🇵", CN: "🇨🇳", TW: "🇹🇼", GB: "🇬🇧",
-  DE: "🇩🇪", FR: "🇫🇷", CA: "🇨🇦", AU: "🇦🇺", BR: "🇧🇷", RU: "🇷🇺",
-  IN: "🇮🇳", MX: "🇲🇽", ES: "🇪🇸", IT: "🇮🇹", PL: "🇵🇱", NL: "🇳🇱",
-  SE: "🇸🇪", NO: "🇳🇴", DK: "🇩🇰", FI: "🇫🇮", SG: "🇸🇬", HK: "🇭🇰",
-  TH: "🇹🇭", VN: "🇻🇳", PH: "🇵🇭", ID: "🇮🇩", MY: "🇲🇾", GU: "🇬🇺",
-};
+/** Convert ISO 3166-1 alpha-2 country code to flag emoji */
+function countryFlag(code: string): string {
+  const upper = code.toUpperCase();
+  if (upper.length !== 2) return "🏳️";
+  const cp1 = 0x1F1E6 + upper.charCodeAt(0) - 65;
+  const cp2 = 0x1F1E6 + upper.charCodeAt(1) - 65;
+  return String.fromCodePoint(cp1, cp2);
+}
 
 const osIcons: Record<string, string> = {
   iOS: "🍎", macOS: "🍎", Windows: "🪟", Android: "🤖", Linux: "🐧", ChromeOS: "💻",
@@ -219,7 +220,7 @@ export default function StatsPage() {
                       label={code}
                       count={count}
                       total={totalCountryVisits}
-                      icon={countryFlags[code] ?? "🏳️"}
+                      icon={countryFlag(code)}
                     />
                   ))}
                 </div>
@@ -259,7 +260,7 @@ export default function StatsPage() {
                           </td>
                           <td className="py-2 pr-3 font-mono text-foreground/80">{v.ip}</td>
                           <td className="py-2 pr-3 whitespace-nowrap">
-                            {countryFlags[v.country] ?? "🏳️"} {v.country}
+                            {countryFlag(v.country)} {v.country}
                           </td>
                           <td className="py-2 pr-3 text-muted-foreground">{v.region}</td>
                           <td className="py-2 pr-3 text-muted-foreground">{v.city}</td>
