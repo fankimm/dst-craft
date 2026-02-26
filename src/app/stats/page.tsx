@@ -88,7 +88,7 @@ export default function StatsPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground p-4 sm:p-8">
-      <div className="mx-auto max-w-2xl space-y-6">
+      <div className="mx-auto max-w-5xl space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-bold flex items-center gap-2">
             <BarChart3 className="size-5" />

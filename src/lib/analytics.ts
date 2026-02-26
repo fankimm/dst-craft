@@ -1,7 +1,15 @@
 const WORKER_URL = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
 
+/** URL에 ?admin=1 또는 ?admin=0 으로 설정/해제 가능 */
 function isAdmin(): boolean {
-  try { return localStorage.getItem("dst:admin") === "1"; } catch { return false; }
+  try {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("admin") === "1") localStorage.setItem("dst:admin", "1");
+      else if (params.get("admin") === "0") localStorage.removeItem("dst:admin");
+    }
+    return localStorage.getItem("dst:admin") === "1";
+  } catch { return false; }
 }
 
 export interface AnalyticsData {
