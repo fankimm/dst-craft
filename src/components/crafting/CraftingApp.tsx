@@ -3,7 +3,7 @@
 import { useMemo, useCallback } from "react";
 import { categories } from "@/data/categories";
 import { characters } from "@/data/characters";
-import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById } from "@/lib/crafting-data";
+import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
 import { useCraftingState } from "@/hooks/use-crafting-state";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
@@ -53,8 +53,9 @@ export function CraftingApp() {
     isSearching,
   } = useSearch();
 
-  const handleStationClick = useCallback((stationLabel: string) => {
-    addSearchTag(stationLabel);
+  const handleStationClick = useCallback((stationLabel: string, station?: string) => {
+    const image = station ? (stationImages[station as keyof typeof stationImages] ?? undefined) : undefined;
+    addSearchTag({ text: stationLabel, type: "station", image });
     setItem(null);
   }, [addSearchTag, setItem]);
 

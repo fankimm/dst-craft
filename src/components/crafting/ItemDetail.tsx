@@ -21,7 +21,7 @@ interface ItemDetailProps {
   onMaterialClick?: (item: CraftingItem) => void;
   onCategoryClick?: (categoryId: CategoryId) => void;
   onCharacterClick?: (characterId: string) => void;
-  onStationClick?: (stationLabel: string) => void;
+  onStationClick?: (stationLabel: string, station?: string) => void;
 }
 
 export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick }: ItemDetailProps) {
@@ -84,7 +84,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
                 key={station}
                 variant="secondary"
                 className={`text-xs gap-1 pl-1 pr-2 py-1 h-7 bg-surface-hover text-foreground/80 border-border ${clickable ? "cursor-pointer hover:border-primary hover:text-primary transition-colors" : ""}`}
-                onClick={clickable ? () => onStationClick(label) : undefined}
+                onClick={clickable ? () => onStationClick(label, station) : undefined}
                 role={clickable ? "button" : undefined}
               >
                 {stationImages[station] ? (

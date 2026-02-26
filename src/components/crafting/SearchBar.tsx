@@ -57,7 +57,7 @@ interface SearchBarProps {
   inputValue: string;
   tags: SearchTag[];
   onInputChange: (value: string) => void;
-  onAddTag: (value: string) => void;
+  onAddTag: (value: string | SearchTag) => void;
   onRemoveTag: (index: number) => void;
   onClearAll: () => void;
   className?: string;
@@ -101,7 +101,8 @@ export function SearchBar({
   }, [inputValue]);
 
   function selectSuggestion(s: Suggestion) {
-    onAddTag(s.text);
+    // Pass a full SearchTag to preserve image/type from the suggestion
+    onAddTag({ text: s.text, type: s.type, portrait: s.portrait, image: s.image });
     setShowSuggestions(false);
     setSelectedIndex(-1);
   }

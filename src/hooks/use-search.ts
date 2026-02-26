@@ -34,10 +34,16 @@ export function useSearch() {
   }, [debouncedTexts.join("\0")]);
 
   const addTag = useCallback(
-    (value: string) => {
-      const trimmed = value.trim();
-      if (trimmed && !tags.some((t) => t.text === trimmed)) {
-        setTags((prev) => [...prev, classifyTag(trimmed)]);
+    (value: string | SearchTag) => {
+      if (typeof value === "string") {
+        const trimmed = value.trim();
+        if (trimmed && !tags.some((t) => t.text === trimmed)) {
+          setTags((prev) => [...prev, classifyTag(trimmed)]);
+        }
+      } else {
+        if (!tags.some((t) => t.text === value.text)) {
+          setTags((prev) => [...prev, value]);
+        }
       }
       setInputValue("");
     },
