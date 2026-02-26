@@ -16,6 +16,7 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 const SITE_URL = "https://fankimm.github.io/dst-craft";
+const BASE = process.env.NODE_ENV === "production" ? "/dst-craft" : "";
 
 export const metadata: Metadata = {
   title: "DST Crafting Guide | Don't Starve Together 크래프팅 레시피",
@@ -62,7 +63,7 @@ export const metadata: Metadata = {
       "Don't Starve Together 크래프팅 레시피 가이드. 모든 아이템의 제작법, 재료, 제작소를 검색하세요.",
     images: ["/og-image.png"],
   },
-  manifest: "/manifest.json",
+  manifest: `${BASE}/manifest.json`,
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -70,11 +71,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "48x48" },
-      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: `${BASE}/favicon.ico`, sizes: "48x48" },
+      { url: `${BASE}/icons/icon-192.png`, sizes: "192x192", type: "image/png" },
+      { url: `${BASE}/icons/icon-512.png`, sizes: "512x512", type: "image/png" },
     ],
-    apple: { url: "/icons/icon-180.png", sizes: "180x180", type: "image/png" },
+    apple: { url: `${BASE}/icons/icon-180.png`, sizes: "180x180", type: "image/png" },
   },
 };
 
