@@ -2,7 +2,7 @@ import { Github, Mail } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="flex items-center justify-center gap-4 px-4 py-3 text-xs text-muted-foreground/60 border-t border-border/50">
+    <footer className="flex items-center justify-center gap-4 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-xs text-muted-foreground/60 border-t border-border/50">
       <a
         href="https://github.com/fankimm/dst-craft"
         target="_blank"
