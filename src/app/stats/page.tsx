@@ -51,7 +51,7 @@ export default function StatsPage() {
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-bold flex items-center gap-2">
             <BarChart3 className="size-5" />
-            Analytics
+            접속 통계
           </h1>
           <button
             onClick={load}
@@ -64,25 +64,25 @@ export default function StatsPage() {
 
         {loading && !data ? (
           <div className="flex items-center justify-center py-20 text-muted-foreground text-sm">
-            Loading...
+            불러오는 중...
           </div>
         ) : !data ? (
           <div className="flex items-center justify-center py-20 text-muted-foreground text-sm">
-            Failed to load analytics data
+            데이터를 불러올 수 없습니다
           </div>
         ) : (
           <>
             {/* Summary Cards */}
             <div className="grid grid-cols-2 gap-3">
-              <StatCard icon={Eye} label="Total Page Views" value={data.totalPageViews} />
-              <StatCard icon={Users} label="Total Unique Visitors" value={data.totalUniqueVisitors} />
-              <StatCard icon={Eye} label="Today Page Views" value={data.todayPageViews} />
-              <StatCard icon={Users} label="Today Unique" value={data.todayUniqueVisitors} />
+              <StatCard icon={Eye} label="총 페이지뷰" value={data.totalPageViews} />
+              <StatCard icon={Users} label="총 방문자" value={data.totalUniqueVisitors} />
+              <StatCard icon={Eye} label="오늘 페이지뷰" value={data.todayPageViews} />
+              <StatCard icon={Users} label="오늘 방문자" value={data.todayUniqueVisitors} />
             </div>
 
             {/* 7-Day Chart */}
             <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-              <h2 className="text-sm font-semibold">Last 7 Days</h2>
+              <h2 className="text-sm font-semibold">최근 7일</h2>
               <div className="space-y-2">
                 {[...data.last7Days].reverse().map((day) => (
                   <div key={day.date} className="flex items-center gap-3 text-xs">
@@ -108,10 +108,10 @@ export default function StatsPage() {
             <div className="rounded-lg border border-border bg-card p-4 space-y-3">
               <h2 className="text-sm font-semibold flex items-center gap-2">
                 <Globe className="size-4" />
-                Countries
+                국가별 방문
               </h2>
               {sortedCountries.length === 0 ? (
-                <p className="text-xs text-muted-foreground">No data yet</p>
+                <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
               ) : (
                 <div className="space-y-1.5">
                   {sortedCountries.map(([code, count]) => (
@@ -128,9 +128,9 @@ export default function StatsPage() {
 
             {/* Recent Visitors */}
             <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-              <h2 className="text-sm font-semibold">Recent Visitors</h2>
+              <h2 className="text-sm font-semibold">최근 방문자</h2>
               {data.recentVisitors.length === 0 ? (
-                <p className="text-xs text-muted-foreground">No data yet</p>
+                <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
               ) : (
                 <div className="space-y-2 max-h-80 overflow-y-auto">
                   {data.recentVisitors.map((v, i) => (
