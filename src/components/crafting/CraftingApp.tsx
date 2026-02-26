@@ -56,6 +56,34 @@ export function CraftingApp() {
     isSearching,
   } = useSearch();
 
+  // --- Secret backdoor: tap title 5x → tap "rain" category → stats ---
+  const secretTaps = useRef(0);
+  const secretTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const secretReady = useRef(false);
+
+  const handleTitleTap = useCallback(() => {
+    clearTimeout(secretTimer.current);
+    secretTaps.current++;
+    if (secretTaps.current >= 5) {
+      secretReady.current = true;
+      secretTaps.current = 0;
+      // Auto-reset after 5s if no rain tap
+      secretTimer.current = setTimeout(() => { secretReady.current = false; }, 5000);
+    } else {
+      // Reset tap count if idle for 2s
+      secretTimer.current = setTimeout(() => { secretTaps.current = 0; }, 2000);
+    }
+  }, []);
+
+  const handleSelectCategory = useCallback((id: CategoryId) => {
+    if (secretReady.current && id === "rain") {
+      secretReady.current = false;
+      window.location.href = `${window.location.pathname.replace(/\/$/, "")}/stats`;
+      return;
+    }
+    setCategory(id);
+  }, [setCategory]);
+
   // Track visit + duration + PWA install on first load
   useEffect(() => {
     trackVisit();
@@ -157,7 +185,7 @@ export function CraftingApp() {
                   onHomeClick={goHome}
                 />
               ) : (
-                <Breadcrumb onHomeClick={goHome} />
+                <Breadcrumb onHomeClick={goHome} onTitleClick={handleTitleTap} />
               )}
             </div>
             <SettingsButton />
@@ -175,7 +203,7 @@ export function CraftingApp() {
             ) : (
               <CategoryGrid
                 categories={categories}
-                onSelectCategory={setCategory}
+                onSelectCategory={handleSelectCategory}
               />
             )}
             <Footer />

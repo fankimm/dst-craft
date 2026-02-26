@@ -21,6 +21,7 @@ interface BreadcrumbProps {
   searchLabel?: string;
   onHomeClick: () => void;
   onCategoryClick?: () => void;
+  onTitleClick?: () => void;
 }
 
 export function Breadcrumb({
@@ -31,6 +32,7 @@ export function Breadcrumb({
   searchLabel,
   onHomeClick,
   onCategoryClick,
+  onTitleClick,
 }: BreadcrumbProps) {
   const { resolvedLocale } = useSettings();
 
@@ -102,7 +104,10 @@ export function Breadcrumb({
                 />
               )
             ) : isLast ? (
-              <span className="font-semibold text-foreground truncate">
+              <span
+                className="font-semibold text-foreground truncate"
+                onClick={onTitleClick}
+              >
                 {seg.label}
               </span>
             ) : (
