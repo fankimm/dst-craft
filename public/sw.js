@@ -1,8 +1,11 @@
-const CACHE_NAME = "dst-crafting-v2";
+const CACHE_NAME = "dst-crafting-v3";
+const BASE = new URL(self.location.href).pathname.replace(/\/sw\.js$/, "");
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(["/", "/manifest.json"]))
+    caches.open(CACHE_NAME).then((cache) =>
+      cache.addAll([BASE + "/", BASE + "/manifest.json"])
+    )
   );
   self.skipWaiting();
 });
@@ -26,7 +29,7 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
   // Images: cache-first, never re-fetch once cached
-  if (url.pathname.startsWith("/images/") || url.pathname.startsWith("/dst-craft/images/")) {
+  if (url.pathname.startsWith(BASE + "/images/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) return cached;
@@ -43,7 +46,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   // JS/CSS/_next assets: cache-first (hashed filenames = immutable)
-  if (url.pathname.startsWith("/_next/")) {
+  if (url.pathname.startsWith(BASE + "/_next/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) return cached;

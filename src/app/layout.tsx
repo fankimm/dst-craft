@@ -50,7 +50,7 @@ const themeScript = `
 })();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js');
+    navigator.serviceWorker.register('${process.env.NODE_ENV === "production" ? "/dst-craft" : ""}/sw.js');
   });
 }
 `;

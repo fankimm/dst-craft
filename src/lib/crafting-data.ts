@@ -99,3 +99,108 @@ export function getItemByMaterialId(materialId: string): CraftingItem | undefine
 export function getCharacterById(characterId: string): Character | undefined {
   return characters.find((c) => c.id === characterId);
 }
+
+// --- Tag classification ---
+export type TagType = "character" | "category" | "material" | "text";
+export interface SearchTag {
+  text: string;
+  type: TagType;
+  portrait?: string; // character portrait id
+}
+
+export function classifyTag(text: string): SearchTag {
+  const lower = text.toLowerCase().trim();
+
+  // Check characters (en + ko) — partial match
+  for (const char of characters) {
+    if (
+      char.name.toLowerCase().includes(lower) ||
+      ko.characters[char.id]?.name?.toLowerCase().includes(lower)
+    ) {
+      return { text, type: "character", portrait: char.portrait };
+    }
+  }
+
+  // Check categories (en + ko) — partial match
+  for (const cat of categories) {
+    if (
+      cat.name.toLowerCase().includes(lower) ||
+      ko.categories[cat.id]?.name?.toLowerCase().includes(lower)
+    ) {
+      return { text, type: "category" };
+    }
+  }
+
+  // Check materials (en + ko) — partial match
+  const matNameMap = getMaterialNameMap();
+  for (const [, names] of matNameMap) {
+    if (names.some((n) => n.includes(lower))) {
+      return { text, type: "material" };
+    }
+  }
+
+  return { text, type: "text" };
+}
+
+// --- Autocomplete suggestions ---
+export interface Suggestion {
+  text: string;
+  type: TagType;
+  portrait?: string;
+}
+
+const MAX_SUGGESTIONS = 6;
+
+export function getSuggestions(query: string): Suggestion[] {
+  const lower = query.toLowerCase().trim();
+  if (!lower) return [];
+
+  const results: Suggestion[] = [];
+
+  // Characters
+  for (const char of characters) {
+    const koName = ko.characters[char.id]?.name;
+    if (
+      char.name.toLowerCase().includes(lower) ||
+      koName?.toLowerCase().includes(lower)
+    ) {
+      results.push({
+        text: koName || char.name,
+        type: "character",
+        portrait: char.portrait,
+      });
+    }
+    if (results.length >= MAX_SUGGESTIONS) return results;
+  }
+
+  // Categories
+  for (const cat of categories) {
+    const koName = ko.categories[cat.id]?.name;
+    if (
+      cat.name.toLowerCase().includes(lower) ||
+      koName?.toLowerCase().includes(lower)
+    ) {
+      results.push({
+        text: koName || cat.name,
+        type: "category",
+      });
+    }
+    if (results.length >= MAX_SUGGESTIONS) return results;
+  }
+
+  // Materials
+  const matNameMap = getMaterialNameMap();
+  for (const mat of materials) {
+    const names = matNameMap.get(mat.id) || [];
+    if (names.some((n) => n.includes(lower))) {
+      const koName = ko.materials[mat.id]?.name;
+      results.push({
+        text: koName || mat.name,
+        type: "material",
+      });
+    }
+    if (results.length >= MAX_SUGGESTIONS) return results;
+  }
+
+  return results;
+}

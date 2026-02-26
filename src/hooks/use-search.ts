@@ -2,44 +2,50 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { CraftingItem } from "@/lib/types";
-import { searchItemsByTags } from "@/lib/crafting-data";
+import { searchItemsByTags, classifyTag } from "@/lib/crafting-data";
+import type { SearchTag } from "@/lib/crafting-data";
+
+export type { SearchTag };
 
 export function useSearch() {
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<SearchTag[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [debouncedTags, setDebouncedTags] = useState<string[]>([]);
+  const [debouncedTexts, setDebouncedTexts] = useState<string[]>([]);
   const [results, setResults] = useState<CraftingItem[]>([]);
 
   // Include inputValue as a live preview tag for real-time filtering
-  const effectiveTags = inputValue.trim()
-    ? [...tags, inputValue.trim()]
-    : tags;
+  const effectiveTexts = inputValue.trim()
+    ? [...tags.map((t) => t.text), inputValue.trim()]
+    : tags.map((t) => t.text);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedTags(effectiveTags);
+      setDebouncedTexts(effectiveTexts);
     }, 300);
     return () => clearTimeout(timer);
-  }, [effectiveTags.join("\0")]);
+  }, [effectiveTexts.join("\0")]);
 
   useEffect(() => {
-    if (debouncedTags.length === 0) {
+    if (debouncedTexts.length === 0) {
       setResults([]);
       return;
     }
-    setResults(searchItemsByTags(debouncedTags));
-  }, [debouncedTags.join("\0")]);
+    setResults(searchItemsByTags(debouncedTexts));
+  }, [debouncedTexts.join("\0")]);
 
-  const addTag = useCallback((value: string) => {
-    const trimmed = value.trim();
-    if (trimmed && !tags.includes(trimmed)) {
-      setTags(prev => [...prev, trimmed]);
-    }
-    setInputValue("");
-  }, [tags]);
+  const addTag = useCallback(
+    (value: string) => {
+      const trimmed = value.trim();
+      if (trimmed && !tags.some((t) => t.text === trimmed)) {
+        setTags((prev) => [...prev, classifyTag(trimmed)]);
+      }
+      setInputValue("");
+    },
+    [tags]
+  );
 
   const removeTag = useCallback((index: number) => {
-    setTags(prev => prev.filter((_, i) => i !== index));
+    setTags((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
   const clearAll = useCallback(() => {
