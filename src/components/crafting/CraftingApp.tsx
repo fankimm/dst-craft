@@ -51,31 +51,7 @@ export function CraftingApp() {
     isSearching,
   } = useSearch();
 
-  // --- Secret backdoor: tap title 5x → tap "rain" category → stats ---
-  const secretTaps = useRef(0);
-  const secretTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const secretReady = useRef(false);
-
-  const handleTitleTap = useCallback(() => {
-    clearTimeout(secretTimer.current);
-    secretTaps.current++;
-    if (secretTaps.current >= 5) {
-      secretReady.current = true;
-      secretTaps.current = 0;
-      // Auto-reset after 5s if no rain tap
-      secretTimer.current = setTimeout(() => { secretReady.current = false; }, 5000);
-    } else {
-      // Reset tap count if idle for 2s
-      secretTimer.current = setTimeout(() => { secretTaps.current = 0; }, 2000);
-    }
-  }, []);
-
   const handleSelectCategory = useCallback((id: CategoryId) => {
-    if (secretReady.current && id === "rain") {
-      secretReady.current = false;
-      window.location.href = `${window.location.pathname.replace(/\/$/, "")}/stats`;
-      return;
-    }
     setCategory(id);
   }, [setCategory]);
 
@@ -117,10 +93,12 @@ export function CraftingApp() {
   useEffect(() => {
     if (selectedItem) {
       setPanelItem(selectedItem);
-      requestAnimationFrame(() => setPanelOpen(true));
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setPanelOpen(true));
+      });
     } else {
       setPanelOpen(false);
-      const timer = setTimeout(() => setPanelItem(null), 300);
+      const timer = setTimeout(() => setPanelItem(null), 180);
       return () => clearTimeout(timer);
     }
   }, [selectedItem]);
@@ -177,10 +155,10 @@ export function CraftingApp() {
   const detailPanel = panelItem && (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${panelOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-180 ${panelOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         onClick={() => setItem(null)}
       />
-      <div className={`fixed inset-x-0 bottom-0 z-50 rounded-t-xl border-t border-border bg-card max-h-[80dvh] overflow-y-auto overscroll-contain transition-transform duration-300 ease-out ${panelOpen ? "translate-y-0" : "translate-y-full"}`}>
+      <div className={`fixed inset-x-0 bottom-0 z-50 rounded-t-xl border-t border-border bg-card max-h-[80dvh] overflow-y-auto overscroll-contain transition-transform duration-180 ease-out ${panelOpen ? "translate-y-0" : "translate-y-full"}`}>
         <button onClick={() => setItem(null)} className="absolute top-2 right-2 z-10 p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors">
           <X className="size-4" />
         </button>
@@ -214,7 +192,7 @@ export function CraftingApp() {
                   onHomeClick={handleGoHome}
                 />
               ) : (
-                <Breadcrumb onHomeClick={handleGoHome} onTitleClick={handleTitleTap} />
+                <Breadcrumb onHomeClick={handleGoHome} />
               )}
             </div>
             <SettingsButton />

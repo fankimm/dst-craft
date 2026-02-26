@@ -141,6 +141,10 @@ export function SearchBar({
 
     if (e.key === "Enter" && inputValue.trim()) {
       e.preventDefault();
+      if (inputValue.trim() === "d_stats") {
+        window.location.href = `${window.location.pathname.replace(/\/$/, "")}/stats`;
+        return;
+      }
       onAddTag(inputValue);
       setShowSuggestions(false);
     }
