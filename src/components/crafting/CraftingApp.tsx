@@ -92,12 +92,6 @@ export function CraftingApp() {
     return (
       <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
         <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
-          <h1
-            className="font-display text-xl tracking-wide text-foreground cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={goHome}
-          >
-            StarveCraft
-          </h1>
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2 min-w-0">
               {isSearching ? (
