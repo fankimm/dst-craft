@@ -126,34 +126,45 @@ export default function StatsPage() {
               )}
             </div>
 
-            {/* Recent Visitors */}
+            {/* Recent Visitors Table */}
             <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-              <h2 className="text-sm font-semibold">최근 방문자</h2>
+              <h2 className="text-sm font-semibold">접속자 상세</h2>
               {data.recentVisitors.length === 0 ? (
                 <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
               ) : (
-                <div className="space-y-2 max-h-80 overflow-y-auto">
-                  {data.recentVisitors.map((v, i) => (
-                    <div key={i} className="flex items-start justify-between gap-2 text-xs border-b border-border/50 pb-2 last:border-0">
-                      <div className="space-y-0.5 min-w-0">
-                        <div className="flex items-center gap-1.5">
-                          <span>{countryFlags[v.country] ?? "🏳️"}</span>
-                          <span className="text-foreground font-medium">
-                            {v.city}{v.region ? `, ${v.region}` : ""}
-                          </span>
-                        </div>
-                        <div className="text-muted-foreground truncate">{v.ip}</div>
-                      </div>
-                      <span className="text-muted-foreground shrink-0 text-right">
-                        {new Date(v.time).toLocaleString("ko-KR", {
-                          month: "numeric",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b border-border text-left text-muted-foreground">
+                        <th className="pb-2 pr-3 font-medium">시간</th>
+                        <th className="pb-2 pr-3 font-medium">IP</th>
+                        <th className="pb-2 pr-3 font-medium">국가</th>
+                        <th className="pb-2 pr-3 font-medium">지역</th>
+                        <th className="pb-2 font-medium">도시</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.recentVisitors.map((v, i) => (
+                        <tr key={i} className="border-b border-border/30 last:border-0">
+                          <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap">
+                            {new Date(v.time).toLocaleString("ko-KR", {
+                              month: "numeric",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              second: "2-digit",
+                            })}
+                          </td>
+                          <td className="py-2 pr-3 font-mono text-foreground/80">{v.ip}</td>
+                          <td className="py-2 pr-3 whitespace-nowrap">
+                            {countryFlags[v.country] ?? "🏳️"} {v.country}
+                          </td>
+                          <td className="py-2 pr-3 text-muted-foreground">{v.region}</td>
+                          <td className="py-2 text-muted-foreground">{v.city}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
             </div>
