@@ -37,25 +37,51 @@ function getMaterialNameMap(): Map<string, string[]> {
   return _materialNameMap;
 }
 
+function itemMatchesQuery(item: CraftingItem, lowerQuery: string, matNameMap: Map<string, string[]>): boolean {
+  // Check item name (en + ko)
+  if (item.name.toLowerCase().includes(lowerQuery)) return true;
+  if (ko.items[item.id]?.name?.toLowerCase().includes(lowerQuery)) return true;
+  // Check description
+  if (item.description.toLowerCase().includes(lowerQuery)) return true;
+  // Check character name
+  if (item.characterOnly) {
+    const char = characters.find(c => c.id === item.characterOnly);
+    if (char) {
+      if (char.name.toLowerCase().includes(lowerQuery)) return true;
+      if (ko.characters[char.id]?.name?.toLowerCase().includes(lowerQuery)) return true;
+    }
+  }
+  // Check category name
+  for (const catId of item.category) {
+    const cat = categories.find(c => c.id === catId);
+    if (cat) {
+      if (cat.name.toLowerCase().includes(lowerQuery)) return true;
+      if (ko.categories[catId]?.name?.toLowerCase().includes(lowerQuery)) return true;
+    }
+  }
+  // Check materials
+  for (const m of item.materials) {
+    for (const name of (matNameMap.get(m.materialId) || [])) {
+      if (name.includes(lowerQuery)) return true;
+    }
+  }
+  return false;
+}
+
 export function searchItems(query: string): CraftingItem[] {
   const lowerQuery = query.toLowerCase().trim();
   if (!lowerQuery) return [];
-
-  // Find matching material ids
   const matNameMap = getMaterialNameMap();
-  const matchingMatIds = new Set<string>();
-  for (const [matId, names] of matNameMap) {
-    if (names.some(n => n.includes(lowerQuery))) {
-      matchingMatIds.add(matId);
-    }
-  }
+  return allItems.filter(item => itemMatchesQuery(item, lowerQuery, matNameMap));
+}
 
-  return allItems.filter(
-    (item) =>
-      item.name.toLowerCase().includes(lowerQuery) ||
-      (ko.items[item.id]?.name?.toLowerCase().includes(lowerQuery) ?? false) ||
-      item.description.toLowerCase().includes(lowerQuery) ||
-      (matchingMatIds.size > 0 && item.materials.some(m => matchingMatIds.has(m.materialId)))
+export function searchItemsByTags(tags: string[]): CraftingItem[] {
+  if (tags.length === 0) return [];
+  const lowerTags = tags.map(t => t.toLowerCase().trim()).filter(Boolean);
+  if (lowerTags.length === 0) return [];
+  const matNameMap = getMaterialNameMap();
+  return allItems.filter(item =>
+    lowerTags.every(tag => itemMatchesQuery(item, tag, matNameMap))
   );
 }
 

@@ -28,14 +28,10 @@ export function CraftingApp() {
     selectedCategory,
     selectedItem,
     selectedCharacter,
-    searchQuery,
-    isSearching,
     showCategoryGrid,
     setCategory,
     setItem,
     setCharacter,
-    setSearchQuery,
-    clearSearch,
     goBack,
     goHome,
     goToCategory,
@@ -46,7 +42,16 @@ export function CraftingApp() {
 
   const { resolvedLocale } = useSettings();
 
-  const { results: searchResults } = useSearch(searchQuery);
+  const {
+    tags: searchTags,
+    inputValue: searchInput,
+    setInputValue: setSearchInput,
+    addTag: addSearchTag,
+    removeTag: removeSearchTag,
+    clearAll: clearSearch,
+    results: searchResults,
+    isSearching,
+  } = useSearch();
 
   const currentCategory = getCategoryById(selectedCategory);
   const currentCharacter = selectedCharacter ? getCharacterById(selectedCharacter) : null;
@@ -68,9 +73,12 @@ export function CraftingApp() {
 
   const searchBar = (
     <SearchBar
-      value={searchQuery}
-      onChange={setSearchQuery}
-      onClear={clearSearch}
+      inputValue={searchInput}
+      tags={searchTags}
+      onInputChange={setSearchInput}
+      onAddTag={addSearchTag}
+      onRemoveTag={removeSearchTag}
+      onClearAll={clearSearch}
     />
   );
 
