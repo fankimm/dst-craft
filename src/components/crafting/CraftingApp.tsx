@@ -17,6 +17,7 @@ import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
 import { SettingsButton } from "./SettingsButton";
 import { Footer } from "./Footer";
+import { trackVisit } from "@/lib/analytics";
 import {
   Sheet,
   SheetContent,
@@ -53,6 +54,11 @@ export function CraftingApp() {
     results: searchResults,
     isSearching,
   } = useSearch();
+
+  // Track visit on first load
+  useEffect(() => {
+    trackVisit();
+  }, []);
 
   // --- Slide transition ---
   const [slideDir, setSlideDir] = useState<"right" | "left" | null>(null);
