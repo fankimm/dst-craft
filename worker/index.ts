@@ -28,6 +28,20 @@ function today() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function isMobile(ua: string): boolean {
+  return /mobile|android|iphone|ipad|ipod|webos|blackberry|opera mini|iemobile/i.test(ua);
+}
+
+function parseOS(ua: string): string {
+  if (/windows/i.test(ua)) return "Windows";
+  if (/macintosh|mac os/i.test(ua)) return "macOS";
+  if (/iphone|ipad|ipod/i.test(ua)) return "iOS";
+  if (/android/i.test(ua)) return "Android";
+  if (/linux/i.test(ua)) return "Linux";
+  if (/cros/i.test(ua)) return "ChromeOS";
+  return "Other";
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const origin = request.headers.get("Origin") ?? "";
@@ -41,26 +55,34 @@ export default {
 
     // POST /track — record a visit
     if (url.pathname === "/track" && request.method === "POST") {
-      // IP from Cloudflare
       const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-      // Country from Cloudflare (no GeoIP API needed!)
       const countryCode = request.headers.get("CF-IPCountry") ?? "";
       const city = (request as any).cf?.city ?? "";
       const region = (request as any).cf?.region ?? "";
 
       const date = today();
-      const body = await request.json().catch(() => ({})) as Record<string, string>;
-      const ua = body.ua?.slice(0, 120) ?? "";
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const ua = (body.ua as string)?.slice(0, 120) ?? "";
+      const isReturn = !!body.isReturn;
+      const device = isMobile(ua) ? "mobile" : "desktop";
+      const os = parseOS(ua);
 
       const commands: string[][] = [
         ["INCR", "dst:pv:total"],
         ["INCR", `dst:pv:${date}`],
         ["PFADD", `dst:uv:${date}`, ip],
         ["PFADD", "dst:uv:total", ip],
+        // Device type & OS
+        ["HINCRBY", "dst:device", device, "1"],
+        ["HINCRBY", "dst:os", os, "1"],
       ];
 
       if (countryCode) {
         commands.push(["HINCRBY", "dst:geo:countries", countryCode, "1"]);
+      }
+
+      if (isReturn) {
+        commands.push(["INCR", "dst:return:total"]);
       }
 
       const logEntry = JSON.stringify({
@@ -70,6 +92,8 @@ export default {
         region,
         time: new Date().toISOString(),
         ua,
+        device,
+        os,
       });
       commands.push(
         ["LPUSH", "dst:visitors", logEntry],
@@ -79,6 +103,31 @@ export default {
       );
 
       await redisPipeline(env, commands);
+      return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
+    }
+
+    // POST /event — track generic events (search, pwa_install, duration)
+    if (url.pathname === "/event" && request.method === "POST") {
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const type = body.type as string;
+
+      const commands: string[][] = [];
+
+      if (type === "search") {
+        commands.push(["INCR", "dst:events:search"]);
+      } else if (type === "pwa_install") {
+        commands.push(["INCR", "dst:events:pwa_install"]);
+      } else if (type === "duration" && typeof body.value === "number") {
+        const duration = Math.min(Math.max(Math.round(body.value), 0), 3600);
+        commands.push(
+          ["LPUSH", "dst:duration:samples", `${duration}`],
+          ["LTRIM", "dst:duration:samples", "0", "999"],
+        );
+      }
+
+      if (commands.length > 0) {
+        await redisPipeline(env, commands);
+      }
       return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
     }
 
@@ -93,16 +142,23 @@ export default {
       }
 
       const commands: string[][] = [
-        ["GET", "dst:pv:total"],
-        ["PFCOUNT", "dst:uv:total"],
-        ["GET", `dst:pv:${date}`],
-        ["PFCOUNT", `dst:uv:${date}`],
-        ["HGETALL", "dst:geo:countries"],
-        ["LRANGE", "dst:visitors", "0", "49"],
+        ["GET", "dst:pv:total"],           // 0
+        ["PFCOUNT", "dst:uv:total"],       // 1
+        ["GET", `dst:pv:${date}`],         // 2
+        ["PFCOUNT", `dst:uv:${date}`],     // 3
+        ["HGETALL", "dst:geo:countries"],   // 4
+        ["LRANGE", "dst:visitors", "0", "49"], // 5
+        // New stats
+        ["HGETALL", "dst:device"],          // 6
+        ["GET", "dst:return:total"],        // 7
+        ["GET", "dst:events:search"],       // 8
+        ["GET", "dst:events:pwa_install"],  // 9
+        ["LRANGE", "dst:duration:samples", "0", "999"], // 10
+        ["HGETALL", "dst:os"],              // 11
       ];
       for (const d of dates) {
-        commands.push(["GET", `dst:pv:${d}`]);
-        commands.push(["PFCOUNT", `dst:uv:${d}`]);
+        commands.push(["GET", `dst:pv:${d}`]);     // 12 + i*2
+        commands.push(["PFCOUNT", `dst:uv:${d}`]); // 13 + i*2
       }
 
       const results = await redisPipeline(env, commands) as { result: any }[];
@@ -121,20 +177,57 @@ export default {
         try { return JSON.parse(v); } catch { return null; }
       }).filter(Boolean);
 
+      // Device stats
+      const deviceRaw = r(6) as string[] | null;
+      const device: Record<string, number> = {};
+      if (Array.isArray(deviceRaw)) {
+        for (let i = 0; i < deviceRaw.length; i += 2) {
+          device[deviceRaw[i]] = parseInt(deviceRaw[i + 1], 10) || 0;
+        }
+      }
+
+      // OS stats
+      const osRaw = r(11) as string[] | null;
+      const os: Record<string, number> = {};
+      if (Array.isArray(osRaw)) {
+        for (let i = 0; i < osRaw.length; i += 2) {
+          os[osRaw[i]] = parseInt(osRaw[i + 1], 10) || 0;
+        }
+      }
+
+      // Average duration
+      const durationRaw = r(10) as string[] | null;
+      let avgDuration = 0;
+      if (Array.isArray(durationRaw) && durationRaw.length > 0) {
+        const sum = durationRaw.reduce((acc, v) => acc + (parseInt(v, 10) || 0), 0);
+        avgDuration = Math.round(sum / durationRaw.length);
+      }
+
+      const totalPV = parseInt(r(0) ?? "0", 10) || 0;
+      const returnTotal = parseInt(r(7) ?? "0", 10) || 0;
+
       const last7Days = dates.map((d, i) => ({
         date: d,
-        pv: parseInt(r(6 + i * 2) ?? "0", 10) || 0,
-        uv: parseInt(r(6 + i * 2 + 1) ?? "0", 10) || 0,
+        pv: parseInt(r(12 + i * 2) ?? "0", 10) || 0,
+        uv: parseInt(r(12 + i * 2 + 1) ?? "0", 10) || 0,
       }));
 
       const data = {
-        totalPageViews: parseInt(r(0) ?? "0", 10) || 0,
+        totalPageViews: totalPV,
         totalUniqueVisitors: parseInt(r(1) ?? "0", 10) || 0,
         todayPageViews: parseInt(r(2) ?? "0", 10) || 0,
         todayUniqueVisitors: parseInt(r(3) ?? "0", 10) || 0,
         last7Days,
         countries,
         recentVisitors,
+        // New stats
+        device,
+        os,
+        returnVisitors: returnTotal,
+        returnRate: totalPV > 0 ? Math.round((returnTotal / totalPV) * 100) : 0,
+        avgDuration,
+        searchCount: parseInt(r(8) ?? "0", 10) || 0,
+        pwaInstalls: parseInt(r(9) ?? "0", 10) || 0,
       };
 
       return new Response(JSON.stringify(data), {

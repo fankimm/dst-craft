@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import type { CraftingItem } from "@/lib/types";
 import { searchItemsByTags } from "@/lib/crafting-data";
 import type { SearchTag } from "@/lib/crafting-data";
+import { trackEvent } from "@/lib/analytics";
 
 export type { SearchTag };
 
@@ -12,6 +13,7 @@ export function useSearch() {
   const [inputValue, setInputValue] = useState("");
   const [debouncedTexts, setDebouncedTexts] = useState<string[]>([]);
   const [results, setResults] = useState<CraftingItem[]>([]);
+  const searchTracked = useRef(false);
 
   // Include inputValue as a live preview tag for real-time filtering
   const effectiveTexts = inputValue.trim()
@@ -31,6 +33,11 @@ export function useSearch() {
       return;
     }
     setResults(searchItemsByTags(debouncedTexts));
+    // Track search usage once per session
+    if (!searchTracked.current) {
+      searchTracked.current = true;
+      trackEvent("search");
+    }
   }, [debouncedTexts.join("\0")]);
 
   const addTag = useCallback(

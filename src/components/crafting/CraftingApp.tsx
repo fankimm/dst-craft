@@ -17,7 +17,7 @@ import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
 import { SettingsButton } from "./SettingsButton";
 import { Footer } from "./Footer";
-import { trackVisit } from "@/lib/analytics";
+import { trackVisit, initDurationTracking, trackEvent } from "@/lib/analytics";
 import {
   Sheet,
   SheetContent,
@@ -55,9 +55,14 @@ export function CraftingApp() {
     isSearching,
   } = useSearch();
 
-  // Track visit on first load
+  // Track visit + duration + PWA install on first load
   useEffect(() => {
     trackVisit();
+    initDurationTracking();
+
+    const handlePWA = () => trackEvent("pwa_install");
+    window.addEventListener("appinstalled", handlePWA);
+    return () => window.removeEventListener("appinstalled", handlePWA);
   }, []);
 
   // --- Slide transition ---
