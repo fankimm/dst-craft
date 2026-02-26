@@ -16,6 +16,7 @@ import { ItemGrid } from "./ItemGrid";
 import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
 import { SettingsButton } from "./SettingsButton";
+import { Footer } from "./Footer";
 import {
   Sheet,
   SheetContent,
@@ -156,6 +157,7 @@ export function CraftingApp() {
               onSelectCategory={setCategory}
             />
           )}
+          <Footer />
         </div>
 
         {/* Desktop: fixed bottom detail panel (for search results) */}
@@ -227,6 +229,7 @@ export function CraftingApp() {
             onSelectItem={setItem}
           />
         )}
+        <Footer />
       </div>
 
       {/* Desktop: fixed bottom detail panel */}
