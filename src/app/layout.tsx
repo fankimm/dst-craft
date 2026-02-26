@@ -19,48 +19,62 @@ const SITE_URL = "https://fankimm.github.io/dst-craft";
 const BASE = process.env.NODE_ENV === "production" ? "/dst-craft" : "";
 
 export const metadata: Metadata = {
-  title: "DST Crafting Guide | Don't Starve Together 크래프팅 레시피",
+  title: "DST Crafting Guide | Don't Starve Together Crafting Recipes & 크래프팅 레시피",
   description:
-    "Don't Starve Together 크래프팅 레시피 가이드. 모든 아이템의 제작법, 재료, 제작소를 한눈에 검색하세요. Crafting recipes for all items, materials, and stations.",
+    "Complete Don't Starve Together crafting guide. Search all crafting recipes, materials, stations, and character-specific items. DST 크래프팅 레시피 가이드 — 모든 아이템의 제작법, 재료, 제작소를 한눈에 검색하세요.",
   keywords: [
     "Don't Starve Together",
     "DST",
-    "crafting",
+    "crafting guide",
+    "crafting recipes",
     "recipe",
     "guide",
+    "DST crafting",
+    "DST recipes",
+    "crafting station",
+    "DST items",
     "크래프팅",
     "레시피",
     "굶지마 투게더",
     "제작법",
     "가이드",
+    "돈스타브",
   ],
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
+    languages: {
+      "en": "/",
+      "ko": "/",
+      "ja": "/",
+      "zh-Hans": "/",
+      "zh-Hant": "/",
+      "x-default": "/",
+    },
   },
   openGraph: {
     type: "website",
     url: SITE_URL,
-    title: "DST Crafting Guide",
+    title: "DST Crafting Guide — Don't Starve Together Recipes",
     description:
-      "Don't Starve Together 크래프팅 레시피 가이드. 모든 아이템의 제작법, 재료, 제작소를 한눈에 검색하세요.",
+      "Complete Don't Starve Together crafting guide. Search all recipes, materials, stations & character-specific items. 모든 아이템의 제작법을 한눈에 검색하세요.",
     siteName: "DST Crafting Guide",
-    locale: "ko_KR",
-    alternateLocale: ["en_US", "ja_JP", "zh_CN"],
+    locale: "en_US",
+    alternateLocale: ["ko_KR", "ja_JP", "zh_CN", "zh_TW", "fr_FR", "de_DE", "es_ES", "ru_RU", "pt_BR", "pl_PL", "it_IT"],
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "DST Crafting Guide",
+        alt: "DST Crafting Guide — Don't Starve Together Recipe Database",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DST Crafting Guide",
+    title: "DST Crafting Guide — Don't Starve Together Recipes",
     description:
-      "Don't Starve Together 크래프팅 레시피 가이드. 모든 아이템의 제작법, 재료, 제작소를 검색하세요.",
+      "Complete Don't Starve Together crafting guide. Search all recipes, materials, and crafting stations.",
     images: ["/og-image.png"],
   },
   manifest: `${BASE}/manifest.json`,
@@ -93,6 +107,22 @@ const themeScript = `
     var m = document.querySelector('meta[name="theme-color"]');
     if (m) m.setAttribute('content', d ? '#09090b' : '#fafafa');
   } catch(e) {}
+  try {
+    var s = localStorage.getItem('dst-locale');
+    var l = s || navigator.language || 'en';
+    var lang = l.toLowerCase().startsWith('ko') ? 'ko'
+      : l.toLowerCase().startsWith('ja') ? 'ja'
+      : l.toLowerCase().startsWith('zh') ? 'zh'
+      : l.toLowerCase().startsWith('fr') ? 'fr'
+      : l.toLowerCase().startsWith('de') ? 'de'
+      : l.toLowerCase().startsWith('es') ? 'es'
+      : l.toLowerCase().startsWith('ru') ? 'ru'
+      : l.toLowerCase().startsWith('pt') ? 'pt'
+      : l.toLowerCase().startsWith('pl') ? 'pl'
+      : l.toLowerCase().startsWith('it') ? 'it'
+      : 'en';
+    document.documentElement.lang = lang;
+  } catch(e) {}
 })();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
@@ -107,7 +137,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
@@ -117,13 +147,52 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebApplication",
               name: "DST Crafting Guide",
+              alternateName: "DST 크래프팅 가이드",
               url: SITE_URL,
               description:
-                "Don't Starve Together crafting recipe guide with all items, materials, and stations.",
+                "Complete Don't Starve Together crafting guide. Search all crafting recipes, materials, stations, and character-specific items.",
               applicationCategory: "GameApplication",
               operatingSystem: "All",
               offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-              inLanguage: ["ko", "en", "ja", "zh-CN", "zh-TW", "fr", "de", "it", "pl", "pt-BR", "ru", "es"],
+              inLanguage: ["en", "ko", "ja", "zh-CN", "zh-TW", "fr", "de", "it", "pl", "pt-BR", "ru", "es"],
+              availableLanguage: [
+                { "@type": "Language", name: "English", alternateName: "en" },
+                { "@type": "Language", name: "Korean", alternateName: "ko" },
+                { "@type": "Language", name: "Japanese", alternateName: "ja" },
+                { "@type": "Language", name: "Chinese (Simplified)", alternateName: "zh-CN" },
+                { "@type": "Language", name: "Chinese (Traditional)", alternateName: "zh-TW" },
+                { "@type": "Language", name: "French", alternateName: "fr" },
+                { "@type": "Language", name: "German", alternateName: "de" },
+                { "@type": "Language", name: "Spanish", alternateName: "es" },
+                { "@type": "Language", name: "Russian", alternateName: "ru" },
+              ],
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "What is DST Crafting Guide?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "DST Crafting Guide is a free web app that provides a complete database of all crafting recipes in Don't Starve Together, including materials, crafting stations, and character-specific items.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "How do I search for crafting recipes in Don't Starve Together?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Use the search bar to find any item by name. You can filter by category, crafting station, or character-specific recipes. The guide supports 13 languages including English, Korean, Japanese, and Chinese.",
+                  },
+                },
+              ],
             }),
           }}
         />
