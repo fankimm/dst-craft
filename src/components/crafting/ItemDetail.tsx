@@ -6,52 +6,37 @@ import { MaterialSlot } from "./MaterialSlot";
 import { getCategoryById, getCharacterById } from "@/lib/crafting-data";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
-import { t, itemName, itemAltName, itemDesc, categoryName, characterName } from "@/lib/i18n";
-import type { TranslationKey } from "@/lib/i18n";
+import { t, itemName, itemAltName, itemDesc, categoryName, characterName, stationName } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
 
-const stationKeys: Record<CraftingStation, TranslationKey> = {
-  none: "station_none",
-  science_1: "station_science_1",
-  science_2: "station_science_2",
-  magic_1: "station_magic_1",
-  magic_2: "station_magic_2",
-  ancient: "station_ancient",
-  celestial: "station_celestial",
-  think_tank: "station_think_tank",
-  cartography: "station_cartography",
-  tackle_station: "station_tackle_station",
-  potter_wheel: "station_potter_wheel",
-  bookstation: "station_bookstation",
-  portableblender: "station_portableblender",
-  lunar_forge: "station_lunar_forge",
-  shadow_forge: "station_shadow_forge",
-  carpentry_station: "station_carpentry_station",
-  turfcraftingstation: "station_turfcraftingstation",
-  critter_lab: "station_critter_lab",
-  character: "station_character",
+// Use actual item images for station badges
+const stationImages: Record<CraftingStation, string | null> = {
+  none: null,
+  science_1: "items/Science_Machine.png",
+  science_2: "items/Alchemy_Engine.png",
+  magic_1: "items/Prestihatitator.png",
+  magic_2: "items/Shadow_Manipulator.png",
+  ancient: "items/Ancient_Pseudoscience_Station.png",
+  celestial: "items/Celestial_Altar.png",
+  think_tank: "items/Think_Tank.png",
+  cartography: "items/Cartography_Desk.png",
+  tackle_station: "items/Tackle_Receptacle.png",
+  potter_wheel: "items/Potter's_Wheel.png",
+  bookstation: "items/Bookcase.png",
+  portableblender: "items/Portable_Grinding_Mill.png",
+  lunar_forge: "category-icons/magic.png",
+  shadow_forge: "category-icons/magic.png",
+  carpentry_station: "items/Carpentry_Station.png",
+  turfcraftingstation: "items/Turfcraftingstation.png",
+  critter_lab: "category-icons/decorations.png",
+  character: null,
 };
 
-const stationIcons: Record<CraftingStation, string | null> = {
-  none: null,
-  science_1: "prototypers",
-  science_2: "prototypers",
-  magic_1: "magic",
-  magic_2: "magic",
-  ancient: "magic",
-  celestial: "magic",
-  think_tank: "prototypers",
-  cartography: "tools",
-  tackle_station: "fishing",
-  potter_wheel: "tools",
-  bookstation: "magic",
-  portableblender: "cooking",
-  lunar_forge: "magic",
-  shadow_forge: "magic",
-  carpentry_station: "tools",
-  turfcraftingstation: "decorations",
-  critter_lab: "decorations",
-  character: "character",
+// Higher-tier stations that can also craft items of the base station
+const stationUpgrades: Partial<Record<CraftingStation, CraftingStation[]>> = {
+  science_1: ["science_2"],
+  magic_1: ["magic_2"],
 };
 
 interface ItemDetailProps {
@@ -59,9 +44,10 @@ interface ItemDetailProps {
   onMaterialClick?: (item: CraftingItem) => void;
   onCategoryClick?: (categoryId: CategoryId) => void;
   onCharacterClick?: (characterId: string) => void;
+  onStationClick?: (stationLabel: string) => void;
 }
 
-export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick }: ItemDetailProps) {
+export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick }: ItemDetailProps) {
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
 
@@ -110,24 +96,31 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
 
         {/* Badges: station, character, categories */}
         <div className="flex items-center gap-2 flex-wrap">
-          {/* Station badge (hidden for character-only items since character badge conveys this) */}
-          {!item.characterOnly && (
-            <Badge
-              variant="secondary"
-              className="text-xs gap-1 pl-1 pr-2 py-1 h-7 bg-surface-hover text-foreground/80 border-border"
-            >
-              {stationIcons[item.station] ? (
-                <img
-                  src={assetPath(`/images/category-icons/${stationIcons[item.station]}.png`)}
-                  alt=""
-                  className="size-5 object-contain"
-                />
-              ) : (
-                <span className="size-5" />
-              )}
-              {t(resolvedLocale, stationKeys[item.station])}
-            </Badge>
-          )}
+          {/* Station badges (hidden for character-only items since character badge conveys this) */}
+          {!item.characterOnly && [item.station, ...(stationUpgrades[item.station] ?? [])].map((station) => {
+            const label = stationName(station, resolvedLocale as Locale);
+            const clickable = !!onStationClick;
+            return (
+              <Badge
+                key={station}
+                variant="secondary"
+                className={`text-xs gap-1 pl-1 pr-2 py-1 h-7 bg-surface-hover text-foreground/80 border-border ${clickable ? "cursor-pointer hover:border-primary hover:text-primary transition-colors" : ""}`}
+                onClick={clickable ? () => onStationClick(label) : undefined}
+                role={clickable ? "button" : undefined}
+              >
+                {stationImages[station] ? (
+                  <img
+                    src={assetPath(`/images/${stationImages[station]}`)}
+                    alt=""
+                    className="size-5 object-contain"
+                  />
+                ) : (
+                  <span className="size-5" />
+                )}
+                {label}
+              </Badge>
+            );
+          })}
           {/* Character badge (clickable) */}
           {item.characterOnly && (() => {
             const char = getCharacterById(item.characterOnly);

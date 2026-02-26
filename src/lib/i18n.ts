@@ -1,6 +1,7 @@
-import type { CraftingItem, Material, Category, Character } from "@/lib/types";
+import type { CraftingItem, CraftingStation, Material, Category, Character } from "@/lib/types";
 import { ko } from "@/data/locales/ko";
 import type { LocaleData } from "@/data/locales/types";
+import { allItems } from "@/data/items";
 
 export type Locale = "ko" | "en";
 export type LocaleSetting = Locale | "system";
@@ -25,11 +26,11 @@ const translations = {
     station_none: "손 제작",
     station_science_1: "과학 기계",
     station_science_2: "연금술 엔진",
-    station_magic_1: "프레스티해티테이터",
+    station_magic_1: "요술 모자",
     station_magic_2: "그림자 조종기",
     station_ancient: "고대",
     station_celestial: "천상",
-    station_think_tank: "씽크 탱크",
+    station_think_tank: "싱크 탱크",
     station_cartography: "지도 제작대",
     station_tackle_station: "낚시 도구 제작대",
     station_potter_wheel: "도자기 물레",
@@ -124,4 +125,51 @@ export function detectLocale(): Locale {
   const lang = navigator.language.toLowerCase();
   if (lang.startsWith("ko")) return "ko";
   return "en";
+}
+
+// --- Station name: derived from item name (single source of truth) ---
+
+/** Maps CraftingStation → item ID for stations that have a corresponding item */
+const stationItemId: Partial<Record<CraftingStation, string>> = {
+  science_1: "researchlab",
+  science_2: "researchlab2",
+  magic_1: "researchlab4",
+  magic_2: "researchlab3",
+  think_tank: "seafaring_prototyper",
+  cartography: "cartographydesk",
+  tackle_station: "tacklestation",
+  bookstation: "bookstation",
+  carpentry_station: "carpentry_station",
+  turfcraftingstation: "turfcraftingstation",
+};
+
+// Lazy-built English name lookup (from items.ts)
+let _itemEnNames: Map<string, string> | null = null;
+function getItemEnName(itemId: string): string | undefined {
+  if (!_itemEnNames) {
+    _itemEnNames = new Map(allItems.map((i) => [i.id, i.name]));
+  }
+  return _itemEnNames.get(itemId);
+}
+
+/**
+ * Get localized station name.
+ * Priority: locale stations section → item name (for stations with items) → English fallback.
+ */
+export function stationName(station: CraftingStation, locale: Locale): string {
+  // 1. Check locale stations section (ko.ts stations)
+  const stationLabel = locales[locale]?.stations?.[station]?.name;
+  if (stationLabel) return stationLabel;
+
+  // 2. Derive from item name (for stations that have a corresponding item)
+  const itemId = stationItemId[station];
+  if (itemId) {
+    const localeName = locales[locale]?.items[itemId]?.name;
+    if (localeName) return localeName;
+    return getItemEnName(itemId) ?? station;
+  }
+
+  // 3. English fallback
+  const key = `station_${station}` as TranslationKey;
+  return translations[locale][key] ?? station;
 }

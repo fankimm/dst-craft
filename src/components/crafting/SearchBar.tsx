@@ -16,6 +16,8 @@ const tagStyles = {
     "border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700/60 dark:bg-amber-950/40 dark:text-amber-300",
   category:
     "border-blue-300 bg-blue-50 text-blue-800 dark:border-blue-700/60 dark:bg-blue-950/40 dark:text-blue-300",
+  station:
+    "border-violet-300 bg-violet-50 text-violet-800 dark:border-violet-700/60 dark:bg-violet-950/40 dark:text-violet-300",
   material:
     "border-green-300 bg-green-50 text-green-800 dark:border-green-700/60 dark:bg-green-950/40 dark:text-green-300",
   text: "bg-primary/10 text-primary border-primary/20",
@@ -24,6 +26,7 @@ const tagStyles = {
 const tagHoverStyles = {
   character: "hover:bg-amber-200 dark:hover:bg-amber-800/50",
   category: "hover:bg-blue-200 dark:hover:bg-blue-800/50",
+  station: "hover:bg-violet-200 dark:hover:bg-violet-800/50",
   material: "hover:bg-green-200 dark:hover:bg-green-800/50",
   text: "hover:bg-primary/20",
 } as const;
@@ -31,6 +34,7 @@ const tagHoverStyles = {
 const suggestionDotStyles = {
   character: "bg-amber-500",
   category: "bg-blue-500",
+  station: "bg-violet-500",
   material: "bg-green-500",
   text: "bg-muted-foreground",
 } as const;
@@ -190,7 +194,9 @@ export function SearchBar({
                     ? "캐릭터"
                     : s.type === "category"
                       ? "카테고리"
-                      : "재료"}
+                      : s.type === "station"
+                        ? "제작소"
+                        : "재료"}
                 </span>
               </button>
             ))}

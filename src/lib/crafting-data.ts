@@ -1,9 +1,10 @@
-import type { CategoryId, CraftingItem, Material, Category, Character } from "@/lib/types";
+import type { CategoryId, CraftingStation, CraftingItem, Material, Category, Character } from "@/lib/types";
 import { categories } from "@/data/categories";
 import { characters } from "@/data/characters";
 import { materials } from "@/data/materials";
 import { allItems } from "@/data/items";
 import { ko } from "@/data/locales/ko";
+import { stationName } from "@/lib/i18n";
 
 export function getItemsByCategory(categoryId: CategoryId): CraftingItem[] {
   return allItems
@@ -37,12 +38,32 @@ function getMaterialNameMap(): Map<string, string[]> {
   return _materialNameMap;
 }
 
+// Build station name lookup for search (lazy-initialized)
+let _stationNameMap: Map<CraftingStation, string[]> | null = null;
+function getStationNameMap(): Map<CraftingStation, string[]> {
+  if (_stationNameMap) return _stationNameMap;
+  _stationNameMap = new Map();
+  const stationIds = [...new Set(allItems.map((i) => i.station))].filter(
+    (s) => s !== "none" && s !== "character"
+  ) as CraftingStation[];
+  for (const id of stationIds) {
+    const names = new Set<string>();
+    names.add(stationName(id, "en").toLowerCase());
+    names.add(stationName(id, "ko").toLowerCase());
+    _stationNameMap.set(id, [...names]);
+  }
+  return _stationNameMap;
+}
+
 function itemMatchesQuery(item: CraftingItem, lowerQuery: string, matNameMap: Map<string, string[]>): boolean {
   // Check item name (en + ko)
   if (item.name.toLowerCase().includes(lowerQuery)) return true;
   if (ko.items[item.id]?.name?.toLowerCase().includes(lowerQuery)) return true;
   // Check description
   if (item.description.toLowerCase().includes(lowerQuery)) return true;
+  // Check station name
+  const stationNames = getStationNameMap().get(item.station);
+  if (stationNames?.some((n) => n.includes(lowerQuery))) return true;
   // Check character name
   if (item.characterOnly) {
     const char = characters.find(c => c.id === item.characterOnly);
@@ -101,7 +122,7 @@ export function getCharacterById(characterId: string): Character | undefined {
 }
 
 // --- Tag classification ---
-export type TagType = "character" | "category" | "material" | "text";
+export type TagType = "character" | "category" | "station" | "material" | "text";
 export interface SearchTag {
   text: string;
   type: TagType;
@@ -128,6 +149,13 @@ export function classifyTag(text: string): SearchTag {
       ko.categories[cat.id]?.name?.toLowerCase().includes(lower)
     ) {
       return { text, type: "category" };
+    }
+  }
+
+  // Check stations (en + ko) — partial match
+  for (const [, names] of getStationNameMap()) {
+    if (names.some((n) => n.includes(lower))) {
+      return { text, type: "station" };
     }
   }
 
@@ -184,6 +212,18 @@ export function getSuggestions(query: string): Suggestion[] {
         text: koName || cat.name,
         type: "category",
       });
+    }
+    if (results.length >= MAX_SUGGESTIONS) return results;
+  }
+
+  // Stations
+  for (const [stationId, names] of getStationNameMap()) {
+    if (names.some((n) => n.includes(lower))) {
+      const label = stationName(stationId, "ko");
+      // Avoid duplicate if station name matches a category already added
+      if (!results.some((r) => r.text === label)) {
+        results.push({ text: label, type: "station" });
+      }
     }
     if (results.length >= MAX_SUGGESTIONS) return results;
   }

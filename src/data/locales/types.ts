@@ -3,4 +3,6 @@ export interface LocaleData {
   materials: Record<string, { name?: string }>;
   categories: Record<string, { name?: string }>;
   characters: Record<string, { name?: string }>;
+  /** Station names for stations without a corresponding item (none, ancient, etc.) */
+  stations?: Record<string, { name?: string }>;
 }

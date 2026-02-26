@@ -62,7 +62,10 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // HTML/other: stale-while-revalidate
+  // Navigation: don't intercept, preserve Safari bfcache for back/forward
+  if (event.request.mode === "navigate") return;
+
+  // Other (fonts, etc.): stale-while-revalidate
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const fetchPromise = fetch(event.request)

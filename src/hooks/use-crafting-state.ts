@@ -36,9 +36,17 @@ export function useCraftingState() {
 
   // Listen to popstate (browser back/forward)
   useEffect(() => {
-    const handler = () => setUrlState(readUrlState());
-    window.addEventListener("popstate", handler);
-    return () => window.removeEventListener("popstate", handler);
+    const onPopState = () => setUrlState(readUrlState());
+    window.addEventListener("popstate", onPopState);
+    // Sync state when page is restored from bfcache (Safari back/forward)
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) setUrlState(readUrlState());
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+      window.removeEventListener("pageshow", onPageShow);
+    };
   }, []);
 
   const setCategory = useCallback((category: CategoryId) => {
