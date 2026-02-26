@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { CraftingItem } from "@/lib/types";
-import { searchItemsByTags, classifyTag } from "@/lib/crafting-data";
+import { searchItemsByTags } from "@/lib/crafting-data";
 import type { SearchTag } from "@/lib/crafting-data";
 
 export type { SearchTag };
@@ -38,7 +38,7 @@ export function useSearch() {
       if (typeof value === "string") {
         const trimmed = value.trim();
         if (trimmed && !tags.some((t) => t.text === trimmed)) {
-          setTags((prev) => [...prev, classifyTag(trimmed)]);
+          setTags((prev) => [...prev, { text: trimmed, type: "text" }]);
         }
       } else {
         if (!tags.some((t) => t.text === value.text)) {
