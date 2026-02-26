@@ -3,10 +3,10 @@
 import type { CraftingItem, CraftingStation, CategoryId } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { MaterialSlot } from "./MaterialSlot";
-import { getCategoryById } from "@/lib/crafting-data";
+import { getCategoryById, getCharacterById } from "@/lib/crafting-data";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
-import { t, itemName, itemAltName, itemDesc, categoryName } from "@/lib/i18n";
+import { t, itemName, itemAltName, itemDesc, categoryName, characterName } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
 
@@ -27,6 +27,7 @@ const stationKeys: Record<CraftingStation, TranslationKey> = {
   lunar_forge: "station_lunar_forge",
   shadow_forge: "station_shadow_forge",
   carpentry_station: "station_carpentry_station",
+  turfcraftingstation: "station_turfcraftingstation",
   critter_lab: "station_critter_lab",
   character: "station_character",
 };
@@ -48,6 +49,7 @@ const stationIcons: Record<CraftingStation, string | null> = {
   lunar_forge: "magic",
   shadow_forge: "magic",
   carpentry_station: "tools",
+  turfcraftingstation: "decorations",
   critter_lab: "decorations",
   character: "character",
 };
@@ -125,21 +127,26 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             </Badge>
           )}
           {/* Character badge (clickable) */}
-          {item.characterOnly && (
-            <Badge
-              variant="secondary"
-              className={`text-xs gap-1 pl-0.5 pr-2 py-1 bg-amber-900/40 text-amber-400 border-amber-700/50 ${onCharacterClick ? "cursor-pointer hover:bg-amber-900/60 transition-colors" : ""}`}
-              onClick={onCharacterClick ? () => onCharacterClick(item.characterOnly!) : undefined}
-              role={onCharacterClick ? "button" : undefined}
-            >
-              <img
-                src={assetPath(`/images/characters/${item.characterOnly}.png`)}
-                alt={item.characterOnly}
-                className="size-5 rounded-full object-cover object-[center_25%] border border-amber-700/50"
-              />
-              {item.characterOnly}
-            </Badge>
-          )}
+          {item.characterOnly && (() => {
+            const char = getCharacterById(item.characterOnly);
+            return (
+              <Badge
+                variant="outline"
+                className={`text-xs gap-1 pl-0.5 pr-2 py-1 border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700/60 dark:bg-amber-950/40 dark:text-amber-300 ${onCharacterClick ? "cursor-pointer hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors" : ""}`}
+                onClick={onCharacterClick ? () => onCharacterClick(item.characterOnly!) : undefined}
+                role={onCharacterClick ? "button" : undefined}
+              >
+                {char && (
+                  <img
+                    src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
+                    alt={item.characterOnly}
+                    className="size-5 object-contain"
+                  />
+                )}
+                {char ? characterName(char, resolvedLocale) : item.characterOnly}
+              </Badge>
+            );
+          })()}
           {/* Category badges (exclude "character" when characterOnly is set) */}
           {item.category
             .filter((catId) => !(item.characterOnly && catId === "character"))

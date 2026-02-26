@@ -15,6 +15,7 @@ export type CraftingStation =
   | "lunar_forge"
   | "shadow_forge"
   | "carpentry_station"
+  | "turfcraftingstation"
   | "critter_lab"
   | "character";
 

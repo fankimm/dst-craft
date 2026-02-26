@@ -84,7 +84,7 @@ export function CraftingApp() {
             <SettingsButton />
           </div>
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
           {isSearching ? (
             <ItemGrid
               items={searchResults}
@@ -114,15 +114,15 @@ export function CraftingApp() {
               if (!open) setItem(null);
             }}
           >
-            <SheetContent side="bottom" className="sm:hidden max-h-[70dvh] rounded-t-xl">
-              <SheetHeader className="p-0">
+            <SheetContent side="bottom" className="sm:hidden max-h-[80dvh] rounded-t-xl">
+              <SheetHeader className="p-0 shrink-0">
                 <SheetTitle className="sr-only">
                   {selectedItem
                     ? itemName(selectedItem, resolvedLocale)
                     : t(resolvedLocale, "itemDetail")}
                 </SheetTitle>
               </SheetHeader>
-              <div className="overflow-y-auto">
+              <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
                 <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} />
               </div>
             </SheetContent>
@@ -143,12 +143,12 @@ export function CraftingApp() {
       />
 
       {/* Mobile search bar */}
-      <div className="sm:hidden px-3 py-2 border-b border-border bg-background">
+      <div className="sm:hidden px-3 py-2 border-b border-border bg-background shrink-0">
         {searchBar}
       </div>
 
       {/* Scrollable content area */}
-      <div className="flex-1 min-h-0 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
         {/* Character selector (only when no character selected yet) */}
         {selectedCategory === "character" && !selectedCharacter && !isSearching ? (
           <CharacterSelector
@@ -180,15 +180,15 @@ export function CraftingApp() {
           if (!open) setItem(null);
         }}
       >
-        <SheetContent side="bottom" className="sm:hidden max-h-[70dvh] rounded-t-xl">
-          <SheetHeader className="p-0">
+        <SheetContent side="bottom" className="sm:hidden max-h-[80dvh] rounded-t-xl">
+          <SheetHeader className="p-0 shrink-0">
             <SheetTitle className="sr-only">
               {selectedItem
                 ? itemName(selectedItem, resolvedLocale)
                 : t(resolvedLocale, "itemDetail")}
             </SheetTitle>
           </SheetHeader>
-          <div className="overflow-y-auto">
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
             <ItemDetail item={selectedItem} onMaterialClick={navigateToItem} onCategoryClick={jumpToCategory} onCharacterClick={jumpToCharacter} />
           </div>
         </SheetContent>

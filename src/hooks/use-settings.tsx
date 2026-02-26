@@ -26,13 +26,13 @@ interface SettingsContextValue {
 const SettingsContext = createContext<SettingsContextValue | null>(null);
 
 // SSR-safe defaults: must match on server and client initial render
-const DEFAULT_THEME: ThemeSetting = "dark";
+const DEFAULT_THEME: ThemeSetting = "light";
 const DEFAULT_LOCALE: LocaleSetting = "system";
-const SSR_RESOLVED_THEME: ResolvedTheme = "dark";
+const SSR_RESOLVED_THEME: ResolvedTheme = "light";
 const SSR_RESOLVED_LOCALE: Locale = "ko";
 
 function getSystemTheme(): ResolvedTheme {
-  if (typeof window === "undefined") return "dark";
+  if (typeof window === "undefined") return "light";
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";

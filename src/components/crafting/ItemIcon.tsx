@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { itemName } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
+import { getCharacterById } from "@/lib/crafting-data";
 
 interface ItemIconProps {
   item: CraftingItem;
@@ -27,13 +28,16 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
           : "border-border hover:border-ring"
       )}
     >
-      {item.characterOnly && (
-        <img
-          src={assetPath(`/images/characters/${item.characterOnly}.png`)}
-          alt={item.characterOnly}
-          className="absolute top-1 right-1 size-5 sm:size-6 rounded-full border border-border bg-surface object-cover object-[center_25%]"
-        />
-      )}
+      {item.characterOnly && (() => {
+        const char = getCharacterById(item.characterOnly);
+        return char ? (
+          <img
+            src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
+            alt={item.characterOnly}
+            className="absolute top-1 right-1 size-5 sm:size-6 object-contain"
+          />
+        ) : null;
+      })()}
       {imgError ? (
         <div className="flex items-center justify-center size-12 sm:size-14">
           <span className="text-xs text-muted-foreground text-center leading-tight">
