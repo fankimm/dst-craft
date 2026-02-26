@@ -15,9 +15,53 @@ const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://fankimm.github.io/dst-craft";
+
 export const metadata: Metadata = {
-  title: "DST Crafting Guide",
-  description: "Don't Starve Together Crafting Recipe Guide",
+  title: "DST Crafting Guide | Don't Starve Together 크래프팅 레시피",
+  description:
+    "Don't Starve Together 크래프팅 레시피 가이드. 모든 아이템의 제작법, 재료, 제작소를 한눈에 검색하세요. Crafting recipes for all items, materials, and stations.",
+  keywords: [
+    "Don't Starve Together",
+    "DST",
+    "crafting",
+    "recipe",
+    "guide",
+    "크래프팅",
+    "레시피",
+    "굶지마 투게더",
+    "제작법",
+    "가이드",
+  ],
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    title: "DST Crafting Guide",
+    description:
+      "Don't Starve Together 크래프팅 레시피 가이드. 모든 아이템의 제작법, 재료, 제작소를 한눈에 검색하세요.",
+    siteName: "DST Crafting Guide",
+    locale: "ko_KR",
+    alternateLocale: ["en_US", "ja_JP", "zh_CN"],
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "DST Crafting Guide",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DST Crafting Guide",
+    description:
+      "Don't Starve Together 크래프팅 레시피 가이드. 모든 아이템의 제작법, 재료, 제작소를 검색하세요.",
+    images: ["/og-image.png"],
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -65,6 +109,23 @@ export default function RootLayout({
     <html lang="ko" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: "DST Crafting Guide",
+              url: SITE_URL,
+              description:
+                "Don't Starve Together crafting recipe guide with all items, materials, and stations.",
+              applicationCategory: "GameApplication",
+              operatingSystem: "All",
+              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+              inLanguage: ["ko", "en", "ja", "zh-CN", "zh-TW", "fr", "de", "it", "pl", "pt-BR", "ru", "es"],
+            }),
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased`}

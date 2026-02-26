@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fankimm.github.io/dst-craft/sitemap.xml
