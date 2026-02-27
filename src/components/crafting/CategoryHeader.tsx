@@ -4,7 +4,6 @@ import type { Category, Character } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
 import { t } from "@/lib/i18n";
-import { SettingsButton } from "./SettingsButton";
 import { Breadcrumb } from "./Breadcrumb";
 import type { ReactNode } from "react";
 
@@ -34,7 +33,7 @@ export function CategoryHeader({
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-4 border-b border-border bg-background/80 px-4 py-2.5",
+        "border-b border-border bg-background/80 px-4 py-2.5 space-y-2",
         className
       )}
     >
@@ -49,10 +48,7 @@ export function CategoryHeader({
           onCategoryClick={onCategoryClick}
         />
       </div>
-      <div className="flex items-center gap-2 shrink-0">
-        <div className="hidden sm:block w-56">{searchBar}</div>
-        <SettingsButton />
-      </div>
+      {searchBar}
     </div>
   );
 }

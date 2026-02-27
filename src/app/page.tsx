@@ -1,5 +1,5 @@
-import { CraftingApp } from "@/components/crafting/CraftingApp";
+import { AppShell } from "@/components/AppShell";
 
 export default function Home() {
-  return <CraftingApp />;
+  return <AppShell />;
 }

@@ -180,7 +180,7 @@ export function SearchBar({
 
         {/* Suggestions dropdown */}
         {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute top-full left-0 right-0 z-50 mt-1 rounded-md border border-border bg-popover shadow-md overflow-hidden">
+          <div className="absolute top-full left-0 right-0 z-50 mt-1 rounded-md border border-border bg-popover shadow-md overflow-y-auto max-h-64">
             {suggestions.map((s, i) => (
               <button
                 key={`${s.type}-${s.text}`}

@@ -5,4 +5,6 @@ export interface LocaleData {
   characters: Record<string, { name?: string }>;
   /** Station names for stations without a corresponding item (none, ancient, etc.) */
   stations?: Record<string, { name?: string }>;
+  /** Cooking recipe names */
+  foods?: Record<string, { name?: string }>;
 }

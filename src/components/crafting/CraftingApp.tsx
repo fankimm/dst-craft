@@ -16,7 +16,6 @@ import { SearchBar } from "./SearchBar";
 import { ItemGrid } from "./ItemGrid";
 import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
-import { SettingsButton } from "./SettingsButton";
 import { Footer } from "./Footer";
 import { X } from "lucide-react";
 import { trackVisit, initDurationTracking, trackEvent } from "@/lib/analytics";
@@ -181,7 +180,7 @@ export function CraftingApp() {
   // Category grid view (initial state - no category selected)
   if (showCategoryGrid) {
     return (
-      <div className={`flex flex-col h-dvh bg-background text-foreground overflow-hidden ${slideClass}`}>
+      <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
         <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2 min-w-0">
@@ -195,7 +194,6 @@ export function CraftingApp() {
                 <Breadcrumb onHomeClick={handleGoHome} />
               )}
             </div>
-            <SettingsButton />
           </div>
           {searchBar}
         </div>
@@ -224,7 +222,7 @@ export function CraftingApp() {
 
   // Item list view (after category selection or searching)
   return (
-    <div className={`flex flex-col h-dvh bg-background text-foreground overflow-hidden ${slideClass}`}>
+    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
       {/* Header */}
       <CategoryHeader
         category={isSearching ? undefined : currentCategory}
@@ -235,11 +233,6 @@ export function CraftingApp() {
         onHomeClick={handleGoHome}
         onCategoryClick={selectedCharacter ? goToCategory : undefined}
       />
-
-      {/* Mobile search bar */}
-      <div className="sm:hidden px-3 py-2 border-b border-border bg-background shrink-0">
-        {searchBar}
-      </div>
 
       {/* Scrollable content area */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">

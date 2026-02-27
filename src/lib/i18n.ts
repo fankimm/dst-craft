@@ -47,6 +47,25 @@ const translations = {
     station_turfcraftingstation: "땅다지개",
     station_critter_lab: "동물 친구",
     station_character: "생존자 아이템",
+    tab_crafting: "제작",
+    tab_cooking: "요리",
+    tab_cookpot: "요리솥",
+    tab_settings: "설정",
+    cooking_all: "전체",
+    cooking_cookpot: "요리솥",
+    cooking_portablecookpot: "휴대용 요리솥",
+    cooking_health: "체력",
+    cooking_hunger: "허기",
+    cooking_sanity: "정신력",
+    cooking_perish: "유통기한",
+    cooking_cooktime: "조리시간",
+    cooking_days: "일",
+    cooking_seconds: "초",
+    cooking_ingredients: "추천 재료",
+    cooking_warly_exclusive: "왈리 전용",
+    cooking_no_perish: "썩지 않음",
+    cooking_effect: "특수 효과",
+    cooking_requirements: "조리법",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -83,6 +102,25 @@ const translations = {
     station_turfcraftingstation: "Turf Crafting Station",
     station_critter_lab: "Rock Den",
     station_character: "Character Specific",
+    tab_crafting: "Crafting",
+    tab_cooking: "Cooking",
+    tab_cookpot: "Crock Pot",
+    tab_settings: "Settings",
+    cooking_all: "All",
+    cooking_cookpot: "Crock Pot",
+    cooking_portablecookpot: "Portable Crock Pot",
+    cooking_health: "Health",
+    cooking_hunger: "Hunger",
+    cooking_sanity: "Sanity",
+    cooking_perish: "Perish",
+    cooking_cooktime: "Cook Time",
+    cooking_days: "d",
+    cooking_seconds: "s",
+    cooking_ingredients: "Ingredients",
+    cooking_warly_exclusive: "Warly Exclusive",
+    cooking_no_perish: "Never",
+    cooking_effect: "Special Effect",
+    cooking_requirements: "Requirements",
   },
 } as const;
 
@@ -139,6 +177,10 @@ export function categoryName(cat: Pick<Category, "id" | "name">, locale: string)
 
 export function characterName(char: Pick<Character, "id" | "name">, locale: string): string {
   return locales[locale]?.characters[char.id]?.name ?? char.name;
+}
+
+export function foodName(food: { id: string; name: string }, locale: string): string {
+  return locales[locale]?.foods?.[food.id]?.name ?? food.name;
 }
 
 /** Get the "other language" name for display (e.g. show English when locale is Korean) */

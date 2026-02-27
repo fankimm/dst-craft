@@ -85,12 +85,17 @@ function getStationNameMap(): Map<CraftingStation, string[]> {
   return _stationNameMap;
 }
 
-function itemMatchesQuery(item: CraftingItem, lowerQuery: string, matNameMap: Map<string, string[]>): boolean {
-  // Check item name (English + all locales)
+function itemNameMatches(item: CraftingItem, lowerQuery: string): boolean {
   if (item.name.toLowerCase().includes(lowerQuery)) return true;
   for (const localeData of Object.values(allLocales)) {
     if (localeData.items[item.id]?.name?.toLowerCase().includes(lowerQuery)) return true;
   }
+  return false;
+}
+
+function itemMatchesQuery(item: CraftingItem, lowerQuery: string, matNameMap: Map<string, string[]>): boolean {
+  // Check item name (English + all locales)
+  if (itemNameMatches(item, lowerQuery)) return true;
   // Check description (English only — locale descriptions are for display, not search)
   if (item.description.toLowerCase().includes(lowerQuery)) return true;
   // Check station name (all locales already in the map)
@@ -137,9 +142,16 @@ export function searchItemsByTags(tags: string[]): CraftingItem[] {
   const lowerTags = tags.map(t => t.toLowerCase().trim()).filter(Boolean);
   if (lowerTags.length === 0) return [];
   const matNameMap = getMaterialNameMap();
-  return allItems.filter(item =>
+  const matched = allItems.filter(item =>
     lowerTags.every(tag => itemMatchesQuery(item, tag, matNameMap))
   );
+  // Sort: items whose name matches come first
+  matched.sort((a, b) => {
+    const aName = lowerTags.some(tag => itemNameMatches(a, tag)) ? 0 : 1;
+    const bName = lowerTags.some(tag => itemNameMatches(b, tag)) ? 0 : 1;
+    return aName - bName;
+  });
+  return matched;
 }
 
 export function getCharacterItems(characterId: string): CraftingItem[] {
@@ -222,7 +234,7 @@ export interface Suggestion {
   image?: string;
 }
 
-const MAX_SUGGESTIONS = 6;
+const MAX_SUGGESTIONS = Infinity;
 
 export function getSuggestions(query: string, locale: string = "ko"): Suggestion[] {
   const lower = query.toLowerCase().trim();
@@ -275,6 +287,20 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
     if (results.length >= limit) return results;
   }
 
+  // Materials (before items — small focused set, high relevance)
+  const matNameMap = getMaterialNameMap();
+  for (const mat of materials) {
+    const mNames = matNameMap.get(mat.id) || [];
+    if (mNames.some((n) => n.includes(lower))) {
+      results.push({
+        text: materialName(mat, locale),
+        type: "material",
+        image: `game-items/${mat.image}`,
+      });
+    }
+    if (results.length >= limit) return results;
+  }
+
   // Items
   for (const item of allItems) {
     let matched = item.name.toLowerCase().includes(lower);
@@ -307,20 +333,6 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
           image: stationImages[stationId] ?? undefined,
         });
       }
-    }
-    if (results.length >= limit) return results;
-  }
-
-  // Materials
-  const matNameMap = getMaterialNameMap();
-  for (const mat of materials) {
-    const mNames = matNameMap.get(mat.id) || [];
-    if (mNames.some((n) => n.includes(lower))) {
-      results.push({
-        text: materialName(mat, locale),
-        type: "material",
-        image: `game-items/${mat.image}`,
-      });
     }
     if (results.length >= limit) return results;
   }
