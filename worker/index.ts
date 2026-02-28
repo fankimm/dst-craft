@@ -33,9 +33,9 @@ function isMobile(ua: string): boolean {
 }
 
 function parseOS(ua: string): string {
+  if (/iphone|ipad|ipod/i.test(ua)) return "iOS";
   if (/windows/i.test(ua)) return "Windows";
   if (/macintosh|mac os/i.test(ua)) return "macOS";
-  if (/iphone|ipad|ipod/i.test(ua)) return "iOS";
   if (/android/i.test(ua)) return "Android";
   if (/linux/i.test(ua)) return "Linux";
   if (/cros/i.test(ua)) return "ChromeOS";
