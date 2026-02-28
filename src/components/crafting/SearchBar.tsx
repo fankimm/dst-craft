@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Search, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
 import { t } from "@/lib/i18n";
@@ -10,7 +8,8 @@ import type { Locale } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
 import { getSuggestions } from "@/lib/crafting-data";
 import type { SearchTag } from "@/hooks/use-search";
-import type { Suggestion, TagType } from "@/lib/crafting-data";
+import type { TagType } from "@/lib/crafting-data";
+import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
 
 const typeLabels: Record<string, Record<TagType, string>> = {
   ko: { character: "캐릭터", category: "카테고리", station: "제작소", material: "재료", item: "아이템", text: "텍스트" },
@@ -48,14 +47,14 @@ const tagHoverStyles = {
   text: "hover:bg-[#e4ddd0] dark:hover:bg-[#3e3c30]/60",
 } as const;
 
-const suggestionDotStyles = {
+const suggestionDotStyles: Record<TagType, string> = {
   character: "bg-[#c9a865]",
   category: "bg-[#a08060]",
   station: "bg-[#a8584f]",
   material: "bg-[#8a8050]",
   item: "bg-[#6a8a6a]",
   text: "bg-muted-foreground",
-} as const;
+};
 
 interface SearchBarProps {
   inputValue: string;
@@ -78,146 +77,46 @@ export function SearchBar({
 }: SearchBarProps) {
   const { resolvedLocale } = useSettings();
   const hasContent = tags.length > 0 || inputValue.length > 0;
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  const suggestions =
-    inputValue.trim().length > 0 ? getSuggestions(inputValue, resolvedLocale) : [];
+  // Map crafting suggestions → SearchSuggestion
+  const suggestions: SearchSuggestion[] =
+    inputValue.trim().length > 0
+      ? getSuggestions(inputValue, resolvedLocale).map((s) => ({
+          key: `${s.type}-${s.text}`,
+          text: s.text,
+          image: s.image,
+          typeLabel: suggestionTypeLabel(s.type, resolvedLocale),
+          dotClass: !s.image ? suggestionDotStyles[s.type] : undefined,
+          data: s, // preserve original suggestion for tag creation
+        }))
+      : [];
 
-  // Close suggestions on outside click
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
-        setShowSuggestions(false);
-      }
+  const handleSelect = (s: SearchSuggestion) => {
+    const original = s.data as { text: string; type: TagType; portrait?: string; image?: string };
+    onAddTag({ text: original.text, type: original.type, portrait: original.portrait, image: original.image });
+  };
+
+  const handleSubmit = (value: string) => {
+    if (value.trim() === "d_stats") {
+      window.location.href = `${window.location.pathname.replace(/\/$/, "")}/stats`;
+      return;
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
-
-  // Reset selection when suggestions change
-  useEffect(() => {
-    setSelectedIndex(-1);
-  }, [inputValue]);
-
-  function selectSuggestion(s: Suggestion) {
-    // Pass a full SearchTag to preserve image/type from the suggestion
-    onAddTag({ text: s.text, type: s.type, portrait: s.portrait, image: s.image });
-    setShowSuggestions(false);
-    setSelectedIndex(-1);
-  }
-
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (showSuggestions && suggestions.length > 0) {
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        setSelectedIndex((prev) =>
-          prev < suggestions.length - 1 ? prev + 1 : 0
-        );
-        return;
-      }
-      if (e.key === "ArrowUp") {
-        e.preventDefault();
-        setSelectedIndex((prev) =>
-          prev > 0 ? prev - 1 : suggestions.length - 1
-        );
-        return;
-      }
-      if (e.key === "Enter" && selectedIndex >= 0) {
-        e.preventDefault();
-        selectSuggestion(suggestions[selectedIndex]);
-        return;
-      }
-      if (e.key === "Escape") {
-        setShowSuggestions(false);
-        setSelectedIndex(-1);
-        return;
-      }
-    }
-
-    if (e.key === "Enter" && inputValue.trim()) {
-      e.preventDefault();
-      if (inputValue.trim() === "d_stats") {
-        window.location.href = `${window.location.pathname.replace(/\/$/, "")}/stats`;
-        return;
-      }
-      onAddTag(inputValue);
-      setShowSuggestions(false);
-    }
-    if (e.key === "Backspace" && !inputValue && tags.length > 0) {
-      onRemoveTag(tags.length - 1);
-    }
-  }
+    onAddTag(value);
+  };
 
   return (
-    <div className={cn("flex flex-col gap-1.5", className)} ref={containerRef}>
-      <div className="relative">
-        <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          type="text"
-          placeholder={t(resolvedLocale, "searchPlaceholder")}
-          value={inputValue}
-          onChange={(e) => {
-            onInputChange(e.target.value);
-            setShowSuggestions(true);
-          }}
-          onFocus={() => setShowSuggestions(true)}
-          onKeyDown={handleKeyDown}
-          className="h-8 pl-8 pr-8 bg-surface border-input text-base sm:text-sm placeholder:text-muted-foreground"
-        />
-        {hasContent && (
-          <button
-            onClick={onClearAll}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 p-0.5 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <X className="size-3.5" />
-          </button>
-        )}
-
-        {/* Suggestions dropdown */}
-        {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute top-full left-0 right-0 z-50 mt-1 rounded-md border border-border bg-popover shadow-md overflow-y-auto max-h-64">
-            {suggestions.map((s, i) => (
-              <button
-                key={`${s.type}-${s.text}`}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  selectSuggestion(s);
-                }}
-                className={cn(
-                  "flex items-center gap-2 w-full px-2 h-8 text-sm sm:text-xs text-left transition-colors",
-                  i === selectedIndex
-                    ? "bg-accent text-accent-foreground"
-                    : "hover:bg-accent/50"
-                )}
-              >
-                {s.image ? (
-                  <img
-                    src={assetPath(`/images/${s.image}`)}
-                    alt=""
-                    className="size-5 object-contain shrink-0"
-                  />
-                ) : (
-                  <span
-                    className={cn(
-                      "size-2 rounded-full shrink-0 mx-1.5",
-                      suggestionDotStyles[s.type]
-                    )}
-                  />
-                )}
-                <span className="truncate">{s.text}</span>
-                <span className="ml-auto text-xs sm:text-[10px] text-muted-foreground shrink-0">
-                  {suggestionTypeLabel(s.type, resolvedLocale)}
-                </span>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+    <div className={cn("flex flex-col gap-1.5", className)}>
+      <SearchWithSuggestions
+        value={inputValue}
+        onChange={onInputChange}
+        suggestions={suggestions}
+        onSelect={handleSelect}
+        onSubmit={handleSubmit}
+        onBackspace={tags.length > 0 ? () => onRemoveTag(tags.length - 1) : undefined}
+        onClear={onClearAll}
+        showClear={hasContent}
+        placeholder={t(resolvedLocale, "searchPlaceholder")}
+      />
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {tags.map((tag, i) => (
@@ -225,7 +124,7 @@ export function SearchBar({
               key={i}
               className={cn(
                 "inline-flex items-center gap-1 pl-1.5 pr-2 py-1 rounded-md text-xs font-medium border h-7",
-                tagStyles[tag.type]
+                tagStyles[tag.type],
               )}
             >
               {tag.image && (
@@ -240,7 +139,7 @@ export function SearchBar({
                 onClick={() => onRemoveTag(i)}
                 className={cn(
                   "rounded-full transition-colors p-0.5 -mr-0.5",
-                  tagHoverStyles[tag.type]
+                  tagHoverStyles[tag.type],
                 )}
               >
                 <X className="size-3" />

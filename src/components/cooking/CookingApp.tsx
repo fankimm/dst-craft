@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { ItemSlot } from "../ui/ItemSlot";
+import { SearchWithSuggestions, type SearchSuggestion } from "../ui/SearchWithSuggestions";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -184,6 +185,13 @@ export function CookingApp() {
     setActiveFilter(null);
   }, []);
 
+  const handleSearchSelectRecipe = useCallback((recipe: CookingRecipe) => {
+    setSelectedCategory("all");
+    setSearchQuery("");
+    setActiveFilter(null);
+    setSelectedRecipe(recipe);
+  }, []);
+
   // Filtered recipes for selected category
   const filteredRecipes = useMemo(() => {
     let recipes = cookingRecipes;
@@ -296,7 +304,7 @@ export function CookingApp() {
         {/* Header */}
         <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
           <CookingBreadcrumb locale={resolvedLocale} onHomeClick={handleGoHome} />
-          <SearchInput value={searchQuery} onChange={setSearchQuery} locale={resolvedLocale} />
+          <CookingSearchInput value={searchQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} />
         </div>
 
         {/* Category grid */}
@@ -342,7 +350,7 @@ export function CookingApp() {
           categoryLabel={currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
           onHomeClick={handleGoHome}
         />
-        <SearchInput value={searchQuery} onChange={setSearchQuery} locale={resolvedLocale} />
+        <CookingSearchInput value={searchQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} />
       </div>
 
       {/* Filter chip */}
@@ -426,36 +434,47 @@ function CookingBreadcrumb({
 }
 
 // ---------------------------------------------------------------------------
-// Search input (simple)
+// Search input with recipe suggestions
 // ---------------------------------------------------------------------------
 
-function SearchInput({
+function CookingSearchInput({
   value,
   onChange,
   locale,
+  onSelectRecipe,
 }: {
   value: string;
   onChange: (v: string) => void;
   locale: Locale;
+  onSelectRecipe: (recipe: CookingRecipe) => void;
 }) {
+  const suggestions: SearchSuggestion[] = useMemo(() => {
+    const q = value.trim().toLowerCase();
+    if (!q) return [];
+    return cookingRecipes
+      .filter((r) => {
+        const localName = foodName(r, locale).toLowerCase();
+        const engName = r.name.toLowerCase();
+        return localName.includes(q) || engName.includes(q);
+      })
+      .slice(0, 8)
+      .map((r) => ({
+        key: r.id,
+        text: foodName(r, locale),
+        image: `game-items/${r.id}.png`,
+        typeLabel: t(locale, "tab_cooking"),
+        data: r,
+      }));
+  }, [value, locale]);
+
   return (
-    <div className="relative">
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={t(locale, "searchPlaceholder")}
-        className="w-full h-8 rounded-md border border-input bg-surface pl-3 pr-8 text-base sm:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-      />
-      {value && (
-        <button
-          onClick={() => onChange("")}
-          className="absolute right-1.5 top-1/2 -translate-y-1/2 p-0.5 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <X className="size-3.5" />
-        </button>
-      )}
-    </div>
+    <SearchWithSuggestions
+      value={value}
+      onChange={onChange}
+      suggestions={suggestions}
+      onSelect={(s) => onSelectRecipe(s.data as CookingRecipe)}
+      placeholder={t(locale, "searchPlaceholder")}
+    />
   );
 }
 
