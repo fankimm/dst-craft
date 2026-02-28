@@ -277,7 +277,7 @@ export function CookingApp() {
 
   // Filter chip component
   const filterChip = activeFilter && (
-    <div className="flex items-center gap-1.5 px-4 pt-2 pb-1">
+    <div className="flex items-center gap-1.5 px-4 py-2">
       <span className="inline-flex items-center gap-1 rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">
         {activeFilter.icon && <img src={assetPath(`/images/game-items/${activeFilter.icon}`)} alt="" className="size-4 object-contain" />}
         {activeFilter.label}
