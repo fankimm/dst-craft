@@ -28,6 +28,7 @@ interface CookingFilter {
   type: "foodType" | "station" | "effect";
   value: string;
   label: string;
+  icon?: string; // game-items image filename
 }
 
 const COOK_TIME_BASE = 40; // seconds per cookTime unit
@@ -157,14 +158,16 @@ export function CookingApp() {
     setSelectedRecipe(null);
     setSelectedCategory("all");
     setSearchQuery("");
-    setActiveFilter({ type: "foodType", value: foodType, label: foodType });
+    const ftIcons: Record<string, string> = { meat: "meat.png", veggie: "carrot.png", goodies: "honey.png", roughage: "cutlichen.png" };
+    setActiveFilter({ type: "foodType", value: foodType, label: foodType, icon: ftIcons[foodType] });
   }, []);
 
   const handleStationClick = useCallback((station: string, label: string) => {
     setSelectedRecipe(null);
     setSelectedCategory("all");
     setSearchQuery("");
-    setActiveFilter({ type: "station", value: station, label });
+    const stIcons: Record<string, string> = { cookpot: "cookpot.png", portablecookpot: "portablecookpot_item.png" };
+    setActiveFilter({ type: "station", value: station, label, icon: stIcons[station] });
   }, []);
 
   const handleEffectClick = useCallback((effect: string) => {
@@ -274,6 +277,7 @@ export function CookingApp() {
   const filterChip = activeFilter && (
     <div className="flex items-center gap-1.5 px-4 pt-2">
       <span className="inline-flex items-center gap-1 rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">
+        {activeFilter.icon && <img src={assetPath(`/images/game-items/${activeFilter.icon}`)} alt="" className="size-4 object-contain" />}
         {activeFilter.label}
         <button
           onClick={handleClearFilter}
@@ -609,8 +613,13 @@ function RecipeDetail({
         </div>
         {recipe.temperature != null && (
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">
-              {recipe.temperature > 0 ? "🔥" : "❄️"} Temp
+            <span className="inline-flex items-center gap-1 text-muted-foreground">
+              <img
+                src={assetPath(`/images/game-items/${recipe.temperature > 0 ? "campfire" : "ice"}.png`)}
+                alt=""
+                className="size-4 object-contain"
+              />
+              Temp
             </span>
             <span>
               {recipe.temperature > 0 ? "+" : ""}{recipe.temperature}°
@@ -630,7 +639,7 @@ function RecipeDetail({
       {recipe.requirements && (
         <div className="space-y-1.5">
           <span className="text-sm text-muted-foreground">{t(locale, "cooking_requirements")}</span>
-          <p className="text-sm leading-relaxed">{recipe.requirements}</p>
+          <RequirementsText text={recipe.requirements} />
         </div>
       )}
 
@@ -654,6 +663,92 @@ function RecipeDetail({
         </div>
       )}
     </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Requirements renderer — replace item names with inline icons
+// ---------------------------------------------------------------------------
+
+/** Map of item display names → game-items image filenames */
+const requirementIcons: Record<string, string> = {
+  "Asparagus": "asparagus.png",
+  "Cave Banana": "cave_banana.png",
+  "Barnacle": "barnacle.png",
+  "Berries": "berries.png",
+  "Butter": "butter.png",
+  "Butterfly Wings": "butterflywings.png",
+  "Cactus Flower": "cactus_flower.png",
+  "Cactus Flesh": "cactus_meat.png",
+  "Corn": "corn.png",
+  "Dragon Fruit": "dragonfruit.png",
+  "Drumstick": "drumstick.png",
+  "Eggplant": "eggplant.png",
+  "Fig": "fig.png",
+  "Forget-Me-Lots": "forgetmelots.png",
+  "Frog Legs": "froglegs.png",
+  "Garlic": "garlic.png",
+  "Glow Berry": "wormlight.png",
+  "Honey": "honey.png",
+  "Kelp": "kelp.png",
+  "Koalefant Trunk": "trunk_summer.png",
+  "Leafy Meat": "plantmeat.png",
+  "Lichen": "cutlichen.png",
+  "Mandrake": "mandrake.png",
+  "Moleworm": "mole.png",
+  "Monster Meat": "monstermeat.png",
+  "Moon Shroom": "moon_cap.png",
+  "Red Cap": "red_cap.png",
+  "Blue Cap": "blue_cap.png",
+  "Green Cap": "green_cap.png",
+  "Nightmare Fuel": "nightmarefuel.png",
+  "Onion": "quagmire_onion.png",
+  "Pepper": "pepper.png",
+  "Pomegranate": "pomegranate.png",
+  "Potato": "potato.png",
+  "Pumpkin": "pumpkin.png",
+  "Ripe Stone Fruit": "rock_avocado_fruit_ripe.png",
+  "Royal Jelly": "royal_jelly.png",
+  "Tallbird Egg": "tallbirdegg.png",
+  "Tomato": "tomato.png",
+  "Twigs": "twigs.png",
+  "Volt Goat Horn": "lightninggoathorn.png",
+  "Watermelon": "watermelon.png",
+  "Wobster": "wobster_sheller_land.png",
+  "Eel": "pondeel.png",
+  "Bone Shards": "boneshard.png",
+  "Acorn": "acorn.png",
+  "Durian": "durian.png",
+};
+
+/** Regex matching all known item names (longest first to avoid partial matches) */
+const reqIconPattern = new RegExp(
+  `(${Object.keys(requirementIcons).sort((a, b) => b.length - a.length).join("|")})`,
+  "g",
+);
+
+function RequirementsText({ text }: { text: string }) {
+  const parts = text.split(reqIconPattern);
+  return (
+    <span className="text-sm leading-relaxed">
+      {parts.map((part, i) => {
+        const icon = requirementIcons[part];
+        if (icon) {
+          return (
+            <span key={i} className="inline-flex items-center gap-0.5 align-middle">
+              <img
+                src={assetPath(`/images/game-items/${icon}`)}
+                alt={part}
+                title={part}
+                className="size-4 object-contain inline"
+              />
+              {part}
+            </span>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
+    </span>
   );
 }
 
@@ -682,6 +777,13 @@ function StatBox({
   );
 }
 
+const foodTypeIcons: Record<string, string> = {
+  meat: "meat.png",
+  veggie: "carrot.png",
+  goodies: "honey.png",
+  roughage: "cutlichen.png",
+};
+
 function FoodTypeBadge({ foodType, onClick }: { foodType: string; onClick?: (foodType: string) => void }) {
   const colors: Record<string, string> = {
     meat: "bg-red-500/15 text-red-600 dark:text-red-400",
@@ -691,23 +793,31 @@ function FoodTypeBadge({ foodType, onClick }: { foodType: string; onClick?: (foo
     generic: "bg-muted text-muted-foreground",
   };
 
+  const icon = foodTypeIcons[foodType];
+  const content = (
+    <>
+      {icon && <img src={assetPath(`/images/game-items/${icon}`)} alt="" className="size-3.5 object-contain" />}
+      {foodType}
+    </>
+  );
+
   if (onClick) {
     return (
       <button
         onClick={() => onClick(foodType)}
         className={cn(
-          "px-1.5 py-0.5 rounded text-[10px] font-medium capitalize cursor-pointer hover:opacity-70 transition-opacity",
+          "inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium capitalize cursor-pointer hover:opacity-70 transition-opacity",
           colors[foodType] ?? colors.generic
         )}
       >
-        {foodType}
+        {content}
       </button>
     );
   }
 
   return (
-    <span className={cn("px-1.5 py-0.5 rounded text-[10px] font-medium capitalize", colors[foodType] ?? colors.generic)}>
-      {foodType}
+    <span className={cn("inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium capitalize", colors[foodType] ?? colors.generic)}>
+      {content}
     </span>
   );
 }
