@@ -16,8 +16,8 @@ const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://fankimm.github.io/dst-craft";
-const BASE = process.env.NODE_ENV === "production" ? "/dst-craft" : "";
+// TODO: Vercel 배포 후 실제 도메인으로 교체
+const SITE_URL = "https://dst-craft.vercel.app";
 
 export const metadata: Metadata = {
   title: "Don't Craft Without Recipes | Don't Starve Together Guide & 크래프팅 레시피",
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
       "Complete Don't Starve Together crafting & cooking guide. Search all crafting recipes, crock pot recipes, and materials.",
     images: ["/og-image.png"],
   },
-  manifest: `${BASE}/manifest.json`,
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -98,11 +98,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: `${BASE}/favicon.ico`, sizes: "48x48" },
-      { url: `${BASE}/icons/icon-192.png`, sizes: "192x192", type: "image/png" },
-      { url: `${BASE}/icons/icon-512.png`, sizes: "512x512", type: "image/png" },
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: { url: `${BASE}/icons/icon-180.png`, sizes: "180x180", type: "image/png" },
+    apple: { url: "/icons/icon-180.png", sizes: "180x180", type: "image/png" },
   },
 };
 
@@ -157,7 +157,7 @@ const themeScript = `
 })();
 ${process.env.NODE_ENV === "production" ? `if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/dst-craft/sw.js');
+    navigator.serviceWorker.register('/sw.js');
   });
 }` : `if (navigator.serviceWorker) {
   navigator.serviceWorker.getRegistrations().then(function(regs) {

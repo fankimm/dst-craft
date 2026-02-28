@@ -13,13 +13,11 @@ import { cn } from "@/lib/utils";
 
 type TabId = "crafting" | "cooking" | "cookpot" | "settings";
 
-const basePath = process.env.NODE_ENV === "production" ? "/dst-craft" : "";
-
 const tabs: { id: TabId; labelKey: TranslationKey; image?: string }[] = [
-  { id: "crafting", labelKey: "tab_crafting", image: `${basePath}/images/category-icons/tools.png` },
-  { id: "cooking", labelKey: "tab_cooking", image: `${basePath}/images/category-icons/cooking.png` },
-  { id: "cookpot", labelKey: "tab_cookpot", image: `${basePath}/images/game-items/cookpot.png` },
-  { id: "settings", labelKey: "tab_settings", image: `${basePath}/images/game-items/gears.png` },
+  { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.png" },
+  { id: "cooking", labelKey: "tab_cooking", image: "/images/category-icons/cooking.png" },
+  { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
+  { id: "settings", labelKey: "tab_settings", image: "/images/game-items/gears.png" },
 ];
 
 export function AppShell() {
@@ -32,7 +30,7 @@ export function AppShell() {
       <div className="flex items-center justify-between px-4 py-1.5 bg-surface border-b border-border shrink-0">
         <div className="flex items-center gap-1.5">
           <Image
-            src={`${basePath}/icons/icon-192.png`}
+            src="/icons/icon-192.png"
             alt=""
             width={20}
             height={20}

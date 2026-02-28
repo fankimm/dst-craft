@@ -1,33 +1,33 @@
 {
-  "name": "DST 크래프팅 가이드",
-  "short_name": "DST 크래프팅",
-  "description": "Don't Starve Together 크래프팅 레시피 가이드",
-  "start_url": "/dst-craft/",
-  "scope": "/dst-craft/",
+  "name": "Don't Craft Without Recipes",
+  "short_name": "DST Craft",
+  "description": "Don't Starve Together 크래프팅·쿠킹 레시피 가이드",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#09090b",
   "theme_color": "#09090b",
   "icons": [
     {
-      "src": "/dst-craft/icons/icon-192.png",
+      "src": "/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/dst-craft/icons/icon-512.png",
+      "src": "/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/dst-craft/icons/icon-maskable-192.png",
+      "src": "/icons/icon-maskable-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/dst-craft/icons/icon-maskable-512.png",
+      "src": "/icons/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

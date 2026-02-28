@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Redirect GitHub Pages to Vercel
 
 on:
   push:
@@ -14,28 +14,48 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  deploy-redirect:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - run: npm ci
-      - run: npm run build
-        env:
-          NEXT_PUBLIC_ANALYTICS_WORKER_URL: https://dst-analytics.fankimm.workers.dev
+      - name: Create redirect page
+        run: |
+          mkdir -p _site
+          cat > _site/index.html << 'REDIRECT_EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8" />
+            <title>Redirecting…</title>
+            <meta http-equiv="refresh" content="0;url=https://dst-craft.vercel.app/" />
+            <link rel="canonical" href="https://dst-craft.vercel.app/" />
+          </head>
+          <body>
+            <p>This site has moved to <a href="https://dst-craft.vercel.app/">dst-craft.vercel.app</a>.</p>
+          </body>
+          </html>
+          REDIRECT_EOF
+          cat > _site/404.html << 'REDIRECT_EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8" />
+            <title>Redirecting…</title>
+            <meta http-equiv="refresh" content="0;url=https://dst-craft.vercel.app/" />
+            <link rel="canonical" href="https://dst-craft.vercel.app/" />
+          </head>
+          <body>
+            <p>This site has moved to <a href="https://dst-craft.vercel.app/">dst-craft.vercel.app</a>.</p>
+          </body>
+          </html>
+          REDIRECT_EOF
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: out
+          path: _site
 
       - id: deployment
         uses: actions/deploy-pages@v4

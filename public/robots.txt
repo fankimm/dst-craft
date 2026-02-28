@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fankimm.github.io/dst-craft/sitemap.xml
+Sitemap: https://dst-craft.vercel.app/sitemap.xml
