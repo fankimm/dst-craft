@@ -137,18 +137,86 @@ export function searchItems(query: string): CraftingItem[] {
   return allItems.filter(item => itemMatchesQuery(item, lowerQuery, matNameMap));
 }
 
-export function searchItemsByTags(tags: string[]): CraftingItem[] {
+/**
+ * Match an item against a single typed search tag.
+ * When type is specific (material, item, character, category, station),
+ * only the corresponding field is checked with exact-name matching.
+ * When type is "text", all fields are searched with substring matching.
+ */
+function itemMatchesTypedTag(
+  item: CraftingItem,
+  tag: SearchTag,
+  matNameMap: Map<string, string[]>,
+): boolean {
+  const q = tag.text.toLowerCase().trim();
+  if (!q) return false;
+
+  switch (tag.type) {
+    case "material":
+      // Exact match on any locale name of each material used by this item
+      for (const m of item.materials) {
+        for (const name of matNameMap.get(m.materialId) || []) {
+          if (name === q) return true;
+        }
+      }
+      return false;
+
+    case "item":
+      // Exact match on any locale name of this item
+      if (item.name.toLowerCase() === q) return true;
+      for (const localeData of Object.values(allLocales)) {
+        if (localeData.items[item.id]?.name?.toLowerCase() === q) return true;
+      }
+      return false;
+
+    case "character":
+      if (!item.characterOnly) return false;
+      {
+        const char = characters.find((c) => c.id === item.characterOnly);
+        if (!char) return false;
+        if (char.name.toLowerCase() === q) return true;
+        for (const localeData of Object.values(allLocales)) {
+          if (localeData.characters[char.id]?.name?.toLowerCase() === q) return true;
+        }
+      }
+      return false;
+
+    case "category":
+      for (const catId of item.category) {
+        const cat = categories.find((c) => c.id === catId);
+        if (cat) {
+          if (cat.name.toLowerCase() === q) return true;
+          for (const localeData of Object.values(allLocales)) {
+            if (localeData.categories[catId]?.name?.toLowerCase() === q) return true;
+          }
+        }
+      }
+      return false;
+
+    case "station": {
+      const stNames = getStationNameMap().get(item.station);
+      return stNames?.some((n) => n === q) ?? false;
+    }
+
+    case "text":
+    default:
+      // Substring search across all fields (original behavior)
+      return itemMatchesQuery(item, q, matNameMap);
+  }
+}
+
+export function searchItemsByTags(tags: SearchTag[]): CraftingItem[] {
   if (tags.length === 0) return [];
-  const lowerTags = tags.map(t => t.toLowerCase().trim()).filter(Boolean);
-  if (lowerTags.length === 0) return [];
+  const validTags = tags.filter((t) => t.text.trim());
+  if (validTags.length === 0) return [];
   const matNameMap = getMaterialNameMap();
-  const matched = allItems.filter(item =>
-    lowerTags.every(tag => itemMatchesQuery(item, tag, matNameMap))
+  const matched = allItems.filter((item) =>
+    validTags.every((tag) => itemMatchesTypedTag(item, tag, matNameMap)),
   );
   // Sort: items whose name matches come first
   matched.sort((a, b) => {
-    const aName = lowerTags.some(tag => itemNameMatches(a, tag)) ? 0 : 1;
-    const bName = lowerTags.some(tag => itemNameMatches(b, tag)) ? 0 : 1;
+    const aName = validTags.some((tag) => itemNameMatches(a, tag.text.toLowerCase().trim())) ? 0 : 1;
+    const bName = validTags.some((tag) => itemNameMatches(b, tag.text.toLowerCase().trim())) ? 0 : 1;
     return aName - bName;
   });
   return matched;

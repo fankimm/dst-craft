@@ -8,37 +8,42 @@ import { trackEvent } from "@/lib/analytics";
 
 export type { SearchTag };
 
+/** Serialize SearchTag array for useEffect dependency comparison */
+function tagKey(tags: SearchTag[]): string {
+  return tags.map((t) => `${t.type}\x01${t.text}`).join("\0");
+}
+
 export function useSearch() {
   const [tags, setTags] = useState<SearchTag[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [debouncedTexts, setDebouncedTexts] = useState<string[]>([]);
+  const [debouncedTags, setDebouncedTags] = useState<SearchTag[]>([]);
   const [results, setResults] = useState<CraftingItem[]>([]);
   const searchTracked = useRef(false);
 
-  // Include inputValue as a live preview tag for real-time filtering
-  const effectiveTexts = inputValue.trim()
-    ? [...tags.map((t) => t.text), inputValue.trim()]
-    : tags.map((t) => t.text);
+  // Include inputValue as a live-preview "text" tag for real-time filtering
+  const effectiveTags: SearchTag[] = inputValue.trim()
+    ? [...tags, { text: inputValue.trim(), type: "text" as const }]
+    : tags;
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedTexts(effectiveTexts);
+      setDebouncedTags(effectiveTags);
     }, 300);
     return () => clearTimeout(timer);
-  }, [effectiveTexts.join("\0")]);
+  }, [tagKey(effectiveTags)]);
 
   useEffect(() => {
-    if (debouncedTexts.length === 0) {
+    if (debouncedTags.length === 0) {
       setResults([]);
       return;
     }
-    setResults(searchItemsByTags(debouncedTexts));
+    setResults(searchItemsByTags(debouncedTags));
     // Track search usage once per session
     if (!searchTracked.current) {
       searchTracked.current = true;
       trackEvent("search");
     }
-  }, [debouncedTexts.join("\0")]);
+  }, [tagKey(debouncedTags)]);
 
   const addTag = useCallback(
     (value: string | SearchTag) => {
@@ -48,7 +53,7 @@ export function useSearch() {
           setTags((prev) => [...prev, { text: trimmed, type: "text" }]);
         }
       } else {
-        if (!tags.some((t) => t.text === value.text)) {
+        if (!tags.some((t) => t.text === value.text && t.type === value.type)) {
           setTags((prev) => [...prev, value]);
         }
       }
