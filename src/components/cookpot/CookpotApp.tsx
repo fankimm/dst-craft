@@ -113,28 +113,19 @@ export function CookpotApp() {
         <div className="flex flex-col min-h-full">
           {/* Cookpot + Slots area */}
           <div className="px-4 pt-4 pb-2">
-            <div className="flex items-center justify-center gap-3 sm:gap-4">
-              {/* Cookpot image with result overlay */}
-              <div className="relative flex-shrink-0">
-                {/* Swap to cookpot_full when result exists (cookpot station only) */}
+            <div className="flex items-center justify-center gap-4">
+              {/* Cookpot image — swap to cookpot_full when result exists */}
+              <div className="flex-shrink-0 flex items-center justify-center size-24 sm:size-28">
                 <img
                   src={assetPath(`/images/game-items/${firstRecipe && station === "cookpot" ? "cookpot_full.png" : stationImage}`)}
                   alt={station}
-                  className="size-20 sm:size-24 object-contain"
+                  className="max-w-full max-h-full object-contain"
                   draggable={false}
                 />
-                {/* Result recipe image overlay */}
-                {firstRecipe && firstRecipe.id !== "wetgoop" && (
-                  <img
-                    src={assetPath(`/images/game-items/${firstRecipe.id}.png`)}
-                    alt={foodName(firstRecipe, resolvedLocale)}
-                    className="absolute -top-4 left-1/2 -translate-x-1/2 size-11 sm:size-13 object-contain drop-shadow-lg"
-                  />
-                )}
               </div>
 
-              {/* Vertical slots */}
-              <div className="flex flex-col gap-1.5">
+              {/* Vertical slots + clear button */}
+              <div className="flex flex-col gap-1.5 items-start">
                 {slots.map((slot, i) => (
                   <IngredientSlot
                     key={i}
@@ -144,17 +135,15 @@ export function CookpotApp() {
                     onRemove={handleRemoveSlot}
                   />
                 ))}
-              </div>
-
-              {/* Clear button */}
-              <div className="flex-shrink-0 self-end pb-1">
+                {/* Clear button inline after slots */}
                 {filledIngredients.length > 0 && (
                   <button
                     onClick={handleClear}
-                    className="flex items-center justify-center size-8 rounded-full border border-border text-muted-foreground hover:text-foreground hover:bg-surface transition-colors"
+                    className="flex items-center gap-1 mt-0.5 px-2 py-1 rounded-full text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-surface border border-border transition-colors"
                     title={t(resolvedLocale, "cookpot_clear")}
                   >
-                    <RotateCcw className="size-3.5" />
+                    <RotateCcw className="size-3" />
+                    {t(resolvedLocale, "cookpot_clear")}
                   </button>
                 )}
               </div>
