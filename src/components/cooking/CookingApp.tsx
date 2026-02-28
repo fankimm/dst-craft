@@ -14,7 +14,8 @@ import { Footer } from "../crafting/Footer";
 // Constants
 // ---------------------------------------------------------------------------
 
-type CookingCategoryId = "all" | CookingStation;
+type RecommendCategoryId = "recommend_health" | "recommend_sanity" | "recommend_hunger";
+type CookingCategoryId = "all" | CookingStation | RecommendCategoryId;
 
 interface CookingCategory {
   id: CookingCategoryId;
@@ -23,16 +24,47 @@ interface CookingCategory {
   count: number;
 }
 
+interface CookingFilter {
+  type: "foodType" | "station" | "effect";
+  value: string;
+  label: string;
+}
+
 const COOK_TIME_BASE = 40; // seconds per cookTime unit
+
+const HEALTH_THRESHOLD = 40;
+const SANITY_THRESHOLD = 15;
+const HUNGER_THRESHOLD = 75;
 
 const cookpotCount = cookingRecipes.filter((r) => r.station === "cookpot").length;
 const portableCount = cookingRecipes.filter((r) => r.station === "portablecookpot").length;
+const healthRecommendCount = cookingRecipes.filter((r) => r.health >= HEALTH_THRESHOLD).length;
+const sanityRecommendCount = cookingRecipes.filter((r) => r.sanity >= SANITY_THRESHOLD).length;
+const hungerRecommendCount = cookingRecipes.filter((r) => r.hunger >= HUNGER_THRESHOLD).length;
 
 const cookingCategories: CookingCategory[] = [
   { id: "all", labelKey: "cooking_all", image: "category-icons/all.png", count: cookingRecipes.length },
   { id: "cookpot", labelKey: "cooking_cookpot", image: "game-items/cookpot.png", count: cookpotCount },
   { id: "portablecookpot", labelKey: "cooking_portablecookpot", image: "game-items/portablecookpot_item.png", count: portableCount },
+  { id: "recommend_health", labelKey: "cooking_recommend_health", image: "ui/health.png", count: healthRecommendCount },
+  { id: "recommend_sanity", labelKey: "cooking_recommend_sanity", image: "ui/sanity.png", count: sanityRecommendCount },
+  { id: "recommend_hunger", labelKey: "cooking_recommend_hunger", image: "ui/hunger.png", count: hungerRecommendCount },
 ];
+
+// Effect badge labels
+const effectLabels: Record<string, string> = {
+  health_regen: "HP Regen",
+  sleep_resistance: "Sleep Resist",
+  sanity_regen: "Sanity Regen",
+  beefalo_food: "Beefalo",
+  sleep: "Sleep",
+  swap_health_sanity: "HP↔Sanity",
+  electric_attack: "Electric",
+  glow: "Glow",
+  moisture_immunity: "Waterproof",
+  heat_resistance: "Heat Resist",
+  cold_resistance: "Cold Resist",
+};
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -49,6 +81,10 @@ function formatStat(value: number): string {
   return String(value);
 }
 
+function isRecommendCategory(id: CookingCategoryId): id is RecommendCategoryId {
+  return id === "recommend_health" || id === "recommend_sanity" || id === "recommend_hunger";
+}
+
 // ---------------------------------------------------------------------------
 // CookingApp
 // ---------------------------------------------------------------------------
@@ -60,6 +96,7 @@ export function CookingApp() {
   const [selectedCategory, setSelectedCategory] = useState<CookingCategoryId | null>(null);
   const [selectedRecipe, setSelectedRecipe] = useState<CookingRecipe | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<CookingFilter | null>(null);
 
   // Slide animation
   const [slideDir, setSlideDir] = useState<"right" | "left" | null>(null);
@@ -102,23 +139,87 @@ export function CookingApp() {
     setSelectedCategory(null);
     setSelectedRecipe(null);
     setSearchQuery("");
+    setActiveFilter(null);
   }, []);
 
   const handleSelectCategory = useCallback((id: CookingCategoryId) => {
     setSelectedCategory(id);
     setSearchQuery("");
+    setActiveFilter(null);
   }, []);
 
   const handleClosePanel = useCallback(() => {
     setSelectedRecipe(null);
   }, []);
 
+  // Badge click handlers — close panel, go to "all", set filter
+  const handleFoodTypeClick = useCallback((foodType: string) => {
+    setSelectedRecipe(null);
+    setSelectedCategory("all");
+    setSearchQuery("");
+    setActiveFilter({ type: "foodType", value: foodType, label: foodType });
+  }, []);
+
+  const handleStationClick = useCallback((station: string, label: string) => {
+    setSelectedRecipe(null);
+    setSelectedCategory("all");
+    setSearchQuery("");
+    setActiveFilter({ type: "station", value: station, label });
+  }, []);
+
+  const handleEffectClick = useCallback((effect: string) => {
+    setSelectedRecipe(null);
+    setSelectedCategory("all");
+    setSearchQuery("");
+    setActiveFilter({ type: "effect", value: effect, label: effectLabels[effect] ?? effect });
+  }, []);
+
+  const handleClearFilter = useCallback(() => {
+    setActiveFilter(null);
+  }, []);
+
   // Filtered recipes for selected category
   const filteredRecipes = useMemo(() => {
     let recipes = cookingRecipes;
+
+    // Category filter
     if (selectedCategory && selectedCategory !== "all") {
-      recipes = recipes.filter((r) => r.station === selectedCategory);
+      if (isRecommendCategory(selectedCategory)) {
+        switch (selectedCategory) {
+          case "recommend_health":
+            recipes = recipes.filter((r) => r.health >= HEALTH_THRESHOLD);
+            recipes = [...recipes].sort((a, b) => b.health - a.health);
+            break;
+          case "recommend_sanity":
+            recipes = recipes.filter((r) => r.sanity >= SANITY_THRESHOLD);
+            recipes = [...recipes].sort((a, b) => b.sanity - a.sanity);
+            break;
+          case "recommend_hunger":
+            recipes = recipes.filter((r) => r.hunger >= HUNGER_THRESHOLD);
+            recipes = [...recipes].sort((a, b) => b.hunger - a.hunger);
+            break;
+        }
+      } else {
+        recipes = recipes.filter((r) => r.station === selectedCategory);
+      }
     }
+
+    // Active filter from badge click
+    if (activeFilter) {
+      switch (activeFilter.type) {
+        case "foodType":
+          recipes = recipes.filter((r) => r.foodType === activeFilter.value);
+          break;
+        case "station":
+          recipes = recipes.filter((r) => r.station === activeFilter.value);
+          break;
+        case "effect":
+          recipes = recipes.filter((r) => r.specialEffect === activeFilter.value);
+          break;
+      }
+    }
+
+    // Search filter
     if (searchQuery.trim()) {
       const q = searchQuery.trim().toLowerCase();
       recipes = recipes.filter((r) => {
@@ -127,8 +228,9 @@ export function CookingApp() {
         return localName.includes(q) || engName.includes(q);
       });
     }
+
     return recipes;
-  }, [selectedCategory, searchQuery, resolvedLocale]);
+  }, [selectedCategory, activeFilter, searchQuery, resolvedLocale]);
 
   // Current category info
   const currentCat = selectedCategory
@@ -157,9 +259,30 @@ export function CookingApp() {
         >
           <X className="size-4" />
         </button>
-        <RecipeDetail recipe={panelRecipe} locale={resolvedLocale} />
+        <RecipeDetail
+          recipe={panelRecipe}
+          locale={resolvedLocale}
+          onFoodTypeClick={handleFoodTypeClick}
+          onStationClick={handleStationClick}
+          onEffectClick={handleEffectClick}
+        />
       </div>
     </>
+  );
+
+  // Filter chip component
+  const filterChip = activeFilter && (
+    <div className="flex items-center gap-1.5 px-4 pt-2">
+      <span className="inline-flex items-center gap-1 rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">
+        {activeFilter.label}
+        <button
+          onClick={handleClearFilter}
+          className="ml-0.5 rounded-full p-0.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        >
+          <X className="size-3" />
+        </button>
+      </span>
+    </div>
   );
 
   // -----------------------------------------------------------------------
@@ -219,6 +342,9 @@ export function CookingApp() {
         />
         <SearchInput value={searchQuery} onChange={setSearchQuery} locale={resolvedLocale} />
       </div>
+
+      {/* Filter chip */}
+      {filterChip}
 
       {/* Recipe grid */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
@@ -376,9 +502,15 @@ function RecipeCard({
 function RecipeDetail({
   recipe,
   locale,
+  onFoodTypeClick,
+  onStationClick,
+  onEffectClick,
 }: {
   recipe: CookingRecipe;
   locale: Locale;
+  onFoodTypeClick?: (foodType: string) => void;
+  onStationClick?: (station: string, label: string) => void;
+  onEffectClick?: (effect: string) => void;
 }) {
   const localName = foodName(recipe, locale);
   const showAltName = locale !== "en" && localName !== recipe.name;
@@ -398,12 +530,33 @@ function RecipeDetail({
           {showAltName && (
             <p className="text-sm text-muted-foreground">{recipe.name}</p>
           )}
-          <div className="flex items-center gap-2 mt-1">
-            <FoodTypeBadge foodType={recipe.foodType} />
+          <div className="flex items-center gap-2 mt-1 flex-wrap">
+            <FoodTypeBadge foodType={recipe.foodType} onClick={onFoodTypeClick} />
+            {recipe.station === "cookpot" && (
+              <button
+                onClick={() => onStationClick?.("cookpot", t(locale, "cooking_cookpot"))}
+                className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-stone-500/15 text-stone-600 dark:text-stone-400 cursor-pointer hover:opacity-70 transition-opacity inline-flex items-center gap-1"
+              >
+                <img
+                  src={assetPath("/images/game-items/cookpot.png")}
+                  alt=""
+                  className="size-3.5 object-contain"
+                />
+                {t(locale, "cooking_cookpot")}
+              </button>
+            )}
             {recipe.station === "portablecookpot" && (
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-500/15 text-amber-600 dark:text-amber-400">
+              <button
+                onClick={() => onStationClick?.("portablecookpot", t(locale, "cooking_warly_exclusive"))}
+                className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-500/15 text-amber-600 dark:text-amber-400 cursor-pointer hover:opacity-70 transition-opacity inline-flex items-center gap-1"
+              >
+                <img
+                  src={assetPath("/images/game-items/portablecookpot_item.png")}
+                  alt=""
+                  className="size-3.5 object-contain"
+                />
                 {t(locale, "cooking_warly_exclusive")}
-              </span>
+              </button>
             )}
           </div>
         </div>
@@ -462,7 +615,7 @@ function RecipeDetail({
         {recipe.specialEffect && (
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">{t(locale, "cooking_effect")}</span>
-            <EffectBadge effect={recipe.specialEffect} />
+            <EffectBadge effect={recipe.specialEffect} onClick={onEffectClick} />
           </div>
         )}
       </div>
@@ -523,7 +676,7 @@ function StatBox({
   );
 }
 
-function FoodTypeBadge({ foodType }: { foodType: string }) {
+function FoodTypeBadge({ foodType, onClick }: { foodType: string; onClick?: (foodType: string) => void }) {
   const colors: Record<string, string> = {
     meat: "bg-red-500/15 text-red-600 dark:text-red-400",
     veggie: "bg-green-500/15 text-green-600 dark:text-green-400",
@@ -532,6 +685,20 @@ function FoodTypeBadge({ foodType }: { foodType: string }) {
     generic: "bg-muted text-muted-foreground",
   };
 
+  if (onClick) {
+    return (
+      <button
+        onClick={() => onClick(foodType)}
+        className={cn(
+          "px-1.5 py-0.5 rounded text-[10px] font-medium capitalize cursor-pointer hover:opacity-70 transition-opacity",
+          colors[foodType] ?? colors.generic
+        )}
+      >
+        {foodType}
+      </button>
+    );
+  }
+
   return (
     <span className={cn("px-1.5 py-0.5 rounded text-[10px] font-medium capitalize", colors[foodType] ?? colors.generic)}>
       {foodType}
@@ -539,24 +706,23 @@ function FoodTypeBadge({ foodType }: { foodType: string }) {
   );
 }
 
-function EffectBadge({ effect }: { effect: string }) {
-  const labels: Record<string, string> = {
-    health_regen: "HP Regen",
-    sleep_resistance: "Sleep Resist",
-    sanity_regen: "Sanity Regen",
-    beefalo_food: "Beefalo",
-    sleep: "Sleep",
-    swap_health_sanity: "HP↔Sanity",
-    electric_attack: "Electric",
-    glow: "Glow",
-    moisture_immunity: "Waterproof",
-    heat_resistance: "Heat Resist",
-    cold_resistance: "Cold Resist",
-  };
+function EffectBadge({ effect, onClick }: { effect: string; onClick?: (effect: string) => void }) {
+  const label = effectLabels[effect] ?? effect;
+
+  if (onClick) {
+    return (
+      <button
+        onClick={() => onClick(effect)}
+        className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-500/15 text-blue-600 dark:text-blue-400 cursor-pointer hover:opacity-70 transition-opacity"
+      >
+        {label}
+      </button>
+    );
+  }
 
   return (
     <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-500/15 text-blue-600 dark:text-blue-400">
-      {labels[effect] ?? effect}
+      {label}
     </span>
   );
 }

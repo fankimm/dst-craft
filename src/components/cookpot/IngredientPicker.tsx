@@ -33,17 +33,16 @@ const categoryTabs: CategoryTab[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// IngredientPicker
+// IngredientPicker (inline, always visible)
 // ---------------------------------------------------------------------------
 
 interface IngredientPickerProps {
-  open: boolean;
   locale: Locale;
   onSelect: (ingredient: CookpotIngredient) => void;
-  onClose: () => void;
+  disabled?: boolean;
 }
 
-export function IngredientPicker({ open, locale, onSelect, onClose }: IngredientPickerProps) {
+export function IngredientPicker({ locale, onSelect, disabled }: IngredientPickerProps) {
   const [category, setCategory] = useState<"all" | IngredientCategory>("all");
   const [search, setSearch] = useState("");
 
@@ -69,116 +68,83 @@ export function IngredientPicker({ open, locale, onSelect, onClose }: Ingredient
   }, [category, search, locale]);
 
   const handleSelect = (ing: CookpotIngredient) => {
+    if (disabled) return;
     onSelect(ing);
-    setSearch("");
-    setCategory("all");
-  };
-
-  const handleClose = () => {
-    onClose();
-    setSearch("");
-    setCategory("all");
   };
 
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-180",
-          open ? "opacity-100" : "opacity-0 pointer-events-none",
-        )}
-        onClick={handleClose}
-      />
-
-      {/* Bottom sheet */}
-      <div
-        className={cn(
-          "fixed inset-x-0 bottom-0 z-50 rounded-t-xl border-t border-border bg-card max-h-[85dvh] flex flex-col transition-transform duration-180 ease-out",
-          open ? "translate-y-0" : "translate-y-full",
-        )}
-      >
-        {/* Header */}
-        <div className="shrink-0 px-4 pt-3 pb-2 space-y-2">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold">
-              {t(locale, "cookpot_select_ingredient")}
-            </h3>
+    <div className={cn(
+      "flex flex-col border-t border-border bg-card rounded-t-xl",
+      disabled && "opacity-50 pointer-events-none",
+    )}>
+      {/* Header: search + category tabs */}
+      <div className="shrink-0 px-4 pt-3 pb-2 space-y-2">
+        {/* Search */}
+        <div className="relative">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={t(locale, "cookpot_search_ingredients")}
+            className="w-full h-8 rounded-md border border-input bg-surface pl-3 pr-8 text-base sm:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+          />
+          {search && (
             <button
-              onClick={handleClose}
-              className="p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => setSearch("")}
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 p-0.5 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              <X className="size-4" />
+              <X className="size-3.5" />
             </button>
-          </div>
+          )}
+        </div>
 
-          {/* Search */}
-          <div className="relative">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t(locale, "cookpot_search_ingredients")}
-              className="w-full h-8 rounded-md border border-input bg-surface pl-3 pr-8 text-base sm:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-            />
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 p-0.5 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X className="size-3.5" />
-              </button>
-            )}
-          </div>
+        {/* Category tabs */}
+        <div className="flex gap-1 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
+          {categoryTabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setCategory(tab.id)}
+              className={cn(
+                "shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
+                category === tab.id
+                  ? "bg-foreground text-background"
+                  : "bg-surface border border-border text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {t(locale, tab.labelKey)}
+            </button>
+          ))}
+        </div>
+      </div>
 
-          {/* Category tabs */}
-          <div className="flex gap-1 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
-            {categoryTabs.map((tab) => (
+      {/* Ingredient grid */}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 pb-4" style={{ maxHeight: "40dvh" }}>
+        {filtered.length === 0 ? (
+          <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
+            {t(locale, "noItems")}
+          </div>
+        ) : (
+          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-1.5">
+            {filtered.map((ing) => (
               <button
-                key={tab.id}
-                onClick={() => setCategory(tab.id)}
-                className={cn(
-                  "shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
-                  category === tab.id
-                    ? "bg-foreground text-background"
-                    : "bg-surface border border-border text-muted-foreground hover:text-foreground",
-                )}
+                key={ing.id}
+                onClick={() => handleSelect(ing)}
+                className="flex flex-col items-center gap-1 rounded-lg border border-border bg-surface p-2 transition-colors active:bg-surface-hover hover:bg-surface-hover hover:border-ring"
               >
-                {t(locale, tab.labelKey)}
+                <img
+                  src={assetPath(`/images/game-items/${ingredientImage(ing)}`)}
+                  alt={ingredientName(ing, locale)}
+                  className="size-9 sm:size-10 object-contain"
+                  loading="lazy"
+                />
+                <span className="text-[10px] sm:text-xs text-foreground/80 font-medium text-center leading-tight line-clamp-2">
+                  {ingredientName(ing, locale)}
+                </span>
               </button>
             ))}
           </div>
-        </div>
-
-        {/* Ingredient grid */}
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 pb-4">
-          {filtered.length === 0 ? (
-            <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-              {t(locale, "noItems")}
-            </div>
-          ) : (
-            <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-1.5">
-              {filtered.map((ing) => (
-                <button
-                  key={ing.id}
-                  onClick={() => handleSelect(ing)}
-                  className="flex flex-col items-center gap-1 rounded-lg border border-border bg-surface p-2 transition-colors active:bg-surface-hover hover:bg-surface-hover hover:border-ring"
-                >
-                  <img
-                    src={assetPath(`/images/game-items/${ingredientImage(ing)}`)}
-                    alt={ingredientName(ing, locale)}
-                    className="size-9 sm:size-10 object-contain"
-                    loading="lazy"
-                  />
-                  <span className="text-[10px] sm:text-xs text-foreground/80 font-medium text-center leading-tight line-clamp-2">
-                    {ingredientName(ing, locale)}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        )}
       </div>
-    </>
+    </div>
   );
 }
