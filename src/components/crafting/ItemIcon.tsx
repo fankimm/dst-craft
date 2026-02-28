@@ -4,6 +4,7 @@ import type { CraftingItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
+import { useFavorites } from "@/hooks/use-favorites";
 import { itemName } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
 import { getCharacterById } from "@/lib/crafting-data";
@@ -17,6 +18,8 @@ interface ItemIconProps {
 export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const fav = isFavorite(item.id);
 
   return (
     <button
@@ -28,6 +31,15 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
           : "border-border hover:border-ring"
       )}
     >
+      {/* Favorite toggle */}
+      <div
+        onClick={(e) => { e.stopPropagation(); toggleFavorite(item.id); }}
+        className="absolute top-1 left-1 p-0.5 rounded-full transition-colors z-10 cursor-pointer"
+        role="button"
+        aria-label="favorite"
+      >
+        <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-3.5 sm:size-4", !fav && "opacity-30 grayscale")} />
+      </div>
       {item.characterOnly && (() => {
         const char = getCharacterById(item.characterOnly);
         return char ? (

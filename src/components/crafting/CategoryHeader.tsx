@@ -13,6 +13,7 @@ interface CategoryHeaderProps {
   characterId?: string | null;
   searchBar: ReactNode;
   isSearching?: boolean;
+  customLabel?: string;
   onHomeClick: () => void;
   onCategoryClick?: () => void;
   className?: string;
@@ -24,6 +25,7 @@ export function CategoryHeader({
   characterId,
   searchBar,
   isSearching,
+  customLabel,
   onHomeClick,
   onCategoryClick,
   className,
@@ -44,6 +46,7 @@ export function CategoryHeader({
           characterId={characterId}
           isSearching={isSearching}
           searchLabel={t(resolvedLocale, "searchResults")}
+          customLabel={customLabel}
           onHomeClick={onHomeClick}
           onCategoryClick={onCategoryClick}
         />

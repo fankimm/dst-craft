@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Sans_KR } from "next/font/google";
+import Script from "next/script";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SettingsProvider } from "@/hooks/use-settings";
+import { AuthProvider } from "@/hooks/use-auth";
+import { FavoritesProvider } from "@/hooks/use-favorites";
 import { APP_VERSION } from "@/lib/version";
 import "./globals.css";
 
@@ -240,8 +243,13 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased`}
       >
+        <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
         <SettingsProvider>
-          <TooltipProvider>{children}</TooltipProvider>
+          <AuthProvider>
+            <FavoritesProvider>
+              <TooltipProvider>{children}</TooltipProvider>
+            </FavoritesProvider>
+          </AuthProvider>
         </SettingsProvider>
       </body>
     </html>

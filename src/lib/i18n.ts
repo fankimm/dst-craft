@@ -92,6 +92,12 @@ const translations = {
     cookpot_category_eggs: "알",
     cookpot_category_sweeteners: "감미료",
     cookpot_category_misc: "기타",
+    favorites: "즐겨찾기",
+    favorites_login_prompt: "로그인하면 즐겨찾기가 기기 간 동기화됩니다",
+    favorites_local_warning: "로그인하지 않으면 이 브라우저에서만 저장됩니다",
+    sign_in_with_google: "Google로 로그인",
+    sign_out: "로그아웃",
+    account: "계정",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -173,6 +179,12 @@ const translations = {
     cookpot_category_eggs: "Eggs",
     cookpot_category_sweeteners: "Sweeteners",
     cookpot_category_misc: "Misc",
+    favorites: "Favorites",
+    favorites_login_prompt: "Sign in to sync favorites across devices",
+    favorites_local_warning: "Favorites will only be saved in this browser",
+    sign_in_with_google: "Sign in with Google",
+    sign_out: "Sign out",
+    account: "Account",
   },
 } as const;
 

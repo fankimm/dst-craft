@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ChevronRight, X } from "lucide-react";
 import { cookingRecipes, type CookingRecipe, type CookingStation } from "@/data/recipes";
 import { useSettings } from "@/hooks/use-settings";
+import { useFavorites } from "@/hooks/use-favorites";
 import { t, foodName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
@@ -17,7 +18,7 @@ import { SearchWithSuggestions, type SearchSuggestion } from "../ui/SearchWithSu
 // ---------------------------------------------------------------------------
 
 type RecommendCategoryId = "recommend_health" | "recommend_sanity" | "recommend_hunger";
-type CookingCategoryId = "all" | CookingStation | RecommendCategoryId;
+type CookingCategoryId = "all" | "favorites" | CookingStation | RecommendCategoryId;
 
 interface CookingCategory {
   id: CookingCategoryId;
@@ -94,6 +95,13 @@ function isRecommendCategory(id: CookingCategoryId): id is RecommendCategoryId {
 
 export function CookingApp() {
   const { resolvedLocale } = useSettings();
+  const { favorites, isFavorite, toggleFavorite } = useFavorites();
+
+  // Cooking favorites: filter recipes whose id is in favorites set
+  const cookingFavCount = useMemo(
+    () => cookingRecipes.filter((r) => favorites.has(r.id)).length,
+    [favorites],
+  );
 
   // Navigation state
   const [selectedCategory, setSelectedCategory] = useState<CookingCategoryId | null>(null);
@@ -197,7 +205,9 @@ export function CookingApp() {
     let recipes = cookingRecipes;
 
     // Category filter
-    if (selectedCategory && selectedCategory !== "all") {
+    if (selectedCategory === "favorites") {
+      recipes = recipes.filter((r) => favorites.has(r.id));
+    } else if (selectedCategory && selectedCategory !== "all") {
       if (isRecommendCategory(selectedCategory)) {
         switch (selectedCategory) {
           case "recommend_health":
@@ -244,7 +254,7 @@ export function CookingApp() {
     }
 
     return recipes;
-  }, [selectedCategory, activeFilter, searchQuery, resolvedLocale]);
+  }, [selectedCategory, activeFilter, searchQuery, resolvedLocale, favorites]);
 
   // Current category info
   const currentCat = selectedCategory
@@ -279,6 +289,8 @@ export function CookingApp() {
           onFoodTypeClick={handleFoodTypeClick}
           onStationClick={handleStationClick}
           onEffectClick={handleEffectClick}
+          isFav={isFavorite(panelRecipe.id)}
+          onToggleFav={() => toggleFavorite(panelRecipe.id)}
         />
       </div>
     </>
@@ -311,6 +323,27 @@ export function CookingApp() {
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
           <div className="flex flex-col min-h-full">
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+              {/* Favorites tile */}
+              {cookingFavCount > 0 && (
+                <button
+                  className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+                  onClick={() => handleSelectCategory("favorites")}
+                >
+                  <div className="relative flex items-center justify-center size-12 sm:size-14">
+                    <img
+                      src={assetPath("/images/ui/health.png")}
+                      alt=""
+                      className="size-10 sm:size-12 object-contain"
+                    />
+                    <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80">
+                      {cookingFavCount}
+                    </span>
+                  </div>
+                  <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
+                    {t(resolvedLocale, "favorites")}
+                  </span>
+                </button>
+              )}
               {cookingCategories.map((cat) => (
                 <button
                   key={cat.id}
@@ -347,7 +380,7 @@ export function CookingApp() {
       <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
         <CookingBreadcrumb
           locale={resolvedLocale}
-          categoryLabel={currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
+          categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
           onHomeClick={handleGoHome}
         />
         <CookingSearchInput value={searchQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} />
@@ -371,6 +404,8 @@ export function CookingApp() {
                   recipe={recipe}
                   locale={resolvedLocale}
                   onClick={() => setSelectedRecipe(recipe)}
+                  isFav={isFavorite(recipe.id)}
+                  onToggleFav={() => toggleFavorite(recipe.id)}
                 />
               ))}
             </div>
@@ -486,10 +521,14 @@ function RecipeCard({
   recipe,
   locale,
   onClick,
+  isFav,
+  onToggleFav,
 }: {
   recipe: CookingRecipe;
   locale: Locale;
   onClick: () => void;
+  isFav: boolean;
+  onToggleFav: () => void;
 }) {
   const localName = foodName(recipe, locale);
 
@@ -498,6 +537,15 @@ function RecipeCard({
       onClick={onClick}
       className="relative flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover border-border hover:border-ring"
     >
+      {/* Favorite toggle */}
+      <div
+        onClick={(e) => { e.stopPropagation(); onToggleFav(); }}
+        className="absolute top-1 left-1 p-0.5 rounded-full transition-colors z-10 cursor-pointer"
+        role="button"
+        aria-label="favorite"
+      >
+        <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-3.5 sm:size-4", !isFav && "opacity-30 grayscale")} />
+      </div>
       {recipe.station === "portablecookpot" && (
         <span className="absolute top-1 right-1 px-1 py-0.5 rounded text-[9px] font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-400 leading-none">
           W
@@ -526,12 +574,16 @@ function RecipeDetail({
   onFoodTypeClick,
   onStationClick,
   onEffectClick,
+  isFav,
+  onToggleFav,
 }: {
   recipe: CookingRecipe;
   locale: Locale;
   onFoodTypeClick?: (foodType: string) => void;
   onStationClick?: (station: string, label: string) => void;
   onEffectClick?: (effect: string) => void;
+  isFav: boolean;
+  onToggleFav: () => void;
 }) {
   const localName = foodName(recipe, locale);
   const showAltName = locale !== "en" && localName !== recipe.name;
@@ -547,7 +599,16 @@ function RecipeDetail({
           className="size-16 object-contain shrink-0"
         />
         <div className="flex-1 min-w-0 pt-1">
-          <h3 className="text-base font-semibold">{localName}</h3>
+          <div className="flex items-center gap-1.5">
+            <h3 className="text-base font-semibold">{localName}</h3>
+            <button
+              onClick={onToggleFav}
+              className="p-0.5 rounded-full transition-colors shrink-0"
+              aria-label="favorite"
+            >
+              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} />
+            </button>
+          </div>
           {showAltName && (
             <p className="text-sm text-muted-foreground">{recipe.name}</p>
           )}

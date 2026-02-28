@@ -4,3 +4,5 @@ compatibility_date = "2024-01-01"
 
 [vars]
 ALLOWED_ORIGIN = "https://dst-craft.vercel.app"
+GOOGLE_CLIENT_ID = "117734247342-u16uc0cf2tfnjjv06m952g9rv4thi7oa.apps.googleusercontent.com"
+# JWT_SECRET is set via: wrangler secret put JWT_SECRET

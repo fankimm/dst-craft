@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { CraftingApp } from "./crafting/CraftingApp";
 import { CookingApp } from "./cooking/CookingApp";
@@ -23,6 +23,17 @@ const tabs: { id: TabId; labelKey: TranslationKey; image?: string }[] = [
 export function AppShell() {
   const [activeTab, setActiveTab] = useState<TabId>("crafting");
   const { resolvedLocale } = useSettings();
+  const [toast, setToast] = useState<string | null>(null);
+
+  // Listen for local-only favorites warning
+  useEffect(() => {
+    const handler = () => {
+      setToast(t(resolvedLocale, "favorites_local_warning"));
+      setTimeout(() => setToast(null), 3000);
+    };
+    window.addEventListener("dst-fav-local-warning", handler);
+    return () => window.removeEventListener("dst-fav-local-warning", handler);
+  }, [resolvedLocale]);
 
   return (
     <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
@@ -74,6 +85,15 @@ export function AppShell() {
           <SettingsPage />
         </div>
       </div>
+
+      {/* Toast */}
+      {toast && (
+        <div className="fixed bottom-16 inset-x-0 flex justify-center z-50 pointer-events-none">
+          <div className="bg-foreground text-background text-xs font-medium px-4 py-2 rounded-full shadow-lg animate-in fade-in duration-200">
+            {toast}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

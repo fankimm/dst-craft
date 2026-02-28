@@ -3,10 +3,11 @@
 import { useMemo, useCallback, useState, useRef, useEffect } from "react";
 import { categories } from "@/data/categories";
 import { characters } from "@/data/characters";
-import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
+import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById, getItemById, stationImages } from "@/lib/crafting-data";
 import { useCraftingState } from "@/hooks/use-crafting-state";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
+import { useFavorites } from "@/hooks/use-favorites";
 import { t, itemName, categoryName } from "@/lib/i18n";
 import type { CategoryId } from "@/lib/types";
 import { CategoryGrid } from "./CategoryGrid";
@@ -38,6 +39,12 @@ export function CraftingApp() {
   } = useCraftingState();
 
   const { resolvedLocale } = useSettings();
+  const { favorites } = useFavorites();
+
+  const craftingFavCount = useMemo(
+    () => [...favorites].filter((id) => getItemById(id)).length,
+    [favorites],
+  );
 
   const {
     tags: searchTags,
@@ -50,8 +57,8 @@ export function CraftingApp() {
     isSearching,
   } = useSearch();
 
-  const handleSelectCategory = useCallback((id: CategoryId) => {
-    setCategory(id);
+  const handleSelectCategory = useCallback((id: CategoryId | "favorites") => {
+    setCategory(id as CategoryId);
   }, [setCategory]);
 
   // Track visit + duration + PWA install on first load
@@ -137,6 +144,11 @@ export function CraftingApp() {
   const currentCharacter = selectedCharacter ? getCharacterById(selectedCharacter) : null;
 
   const categoryItems = useMemo(() => {
+    if ((selectedCategory as string) === "favorites") {
+      return [...favorites]
+        .map((id) => getItemById(id))
+        .filter((item): item is NonNullable<typeof item> => !!item);
+    }
     if (selectedCategory === "character") {
       if (selectedCharacter === "all") {
         return getItemsByCategory("character");
@@ -147,7 +159,7 @@ export function CraftingApp() {
       return []; // No character selected yet - show picker only
     }
     return getItemsByCategory(selectedCategory);
-  }, [selectedCategory, selectedCharacter]);
+  }, [selectedCategory, selectedCharacter, favorites]);
 
   const displayItems = isSearching ? searchResults : categoryItems;
 
@@ -208,6 +220,7 @@ export function CraftingApp() {
             ) : (
               <CategoryGrid
                 categories={categories}
+                favCount={craftingFavCount}
                 onSelectCategory={handleSelectCategory}
               />
             )}
@@ -230,6 +243,7 @@ export function CraftingApp() {
         characterId={selectedCharacter}
         searchBar={searchBar}
         isSearching={isSearching}
+        customLabel={(selectedCategory as string) === "favorites" ? t(resolvedLocale, "favorites") : undefined}
         onHomeClick={handleGoHome}
         onCategoryClick={selectedCharacter ? goToCategory : undefined}
       />

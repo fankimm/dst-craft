@@ -11,6 +11,35 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.1.0",
+    date: "2026-03-01",
+    dev: [
+      "Google Identity Services (GIS) renderButton 방식 로그인 구현",
+      "Worker에 JWT 발급/검증 (HMAC SHA-256) + /auth/google 엔드포인트 추가",
+      "Worker에 GET/POST /favorites 엔드포인트 추가 (Redis Set)",
+      "use-auth.tsx: AuthProvider + useAuth 훅 (GIS renderButton, JWT localStorage 저장)",
+      "use-favorites.tsx: FavoritesProvider + useFavorites 훅 (비로그인=localStorage, 로그인=Redis)",
+      "favorites-api.ts: Worker 즐겨찾기 API 클라이언트",
+      "로그인/비로그인 즐겨찾기 완전 분리 (마이그레이션 없음)",
+      "제작탭 즐겨찾기 카운트: 제작 아이템만 필터링 (요리 포함 안 됨)",
+      "ItemIcon/ItemDetail/RecipeCard/RecipeDetail에 인게임 체력 아이콘 즐겨찾기 토글 추가",
+      "CategoryGrid/CookingApp에 즐겨찾기 카테고리 타일 추가",
+      "SettingsPage에 Google 로그인/프로필/로그아웃 UI (key prop으로 DOM 재사용 방지)",
+      "비로그인 즐겨찾기 매번 경고 토스트 구현",
+      "설정 브랜딩 텍스트 스타일 변경 + 버전정보 하단 이동",
+      "wrangler.toml에 GOOGLE_CLIENT_ID 변수 추가",
+      "CORS 헤더에 Authorization 허용 + localhost 지원",
+    ],
+    changes: [
+      "즐겨찾기 기능 추가 — 아이템과 레시피를 즐겨찾기로 저장",
+      "Google 로그인 — 기기 간 즐겨찾기 동기화",
+      "모든 아이템 카드와 상세 패널에 즐겨찾기 토글",
+      "제작/요리 홈 화면에 즐겨찾기 카테고리 타일",
+      "설정에 계정 섹션 (로그인/로그아웃)",
+      "비로그인 시 즐겨찾기 저장 경고 토스트",
+    ],
+  },
+  {
     version: "0.0.4",
     date: "2026-02-28",
     dev: [

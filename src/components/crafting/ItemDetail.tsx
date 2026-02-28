@@ -6,8 +6,9 @@ import { MaterialSlot } from "./MaterialSlot";
 import { getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
+import { useFavorites } from "@/hooks/use-favorites";
 import { t, itemName, itemAltName, itemDesc, categoryName, characterName, stationName } from "@/lib/i18n";
-
+import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 
 // Higher-tier stations that can also craft items of the base station
@@ -27,6 +28,7 @@ interface ItemDetailProps {
 export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick }: ItemDetailProps) {
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   if (!item) {
     return (
@@ -59,9 +61,18 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
       {/* Item info */}
       <div className="flex-1 min-w-0 space-y-2">
         <div>
-          <h3 className="text-sm font-semibold text-foreground">
-            {itemName(item, resolvedLocale)}
-          </h3>
+          <div className="flex items-center gap-1.5">
+            <h3 className="text-sm font-semibold text-foreground">
+              {itemName(item, resolvedLocale)}
+            </h3>
+            <button
+              onClick={() => toggleFavorite(item.id)}
+              className="p-0.5 rounded-full transition-colors shrink-0"
+              aria-label="favorite"
+            >
+              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFavorite(item.id) && "opacity-30 grayscale")} />
+            </button>
+          </div>
           {itemAltName(item, resolvedLocale) && (
             <p className="text-xs text-muted-foreground">
               {itemAltName(item, resolvedLocale)}

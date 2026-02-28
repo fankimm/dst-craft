@@ -19,6 +19,8 @@ interface BreadcrumbProps {
   characterId?: string | null;
   isSearching?: boolean;
   searchLabel?: string;
+  /** Custom label for non-standard categories (e.g. favorites) */
+  customLabel?: string;
   onHomeClick: () => void;
   onCategoryClick?: () => void;
   onTitleClick?: () => void;
@@ -30,6 +32,7 @@ export function Breadcrumb({
   characterId,
   isSearching,
   searchLabel,
+  customLabel,
   onHomeClick,
   onCategoryClick,
   onTitleClick,
@@ -43,6 +46,8 @@ export function Breadcrumb({
 
   if (isSearching) {
     segments.push({ label: searchLabel || "Search" });
+  } else if (customLabel) {
+    segments.push({ label: customLabel });
   } else if (category) {
     const catName = categoryName(category, resolvedLocale);
     if (characterId) {

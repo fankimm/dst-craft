@@ -22,6 +22,8 @@
 | **재료 선택기** | `IngredientPicker.tsx` | 재료 검색/선택 바텀시트 |
 | **스테이션 토글** | `CookpotApp.tsx` | 요리솥/휴대용 요리솥 전환 버튼 |
 | **릴리즈 노트 페이지** | `src/app/releases/page.tsx` | 버전별 변경 사항을 표시하는 독립 페이지. 설정에서 진입 |
+| **즐겨찾기 타일** | `CategoryGrid.tsx`, `CookingApp.tsx` | 카테고리 그리드 상단의 즐겨찾기 카테고리 버튼 (하트 아이콘, 즐겨찾기 개수 표시) |
+| **즐겨찾기 토글** | `ItemIcon.tsx`, `ItemDetail.tsx`, `RecipeCard`, `RecipeDetail` | 아이템 카드/상세 패널의 즐겨찾기 추가/제거 하트 버튼 |
 
 ## 버그 리포트 예시
 

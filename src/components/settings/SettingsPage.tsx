@@ -1,8 +1,10 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import Image from "next/image";
-import { Sun, Moon, Monitor, Check, ChevronRight } from "lucide-react";
+import { Sun, Moon, Monitor, Check, ChevronRight, LogOut } from "lucide-react";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
+import { useAuth } from "@/hooks/use-auth";
 import type { LocaleSetting } from "@/lib/i18n";
 import { t, supportedLocales, localeLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -22,6 +24,19 @@ const localeOptions: { value: LocaleSetting; label: string }[] = [
 
 export function SettingsPage() {
   const { theme, locale, resolvedLocale, setTheme, setLocale } = useSettings();
+  const { user, loading: authLoading, gisReady, logout, renderGoogleButton } = useAuth();
+  const googleBtnRef = useRef<HTMLDivElement>(null);
+
+  // Render Google button when ready and not logged in
+  useEffect(() => {
+    const el = googleBtnRef.current;
+    if (!authLoading && !user && gisReady && el) {
+      renderGoogleButton(el, "standard");
+    }
+    return () => {
+      if (el) el.innerHTML = "";
+    };
+  }, [authLoading, user, gisReady, renderGoogleButton]);
 
   return (
     <div className="flex flex-col h-full bg-background text-foreground overflow-y-auto overscroll-contain">
@@ -37,9 +52,48 @@ export function SettingsPage() {
               className="size-12 rounded-lg"
             />
             <div className="text-center">
-              <h1 className="text-sm font-bold tracking-wide">DON&apos;T CRAFT WITHOUT RECIPES</h1>
-              <p className="text-xs text-muted-foreground mt-0.5">v{APP_VERSION}</p>
+              <h1 className="text-sm tracking-wide">
+                <span className="font-bold">DON&apos;T CRAFT</span>{" "}
+                <span className="text-muted-foreground">WITHOUT RECIPES</span>
+              </h1>
             </div>
+          </div>
+
+          {/* Account */}
+          <div className="space-y-2">
+            <h2 className="text-sm font-semibold">{t(resolvedLocale, "account")}</h2>
+            {!authLoading && (
+              user ? (
+                <div key="profile" className="flex items-center gap-3 rounded-lg border border-border p-3">
+                  {user.picture && (
+                    <img
+                      src={user.picture}
+                      alt=""
+                      referrerPolicy="no-referrer"
+                      className="size-10 rounded-full shrink-0"
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{user.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  </div>
+                  <button
+                    onClick={logout}
+                    className="shrink-0 flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs text-muted-foreground hover:bg-surface-hover transition-colors"
+                  >
+                    <LogOut className="size-3.5" />
+                    {t(resolvedLocale, "sign_out")}
+                  </button>
+                </div>
+              ) : (
+                <div key="login" className="rounded-lg border border-border p-4 space-y-3">
+                  <p className="text-xs text-muted-foreground">
+                    {t(resolvedLocale, "favorites_login_prompt")}
+                  </p>
+                  <div ref={googleBtnRef} className="flex justify-center" />
+                </div>
+              )
+            )}
           </div>
 
           {/* Theme */}
@@ -105,6 +159,7 @@ export function SettingsPage() {
           </a>
         </div>
 
+        <p className="text-center text-xs text-muted-foreground/50 py-2">v{APP_VERSION}</p>
         <Footer />
       </div>
     </div>

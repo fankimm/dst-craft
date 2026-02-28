@@ -2,13 +2,16 @@ interface Env {
   UPSTASH_REDIS_REST_URL: string;
   UPSTASH_REDIS_REST_TOKEN: string;
   ALLOWED_ORIGIN: string;
+  GOOGLE_CLIENT_ID: string;
+  JWT_SECRET: string;
 }
 
 function corsHeaders(origin: string, allowed: string): HeadersInit {
+  const isAllowed = origin.startsWith(allowed) || origin.startsWith("http://localhost:");
   return {
-    "Access-Control-Allow-Origin": origin.startsWith(allowed) ? origin : "",
+    "Access-Control-Allow-Origin": isAllowed ? origin : "",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
 }
 
@@ -32,6 +35,64 @@ function isMobile(ua: string): boolean {
   return /mobile|android|iphone|ipad|ipod|webos|blackberry|opera mini|iemobile/i.test(ua);
 }
 
+// ---------------------------------------------------------------------------
+// JWT helpers (HMAC SHA-256 via Web Crypto API)
+// ---------------------------------------------------------------------------
+
+function base64UrlEncode(data: Uint8Array): string {
+  let binary = "";
+  for (const byte of data) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function base64UrlDecode(s: string): Uint8Array {
+  const padded = s.replace(/-/g, "+").replace(/_/g, "/") + "==".slice(0, (4 - (s.length % 4)) % 4);
+  const binary = atob(padded);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+async function getSigningKey(secret: string): Promise<CryptoKey> {
+  const enc = new TextEncoder();
+  return crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign", "verify"]);
+}
+
+async function createJWT(payload: Record<string, unknown>, secret: string): Promise<string> {
+  const header = { alg: "HS256", typ: "JWT" };
+  const enc = new TextEncoder();
+  const headerB64 = base64UrlEncode(enc.encode(JSON.stringify(header)));
+  const payloadB64 = base64UrlEncode(enc.encode(JSON.stringify(payload)));
+  const data = `${headerB64}.${payloadB64}`;
+  const key = await getSigningKey(secret);
+  const sig = new Uint8Array(await crypto.subtle.sign("HMAC", key, enc.encode(data)));
+  return `${data}.${base64UrlEncode(sig)}`;
+}
+
+async function verifyJWT(token: string, secret: string): Promise<Record<string, unknown> | null> {
+  const parts = token.split(".");
+  if (parts.length !== 3) return null;
+  try {
+    const key = await getSigningKey(secret);
+    const enc = new TextEncoder();
+    const sigBytes = base64UrlDecode(parts[2]);
+    const valid = await crypto.subtle.verify("HMAC", key, sigBytes.buffer as ArrayBuffer, enc.encode(`${parts[0]}.${parts[1]}`));
+    if (!valid) return null;
+    const payload = JSON.parse(new TextDecoder().decode(base64UrlDecode(parts[1])));
+    if (payload.exp && Date.now() / 1000 > payload.exp) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+async function extractSub(request: Request, env: Env): Promise<string | null> {
+  const auth = request.headers.get("Authorization") ?? "";
+  if (!auth.startsWith("Bearer ")) return null;
+  const payload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+  return (payload?.sub as string) ?? null;
+}
+
 function parseOS(ua: string): string {
   if (/iphone|ipad|ipod/i.test(ua)) return "iOS";
   if (/windows/i.test(ua)) return "Windows";
@@ -51,6 +112,19 @@ export default {
       return new Response(null, { status: 204, headers });
     }
 
+    try {
+    return await handleRequest(request, env, headers);
+    } catch (err: any) {
+      console.error("Worker error:", err);
+      return new Response(JSON.stringify({ error: err.message ?? "Internal error" }), {
+        status: 500,
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
+  },
+};
+
+async function handleRequest(request: Request, env: Env, headers: HeadersInit): Promise<Response> {
     const url = new URL(request.url);
 
     // POST /track — record a visit
@@ -235,6 +309,81 @@ export default {
       });
     }
 
+    // POST /auth/google — verify Google ID token, issue JWT
+    if (url.pathname === "/auth/google" && request.method === "POST") {
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const idToken = body.idToken as string;
+      if (!idToken) {
+        return new Response(JSON.stringify({ error: "Missing idToken" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      // Verify via Google tokeninfo
+      const tokenRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
+      if (!tokenRes.ok) {
+        return new Response(JSON.stringify({ error: "Invalid token" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const tokenInfo = await tokenRes.json() as Record<string, any>;
+
+      // Verify audience
+      if (tokenInfo.aud !== env.GOOGLE_CLIENT_ID) {
+        return new Response(JSON.stringify({ error: "Invalid audience" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const sub = tokenInfo.sub as string;
+      const email = (tokenInfo.email as string) ?? "";
+      const name = (tokenInfo.name as string) ?? "";
+      const picture = (tokenInfo.picture as string) ?? "";
+
+      // Save user info to Redis
+      await redisPipeline(env, [
+        ["HSET", `dst:user:${sub}`, "email", email, "name", name, "picture", picture],
+      ]);
+
+      // Issue JWT (30 days expiry)
+      const jwt = await createJWT(
+        { sub, email, name, picture, exp: Math.floor(Date.now() / 1000) + 30 * 86400 },
+        env.JWT_SECRET,
+      );
+
+      return new Response(
+        JSON.stringify({ token: jwt, user: { sub, email, name, picture } }),
+        { headers: { ...headers, "Content-Type": "application/json" } },
+      );
+    }
+
+    // GET /favorites — fetch user favorites
+    if (url.pathname === "/favorites" && request.method === "GET") {
+      const sub = await extractSub(request, env);
+      if (!sub) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const results = await redisPipeline(env, [["SMEMBERS", `dst:fav:${sub}`]]) as { result: any }[];
+      const items = (results[0]?.result as string[]) ?? [];
+
+      return new Response(JSON.stringify({ items }), { headers: { ...headers, "Content-Type": "application/json" } });
+    }
+
+    // POST /favorites — add/remove favorite
+    if (url.pathname === "/favorites" && request.method === "POST") {
+      const sub = await extractSub(request, env);
+      if (!sub) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const itemId = body.itemId as string;
+      const action = body.action as string;
+
+      if (!itemId || (action !== "add" && action !== "remove")) {
+        return new Response(JSON.stringify({ error: "Invalid request" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const cmd = action === "add" ? "SADD" : "SREM";
+      await redisPipeline(env, [[cmd, `dst:fav:${sub}`, itemId]]);
+
+      return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
+    }
+
     return new Response("Not Found", { status: 404, headers });
-  },
-};
+}
