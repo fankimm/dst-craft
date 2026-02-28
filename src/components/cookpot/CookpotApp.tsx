@@ -80,12 +80,6 @@ export function CookpotApp() {
     setSlots([null, null, null, null]);
   }, []);
 
-  const stationImage =
-    station === "cookpot" ? "cookpot.png" : "portablecookpot_item.png";
-
-  // First result recipe (for overlay)
-  const firstRecipe = result?.recipes[0] ?? null;
-
   return (
     <div className="flex flex-col h-full bg-background text-foreground overflow-hidden">
       {/* Header */}
@@ -111,28 +105,13 @@ export function CookpotApp() {
       {/* Scrollable main area */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
         <div className="flex flex-col min-h-full">
-          {/* Cookpot + Slots area */}
+          {/* Result + Slots area */}
           <div className="px-4 pt-4 pb-2">
-            <div className="flex items-center justify-center gap-4">
-              {/* Cookpot image + result overlay */}
-              <div className="relative flex-shrink-0">
-                <img
-                  src={assetPath(`/images/game-items/${stationImage}`)}
-                  alt={station}
-                  className="size-20 sm:size-24 object-contain"
-                  draggable={false}
-                />
-                {/* Result recipe image overlaid on top of the pot */}
-                {firstRecipe && firstRecipe.id !== "wetgoop" && (
-                  <img
-                    src={assetPath(`/images/game-items/${firstRecipe.id}.png`)}
-                    alt={foodName(firstRecipe, resolvedLocale)}
-                    className="absolute -top-2 left-1/2 -translate-x-1/2 size-11 sm:size-13 object-contain drop-shadow-lg"
-                  />
-                )}
-              </div>
+            <div className="flex justify-center gap-3 sm:gap-4">
+              {/* Left: result card or empty placeholder */}
+              <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} />
 
-              {/* Vertical slots + clear button */}
+              {/* Right: vertical slots + clear button */}
               <div className="flex flex-col gap-1.5 items-start">
                 {slots.map((slot, i) => (
                   <IngredientSlot
@@ -157,9 +136,6 @@ export function CookpotApp() {
               </div>
             </div>
           </div>
-
-          {/* Result area (inline) */}
-          <ResultArea result={result} allFilled={allFilled} locale={resolvedLocale} />
 
           {/* Ingredient picker (always visible) */}
           <div className="mt-auto">
@@ -284,10 +260,10 @@ function IngredientSlot({
 }
 
 // ---------------------------------------------------------------------------
-// Result area (inline, compact)
+// Result panel (left column: empty placeholder or result card)
 // ---------------------------------------------------------------------------
 
-function ResultArea({
+function ResultPanel({
   result,
   allFilled,
   locale,
@@ -296,35 +272,28 @@ function ResultArea({
   allFilled: boolean;
   locale: Locale;
 }) {
-  if (!allFilled) {
+  // No result — show dashed placeholder
+  if (!allFilled || !result || result.recipes.length === 0) {
     return (
-      <div className="text-xs text-muted-foreground text-center py-3 px-4">
-        {t(locale, "cookpot_no_result")}
+      <div className="flex flex-col items-center justify-center w-36 sm:w-44 rounded-xl border-2 border-dashed border-border bg-surface/30 self-stretch">
+        <span className="text-[10px] text-muted-foreground text-center px-2">
+          {t(locale, "cookpot_no_result")}
+        </span>
       </div>
     );
   }
 
-  if (!result || result.recipes.length === 0) {
-    return (
-      <div className="text-xs text-muted-foreground text-center py-3 px-4">
-        {t(locale, "cookpot_no_result")}
-      </div>
-    );
-  }
-
+  // Has result — show card(s)
   return (
-    <div className="px-4 py-2 space-y-2">
+    <div className="flex flex-col gap-2 w-36 sm:w-44 self-stretch">
       {/* Random result badge */}
       {result.isRandom && (
-        <div className="flex justify-center">
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/15 text-amber-600 dark:text-amber-400">
-            <Shuffle className="size-3" />
-            {t(locale, "cookpot_random_result")}
-          </span>
-        </div>
+        <span className="inline-flex items-center gap-1 self-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-500/15 text-amber-600 dark:text-amber-400">
+          <Shuffle className="size-3" />
+          {t(locale, "cookpot_random_result")}
+        </span>
       )}
 
-      {/* Result cards */}
       {result.recipes.map((recipe) => (
         <ResultCard
           key={recipe.id}
