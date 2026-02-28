@@ -32,6 +32,15 @@
 - `worker/wrangler.toml` — Worker 설정
 - `docs/terminology.md` — UI 용어집
 
+## Deploy Checklist
+배포 전 반드시 확인:
+1. **Vercel 환경변수**: `.env.local`에 새 `NEXT_PUBLIC_*` 변수가 추가됐으면 Vercel 대시보드에도 동일하게 설정할 것
+   - 현재 필요: `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, `NEXT_PUBLIC_ANALYTICS_WORKER_URL`
+2. **Worker 배포**: `worker/index.ts` 변경 시 `cd worker && npx wrangler deploy` 별도 실행
+3. **Worker 시크릿**: 새 시크릿 추가 시 `npx wrangler secret put <KEY>` 실행 안내
+4. **Google Cloud Console**: 새 도메인 추가 시 승인된 JavaScript 원본에 등록 확인
+5. **릴리즈 노트 + 버전**: 아래 Release Notes Rules 참고
+
 ## Release Notes Rules
 - 배포 전 `src/app/releases/page.tsx`의 릴리즈 노트를 업데이트할 것
 - 새 버전 번호는 릴리즈 노트 페이지의 기존 버전을 참고하여 결정
