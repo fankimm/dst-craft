@@ -342,12 +342,18 @@ function ResultCard({
           {showAltName && (
             <p className="text-[10px] text-muted-foreground">{recipe.name}</p>
           )}
-          <p className="text-[10px] text-muted-foreground">
-            {cookSeconds}{t(locale, "cooking_seconds")} ·{" "}
-            {recipe.perishDays == null
-              ? t(locale, "cooking_no_perish")
-              : `${recipe.perishDays}${t(locale, "cooking_days")}`}
-          </p>
+          <div className="flex items-center gap-2 mt-0.5 text-[10px] text-muted-foreground">
+            <span className="inline-flex items-center gap-0.5">
+              <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-3.5 object-contain" />
+              {cookSeconds}{t(locale, "cooking_seconds")}
+            </span>
+            <span className="inline-flex items-center gap-0.5">
+              <img src={assetPath("/images/ui/perish.png")} alt="" className="size-3.5 object-contain" />
+              {recipe.perishDays == null
+                ? t(locale, "cooking_no_perish")
+                : `${recipe.perishDays}${t(locale, "cooking_days")}`}
+            </span>
+          </div>
         </div>
       </div>
 

@@ -590,7 +590,10 @@ function RecipeDetail({
       {/* Info rows */}
       <div className="space-y-2 text-sm">
         <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">{t(locale, "cooking_perish")}</span>
+          <span className="inline-flex items-center gap-1 text-muted-foreground">
+            <img src={assetPath("/images/ui/perish.png")} alt="" className="size-4 object-contain" />
+            {t(locale, "cooking_perish")}
+          </span>
           <span>
             {recipe.perishDays == null
               ? t(locale, "cooking_no_perish")
@@ -598,7 +601,10 @@ function RecipeDetail({
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">{t(locale, "cooking_cooktime")}</span>
+          <span className="inline-flex items-center gap-1 text-muted-foreground">
+            <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" />
+            {t(locale, "cooking_cooktime")}
+          </span>
           <span>{cookSeconds}{t(locale, "cooking_seconds")}</span>
         </div>
         {recipe.temperature != null && (
