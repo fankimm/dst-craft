@@ -637,26 +637,6 @@ function RecipeDetail({
 
       {/* Requirements — split into needed / excluded */}
       {recipe.requirements && <RequirementsSections text={recipe.requirements} locale={locale} />}
-
-      {/* Suggested ingredients */}
-      {recipe.cardIngredients && recipe.cardIngredients.length > 0 && (
-        <div className="space-y-2">
-          <span className="text-sm text-muted-foreground">{t(locale, "cooking_ingredients")}</span>
-          <div className="flex items-center gap-2 flex-wrap">
-            {recipe.cardIngredients.map(([id, qty], i) => (
-              <div key={i} className="flex items-center gap-1 rounded-md border border-border bg-surface px-2 py-1">
-                <img
-                  src={assetPath(`/images/game-items/${id}.png`)}
-                  alt={id}
-                  className="size-6 object-contain"
-                  loading="lazy"
-                />
-                <span className="text-xs font-medium">x{qty}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -714,6 +694,20 @@ const requirementIcons: Record<string, string> = {
   "Bone Shards": "boneshard.png",
   "Acorn": "acorn.png",
   "Durian": "durian.png",
+  // Tag-based requirements
+  "Meat": "meat.png",
+  "Veggie": "carrot.png",
+  "Fruit": "pomegranate.png",
+  "Fish": "fishmeat.png",
+  "Egg": "tallbirdegg.png",
+  "Sweetener": "honey.png",
+  "Monster": "monstermeat.png",
+  "Inedible": "twigs.png",
+  "Frozen": "ice.png",
+  "Dairy": "butter.png",
+  "Fat": "butter.png",
+  "Seed": "seeds.png",
+  "Magic": "nightmarefuel.png",
 };
 
 /** Regex matching all known item names (longest first to avoid partial matches) */
@@ -722,24 +716,32 @@ const reqIconPattern = new RegExp(
   "g",
 );
 
-/** Render a single requirement item with inline icons for known item names */
-function ReqItem({ text }: { text: string }) {
-  const parts = text.trim().split(reqIconPattern);
+/** Find the first known icon in a requirement string */
+function findReqIcon(text: string): string | undefined {
+  for (const [name, icon] of Object.entries(requirementIcons)) {
+    if (text.includes(name)) return icon;
+  }
+  return undefined;
+}
+
+/** Render a requirement chip: icon + label */
+function ReqChip({ text, variant }: { text: string; variant: "needed" | "excluded" }) {
+  const icon = findReqIcon(text);
+  const borderClass = variant === "excluded"
+    ? "border-red-500/30 bg-red-500/5"
+    : "border-border bg-surface";
+
   return (
-    <span className="inline-flex items-center gap-0.5 text-sm">
-      {parts.map((part, i) => {
-        const icon = requirementIcons[part];
-        if (icon) {
-          return (
-            <span key={i} className="inline-flex items-center gap-0.5">
-              <img src={assetPath(`/images/game-items/${icon}`)} alt={part} title={part} className="size-4 object-contain" />
-              {part}
-            </span>
-          );
-        }
-        return <span key={i}>{part}</span>;
-      })}
-    </span>
+    <div className={cn("flex items-center gap-1 rounded-md border px-2 py-1", borderClass)}>
+      {icon && (
+        <img
+          src={assetPath(`/images/game-items/${icon}`)}
+          alt=""
+          className="size-5 object-contain"
+        />
+      )}
+      <span className="text-xs font-medium">{text}</span>
+    </div>
   );
 }
 
@@ -763,21 +765,21 @@ function RequirementsSections({ text, locale }: { text: string; locale: Locale }
   return (
     <div className="space-y-2">
       {needed.length > 0 && (
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <span className="text-xs text-muted-foreground font-medium">{t(locale, "cooking_req_needed")}</span>
-          <div className="flex flex-col gap-0.5">
+          <div className="flex items-center gap-1.5 flex-wrap">
             {needed.map((item, i) => (
-              <ReqItem key={i} text={item} />
+              <ReqChip key={i} text={item} variant="needed" />
             ))}
           </div>
         </div>
       )}
       {excluded.length > 0 && (
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <span className="text-xs text-red-500 dark:text-red-400 font-medium">{t(locale, "cooking_req_excluded")}</span>
-          <div className="flex flex-col gap-0.5">
+          <div className="flex items-center gap-1.5 flex-wrap">
             {excluded.map((item, i) => (
-              <ReqItem key={i} text={item} />
+              <ReqChip key={i} text={item} variant="excluded" />
             ))}
           </div>
         </div>
