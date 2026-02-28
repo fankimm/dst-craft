@@ -114,14 +114,22 @@ export function CookpotApp() {
           {/* Cookpot + Slots area */}
           <div className="px-4 pt-4 pb-2">
             <div className="flex items-center justify-center gap-4">
-              {/* Cookpot image — swap to cookpot_full when result exists */}
-              <div className="flex-shrink-0 flex items-center justify-center size-24 sm:size-28">
+              {/* Cookpot image + result overlay */}
+              <div className="relative flex-shrink-0 w-24 sm:w-28">
                 <img
                   src={assetPath(`/images/game-items/${firstRecipe && station === "cookpot" ? "cookpot_full.png" : stationImage}`)}
                   alt={station}
-                  className="max-w-full max-h-full object-contain"
+                  className="w-full h-auto object-contain"
                   draggable={false}
                 />
+                {/* Result recipe image on top of the pot */}
+                {firstRecipe && firstRecipe.id !== "wetgoop" && (
+                  <img
+                    src={assetPath(`/images/game-items/${firstRecipe.id}.png`)}
+                    alt={foodName(firstRecipe, resolvedLocale)}
+                    className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 size-12 sm:size-14 object-contain drop-shadow-lg"
+                  />
+                )}
               </div>
 
               {/* Vertical slots + clear button */}
