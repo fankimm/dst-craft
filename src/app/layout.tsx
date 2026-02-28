@@ -20,7 +20,7 @@ const SITE_URL = "https://fankimm.github.io/dst-craft";
 const BASE = process.env.NODE_ENV === "production" ? "/dst-craft" : "";
 
 export const metadata: Metadata = {
-  title: "DST Crafting Guide | Don't Starve Together Crafting Recipes & 크래프팅 레시피",
+  title: "Don't Craft Without Recipes | Don't Starve Together Guide & 크래프팅 레시피",
   description:
     "Complete Don't Starve Together crafting guide. Search all crafting recipes, materials, stations, and character-specific items. DST 크래프팅 레시피 가이드 — 모든 아이템의 제작법, 재료, 제작소를 한눈에 검색하세요.",
   keywords: [
@@ -56,10 +56,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    title: "DST Crafting Guide — Don't Starve Together Recipes",
+    title: "Don't Craft Without Recipes — Don't Starve Together Guide",
     description:
       "Complete Don't Starve Together crafting guide. Search all recipes, materials, stations & character-specific items. 모든 아이템의 제작법을 한눈에 검색하세요.",
-    siteName: "DST Crafting Guide",
+    siteName: "Don't Craft Without Recipes",
     locale: "en_US",
     alternateLocale: ["ko_KR", "ja_JP", "zh_CN", "zh_TW", "fr_FR", "de_DE", "es_ES", "ru_RU", "pt_BR", "pl_PL", "it_IT"],
     images: [
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "DST Crafting Guide — Don't Starve Together Recipes",
+    title: "Don't Craft Without Recipes — Don't Starve Together Guide",
     description:
       "Complete Don't Starve Together crafting guide. Search all recipes, materials, and crafting stations.",
     images: ["/og-image.png"],
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "DST Crafting",
+    title: "Don't Craft Without Recipes",
   },
   icons: {
     icon: [
@@ -174,8 +174,8 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              name: "DST Crafting Guide",
-              alternateName: "DST 크래프팅 가이드",
+              name: "Don't Craft Without Recipes",
+              alternateName: "DST 크래프팅·쿠킹 가이드",
               url: SITE_URL,
               description:
                 "Complete Don't Starve Together crafting guide. Search all crafting recipes, materials, stations, and character-specific items.",

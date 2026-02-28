@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Stats — DST Crafting Guide",
-  description: "Usage statistics and analytics for DST Crafting Guide.",
+  title: "Stats — Don't Craft Without Recipes",
+  description: "Usage statistics and analytics for Don't Craft Without Recipes.",
   robots: { index: false, follow: false },
 };
 

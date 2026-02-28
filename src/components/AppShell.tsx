@@ -29,7 +29,7 @@ export function AppShell() {
   return (
     <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
       {/* Title bar */}
-      <div className="flex items-center justify-between px-4 py-1.5 bg-black text-white shrink-0">
+      <div className="flex items-center justify-between px-4 py-1.5 bg-surface border-b border-border shrink-0">
         <div className="flex items-center gap-1.5">
           <Image
             src={`${basePath}/icons/icon-192.png`}
@@ -38,10 +38,10 @@ export function AppShell() {
             height={20}
             className="size-5 rounded-sm"
           />
-          <span className="text-sm font-bold tracking-wide">STARVE CRAFT</span>
+          <span className="text-sm font-bold tracking-wide text-foreground">DON&apos;T CRAFT WITHOUT RECIPES</span>
         </div>
-        <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-white text-black leading-none">
-          BETA
+        <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-foreground text-background leading-none">
+          DST
         </span>
       </div>
 

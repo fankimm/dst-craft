@@ -71,7 +71,7 @@ export function ItemSlot({ icon, label, badge, variant = "default", onClick }: I
         className={cn(
           "text-[11px] text-center leading-tight max-w-[60px] truncate",
           isExcluded
-            ? "text-red-500 dark:text-red-400 line-through"
+            ? "text-red-500 dark:text-red-400"
             : isClickable
               ? "text-primary underline decoration-dotted"
               : "text-muted-foreground",
