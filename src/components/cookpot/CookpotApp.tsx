@@ -108,13 +108,13 @@ export function CookpotApp() {
           {/* Result + Slots area */}
           <div className="px-3 pt-4 pb-2">
             <div className="flex gap-2">
-              {/* Left: result card or empty placeholder — fills remaining space */}
-              <div className="flex-1 min-w-0">
+              {/* Left: result card or empty placeholder — 50% */}
+              <div className="w-1/2 min-w-0">
                 <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} />
               </div>
 
-              {/* Right: vertical slots + clear button — fixed width */}
-              <div className="flex flex-col gap-1.5 items-start shrink-0">
+              {/* Right: vertical slots + clear button — 50% */}
+              <div className="w-1/2 flex flex-col gap-1.5 items-start">
                 {slots.map((slot, i) => (
                   <IngredientSlot
                     key={i}
@@ -228,7 +228,7 @@ function IngredientSlot({
 }) {
   if (!slot) {
     return (
-      <div className="flex items-center gap-1.5 w-20 sm:w-24 h-10 rounded-lg border-2 border-dashed border-border bg-surface/50 px-1.5">
+      <div className="flex items-center gap-1.5 w-full h-10 rounded-lg border-2 border-dashed border-border bg-surface/50 px-1.5">
         <div className="size-6 flex items-center justify-center rounded bg-muted/50 text-[10px] font-semibold text-muted-foreground shrink-0">
           {index + 1}
         </div>
@@ -237,7 +237,7 @@ function IngredientSlot({
   }
 
   return (
-    <div className="relative flex items-center gap-1 w-20 sm:w-24 h-10 rounded-lg border border-border bg-surface px-1.5">
+    <div className="relative flex items-center gap-1 w-full h-10 rounded-lg border border-border bg-surface px-1.5">
       <img
         src={assetPath(`/images/game-items/${ingredientImage(slot)}`)}
         alt={ingredientName(slot, locale)}
