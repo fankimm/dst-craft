@@ -116,18 +116,19 @@ export function CookpotApp() {
             <div className="flex items-center justify-center gap-3 sm:gap-4">
               {/* Cookpot image with result overlay */}
               <div className="relative flex-shrink-0">
+                {/* Swap to cookpot_full when result exists (cookpot station only) */}
                 <img
-                  src={assetPath(`/images/game-items/${stationImage}`)}
+                  src={assetPath(`/images/game-items/${firstRecipe && station === "cookpot" ? "cookpot_full.png" : stationImage}`)}
                   alt={station}
                   className="size-20 sm:size-24 object-contain"
                   draggable={false}
                 />
-                {/* Result image overlay */}
+                {/* Result recipe image overlay */}
                 {firstRecipe && firstRecipe.id !== "wetgoop" && (
                   <img
                     src={assetPath(`/images/game-items/${firstRecipe.id}.png`)}
                     alt={foodName(firstRecipe, resolvedLocale)}
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 size-12 sm:size-14 object-contain drop-shadow-lg"
+                    className="absolute -top-4 left-1/2 -translate-x-1/2 size-11 sm:size-13 object-contain drop-shadow-lg"
                   />
                 )}
               </div>
