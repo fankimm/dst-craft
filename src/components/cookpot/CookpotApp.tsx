@@ -106,13 +106,15 @@ export function CookpotApp() {
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
         <div className="flex flex-col min-h-full">
           {/* Result + Slots area */}
-          <div className="px-4 pt-4 pb-2">
-            <div className="flex justify-center gap-3 sm:gap-4">
-              {/* Left: result card or empty placeholder */}
-              <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} />
+          <div className="px-3 pt-4 pb-2">
+            <div className="flex gap-2">
+              {/* Left: result card or empty placeholder — fills remaining space */}
+              <div className="flex-1 min-w-0">
+                <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} />
+              </div>
 
-              {/* Right: vertical slots + clear button */}
-              <div className="flex flex-col gap-1.5 items-start">
+              {/* Right: vertical slots + clear button — fixed width */}
+              <div className="flex flex-col gap-1.5 items-start shrink-0">
                 {slots.map((slot, i) => (
                   <IngredientSlot
                     key={i}
@@ -271,7 +273,7 @@ function ResultPanel({
   // No result — show dashed placeholder
   if (!allFilled || !result || result.recipes.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center w-48 sm:w-60 rounded-xl border-2 border-dashed border-border bg-surface/30 self-stretch">
+      <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-surface/30 h-full">
         <span className="text-[10px] text-muted-foreground text-center px-2">
           {t(locale, "cookpot_no_result")}
         </span>
@@ -281,7 +283,7 @@ function ResultPanel({
 
   // Has result — show card(s)
   return (
-    <div className="flex flex-col gap-2 w-48 sm:w-60 self-stretch">
+    <div className="flex flex-col gap-2 h-full">
       {/* Random result badge */}
       {result.isRandom && (
         <span className="inline-flex items-center gap-1 self-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-500/15 text-amber-600 dark:text-amber-400">
