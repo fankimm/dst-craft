@@ -9,6 +9,7 @@ import { t, foodName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
+import { ItemSlot } from "../ui/ItemSlot";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -278,16 +279,11 @@ export function CookingApp() {
   // Filter chip component
   const filterChip = activeFilter && (
     <div className="flex items-center gap-1.5 px-4 py-2">
-      <span className="inline-flex items-center gap-1 rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">
-        {activeFilter.icon && <img src={assetPath(`/images/game-items/${activeFilter.icon}`)} alt="" className="size-4 object-contain" />}
-        {activeFilter.label}
-        <button
-          onClick={handleClearFilter}
-          className="ml-0.5 rounded-full p-0.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-        >
-          <X className="size-3" />
-        </button>
-      </span>
+      <TagChip
+        label={activeFilter.label}
+        icon={activeFilter.icon}
+        onRemove={handleClearFilter}
+      />
     </div>
   );
 
@@ -536,33 +532,25 @@ function RecipeDetail({
           {showAltName && (
             <p className="text-sm text-muted-foreground">{recipe.name}</p>
           )}
-          <div className="flex items-center gap-2 mt-1 flex-wrap">
-            <FoodTypeBadge foodType={recipe.foodType} locale={locale} onClick={onFoodTypeClick} />
+          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+            <TagChip
+              label={foodTypeLabelKeys[recipe.foodType] ? t(locale, foodTypeLabelKeys[recipe.foodType]) : recipe.foodType}
+              icon={foodTypeIcons[recipe.foodType]}
+              onClick={onFoodTypeClick ? () => onFoodTypeClick(recipe.foodType) : undefined}
+            />
             {recipe.station === "cookpot" && (
-              <button
-                onClick={() => onStationClick?.("cookpot", t(locale, "cooking_cookpot"))}
-                className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-stone-500/15 text-stone-600 dark:text-stone-400 cursor-pointer hover:opacity-70 transition-opacity inline-flex items-center gap-1"
-              >
-                <img
-                  src={assetPath("/images/game-items/cookpot.png")}
-                  alt=""
-                  className="size-3.5 object-contain"
-                />
-                {t(locale, "cooking_cookpot")}
-              </button>
+              <TagChip
+                label={t(locale, "cooking_cookpot")}
+                icon="cookpot.png"
+                onClick={onStationClick ? () => onStationClick("cookpot", t(locale, "cooking_cookpot")) : undefined}
+              />
             )}
             {recipe.station === "portablecookpot" && (
-              <button
-                onClick={() => onStationClick?.("portablecookpot", t(locale, "cooking_warly_exclusive"))}
-                className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-500/15 text-amber-600 dark:text-amber-400 cursor-pointer hover:opacity-70 transition-opacity inline-flex items-center gap-1"
-              >
-                <img
-                  src={assetPath("/images/game-items/portablecookpot_item.png")}
-                  alt=""
-                  className="size-3.5 object-contain"
-                />
-                {t(locale, "cooking_warly_exclusive")}
-              </button>
+              <TagChip
+                label={t(locale, "cooking_warly_exclusive")}
+                icon="portablecookpot_item.png"
+                onClick={onStationClick ? () => onStationClick("portablecookpot", t(locale, "cooking_warly_exclusive")) : undefined}
+              />
             )}
           </div>
         </div>
@@ -632,7 +620,10 @@ function RecipeDetail({
         {recipe.specialEffect && (
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">{t(locale, "cooking_effect")}</span>
-            <EffectBadge effect={recipe.specialEffect} onClick={onEffectClick} />
+            <TagChip
+              label={effectLabels[recipe.specialEffect] ?? recipe.specialEffect}
+              onClick={onEffectClick ? () => onEffectClick(recipe.specialEffect!) : undefined}
+            />
           </div>
         )}
       </div>
@@ -712,12 +703,6 @@ const requirementIcons: Record<string, string> = {
   "Magic": "nightmarefuel.png",
 };
 
-/** Regex matching all known item names (longest first to avoid partial matches) */
-const reqIconPattern = new RegExp(
-  `(${Object.keys(requirementIcons).sort((a, b) => b.length - a.length).join("|")})`,
-  "g",
-);
-
 /** Find the first known icon in a requirement string */
 function findReqIcon(text: string): string | undefined {
   for (const [name, icon] of Object.entries(requirementIcons)) {
@@ -727,24 +712,54 @@ function findReqIcon(text: string): string | undefined {
 }
 
 /** Render a requirement chip: icon + label */
-function ReqChip({ text, variant }: { text: string; variant: "needed" | "excluded" }) {
-  const icon = findReqIcon(text);
-  const borderClass = variant === "excluded"
-    ? "border-red-500/30 bg-red-500/5"
-    : "border-border bg-surface";
+/** Localized names for requirement terms */
+const reqTranslations: Record<string, Record<string, string>> = {
+  ko: {
+    "Meat": "고기", "Veggie": "채소", "Fruit": "과일", "Fish": "생선",
+    "Egg": "알", "Sweetener": "감미료", "Monster": "괴물", "Inedible": "못먹는것",
+    "Frozen": "냉동", "Dairy": "유제품", "Fat": "지방", "Seed": "씨앗",
+    "Magic": "마법", "Honey": "꿀", "Butter": "버터",
+    "Asparagus": "아스파라거스", "Cave Banana": "동굴 바나나", "Barnacle": "거북순",
+    "Berries": "딸기", "Butterfly Wings": "나비 날개", "Cactus Flower": "선인장 꽃",
+    "Cactus Flesh": "선인장 과육", "Corn": "옥수수", "Dragon Fruit": "용과",
+    "Drumstick": "닭다리", "Eggplant": "가지", "Fig": "무화과",
+    "Forget-Me-Lots": "물망초", "Frog Legs": "개구리 다리", "Garlic": "마늘",
+    "Glow Berry": "발광 열매", "Kelp": "다시마", "Koalefant Trunk": "코 주둥이",
+    "Leafy Meat": "풀고기", "Lichen": "이끼", "Mandrake": "맨드레이크",
+    "Moleworm": "두더지", "Monster Meat": "괴물 고기",
+    "Moon Shroom": "달 버섯", "Red Cap": "빨간 버섯", "Blue Cap": "파란 버섯",
+    "Green Cap": "초록 버섯", "Nightmare Fuel": "악몽 연료",
+    "Onion": "양파", "Pepper": "고추", "Pomegranate": "석류",
+    "Potato": "감자", "Pumpkin": "호박",
+    "Ripe Stone Fruit": "돌과일", "Royal Jelly": "로열젤리",
+    "Tallbird Egg": "톨버드 알", "Tomato": "토마토", "Twigs": "나뭇가지",
+    "Volt Goat Horn": "번개 염소 뿔", "Watermelon": "수박",
+    "Wobster": "로브스터", "Eel": "장어", "Bone Shards": "뼛조각",
+    "Acorn": "도토리", "Durian": "두리안",
+  },
+};
 
-  return (
-    <div className={cn("flex items-center gap-1 rounded-md border px-2 py-1", borderClass)}>
-      {icon && (
-        <img
-          src={assetPath(`/images/game-items/${icon}`)}
-          alt=""
-          className="size-5 object-contain"
-        />
-      )}
-      <span className="text-xs font-medium">{text}</span>
-    </div>
-  );
+function translateReq(text: string, locale: Locale): string {
+  if (locale === "en") return text;
+  const dict = reqTranslations[locale];
+  if (!dict) return text;
+  // Replace known terms (longest first)
+  let result = text;
+  const keys = Object.keys(dict).sort((a, b) => b.length - a.length);
+  for (const key of keys) {
+    result = result.replace(new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"), dict[key]);
+  }
+  return result;
+}
+
+/** Parse a single requirement entry like "Meat ≥ 3" or "Asparagus ×2" into name + badge */
+function parseReqEntry(text: string): { name: string; badge?: string } {
+  // Match patterns: "Name ×2", "Name ≥ 3", "Name > 2", "Name < 1", "Name ≤ 1"
+  const m = text.match(/^(.+?)\s*(×|≥|>|<|≤)\s*(\d+(?:\.\d+)?)$/);
+  if (m) {
+    return { name: m[1].trim(), badge: `${m[2]}${m[3]}` };
+  }
+  return { name: text.trim() };
 }
 
 /** Split requirements into "needed" and "excluded (No ...)" sections */
@@ -765,24 +780,40 @@ function RequirementsSections({ text, locale }: { text: string; locale: Locale }
   if (needed.length === 1 && needed[0].includes("Anything")) return null;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {needed.length > 0 && (
         <div className="space-y-1.5">
           <span className="text-xs text-muted-foreground font-medium">{t(locale, "cooking_req_needed")}</span>
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {needed.map((item, i) => (
-              <ReqChip key={i} text={item} variant="needed" />
-            ))}
+          <div className="flex flex-wrap gap-4">
+            {needed.map((item, i) => {
+              const { name, badge } = parseReqEntry(item);
+              return (
+                <ItemSlot
+                  key={i}
+                  icon={findReqIcon(name)}
+                  label={translateReq(name, locale)}
+                  badge={badge}
+                />
+              );
+            })}
           </div>
         </div>
       )}
       {excluded.length > 0 && (
         <div className="space-y-1.5">
           <span className="text-xs text-red-500 dark:text-red-400 font-medium">{t(locale, "cooking_req_excluded")}</span>
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {excluded.map((item, i) => (
-              <ReqChip key={i} text={item} variant="excluded" />
-            ))}
+          <div className="flex flex-wrap gap-4">
+            {excluded.map((item, i) => {
+              const { name } = parseReqEntry(item);
+              return (
+                <ItemSlot
+                  key={i}
+                  icon={findReqIcon(name)}
+                  label={translateReq(name, locale)}
+                  variant="excluded"
+                />
+              );
+            })}
           </div>
         </div>
       )}
@@ -815,6 +846,53 @@ function StatBox({
   );
 }
 
+// ---------------------------------------------------------------------------
+// TagChip — shared chip component for tags & filter badges
+// ---------------------------------------------------------------------------
+
+function TagChip({
+  label,
+  icon,
+  onClick,
+  onRemove,
+}: {
+  label: string;
+  icon?: string; // game-items image filename
+  onClick?: () => void;
+  onRemove?: () => void;
+}) {
+  const inner = (
+    <>
+      {icon && <img src={assetPath(`/images/game-items/${icon}`)} alt="" className="size-4 object-contain" />}
+      {label}
+      {onRemove && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onRemove(); }}
+          className="ml-0.5 rounded-full p-0.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        >
+          <X className="size-3" />
+        </button>
+      )}
+    </>
+  );
+
+  const base = "inline-flex items-center gap-1 rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium transition-colors";
+
+  if (onClick) {
+    return (
+      <button onClick={onClick} className={cn(base, "cursor-pointer hover:bg-surface-hover")}>
+        {inner}
+      </button>
+    );
+  }
+
+  return <span className={base}>{inner}</span>;
+}
+
+// ---------------------------------------------------------------------------
+// Tag helpers
+// ---------------------------------------------------------------------------
+
 const foodTypeIcons: Record<string, string> = {
   meat: "meat.png",
   veggie: "carrot.png",
@@ -828,64 +906,3 @@ const foodTypeLabelKeys: Record<string, TranslationKey> = {
   goodies: "foodtype_goodies",
   roughage: "foodtype_roughage",
 };
-
-function FoodTypeBadge({ foodType, locale, onClick }: { foodType: string; locale?: Locale; onClick?: (foodType: string) => void }) {
-  const colors: Record<string, string> = {
-    meat: "bg-red-500/15 text-red-600 dark:text-red-400",
-    veggie: "bg-green-500/15 text-green-600 dark:text-green-400",
-    goodies: "bg-purple-500/15 text-purple-600 dark:text-purple-400",
-    roughage: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400",
-    generic: "bg-muted text-muted-foreground",
-  };
-
-  const icon = foodTypeIcons[foodType];
-  const labelKey = foodTypeLabelKeys[foodType];
-  const label = locale && labelKey ? t(locale, labelKey) : foodType;
-  const content = (
-    <>
-      {icon && <img src={assetPath(`/images/game-items/${icon}`)} alt="" className="size-3.5 object-contain" />}
-      {label}
-    </>
-  );
-
-  if (onClick) {
-    return (
-      <button
-        onClick={() => onClick(foodType)}
-        className={cn(
-          "inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium cursor-pointer hover:opacity-70 transition-opacity",
-          colors[foodType] ?? colors.generic
-        )}
-      >
-        {content}
-      </button>
-    );
-  }
-
-  return (
-    <span className={cn("inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium", colors[foodType] ?? colors.generic)}>
-      {content}
-    </span>
-  );
-}
-
-function EffectBadge({ effect, onClick }: { effect: string; onClick?: (effect: string) => void }) {
-  const label = effectLabels[effect] ?? effect;
-
-  if (onClick) {
-    return (
-      <button
-        onClick={() => onClick(effect)}
-        className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-500/15 text-blue-600 dark:text-blue-400 cursor-pointer hover:opacity-70 transition-opacity"
-      >
-        {label}
-      </button>
-    );
-  }
-
-  return (
-    <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-500/15 text-blue-600 dark:text-blue-400">
-      {label}
-    </span>
-  );
-}
