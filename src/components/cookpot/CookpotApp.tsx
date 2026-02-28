@@ -122,17 +122,16 @@ export function CookpotApp() {
                     onRemove={handleRemoveSlot}
                   />
                 ))}
-                {/* Clear button inline after slots */}
-                {filledIngredients.length > 0 && (
-                  <button
-                    onClick={handleClear}
-                    className="flex items-center gap-1 mt-0.5 px-2 py-1 rounded-full text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-surface border border-border transition-colors"
-                    title={t(resolvedLocale, "cookpot_clear")}
-                  >
-                    <RotateCcw className="size-3" />
-                    {t(resolvedLocale, "cookpot_clear")}
-                  </button>
-                )}
+                {/* Clear button — always visible, disabled when empty */}
+                <button
+                  onClick={handleClear}
+                  disabled={filledIngredients.length === 0}
+                  className="flex items-center gap-1 mt-0.5 px-2 py-1 rounded-full text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-surface border border-border transition-colors disabled:opacity-30 disabled:pointer-events-none"
+                  title={t(resolvedLocale, "cookpot_clear")}
+                >
+                  <RotateCcw className="size-3" />
+                  {t(resolvedLocale, "cookpot_clear")}
+                </button>
               </div>
             </div>
           </div>
