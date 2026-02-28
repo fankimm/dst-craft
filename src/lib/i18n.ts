@@ -98,6 +98,7 @@ const translations = {
     sign_in_with_google: "Google로 로그인",
     sign_out: "로그아웃",
     account: "계정",
+    release_notes: "릴리즈 노트",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -185,6 +186,7 @@ const translations = {
     sign_in_with_google: "Sign in with Google",
     sign_out: "Sign out",
     account: "Account",
+    release_notes: "Release Notes",
   },
 } as const;
 

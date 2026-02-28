@@ -154,7 +154,7 @@ export function SettingsPage() {
             href="/releases"
             className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
           >
-            <span>Release Notes</span>
+            <span>{t(resolvedLocale, "release_notes")}</span>
             <ChevronRight className="size-4" />
           </a>
         </div>
