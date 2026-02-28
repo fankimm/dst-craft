@@ -352,8 +352,8 @@ function ResultCard({
         </div>
       </div>
 
-      {/* Stats row */}
-      <div className="flex items-center gap-2">
+      {/* Stats (vertical) */}
+      <div className="flex flex-col gap-1">
         <InlineStat
           iconSrc={assetPath("/images/ui/health.png")}
           formatted={formatStat(recipe.health)}
