@@ -66,6 +66,26 @@ const translations = {
     cooking_no_perish: "썩지 않음",
     cooking_effect: "특수 효과",
     cooking_requirements: "조리법",
+    cooking_recommend_health: "체력회복 추천",
+    cooking_recommend_sanity: "정신력 회복 추천",
+    cooking_recommend_hunger: "허기 추천",
+    cookpot_station_cookpot: "요리솥",
+    cookpot_station_portable: "휴대용 요리솥",
+    cookpot_slot_empty: "재료 추가",
+    cookpot_result: "결과",
+    cookpot_no_result: "재료를 4개 넣어주세요",
+    cookpot_random_result: "랜덤 결과",
+    cookpot_clear: "초기화",
+    cookpot_select_ingredient: "재료 선택",
+    cookpot_search_ingredients: "재료 검색...",
+    cookpot_category_all: "전체",
+    cookpot_category_fruits: "과일",
+    cookpot_category_veggies: "채소",
+    cookpot_category_meats: "고기",
+    cookpot_category_fish: "생선",
+    cookpot_category_eggs: "알",
+    cookpot_category_sweeteners: "감미료",
+    cookpot_category_misc: "기타",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -121,6 +141,26 @@ const translations = {
     cooking_no_perish: "Never",
     cooking_effect: "Special Effect",
     cooking_requirements: "Requirements",
+    cooking_recommend_health: "Health Recovery",
+    cooking_recommend_sanity: "Sanity Recovery",
+    cooking_recommend_hunger: "Best Hunger",
+    cookpot_station_cookpot: "Crock Pot",
+    cookpot_station_portable: "Portable Crock Pot",
+    cookpot_slot_empty: "Add Ingredient",
+    cookpot_result: "Result",
+    cookpot_no_result: "Add 4 ingredients",
+    cookpot_random_result: "Random Result",
+    cookpot_clear: "Clear",
+    cookpot_select_ingredient: "Select Ingredient",
+    cookpot_search_ingredients: "Search ingredients...",
+    cookpot_category_all: "All",
+    cookpot_category_fruits: "Fruits",
+    cookpot_category_veggies: "Veggies",
+    cookpot_category_meats: "Meats",
+    cookpot_category_fish: "Fish",
+    cookpot_category_eggs: "Eggs",
+    cookpot_category_sweeteners: "Sweeteners",
+    cookpot_category_misc: "Misc",
   },
 } as const;
 
@@ -181,6 +221,16 @@ export function characterName(char: Pick<Character, "id" | "name">, locale: stri
 
 export function foodName(food: { id: string; name: string }, locale: string): string {
   return locales[locale]?.foods?.[food.id]?.name ?? food.name;
+}
+
+export function ingredientName(ing: { id: string; name: string; nameKo?: string }, locale: string): string {
+  // 1. ko.ts items section (shared game items)
+  const localeItem = locales[locale]?.items[ing.id]?.name;
+  if (localeItem) return localeItem;
+  // 2. Ingredient-level Korean name
+  if (locale === "ko" && ing.nameKo) return ing.nameKo;
+  // 3. English fallback
+  return ing.name;
 }
 
 /** Get the "other language" name for display (e.g. show English when locale is Korean) */

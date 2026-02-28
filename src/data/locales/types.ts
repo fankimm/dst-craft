@@ -7,4 +7,6 @@ export interface LocaleData {
   stations?: Record<string, { name?: string }>;
   /** Cooking recipe names */
   foods?: Record<string, { name?: string }>;
+  /** Cookpot ingredient names */
+  ingredients?: Record<string, { name?: string }>;
 }
