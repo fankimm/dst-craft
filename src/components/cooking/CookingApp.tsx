@@ -46,7 +46,7 @@ const sanityRecommendCount = cookingRecipes.filter((r) => r.sanity >= SANITY_THR
 const hungerRecommendCount = cookingRecipes.filter((r) => r.hunger >= HUNGER_THRESHOLD).length;
 
 const cookingCategories: CookingCategory[] = [
-  { id: "all", labelKey: "cooking_all", image: "category-icons/all.png", count: cookingRecipes.length },
+  { id: "all", labelKey: "cooking_all", image: "game-items/meatballs.png", count: cookingRecipes.length },
   { id: "cookpot", labelKey: "cooking_cookpot", image: "game-items/cookpot.png", count: cookpotCount },
   { id: "portablecookpot", labelKey: "cooking_portablecookpot", image: "game-items/portablecookpot_item.png", count: portableCount },
   { id: "recommend_health", labelKey: "cooking_recommend_health", image: "ui/health.png", count: healthRecommendCount },
