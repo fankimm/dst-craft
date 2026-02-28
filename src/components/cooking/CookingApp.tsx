@@ -635,13 +635,8 @@ function RecipeDetail({
         )}
       </div>
 
-      {/* Requirements */}
-      {recipe.requirements && (
-        <div className="space-y-1.5">
-          <span className="text-sm text-muted-foreground">{t(locale, "cooking_requirements")}</span>
-          <RequirementsText text={recipe.requirements} />
-        </div>
-      )}
+      {/* Requirements — split into needed / excluded */}
+      {recipe.requirements && <RequirementsSections text={recipe.requirements} locale={locale} />}
 
       {/* Suggested ingredients */}
       {recipe.cardIngredients && recipe.cardIngredients.length > 0 && (
@@ -727,21 +722,17 @@ const reqIconPattern = new RegExp(
   "g",
 );
 
-function RequirementsText({ text }: { text: string }) {
-  const parts = text.split(reqIconPattern);
+/** Render a single requirement item with inline icons for known item names */
+function ReqItem({ text }: { text: string }) {
+  const parts = text.trim().split(reqIconPattern);
   return (
-    <span className="text-sm leading-relaxed">
+    <span className="inline-flex items-center gap-0.5 text-sm">
       {parts.map((part, i) => {
         const icon = requirementIcons[part];
         if (icon) {
           return (
-            <span key={i} className="inline-flex items-center gap-0.5 align-middle">
-              <img
-                src={assetPath(`/images/game-items/${icon}`)}
-                alt={part}
-                title={part}
-                className="size-4 object-contain inline"
-              />
+            <span key={i} className="inline-flex items-center gap-0.5">
+              <img src={assetPath(`/images/game-items/${icon}`)} alt={part} title={part} className="size-4 object-contain" />
               {part}
             </span>
           );
@@ -749,6 +740,49 @@ function RequirementsText({ text }: { text: string }) {
         return <span key={i}>{part}</span>;
       })}
     </span>
+  );
+}
+
+/** Split requirements into "needed" and "excluded (No ...)" sections */
+function RequirementsSections({ text, locale }: { text: string; locale: Locale }) {
+  const items = text.split(",").map((s) => s.trim()).filter(Boolean);
+  const needed: string[] = [];
+  const excluded: string[] = [];
+
+  for (const item of items) {
+    if (item.startsWith("No ")) {
+      excluded.push(item.replace(/^No\s+/, ""));
+    } else {
+      needed.push(item);
+    }
+  }
+
+  // Skip "Anything (default)" type entries
+  if (needed.length === 1 && needed[0].includes("Anything")) return null;
+
+  return (
+    <div className="space-y-2">
+      {needed.length > 0 && (
+        <div className="space-y-1">
+          <span className="text-xs text-muted-foreground font-medium">{t(locale, "cooking_req_needed")}</span>
+          <div className="flex flex-col gap-0.5">
+            {needed.map((item, i) => (
+              <ReqItem key={i} text={item} />
+            ))}
+          </div>
+        </div>
+      )}
+      {excluded.length > 0 && (
+        <div className="space-y-1">
+          <span className="text-xs text-red-500 dark:text-red-400 font-medium">{t(locale, "cooking_req_excluded")}</span>
+          <div className="flex flex-col gap-0.5">
+            {excluded.map((item, i) => (
+              <ReqItem key={i} text={item} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
