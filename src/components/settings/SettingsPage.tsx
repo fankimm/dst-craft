@@ -1,10 +1,12 @@
 "use client";
 
-import { Sun, Moon, Monitor, Check } from "lucide-react";
+import Image from "next/image";
+import { Sun, Moon, Monitor, Check, ChevronRight } from "lucide-react";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
 import type { LocaleSetting } from "@/lib/i18n";
 import { t, supportedLocales, localeLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { APP_VERSION } from "@/lib/version";
 import { Footer } from "../crafting/Footer";
 
 const themeOptions: { value: ThemeSetting; icon: typeof Sun; labelKey: "light" | "dark" | "system" }[] = [
@@ -25,6 +27,21 @@ export function SettingsPage() {
     <div className="flex flex-col h-full bg-background text-foreground overflow-y-auto overscroll-contain">
       <div className="flex flex-col min-h-full">
         <div className="flex-1 p-4 space-y-6 max-w-md mx-auto w-full">
+          {/* Branding */}
+          <div className="flex flex-col items-center gap-2 py-4">
+            <Image
+              src="/icons/icon-192.png"
+              alt=""
+              width={48}
+              height={48}
+              className="size-12 rounded-lg"
+            />
+            <div className="text-center">
+              <h1 className="text-sm font-bold tracking-wide">DON&apos;T CRAFT WITHOUT RECIPES</h1>
+              <p className="text-xs text-muted-foreground mt-0.5">v{APP_VERSION}</p>
+            </div>
+          </div>
+
           {/* Theme */}
           <div className="space-y-2">
             <h2 className="text-sm font-semibold">{t(resolvedLocale, "theme")}</h2>
@@ -77,6 +94,15 @@ export function SettingsPage() {
               })}
             </div>
           </div>
+
+          {/* Release Notes */}
+          <a
+            href="/releases"
+            className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
+          >
+            <span>Release Notes</span>
+            <ChevronRight className="size-4" />
+          </a>
         </div>
 
         <Footer />

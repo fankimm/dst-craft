@@ -26,23 +26,6 @@ export function AppShell() {
 
   return (
     <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
-      {/* Title bar */}
-      <div className="flex items-center justify-between px-4 py-1.5 bg-surface border-b border-border shrink-0">
-        <div className="flex items-center gap-1.5">
-          <Image
-            src="/icons/icon-192.png"
-            alt=""
-            width={20}
-            height={20}
-            className="size-5 rounded-sm"
-          />
-          <span className="text-sm font-bold tracking-wide text-foreground">DON&apos;T CRAFT WITHOUT RECIPES</span>
-        </div>
-        <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-foreground text-background leading-none">
-          DST
-        </span>
-      </div>
-
       {/* Tab bar */}
       <div className="flex items-center border-b border-border bg-background shrink-0">
         {tabs.map((tab) => {

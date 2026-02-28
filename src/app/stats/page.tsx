@@ -7,6 +7,7 @@ import {
   Smartphone, Monitor, Clock, Search, Download,
   RotateCcw, TrendingUp,
 } from "lucide-react";
+import { BackToHome } from "@/components/ui/BackToHome";
 
 /** Convert ISO 3166-1 alpha-2 country code to flag emoji */
 function countryFlag(code: string): string {
@@ -88,8 +89,9 @@ export default function StatsPage() {
   const mobilePct = totalDevice > 0 ? Math.round((mobileCount / totalDevice) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-4 sm:p-8">
-      <div className="mx-auto max-w-5xl space-y-6">
+    <div className="min-h-screen bg-background text-foreground">
+      <BackToHome />
+      <div className="mx-auto max-w-5xl space-y-6 p-4 sm:p-8">
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-bold flex items-center gap-2">
             <BarChart3 className="size-5" />
