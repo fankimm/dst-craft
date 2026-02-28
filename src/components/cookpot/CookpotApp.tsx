@@ -226,33 +226,30 @@ function IngredientSlot({
 }) {
   if (!slot) {
     return (
-      <div className="flex items-center gap-2 w-36 sm:w-44 h-10 rounded-lg border-2 border-dashed border-border bg-surface/50 px-2">
-        <div className="size-7 flex items-center justify-center rounded-md bg-muted/50 text-xs font-semibold text-muted-foreground">
+      <div className="flex items-center gap-1.5 w-20 sm:w-24 h-10 rounded-lg border-2 border-dashed border-border bg-surface/50 px-1.5">
+        <div className="size-6 flex items-center justify-center rounded bg-muted/50 text-[10px] font-semibold text-muted-foreground shrink-0">
           {index + 1}
         </div>
-        <span className="text-[10px] text-muted-foreground">
-          {t(locale, "cookpot_slot_empty")}
-        </span>
       </div>
     );
   }
 
   return (
-    <div className="relative flex items-center gap-2 w-36 sm:w-44 h-10 rounded-lg border border-border bg-surface px-2">
+    <div className="relative flex items-center gap-1 w-20 sm:w-24 h-10 rounded-lg border border-border bg-surface px-1.5">
       <img
         src={assetPath(`/images/game-items/${ingredientImage(slot)}`)}
         alt={ingredientName(slot, locale)}
-        className="size-7 object-contain"
+        className="size-7 object-contain shrink-0"
       />
-      <span className="text-[10px] sm:text-xs text-foreground/80 font-medium leading-tight truncate flex-1">
+      <span className="text-[9px] sm:text-[10px] text-foreground/80 font-medium leading-tight truncate flex-1">
         {ingredientName(slot, locale)}
       </span>
       {/* Remove button */}
       <button
         onClick={() => onRemove(index)}
-        className="flex-shrink-0 size-5 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+        className="flex-shrink-0 size-4 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
       >
-        <X className="size-3" />
+        <X className="size-2.5" />
       </button>
     </div>
   );
@@ -274,7 +271,7 @@ function ResultPanel({
   // No result — show dashed placeholder
   if (!allFilled || !result || result.recipes.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center w-36 sm:w-44 rounded-xl border-2 border-dashed border-border bg-surface/30 self-stretch">
+      <div className="flex flex-col items-center justify-center w-48 sm:w-60 rounded-xl border-2 border-dashed border-border bg-surface/30 self-stretch">
         <span className="text-[10px] text-muted-foreground text-center px-2">
           {t(locale, "cookpot_no_result")}
         </span>
@@ -284,7 +281,7 @@ function ResultPanel({
 
   // Has result — show card(s)
   return (
-    <div className="flex flex-col gap-2 w-36 sm:w-44 self-stretch">
+    <div className="flex flex-col gap-2 w-48 sm:w-60 self-stretch">
       {/* Random result badge */}
       {result.isRandom && (
         <span className="inline-flex items-center gap-1 self-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-500/15 text-amber-600 dark:text-amber-400">
