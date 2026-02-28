@@ -159,8 +159,10 @@ export function CookingApp() {
     setSelectedCategory("all");
     setSearchQuery("");
     const ftIcons: Record<string, string> = { meat: "meat.png", veggie: "carrot.png", goodies: "honey.png", roughage: "cutlichen.png" };
-    setActiveFilter({ type: "foodType", value: foodType, label: foodType, icon: ftIcons[foodType] });
-  }, []);
+    const ftLabelKeys: Record<string, TranslationKey> = { meat: "foodtype_meat", veggie: "foodtype_veggie", goodies: "foodtype_goodies", roughage: "foodtype_roughage" };
+    const label = ftLabelKeys[foodType] ? t(resolvedLocale, ftLabelKeys[foodType]) : foodType;
+    setActiveFilter({ type: "foodType", value: foodType, label, icon: ftIcons[foodType] });
+  }, [resolvedLocale]);
 
   const handleStationClick = useCallback((station: string, label: string) => {
     setSelectedRecipe(null);
@@ -275,7 +277,7 @@ export function CookingApp() {
 
   // Filter chip component
   const filterChip = activeFilter && (
-    <div className="flex items-center gap-1.5 px-4 pt-2">
+    <div className="flex items-center gap-1.5 px-4 pt-2 pb-1">
       <span className="inline-flex items-center gap-1 rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium">
         {activeFilter.icon && <img src={assetPath(`/images/game-items/${activeFilter.icon}`)} alt="" className="size-4 object-contain" />}
         {activeFilter.label}
@@ -535,7 +537,7 @@ function RecipeDetail({
             <p className="text-sm text-muted-foreground">{recipe.name}</p>
           )}
           <div className="flex items-center gap-2 mt-1 flex-wrap">
-            <FoodTypeBadge foodType={recipe.foodType} onClick={onFoodTypeClick} />
+            <FoodTypeBadge foodType={recipe.foodType} locale={locale} onClick={onFoodTypeClick} />
             {recipe.station === "cookpot" && (
               <button
                 onClick={() => onStationClick?.("cookpot", t(locale, "cooking_cookpot"))}
@@ -820,7 +822,14 @@ const foodTypeIcons: Record<string, string> = {
   roughage: "cutlichen.png",
 };
 
-function FoodTypeBadge({ foodType, onClick }: { foodType: string; onClick?: (foodType: string) => void }) {
+const foodTypeLabelKeys: Record<string, TranslationKey> = {
+  meat: "foodtype_meat",
+  veggie: "foodtype_veggie",
+  goodies: "foodtype_goodies",
+  roughage: "foodtype_roughage",
+};
+
+function FoodTypeBadge({ foodType, locale, onClick }: { foodType: string; locale?: Locale; onClick?: (foodType: string) => void }) {
   const colors: Record<string, string> = {
     meat: "bg-red-500/15 text-red-600 dark:text-red-400",
     veggie: "bg-green-500/15 text-green-600 dark:text-green-400",
@@ -830,10 +839,12 @@ function FoodTypeBadge({ foodType, onClick }: { foodType: string; onClick?: (foo
   };
 
   const icon = foodTypeIcons[foodType];
+  const labelKey = foodTypeLabelKeys[foodType];
+  const label = locale && labelKey ? t(locale, labelKey) : foodType;
   const content = (
     <>
       {icon && <img src={assetPath(`/images/game-items/${icon}`)} alt="" className="size-3.5 object-contain" />}
-      {foodType}
+      {label}
     </>
   );
 
@@ -842,7 +853,7 @@ function FoodTypeBadge({ foodType, onClick }: { foodType: string; onClick?: (foo
       <button
         onClick={() => onClick(foodType)}
         className={cn(
-          "inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium capitalize cursor-pointer hover:opacity-70 transition-opacity",
+          "inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium cursor-pointer hover:opacity-70 transition-opacity",
           colors[foodType] ?? colors.generic
         )}
       >
@@ -852,7 +863,7 @@ function FoodTypeBadge({ foodType, onClick }: { foodType: string; onClick?: (foo
   }
 
   return (
-    <span className={cn("inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium capitalize", colors[foodType] ?? colors.generic)}>
+    <span className={cn("inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium", colors[foodType] ?? colors.generic)}>
       {content}
     </span>
   );
