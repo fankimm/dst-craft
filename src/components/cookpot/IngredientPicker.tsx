@@ -13,23 +13,24 @@ import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 
 // ---------------------------------------------------------------------------
-// Category tabs
+// Category tabs with icons
 // ---------------------------------------------------------------------------
 
 interface CategoryTab {
   id: "all" | IngredientCategory;
   labelKey: TranslationKey;
+  icon: string; // game-items image filename
 }
 
 const categoryTabs: CategoryTab[] = [
-  { id: "all", labelKey: "cookpot_category_all" },
-  { id: "fruits", labelKey: "cookpot_category_fruits" },
-  { id: "veggies", labelKey: "cookpot_category_veggies" },
-  { id: "meats", labelKey: "cookpot_category_meats" },
-  { id: "fish", labelKey: "cookpot_category_fish" },
-  { id: "eggs", labelKey: "cookpot_category_eggs" },
-  { id: "sweeteners", labelKey: "cookpot_category_sweeteners" },
-  { id: "misc", labelKey: "cookpot_category_misc" },
+  { id: "all", labelKey: "cookpot_category_all", icon: "cookpot.png" },
+  { id: "fruits", labelKey: "cookpot_category_fruits", icon: "pomegranate.png" },
+  { id: "veggies", labelKey: "cookpot_category_veggies", icon: "carrot.png" },
+  { id: "meats", labelKey: "cookpot_category_meats", icon: "meat.png" },
+  { id: "fish", labelKey: "cookpot_category_fish", icon: "fishmeat.png" },
+  { id: "eggs", labelKey: "cookpot_category_eggs", icon: "tallbirdegg.png" },
+  { id: "sweeteners", labelKey: "cookpot_category_sweeteners", icon: "honey.png" },
+  { id: "misc", labelKey: "cookpot_category_misc", icon: "twigs.png" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -105,20 +106,25 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
               key={tab.id}
               onClick={() => setCategory(tab.id)}
               className={cn(
-                "shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
+                "shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
                 category === tab.id
                   ? "bg-foreground text-background"
                   : "bg-surface border border-border text-muted-foreground hover:text-foreground",
               )}
             >
+              <img
+                src={assetPath(`/images/game-items/${tab.icon}`)}
+                alt=""
+                className="size-4 object-contain"
+              />
               {t(locale, tab.labelKey)}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Ingredient grid */}
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 pb-4" style={{ maxHeight: "40dvh" }}>
+      {/* Ingredient grid — fixed height so layout doesn't jump */}
+      <div className="overflow-y-auto overscroll-contain px-3 pb-4" style={{ height: "40dvh" }}>
         {filtered.length === 0 ? (
           <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
             {t(locale, "noItems")}
