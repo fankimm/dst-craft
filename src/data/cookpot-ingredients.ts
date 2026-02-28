@@ -85,7 +85,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "pondfish", name: "Pond Fish", nameKo: "연못 물고기", tags: { fish: 0.5, meat: 0.25 }, category: "fish", cookable: true },
   { id: "fishmeat_small", name: "Small Fish Morsel", nameKo: "작은 생선살", tags: { fish: 0.5, meat: 0.5 }, category: "fish", cookable: true, dryable: true },
   { id: "fishmeat", name: "Fish Morsel", nameKo: "생선살", tags: { fish: 1, meat: 1 }, category: "fish", cookable: true, dryable: true },
-  { id: "wobster_sheller_land", name: "Wobster", nameKo: "로브스터", tags: { fish: 2, meat: 1 }, category: "fish", cookable: true },
+  { id: "wobster_sheller_land", name: "Wobster", nameKo: "로브스터", tags: { fish: 2, meat: 1 }, category: "fish", cookable: true, cookedImage: "wobster_sheller_dead_cooked.png" },
   { id: "barnacle", name: "Barnacle", nameKo: "거북순", tags: { fish: 0.25, meat: 0.25 }, category: "fish" },
   { id: "barnacle_cooked", name: "Cooked Barnacle", nameKo: "구운 거북순", tags: { fish: 0.25, meat: 0.25, precook: 1 }, category: "fish" },
   { id: "oceanfish_small_5_inv", name: "Corn Cod", nameKo: "옥수수 대구", tags: { fish: 0.5, meat: 0.5 }, category: "fish" },
