@@ -99,6 +99,7 @@ const translations = {
     sign_out: "로그아웃",
     account: "계정",
     release_notes: "릴리즈 노트",
+    insight: "통계",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -187,6 +188,7 @@ const translations = {
     sign_out: "Sign out",
     account: "Account",
     release_notes: "Release Notes",
+    insight: "Insight",
   },
 } as const;
 

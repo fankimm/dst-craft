@@ -47,6 +47,8 @@ interface AuthContextValue {
   loading: boolean;
   /** true when GIS script is ready */
   gisReady: boolean;
+  /** true when the logged-in user has admin role */
+  isAdmin: boolean;
   logout: () => void;
   /** Call with a container element to render Google's sign-in button into it */
   renderGoogleButton: (el: HTMLElement, mode?: "standard" | "icon") => void;
@@ -91,6 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             email: payload.email as string,
             name: payload.name as string,
             picture: payload.picture as string,
+            role: (payload.role as string) ?? undefined,
           });
         } else {
           localStorage.removeItem(STORAGE_KEY);
@@ -122,6 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               email: (payload?.email as string) ?? "",
               name: (payload?.name as string) ?? "",
               picture: (payload?.picture as string) ?? "",
+              role: (payload?.role as string) ?? undefined,
             });
           } catch (err) {
             console.error("[Auth] Login failed:", err);
@@ -165,9 +169,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem(STORAGE_KEY);
   }, []);
 
+  const isAdmin = user?.role === "admin";
+
   const value = useMemo(
-    () => ({ user, token, loading, gisReady, logout, renderGoogleButton }),
-    [user, token, loading, gisReady, logout, renderGoogleButton],
+    () => ({ user, token, loading, gisReady, isAdmin, logout, renderGoogleButton }),
+    [user, token, loading, gisReady, isAdmin, logout, renderGoogleButton],
   );
 
   return (

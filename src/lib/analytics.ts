@@ -1,17 +1,5 @@
 const WORKER_URL = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
 
-/** URL에 ?admin=1 또는 ?admin=0 으로 설정/해제 가능 */
-function isAdmin(): boolean {
-  try {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("admin") === "1") localStorage.setItem("dst:admin", "1");
-      else if (params.get("admin") === "0") localStorage.removeItem("dst:admin");
-    }
-    return localStorage.getItem("dst:admin") === "1";
-  } catch { return false; }
-}
-
 export interface AnalyticsData {
   totalPageViews: number;
   totalUniqueVisitors: number;
@@ -39,8 +27,8 @@ export interface AnalyticsData {
 }
 
 /** Track a page visit — call once on app load */
-export async function trackVisit() {
-  if (!WORKER_URL || isAdmin()) return;
+export async function trackVisit(skipTracking?: boolean) {
+  if (!WORKER_URL || skipTracking) return;
 
   // Prevent duplicate tracking in the same session
   if (sessionStorage.getItem("dst:tracked")) return;
@@ -65,8 +53,8 @@ export async function trackVisit() {
 }
 
 /** Track session duration — call on visibility change / unload */
-export function initDurationTracking() {
-  if (!WORKER_URL || isAdmin()) return;
+export function initDurationTracking(skipTracking?: boolean) {
+  if (!WORKER_URL || skipTracking) return;
 
   const start = Date.now();
 
@@ -88,8 +76,8 @@ export function initDurationTracking() {
 }
 
 /** Track a generic event */
-export function trackEvent(type: "search" | "pwa_install") {
-  if (!WORKER_URL || isAdmin()) return;
+export function trackEvent(type: "search" | "pwa_install", skipTracking?: boolean) {
+  if (!WORKER_URL || skipTracking) return;
   // Use sendBeacon to avoid blocking
   navigator.sendBeacon(
     `${WORKER_URL}/event`,
@@ -97,12 +85,14 @@ export function trackEvent(type: "search" | "pwa_install") {
   );
 }
 
-/** Fetch analytics data for the stats page */
-export async function fetchAnalytics(): Promise<AnalyticsData | null> {
-  if (!WORKER_URL) return null;
+/** Fetch analytics data for the stats page (requires admin JWT) */
+export async function fetchAnalytics(token: string): Promise<AnalyticsData | null> {
+  if (!WORKER_URL || !token) return null;
 
   try {
-    const res = await fetch(`${WORKER_URL}/stats`);
+    const res = await fetch(`${WORKER_URL}/stats`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (!res.ok) return null;
     return await res.json();
   } catch {

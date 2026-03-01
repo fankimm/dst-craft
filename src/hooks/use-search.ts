@@ -5,6 +5,7 @@ import type { CraftingItem } from "@/lib/types";
 import { searchItemsByTags } from "@/lib/crafting-data";
 import type { SearchTag } from "@/lib/crafting-data";
 import { trackEvent } from "@/lib/analytics";
+import { useAuth } from "@/hooks/use-auth";
 
 export type { SearchTag };
 
@@ -14,6 +15,7 @@ function tagKey(tags: SearchTag[]): string {
 }
 
 export function useSearch() {
+  const { isAdmin } = useAuth();
   const [tags, setTags] = useState<SearchTag[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [debouncedTags, setDebouncedTags] = useState<SearchTag[]>([]);
@@ -41,7 +43,7 @@ export function useSearch() {
     // Track search usage once per session
     if (!searchTracked.current) {
       searchTracked.current = true;
-      trackEvent("search");
+      trackEvent("search", isAdmin);
     }
   }, [tagKey(debouncedTags)]);
 

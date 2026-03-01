@@ -15,6 +15,37 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.2.0",
+    date: "2026-03-01",
+    dev: [
+      "src/app/favicon.ico 삭제 — Next.js App Router route convention 충돌 해소, public/favicon.ico만 사용",
+      "Worker: ADMIN_EMAILS 환경변수 추가 (wrangler.toml), Env 인터페이스 확장",
+      "Worker /auth/google: 이메일 화이트리스트 매칭 시 JWT에 role: admin 포함",
+      "Worker /stats: Bearer JWT 인증 + role === admin 검증 필수, 미인증 시 401",
+      "use-auth.tsx: JWT payload에서 role 추출, isAdmin: boolean 컨텍스트에 노출",
+      "favorites-api.ts: AuthUser에 role?: string 추가",
+      "i18n.ts: insight 번역 키 추가 (ko: 통계, en: Insight)",
+      "SettingsPage: isAdmin일 때 Insight 버튼 (BarChart3 아이콘) 표시",
+      "analytics.ts: isAdmin() localStorage 방식 제거, trackVisit/initDurationTracking/trackEvent에 skipTracking 파라미터 추가",
+      "analytics.ts: fetchAnalytics(token) — JWT를 Authorization 헤더에 포함",
+      "stats/page.tsx: 비관리자 접근 시 홈 리다이렉트, 7일 추이 SVG 영역(area) 차트로 변경",
+    ],
+    changes: {
+      ko: [
+        "파비콘이 시크릿모드에서 정상 표시되도록 수정",
+        "관리자 전용 통계 페이지 — 로그인 기반 접근 제어",
+        "설정에 통계(Insight) 바로가기 추가 (관리자만 표시)",
+        "7일 접속 추이 차트를 영역(area) 차트로 개선",
+      ],
+      en: [
+        "Fixed favicon not showing in incognito mode",
+        "Admin-only stats page with login-based access control",
+        "Insight shortcut in settings (visible to admins only)",
+        "7-day trend chart upgraded to area chart",
+      ],
+    },
+  },
+  {
     version: "0.1.1",
     date: "2026-03-01",
     dev: [

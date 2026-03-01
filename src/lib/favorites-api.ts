@@ -5,6 +5,7 @@ export interface AuthUser {
   email: string;
   name: string;
   picture: string;
+  role?: string;
 }
 
 export async function loginWithGoogle(idToken: string): Promise<{ token: string; user: AuthUser }> {

@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { fetchAnalytics, type AnalyticsData } from "@/lib/analytics";
+import { useAuth } from "@/hooks/use-auth";
 import {
   BarChart3, Globe, Users, Eye, RefreshCw,
   Smartphone, Monitor, Clock, Search, Download,
@@ -12,14 +14,14 @@ import { BackToHome } from "@/components/ui/BackToHome";
 /** Convert ISO 3166-1 alpha-2 country code to flag emoji */
 function countryFlag(code: string): string {
   const upper = code.toUpperCase();
-  if (upper.length !== 2) return "🏳️";
+  if (upper.length !== 2) return "\u{1F3F3}\uFE0F";
   const cp1 = 0x1F1E6 + upper.charCodeAt(0) - 65;
   const cp2 = 0x1F1E6 + upper.charCodeAt(1) - 65;
   return String.fromCodePoint(cp1, cp2);
 }
 
 const osIcons: Record<string, string> = {
-  iOS: "🍎", macOS: "🍎", Windows: "🪟", Android: "🤖", Linux: "🐧", ChromeOS: "💻",
+  iOS: "\u{1F34E}", macOS: "\u{1F34E}", Windows: "\u{1FA9F}", Android: "\u{1F916}", Linux: "\u{1F427}", ChromeOS: "\u{1F4BB}",
 };
 
 function StatCard({ icon: Icon, label, value, sub }: { icon: typeof Eye; label: string; value: number | string; sub?: string }) {
@@ -36,10 +38,10 @@ function StatCard({ icon: Icon, label, value, sub }: { icon: typeof Eye; label: 
 }
 
 function formatDuration(seconds: number): string {
-  if (seconds < 60) return `${seconds}초`;
+  if (seconds < 60) return `${seconds}\uCD08`;
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
-  return s > 0 ? `${m}분 ${s}초` : `${m}분`;
+  return s > 0 ? `${m}\uBD84 ${s}\uCD08` : `${m}\uBD84`;
 }
 
 function PercentBar({ label, count, total, icon }: { label: string; count: number; total: number; icon?: string }) {
@@ -55,20 +57,99 @@ function PercentBar({ label, count, total, icon }: { label: string; count: numbe
   );
 }
 
+/** SVG Area Chart for 7-day trend */
+function AreaChart({ data }: { data: { date: string; pv: number; uv: number }[] }) {
+  const days = [...data].reverse(); // oldest → newest
+  const maxVal = Math.max(...days.map((d) => Math.max(d.pv, d.uv)), 1);
+
+  const W = 600;
+  const H = 200;
+  const padTop = 20;
+  const padBottom = 30;
+  const padLeft = 10;
+  const padRight = 10;
+  const chartW = W - padLeft - padRight;
+  const chartH = H - padTop - padBottom;
+
+  function x(i: number) {
+    return padLeft + (i / (days.length - 1)) * chartW;
+  }
+  function y(val: number) {
+    return padTop + chartH - (val / maxVal) * chartH;
+  }
+
+  function areaPath(key: "pv" | "uv") {
+    const pts = days.map((d, i) => `${x(i)},${y(d[key])}`);
+    return `M${pts.join(" L")} L${x(days.length - 1)},${padTop + chartH} L${x(0)},${padTop + chartH} Z`;
+  }
+
+  function linePath(key: "pv" | "uv") {
+    const pts = days.map((d, i) => `${x(i)},${y(d[key])}`);
+    return `M${pts.join(" L")}`;
+  }
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
+      {/* PV area */}
+      <path d={areaPath("pv")} className="fill-primary/20" />
+      <path d={linePath("pv")} className="stroke-primary/60" fill="none" strokeWidth="2" />
+      {/* UV area */}
+      <path d={areaPath("uv")} className="fill-green-500/20" />
+      <path d={linePath("uv")} className="stroke-green-500/60" fill="none" strokeWidth="2" />
+      {/* Data points + labels */}
+      {days.map((d, i) => (
+        <g key={d.date}>
+          {/* PV dot */}
+          <circle cx={x(i)} cy={y(d.pv)} r="3" className="fill-primary/80" />
+          <text x={x(i)} y={y(d.pv) - 8} textAnchor="middle" className="fill-foreground text-[10px] font-medium">{d.pv}</text>
+          {/* UV dot */}
+          <circle cx={x(i)} cy={y(d.uv)} r="3" className="fill-green-500/80" />
+          <text x={x(i)} y={y(d.uv) + 14} textAnchor="middle" className="fill-green-600 dark:fill-green-400 text-[10px] font-medium">{d.uv}</text>
+          {/* Date label */}
+          <text x={x(i)} y={H - 5} textAnchor="middle" className="fill-muted-foreground text-[10px]">
+            {d.date.slice(5)}
+          </text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 export default function StatsPage() {
+  const { token, isAdmin, loading: authLoading } = useAuth();
+  const router = useRouter();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Redirect non-admin users
+  useEffect(() => {
+    if (!authLoading && !isAdmin) {
+      router.replace("/");
+    }
+  }, [authLoading, isAdmin, router]);
+
   async function load() {
+    if (!token) return;
     setLoading(true);
-    const result = await fetchAnalytics();
+    const result = await fetchAnalytics(token);
     setData(result);
     setLoading(false);
   }
 
   useEffect(() => {
-    load();
-  }, []);
+    if (token && isAdmin) {
+      load();
+    }
+  }, [token, isAdmin]);
+
+  // Don't render anything for non-admin
+  if (authLoading || !isAdmin) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground text-sm">
+        {authLoading ? "\uBD88\uB7EC\uC624\uB294 \uC911..." : "\uC811\uADFC \uAD8C\uD55C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4"}
+      </div>
+    );
+  }
 
   const sortedCountries = data
     ? Object.entries(data.countries).sort((a, b) => b[1] - a[1])
@@ -79,9 +160,6 @@ export default function StatsPage() {
     ? Object.entries(data.os ?? {}).sort((a, b) => b[1] - a[1])
     : [];
   const totalOS = sortedOS.reduce((sum, [, c]) => sum + c, 0);
-
-  const maxPv = data ? Math.max(...data.last7Days.map((d) => d.pv), 1) : 1;
-  const maxUv = data ? Math.max(...data.last7Days.map((d) => d.uv), 1) : 1;
 
   const mobileCount = data?.device?.mobile ?? 0;
   const desktopCount = data?.device?.desktop ?? 0;
@@ -133,44 +211,13 @@ export default function StatsPage() {
               <StatCard icon={Download} label="PWA 설치" value={data.pwaInstalls} />
             </div>
 
-            {/* 7-Day Trend Chart */}
+            {/* 7-Day Trend Area Chart */}
             <div className="rounded-lg border border-border bg-card p-4 space-y-3">
               <h2 className="text-sm font-semibold flex items-center gap-2">
                 <TrendingUp className="size-4" />
                 접속자 추이 (7일)
               </h2>
-              {/* Line-style bar chart */}
-              <div className="space-y-2">
-                {[...data.last7Days].reverse().map((day) => (
-                  <div key={day.date} className="flex items-center gap-3 text-xs">
-                    <span className="w-14 text-muted-foreground shrink-0">
-                      {day.date.slice(5)}
-                    </span>
-                    <div className="flex-1 space-y-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-6 text-right text-muted-foreground shrink-0">PV</span>
-                        <div className="flex-1 h-3 bg-surface rounded overflow-hidden">
-                          <div
-                            className="h-full bg-primary/60 rounded transition-all"
-                            style={{ width: `${(day.pv / maxPv) * 100}%` }}
-                          />
-                        </div>
-                        <span className="w-8 text-right text-muted-foreground shrink-0">{day.pv}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-6 text-right text-muted-foreground shrink-0">UV</span>
-                        <div className="flex-1 h-3 bg-surface rounded overflow-hidden">
-                          <div
-                            className="h-full bg-green-500/60 rounded transition-all"
-                            style={{ width: `${(day.uv / maxUv) * 100}%` }}
-                          />
-                        </div>
-                        <span className="w-8 text-right text-muted-foreground shrink-0">{day.uv}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <AreaChart data={data.last7Days} />
               <div className="flex gap-4 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1"><span className="inline-block w-3 h-2 bg-primary/60 rounded" /> PV (페이지뷰)</span>
                 <span className="flex items-center gap-1"><span className="inline-block w-3 h-2 bg-green-500/60 rounded" /> UV (순 방문자)</span>
@@ -186,8 +233,8 @@ export default function StatsPage() {
                   디바이스
                 </h2>
                 <div className="space-y-2">
-                  <PercentBar label="모바일" count={mobileCount} total={totalDevice} icon="📱" />
-                  <PercentBar label="데스크탑" count={desktopCount} total={totalDevice} icon="🖥️" />
+                  <PercentBar label="모바일" count={mobileCount} total={totalDevice} icon={"\u{1F4F1}"} />
+                  <PercentBar label="데스크탑" count={desktopCount} total={totalDevice} icon={"\u{1F5A5}\uFE0F"} />
                 </div>
               </div>
 
@@ -199,7 +246,7 @@ export default function StatsPage() {
                 ) : (
                   <div className="space-y-2">
                     {sortedOS.map(([name, count]) => (
-                      <PercentBar key={name} label={name} count={count} total={totalOS} icon={osIcons[name] ?? "💻"} />
+                      <PercentBar key={name} label={name} count={count} total={totalOS} icon={osIcons[name] ?? "\u{1F4BB}"} />
                     ))}
                   </div>
                 )}
@@ -266,7 +313,7 @@ export default function StatsPage() {
                           </td>
                           <td className="py-2 pr-3 text-muted-foreground">{v.region}</td>
                           <td className="py-2 pr-3 text-muted-foreground">{v.city}</td>
-                          <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "📱" : "🖥️"}</td>
+                          <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "\u{1F4F1}" : "\u{1F5A5}\uFE0F"}</td>
                           <td className="py-2 text-muted-foreground">{v.os ?? ""}</td>
                         </tr>
                       ))}

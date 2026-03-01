@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import Image from "next/image";
-import { Sun, Moon, Monitor, Check, ChevronRight, LogOut } from "lucide-react";
+import { Sun, Moon, Monitor, Check, ChevronRight, LogOut, BarChart3 } from "lucide-react";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import type { LocaleSetting } from "@/lib/i18n";
@@ -24,7 +24,7 @@ const localeOptions: { value: LocaleSetting; label: string }[] = [
 
 export function SettingsPage() {
   const { theme, locale, resolvedLocale, setTheme, setLocale } = useSettings();
-  const { user, loading: authLoading, gisReady, logout, renderGoogleButton } = useAuth();
+  const { user, loading: authLoading, gisReady, isAdmin, logout, renderGoogleButton } = useAuth();
   const googleBtnRef = useRef<HTMLDivElement>(null);
 
   // Render Google button when ready and not logged in
@@ -148,6 +148,20 @@ export function SettingsPage() {
               })}
             </div>
           </div>
+
+          {/* Insight (admin only) */}
+          {isAdmin && (
+            <a
+              href="/stats"
+              className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
+            >
+              <span className="flex items-center gap-2">
+                <BarChart3 className="size-4" />
+                {t(resolvedLocale, "insight")}
+              </span>
+              <ChevronRight className="size-4" />
+            </a>
+          )}
 
           {/* Release Notes */}
           <a

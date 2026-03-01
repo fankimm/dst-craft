@@ -7,6 +7,7 @@ import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterByI
 import { useCraftingState } from "@/hooks/use-crafting-state";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
+import { useAuth } from "@/hooks/use-auth";
 import { useFavorites } from "@/hooks/use-favorites";
 import { t, itemName, categoryName } from "@/lib/i18n";
 import type { CategoryId } from "@/lib/types";
@@ -39,6 +40,7 @@ export function CraftingApp() {
   } = useCraftingState();
 
   const { resolvedLocale } = useSettings();
+  const { isAdmin } = useAuth();
   const { favorites } = useFavorites();
 
   const craftingFavCount = useMemo(
@@ -63,13 +65,13 @@ export function CraftingApp() {
 
   // Track visit + duration + PWA install on first load
   useEffect(() => {
-    trackVisit();
-    initDurationTracking();
+    trackVisit(isAdmin);
+    initDurationTracking(isAdmin);
 
-    const handlePWA = () => trackEvent("pwa_install");
+    const handlePWA = () => trackEvent("pwa_install", isAdmin);
     window.addEventListener("appinstalled", handlePWA);
     return () => window.removeEventListener("appinstalled", handlePWA);
-  }, []);
+  }, [isAdmin]);
 
   // --- Slide transition ---
   const [slideDir, setSlideDir] = useState<"right" | "left" | null>(null);

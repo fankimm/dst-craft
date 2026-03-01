@@ -4,6 +4,7 @@ interface Env {
   ALLOWED_ORIGIN: string;
   GOOGLE_CLIENT_ID: string;
   JWT_SECRET: string;
+  ADMIN_EMAILS: string;
 }
 
 function corsHeaders(origin: string, allowed: string): HeadersInit {
@@ -205,8 +206,17 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
     }
 
-    // GET /stats — fetch analytics data
+    // GET /stats — fetch analytics data (admin only)
     if (url.pathname === "/stats" && request.method === "GET") {
+      const auth = request.headers.get("Authorization") ?? "";
+      if (!auth.startsWith("Bearer ")) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const jwtPayload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+      if (!jwtPayload || jwtPayload.role !== "admin") {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
       const date = today();
       const dates: string[] = [];
       for (let i = 0; i < 7; i++) {
@@ -339,9 +349,13 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         ["HSET", `dst:user:${sub}`, "email", email, "name", name, "picture", picture],
       ]);
 
+      // Check admin whitelist
+      const adminEmails = (env.ADMIN_EMAILS ?? "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
+      const isAdmin = adminEmails.includes(email.toLowerCase());
+
       // Issue JWT (30 days expiry)
       const jwt = await createJWT(
-        { sub, email, name, picture, exp: Math.floor(Date.now() / 1000) + 30 * 86400 },
+        { sub, email, name, picture, ...(isAdmin ? { role: "admin" } : {}), exp: Math.floor(Date.now() / 1000) + 30 * 86400 },
         env.JWT_SECRET,
       );
 
