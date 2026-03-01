@@ -1,15 +1,14 @@
 "use client";
 
-import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
 import { t } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n";
-import { assetPath } from "@/lib/asset-path";
 import { getSuggestions } from "@/lib/crafting-data";
 import type { SearchTag } from "@/hooks/use-search";
 import type { TagType } from "@/lib/crafting-data";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
+import { TagChip } from "@/components/ui/TagChip";
 
 const typeLabels: Record<string, Record<TagType, string>> = {
   ko: { character: "캐릭터", category: "카테고리", station: "제작소", material: "재료", item: "아이템", text: "텍스트" },
@@ -36,15 +35,6 @@ const tagStyles = {
   item:
     "border-[#6a8a6a] bg-[#e8f0e8] text-[#2a4a2a] dark:border-[#4a7a4a]/60 dark:bg-[#1a2e1a]/50 dark:text-[#80b080]",
   text: "border-[#b8b0a0] bg-[#f0ece4] text-[#5a5040] dark:border-[#6a6458]/60 dark:bg-[#2e2c24]/50 dark:text-[#a09880]",
-} as const;
-
-const tagHoverStyles = {
-  character: "hover:bg-[#f0e4c0] dark:hover:bg-[#4a3e1a]/60",
-  category: "hover:bg-[#ecdcc8] dark:hover:bg-[#4c3020]/60",
-  station: "hover:bg-[#ecd4cc] dark:hover:bg-[#5a2820]/60",
-  material: "hover:bg-[#e4e0c8] dark:hover:bg-[#3a3818]/60",
-  item: "hover:bg-[#d8e8d8] dark:hover:bg-[#2a3e2a]/60",
-  text: "hover:bg-[#e4ddd0] dark:hover:bg-[#3e3c30]/60",
 } as const;
 
 const suggestionDotStyles: Record<TagType, string> = {
@@ -120,31 +110,13 @@ export function SearchBar({
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {tags.map((tag, i) => (
-            <span
+            <TagChip
               key={i}
-              className={cn(
-                "inline-flex items-center gap-1 pl-1.5 pr-2 py-1 rounded-md text-xs font-medium border h-7",
-                tagStyles[tag.type],
-              )}
-            >
-              {tag.image && (
-                <img
-                  src={assetPath(`/images/${tag.image}`)}
-                  alt=""
-                  className="size-4.5 object-contain shrink-0"
-                />
-              )}
-              {tag.text}
-              <button
-                onClick={() => onRemoveTag(i)}
-                className={cn(
-                  "rounded-full transition-colors p-0.5 -mr-0.5",
-                  tagHoverStyles[tag.type],
-                )}
-              >
-                <X className="size-3" />
-              </button>
-            </span>
+              label={tag.text}
+              icon={tag.image}
+              onRemove={() => onRemoveTag(i)}
+              className={tagStyles[tag.type]}
+            />
           ))}
         </div>
       )}

@@ -3,22 +3,22 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight, X } from "lucide-react";
-import { cookingRecipes, type CookingRecipe, type CookingStation } from "@/data/recipes";
+import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
+import { cookpotIngredients, ingredientImage } from "@/data/cookpot-ingredients";
 import { useSettings } from "@/hooks/use-settings";
 import { useFavorites } from "@/hooks/use-favorites";
+import { useCookingState, type CookingCategoryId } from "@/hooks/use-cooking-state";
 import { t, foodName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { ItemSlot } from "../ui/ItemSlot";
 import { SearchWithSuggestions, type SearchSuggestion } from "../ui/SearchWithSuggestions";
+import { TagChip } from "../ui/TagChip";
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-type RecommendCategoryId = "recommend_health" | "recommend_sanity" | "recommend_hunger";
-type CookingCategoryId = "all" | "favorites" | CookingStation | RecommendCategoryId;
 
 interface CookingCategory {
   id: CookingCategoryId;
@@ -28,7 +28,7 @@ interface CookingCategory {
 }
 
 interface CookingFilter {
-  type: "foodType" | "station" | "effect";
+  type: "foodType" | "station" | "effect" | "ingredient";
   value: string;
   label: string;
   icon?: string; // game-items image filename
@@ -85,17 +85,102 @@ function formatStat(value: number): string {
   return String(value);
 }
 
-function isRecommendCategory(id: CookingCategoryId): id is RecommendCategoryId {
+function isRecommendCategory(id: CookingCategoryId): boolean {
   return id === "recommend_health" || id === "recommend_sanity" || id === "recommend_hunger";
 }
+
+/** Extract searchable ingredient/tag names from recipe requirements (en + locale) */
+function getRecipeIngredientNames(recipe: CookingRecipe, locale: Locale): string[] {
+  if (!recipe.requirements) return [];
+  const items = recipe.requirements.split(",").map(s => s.trim()).filter(Boolean);
+  const names: string[] = [];
+  for (const item of items) {
+    const raw = item.replace(/^No\s+/, "");
+    const { name } = parseReqEntry(raw);
+    const parts = name.split(/\s*\/\s*/);
+    for (const part of parts) {
+      names.push(part.toLowerCase());
+      const translated = translateReq(part, locale);
+      if (translated !== part) names.push(translated.toLowerCase());
+    }
+  }
+  return names;
+}
+
+/** Cooking ingredient suggestions (matches crafting-tab getSuggestions pattern) */
+function getCookingIngredientSuggestions(query: string, locale: Locale) {
+  const lower = query.toLowerCase();
+  const results: Array<{ text: string; image: string; engName: string }> = [];
+
+  // 1. cookpotIngredients: match by name + nameKo
+  for (const ing of cookpotIngredients) {
+    const names = [ing.name.toLowerCase()];
+    if (ing.nameKo) names.push(ing.nameKo.toLowerCase());
+    if (names.some(n => n.includes(lower))) {
+      results.push({
+        text: locale === "ko" && ing.nameKo ? ing.nameKo : ing.name,
+        image: `game-items/${ingredientImage(ing)}`,
+        engName: ing.name,
+      });
+    }
+    if (results.length >= 5) return results;
+  }
+
+  // 2. Tag search (Meat→고기, Veggie→채소 etc.) via tagIcons + reqTagTranslations
+  for (const [engTag, icon] of Object.entries(tagIcons)) {
+    const translated = reqTagTranslations[locale]?.[engTag];
+    const names = [engTag.toLowerCase()];
+    if (translated) names.push(translated.toLowerCase());
+    if (names.some(n => n.includes(lower))) {
+      if (!results.some(r => r.engName === engTag)) {
+        results.push({
+          text: translated || engTag,
+          image: `game-items/${icon}`,
+          engName: engTag,
+        });
+      }
+    }
+    if (results.length >= 5) return results;
+  }
+
+  return results;
+}
+
+const cookingTypeLabels: Record<string, Record<string, string>> = {
+  ko: { ingredient: "재료", recipe: "요리" },
+  en: { ingredient: "Ingredient", recipe: "Recipe" },
+  ja: { ingredient: "素材", recipe: "料理" },
+  zh_CN: { ingredient: "材料", recipe: "料理" },
+  zh_TW: { ingredient: "材料", recipe: "料理" },
+};
 
 // ---------------------------------------------------------------------------
 // CookingApp
 // ---------------------------------------------------------------------------
 
-export function CookingApp() {
+export function CookingApp({
+  pendingRecipeId,
+  onClearPendingRecipe,
+}: {
+  pendingRecipeId?: string | null;
+  onClearPendingRecipe?: () => void;
+}) {
   const { resolvedLocale } = useSettings();
   const { favorites, isFavorite, toggleFavorite } = useFavorites();
+  const {
+    selectedCategory,
+    selectedRecipeId,
+    showCategoryGrid,
+    selectCategory,
+    selectRecipe,
+    openRecipeFromExternal,
+    goHome,
+  } = useCookingState();
+
+  // Derive recipe object from ID
+  const selectedRecipe = selectedRecipeId
+    ? cookingRecipes.find((r) => r.id === selectedRecipeId) ?? null
+    : null;
 
   // Cooking favorites: filter recipes whose id is in favorites set
   const cookingFavCount = useMemo(
@@ -103,11 +188,16 @@ export function CookingApp() {
     [favorites],
   );
 
-  // Navigation state
-  const [selectedCategory, setSelectedCategory] = useState<CookingCategoryId | null>(null);
-  const [selectedRecipe, setSelectedRecipe] = useState<CookingRecipe | null>(null);
+  // Local transient state (search, filters, animation)
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState<CookingFilter | null>(null);
+
+  // Debounce search query (200ms)
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(searchQuery), 200);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   // Slide animation
   const [slideDir, setSlideDir] = useState<"right" | "left" | null>(null);
@@ -129,6 +219,18 @@ export function CookingApp() {
   const slideClass =
     slideDir === "right" ? "animate-slide-right" : slideDir === "left" ? "animate-slide-left" : "";
 
+  // Handle pending recipe from cookpot tab
+  useEffect(() => {
+    if (!pendingRecipeId) return;
+    const recipe = cookingRecipes.find((r) => r.id === pendingRecipeId);
+    if (recipe) {
+      openRecipeFromExternal(recipe.id, "all");
+      setSearchQuery("");
+      setActiveFilter(null);
+    }
+    onClearPendingRecipe?.();
+  }, [pendingRecipeId, onClearPendingRecipe, openRecipeFromExternal]);
+
   // Detail panel animation
   const [panelRecipe, setPanelRecipe] = useState<CookingRecipe | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -147,58 +249,63 @@ export function CookingApp() {
   }, [selectedRecipe]);
 
   const handleGoHome = useCallback(() => {
-    setSelectedCategory(null);
-    setSelectedRecipe(null);
+    goHome();
     setSearchQuery("");
     setActiveFilter(null);
-  }, []);
+  }, [goHome]);
 
   const handleSelectCategory = useCallback((id: CookingCategoryId) => {
-    setSelectedCategory(id);
+    selectCategory(id);
     setSearchQuery("");
     setActiveFilter(null);
-  }, []);
+  }, [selectCategory]);
 
   const handleClosePanel = useCallback(() => {
-    setSelectedRecipe(null);
-  }, []);
+    selectRecipe(null);
+  }, [selectRecipe]);
 
   // Badge click handlers — close panel, go to "all", set filter
   const handleFoodTypeClick = useCallback((foodType: string) => {
-    setSelectedRecipe(null);
-    setSelectedCategory("all");
+    selectRecipe(null);
+    selectCategory("all");
     setSearchQuery("");
-    const ftIcons: Record<string, string> = { meat: "meat.png", veggie: "carrot.png", goodies: "honey.png", roughage: "cutlichen.png" };
+    const ftIcons: Record<string, string> = { meat: "game-items/meat.png", veggie: "game-items/carrot.png", goodies: "game-items/honey.png", roughage: "game-items/cutlichen.png" };
     const ftLabelKeys: Record<string, TranslationKey> = { meat: "foodtype_meat", veggie: "foodtype_veggie", goodies: "foodtype_goodies", roughage: "foodtype_roughage" };
     const label = ftLabelKeys[foodType] ? t(resolvedLocale, ftLabelKeys[foodType]) : foodType;
     setActiveFilter({ type: "foodType", value: foodType, label, icon: ftIcons[foodType] });
-  }, [resolvedLocale]);
+  }, [resolvedLocale, selectRecipe, selectCategory]);
 
   const handleStationClick = useCallback((station: string, label: string) => {
-    setSelectedRecipe(null);
-    setSelectedCategory("all");
+    selectRecipe(null);
+    selectCategory("all");
     setSearchQuery("");
-    const stIcons: Record<string, string> = { cookpot: "cookpot.png", portablecookpot: "portablecookpot_item.png" };
+    const stIcons: Record<string, string> = { cookpot: "game-items/cookpot.png", portablecookpot: "game-items/portablecookpot_item.png" };
     setActiveFilter({ type: "station", value: station, label, icon: stIcons[station] });
-  }, []);
+  }, [selectRecipe, selectCategory]);
 
   const handleEffectClick = useCallback((effect: string) => {
-    setSelectedRecipe(null);
-    setSelectedCategory("all");
+    selectRecipe(null);
+    selectCategory("all");
     setSearchQuery("");
     setActiveFilter({ type: "effect", value: effect, label: effectLabels[effect] ?? effect });
-  }, []);
+  }, [selectRecipe, selectCategory]);
 
   const handleClearFilter = useCallback(() => {
     setActiveFilter(null);
   }, []);
 
   const handleSearchSelectRecipe = useCallback((recipe: CookingRecipe) => {
-    setSelectedCategory("all");
+    selectCategory("all");
     setSearchQuery("");
     setActiveFilter(null);
-    setSelectedRecipe(recipe);
-  }, []);
+    selectRecipe(recipe.id);
+  }, [selectCategory, selectRecipe]);
+
+  const handleSearchSelectIngredient = useCallback((engName: string, label: string, image?: string) => {
+    selectCategory("all");
+    setSearchQuery("");
+    setActiveFilter({ type: "ingredient", value: engName, label, icon: image });
+  }, [selectCategory]);
 
   // Filtered recipes for selected category
   const filteredRecipes = useMemo(() => {
@@ -240,21 +347,33 @@ export function CookingApp() {
         case "effect":
           recipes = recipes.filter((r) => r.specialEffect === activeFilter.value);
           break;
+        case "ingredient":
+          recipes = recipes.filter((r) => {
+            if (!r.requirements) return false;
+            const items = r.requirements.split(",").map(s => s.trim()).filter(Boolean);
+            return items.some(item => {
+              if (item.startsWith("No ")) return false;
+              const { name } = parseReqEntry(item);
+              return name.split(/\s*\/\s*/).some(part => part === activeFilter.value);
+            });
+          });
+          break;
       }
     }
 
-    // Search filter
-    if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
+    // Search filter (uses debounced query)
+    if (debouncedQuery.trim()) {
+      const q = debouncedQuery.trim().toLowerCase();
       recipes = recipes.filter((r) => {
         const localName = foodName(r, resolvedLocale).toLowerCase();
         const engName = r.name.toLowerCase();
-        return localName.includes(q) || engName.includes(q);
+        return localName.includes(q) || engName.includes(q) ||
+          getRecipeIngredientNames(r, resolvedLocale).some(n => n.includes(q));
       });
     }
 
     return recipes;
-  }, [selectedCategory, activeFilter, searchQuery, resolvedLocale, favorites]);
+  }, [selectedCategory, activeFilter, debouncedQuery, resolvedLocale, favorites]);
 
   // Current category info
   const currentCat = selectedCategory
@@ -310,13 +429,13 @@ export function CookingApp() {
   // -----------------------------------------------------------------------
   // Category grid view (home)
   // -----------------------------------------------------------------------
-  if (selectedCategory === null) {
+  if (showCategoryGrid) {
     return (
       <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
         {/* Header */}
         <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
           <CookingBreadcrumb locale={resolvedLocale} onHomeClick={handleGoHome} />
-          <CookingSearchInput value={searchQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} />
+          <CookingSearchInput value={searchQuery} debouncedValue={debouncedQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} onSelectIngredient={handleSearchSelectIngredient} />
         </div>
 
         {/* Category grid */}
@@ -383,7 +502,7 @@ export function CookingApp() {
           categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
           onHomeClick={handleGoHome}
         />
-        <CookingSearchInput value={searchQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} />
+        <CookingSearchInput value={searchQuery} debouncedValue={debouncedQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} onSelectIngredient={handleSearchSelectIngredient} />
       </div>
 
       {/* Filter chip */}
@@ -403,7 +522,7 @@ export function CookingApp() {
                   key={recipe.id}
                   recipe={recipe}
                   locale={resolvedLocale}
-                  onClick={() => setSelectedRecipe(recipe)}
+                  onClick={() => selectRecipe(recipe.id)}
                   isFav={isFavorite(recipe.id)}
                   onToggleFav={() => toggleFavorite(recipe.id)}
                 />
@@ -474,40 +593,71 @@ function CookingBreadcrumb({
 
 function CookingSearchInput({
   value,
+  debouncedValue,
   onChange,
   locale,
   onSelectRecipe,
+  onSelectIngredient,
 }: {
   value: string;
+  debouncedValue: string;
   onChange: (v: string) => void;
   locale: Locale;
   onSelectRecipe: (recipe: CookingRecipe) => void;
+  onSelectIngredient: (engName: string, label: string, image?: string) => void;
 }) {
   const suggestions: SearchSuggestion[] = useMemo(() => {
-    const q = value.trim().toLowerCase();
+    const q = debouncedValue.trim().toLowerCase();
     if (!q) return [];
-    return cookingRecipes
+    const result: SearchSuggestion[] = [];
+
+    // Ingredient suggestions first (crafting tab: materials before items)
+    for (const s of getCookingIngredientSuggestions(debouncedValue, locale)) {
+      result.push({
+        key: `ing-${s.engName}`,
+        text: s.text,
+        image: s.image,
+        typeLabel: cookingTypeLabels[locale]?.ingredient ?? "Ingredient",
+        data: { type: "ingredient", engName: s.engName, label: s.text, image: s.image },
+      });
+    }
+
+    // Recipe suggestions after
+    const recipeMatches = cookingRecipes
       .filter((r) => {
         const localName = foodName(r, locale).toLowerCase();
         const engName = r.name.toLowerCase();
-        return localName.includes(q) || engName.includes(q);
+        return localName.includes(q) || engName.includes(q) ||
+          getRecipeIngredientNames(r, locale).some(n => n.includes(q));
       })
-      .slice(0, 8)
-      .map((r) => ({
+      .slice(0, 8 - result.length);
+
+    for (const r of recipeMatches) {
+      result.push({
         key: r.id,
         text: foodName(r, locale),
         image: `game-items/${r.id}.png`,
-        typeLabel: t(locale, "tab_cooking"),
-        data: r,
-      }));
-  }, [value, locale]);
+        typeLabel: cookingTypeLabels[locale]?.recipe ?? "Recipe",
+        data: { type: "recipe", recipe: r },
+      });
+    }
+
+    return result.slice(0, 8);
+  }, [debouncedValue, locale]);
 
   return (
     <SearchWithSuggestions
       value={value}
       onChange={onChange}
       suggestions={suggestions}
-      onSelect={(s) => onSelectRecipe(s.data as CookingRecipe)}
+      onSelect={(s) => {
+        const d = s.data as { type: string; [key: string]: unknown };
+        if (d.type === "ingredient") {
+          onSelectIngredient(d.engName as string, d.label as string, d.image as string | undefined);
+        } else {
+          onSelectRecipe((d as { type: string; recipe: CookingRecipe }).recipe);
+        }
+      }}
       placeholder={t(locale, "searchPlaceholder")}
     />
   );
@@ -621,14 +771,14 @@ function RecipeDetail({
             {recipe.station === "cookpot" && (
               <TagChip
                 label={t(locale, "cooking_cookpot")}
-                icon="cookpot.png"
+                icon="game-items/cookpot.png"
                 onClick={onStationClick ? () => onStationClick("cookpot", t(locale, "cooking_cookpot")) : undefined}
               />
             )}
             {recipe.station === "portablecookpot" && (
               <TagChip
                 label={t(locale, "cooking_warly_exclusive")}
-                icon="portablecookpot_item.png"
+                icon="game-items/portablecookpot_item.png"
                 onClick={onStationClick ? () => onStationClick("portablecookpot", t(locale, "cooking_warly_exclusive")) : undefined}
               />
             )}
@@ -718,56 +868,16 @@ function RecipeDetail({
 // Requirements renderer — replace item names with inline icons
 // ---------------------------------------------------------------------------
 
-/** Map of item display names → game-items image filenames */
-const requirementIcons: Record<string, string> = {
-  "Asparagus": "asparagus.png",
-  "Cave Banana": "cave_banana.png",
-  "Barnacle": "barnacle.png",
-  "Berries": "berries.png",
-  "Butter": "butter.png",
-  "Butterfly Wings": "butterflywings.png",
-  "Cactus Flower": "cactus_flower.png",
-  "Cactus Flesh": "cactus_meat.png",
-  "Corn": "corn.png",
-  "Dragon Fruit": "dragonfruit.png",
-  "Drumstick": "drumstick.png",
-  "Eggplant": "eggplant.png",
-  "Fig": "fig.png",
-  "Forget-Me-Lots": "forgetmelots.png",
-  "Frog Legs": "froglegs.png",
-  "Garlic": "garlic.png",
-  "Glow Berry": "wormlight.png",
-  "Honey": "honey.png",
-  "Kelp": "kelp.png",
-  "Koalefant Trunk": "trunk_summer.png",
-  "Leafy Meat": "plantmeat.png",
-  "Lichen": "cutlichen.png",
-  "Mandrake": "mandrake.png",
-  "Moleworm": "mole.png",
-  "Monster Meat": "monstermeat.png",
-  "Moon Shroom": "moon_cap.png",
-  "Red Cap": "red_cap.png",
-  "Blue Cap": "blue_cap.png",
-  "Green Cap": "green_cap.png",
-  "Nightmare Fuel": "nightmarefuel.png",
-  "Onion": "quagmire_onion.png",
-  "Pepper": "pepper.png",
-  "Pomegranate": "pomegranate.png",
-  "Potato": "potato.png",
-  "Pumpkin": "pumpkin.png",
-  "Ripe Stone Fruit": "rock_avocado_fruit_ripe.png",
-  "Royal Jelly": "royal_jelly.png",
-  "Tallbird Egg": "tallbirdegg.png",
-  "Tomato": "tomato.png",
-  "Twigs": "twigs.png",
-  "Volt Goat Horn": "lightninggoathorn.png",
-  "Watermelon": "watermelon.png",
-  "Wobster": "wobster_sheller_land.png",
-  "Eel": "pondeel.png",
-  "Bone Shards": "boneshard.png",
-  "Acorn": "acorn.png",
-  "Durian": "durian.png",
-  // Tag-based requirements
+/** Ingredient lookup by display name (from cookpot-ingredients — single source of truth) */
+const ingredientByName = new Map(cookpotIngredients.map(ing => [ing.name, ing]));
+// Aliases for requirement names that differ from canonical ingredient names
+ingredientByName.set("Kelp", ingredientByName.get("Kelp Fronds")!);
+ingredientByName.set("Lichen", ingredientByName.get("Cut Lichen")!);
+ingredientByName.set("Moleworm", ingredientByName.get("Naked Mole Bat")!);
+ingredientByName.set("Acorn", ingredientByName.get("Birchnut")!);
+
+/** Tag-based requirement icons (not tied to a specific ingredient) */
+const tagIcons: Record<string, string> = {
   "Meat": "meat.png",
   "Veggie": "carrot.png",
   "Fruit": "pomegranate.png",
@@ -783,56 +893,30 @@ const requirementIcons: Record<string, string> = {
   "Magic": "nightmarefuel.png",
 };
 
-/** Find the first known icon in a requirement string */
+/** Find icon for a requirement: ingredient lookup first, then tag fallback */
 function findReqIcon(text: string): string | undefined {
-  for (const [name, icon] of Object.entries(requirementIcons)) {
-    if (text.includes(name)) return icon;
-  }
-  return undefined;
+  const ing = ingredientByName.get(text);
+  if (ing) return ingredientImage(ing);
+  return tagIcons[text];
 }
 
-/** Render a requirement chip: icon + label */
-/** Localized names for requirement terms */
-const reqTranslations: Record<string, Record<string, string>> = {
+/** Tag-only translations (ingredient translations come from cookpot-ingredients) */
+const reqTagTranslations: Record<string, Record<string, string>> = {
   ko: {
-    // Tag-based requirements
     "Meat": "고기", "Veggie": "채소", "Fruit": "과일", "Fish": "생선",
     "Egg": "알", "Sweetener": "감미료", "Monster": "괴물", "Inedible": "못먹는것",
     "Frozen": "얼음", "Dairy": "유제품", "Fat": "지방", "Seed": "씨앗",
     "Magic": "마법",
-    // Specific ingredients (한글모드 ko.po 기준)
-    "Honey": "꿀", "Butter": "버터",
-    "Asparagus": "아스파라거스", "Cave Banana": "바나나", "Barnacle": "거북순",
-    "Berries": "베리", "Butterfly Wings": "나비 날개", "Cactus Flower": "선인장 꽃",
-    "Cactus Flesh": "선인장 과육", "Corn": "옥수수", "Dragon Fruit": "용과",
-    "Drumstick": "닭다리", "Eggplant": "가지", "Fig": "무화과",
-    "Forget-Me-Lots": "건망초", "Frog Legs": "개구리 다리", "Garlic": "마늘",
-    "Glow Berry": "발광 베리", "Kelp": "다시마 잎", "Koalefant Trunk": "코알라판트 코",
-    "Leafy Meat": "풀고기", "Lichen": "이끼", "Mandrake": "맨드레이크",
-    "Moleworm": "벌거숭이두더박쥐", "Monster Meat": "괴물고기",
-    "Moon Shroom": "달버섯", "Red Cap": "빨간 버섯", "Blue Cap": "파란 버섯",
-    "Green Cap": "녹색 버섯", "Nightmare Fuel": "악몽 연료",
-    "Onion": "양파", "Pepper": "고추", "Pomegranate": "석류",
-    "Potato": "감자", "Pumpkin": "호박",
-    "Ripe Stone Fruit": "익은 아보카돌", "Royal Jelly": "로열 젤리",
-    "Tallbird Egg": "키다리새 알", "Tomato": "토마토란", "Twigs": "잔가지",
-    "Volt Goat Horn": "번개 염소의 뿔", "Watermelon": "수박",
-    "Wobster": "왑스터", "Eel": "장어", "Bone Shards": "뼛조각",
-    "Acorn": "버치넛", "Durian": "두리안",
   },
 };
 
 function translateReq(text: string, locale: Locale): string {
   if (locale === "en") return text;
-  const dict = reqTranslations[locale];
-  if (!dict) return text;
-  // Replace known terms (longest first)
-  let result = text;
-  const keys = Object.keys(dict).sort((a, b) => b.length - a.length);
-  for (const key of keys) {
-    result = result.replace(new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"), dict[key]);
-  }
-  return result;
+  // 1. cookpot-ingredients에서 재료 이름 찾기
+  const ing = ingredientByName.get(text);
+  if (ing?.nameKo && locale === "ko") return ing.nameKo;
+  // 2. 태그 번역 폴백
+  return reqTagTranslations[locale]?.[text] ?? text;
 }
 
 /** Parse a single requirement entry like "Meat ≥ 3" or "Asparagus ×2" into name + badge */
@@ -930,57 +1014,14 @@ function StatBox({
 }
 
 // ---------------------------------------------------------------------------
-// TagChip — shared chip component for tags & filter badges
-// ---------------------------------------------------------------------------
-
-function TagChip({
-  label,
-  icon,
-  onClick,
-  onRemove,
-}: {
-  label: string;
-  icon?: string; // game-items image filename
-  onClick?: () => void;
-  onRemove?: () => void;
-}) {
-  const inner = (
-    <>
-      {icon && <img src={assetPath(`/images/game-items/${icon}`)} alt="" className="size-4 object-contain" />}
-      {label}
-      {onRemove && (
-        <button
-          onClick={(e) => { e.stopPropagation(); onRemove(); }}
-          className="ml-0.5 rounded-full p-0.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-        >
-          <X className="size-3" />
-        </button>
-      )}
-    </>
-  );
-
-  const base = "inline-flex items-center gap-1 rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-medium transition-colors";
-
-  if (onClick) {
-    return (
-      <button onClick={onClick} className={cn(base, "cursor-pointer hover:bg-surface-hover")}>
-        {inner}
-      </button>
-    );
-  }
-
-  return <span className={base}>{inner}</span>;
-}
-
-// ---------------------------------------------------------------------------
 // Tag helpers
 // ---------------------------------------------------------------------------
 
 const foodTypeIcons: Record<string, string> = {
-  meat: "meat.png",
-  veggie: "carrot.png",
-  goodies: "honey.png",
-  roughage: "cutlichen.png",
+  meat: "game-items/meat.png",
+  veggie: "game-items/carrot.png",
+  goodies: "game-items/honey.png",
+  roughage: "game-items/cutlichen.png",
 };
 
 const foodTypeLabelKeys: Record<string, TranslationKey> = {

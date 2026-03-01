@@ -36,11 +36,17 @@ export function useCraftingState() {
 
   // Listen to popstate (browser back/forward)
   useEffect(() => {
-    const onPopState = () => setUrlState(readUrlState());
+    const onPopState = () => {
+      // Skip if URL belongs to another tab (cooking, cookpot, settings)
+      const tab = new URLSearchParams(window.location.search).get("tab");
+      if (tab) return;
+      setUrlState(readUrlState());
+    };
     window.addEventListener("popstate", onPopState);
     // Sync state when page is restored from bfcache (Safari back/forward)
     const onPageShow = (e: PageTransitionEvent) => {
-      if (e.persisted) setUrlState(readUrlState());
+      const tab = new URLSearchParams(window.location.search).get("tab");
+      if (e.persisted && !tab) setUrlState(readUrlState());
     };
     window.addEventListener("pageshow", onPageShow);
     return () => {

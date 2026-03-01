@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
-import { ChevronRight, X, RotateCcw, Shuffle } from "lucide-react";
+import { ChevronRight, X, RotateCcw, Shuffle, ExternalLink } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
 import { t, foodName, ingredientName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -41,7 +41,7 @@ const COOK_TIME_BASE = 40;
 // CookpotApp
 // ---------------------------------------------------------------------------
 
-export function CookpotApp() {
+export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string) => void }) {
   const { resolvedLocale } = useSettings();
 
   // State
@@ -110,7 +110,7 @@ export function CookpotApp() {
             <div className="flex gap-2">
               {/* Left: result card or empty placeholder — 50% */}
               <div className="w-1/2 min-w-0">
-                <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} />
+                <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} onViewRecipe={onViewRecipe} />
               </div>
 
               {/* Right: vertical slots + clear button — 50% */}
@@ -265,10 +265,12 @@ function ResultPanel({
   result,
   allFilled,
   locale,
+  onViewRecipe,
 }: {
   result: ReturnType<typeof simulate> | null;
   allFilled: boolean;
   locale: Locale;
+  onViewRecipe?: (recipeId: string) => void;
 }) {
   // No result — show dashed placeholder
   if (!allFilled || !result || result.recipes.length === 0) {
@@ -298,6 +300,7 @@ function ResultPanel({
           recipe={recipe}
           locale={locale}
           isWetGoop={recipe.id === "wetgoop"}
+          onViewRecipe={onViewRecipe}
         />
       ))}
     </div>
@@ -312,23 +315,38 @@ function ResultCard({
   recipe,
   locale,
   isWetGoop,
+  onViewRecipe,
 }: {
   recipe: CookingRecipe;
   locale: Locale;
   isWetGoop: boolean;
+  onViewRecipe?: (recipeId: string) => void;
 }) {
   const localName = foodName(recipe, locale);
   const showAltName = locale !== "en" && localName !== recipe.name;
   const cookSeconds = recipe.cookTime * COOK_TIME_BASE;
+  const canNavigate = !isWetGoop && !!onViewRecipe;
 
   return (
     <div
       className={cn(
-        "rounded-xl border p-3 space-y-2",
+        "rounded-xl border p-3 space-y-2 transition-colors",
         isWetGoop
           ? "border-red-500/30 bg-red-500/5"
           : "border-border bg-surface",
+        canNavigate && "cursor-pointer active:bg-surface-hover hover:border-ring",
       )}
+      {...(canNavigate && {
+        role: "button",
+        tabIndex: 0,
+        onClick: () => onViewRecipe(recipe.id),
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onViewRecipe(recipe.id);
+          }
+        },
+      })}
     >
       {/* Header row: image + name + meta */}
       <div className="flex items-center gap-3">
@@ -338,7 +356,12 @@ function ResultCard({
           className="size-10 object-contain shrink-0"
         />
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold leading-tight">{localName}</h3>
+          <div className="flex items-center gap-1">
+            <h3 className="text-sm font-semibold leading-tight">{localName}</h3>
+            {canNavigate && (
+              <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" />
+            )}
+          </div>
           {showAltName && (
             <p className="text-[10px] text-muted-foreground">{recipe.name}</p>
           )}

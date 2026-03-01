@@ -1,7 +1,7 @@
 "use client";
 
 import type { CraftingItem, CraftingStation, CategoryId } from "@/lib/types";
-import { Badge } from "@/components/ui/badge";
+import { TagChip } from "@/components/ui/TagChip";
 import { MaterialSlot } from "./MaterialSlot";
 import { getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
 import { useState } from "react";
@@ -89,45 +89,25 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
           {/* Station badges (hidden for character-only items since character badge conveys this) */}
           {!item.characterOnly && [item.station, ...(stationUpgrades[item.station] ?? [])].map((station) => {
             const label = stationName(station, resolvedLocale);
-            const clickable = !!onStationClick;
             return (
-              <Badge
+              <TagChip
                 key={station}
-                variant="secondary"
-                className={`text-xs gap-1 pl-1 pr-2 py-1 h-7 bg-surface-hover text-foreground/80 border-border ${clickable ? "cursor-pointer hover:border-primary hover:text-primary transition-colors" : ""}`}
-                onClick={clickable ? () => onStationClick(label, station) : undefined}
-                role={clickable ? "button" : undefined}
-              >
-                {stationImages[station] && (
-                  <img
-                    src={assetPath(`/images/${stationImages[station]}`)}
-                    alt=""
-                    className="size-5 object-contain"
-                  />
-                )}
-                {label}
-              </Badge>
+                label={label}
+                icon={stationImages[station] ?? undefined}
+                onClick={onStationClick ? () => onStationClick(label, station) : undefined}
+              />
             );
           })}
           {/* Character badge (clickable) */}
           {item.characterOnly && (() => {
             const char = getCharacterById(item.characterOnly);
             return (
-              <Badge
-                variant="outline"
-                className={`text-xs gap-1 pl-0.5 pr-2 py-1 border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700/60 dark:bg-amber-950/40 dark:text-amber-300 ${onCharacterClick ? "cursor-pointer hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors" : ""}`}
+              <TagChip
+                label={char ? characterName(char, resolvedLocale) : item.characterOnly}
+                icon={char ? `category-icons/characters/${char.portrait}.png` : undefined}
                 onClick={onCharacterClick ? () => onCharacterClick(item.characterOnly!) : undefined}
-                role={onCharacterClick ? "button" : undefined}
-              >
-                {char && (
-                  <img
-                    src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
-                    alt={item.characterOnly}
-                    className="size-5 object-contain"
-                  />
-                )}
-                {char ? characterName(char, resolvedLocale) : item.characterOnly}
-              </Badge>
+                className="border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700/60 dark:bg-amber-950/40 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50"
+              />
             );
           })()}
           {/* Category badges (exclude "character" when characterOnly is set) */}
@@ -136,22 +116,14 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             .map((catId) => {
               const cat = getCategoryById(catId);
               if (!cat) return null;
-              const clickable = !!onCategoryClick;
               return (
-                <Badge
+                <TagChip
                   key={catId}
-                  variant="outline"
-                  className={`text-xs gap-1 pl-1 pr-2 py-1 h-7 border-border text-muted-foreground ${clickable ? "cursor-pointer hover:border-primary hover:text-primary transition-colors" : ""}`}
-                  onClick={clickable ? () => onCategoryClick(catId) : undefined}
-                  role={clickable ? "button" : undefined}
-                >
-                  <img
-                    src={assetPath(`/images/category-icons/${catId}.png`)}
-                    alt=""
-                    className="size-5 object-contain"
-                  />
-                  {categoryName(cat, resolvedLocale)}
-                </Badge>
+                  label={categoryName(cat, resolvedLocale)}
+                  icon={`category-icons/${catId}.png`}
+                  onClick={onCategoryClick ? () => onCategoryClick(catId) : undefined}
+                  className="text-muted-foreground"
+                />
               );
             })}
         </div>
