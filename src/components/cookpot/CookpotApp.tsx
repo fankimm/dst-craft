@@ -104,7 +104,7 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
 
       {/* Scrollable main area */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
-        <div className="flex flex-col min-h-full">
+        <div className="flex flex-col min-h-full max-w-4xl mx-auto w-full">
           {/* Result + Slots area */}
           <div className="px-3 pt-4 pb-2">
             <div className="flex gap-2">
