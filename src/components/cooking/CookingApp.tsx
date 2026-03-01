@@ -795,27 +795,30 @@ function findReqIcon(text: string): string | undefined {
 /** Localized names for requirement terms */
 const reqTranslations: Record<string, Record<string, string>> = {
   ko: {
+    // Tag-based requirements
     "Meat": "고기", "Veggie": "채소", "Fruit": "과일", "Fish": "생선",
     "Egg": "알", "Sweetener": "감미료", "Monster": "괴물", "Inedible": "못먹는것",
-    "Frozen": "냉동", "Dairy": "유제품", "Fat": "지방", "Seed": "씨앗",
-    "Magic": "마법", "Honey": "꿀", "Butter": "버터",
+    "Frozen": "얼음", "Dairy": "유제품", "Fat": "지방", "Seed": "씨앗",
+    "Magic": "마법",
+    // Specific ingredients (aligned with cookpot-ingredients.ts nameKo)
+    "Honey": "꿀", "Butter": "버터",
     "Asparagus": "아스파라거스", "Cave Banana": "동굴 바나나", "Barnacle": "거북순",
-    "Berries": "딸기", "Butterfly Wings": "나비 날개", "Cactus Flower": "선인장 꽃",
+    "Berries": "딸기", "Butterfly Wings": "나비 날개", "Cactus Flower": "선인장 꽃봉오리",
     "Cactus Flesh": "선인장 과육", "Corn": "옥수수", "Dragon Fruit": "용과",
     "Drumstick": "닭다리", "Eggplant": "가지", "Fig": "무화과",
-    "Forget-Me-Lots": "물망초", "Frog Legs": "개구리 다리", "Garlic": "마늘",
+    "Forget-Me-Lots": "울지마 꽃", "Frog Legs": "개구리 다리", "Garlic": "마늘",
     "Glow Berry": "발광 열매", "Kelp": "다시마", "Koalefant Trunk": "코 주둥이",
     "Leafy Meat": "풀고기", "Lichen": "이끼", "Mandrake": "맨드레이크",
-    "Moleworm": "두더지", "Monster Meat": "괴물 고기",
-    "Moon Shroom": "달 버섯", "Red Cap": "빨간 버섯", "Blue Cap": "파란 버섯",
+    "Moleworm": "두더지 박쥐", "Monster Meat": "괴물 고기",
+    "Moon Shroom": "달 버섯", "Red Cap": "붉은 버섯", "Blue Cap": "파란 버섯",
     "Green Cap": "초록 버섯", "Nightmare Fuel": "악몽 연료",
     "Onion": "양파", "Pepper": "고추", "Pomegranate": "석류",
     "Potato": "감자", "Pumpkin": "호박",
-    "Ripe Stone Fruit": "돌과일", "Royal Jelly": "로열젤리",
-    "Tallbird Egg": "톨버드 알", "Tomato": "토마토", "Twigs": "나뭇가지",
+    "Ripe Stone Fruit": "돌 열매", "Royal Jelly": "로열 젤리",
+    "Tallbird Egg": "큰새 알", "Tomato": "토마토", "Twigs": "잔가지",
     "Volt Goat Horn": "번개 염소 뿔", "Watermelon": "수박",
-    "Wobster": "로브스터", "Eel": "장어", "Bone Shards": "뼛조각",
-    "Acorn": "도토리", "Durian": "두리안",
+    "Wobster": "로브스터", "Eel": "뱀장어", "Bone Shards": "뼛조각",
+    "Acorn": "자작나무 열매", "Durian": "두리안",
   },
 };
 
