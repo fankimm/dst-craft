@@ -28,8 +28,11 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   // Load favorites: from server if logged in, otherwise from localStorage
+  // Reset immediately on account change to prevent stale data from previous account
   useEffect(() => {
     let cancelled = false;
+    setFavorites(new Set());
+    setLoading(true);
 
     async function load() {
       if (token && user) {
