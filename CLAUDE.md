@@ -41,6 +41,15 @@
 4. **Google Cloud Console**: 새 도메인 추가 시 승인된 JavaScript 원본에 등록 확인
 5. **릴리즈 노트 + 버전**: 아래 Release Notes Rules 참고
 
+## Korean Translation Rules
+- 게임 내 아이템/재료/음식 이름의 한국어 번역 기준: **DST 커뮤니티 한글모드** ([Steam Workshop #2391246365](https://steamcommunity.com/sharedfiles/filedetails/?id=2391246365))
+- 번역 원본 파일 경로: `~/Library/Application Support/Steam/steamapps/workshop/content/322330/2391246365/scripts/languages/ko.po`
+- 자체 번역 금지 — 반드시 `ko.po` 파일의 `msgstr` 값을 사용할 것
+- 번역이 필요한 파일:
+  - `src/components/cooking/CookingApp.tsx` — `reqTranslations` (요리 조건 번역)
+  - `src/data/cookpot-ingredients.ts` — `nameKo` (재료 이름)
+  - `src/data/locales/ko.ts` — 로캘 데이터 (아이템/스테이션 이름)
+
 ## Release Notes Rules
 - 배포 전 `src/app/releases/page.tsx`의 릴리즈 노트를 업데이트할 것
 - 새 버전 번호는 릴리즈 노트 페이지의 기존 버전을 참고하여 결정
