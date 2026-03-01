@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.2.1",
+    date: "2026-03-01",
+    dev: [
+      "reqTranslations(CookingApp.tsx), cookpot-ingredients.ts nameKo, ko.ts foods를 DST 한글모드 ko.po 기준으로 전면 수정",
+      "CLAUDE.md에 Korean Translation Rules 섹션 추가 — 번역 기준 문서화",
+    ],
+    changes: {
+      ko: [
+        "요리 재료/음식 이름을 한글모드 번역에 맞춰 수정",
+      ],
+      en: [
+        "Fixed cooking ingredient/food names to match Korean community translation mod",
+      ],
+    },
+  },
+  {
     version: "0.2.0",
     date: "2026-03-01",
     dev: [
