@@ -1222,7 +1222,7 @@ export const ko: LocaleData = {
     "glowberrymousse": { name: "발광 베리 무스" },
     "guacamole": { name: "과카몰리" },
     "honeyham": { name: "꿀바른 햄" },
-    "honeynuggets": { name: "꿀바른 너겟" },
+    "honeynuggets": { name: "꿀 바른 너겟" },
     "hotchili": { name: "매콤한 칠리" },
     "icecream": { name: "아이스크림" },
     "jammypreserves": { name: "과일잼 한 줌" },
