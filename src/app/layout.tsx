@@ -288,15 +288,16 @@ export default function RootLayout({
           (function(){
             var el = document.getElementById('app-loading');
             if (!el) return;
-            var observer = new MutationObserver(function() {
-              if (document.querySelector('[data-app-ready]')) {
-                el.style.opacity = '0';
-                setTimeout(function() { el.remove(); }, 300);
-                observer.disconnect();
-              }
-            });
-            observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-            setTimeout(function() { if (el.parentNode) { el.style.opacity = '0'; setTimeout(function() { el.remove(); }, 300); } }, 5000);
+            function hide() {
+              if (el.dataset.hidden) return;
+              el.dataset.hidden = '1';
+              el.style.opacity = '0';
+              el.style.pointerEvents = 'none';
+              setTimeout(function() { el.style.display = 'none'; }, 300);
+            }
+            if (document.readyState !== 'loading') { hide(); }
+            else { document.addEventListener('DOMContentLoaded', hide); }
+            setTimeout(hide, 5000);
           })();
         `}} />
         <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
