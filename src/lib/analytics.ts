@@ -5,7 +5,7 @@ export interface AnalyticsData {
   totalUniqueVisitors: number;
   todayPageViews: number;
   todayUniqueVisitors: number;
-  last7Days: { date: string; pv: number; uv: number }[];
+  dailyTrend: { date: string; pv: number; uv: number }[];
   countries: Record<string, number>;
   recentVisitors: {
     ip: string;
@@ -103,11 +103,11 @@ export function trackEvent(type: "search" | "pwa_install", skipTracking?: boolea
 }
 
 /** Fetch analytics data for the stats page (requires admin JWT) */
-export async function fetchAnalytics(token: string): Promise<AnalyticsData | null> {
+export async function fetchAnalytics(token: string, days = 7): Promise<AnalyticsData | null> {
   if (!WORKER_URL || !token) return null;
 
   try {
-    const res = await fetch(`${WORKER_URL}/stats`, {
+    const res = await fetch(`${WORKER_URL}/stats?days=${days}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) return null;

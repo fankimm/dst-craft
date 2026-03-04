@@ -223,8 +223,9 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       }
 
       const date = today();
+      const daysParam = Math.min(Math.max(parseInt(url.searchParams.get("days") ?? "7", 10) || 7, 1), 90);
       const dates: string[] = [];
-      for (let i = 0; i < 7; i++) {
+      for (let i = 0; i < daysParam; i++) {
         const d = new Date();
         d.setDate(d.getDate() - i);
         dates.push(d.toISOString().slice(0, 10));
@@ -305,7 +306,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       const totalPV = parseInt(r(0) ?? "0", 10) || 0;
       const returnTotal = parseInt(r(7) ?? "0", 10) || 0;
 
-      const last7Days = dates.map((d, i) => ({
+      const dailyTrend = dates.map((d, i) => ({
         date: d,
         pv: parseInt(r(13 + i * 2) ?? "0", 10) || 0,
         uv: parseInt(r(13 + i * 2 + 1) ?? "0", 10) || 0,
@@ -316,7 +317,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         totalUniqueVisitors: parseInt(r(1) ?? "0", 10) || 0,
         todayPageViews: parseInt(r(2) ?? "0", 10) || 0,
         todayUniqueVisitors: parseInt(r(3) ?? "0", 10) || 0,
-        last7Days,
+        dailyTrend,
         countries,
         recentVisitors,
         // New stats

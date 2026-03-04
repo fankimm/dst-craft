@@ -57,9 +57,10 @@ function PercentBar({ label, count, total, icon }: { label: string; count: numbe
   );
 }
 
-/** SVG Area Chart for 7-day trend */
+/** SVG Area Chart for daily trend */
 function AreaChart({ data }: { data: { date: string; pv: number; uv: number }[] }) {
   const days = [...data].reverse(); // oldest → newest
+  if (days.length < 2) return null;
   const maxVal = Math.max(...days.map((d) => Math.max(d.pv, d.uv)), 1);
 
   const W = 600;
@@ -70,6 +71,9 @@ function AreaChart({ data }: { data: { date: string; pv: number; uv: number }[] 
   const padRight = 30;
   const chartW = W - padLeft - padRight;
   const chartH = H - padTop - padBottom;
+
+  // Show every Nth label to avoid overlap
+  const labelStep = days.length <= 10 ? 1 : days.length <= 20 ? 2 : Math.ceil(days.length / 10);
 
   function x(i: number) {
     return padLeft + (i / (days.length - 1)) * chartW;
@@ -88,6 +92,8 @@ function AreaChart({ data }: { data: { date: string; pv: number; uv: number }[] 
     return `M${pts.join(" L")}`;
   }
 
+  const showValues = days.length <= 14;
+
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
       {/* PV area */}
@@ -99,16 +105,19 @@ function AreaChart({ data }: { data: { date: string; pv: number; uv: number }[] 
       {/* Data points + labels */}
       {days.map((d, i) => (
         <g key={d.date}>
-          {/* PV dot */}
-          <circle cx={x(i)} cy={y(d.pv)} r="3" className="fill-primary/80" />
-          <text x={x(i)} y={y(d.pv) - 8} textAnchor="middle" className="fill-foreground text-[10px] font-medium">{d.pv}</text>
-          {/* UV dot */}
-          <circle cx={x(i)} cy={y(d.uv)} r="3" className="fill-green-500/80" />
-          <text x={x(i)} y={y(d.uv) + 14} textAnchor="middle" className="fill-green-600 dark:fill-green-400 text-[10px] font-medium">{d.uv}</text>
-          {/* Date label */}
-          <text x={x(i)} y={H - 5} textAnchor="middle" className="fill-muted-foreground text-[10px]">
-            {d.date.slice(5)}
-          </text>
+          <circle cx={x(i)} cy={y(d.pv)} r={showValues ? 3 : 2} className="fill-primary/80" />
+          {showValues && (
+            <text x={x(i)} y={y(d.pv) - 8} textAnchor="middle" className="fill-foreground text-[10px] font-medium">{d.pv}</text>
+          )}
+          <circle cx={x(i)} cy={y(d.uv)} r={showValues ? 3 : 2} className="fill-green-500/80" />
+          {showValues && (
+            <text x={x(i)} y={y(d.uv) + 14} textAnchor="middle" className="fill-green-600 dark:fill-green-400 text-[10px] font-medium">{d.uv}</text>
+          )}
+          {i % labelStep === 0 && (
+            <text x={x(i)} y={H - 5} textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              {d.date.slice(5)}
+            </text>
+          )}
         </g>
       ))}
     </svg>
@@ -120,6 +129,8 @@ export default function StatsPage() {
   const router = useRouter();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [days, setDays] = useState(7);
+  const [excludeKR, setExcludeKR] = useState(false);
 
   // Redirect non-admin users
   useEffect(() => {
@@ -128,10 +139,10 @@ export default function StatsPage() {
     }
   }, [authLoading, isAdmin, router]);
 
-  async function load() {
+  async function load(d = days) {
     if (!token) return;
     setLoading(true);
-    const result = await fetchAnalytics(token);
+    const result = await fetchAnalytics(token, d);
     setData(result);
     setLoading(false);
   }
@@ -141,6 +152,11 @@ export default function StatsPage() {
       load();
     }
   }, [token, isAdmin]);
+
+  function handleDaysChange(d: number) {
+    setDays(d);
+    load(d);
+  }
 
   // Don't render anything for non-admin
   if (authLoading || !isAdmin) {
@@ -152,7 +168,9 @@ export default function StatsPage() {
   }
 
   const sortedCountries = data
-    ? Object.entries(data.countries).sort((a, b) => b[1] - a[1])
+    ? Object.entries(data.countries)
+        .filter(([code]) => !excludeKR || code !== "KR")
+        .sort((a, b) => b[1] - a[1])
     : [];
   const totalCountryVisits = sortedCountries.reduce((sum, [, c]) => sum + c, 0);
 
@@ -176,7 +194,7 @@ export default function StatsPage() {
             접속 통계
           </h1>
           <button
-            onClick={load}
+            onClick={() => load()}
             disabled={loading}
             className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-surface-hover transition-colors disabled:opacity-50"
           >
@@ -211,13 +229,30 @@ export default function StatsPage() {
               <StatCard icon={Download} label="PWA 설치" value={data.pwaInstalls} />
             </div>
 
-            {/* 7-Day Trend Area Chart */}
+            {/* Daily Trend Area Chart */}
             <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-              <h2 className="text-sm font-semibold flex items-center gap-2">
-                <TrendingUp className="size-4" />
-                접속자 추이 (7일)
-              </h2>
-              <AreaChart data={data.last7Days} />
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <TrendingUp className="size-4" />
+                  접속자 추이
+                </h2>
+                <div className="flex gap-1">
+                  {[7, 14, 30].map((d) => (
+                    <button
+                      key={d}
+                      onClick={() => handleDaysChange(d)}
+                      className={`px-2.5 py-1 text-xs rounded-md transition-colors ${
+                        days === d
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground hover:bg-surface-hover"
+                      }`}
+                    >
+                      {d}일
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <AreaChart data={data.dailyTrend} />
               <div className="flex gap-4 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1"><span className="inline-block w-3 h-2 bg-primary/60 rounded" /> PV (페이지뷰)</span>
                 <span className="flex items-center gap-1"><span className="inline-block w-3 h-2 bg-green-500/60 rounded" /> UV (순 방문자)</span>
@@ -276,10 +311,21 @@ export default function StatsPage() {
 
             {/* Countries */}
             <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-              <h2 className="text-sm font-semibold flex items-center gap-2">
-                <Globe className="size-4" />
-                국가별 방문
-              </h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <Globe className="size-4" />
+                  국가별 방문
+                </h2>
+                <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={excludeKR}
+                    onChange={(e) => setExcludeKR(e.target.checked)}
+                    className="rounded border-border"
+                  />
+                  KR 제외
+                </label>
+              </div>
               {sortedCountries.length === 0 ? (
                 <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
               ) : (

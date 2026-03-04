@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { Sun, Moon, Monitor, Check, ChevronRight, LogOut, BarChart3, Download, Share, Plus } from "lucide-react";
+import { Sun, Moon, Monitor, ChevronRight, LogOut, BarChart3, Download, Share, Plus, ChevronDown } from "lucide-react";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import type { LocaleSetting } from "@/lib/i18n";
@@ -216,27 +216,19 @@ export function SettingsPage() {
           {/* Language */}
           <div className="space-y-2">
             <h2 className="text-sm font-semibold">{t(resolvedLocale, "language")}</h2>
-            <div className="rounded-lg border border-border divide-y divide-border">
-              {localeOptions.map((opt) => {
-                const isActive = locale === opt.value;
-                return (
-                  <button
-                    key={opt.value}
-                    onClick={() => setLocale(opt.value)}
-                    className={cn(
-                      "w-full flex items-center justify-between px-3 py-2.5 text-sm transition-colors",
-                      isActive
-                        ? "text-foreground font-medium"
-                        : "text-muted-foreground hover:bg-surface-hover/50"
-                    )}
-                  >
-                    <span>
-                      {opt.value === "system" ? t(resolvedLocale, "system") : opt.label}
-                    </span>
-                    {isActive && <Check className="size-4 shrink-0" />}
-                  </button>
-                );
-              })}
+            <div className="relative">
+              <select
+                value={locale}
+                onChange={(e) => setLocale(e.target.value as LocaleSetting)}
+                className="w-full appearance-none rounded-lg border border-border bg-card px-3 py-2.5 pr-8 text-sm text-foreground transition-colors hover:bg-surface-hover/50 focus:outline-none focus:ring-1 focus:ring-foreground/20"
+              >
+                {localeOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.value === "system" ? t(resolvedLocale, "system") : opt.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             </div>
           </div>
 
