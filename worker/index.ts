@@ -160,6 +160,11 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         commands.push(["INCR", "dst:return:total"]);
       }
 
+      const referrer = (body.referrer as string)?.slice(0, 100);
+      if (referrer) {
+        commands.push(["HINCRBY", "dst:referrers", referrer, "1"]);
+      }
+
       const logEntry = JSON.stringify({
         ip,
         country: countryCode,
@@ -239,10 +244,11 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         ["GET", "dst:events:pwa_install"],  // 9
         ["LRANGE", "dst:duration:samples", "0", "999"], // 10
         ["HGETALL", "dst:os"],              // 11
+        ["HGETALL", "dst:referrers"],       // 12
       ];
       for (const d of dates) {
-        commands.push(["GET", `dst:pv:${d}`]);     // 12 + i*2
-        commands.push(["PFCOUNT", `dst:uv:${d}`]); // 13 + i*2
+        commands.push(["GET", `dst:pv:${d}`]);     // 13 + i*2
+        commands.push(["PFCOUNT", `dst:uv:${d}`]); // 14 + i*2
       }
 
       const results = await redisPipeline(env, commands) as { result: any }[];
@@ -270,6 +276,15 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         }
       }
 
+      // Referrer stats
+      const referrersRaw = r(12) as string[] | null;
+      const referrers: Record<string, number> = {};
+      if (Array.isArray(referrersRaw)) {
+        for (let i = 0; i < referrersRaw.length; i += 2) {
+          referrers[referrersRaw[i]] = parseInt(referrersRaw[i + 1], 10) || 0;
+        }
+      }
+
       // OS stats
       const osRaw = r(11) as string[] | null;
       const os: Record<string, number> = {};
@@ -292,8 +307,8 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
 
       const last7Days = dates.map((d, i) => ({
         date: d,
-        pv: parseInt(r(12 + i * 2) ?? "0", 10) || 0,
-        uv: parseInt(r(12 + i * 2 + 1) ?? "0", 10) || 0,
+        pv: parseInt(r(13 + i * 2) ?? "0", 10) || 0,
+        uv: parseInt(r(13 + i * 2 + 1) ?? "0", 10) || 0,
       }));
 
       const data = {
@@ -307,6 +322,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         // New stats
         device,
         os,
+        referrers,
         returnVisitors: returnTotal,
         returnRate: totalPV > 0 ? Math.round((returnTotal / totalPV) * 100) : 0,
         avgDuration,

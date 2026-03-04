@@ -19,6 +19,7 @@ export interface AnalyticsData {
   }[];
   device: Record<string, number>;
   os: Record<string, number>;
+  referrers: Record<string, number>;
   returnVisitors: number;
   returnRate: number;
   avgDuration: number;
@@ -38,6 +39,21 @@ export async function trackVisit(skipTracking?: boolean) {
   const hasVisited = !!localStorage.getItem("dst:visitor");
   localStorage.setItem("dst:visitor", "1");
 
+  // Parse referrer
+  let referrer = "direct";
+  if (document.referrer) {
+    try {
+      const refUrl = new URL(document.referrer);
+      if (!refUrl.hostname.endsWith("dstcraft.com")) {
+        referrer = refUrl.hostname.replace(/^www\./, "");
+      } else {
+        referrer = ""; // internal navigation — skip
+      }
+    } catch {
+      referrer = "direct";
+    }
+  }
+
   try {
     await fetch(`${WORKER_URL}/track`, {
       method: "POST",
@@ -45,6 +61,7 @@ export async function trackVisit(skipTracking?: boolean) {
       body: JSON.stringify({
         ua: navigator.userAgent.slice(0, 120),
         isReturn: hasVisited,
+        ...(referrer ? { referrer } : {}),
       }),
     });
   } catch {

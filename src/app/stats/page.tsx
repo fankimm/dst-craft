@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import {
   BarChart3, Globe, Users, Eye, RefreshCw,
   Smartphone, Monitor, Clock, Search, Download,
-  RotateCcw, TrendingUp,
+  RotateCcw, TrendingUp, ExternalLink,
 } from "lucide-react";
 import { BackToHome } from "@/components/ui/BackToHome";
 
@@ -66,8 +66,8 @@ function AreaChart({ data }: { data: { date: string; pv: number; uv: number }[] 
   const H = 200;
   const padTop = 20;
   const padBottom = 30;
-  const padLeft = 10;
-  const padRight = 10;
+  const padLeft = 30;
+  const padRight = 30;
   const chartW = W - padLeft - padRight;
   const chartH = H - padTop - padBottom;
 
@@ -251,6 +251,27 @@ export default function StatsPage() {
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Referrers */}
+            <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+              <h2 className="text-sm font-semibold flex items-center gap-2">
+                <ExternalLink className="size-4" />
+                유입 출처
+              </h2>
+              {(() => {
+                const sortedReferrers = Object.entries(data.referrers ?? {}).sort((a, b) => b[1] - a[1]);
+                const totalReferrers = sortedReferrers.reduce((sum, [, c]) => sum + c, 0);
+                return sortedReferrers.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
+                ) : (
+                  <div className="space-y-2">
+                    {sortedReferrers.map(([source, count]) => (
+                      <PercentBar key={source} label={source} count={count} total={totalReferrers} />
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Countries */}
