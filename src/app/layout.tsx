@@ -274,14 +274,15 @@ export default function RootLayout({
           }}
         >
           <style dangerouslySetInnerHTML={{ __html: `
-            .dark { --loading-bg: #09090b; --loading-text: #a1a1aa; }
-            :root { --loading-bg: #fafafa; --loading-text: #71717a; }
+            .dark { --loading-bg: #09090b; --loading-fg: #fafafa; --loading-text: #a1a1aa; }
+            :root { --loading-bg: #fafafa; --loading-fg: #09090b; --loading-text: #71717a; }
             #app-loading img { width: 96px; height: 96px; animation: loading-pulse 2s ease-in-out infinite; }
             @keyframes loading-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
           `}} />
           <img src="/icons/icon-512.png" alt="" width={96} height={96} />
-          <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 500, color: "var(--loading-text)", letterSpacing: "0.05em" }}>
-            Don&apos;t Craft Without Recipes
+          <p style={{ margin: 0, fontSize: "0.875rem", letterSpacing: "0.05em", color: "var(--loading-fg, #09090b)" }}>
+            <span style={{ fontWeight: 700 }}>DON&apos;T CRAFT</span>{" "}
+            <span style={{ color: "var(--loading-text)" }}>WITHOUT RECIPES</span>
           </p>
         </div>
         <script dangerouslySetInnerHTML={{ __html: `
