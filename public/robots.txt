@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dst-craft.vercel.app/sitemap.xml
+Sitemap: https://www.dstcraft.com/sitemap.xml

@@ -8,7 +8,7 @@ interface Env {
 }
 
 function corsHeaders(origin: string, allowed: string): HeadersInit {
-  const isAllowed = origin.startsWith(allowed) || origin.startsWith("http://localhost:");
+  const isAllowed = origin.startsWith(allowed) || origin === "https://dst-craft.vercel.app" || origin.startsWith("http://localhost:");
   return {
     "Access-Control-Allow-Origin": isAllowed ? origin : "",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
