@@ -260,6 +260,7 @@ export default function RootLayout({
       >
         <div
           id="app-loading"
+          suppressHydrationWarning
           style={{
             position: "fixed",
             inset: 0,
