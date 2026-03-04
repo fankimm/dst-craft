@@ -9,7 +9,7 @@ import { useSettings } from "@/hooks/use-settings";
 import { useFavorites } from "@/hooks/use-favorites";
 import { useCookingState, type CookingCategoryId } from "@/hooks/use-cooking-state";
 import { t, foodName, type Locale, type TranslationKey } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
+import { cn, transitionThemeColor } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { ItemSlot } from "../ui/ItemSlot";
@@ -247,6 +247,15 @@ export function CookingApp({
       return () => clearTimeout(timer);
     }
   }, [selectedRecipe]);
+
+  // Sync theme-color with overlay (iPhone Dynamic Island)
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains("dark");
+    const to = panelOpen
+      ? (isDark ? "#050506" : "#7d7d7d")
+      : (isDark ? "#09090b" : "#fafafa");
+    transitionThemeColor(to, 180);
+  }, [panelOpen]);
 
   const handleGoHome = useCallback(() => {
     goHome();

@@ -21,6 +21,7 @@ import { CharacterSelector } from "./CharacterSelector";
 import { Footer } from "./Footer";
 import { X } from "lucide-react";
 import { trackVisit, initDurationTracking, trackEvent } from "@/lib/analytics";
+import { transitionThemeColor } from "@/lib/utils";
 
 export function CraftingApp() {
   const {
@@ -113,14 +114,11 @@ export function CraftingApp() {
 
   // Sync theme-color with overlay (iPhone Dynamic Island)
   useEffect(() => {
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (!meta) return;
     const isDark = document.documentElement.classList.contains("dark");
-    if (panelOpen) {
-      meta.setAttribute("content", isDark ? "#050506" : "#7d7d7d");
-    } else {
-      meta.setAttribute("content", isDark ? "#09090b" : "#fafafa");
-    }
+    const to = panelOpen
+      ? (isDark ? "#050506" : "#7d7d7d")
+      : (isDark ? "#09090b" : "#fafafa");
+    transitionThemeColor(to, 180);
   }, [panelOpen]);
 
   const handleGoHome = useCallback(() => {
