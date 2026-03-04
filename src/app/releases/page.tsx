@@ -15,6 +15,29 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.3.0",
+    date: "2026-03-04",
+    dev: [
+      "SettingsPage에 PWA 설치 가이드 섹션 추가 (beforeinstallprompt + iOS Safari 가이드)",
+      "i18n.ts에 PWA 설치 관련 번역 키 6개 추가 (ko/en)",
+      "로딩화면 MutationObserver + data-app-ready → DOMContentLoaded 기반으로 변경",
+      "el.remove() → display:none으로 변경 (React hydration 불일치 방지)",
+      "AppShell에서 data-app-ready 속성 제거",
+    ],
+    changes: {
+      ko: [
+        "설정에 앱 설치 가이드 추가 — 브라우저별 PWA 설치 안내",
+        "통계/릴리즈 노트 페이지 진입 시 로딩화면이 오래 표시되던 문제 수정",
+        "하위 페이지에서 뒤로가기 시 에러 발생하던 문제 수정",
+      ],
+      en: [
+        "Added PWA install guide in settings — browser-specific installation instructions",
+        "Fixed loading screen staying too long on stats/release notes pages",
+        "Fixed back navigation error from sub-pages",
+      ],
+    },
+  },
+  {
     version: "0.2.1",
     date: "2026-03-01",
     dev: [
