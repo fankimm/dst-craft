@@ -47,6 +47,8 @@ export function Breadcrumb({
   if (isSearching) {
     segments.push({ label: searchLabel || "Search" });
   } else if (customLabel) {
+    // e.g. Home > Crafting Guide > Favorites
+    segments.push({ label: t(resolvedLocale, "craftingGuide"), onClick: onHomeClick });
     segments.push({ label: customLabel });
   } else if (category) {
     const catName = categoryName(category, resolvedLocale);

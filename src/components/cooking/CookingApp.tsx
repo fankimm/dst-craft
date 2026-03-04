@@ -551,7 +551,7 @@ function CookingBreadcrumb({
   categoryLabel?: string;
   onHomeClick: () => void;
 }) {
-  const iconSrc = assetPath("/icons/icon-192.png");
+  const iconSrc = assetPath("/images/category-icons/cooking.png");
   const isHome = !categoryLabel;
 
   return (
@@ -740,7 +740,7 @@ function RecipeDetail({
   const cookSeconds = recipe.cookTime * COOK_TIME_BASE;
 
   return (
-    <div className="p-4 pt-3 space-y-4">
+    <div className="p-4 pt-3 pb-5 space-y-4">
       {/* Header */}
       <div className="flex items-start gap-4">
         <img
