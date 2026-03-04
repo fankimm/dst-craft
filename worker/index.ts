@@ -153,16 +153,27 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       ];
 
       if (countryCode) {
-        commands.push(["HINCRBY", "dst:geo:countries", countryCode, "1"]);
+        commands.push(
+          ["HINCRBY", "dst:geo:countries", countryCode, "1"],
+          // Per-country tracking for filtering
+          ["INCR", `dst:pv:total:${countryCode}`],
+          ["INCR", `dst:pv:${date}:${countryCode}`],
+          ["PFADD", `dst:uv:${date}:${countryCode}`, ip],
+          ["PFADD", `dst:uv:total:${countryCode}`, ip],
+          ["HINCRBY", `dst:device:${countryCode}`, device, "1"],
+          ["HINCRBY", `dst:os:${countryCode}`, os, "1"],
+        );
       }
 
       if (isReturn) {
         commands.push(["INCR", "dst:return:total"]);
+        if (countryCode) commands.push(["INCR", `dst:return:total:${countryCode}`]);
       }
 
       const referrer = (body.referrer as string)?.slice(0, 100);
       if (referrer) {
         commands.push(["HINCRBY", "dst:referrers", referrer, "1"]);
+        if (countryCode) commands.push(["HINCRBY", `dst:referrers:${countryCode}`, referrer, "1"]);
       }
 
       const logEntry = JSON.stringify({
@@ -181,6 +192,12 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         ["EXPIRE", `dst:pv:${date}`, `${90 * 86400}`],
         ["EXPIRE", `dst:uv:${date}`, `${90 * 86400}`],
       );
+      if (countryCode) {
+        commands.push(
+          ["EXPIRE", `dst:pv:${date}:${countryCode}`, `${90 * 86400}`],
+          ["EXPIRE", `dst:uv:${date}:${countryCode}`, `${90 * 86400}`],
+        );
+      }
 
       await redisPipeline(env, commands);
       return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
@@ -264,7 +281,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       }
 
       const visitorsRaw = r(5) as string[] | null;
-      const recentVisitors = (visitorsRaw ?? []).map((v: string) => {
+      let recentVisitors = (visitorsRaw ?? []).map((v: string) => {
         try { return JSON.parse(v); } catch { return null; }
       }).filter(Boolean);
 
@@ -303,24 +320,96 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         avgDuration = Math.round(sum / durationRaw.length);
       }
 
-      const totalPV = parseInt(r(0) ?? "0", 10) || 0;
-      const returnTotal = parseInt(r(7) ?? "0", 10) || 0;
+      let totalPV = parseInt(r(0) ?? "0", 10) || 0;
+      let totalUV = parseInt(r(1) ?? "0", 10) || 0;
+      let todayPV = parseInt(r(2) ?? "0", 10) || 0;
+      let todayUV = parseInt(r(3) ?? "0", 10) || 0;
+      let returnTotal = parseInt(r(7) ?? "0", 10) || 0;
 
-      const dailyTrend = dates.map((d, i) => ({
+      let dailyTrend = dates.map((d, i) => ({
         date: d,
         pv: parseInt(r(13 + i * 2) ?? "0", 10) || 0,
         uv: parseInt(r(13 + i * 2 + 1) ?? "0", 10) || 0,
       }));
 
+      // Country exclusion filter
+      const excludeCountry = url.searchParams.get("excludeCountry") ?? "";
+      if (excludeCountry) {
+        const exCommands: string[][] = [
+          ["GET", `dst:pv:total:${excludeCountry}`],           // 0
+          ["PFCOUNT", `dst:uv:total:${excludeCountry}`],       // 1
+          ["GET", `dst:pv:${date}:${excludeCountry}`],         // 2
+          ["PFCOUNT", `dst:uv:${date}:${excludeCountry}`],     // 3
+          ["HGETALL", `dst:device:${excludeCountry}`],         // 4
+          ["HGETALL", `dst:os:${excludeCountry}`],             // 5
+          ["GET", `dst:return:total:${excludeCountry}`],       // 6
+          ["HGETALL", `dst:referrers:${excludeCountry}`],      // 7
+        ];
+        for (const d of dates) {
+          exCommands.push(["GET", `dst:pv:${d}:${excludeCountry}`]);      // 8 + i*2
+          exCommands.push(["PFCOUNT", `dst:uv:${d}:${excludeCountry}`]);  // 9 + i*2
+        }
+
+        const exResults = await redisPipeline(env, exCommands) as { result: any }[];
+        const ex = (i: number) => exResults[i]?.result;
+
+        totalPV = Math.max(0, totalPV - (parseInt(ex(0) ?? "0", 10) || 0));
+        totalUV = Math.max(0, totalUV - (parseInt(ex(1) ?? "0", 10) || 0));
+        todayPV = Math.max(0, todayPV - (parseInt(ex(2) ?? "0", 10) || 0));
+        todayUV = Math.max(0, todayUV - (parseInt(ex(3) ?? "0", 10) || 0));
+
+        // Subtract device counts
+        const exDeviceRaw = ex(4) as string[] | null;
+        if (Array.isArray(exDeviceRaw)) {
+          for (let i = 0; i < exDeviceRaw.length; i += 2) {
+            if (device[exDeviceRaw[i]] !== undefined) {
+              device[exDeviceRaw[i]] = Math.max(0, device[exDeviceRaw[i]] - (parseInt(exDeviceRaw[i + 1], 10) || 0));
+            }
+          }
+        }
+
+        // Subtract OS counts
+        const exOsRaw = ex(5) as string[] | null;
+        if (Array.isArray(exOsRaw)) {
+          for (let i = 0; i < exOsRaw.length; i += 2) {
+            if (os[exOsRaw[i]] !== undefined) {
+              os[exOsRaw[i]] = Math.max(0, os[exOsRaw[i]] - (parseInt(exOsRaw[i + 1], 10) || 0));
+            }
+          }
+        }
+
+        returnTotal = Math.max(0, returnTotal - (parseInt(ex(6) ?? "0", 10) || 0));
+
+        // Subtract referrer counts
+        const exRefRaw = ex(7) as string[] | null;
+        if (Array.isArray(exRefRaw)) {
+          for (let i = 0; i < exRefRaw.length; i += 2) {
+            if (referrers[exRefRaw[i]] !== undefined) {
+              referrers[exRefRaw[i]] = Math.max(0, referrers[exRefRaw[i]] - (parseInt(exRefRaw[i + 1], 10) || 0));
+            }
+          }
+        }
+
+        // Subtract daily trend
+        dailyTrend = dailyTrend.map((day, i) => ({
+          ...day,
+          pv: Math.max(0, day.pv - (parseInt(ex(8 + i * 2) ?? "0", 10) || 0)),
+          uv: Math.max(0, day.uv - (parseInt(ex(8 + i * 2 + 1) ?? "0", 10) || 0)),
+        }));
+
+        // Filter countries & recent visitors
+        delete countries[excludeCountry];
+        recentVisitors = recentVisitors.filter((v: any) => v.country !== excludeCountry);
+      }
+
       const data = {
         totalPageViews: totalPV,
-        totalUniqueVisitors: parseInt(r(1) ?? "0", 10) || 0,
-        todayPageViews: parseInt(r(2) ?? "0", 10) || 0,
-        todayUniqueVisitors: parseInt(r(3) ?? "0", 10) || 0,
+        totalUniqueVisitors: totalUV,
+        todayPageViews: todayPV,
+        todayUniqueVisitors: todayUV,
         dailyTrend,
         countries,
         recentVisitors,
-        // New stats
         device,
         os,
         referrers,

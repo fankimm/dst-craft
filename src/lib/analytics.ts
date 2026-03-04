@@ -103,11 +103,13 @@ export function trackEvent(type: "search" | "pwa_install", skipTracking?: boolea
 }
 
 /** Fetch analytics data for the stats page (requires admin JWT) */
-export async function fetchAnalytics(token: string, days = 7): Promise<AnalyticsData | null> {
+export async function fetchAnalytics(token: string, days = 7, excludeCountry?: string): Promise<AnalyticsData | null> {
   if (!WORKER_URL || !token) return null;
 
   try {
-    const res = await fetch(`${WORKER_URL}/stats?days=${days}`, {
+    const params = new URLSearchParams({ days: String(days) });
+    if (excludeCountry) params.set("excludeCountry", excludeCountry);
+    const res = await fetch(`${WORKER_URL}/stats?${params}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) return null;

@@ -10,6 +10,7 @@ import {
   RotateCcw, TrendingUp, ExternalLink,
 } from "lucide-react";
 import { BackToHome } from "@/components/ui/BackToHome";
+import { cn } from "@/lib/utils";
 
 /** Convert ISO 3166-1 alpha-2 country code to flag emoji */
 function countryFlag(code: string): string {
@@ -139,10 +140,10 @@ export default function StatsPage() {
     }
   }, [authLoading, isAdmin, router]);
 
-  async function load(d = days) {
+  async function load(d = days, exclude = excludeKR) {
     if (!token) return;
     setLoading(true);
-    const result = await fetchAnalytics(token, d);
+    const result = await fetchAnalytics(token, d, exclude ? "KR" : undefined);
     setData(result);
     setLoading(false);
   }
@@ -158,6 +159,11 @@ export default function StatsPage() {
     load(d);
   }
 
+  function handleExcludeKR(checked: boolean) {
+    setExcludeKR(checked);
+    load(days, checked);
+  }
+
   // Don't render anything for non-admin
   if (authLoading || !isAdmin) {
     return (
@@ -168,9 +174,7 @@ export default function StatsPage() {
   }
 
   const sortedCountries = data
-    ? Object.entries(data.countries)
-        .filter(([code]) => !excludeKR || code !== "KR")
-        .sort((a, b) => b[1] - a[1])
+    ? Object.entries(data.countries).sort((a, b) => b[1] - a[1])
     : [];
   const totalCountryVisits = sortedCountries.reduce((sum, [, c]) => sum + c, 0);
 
@@ -227,6 +231,23 @@ export default function StatsPage() {
               <StatCard icon={Search} label="검색 사용" value={data.searchCount} sub="세션" />
               <StatCard icon={Smartphone} label="모바일 비율" value={`${mobilePct}%`} sub={`${mobileCount} 모바일 / ${desktopCount} PC`} />
               <StatCard icon={Download} label="PWA 설치" value={data.pwaInstalls} />
+              <button
+                onClick={() => handleExcludeKR(!excludeKR)}
+                className={cn(
+                  "rounded-lg border p-4 space-y-1 text-left transition-colors",
+                  excludeKR
+                    ? "border-primary/40 bg-primary/5"
+                    : "border-border bg-card"
+                )}
+              >
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Globe className="size-4" />
+                  <span className="text-xs font-medium">KR 제외</span>
+                </div>
+                <p className={cn("text-2xl font-bold", excludeKR ? "text-primary" : "text-muted-foreground")}>
+                  {excludeKR ? "ON" : "OFF"}
+                </p>
+              </button>
             </div>
 
             {/* Daily Trend Area Chart */}
@@ -311,21 +332,10 @@ export default function StatsPage() {
 
             {/* Countries */}
             <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold flex items-center gap-2">
-                  <Globe className="size-4" />
-                  국가별 방문
-                </h2>
-                <label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={excludeKR}
-                    onChange={(e) => setExcludeKR(e.target.checked)}
-                    className="rounded border-border"
-                  />
-                  KR 제외
-                </label>
-              </div>
+              <h2 className="text-sm font-semibold flex items-center gap-2">
+                <Globe className="size-4" />
+                국가별 방문
+              </h2>
               {sortedCountries.length === 0 ? (
                 <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
               ) : (
