@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { Sun, Moon, Monitor, Check, ChevronRight, LogOut, BarChart3 } from "lucide-react";
+import { Sun, Moon, Monitor, Check, ChevronRight, LogOut, BarChart3, Download, Share, Plus } from "lucide-react";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import type { LocaleSetting } from "@/lib/i18n";
@@ -22,10 +22,50 @@ const localeOptions: { value: LocaleSetting; label: string }[] = [
   ...supportedLocales.map((code) => ({ value: code as LocaleSetting, label: localeLabels[code] })),
 ];
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+}
+
 export function SettingsPage() {
   const { theme, locale, resolvedLocale, setTheme, setLocale } = useSettings();
   const { user, loading: authLoading, gisReady, isAdmin, logout, renderGoogleButton } = useAuth();
   const googleBtnRef = useRef<HTMLDivElement>(null);
+
+  // PWA install state
+  const [isPwa, setIsPwa] = useState(true); // default true to avoid flash
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isIos, setIsIos] = useState(false);
+
+  useEffect(() => {
+    // Detect if running as PWA
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (navigator as unknown as { standalone?: boolean }).standalone === true;
+    setIsPwa(isStandalone);
+
+    // Detect iOS Safari
+    const ua = navigator.userAgent;
+    setIsIos(/iPad|iPhone|iPod/.test(ua) && !(window as unknown as { MSStream?: unknown }).MSStream);
+
+    // Listen for beforeinstallprompt (Chrome/Edge)
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstall = useCallback(async () => {
+    if (!deferredPrompt) return;
+    await deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === "accepted") {
+      setDeferredPrompt(null);
+      setIsPwa(true);
+    }
+  }, [deferredPrompt]);
 
   // Render Google button when ready and not logged in
   useEffect(() => {
@@ -95,6 +135,57 @@ export function SettingsPage() {
               )
             )}
           </div>
+
+          {/* PWA Install Guide */}
+          {!isPwa && (
+            <div className="space-y-2">
+              <h2 className="text-sm font-semibold">{t(resolvedLocale, "pwa_install_title")}</h2>
+              <div className="rounded-lg border border-border p-4 space-y-3">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/icons/icon-192.png"
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="size-10 rounded-lg shrink-0"
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    {t(resolvedLocale, "pwa_install_desc")}
+                  </p>
+                </div>
+                {deferredPrompt ? (
+                  <button
+                    onClick={handleInstall}
+                    className="w-full flex items-center justify-center gap-2 rounded-md bg-foreground text-background px-3 py-2 text-sm font-medium transition-colors hover:bg-foreground/90"
+                  >
+                    <Download className="size-4" />
+                    {t(resolvedLocale, "pwa_install_button")}
+                  </button>
+                ) : isIos ? (
+                  <div className="space-y-2 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center justify-center size-5 rounded-full bg-muted text-foreground text-[10px] font-bold shrink-0">1</span>
+                      <span className="flex items-center gap-1">
+                        <Share className="size-3.5" />
+                        {t(resolvedLocale, "pwa_install_ios_step1")}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center justify-center size-5 rounded-full bg-muted text-foreground text-[10px] font-bold shrink-0">2</span>
+                      <span className="flex items-center gap-1">
+                        <Plus className="size-3.5" />
+                        {t(resolvedLocale, "pwa_install_ios_step2")}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    {t(resolvedLocale, "pwa_install_generic")}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Theme */}
           <div className="space-y-2">

@@ -100,6 +100,12 @@ const translations = {
     account: "계정",
     release_notes: "릴리즈 노트",
     insight: "통계",
+    pwa_install_title: "앱 설치",
+    pwa_install_desc: "앱으로 설치하면 더 빠르고 편리합니다",
+    pwa_install_button: "설치",
+    pwa_install_ios_step1: "하단의 공유 버튼을 탭하세요",
+    pwa_install_ios_step2: "'홈 화면에 추가'를 선택하세요",
+    pwa_install_generic: "브라우저 메뉴에서 '앱 설치' 또는 '홈 화면에 추가'를 선택하세요",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -189,6 +195,12 @@ const translations = {
     account: "Account",
     release_notes: "Release Notes",
     insight: "Insight",
+    pwa_install_title: "Install App",
+    pwa_install_desc: "Install for a faster and better experience",
+    pwa_install_button: "Install",
+    pwa_install_ios_step1: "Tap the Share button at the bottom",
+    pwa_install_ios_step2: "Select 'Add to Home Screen'",
+    pwa_install_generic: "Select 'Install App' or 'Add to Home Screen' from the browser menu",
   },
 } as const;
 
