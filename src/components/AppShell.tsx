@@ -85,7 +85,7 @@ export function AppShell() {
   }, [resolvedLocale]);
 
   return (
-    <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
+    <div data-app-ready className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
       {/* Tab bar */}
       <div className="flex items-center border-b border-border bg-background shrink-0">
         {tabs.map((tab) => {

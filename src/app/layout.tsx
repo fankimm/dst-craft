@@ -258,6 +258,47 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased`}
       >
+        <div
+          id="app-loading"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9999,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1.5rem",
+            background: "var(--loading-bg, #fafafa)",
+            transition: "opacity 0.3s ease",
+          }}
+        >
+          <style dangerouslySetInnerHTML={{ __html: `
+            .dark { --loading-bg: #09090b; --loading-text: #a1a1aa; }
+            :root { --loading-bg: #fafafa; --loading-text: #71717a; }
+            #app-loading img { width: 96px; height: 96px; animation: loading-pulse 2s ease-in-out infinite; }
+            @keyframes loading-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
+          `}} />
+          <img src="/icons/icon-512.png" alt="" width={96} height={96} />
+          <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 500, color: "var(--loading-text)", letterSpacing: "0.05em" }}>
+            Don&apos;t Craft Without Recipes
+          </p>
+        </div>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function(){
+            var el = document.getElementById('app-loading');
+            if (!el) return;
+            var observer = new MutationObserver(function() {
+              if (document.querySelector('[data-app-ready]')) {
+                el.style.opacity = '0';
+                setTimeout(function() { el.remove(); }, 300);
+                observer.disconnect();
+              }
+            });
+            observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+            setTimeout(function() { if (el.parentNode) { el.style.opacity = '0'; setTimeout(function() { el.remove(); }, 300); } }, 5000);
+          })();
+        `}} />
         <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
         <SettingsProvider>
           <AuthProvider>
