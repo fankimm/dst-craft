@@ -57,7 +57,7 @@ function applyTheme(resolved: ResolvedTheme) {
   }
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
-    meta.setAttribute("content", resolved === "dark" ? "#09090b" : "#fafafa");
+    meta.setAttribute("content", "#000000");
   }
 }
 
