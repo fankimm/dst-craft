@@ -278,7 +278,7 @@ export default function RootLayout({
             :root { --loading-bg: #fafafa; --loading-fg: #09090b; --loading-text: #71717a; }
             #app-loading img { width: 96px; height: 96px; border-radius: 20px; animation: loading-pulse 2s ease-in-out infinite; }
             @keyframes loading-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
-            #app-loading { animation: loading-dismiss 0.3s ease 4s forwards; }
+            #app-loading { animation: loading-dismiss 0.3s ease 2s forwards; }
             @keyframes loading-dismiss { to { opacity: 0; visibility: hidden; pointer-events: none; } }
           `}} />
           <img src="/icons/icon-512.png" alt="" width={96} height={96} />
