@@ -278,8 +278,6 @@ export default function RootLayout({
             :root { --loading-bg: #fafafa; --loading-fg: #09090b; --loading-text: #71717a; }
             #app-loading img { width: 96px; height: 96px; border-radius: 20px; animation: loading-pulse 2s ease-in-out infinite; }
             @keyframes loading-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
-            #app-loading { animation: loading-dismiss 0.3s ease 2s forwards; }
-            @keyframes loading-dismiss { to { opacity: 0; visibility: hidden; pointer-events: none; } }
           `}} />
           <img src="/icons/icon-512.png" alt="" width={96} height={96} />
           <p style={{ margin: 0, fontSize: "0.875rem", letterSpacing: "0.05em", color: "var(--loading-fg, #09090b)" }}>
@@ -291,6 +289,8 @@ export default function RootLayout({
           (function(){
             var el = document.getElementById('app-loading');
             if (!el) return;
+            var isPwa = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+            if (!isPwa) { el.style.display = 'none'; return; }
             function hide() {
               if (el.dataset.hidden) return;
               el.dataset.hidden = '1';
@@ -300,7 +300,7 @@ export default function RootLayout({
             }
             if (document.readyState !== 'loading') { hide(); }
             else { document.addEventListener('DOMContentLoaded', hide); }
-            setTimeout(hide, 5000);
+            setTimeout(hide, 2000);
           })();
         `}} />
         <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
