@@ -1,4 +1,4 @@
-import { Github, Mail } from "lucide-react";
+import { Github, Mail, Heart } from "lucide-react";
 
 export function Footer() {
   return (
@@ -28,6 +28,16 @@ export function Footer() {
       >
         <Mail className="size-3.5" />
         <span>Contact</span>
+      </a>
+      <span className="text-border">|</span>
+      <a
+        href="https://ko-fi.com/fankim"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-1 hover:text-muted-foreground transition-colors"
+      >
+        <Heart className="size-3.5" />
+        <span>Support</span>
       </a>
     </footer>
   );
