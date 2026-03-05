@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SettingsProvider } from "@/hooks/use-settings";
 import { AuthProvider } from "@/hooks/use-auth";
 import { FavoritesProvider } from "@/hooks/use-favorites";
+import { Analytics } from "@vercel/analytics/react";
 import { APP_VERSION } from "@/lib/version";
 import "./globals.css";
 
@@ -309,6 +310,7 @@ export default function RootLayout({
           <AuthProvider>
             <FavoritesProvider>
               <TooltipProvider>{children}</TooltipProvider>
+              <Analytics />
             </FavoritesProvider>
           </AuthProvider>
         </SettingsProvider>
