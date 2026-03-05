@@ -6,6 +6,7 @@ import { CraftingApp } from "./crafting/CraftingApp";
 import { CookingApp } from "./cooking/CookingApp";
 import { CookpotApp } from "./cookpot/CookpotApp";
 import { SettingsPage } from "./settings/SettingsPage";
+import { ReviewPrompt } from "./ReviewPrompt";
 import { useSettings } from "@/hooks/use-settings";
 import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
@@ -33,6 +34,7 @@ export function AppShell() {
   const { resolvedLocale } = useSettings();
   const [toast, setToast] = useState<string | null>(null);
   const [pendingRecipeId, setPendingRecipeId] = useState<string | null>(null);
+  const [showReview, setShowReview] = useState(false);
 
   // Sync active tab from URL on mount (SSR-safe)
   useEffect(() => {
@@ -46,6 +48,24 @@ export function AppShell() {
     };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  // Review prompt trigger — count visits, show after 5+
+  useEffect(() => {
+    if (sessionStorage.getItem("dst:review-counted")) return;
+    sessionStorage.setItem("dst:review-counted", "1");
+
+    const count = (parseInt(localStorage.getItem("dst:visit-count") ?? "0", 10) || 0) + 1;
+    localStorage.setItem("dst:visit-count", String(count));
+
+    if (count >= 5 && !localStorage.getItem("dst:review-dismissed")) {
+      const timer = setTimeout(() => setShowReview(true), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleReviewClose = useCallback(() => {
+    setShowReview(false);
   }, []);
 
   // Tab click handler — pushState + setActiveTab
@@ -134,6 +154,9 @@ export function AppShell() {
           <SettingsPage />
         </div>
       </div>
+
+      {/* Review Prompt */}
+      <ReviewPrompt open={showReview} onClose={handleReviewClose} locale={resolvedLocale} />
 
       {/* Toast */}
       {toast && (

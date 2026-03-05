@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { Sun, Moon, Monitor, ChevronRight, LogOut, BarChart3, Download, Share, Plus, ChevronDown } from "lucide-react";
+import { Sun, Moon, Monitor, ChevronRight, LogOut, BarChart3, Download, Share, Plus, ChevronDown, Heart } from "lucide-react";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import type { LocaleSetting } from "@/lib/i18n";
@@ -252,6 +252,20 @@ export function SettingsPage() {
             className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
           >
             <span>{t(resolvedLocale, "release_notes")}</span>
+            <ChevronRight className="size-4" />
+          </a>
+
+          {/* Ko-fi Support */}
+          <a
+            href="https://ko-fi.com/fankim"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
+          >
+            <span className="flex items-center gap-2">
+              <Heart className="size-4" />
+              {t(resolvedLocale, "support_kofi")}
+            </span>
             <ChevronRight className="size-4" />
           </a>
         </div>

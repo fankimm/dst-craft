@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import {
   BarChart3, Globe, Users, Eye, RefreshCw,
   Smartphone, Monitor, Clock, Search, Download,
-  RotateCcw, TrendingUp, ExternalLink,
+  RotateCcw, TrendingUp, ExternalLink, Star,
 } from "lucide-react";
 import { BackToHome } from "@/components/ui/BackToHome";
 import { cn } from "@/lib/utils";
@@ -249,6 +249,36 @@ export default function StatsPage() {
                 </p>
               </button>
             </div>
+
+            {/* Ratings */}
+            {(data.totalRatings ?? 0) > 0 && (() => {
+              const totalR = data.totalRatings ?? 0;
+              const avgR = data.avgRating ?? 0;
+              const rMap = data.ratings ?? {};
+              return (
+                <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-sm font-semibold flex items-center gap-2">
+                      <Star className="size-4" />
+                      별점 평가
+                    </h2>
+                    <span className="text-xs text-muted-foreground">
+                      평균 {avgR} / 총 {totalR}건
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    {[5, 4, 3, 2, 1].map((star) => (
+                      <PercentBar
+                        key={star}
+                        label={`${"★".repeat(star)}`}
+                        count={rMap[String(star)] ?? 0}
+                        total={totalR}
+                      />
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Daily Trend Area Chart */}
             <div className="rounded-lg border border-border bg-card p-4 space-y-3">

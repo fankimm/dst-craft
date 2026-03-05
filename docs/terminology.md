@@ -24,6 +24,7 @@
 | **릴리즈 노트 페이지** | `src/app/releases/page.tsx` | 버전별 변경 사항을 표시하는 독립 페이지. 설정에서 진입 |
 | **즐겨찾기 타일** | `CategoryGrid.tsx`, `CookingApp.tsx` | 카테고리 그리드 상단의 즐겨찾기 카테고리 버튼 (하트 아이콘, 즐겨찾기 개수 표시) |
 | **즐겨찾기 토글** | `ItemIcon.tsx`, `ItemDetail.tsx`, `RecipeCard`, `RecipeDetail` | 아이템 카드/상세 패널의 즐겨찾기 추가/제거 하트 버튼 |
+| **리뷰 프롬프트** | `ReviewPrompt.tsx` | 5회 이상 방문 사용자에게 한 번만 표시되는 iOS 스타일 바텀시트. 별점 평가 + GitHub Star + 공유 기능 제공 |
 
 ## 버그 리포트 예시
 

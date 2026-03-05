@@ -214,6 +214,10 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         commands.push(["INCR", "dst:events:search"]);
       } else if (type === "pwa_install") {
         commands.push(["INCR", "dst:events:pwa_install"]);
+      } else if (type === "share") {
+        commands.push(["INCR", "dst:events:share"]);
+      } else if (type === "github_star_click") {
+        commands.push(["INCR", "dst:events:github_star_click"]);
       } else if (type === "duration" && typeof body.value === "number") {
         const duration = Math.min(Math.max(Math.round(body.value), 0), 3600);
         commands.push(
@@ -225,6 +229,20 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       if (commands.length > 0) {
         await redisPipeline(env, commands);
       }
+      return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
+    }
+
+    // POST /rate — submit a star rating (1~5)
+    if (url.pathname === "/rate" && request.method === "POST") {
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const rating = body.rating;
+      if (typeof rating !== "number" || !Number.isInteger(rating) || rating < 1 || rating > 5) {
+        return new Response(JSON.stringify({ error: "rating must be an integer between 1 and 5" }), {
+          status: 400,
+          headers: { ...headers, "Content-Type": "application/json" },
+        });
+      }
+      await redisPipeline(env, [["HINCRBY", "dst:ratings", `${rating}`, "1"]]);
       return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
     }
 
@@ -263,10 +281,11 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         ["LRANGE", "dst:duration:samples", "0", "999"], // 10
         ["HGETALL", "dst:os"],              // 11
         ["HGETALL", "dst:referrers"],       // 12
+        ["HGETALL", "dst:ratings"],          // 13
       ];
       for (const d of dates) {
-        commands.push(["GET", `dst:pv:${d}`]);     // 13 + i*2
-        commands.push(["PFCOUNT", `dst:uv:${d}`]); // 14 + i*2
+        commands.push(["GET", `dst:pv:${d}`]);     // 14 + i*2
+        commands.push(["PFCOUNT", `dst:uv:${d}`]); // 15 + i*2
       }
 
       const results = await redisPipeline(env, commands) as { result: any }[];
@@ -312,6 +331,22 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         }
       }
 
+      // Ratings
+      const ratingsRaw = r(13) as string[] | null;
+      const ratings: Record<string, number> = {};
+      let totalRatings = 0;
+      let ratingSum = 0;
+      if (Array.isArray(ratingsRaw)) {
+        for (let i = 0; i < ratingsRaw.length; i += 2) {
+          const star = parseInt(ratingsRaw[i], 10);
+          const count = parseInt(ratingsRaw[i + 1], 10) || 0;
+          ratings[ratingsRaw[i]] = count;
+          totalRatings += count;
+          ratingSum += star * count;
+        }
+      }
+      const avgRating = totalRatings > 0 ? Math.round((ratingSum / totalRatings) * 10) / 10 : 0;
+
       // Average duration
       const durationRaw = r(10) as string[] | null;
       let avgDuration = 0;
@@ -328,8 +363,8 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
 
       let dailyTrend = dates.map((d, i) => ({
         date: d,
-        pv: parseInt(r(13 + i * 2) ?? "0", 10) || 0,
-        uv: parseInt(r(13 + i * 2 + 1) ?? "0", 10) || 0,
+        pv: parseInt(r(14 + i * 2) ?? "0", 10) || 0,
+        uv: parseInt(r(14 + i * 2 + 1) ?? "0", 10) || 0,
       }));
 
       // Country exclusion filter
@@ -418,6 +453,9 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         avgDuration,
         searchCount: parseInt(r(8) ?? "0", 10) || 0,
         pwaInstalls: parseInt(r(9) ?? "0", 10) || 0,
+        ratings,
+        avgRating,
+        totalRatings,
       };
 
       return new Response(JSON.stringify(data), {

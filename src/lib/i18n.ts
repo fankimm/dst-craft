@@ -106,6 +106,13 @@ const translations = {
     pwa_install_ios_step1: "하단의 공유 버튼을 탭하세요",
     pwa_install_ios_step2: "'홈 화면에 추가'를 선택하세요",
     pwa_install_generic: "브라우저 메뉴에서 '앱 설치' 또는 '홈 화면에 추가'를 선택하세요",
+    review_title: "앱이 도움이 되셨나요?",
+    review_message: "여러분의 평가는 개발자에게 큰 힘이 됩니다",
+    review_github_star: "GitHub에서 Star 주기",
+    review_share: "친구에게 공유하기",
+    review_thanks: "감사합니다!",
+    review_later: "나중에",
+    support_kofi: "개발자 후원하기",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -201,6 +208,13 @@ const translations = {
     pwa_install_ios_step1: "Tap the Share button at the bottom",
     pwa_install_ios_step2: "Select 'Add to Home Screen'",
     pwa_install_generic: "Select 'Install App' or 'Add to Home Screen' from the browser menu",
+    review_title: "Enjoying the app?",
+    review_message: "Your feedback means a lot to the developer",
+    review_github_star: "Star on GitHub",
+    review_share: "Share with friends",
+    review_thanks: "Thank you!",
+    review_later: "Maybe later",
+    support_kofi: "Support the developer",
   },
 } as const;
 

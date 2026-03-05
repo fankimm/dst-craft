@@ -25,6 +25,9 @@ export interface AnalyticsData {
   avgDuration: number;
   searchCount: number;
   pwaInstalls: number;
+  ratings?: Record<string, number>;
+  avgRating?: number;
+  totalRatings?: number;
 }
 
 /** Track a page visit — call once on app load */
@@ -92,8 +95,23 @@ export function initDurationTracking(skipTracking?: boolean) {
   });
 }
 
+/** Submit a star rating (1~5) */
+export async function submitRating(rating: number): Promise<boolean> {
+  if (!WORKER_URL) return false;
+  try {
+    const res = await fetch(`${WORKER_URL}/rate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rating }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 /** Track a generic event */
-export function trackEvent(type: "search" | "pwa_install", skipTracking?: boolean) {
+export function trackEvent(type: "search" | "pwa_install" | "share" | "github_star_click", skipTracking?: boolean) {
   if (!WORKER_URL || skipTracking) return;
   // Use sendBeacon to avoid blocking
   navigator.sendBeacon(

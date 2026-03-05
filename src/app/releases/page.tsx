@@ -15,6 +15,31 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.3.1",
+    date: "2026-03-05",
+    dev: [
+      "ReviewPrompt.tsx 신규 생성 — iOS 스타일 바텀시트 (별점 + GitHub Star + 공유)",
+      "AppShell.tsx에 방문 횟수 카운트 + 리뷰 프롬프트 트리거 로직 추가",
+      "Worker POST /rate 엔드포인트 추가 (HINCRBY dst:ratings)",
+      "Worker /event에 share, github_star_click 이벤트 타입 추가",
+      "Worker /stats에 ratings, avgRating, totalRatings 응답 필드 추가",
+      "analytics.ts에 submitRating() 함수 + trackEvent 타입 확장",
+      "i18n.ts에 review_* 번역 키 6개 추가 (ko/en)",
+      "stats/page.tsx에 별점 분포 통계 카드 추가",
+      "docs/terminology.md에 리뷰 프롬프트 용어 추가",
+    ],
+    changes: {
+      ko: [
+        "리뷰 프롬프트 추가 — 5회 이상 방문 시 별점 평가, GitHub Star, 공유 요청",
+        "통계 페이지에 별점 분포 차트 추가",
+      ],
+      en: [
+        "Added review prompt — star rating, GitHub Star, and share after 5+ visits",
+        "Added rating distribution chart to stats page",
+      ],
+    },
+  },
+  {
     version: "0.3.0",
     date: "2026-03-04",
     dev: [
