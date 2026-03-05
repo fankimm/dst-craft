@@ -168,7 +168,6 @@ const themeScript = `
             regs.forEach(function(r) { r.unregister(); });
           });
         }
-        window.location.reload();
       }
     }
   } catch(e) {}
@@ -277,8 +276,10 @@ export default function RootLayout({
           <style dangerouslySetInnerHTML={{ __html: `
             .dark { --loading-bg: #09090b; --loading-fg: #fafafa; --loading-text: #a1a1aa; }
             :root { --loading-bg: #fafafa; --loading-fg: #09090b; --loading-text: #71717a; }
-            #app-loading img { width: 96px; height: 96px; animation: loading-pulse 2s ease-in-out infinite; }
+            #app-loading img { width: 96px; height: 96px; border-radius: 20px; animation: loading-pulse 2s ease-in-out infinite; }
             @keyframes loading-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
+            #app-loading { animation: loading-dismiss 0.3s ease 4s forwards; }
+            @keyframes loading-dismiss { to { opacity: 0; visibility: hidden; pointer-events: none; } }
           `}} />
           <img src="/icons/icon-512.png" alt="" width={96} height={96} />
           <p style={{ margin: 0, fontSize: "0.875rem", letterSpacing: "0.05em", color: "var(--loading-fg, #09090b)" }}>
