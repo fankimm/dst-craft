@@ -74,7 +74,7 @@ export function Breadcrumb({
     segments.push({ label: t(resolvedLocale, "craftingGuide") });
   }
 
-  const iconSrc = assetPath("/icons/icon-192.png");
+  const iconSrc = assetPath("/images/category-icons/tools.png");
 
   return (
     <nav className="flex items-center gap-1 min-w-0 text-sm">

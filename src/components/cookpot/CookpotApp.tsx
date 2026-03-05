@@ -159,7 +159,7 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
 // ---------------------------------------------------------------------------
 
 function CookpotBreadcrumb({ locale }: { locale: Locale }) {
-  const iconSrc = assetPath("/icons/icon-192.png");
+  const iconSrc = assetPath("/images/game-items/cookpot.png");
 
   return (
     <nav className="flex items-center gap-1 min-w-0 text-sm">
