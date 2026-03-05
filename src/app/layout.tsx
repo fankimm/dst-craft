@@ -264,7 +264,7 @@ export default function RootLayout({
             position: "fixed",
             inset: 0,
             zIndex: 9999,
-            display: "flex",
+            display: "none",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
@@ -290,7 +290,8 @@ export default function RootLayout({
             var el = document.getElementById('app-loading');
             if (!el) return;
             var isPwa = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-            if (!isPwa) { el.style.display = 'none'; return; }
+            if (!isPwa) return;
+            el.style.display = 'flex';
             function hide() {
               if (el.dataset.hidden) return;
               el.dataset.hidden = '1';
