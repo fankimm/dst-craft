@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { allItems } from "@/data/items";
 import { cookingRecipes } from "@/data/recipes";
+import { bosses } from "@/data/bosses";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -40,5 +41,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...itemRoutes, ...foodRoutes];
+  const bossRoutes: MetadataRoute.Sitemap = bosses.map((boss) => ({
+    url: `${SITE_URL}/boss/${boss.id}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  return [...staticRoutes, ...itemRoutes, ...foodRoutes, ...bossRoutes];
 }
