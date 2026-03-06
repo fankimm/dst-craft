@@ -855,6 +855,13 @@ function RecipeDetail({
                 onClick={onStationClick ? () => onStationClick("portablecookpot", t(locale, "cooking_warly_exclusive")) : undefined}
               />
             )}
+            {recipe.specialEffect && (
+              <TagChip
+                label={effectLabel(recipe.specialEffect, locale)}
+                onClick={onEffectClick ? () => onEffectClick(recipe.specialEffect!) : undefined}
+                className="border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-400"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -887,7 +894,7 @@ function RecipeDetail({
       </div>
 
       {/* Info row — perish / cooktime / temp inline */}
-      <div className="flex items-center rounded-lg border border-border bg-surface py-2.5 text-sm">
+      <div className="flex items-center py-1 text-sm">
         <div className="flex-1 flex items-center justify-center gap-1.5">
           <img src={assetPath("/images/ui/perish.png")} alt="" className="size-4 object-contain" />
           <div>
@@ -923,17 +930,6 @@ function RecipeDetail({
           </div>
         )}
       </div>
-
-      {/* Special effect */}
-      {recipe.specialEffect && (
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">{t(locale, "cooking_effect")}</span>
-          <TagChip
-            label={effectLabel(recipe.specialEffect, locale)}
-            onClick={onEffectClick ? () => onEffectClick(recipe.specialEffect!) : undefined}
-          />
-        </div>
-      )}
 
       {/* Requirements — split into needed / excluded */}
       {recipe.requirements && <RequirementsSections text={recipe.requirements} locale={locale} />}
@@ -1036,16 +1032,20 @@ function RequirementsSections({ text, locale }: { text: string; locale: Locale }
               const { name, badge } = parseReqEntry(item);
               const parts = name.split(/\s*\/\s*/);
               if (parts.length > 1) {
-                return parts.map((part, j) => (
-                  <span key={`${i}-${j}`} className="contents">
-                    {j > 0 && <span className="text-[10px] text-muted-foreground -mx-1">/</span>}
-                    <ItemSlot
-                      icon={findReqIcon(part)}
-                      label={translateReq(part, locale)}
-                      badge={badge}
-                    />
-                  </span>
-                ));
+                return (
+                  <div key={i} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-border px-1.5 py-1">
+                    {parts.map((part, j) => (
+                      <span key={j} className="flex items-center gap-1.5">
+                        {j > 0 && <span className="text-[10px] text-muted-foreground">{t(locale, "cooking_or")}</span>}
+                        <ItemSlot
+                          icon={findReqIcon(part)}
+                          label={translateReq(part, locale)}
+                          badge={badge}
+                        />
+                      </span>
+                    ))}
+                  </div>
+                );
               }
               return (
                 <ItemSlot
