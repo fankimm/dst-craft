@@ -33,8 +33,10 @@ export function TagChip({ label, icon, onClick, onRemove, className }: TagChipPr
     </>
   );
 
-  const base =
-    "inline-flex items-center gap-1 rounded-full border border-border bg-surface pl-1.5 pr-2.5 py-1 text-xs font-medium h-7 transition-colors";
+  const base = cn(
+    "inline-flex items-center gap-1 rounded-full border border-border bg-surface pr-2.5 py-1 text-xs font-medium h-7 transition-colors",
+    icon ? "pl-1.5" : "pl-2.5",
+  );
 
   if (onClick) {
     return (
