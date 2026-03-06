@@ -77,7 +77,8 @@ jihwan-kim3 (macOS):
 - 새 작업 전 반드시 참조할 것.
 
 ## Release Notes Rules
-- 배포 전 `src/app/releases/page.tsx`의 릴리즈 노트를 업데이트할 것
+- 배포(푸시) 또는 매 커밋 시 `src/app/releases/page.tsx`의 릴리즈 노트를 업데이트할 것
+- 단, 적을만한 내용이 없으면 생략 가능 (예: 릴리즈 노트 자체 수정, 주석/타입/린트 정리, 문서만 수정 등 사용자에게 변화가 없는 경우)
 - 새 버전 번호는 릴리즈 노트 페이지의 기존 버전을 참고하여 결정
 - `src/lib/version.ts`의 `APP_VERSION`도 함께 업데이트
 - 버전 규칙: patch(0.0.x) = 버그픽스/소규모 변경, minor(0.x.0) = 기능 추가, major(x.0.0) = 대규모 변경
