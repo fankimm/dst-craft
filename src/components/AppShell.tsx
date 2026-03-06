@@ -38,6 +38,7 @@ export function AppShell() {
   const { isAdmin } = useAuth();
   const [toast, setToast] = useState<string | null>(null);
   const [pendingRecipeId, setPendingRecipeId] = useState<string | null>(null);
+  const [pendingItemId, setPendingItemId] = useState<string | null>(null);
   const [showReview, setShowReview] = useState(false);
 
   // Sync active tab from URL on mount (SSR-safe)
@@ -98,6 +99,32 @@ export function AppShell() {
     setPendingRecipeId(null);
   }, []);
 
+  // Boss → Crafting item shortcut
+  const handleViewCraftingItem = useCallback((itemId: string) => {
+    const url = `${window.location.pathname}`;
+    window.history.pushState({ _appNav: true }, "", url);
+    setPendingItemId(itemId);
+    setActiveTab("crafting");
+  }, []);
+
+  const handleClearPendingItem = useCallback(() => {
+    setPendingItemId(null);
+  }, []);
+
+  // Crafting → Boss loot search
+  const [pendingLootItemId, setPendingLootItemId] = useState<string | null>(null);
+
+  const handleBlueprintClick = useCallback((itemId: string) => {
+    const url = `${window.location.pathname}?tab=bosses`;
+    window.history.pushState({ _appNav: true }, "", url);
+    setPendingLootItemId(itemId);
+    setActiveTab("bosses");
+  }, []);
+
+  const handleClearPendingLoot = useCallback(() => {
+    setPendingLootItemId(null);
+  }, []);
+
   // Listen for local-only favorites warning
   useEffect(() => {
     const handler = () => {
@@ -146,7 +173,7 @@ export function AppShell() {
       {/* Tab content */}
       <div className="flex-1 min-h-0 overflow-hidden">
         <div className={activeTab === "crafting" ? "h-full" : "hidden"}>
-          <CraftingApp />
+          <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} />
         </div>
         <div className={activeTab === "cooking" ? "h-full" : "hidden"}>
           <CookingApp pendingRecipeId={pendingRecipeId} onClearPendingRecipe={handleClearPendingRecipe} />
@@ -155,7 +182,7 @@ export function AppShell() {
           <CookpotApp onViewRecipe={handleViewRecipe} />
         </div>
         <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
-          <BossesApp />
+          <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} />
         </div>
         <div className={activeTab === "settings" ? "h-full" : "hidden"}>
           <SettingsPage />

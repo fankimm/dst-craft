@@ -15,6 +15,35 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.4.2",
+    date: "2026-03-06",
+    dev: [
+      "보스 전리품 검색: SearchWithSuggestions + TagChip 패턴 적용 (드롭다운 서제스천 + 태그)",
+      "보스 블루프린트 pill 클릭 → 제작 탭 해당 아이템 상세로 이동 (cross-tab navigation)",
+      "제작 탭 '블루프린트 필요' 칩 클릭 → 보스 전리품 검색으로 이동",
+      "블루프린트 pill에 점선 밑줄(클릭 가능 힌트) 추가",
+      "모든 상세 패널 하단 여백을 푸터와 동일하게 통일 (safe-area-inset-bottom)",
+      "디바운스 전체 300ms 통일 (요리 200→300, 요리솥 신규 추가)",
+      "i18n: boss_loot_search, boss_loot_search_result 키 추가",
+    ],
+    changes: {
+      ko: [
+        "보스 전리품 검색 기능 추가 — 드롭다운 + 태그 방식",
+        "보스 블루프린트 클릭 시 제작법으로 이동",
+        "제작 상세 '블루프린트 필요' 클릭 시 보스 전리품 검색으로 이동",
+        "모든 상세 패널 하단 여백 통일 (아이폰 safe area)",
+        "검색 디바운스 300ms 통일",
+      ],
+      en: [
+        "Added boss loot search — dropdown suggestions + tag chips",
+        "Blueprint loot click navigates to crafting recipe",
+        "Crafting 'Blueprint Required' click navigates to boss loot search",
+        "Unified bottom padding on all detail panels (iPhone safe area)",
+        "Unified search debounce to 300ms",
+      ],
+    },
+  },
+  {
     version: "0.4.1",
     date: "2026-03-06",
     dev: [

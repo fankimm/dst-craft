@@ -24,9 +24,10 @@ interface ItemDetailProps {
   onCategoryClick?: (categoryId: CategoryId) => void;
   onCharacterClick?: (characterId: string) => void;
   onStationClick?: (stationLabel: string, station?: string) => void;
+  onBlueprintClick?: (itemId: string) => void;
 }
 
-export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick }: ItemDetailProps) {
+export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick, onBlueprintClick }: ItemDetailProps) {
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -40,7 +41,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
   }
 
   return (
-    <div className="flex gap-4 p-4">
+    <div className="flex gap-4 p-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
       {/* Item image */}
       <div className="flex items-start justify-center shrink-0">
         <div className="flex items-center justify-center size-16 rounded-md border border-input bg-surface">
@@ -140,6 +141,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             <TagChip
               label={t(resolvedLocale, "blueprint_required")}
               icon="game-items/blueprint.png"
+              onClick={onBlueprintClick ? () => onBlueprintClick(item.id) : undefined}
               className="border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
             />
           )}

@@ -24,7 +24,15 @@ import { trackVisit, initDurationTracking, trackEvent, trackItemClick } from "@/
 import { usePopularity } from "@/hooks/use-popularity";
 import { ArrowUpDown } from "lucide-react";
 
-export function CraftingApp() {
+export function CraftingApp({
+  pendingItemId,
+  onClearPendingItem,
+  onBlueprintClick,
+}: {
+  pendingItemId?: string | null;
+  onClearPendingItem?: () => void;
+  onBlueprintClick?: (itemId: string) => void;
+}) {
   const {
     selectedCategory,
     selectedItem,
@@ -44,6 +52,14 @@ export function CraftingApp() {
   const { resolvedLocale } = useSettings();
   const { isAdmin } = useAuth();
   const { favorites } = useFavorites();
+
+  // External navigation (e.g. boss → crafting item)
+  useEffect(() => {
+    if (!pendingItemId) return;
+    const item = getItemById(pendingItemId);
+    if (item) navigateToItem(item);
+    onClearPendingItem?.();
+  }, [pendingItemId, navigateToItem, onClearPendingItem]);
 
   const { getClicks } = usePopularity();
   const [sortByPopular, setSortByPopular] = useState(false);
@@ -188,7 +204,7 @@ export function CraftingApp() {
         <button onClick={() => setItem(null)} className="absolute top-2 right-2 z-10 p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors">
           <X className="size-4" />
         </button>
-        <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} />
+        <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} />
       </div>
     </>
   );

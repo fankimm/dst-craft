@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { X } from "lucide-react";
 import {
   cookpotIngredients,
@@ -46,6 +46,12 @@ interface IngredientPickerProps {
 export function IngredientPicker({ locale, onSelect, disabled }: IngredientPickerProps) {
   const [category, setCategory] = useState<"all" | IngredientCategory>("all");
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 300);
+    return () => clearTimeout(timer);
+  }, [search]);
 
   const filtered = useMemo(() => {
     let list = cookpotIngredients;
@@ -56,7 +62,7 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
     }
 
     // Search filter
-    const q = search.trim().toLowerCase();
+    const q = debouncedSearch.trim().toLowerCase();
     if (q) {
       list = list.filter((i) => {
         const localName = ingredientName(i, locale).toLowerCase();
@@ -66,7 +72,7 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
     }
 
     return list;
-  }, [category, search, locale]);
+  }, [category, debouncedSearch, locale]);
 
   const handleSelect = (ing: CookpotIngredient) => {
     if (disabled) return;

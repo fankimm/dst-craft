@@ -3,7 +3,8 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChevronRight, X } from "lucide-react";
-import { bosses, bossCategories, lootImage, lootDisplayName, type Boss, type BossCategoryId } from "@/data/bosses";
+import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
+import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
 import { useSettings } from "@/hooks/use-settings";
 import { t, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -39,15 +40,109 @@ function categoryImage(catId: BossCategoryId): string {
 
 const ALL_CATEGORY_IMAGE = "/images/category-icons/bosses_all.png";
 
+/** Build unique loot list for suggestions */
+const allLootItems = (() => {
+  const seen = new Set<string>();
+  const items: { id: string; baseId: string; nameKo: string; nameEn: string; image: string; blueprint: boolean }[] = [];
+  for (const boss of bosses) {
+    for (const loot of boss.loot) {
+      if (seen.has(loot.item)) continue;
+      seen.add(loot.item);
+      const baseId = loot.item.replace(/_blueprint$/, "");
+      items.push({
+        id: loot.item,
+        baseId,
+        nameKo: lootNameKo[baseId] ?? lootNameKo[loot.item] ?? baseId.replace(/_/g, " "),
+        nameEn: baseId.replace(/_/g, " "),
+        image: lootImage(loot.item),
+        blueprint: !!loot.blueprint,
+      });
+    }
+  }
+  return items;
+})();
+
+function getLootSuggestions(query: string, locale: Locale): SearchSuggestion[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+  return allLootItems
+    .filter((item) => item.nameKo.toLowerCase().includes(q) || item.nameEn.toLowerCase().includes(q))
+    .slice(0, 8)
+    .map((item) => ({
+      key: item.id,
+      text: locale === "ko" ? item.nameKo : item.nameEn,
+      image: item.image.replace(/^\/images\//, ""),
+      typeLabel: locale === "ko" ? "전리품" : "Loot",
+      data: item.id,
+    }));
+}
+
+interface LootTag {
+  itemId: string;
+  label: string;
+  image: string;
+}
+
 // ---------------------------------------------------------------------------
 // BossesApp
 // ---------------------------------------------------------------------------
 
-export function BossesApp() {
+export function BossesApp({
+  onViewCraftingItem,
+  pendingLootItemId,
+  onClearPendingLoot,
+}: {
+  onViewCraftingItem?: (itemId: string) => void;
+  pendingLootItemId?: string | null;
+  onClearPendingLoot?: () => void;
+}) {
   const { resolvedLocale } = useSettings();
 
   const [selectedCategory, setSelectedCategory] = useState<BossCategoryId | null>(null);
   const [selectedBoss, setSelectedBoss] = useState<Boss | null>(null);
+
+  // Loot search with tags
+  const [lootInput, setLootInput] = useState("");
+  const [lootTags, setLootTags] = useState<LootTag[]>([]);
+
+  // External loot search (e.g. crafting blueprint → boss loot)
+  useEffect(() => {
+    if (!pendingLootItemId) return;
+    const bpId = `${pendingLootItemId}_blueprint`;
+    const lootItem = allLootItems.find((l) => l.id === bpId || l.baseId === pendingLootItemId);
+    if (lootItem) {
+      const label = resolvedLocale === "ko" ? lootItem.nameKo : lootItem.nameEn;
+      setLootTags([{ itemId: lootItem.id, label, image: lootItem.image.replace(/^\/images\//, "") }]);
+      setSelectedCategory(null);
+    }
+    onClearPendingLoot?.();
+  }, [pendingLootItemId, onClearPendingLoot, resolvedLocale]);
+
+  const lootSuggestions = useMemo(
+    () => getLootSuggestions(lootInput, resolvedLocale),
+    [lootInput, resolvedLocale],
+  );
+
+  const handleLootSelect = useCallback((s: SearchSuggestion) => {
+    const itemId = s.data as string;
+    setLootTags((prev) => {
+      if (prev.some((t) => t.itemId === itemId)) return prev;
+      return [...prev, { itemId, label: s.text, image: s.image ?? "" }];
+    });
+    setLootInput("");
+  }, []);
+
+  const handleLootRemoveTag = useCallback((index: number) => {
+    setLootTags((prev) => prev.filter((_, i) => i !== index));
+  }, []);
+
+  const lootSearchResults = useMemo(() => {
+    if (lootTags.length === 0) return null;
+    const tagItemIds = new Set(lootTags.map((t) => t.itemId));
+    return bosses.filter((boss) =>
+      boss.loot.some((loot) => tagItemIds.has(loot.item))
+    );
+  }, [lootTags]);
 
   // Slide animation
   const [slideDir, setSlideDir] = useState<"right" | "left" | null>(null);
@@ -89,6 +184,8 @@ export function BossesApp() {
   const handleGoHome = useCallback(() => {
     setSelectedCategory(null);
     setSelectedBoss(null);
+    setLootInput("");
+    setLootTags([]);
   }, []);
 
   const handleSelectCategory = useCallback((id: BossCategoryId) => {
@@ -126,10 +223,83 @@ export function BossesApp() {
         >
           <X className="size-4" />
         </button>
-        <BossDetail boss={panelBoss} locale={resolvedLocale} />
+        <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} />
       </div>
     </>
   );
+
+  const lootSearchBar = (
+    <div className="px-3 sm:px-4 pt-3 max-w-4xl mx-auto w-full">
+      <div className="flex flex-col gap-1.5">
+        <SearchWithSuggestions
+          value={lootInput}
+          onChange={setLootInput}
+          suggestions={lootSuggestions}
+          onSelect={handleLootSelect}
+          onSubmit={() => {}}
+          onBackspace={lootTags.length > 0 ? () => handleLootRemoveTag(lootTags.length - 1) : undefined}
+          onClear={lootTags.length > 0 || lootInput ? () => { setLootTags([]); setLootInput(""); } : undefined}
+          showClear={lootTags.length > 0 || lootInput.length > 0}
+          placeholder={t(resolvedLocale, "boss_loot_search")}
+        />
+        {lootTags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {lootTags.map((tag, i) => (
+              <TagChip
+                key={tag.itemId}
+                label={tag.label}
+                icon={tag.image}
+                onRemove={() => handleLootRemoveTag(i)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  // -----------------------------------------------------------------------
+  // Loot search results view
+  // -----------------------------------------------------------------------
+  if (lootSearchResults !== null) {
+    return (
+      <div className="flex flex-col h-full bg-background text-foreground overflow-hidden">
+        <div className="border-b border-border bg-background/80 px-4 py-2.5">
+          <BossBreadcrumb
+            locale={resolvedLocale}
+            categoryLabel={t(resolvedLocale, "boss_loot_search_result")}
+            onHomeClick={handleGoHome}
+          />
+        </div>
+
+        {lootSearchBar}
+
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+          <div className="flex flex-col min-h-full">
+            {lootSearchResults.length > 0 ? (
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+                {lootSearchResults.map((boss) => (
+                  <BossCard
+                    key={boss.id}
+                    boss={boss}
+                    locale={resolvedLocale}
+                    onClick={() => setSelectedBoss(boss)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm py-12">
+                {resolvedLocale === "ko" ? "검색 결과가 없습니다" : "No results found"}
+              </div>
+            )}
+            <Footer />
+          </div>
+        </div>
+
+        {detailPanel}
+      </div>
+    );
+  }
 
   // -----------------------------------------------------------------------
   // Category grid view (home)
@@ -140,6 +310,8 @@ export function BossesApp() {
         <div className="border-b border-border bg-background/80 px-4 py-2.5">
           <BossBreadcrumb locale={resolvedLocale} onHomeClick={handleGoHome} />
         </div>
+
+        {lootSearchBar}
 
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
           <div className="flex flex-col min-h-full">
@@ -304,16 +476,18 @@ function BossCard({
 function BossDetail({
   boss,
   locale,
+  onViewCraftingItem,
 }: {
   boss: Boss;
   locale: Locale;
+  onViewCraftingItem?: (itemId: string) => void;
 }) {
   const localName = bossName(boss, locale);
   const showAltName = locale !== "en" && localName !== boss.name;
   const images = Array.isArray(boss.image) ? boss.image : [boss.image];
 
   return (
-    <div className="p-4 pt-3 pb-5 space-y-4">
+    <div className="p-4 pt-3 pb-[calc(1.5rem+env(safe-area-inset-bottom))] space-y-4">
       {/* Header */}
       <div className="flex items-start gap-4">
         <div className="flex items-center shrink-0">
@@ -352,15 +526,16 @@ function BossDetail({
         <div className="flex flex-wrap gap-1.5">
           {boss.loot.map((loot, i) => {
             const displayName = lootDisplayName(loot.item, locale);
-            const countText = (loot.count ?? 0) > 1 ? ` ×${loot.count}` : "";
+            const hasCount = (loot.count ?? 0) > 1;
             const chanceText = loot.chance < 1 ? ` ${Math.round(loot.chance * 100)}%` : "";
-            return (
+            const craftingId = loot.blueprint ? loot.item.replace(/_blueprint$/, "") : null;
+            const isClickable = !!(craftingId && onViewCraftingItem);
+            const pill = (
               <span
-                key={i}
                 className={cn(
-                  "inline-flex items-center gap-1 rounded-full border pl-1.5 pr-2.5 py-1 text-xs font-medium h-7",
+                  "relative inline-flex items-center gap-1 rounded-full border pl-1.5 pr-2.5 py-1 text-xs font-medium h-7",
                   loot.blueprint
-                    ? "border-[#3975ce] bg-[#3975ce]/10 text-blue-400"
+                    ? "border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
                     : "border-border bg-surface text-foreground/80",
                 )}
               >
@@ -370,9 +545,26 @@ function BossDetail({
                   className="size-4 object-contain shrink-0"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                 />
-                {displayName}{countText}
+                {displayName}
                 {chanceText && <span className="text-amber-500">{chanceText}</span>}
+                {hasCount && (
+                  <span className="absolute -bottom-1.5 -right-1.5 flex items-center justify-center min-w-4 h-4 px-0.5 rounded-full text-[10px] font-bold bg-surface-hover border border-ring text-foreground/80">
+                    {loot.count}
+                  </span>
+                )}
               </span>
+            );
+            return isClickable ? (
+              <button
+                key={i}
+                onClick={() => onViewCraftingItem!(craftingId!)}
+                className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+              >
+                {pill}
+                <span className="w-3/4 border-b-2 border-dotted border-[#3975ce]/60 mt-0.5" />
+              </button>
+            ) : (
+              <span key={i}>{pill}</span>
             );
           })}
         </div>
