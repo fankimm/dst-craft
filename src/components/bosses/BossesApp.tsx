@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { TagChip } from "@/components/ui/TagChip";
-import { ItemSlot } from "@/components/ui/ItemSlot";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -350,23 +349,36 @@ function BossDetail({
         <h4 className="text-sm font-semibold text-muted-foreground">
           {t(locale, "boss_loot")}
         </h4>
-        <div className="flex flex-wrap gap-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
           {boss.loot.map((loot, i) => {
             const displayName = lootDisplayName(loot.item, locale);
-            const badge = loot.blueprint
-              ? "BP"
-              : (loot.count ?? 0) > 1
-                ? `×${loot.count}`
-                : loot.chance < 1
-                  ? `${Math.round(loot.chance * 100)}%`
-                  : undefined;
             return (
-              <ItemSlot
+              <div
                 key={i}
-                iconPath={lootImage(loot.item)}
-                label={displayName}
-                badge={badge}
-              />
+                className={cn(
+                  "relative flex flex-col items-center gap-1.5 rounded-lg border p-2.5",
+                  loot.blueprint
+                    ? "bg-blue-500/10 border-blue-500/30"
+                    : "bg-surface border-border",
+                )}
+              >
+                {(loot.count ?? 0) > 1 && (
+                  <span className="absolute -bottom-1.5 -right-1.5 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80">
+                    {loot.count}
+                  </span>
+                )}
+                <img
+                  src={assetPath(lootImage(loot.item))}
+                  alt={displayName}
+                  className="size-10 object-contain"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                />
+                <span className="text-[11px] text-center leading-tight text-foreground/80">
+                  {displayName}
+                  {loot.blueprint && <span className="ml-0.5 font-semibold text-blue-500">BP</span>}
+                  {loot.chance < 1 && <span className="text-amber-500"> {Math.round(loot.chance * 100)}%</span>}
+                </span>
+              </div>
             );
           })}
         </div>

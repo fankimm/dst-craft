@@ -220,7 +220,7 @@ export const bosses: Boss[] = [
   {
     id: "twinsofterror",
     name: "Twins of Terror",
-    nameKo: "레티나이저/스파즈마티즘",
+    nameKo: "공포의 쌍둥이",
     category: "event",
     image: ["retinazor.png", "spazmatism.png"],
     loot: [
