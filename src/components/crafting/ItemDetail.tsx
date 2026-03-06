@@ -131,19 +131,26 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
           {/* Skill badge */}
           {item.builderSkill && (
             <TagChip
-              label={skillName(item.builderSkill, resolvedLocale)}
+              label={resolvedLocale === "ko"
+                ? `${skillName(item.builderSkill, resolvedLocale)} 스킬 필요`
+                : `${skillName(item.builderSkill, resolvedLocale)} Skill Required`}
               icon={`skill-icons/${item.builderSkill}.png`}
               className="border-[#dab74e] bg-[#dab74e] text-black dark:border-[#dab74e] dark:bg-[#dab74e] dark:text-black"
             />
           )}
           {/* Blueprint badge */}
           {item.blueprint && !item.characterOnly && (
-            <TagChip
-              label={t(resolvedLocale, "blueprint_required")}
-              icon="game-items/blueprint.png"
-              onClick={onBlueprintClick ? () => onBlueprintClick(item.id) : undefined}
-              className="border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
-            />
+            <div className="flex flex-col items-center">
+              <TagChip
+                label={t(resolvedLocale, "blueprint_required")}
+                icon="game-items/blueprint.png"
+                onClick={onBlueprintClick ? () => onBlueprintClick(item.id) : undefined}
+                className="border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
+              />
+              {onBlueprintClick && (
+                <span className="w-3/4 border-b-2 border-dotted border-[#3975ce]/60 mt-0.5" />
+              )}
+            </div>
           )}
         </div>
 
