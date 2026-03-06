@@ -1031,9 +1031,22 @@ function RequirementsSections({ text, locale }: { text: string; locale: Locale }
       {needed.length > 0 && (
         <div className="space-y-1.5">
           <span className="text-xs text-muted-foreground font-medium">{t(locale, "cooking_req_needed")}</span>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {needed.map((item, i) => {
               const { name, badge } = parseReqEntry(item);
+              const parts = name.split(/\s*\/\s*/);
+              if (parts.length > 1) {
+                return parts.map((part, j) => (
+                  <span key={`${i}-${j}`} className="contents">
+                    {j > 0 && <span className="text-[10px] text-muted-foreground -mx-1">/</span>}
+                    <ItemSlot
+                      icon={findReqIcon(part)}
+                      label={translateReq(part, locale)}
+                      badge={badge}
+                    />
+                  </span>
+                ));
+              }
               return (
                 <ItemSlot
                   key={i}
