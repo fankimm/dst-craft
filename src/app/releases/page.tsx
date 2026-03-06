@@ -15,6 +15,39 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.4.1",
+    date: "2026-03-06",
+    dev: [
+      "보스/요리 탭 '전체' 카테고리에 2×2 합성 아이콘(bosses_all.png, cooking_all.png) 적용",
+      "BossesApp: CSS 그리드 → 단일 합성 이미지로 교체",
+      "CookingApp: meatballs.png → cooking_all.png로 교체",
+      "허기 추천 임계값 75→62.5 (미트볼, 몬스터 타르타르 포함)",
+      "Footer 하단 여백 0.75rem→1.5rem (아이폰 모서리 여유)",
+      "보스 상세: 카테고리 뱃지 수동 span → TagChip 컴포넌트",
+      "보스 상세: 전리품 표시를 TagChip 스타일 pill로 통일 (아이콘+라벨)",
+      "블루프린트 전리품: BP 텍스트 → 블루프린트 아이콘 사용",
+      "공포의 쌍둥이 nameKo를 ko.po 통칭('공포의 쌍둥이')으로 변경",
+    ],
+    changes: {
+      ko: [
+        "보스/요리 탭 '전체' 카테고리 아이콘 개선 (2×2 합성 이미지)",
+        "허기 추천에 미트볼 포함",
+        "보스 상세 전리품 UI 개선 — 칩 스타일로 통일",
+        "블루프린트 전리품에 블루프린트 아이콘 표시",
+        "공포의 쌍둥이 이름 수정",
+        "푸터 하단 여백 추가 (아이폰 하단 여유)",
+      ],
+      en: [
+        "Improved boss/cooking 'All' category icons (2×2 composite image)",
+        "Meatballs now included in hunger recommendations",
+        "Boss detail loot UI improved — unified chip style",
+        "Blueprint loot now shows blueprint icon",
+        "Fixed Twins of Terror Korean name",
+        "Added footer bottom padding for iPhone",
+      ],
+    },
+  },
+  {
     version: "0.4.0",
     date: "2026-03-06",
     dev: [
