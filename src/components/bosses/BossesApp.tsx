@@ -349,36 +349,30 @@ function BossDetail({
         <h4 className="text-sm font-semibold text-muted-foreground">
           {t(locale, "boss_loot")}
         </h4>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {boss.loot.map((loot, i) => {
             const displayName = lootDisplayName(loot.item, locale);
+            const countText = (loot.count ?? 0) > 1 ? ` ×${loot.count}` : "";
+            const chanceText = loot.chance < 1 ? ` ${Math.round(loot.chance * 100)}%` : "";
             return (
-              <div
+              <span
                 key={i}
                 className={cn(
-                  "relative flex flex-col items-center gap-1.5 rounded-lg border p-2.5",
+                  "inline-flex items-center gap-1 rounded-full border pl-1.5 pr-2.5 py-1 text-xs font-medium h-7",
                   loot.blueprint
-                    ? "bg-blue-500/10 border-blue-500/30"
-                    : "bg-surface border-border",
+                    ? "border-[#3975ce] bg-[#3975ce]/10 text-blue-400"
+                    : "border-border bg-surface text-foreground/80",
                 )}
               >
-                {(loot.count ?? 0) > 1 && (
-                  <span className="absolute -bottom-1.5 -right-1.5 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80">
-                    {loot.count}
-                  </span>
-                )}
                 <img
-                  src={assetPath(lootImage(loot.item))}
-                  alt={displayName}
-                  className="size-10 object-contain"
+                  src={assetPath(loot.blueprint ? "/images/game-items/blueprint.png" : lootImage(loot.item))}
+                  alt=""
+                  className="size-4 object-contain shrink-0"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                 />
-                <span className="text-[11px] text-center leading-tight text-foreground/80">
-                  {displayName}
-                  {loot.blueprint && <span className="ml-0.5 font-semibold text-blue-500">BP</span>}
-                  {loot.chance < 1 && <span className="text-amber-500"> {Math.round(loot.chance * 100)}%</span>}
-                </span>
-              </div>
+                {displayName}{countText}
+                {chanceText && <span className="text-amber-500">{chanceText}</span>}
+              </span>
             );
           })}
         </div>
