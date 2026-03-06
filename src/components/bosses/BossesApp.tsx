@@ -9,6 +9,8 @@ import { t, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
+import { TagChip } from "@/components/ui/TagChip";
+import { ItemSlot } from "@/components/ui/ItemSlot";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -334,9 +336,12 @@ function BossDetail({
           {showAltName && (
             <p className="text-sm text-muted-foreground">{boss.name}</p>
           )}
-          <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-            {categoryLabel(boss.category, locale)}
-          </span>
+          <div className="mt-1">
+            <TagChip
+              label={categoryLabel(boss.category, locale)}
+              icon={`bosses/${Array.isArray(boss.image) ? boss.image[0] : boss.image}`}
+            />
+          </div>
         </div>
       </div>
 
@@ -345,35 +350,23 @@ function BossDetail({
         <h4 className="text-sm font-semibold text-muted-foreground">
           {t(locale, "boss_loot")}
         </h4>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-4">
           {boss.loot.map((loot, i) => {
             const displayName = lootDisplayName(loot.item, locale);
+            const badge = loot.blueprint
+              ? "BP"
+              : (loot.count ?? 0) > 1
+                ? `×${loot.count}`
+                : loot.chance < 1
+                  ? `${Math.round(loot.chance * 100)}%`
+                  : undefined;
             return (
-              <div
+              <ItemSlot
                 key={i}
-                className={cn(
-                  "flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs border",
-                  loot.blueprint
-                    ? "bg-blue-500/10 border-blue-500/30 text-blue-400"
-                    : "bg-muted/50 border-border text-foreground/80",
-                )}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={assetPath(lootImage(loot.item))}
-                  alt={loot.item}
-                  className="size-6 object-contain shrink-0"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-                <span>
-                  {displayName}
-                  {loot.blueprint && <span className="ml-1 font-semibold text-blue-500">BP</span>}
-                  {(loot.count ?? 0) > 1 && <span className="text-muted-foreground"> ×{loot.count}</span>}
-                  {loot.chance < 1 && <span className="text-amber-500"> {Math.round(loot.chance * 100)}%</span>}
-                </span>
-              </div>
+                iconPath={lootImage(loot.item)}
+                label={displayName}
+                badge={badge}
+              />
             );
           })}
         </div>
