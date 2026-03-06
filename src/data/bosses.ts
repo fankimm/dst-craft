@@ -1,30 +1,27 @@
-"use client";
-
-import { BackToHome } from "@/components/ui/BackToHome";
-
-interface BossLoot {
+export interface BossLoot {
   item: string;
   chance: number; // 1.0 = 100%
-  count?: number; // how many guaranteed
+  count?: number;
   blueprint?: boolean;
 }
 
-interface Boss {
+export type BossCategoryId = "seasonal" | "raid" | "ocean" | "dungeon" | "event" | "mini" | "all";
+
+export interface Boss {
   id: string;
   name: string;
   nameKo: string;
-  category: string;
-  image: string | string[]; // path(s) relative to /images/bosses/
+  category: BossCategoryId;
+  image: string | string[]; // filename(s) in /images/bosses/
   loot: BossLoot[];
 }
 
-const bosses: Boss[] = [
-  // === Seasonal Giants ===
+export const bosses: Boss[] = [
   {
     id: "deerclops",
     name: "Deerclops",
     nameKo: "외눈 사슴",
-    category: "시즌 보스",
+    category: "seasonal",
     image: "deerclops.png",
     loot: [
       { item: "meat", chance: 1, count: 8 },
@@ -36,7 +33,7 @@ const bosses: Boss[] = [
     id: "moose",
     name: "Moose/Goose",
     nameKo: "무스/거위",
-    category: "시즌 보스",
+    category: "seasonal",
     image: "moose.png",
     loot: [
       { item: "meat", chance: 1, count: 6 },
@@ -50,7 +47,7 @@ const bosses: Boss[] = [
     id: "bearger",
     name: "Bearger",
     nameKo: "곰거",
-    category: "시즌 보스",
+    category: "seasonal",
     image: "bearger.png",
     loot: [
       { item: "meat", chance: 1, count: 8 },
@@ -59,10 +56,22 @@ const bosses: Boss[] = [
     ],
   },
   {
+    id: "antlion",
+    name: "Antlion",
+    nameKo: "개미사자",
+    category: "seasonal",
+    image: "antlion.png",
+    loot: [
+      { item: "townportal_blueprint", chance: 1, blueprint: true },
+      { item: "antlionhat_blueprint", chance: 1, blueprint: true },
+      { item: "chesspiece_antlion_sketch", chance: 1 },
+    ],
+  },
+  {
     id: "dragonfly",
     name: "Dragonfly",
     nameKo: "용파리",
-    category: "레이드 보스",
+    category: "raid",
     image: "dragonfly.png",
     loot: [
       { item: "dragon_scales", chance: 1 },
@@ -74,12 +83,11 @@ const bosses: Boss[] = [
       { item: "goldnugget", chance: 0.5, count: 4 },
     ],
   },
-  // === Raid Bosses ===
   {
     id: "beequeen",
     name: "Bee Queen",
     nameKo: "여왕벌",
-    category: "레이드 보스",
+    category: "raid",
     image: "beequeen.png",
     loot: [
       { item: "royal_jelly", chance: 1, count: 6 },
@@ -98,7 +106,7 @@ const bosses: Boss[] = [
     id: "klaus",
     name: "Klaus",
     nameKo: "클라우스",
-    category: "레이드 보스",
+    category: "raid",
     image: "klaus.png",
     loot: [
       { item: "monstermeat", chance: 1 },
@@ -111,7 +119,7 @@ const bosses: Boss[] = [
     id: "toadstool",
     name: "Toadstool",
     nameKo: "두꺼비버섯",
-    category: "레이드 보스",
+    category: "raid",
     image: "toadstool.png",
     loot: [
       { item: "shroom_skin", chance: 1 },
@@ -128,7 +136,7 @@ const bosses: Boss[] = [
     id: "stalker_atrium",
     name: "Ancient Fuelweaver",
     nameKo: "고대 연료직공",
-    category: "레이드 보스",
+    category: "raid",
     image: "stalker_atrium.png",
     loot: [
       { item: "shadowheart", chance: 1 },
@@ -144,7 +152,7 @@ const bosses: Boss[] = [
     id: "crabking",
     name: "Crab King",
     nameKo: "게 왕",
-    category: "레이드 보스",
+    category: "raid",
     image: "crabking.png",
     loot: [
       { item: "trident_blueprint", chance: 1, blueprint: true },
@@ -152,10 +160,24 @@ const bosses: Boss[] = [
     ],
   },
   {
+    id: "daywalker",
+    name: "Nightmare Werepig",
+    nameKo: "악몽 돼지인간",
+    category: "raid",
+    image: "daywalker.png",
+    loot: [
+      { item: "armordreadstone_blueprint", chance: 1, blueprint: true },
+      { item: "dreadstonehat_blueprint", chance: 1, blueprint: true },
+      { item: "wall_dreadstone_item_blueprint", chance: 1, blueprint: true },
+      { item: "support_pillar_dreadstone_scaffold_blueprint", chance: 1, blueprint: true },
+      { item: "chesspiece_daywalker_sketch", chance: 1 },
+    ],
+  },
+  {
     id: "malbatross",
     name: "Malbatross",
     nameKo: "말바트로스",
-    category: "해양 보스",
+    category: "ocean",
     image: "malbatross.png",
     loot: [
       { item: "meat", chance: 1, count: 7 },
@@ -167,10 +189,24 @@ const bosses: Boss[] = [
     ],
   },
   {
+    id: "minotaur",
+    name: "Ancient Guardian",
+    nameKo: "고대 수호자",
+    category: "dungeon",
+    image: "minotaur.png",
+    loot: [
+      { item: "armorruins", chance: 1 },
+      { item: "ruinshat", chance: 1 },
+      { item: "ruins_bat", chance: 1 },
+      { item: "support_pillar_scaffold_blueprint", chance: 1, blueprint: true },
+      { item: "chesspiece_minotaur_sketch", chance: 1 },
+    ],
+  },
+  {
     id: "eyeofterror",
     name: "Eye of Terror",
     nameKo: "공포의 눈",
-    category: "이벤트 보스",
+    category: "event",
     image: "eyeofterror.png",
     loot: [
       { item: "chesspiece_eyeofterror_sketch", chance: 1 },
@@ -185,13 +221,11 @@ const bosses: Boss[] = [
     id: "twinsofterror",
     name: "Twins of Terror",
     nameKo: "공포의 쌍둥이",
-    category: "이벤트 보스",
+    category: "event",
     image: ["retinazor.png", "spazmatism.png"],
     loot: [
-      // 공통 (둘 다 처치 시)
       { item: "chesspiece_twinsofterror_sketch", chance: 1 },
       { item: "shieldofterror", chance: 1 },
-      // Retinazor
       { item: "yellowgem", chance: 1 },
       { item: "gears", chance: 1, count: 3 },
       { item: "gears", chance: 0.5, count: 2 },
@@ -201,7 +235,6 @@ const bosses: Boss[] = [
       { item: "nightmarefuel", chance: 0.5, count: 2 },
       { item: "trinket_6", chance: 1 },
       { item: "trinket_6", chance: 0.5 },
-      // Spazmatism
       { item: "greengem", chance: 1 },
       { item: "gears", chance: 1, count: 3 },
       { item: "gears", chance: 0.5, count: 2 },
@@ -214,50 +247,10 @@ const bosses: Boss[] = [
     ],
   },
   {
-    id: "antlion",
-    name: "Antlion",
-    nameKo: "개미사자",
-    category: "시즌 보스",
-    image: "antlion.png",
-    loot: [
-      { item: "townportal_blueprint", chance: 1, blueprint: true },
-      { item: "antlionhat_blueprint", chance: 1, blueprint: true },
-      { item: "chesspiece_antlion_sketch", chance: 1 },
-    ],
-  },
-  {
-    id: "daywalker",
-    name: "Nightmare Werepig",
-    nameKo: "악몽 돼지인간",
-    category: "레이드 보스",
-    image: "daywalker.png",
-    loot: [
-      { item: "armordreadstone_blueprint", chance: 1, blueprint: true },
-      { item: "dreadstonehat_blueprint", chance: 1, blueprint: true },
-      { item: "wall_dreadstone_item_blueprint", chance: 1, blueprint: true },
-      { item: "support_pillar_dreadstone_scaffold_blueprint", chance: 1, blueprint: true },
-      { item: "chesspiece_daywalker_sketch", chance: 1 },
-    ],
-  },
-  {
-    id: "minotaur",
-    name: "Ancient Guardian",
-    nameKo: "고대 수호자",
-    category: "던전 보스",
-    image: "minotaur.png",
-    loot: [
-      { item: "armorruins", chance: 1 },
-      { item: "ruinshat", chance: 1 },
-      { item: "ruins_bat", chance: 1 },
-      { item: "support_pillar_scaffold_blueprint", chance: 1, blueprint: true },
-      { item: "chesspiece_minotaur_sketch", chance: 1 },
-    ],
-  },
-  {
     id: "spiderqueen",
     name: "Spider Queen",
     nameKo: "거미 여왕",
-    category: "미니 보스",
+    category: "mini",
     image: "spiderqueen.png",
     loot: [
       { item: "monstermeat", chance: 1, count: 4 },
@@ -269,7 +262,7 @@ const bosses: Boss[] = [
 ];
 
 /** Korean names for loot items (from ko.po) */
-const lootNameKo: Record<string, string> = {
+export const lootNameKo: Record<string, string> = {
   meat: "고기", monstermeat: "괴물고기", charcoal: "숯", goldnugget: "금",
   silk: "거미줄", bluegem: "푸른 보석", yellowgem: "노란 보석",
   nightmarefuel: "악몽 연료", honey: "꿀", honeycomb: "벌집", stinger: "벌침",
@@ -310,7 +303,7 @@ const lootNameKo: Record<string, string> = {
   chesspiece_minotaur_sketch: "고대 수호자 조각상 스케치",
 };
 
-/** Sketches that have unique icon files (the rest use generic sketch.png) */
+/** Sketches that have unique icon files */
 const SKETCHES_WITH_ICONS = new Set([
   "chesspiece_crabking_sketch",
   "chesspiece_daywalker_sketch",
@@ -318,7 +311,7 @@ const SKETCHES_WITH_ICONS = new Set([
 ]);
 
 /** Resolve image path for a loot item */
-function lootImage(itemId: string): string {
+export function lootImage(itemId: string): string {
   const base = itemId.replace(/_blueprint$/, "");
   if (base.endsWith("_sketch")) {
     return SKETCHES_WITH_ICONS.has(base)
@@ -328,106 +321,21 @@ function lootImage(itemId: string): string {
   return `/images/game-items/${base}.png`;
 }
 
-// Group by category
-const grouped: Record<string, Boss[]> = {};
-for (const boss of bosses) {
-  if (!grouped[boss.category]) grouped[boss.category] = [];
-  grouped[boss.category].push(boss);
+/** Resolve loot display name */
+export function lootDisplayName(itemId: string, locale: string): string {
+  const baseId = itemId.replace(/_blueprint$/, "");
+  if (locale === "ko") {
+    return lootNameKo[baseId] ?? lootNameKo[itemId] ?? baseId.replace(/_/g, " ");
+  }
+  return baseId.replace(/_/g, " ");
 }
 
-const categoryOrder = ["시즌 보스", "레이드 보스", "해양 보스", "던전 보스", "이벤트 보스", "미니 보스"];
-
-export default function BossesPage() {
-  return (
-    <div className="min-h-dvh bg-background text-foreground">
-      <BackToHome />
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Boss Loot Tables</h1>
-        <p style={{ color: "#888", marginBottom: 24 }}>
-          {bosses.length}개 보스 — 게임 소스(prefabs/*.lua)에서 추출
-        </p>
-
-        {categoryOrder.filter(c => grouped[c]).map((category) => (
-          <div key={category} style={{ marginBottom: 40 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16, borderBottom: "1px solid #333", paddingBottom: 4 }}>
-              {category}
-            </h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {grouped[category].map((boss) => (
-                <div
-                  key={boss.id}
-                  style={{
-                    border: "1px solid #333",
-                    borderRadius: 12,
-                    background: "#1a1a1a",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div style={{ padding: "12px 16px", borderBottom: "1px solid #333", display: "flex", alignItems: "center", gap: 12 }}>
-                    {(Array.isArray(boss.image) ? boss.image : [boss.image]).map((img, i) => (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        key={i}
-                        src={`/images/bosses/${img}`}
-                        alt={boss.name}
-                        width={48}
-                        height={48}
-                        style={{ flexShrink: 0, objectFit: "contain", marginRight: Array.isArray(boss.image) ? -12 : 0 }}
-                      />
-                    ))}
-                    <div>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: "#e0e0e0" }}>{boss.nameKo}</div>
-                      <div style={{ fontSize: 12, color: "#888" }}>{boss.name}</div>
-                    </div>
-                  </div>
-                  <div style={{ padding: "8px 16px 12px" }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                      {boss.loot.map((loot, i) => {
-                        const baseId = loot.item.replace(/_blueprint$/, "");
-                        const koName = lootNameKo[baseId] ?? lootNameKo[loot.item];
-                        const displayName = koName ?? baseId.replace(/_/g, " ");
-                        return (
-                          <div
-                            key={i}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 8,
-                              padding: "4px 10px",
-                              borderRadius: 6,
-                              background: loot.blueprint ? "rgba(57,117,206,0.15)" : "rgba(255,255,255,0.05)",
-                              border: loot.blueprint ? "1px solid rgba(57,117,206,0.4)" : "1px solid rgba(255,255,255,0.08)",
-                              fontSize: 12,
-                            }}
-                          >
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={lootImage(loot.item)}
-                              alt={loot.item}
-                              width={24}
-                              height={24}
-                              style={{ flexShrink: 0 }}
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = "none";
-                              }}
-                            />
-                            <span style={{ color: loot.blueprint ? "#6ba3e8" : "#ccc" }}>
-                              {displayName}
-                              {loot.blueprint && <span style={{ color: "#3975ce", marginLeft: 4, fontWeight: 600 }}>BP</span>}
-                              {(loot.count ?? 0) > 1 && <span style={{ color: "#888" }}> ×{loot.count}</span>}
-                              {loot.chance < 1 && <span style={{ color: "#f59e0b" }}> {Math.round(loot.chance * 100)}%</span>}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+export const bossCategories: { id: BossCategoryId; representativeBoss: string }[] = [
+  { id: "all", representativeBoss: "deerclops" },
+  { id: "seasonal", representativeBoss: "deerclops" },
+  { id: "raid", representativeBoss: "dragonfly" },
+  { id: "ocean", representativeBoss: "malbatross" },
+  { id: "dungeon", representativeBoss: "minotaur" },
+  { id: "event", representativeBoss: "eyeofterror" },
+  { id: "mini", representativeBoss: "spiderqueen" },
+];

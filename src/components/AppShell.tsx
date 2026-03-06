@@ -5,6 +5,7 @@ import Image from "next/image";
 import { CraftingApp } from "./crafting/CraftingApp";
 import { CookingApp } from "./cooking/CookingApp";
 import { CookpotApp } from "./cookpot/CookpotApp";
+import { BossesApp } from "./bosses/BossesApp";
 import { SettingsPage } from "./settings/SettingsPage";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { useSettings } from "@/hooks/use-settings";
@@ -13,12 +14,13 @@ import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-type TabId = "crafting" | "cooking" | "cookpot" | "settings";
+type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "settings";
 
 const tabs: { id: TabId; labelKey: TranslationKey; image?: string }[] = [
   { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.png" },
   { id: "cooking", labelKey: "tab_cooking", image: "/images/category-icons/cooking.png" },
   { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
+  { id: "bosses", labelKey: "tab_bosses", image: "/images/game-items/deerclops_eyeball.png" },
   { id: "settings", labelKey: "tab_settings", image: "/images/game-items/gears.png" },
 ];
 
@@ -26,7 +28,7 @@ const tabs: { id: TabId; labelKey: TranslationKey; image?: string }[] = [
 function readTabFromUrl(): TabId {
   if (typeof window === "undefined") return "crafting";
   const tab = new URLSearchParams(window.location.search).get("tab");
-  if (tab === "cooking" || tab === "cookpot" || tab === "settings") return tab;
+  if (tab === "cooking" || tab === "cookpot" || tab === "bosses" || tab === "settings") return tab;
   return "crafting";
 }
 
@@ -151,6 +153,9 @@ export function AppShell() {
         </div>
         <div className={activeTab === "cookpot" ? "h-full" : "hidden"}>
           <CookpotApp onViewRecipe={handleViewRecipe} />
+        </div>
+        <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
+          <BossesApp />
         </div>
         <div className={activeTab === "settings" ? "h-full" : "hidden"}>
           <SettingsPage />
