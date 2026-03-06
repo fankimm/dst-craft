@@ -445,7 +445,7 @@ function BossCard({
       onClick={onClick}
       className="relative flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover border-border hover:border-ring"
     >
-      <div className="relative flex items-center justify-center size-12 sm:size-14">
+      <div className="flex items-center justify-center">
         {images.map((img, i) => (
           <img
             key={i}
@@ -453,8 +453,7 @@ function BossCard({
             alt={boss.name}
             className={cn(
               "size-12 sm:size-14 object-contain",
-              images.length > 1 && i === 0 && "absolute left-0",
-              images.length > 1 && i === 1 && "absolute right-0",
+              images.length > 1 && i > 0 && "-ml-3",
               images.length > 1 && "size-10 sm:size-11",
             )}
             loading="lazy"
