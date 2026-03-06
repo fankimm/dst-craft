@@ -5,6 +5,10 @@
 - 용어집에 없는 새 UI 요소나 개념이 등장하면 용어집에 추가 제안할 것
 - 작업 중 발견한 프로젝트 구조, 배포 방식, 기술 스택 등 중요한 정보는 이 CLAUDE.md에 자동으로 추가/갱신할 것
 
+## UI Design Rules
+- 아이콘/이미지 선택 시 **게임 내 이미지를 항상 우선** 사용할 것 (lucide/SVG 아이콘은 게임 이미지가 없을 때만 fallback)
+- 개발/디버그 전용 페이지나 도구를 만들면 **DevMenu에 자동으로 항목 추가**할 것 (`src/components/AppShell.tsx`의 `DevMenu` → `items` 배열)
+
 ## Project
 - Don't Starve Together 크래프팅 레시피 가이드 웹앱
 - Next.js 16 (App Router, Static Export) + TypeScript + Tailwind CSS v4 + shadcn/ui
@@ -41,14 +45,32 @@
 4. **Google Cloud Console**: 새 도메인 추가 시 승인된 JavaScript 원본에 등록 확인
 5. **릴리즈 노트 + 버전**: 아래 Release Notes Rules 참고
 
+## Game & Mod Paths (per machine)
+```
+jihwan-kim3 (macOS):
+  game:    ~/Library/Application Support/Steam/steamapps/common/Don't Starve Together/
+  workshop: ~/Library/Application Support/Steam/steamapps/workshop/content/322330/
+  한글모드: ~/Library/Application Support/Steam/steamapps/workshop/content/322330/2391246365/
+  ko.po:   ~/Library/Application Support/Steam/steamapps/workshop/content/322330/2391246365/scripts/languages/ko.po
+```
+
 ## Korean Translation Rules
 - 게임 내 아이템/재료/음식 이름의 한국어 번역 기준: **DST 커뮤니티 한글모드** ([Steam Workshop #2391246365](https://steamcommunity.com/sharedfiles/filedetails/?id=2391246365))
-- 번역 원본 파일 경로: `~/Library/Application Support/Steam/steamapps/workshop/content/322330/2391246365/scripts/languages/ko.po`
+- 번역 원본 파일: 위 Game & Mod Paths의 `ko.po` 경로 참조
 - 자체 번역 금지 — 반드시 `ko.po` 파일의 `msgstr` 값을 사용할 것
+- ko.po 내 주요 문자열 패턴:
+  - 아이템 이름: `STRINGS.NAMES.<ID>` → `msgstr`
+  - 아이템 설명: `STRINGS.RECIPE_DESC.<ID>` → `msgstr`
+  - 스킬트리 이름: `STRINGS.SKILLTREE.<CHARACTER>.<SKILL_ID>_TITLE` → `msgstr`
+  - 스킬트리 설명: `STRINGS.SKILLTREE.<CHARACTER>.<SKILL_ID>_DESC` → `msgstr`
 - 번역이 필요한 파일:
   - `src/components/cooking/CookingApp.tsx` — `reqTranslations` (요리 조건 번역)
   - `src/data/cookpot-ingredients.ts` — `nameKo` (재료 이름)
   - `src/data/locales/ko.ts` — 로캘 데이터 (아이템/스테이션 이름)
+
+## Mistakes & Lessons (오답노트)
+- 작업 중 실수/교훈은 **`docs/mistakes.md`** 에 기록할 것. 같은 실수 반복 방지 목적.
+- 새 작업 전 반드시 참조할 것.
 
 ## Release Notes Rules
 - 배포 전 `src/app/releases/page.tsx`의 릴리즈 노트를 업데이트할 것

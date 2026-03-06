@@ -2190,6 +2190,7 @@ export const allItems: CraftingItem[] = [
     ],
     characterOnly: "winona",
     builderSkill: "winona_wagstaff_1",
+    nounlock: true,
     sortOrder: 171,
   },
   {
@@ -2207,6 +2208,7 @@ export const allItems: CraftingItem[] = [
     ],
     characterOnly: "winona",
     builderSkill: "winona_wagstaff_2",
+    nounlock: true,
     sortOrder: 172,
   },
   {
@@ -2224,6 +2226,7 @@ export const allItems: CraftingItem[] = [
     ],
     characterOnly: "winona",
     builderSkill: "winona_wagstaff_2",
+    nounlock: true,
     sortOrder: 173,
   },
   {
@@ -2988,6 +2991,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutstone", quantity: 3 },
       { materialId: "wetgoop", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 8,
   },
   {
@@ -3001,6 +3005,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "boards", quantity: 4 },
       { materialId: "flint", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 9,
   },
   {
@@ -3106,6 +3111,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "thulecite", quantity: 2 },
       { materialId: "refined_dust", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 15,
   },
   {
@@ -3253,6 +3259,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonrocknugget", quantity: 1 },
       { materialId: "thulecite", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 39,
   },
   {
@@ -3512,6 +3519,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "redgem", quantity: 2 },
       { materialId: "charcoal", quantity: 10 },
     ],
+    nounlock: true,
     sortOrder: 18,
   },
   {
@@ -3525,6 +3533,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "shroom_skin", quantity: 1 },
       { materialId: "fertilizer", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 19,
   },
   {
@@ -3539,6 +3548,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "fertilizer", quantity: 1 },
       { materialId: "boards", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 20,
   },
   {
@@ -3945,6 +3955,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 2 },
       { materialId: "nitre", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 17,
   },
   {
@@ -4081,6 +4092,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "shroom_skin", quantity: 1 },
       { materialId: "canary_poisoned", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 16,
   },
   {
@@ -4179,6 +4191,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "kelp", quantity: 4 },
       { materialId: "twigs", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 22,
   },
   {
@@ -4285,6 +4298,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "dreadstone", quantity: 6 },
       { materialId: "horrorfuel", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 12,
   },
   {
@@ -4298,6 +4312,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "dreadstone", quantity: 4 },
       { materialId: "horrorfuel", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 13,
   },
   {
@@ -4406,6 +4421,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "waxpaper", quantity: 1 },
       { materialId: "rope", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 0,
   },
   {
@@ -4698,6 +4714,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goggleshat", quantity: 1 },
       { materialId: "pigskin", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 28,
   },
   {
@@ -4711,6 +4728,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonglass", quantity: 2 },
       { materialId: "potato", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 30,
   },
   {
@@ -4926,6 +4944,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "red_cap", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 47,
   },
   {
@@ -4938,6 +4957,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "green_cap", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 48,
   },
   {
@@ -4950,6 +4970,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "blue_cap", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 49,
   },
   {
@@ -4964,6 +4985,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "feather_canary", quantity: 1 },
       { materialId: "blackflag", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 50,
   },
   {
@@ -5004,6 +5026,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 2 },
       { materialId: "alterguardianhatshard", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 14,
   },
   {
@@ -5154,6 +5177,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutstone", quantity: 1 },
       { materialId: "boards", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 89,
   },
   {
@@ -5167,6 +5191,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "dreadstone", quantity: 4 },
       { materialId: "boards", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 90,
   },
   {
@@ -5277,6 +5302,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "townportaltalisman", quantity: 1 },
       { materialId: "cutstone", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 68,
   },
   {
@@ -5291,6 +5317,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "pigskin", quantity: 3 },
       { materialId: "townportaltalisman", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 36,
   },
   {
@@ -5333,6 +5360,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "boards", quantity: 2 },
       { materialId: "turf_carpetfloor", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 72,
   },
   {
@@ -5347,6 +5375,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonstorm_spark", quantity: 5 },
       { materialId: "transistor", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 73,
   },
   {
@@ -5435,6 +5464,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "dreadstone", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 84,
   },
   {
@@ -5460,6 +5490,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wagpunk_bits", quantity: 6 },
       { materialId: "moonglass", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 78,
   },
   {
@@ -5642,6 +5673,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutstone", quantity: 1 },
       { materialId: "rope", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 21,
   },
   {
@@ -5735,6 +5767,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rope", quantity: 1 },
       { materialId: "charcoal", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 31,
   },
   {
@@ -5748,6 +5781,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutstone", quantity: 2 },
       { materialId: "gunpowder", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 32,
   },
   {
@@ -5819,6 +5853,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "stinger", quantity: 2 },
       { materialId: "palmcone_scale", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 26,
   },
   {
@@ -5831,6 +5866,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "log", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 27,
   },
   {
@@ -5844,6 +5880,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "blackflag", quantity: 1 },
       { materialId: "log", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 23,
   },
   {
@@ -6074,6 +6111,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cookiecuttershell", quantity: 1 },
       { materialId: "mosquitosack", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 17,
   },
   {
@@ -6087,6 +6125,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cookiecuttershell", quantity: 1 },
       { materialId: "ice", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 18,
   },
   {
@@ -6100,6 +6139,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cookiecuttershell", quantity: 1 },
       { materialId: "stinger", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 19,
   },
   {
@@ -6113,6 +6153,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cookiecuttershell", quantity: 1 },
       { materialId: "beefalowool", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 20,
   },
   {
@@ -6127,6 +6168,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "barnacle", quantity: 3 },
       { materialId: "silk", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 21,
   },
   {
@@ -6518,6 +6560,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 1 },
       { materialId: "slurtle_shellpieces", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 49,
   },
   {
@@ -6531,6 +6574,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 1 },
       { materialId: "marble", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 50,
   },
   {
@@ -6737,6 +6781,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonrocknugget", quantity: 1 },
       { materialId: "thulecite_pieces", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 46,
   },
   {
@@ -6750,6 +6795,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonrocknugget", quantity: 1 },
       { materialId: "thulecite_pieces", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 47,
   },
   {
@@ -6763,6 +6809,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 2 },
       { materialId: "nightmarefuel", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 40,
   },
   {
@@ -6775,6 +6822,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 41,
   },
   {
@@ -6788,6 +6836,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 2 },
       { materialId: "nightmarefuel", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 42,
   },
   {
@@ -6800,6 +6849,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 43,
   },
   {
@@ -6813,6 +6863,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 2 },
       { materialId: "nightmarefuel", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 44,
   },
   {
@@ -6825,6 +6876,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 45,
   },
   {
@@ -6875,6 +6927,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "cutstone", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 66,
   },
   {
@@ -6887,6 +6940,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "cutstone", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 67,
   },
   {
@@ -6899,6 +6953,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "cutstone", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 68,
   },
   {
@@ -6911,6 +6966,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "cutstone", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 69,
   },
   {
@@ -6923,6 +6979,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "cutstone", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 70,
   },
   {
@@ -6935,6 +6992,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "cutstone", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 71,
   },
   {
@@ -6948,6 +7006,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "thulecite_pieces", quantity: 1 },
       { materialId: "cutstone", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 72,
   },
   {
@@ -6961,6 +7020,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "thulecite_pieces", quantity: 1 },
       { materialId: "moonrocknugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 73,
   },
   {
@@ -6973,6 +7033,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "cutstone", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 74,
   },
   {
@@ -7942,6 +8003,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "transistor", quantity: 3 },
       { materialId: "alterguardianhatshard", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 15,
   },
   {
@@ -7956,6 +8018,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "transistor", quantity: 3 },
       { materialId: "alterguardianhatshard", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 14,
   },
   {
@@ -7969,6 +8032,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wagpunk_bits", quantity: 1 },
       { materialId: "transistor", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 25,
   },
   {
@@ -9487,6 +9551,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 1 },
       { materialId: "goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 31,
   },
   {
@@ -9500,6 +9565,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutstone", quantity: 1 },
       { materialId: "flint", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 29,
   },
   {
@@ -9513,6 +9579,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 10 },
       { materialId: "log", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 5,
   },
   {

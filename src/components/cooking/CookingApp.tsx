@@ -58,19 +58,11 @@ const cookingCategories: CookingCategory[] = [
 ];
 
 // Effect badge labels
-const effectLabels: Record<string, string> = {
-  health_regen: "HP Regen",
-  sleep_resistance: "Sleep Resist",
-  sanity_regen: "Sanity Regen",
-  beefalo_food: "Beefalo",
-  sleep: "Sleep",
-  swap_health_sanity: "HP↔Sanity",
-  electric_attack: "Electric",
-  glow: "Glow",
-  moisture_immunity: "Waterproof",
-  heat_resistance: "Heat Resist",
-  cold_resistance: "Cold Resist",
-};
+function effectLabel(effect: string, locale: Locale): string {
+  const key = `effect_${effect}` as TranslationKey;
+  const label = t(locale, key);
+  return label !== key ? label : effect;
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -295,8 +287,8 @@ export function CookingApp({
     selectRecipe(null);
     selectCategory("all");
     setSearchQuery("");
-    setActiveFilter({ type: "effect", value: effect, label: effectLabels[effect] ?? effect });
-  }, [selectRecipe, selectCategory]);
+    setActiveFilter({ type: "effect", value: effect, label: effectLabel(effect, resolvedLocale) });
+  }, [selectRecipe, selectCategory, resolvedLocale]);
 
   const handleClearFilter = useCallback(() => {
     setActiveFilter(null);
@@ -719,9 +711,11 @@ function RecipeCard({
         <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-3.5 sm:size-4", !isFav && "opacity-30 grayscale")} />
       </div>
       {recipe.station === "portablecookpot" && (
-        <span className="absolute top-1 right-1 px-1 py-0.5 rounded text-[9px] font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-400 leading-none">
-          W
-        </span>
+        <img
+          src={assetPath("/images/category-icons/characters/warly.png")}
+          alt="Warly"
+          className="absolute top-0.5 right-0.5 size-5 rounded-full"
+        />
       )}
       <img
         src={assetPath(`/images/game-items/${recipe.id}.png`)}
@@ -873,7 +867,7 @@ function RecipeDetail({
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">{t(locale, "cooking_effect")}</span>
             <TagChip
-              label={effectLabels[recipe.specialEffect] ?? recipe.specialEffect}
+              label={effectLabel(recipe.specialEffect, locale)}
               onClick={onEffectClick ? () => onEffectClick(recipe.specialEffect!) : undefined}
             />
           </div>
@@ -943,12 +937,14 @@ function translateReq(text: string, locale: Locale): string {
 
 /** Parse a single requirement entry like "Meat ≥ 3" or "Asparagus ×2" into name + badge */
 function parseReqEntry(text: string): { name: string; badge?: string } {
+  // Strip parenthetical notes like "(or Lesser ×2)"
+  const clean = text.replace(/\s*\(.*?\)\s*/, " ").trim();
   // Match patterns: "Name ×2", "Name ≥ 3", "Name > 2", "Name < 1", "Name ≤ 1"
-  const m = text.match(/^(.+?)\s*(×|≥|>|<|≤)\s*(\d+(?:\.\d+)?)$/);
+  const m = clean.match(/^(.+?)\s*(×|≥|>|<|≤)\s*(\d+(?:\.\d+)?)$/);
   if (m) {
     return { name: m[1].trim(), badge: `${m[2]}${m[3]}` };
   }
-  return { name: text.trim() };
+  return { name: clean };
 }
 
 /** Split requirements into "needed" and "excluded (No ...)" sections */

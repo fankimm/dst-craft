@@ -6,6 +6,8 @@ import { assetPath } from "@/lib/asset-path";
 interface ItemSlotProps {
   /** game-items image filename (e.g. "meat.png") */
   icon?: string;
+  /** Full image path override (e.g. "/images/ui/health.png") — takes priority over icon */
+  iconPath?: string;
   /** Localized display name shown below the icon */
   label: string;
   /** Badge text shown at bottom-right of icon box (e.g. "×2", "≥3") */
@@ -16,7 +18,7 @@ interface ItemSlotProps {
   onClick?: () => void;
 }
 
-export function ItemSlot({ icon, label, badge, variant = "default", onClick }: ItemSlotProps) {
+export function ItemSlot({ icon, iconPath, label, badge, variant = "default", onClick }: ItemSlotProps) {
   const isExcluded = variant === "excluded";
   const isClickable = !!onClick;
 
@@ -42,9 +44,9 @@ export function ItemSlot({ icon, label, badge, variant = "default", onClick }: I
               : "border-input",
         )}
       >
-        {icon ? (
+        {(icon || iconPath) ? (
           <img
-            src={assetPath(`/images/game-items/${icon}`)}
+            src={iconPath ? assetPath(iconPath) : assetPath(`/images/game-items/${icon}`)}
             alt={label}
             className="size-8 object-contain"
             loading="lazy"

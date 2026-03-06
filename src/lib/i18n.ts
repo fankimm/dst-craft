@@ -2,6 +2,7 @@ import type { CraftingItem, CraftingStation, Material, Category, Character } fro
 import { allLocales } from "@/data/locales";
 import type { LocaleData } from "@/data/locales/types";
 import { allItems } from "@/data/items";
+import { skillNames } from "@/data/skill-names";
 
 export type Locale =
   | "ko" | "en"
@@ -117,9 +118,21 @@ const translations = {
     health_cost: "체력 소모",
     skill_tree_required: "스킬트리",
     station_required: "스테이션 필요",
+    blueprint_required: "블루프린트 필요",
     prototypable: "프로토타입 가능",
     sort_default: "기본",
     sort_popular: "인기순",
+    effect_health_regen: "체력 재생",
+    effect_sleep_resistance: "수면 저항",
+    effect_sanity_regen: "정신력 재생",
+    effect_beefalo_food: "비팔로 사료",
+    effect_sleep: "수면",
+    effect_swap_health_sanity: "체력↔정신력",
+    effect_electric_attack: "전기 공격",
+    effect_glow: "발광",
+    effect_moisture_immunity: "방수",
+    effect_heat_resistance: "내열",
+    effect_cold_resistance: "내한",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -226,9 +239,21 @@ const translations = {
     health_cost: "Health Cost",
     skill_tree_required: "Skill Tree",
     station_required: "Station Required",
+    blueprint_required: "Blueprint Required",
     prototypable: "Prototypable",
     sort_default: "Default",
     sort_popular: "Popular",
+    effect_health_regen: "HP Regen",
+    effect_sleep_resistance: "Sleep Resist",
+    effect_sanity_regen: "Sanity Regen",
+    effect_beefalo_food: "Beefalo",
+    effect_sleep: "Sleep",
+    effect_swap_health_sanity: "HP↔Sanity",
+    effect_electric_attack: "Electric",
+    effect_glow: "Glow",
+    effect_moisture_immunity: "Waterproof",
+    effect_heat_resistance: "Heat Resist",
+    effect_cold_resistance: "Cold Resist",
   },
 } as const;
 
@@ -371,4 +396,14 @@ export function stationName(station: CraftingStation, locale: string): string {
   // 3. English fallback from translations
   const key = `station_${station}` as TranslationKey;
   return translations.en[key] ?? station;
+}
+
+/**
+ * Get localized skill name from builderSkill ID.
+ */
+export function skillName(skillId: string, locale: string): string {
+  const entry = skillNames[skillId];
+  if (!entry) return skillId;
+  if (locale === "ko") return entry.ko;
+  return entry.en;
 }

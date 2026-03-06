@@ -227,22 +227,23 @@ function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
   }, []);
 
   const items = [
-    { label: "Review Prompt", action: onOpenReview },
+    { label: "리뷰 프롬프트", action: onOpenReview },
     {
-      label: "Reset Review State",
+      label: "리뷰 상태 초기화",
       action: () => {
         localStorage.removeItem("dst:review-dismissed");
         localStorage.removeItem("dst:visit-count");
         sessionStorage.removeItem("dst:review-counted");
       },
     },
+    { label: "스킬 아이콘 목록", action: () => window.open("/skill-icons", "_blank") },
   ];
 
   return (
     <div ref={ref} className="fixed z-[60]" style={{ right: pos.x, bottom: pos.y }}>
       {open && (
         <div className="absolute bottom-10 right-0 mb-1 min-w-[160px] rounded-lg border border-border bg-popover shadow-xl py-1 animate-in fade-in slide-in-from-bottom-2 duration-150">
-          <div className="px-3 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Dev Menu</div>
+          <div className="px-3 py-1.5 text-[10px] font-bold text-muted-foreground tracking-wider">개발자 메뉴</div>
           {items.map((item) => (
             <button
               key={item.label}
