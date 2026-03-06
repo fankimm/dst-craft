@@ -72,6 +72,7 @@ const translations = {
     foodtype_veggie: "채소",
     foodtype_goodies: "간식",
     foodtype_roughage: "섬유질",
+    foodtype_nonfood: "비식품",
     cooking_recommend_health: "체력회복 추천",
     cooking_recommend_sanity: "정신력 회복 추천",
     cooking_recommend_hunger: "허기 추천",
@@ -113,6 +114,10 @@ const translations = {
     review_thanks: "감사합니다!",
     review_later: "나중에",
     support_kofi: "개발자 후원하기",
+    health_cost: "체력 소모",
+    skill_tree_required: "스킬트리",
+    station_required: "스테이션 필요",
+    prototypable: "프로토타입 가능",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -174,6 +179,7 @@ const translations = {
     foodtype_veggie: "Veggie",
     foodtype_goodies: "Goodies",
     foodtype_roughage: "Roughage",
+    foodtype_nonfood: "Non-Food",
     cooking_recommend_health: "Health Recovery",
     cooking_recommend_sanity: "Sanity Recovery",
     cooking_recommend_hunger: "Best Hunger",
@@ -215,6 +221,10 @@ const translations = {
     review_thanks: "Thank you!",
     review_later: "Maybe later",
     support_kofi: "Support the developer",
+    health_cost: "Health Cost",
+    skill_tree_required: "Skill Tree",
+    station_required: "Station Required",
+    prototypable: "Prototypable",
   },
 } as const;
 

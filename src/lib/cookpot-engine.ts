@@ -267,6 +267,13 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
 
   wetgoop: () => true, // priority -10 fallback
 
+  // ==================== Non-Food Cookpot Recipes ====================
+
+  batnosehat: (n, t) =>
+    n.batnose + n.batnose_cooked >= 1 &&
+    n.kelp + n.kelp_cooked + n.kelp_dried >= 1 &&
+    t.dairy >= 1,
+
   // ==================== Portable Cookpot (Warly) ====================
 
   bonesoup: (n, t) =>

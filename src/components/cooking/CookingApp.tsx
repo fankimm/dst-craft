@@ -1024,6 +1024,7 @@ const foodTypeIcons: Record<string, string> = {
   veggie: "game-items/carrot.png",
   goodies: "game-items/honey.png",
   roughage: "game-items/cutlichen.png",
+  nonfood: "game-items/batnosehat.png",
 };
 
 const foodTypeLabelKeys: Record<string, TranslationKey> = {
@@ -1031,4 +1032,5 @@ const foodTypeLabelKeys: Record<string, TranslationKey> = {
   veggie: "foodtype_veggie",
   goodies: "foodtype_goodies",
   roughage: "foodtype_roughage",
+  nonfood: "foodtype_nonfood",
 };

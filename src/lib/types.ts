@@ -52,6 +52,9 @@ export interface CraftingItem {
   station: CraftingStation;
   materials: { materialId: string; quantity: number }[];
   characterOnly?: string;
+  healthCost?: number;
+  nounlock?: boolean;
+  builderSkill?: string;
   sortOrder: number;
 }
 

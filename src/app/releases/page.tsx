@@ -15,6 +15,42 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.4.0",
+    date: "2026-03-06",
+    dev: [
+      "CraftingItem 타입에 healthCost, nounlock, builderSkill 필드 추가",
+      "워톡스 3개 아이템 버그 수정: characterOnly + station: character 추가",
+      "맥스웰 리워크 반영: deprecated 그림자 인형 4개 제거 (Logger/Miner/Digger/Duelist)",
+      "Codex Umbra에 healthCost: 50 추가",
+      "111개 아이템에 builderSkill 메타데이터 추가 (10개 캐릭터)",
+      "316개 아이템에 nounlock: true 추가",
+      "14개 아이템에 healthCost 추가 (Telltale Heart, Meat Effigy, Wormwood 등)",
+      "ItemDetail에 체력 소모/스킬트리/스테이션 필요 표시 UI 추가",
+      "cookpot-ingredients: rawCookable 필드 추가, 꽃잎/나뭇잎 raw 버전 요리솥 제외",
+      "Milkmade Hat(우유 짜는 모자) 요리 레시피 추가 + 시뮬레이터 매칭 함수",
+      "FoodType에 nonfood 타입 추가",
+      "i18n에 health_cost, skill_tree_required, station_required, prototypable, foodtype_nonfood 번역 키 추가",
+    ],
+    changes: {
+      ko: [
+        "워톡스 아이템 버그 수정 — 캐릭터 전용 + 스킬트리 표시",
+        "맥스웰 리워크 반영 — deprecated 그림자 인형 제거",
+        "아이템 상세에 체력 소모, 스킬트리, 스테이션 필요 정보 표시",
+        "요리솥에 넣을 수 없는 raw 꽃잎/나뭇잎 제거 (말린 것만 유효)",
+        "우유 짜는 모자 요리 레시피 추가 + 시뮬레이터 지원",
+        "111개 스킬트리 레시피 + 316개 스테이션 전용 아이템 데이터 추가",
+      ],
+      en: [
+        "Fixed Wortox items — added character-only + skill tree display",
+        "Applied Maxwell rework — removed deprecated shadow puppets",
+        "Added health cost, skill tree, and station-required info to item details",
+        "Removed raw petals/foliage from crock pot (only dried versions valid)",
+        "Added Milkmade Hat cooking recipe + simulator support",
+        "Added 111 skill tree recipes + 316 station-only item data",
+      ],
+    },
+  },
+  {
     version: "0.3.1",
     date: "2026-03-05",
     dev: [

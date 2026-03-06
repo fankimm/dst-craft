@@ -25,6 +25,9 @@
 | **즐겨찾기 타일** | `CategoryGrid.tsx`, `CookingApp.tsx` | 카테고리 그리드 상단의 즐겨찾기 카테고리 버튼 (하트 아이콘, 즐겨찾기 개수 표시) |
 | **즐겨찾기 토글** | `ItemIcon.tsx`, `ItemDetail.tsx`, `RecipeCard`, `RecipeDetail` | 아이템 카드/상세 패널의 즐겨찾기 추가/제거 하트 버튼 |
 | **리뷰 프롬프트** | `ReviewPrompt.tsx` | 5회 이상 방문 사용자에게 한 번만 표시되는 iOS 스타일 바텀시트. 별점 평가 + GitHub Star + 공유 기능 제공 |
+| **체력 소모 표시** | `ItemDetail.tsx` | 상세 패널에 체력 소모가 있는 아이템의 HP 비용 표시 (빨간색 하트 아이콘) |
+| **스킬트리 태그** | `ItemDetail.tsx` | 상세 패널에 스킬트리가 필요한 아이템의 보라색 스킬 아이콘 표시 |
+| **스테이션 필요 표시** | `ItemDetail.tsx` | 상세 패널에 프로토타입 불가(nounlock) 아이템의 자물쇠 아이콘 표시 |
 
 ## 버그 리포트 예시
 

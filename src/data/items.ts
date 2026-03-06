@@ -102,6 +102,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "garlic", quantity: 3 },
     ],
     characterOnly: "warly",
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -115,6 +116,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "honey", quantity: 3 },
     ],
     characterOnly: "warly",
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -128,6 +130,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "pepper", quantity: 3 },
     ],
     characterOnly: "warly",
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -141,6 +144,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "saltrock", quantity: 3 },
     ],
     characterOnly: "warly",
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -228,6 +232,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "beefalowool", quantity: 1 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_mosquito_craft_1",
     sortOrder: 39,
   },
   {
@@ -242,6 +247,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "mosquito", quantity: 4 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_mosquito_craft_2",
     sortOrder: 40,
   },
   {
@@ -257,6 +263,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "poop", quantity: 1 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_mosquito_craft_2",
     sortOrder: 41,
   },
   {
@@ -270,6 +277,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "mosquitosack", quantity: 2 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_mosquito_craft_2",
     sortOrder: 42,
   },
   {
@@ -284,6 +292,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutreeds", quantity: 2 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_civ_1",
     sortOrder: 43,
   },
   {
@@ -299,6 +308,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "tentaclespots", quantity: 1 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_civ_1_2",
     sortOrder: 44,
   },
   {
@@ -314,6 +324,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutgrass", quantity: 5 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_civ_3",
     sortOrder: 47,
   },
   {
@@ -330,6 +341,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutgrass", quantity: 5 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_civ_3_2",
     sortOrder: 48,
   },
   {
@@ -345,6 +357,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 5 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_civ_2",
     sortOrder: 45,
   },
   {
@@ -361,6 +374,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 5 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_civ_2_2",
     sortOrder: 46,
   },
   {
@@ -376,6 +390,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 1 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_shadow_allegiance_2",
     sortOrder: 49,
   },
   {
@@ -391,6 +406,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 1 },
     ],
     characterOnly: "wurt",
+    builderSkill: "wurt_lunar_allegiance_2",
     sortOrder: 50,
   },
   {
@@ -518,6 +534,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "ghostflower", quantity: 3 },
     ],
     characterOnly: "wendy",
+    builderSkill: "wendy_potion_revive",
     sortOrder: 59,
   },
   {
@@ -532,6 +549,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "ghostflower", quantity: 3 },
     ],
     characterOnly: "wendy",
+    builderSkill: "wendy_shadow_2",
     sortOrder: 60,
   },
   {
@@ -546,6 +564,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "ghostflower", quantity: 3 },
     ],
     characterOnly: "wendy",
+    builderSkill: "wendy_lunar_2",
     sortOrder: 61,
   },
   {
@@ -560,6 +579,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "slurtle_shellpieces", quantity: 1 },
     ],
     characterOnly: "wendy",
+    builderSkill: "wendy_makegravemounds",
     sortOrder: 62,
   },
   {
@@ -574,6 +594,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "petals_evil", quantity: 4 },
     ],
     characterOnly: "wendy",
+    builderSkill: "wendy_makegravemounds",
     sortOrder: 63,
   },
   {
@@ -589,6 +610,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 4 },
     ],
     characterOnly: "wendy",
+    builderSkill: "wendy_potion_container",
     sortOrder: 67,
   },
   {
@@ -602,6 +624,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "ghostflower", quantity: 6 },
     ],
     characterOnly: "wendy",
+    builderSkill: "wendy_ghostflower_hat",
     sortOrder: 68,
   },
   {
@@ -616,6 +639,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "butterflywings", quantity: 1 },
     ],
     characterOnly: "wendy",
+    builderSkill: "wendy_ghostflower_butterfly",
     sortOrder: 69,
   },
   {
@@ -630,6 +654,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonbutterflywings", quantity: 1 },
     ],
     characterOnly: "wendy",
+    builderSkill: "wendy_ghostflower_butterfly",
     sortOrder: 70,
   },
   {
@@ -644,6 +669,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutstone", quantity: 1 },
     ],
     characterOnly: "wendy",
+    healthCost: 40,
+    builderSkill: "wendy_ghostflower_grave",
     sortOrder: 64,
   },
   {
@@ -701,6 +728,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "nightmarefuel", quantity: 5 },
     ],
     characterOnly: "woodie",
+    builderSkill: "woodie_human_treeguard_max",
     sortOrder: 74,
   },
   {
@@ -714,6 +742,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "log", quantity: 3 },
     ],
     characterOnly: "woodie",
+    builderSkill: "woodie_human_lucy_1",
     sortOrder: 75,
   },
   {
@@ -728,6 +757,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "pinecone", quantity: 1 },
     ],
     characterOnly: "woodie",
+    builderSkill: "woodie_human_lucy_2",
     sortOrder: 76,
   },
   {
@@ -742,6 +772,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "charcoal", quantity: 1 },
     ],
     characterOnly: "woodie",
+    builderSkill: "woodie_human_lucy_3",
     sortOrder: 77,
   },
   {
@@ -891,6 +922,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goose_feather", quantity: 3 },
     ],
     characterOnly: "wigfrid",
+    builderSkill: "wathgrithr_songs_revivewarrior",
     sortOrder: 89,
   },
   {
@@ -906,6 +938,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 3 },
     ],
     characterOnly: "wigfrid",
+    builderSkill: "wathgrithr_allegiance_lunar",
     sortOrder: 90,
   },
   {
@@ -921,6 +954,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 3 },
     ],
     characterOnly: "wigfrid",
+    builderSkill: "wathgrithr_allegiance_shadow",
     sortOrder: 91,
   },
   {
@@ -936,6 +970,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "beefalowool", quantity: 1 },
     ],
     characterOnly: "wigfrid",
+    builderSkill: "wathgrithr_arsenal_spear_3",
     sortOrder: 79,
   },
   {
@@ -951,6 +986,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "marble", quantity: 1 },
     ],
     characterOnly: "wigfrid",
+    builderSkill: "wathgrithr_arsenal_helmet_3",
     sortOrder: 81,
   },
   {
@@ -966,6 +1002,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "feather_robin_winter", quantity: 6 },
     ],
     characterOnly: "wigfrid",
+    builderSkill: "wathgrithr_beefalo_saddle",
     sortOrder: 93,
   },
   {
@@ -982,6 +1019,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "beeswax", quantity: 2 },
     ],
     characterOnly: "wigfrid",
+    builderSkill: "wathgrithr_songs_container",
     sortOrder: 92,
   },
   {
@@ -996,6 +1034,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "beefalowool", quantity: 3 },
     ],
     characterOnly: "wigfrid",
+    builderSkill: "wathgrithr_arsenal_shield_1",
     sortOrder: 94,
   },
   {
@@ -1103,6 +1142,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "honey", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_utility",
+    nounlock: true,
     sortOrder: 106,
   },
   {
@@ -1144,6 +1185,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "stinger", quantity: 2 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_shattershots",
+    nounlock: true,
     sortOrder: 104,
   },
   {
@@ -1157,6 +1200,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "dreadstone", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_lucky",
+    nounlock: true,
     sortOrder: 109,
   },
   {
@@ -1171,6 +1216,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "feather_canary", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_utility",
+    nounlock: true,
     sortOrder: 107,
   },
   {
@@ -1186,6 +1233,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "flint", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_lucky",
+    nounlock: true,
     sortOrder: 108,
   },
   {
@@ -1213,6 +1262,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonglass", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_shattershots",
+    nounlock: true,
     sortOrder: 105,
   },
   {
@@ -1226,6 +1277,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "lunarplant_husk", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_lunar",
+    nounlock: true,
     sortOrder: 112,
   },
   {
@@ -1239,6 +1292,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_lunar",
+    nounlock: true,
     sortOrder: 113,
   },
   {
@@ -1252,6 +1307,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "gelblob_bottle", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_shadow",
+    nounlock: true,
     sortOrder: 111,
   },
   {
@@ -1266,6 +1323,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_shadow",
+    nounlock: true,
     sortOrder: 110,
   },
   {
@@ -1280,6 +1339,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "twigs", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_modding",
+    nounlock: true,
     sortOrder: 115,
   },
   {
@@ -1293,6 +1354,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "pigskin", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_modding",
+    nounlock: true,
     sortOrder: 116,
   },
   {
@@ -1307,6 +1370,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "tentaclespots", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_bands",
+    nounlock: true,
     sortOrder: 117,
   },
   {
@@ -1321,6 +1386,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "rope", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_modding",
+    nounlock: true,
     sortOrder: 118,
   },
   {
@@ -1336,6 +1403,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "trinket_6", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_frames",
+    nounlock: true,
     sortOrder: 120,
   },
   {
@@ -1350,6 +1419,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "chestupgrade_stacksize", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_frames",
+    nounlock: true,
     sortOrder: 121,
   },
   {
@@ -1363,6 +1434,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "glommerfuel", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_handles",
+    nounlock: true,
     sortOrder: 123,
   },
   {
@@ -1376,6 +1449,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "royal_jelly", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_handles",
+    nounlock: true,
     sortOrder: 124,
   },
   {
@@ -1389,6 +1464,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 2 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_modding",
+    nounlock: true,
     sortOrder: 122,
   },
   {
@@ -1405,6 +1482,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "bluegem", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_frames",
+    nounlock: true,
     sortOrder: 119,
   },
   {
@@ -1418,6 +1497,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "voidcloth", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_slingshot_handles",
+    nounlock: true,
     sortOrder: 125,
   },
   {
@@ -1431,6 +1512,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "monstermeat_dried", quantity: 1 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_camp_wobytreat",
     sortOrder: 95,
   },
   {
@@ -1444,6 +1526,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "butterflywings", quantity: 3 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_camp_firstaid",
     sortOrder: 128,
   },
   {
@@ -1459,6 +1542,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 2 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_ammo_bag",
     sortOrder: 114,
   },
   {
@@ -1474,6 +1558,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 4 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_camp_fire",
     sortOrder: 127,
   },
   {
@@ -1561,6 +1646,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "flint", quantity: 4 },
     ],
     characterOnly: "wolfgang",
+    builderSkill: "wolfgang_dumbbell_crafting",
     sortOrder: 136,
   },
   {
@@ -1576,6 +1662,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "twigs", quantity: 1 },
     ],
     characterOnly: "wolfgang",
+    builderSkill: "wolfgang_dumbbell_crafting",
     sortOrder: 137,
   },
   {
@@ -1591,6 +1678,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "twigs", quantity: 1 },
     ],
     characterOnly: "wolfgang",
+    builderSkill: "wolfgang_dumbbell_crafting",
     sortOrder: 138,
   },
   {
@@ -1605,6 +1693,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rope", quantity: 1 },
     ],
     characterOnly: "wolfgang",
+    builderSkill: "wolfgang_normal_coach",
     sortOrder: 139,
   },
   {
@@ -1878,6 +1967,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "nightmarefuel", quantity: 2 },
     ],
     characterOnly: "maxwell",
+    healthCost: 50,
     sortOrder: 160,
   },
   {
@@ -1908,62 +1998,6 @@ export const allItems: CraftingItem[] = [
     ],
     characterOnly: "maxwell",
     sortOrder: 159,
-  },
-  {
-    id: "shadowlumber_builder",
-    name: "Shadow Logger",
-    description: "Holds a grudge against trees.",
-    image: "shadowlumber_builder.png",
-    category: ["structures"],
-    station: "character",
-    materials: [
-      { materialId: "nightmarefuel", quantity: 2 },
-      { materialId: "axe", quantity: 1 },
-    ],
-    characterOnly: "maxwell",
-    sortOrder: 999,
-  },
-  {
-    id: "shadowminer_builder",
-    name: "Shadow Miner",
-    description: "Mine that rock!",
-    image: "shadowminer_builder.png",
-    category: ["structures"],
-    station: "character",
-    materials: [
-      { materialId: "nightmarefuel", quantity: 2 },
-      { materialId: "pickaxe", quantity: 1 },
-    ],
-    characterOnly: "maxwell",
-    sortOrder: 999,
-  },
-  {
-    id: "shadowdigger_builder",
-    name: "Shadow Digger",
-    description: "Diggy diggy hole.",
-    image: "shadowdigger_builder.png",
-    category: ["structures"],
-    station: "character",
-    materials: [
-      { materialId: "nightmarefuel", quantity: 2 },
-      { materialId: "shovel", quantity: 1 },
-    ],
-    characterOnly: "maxwell",
-    sortOrder: 999,
-  },
-  {
-    id: "shadowduelist_builder",
-    name: "Shadow Duelist",
-    description: "Ethereal bodyguard.",
-    image: "shadowduelist_builder.png",
-    category: ["structures"],
-    station: "character",
-    materials: [
-      { materialId: "nightmarefuel", quantity: 2 },
-      { materialId: "spear", quantity: 1 },
-    ],
-    characterOnly: "maxwell",
-    sortOrder: 999,
   },
   {
     id: "sewing_tape",
@@ -2124,6 +2158,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "transistor", quantity: 2 },
     ],
     characterOnly: "winona",
+    builderSkill: "winona_wagstaff_1",
     sortOrder: 174,
   },
   {
@@ -2138,6 +2173,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "twigs", quantity: 3 },
     ],
     characterOnly: "winona",
+    builderSkill: "winona_charlie_1",
     sortOrder: 175,
   },
   {
@@ -2153,6 +2189,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "winona_machineparts_1", quantity: 3 },
     ],
     characterOnly: "winona",
+    builderSkill: "winona_wagstaff_1",
     sortOrder: 171,
   },
   {
@@ -2169,6 +2206,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "winona_machineparts_2", quantity: 1 },
     ],
     characterOnly: "winona",
+    builderSkill: "winona_wagstaff_2",
     sortOrder: 172,
   },
   {
@@ -2185,6 +2223,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "winona_machineparts_2", quantity: 1 },
     ],
     characterOnly: "winona",
+    builderSkill: "winona_wagstaff_2",
     sortOrder: 173,
   },
   {
@@ -2376,6 +2415,7 @@ export const allItems: CraftingItem[] = [
     materials: [
     ],
     characterOnly: "wormwood",
+    healthCost: 20,
     sortOrder: 189,
   },
   {
@@ -2434,6 +2474,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "spoiled_food", quantity: 1 },
     ],
     characterOnly: "wormwood",
+    builderSkill: "wormwood_syrupcrafting",
     sortOrder: 198,
   },
   {
@@ -2447,6 +2488,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "twigs", quantity: 5 },
     ],
     characterOnly: "wormwood",
+    healthCost: 5,
+    builderSkill: "wormwood_saplingcrafting",
     sortOrder: 192,
   },
   {
@@ -2461,6 +2504,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "berries_juicy", quantity: 8 },
     ],
     characterOnly: "wormwood",
+    healthCost: 10,
+    builderSkill: "wormwood_berrybushcrafting",
     sortOrder: 193,
   },
   {
@@ -2475,6 +2520,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "berries_juicy", quantity: 8 },
     ],
     characterOnly: "wormwood",
+    healthCost: 10,
+    builderSkill: "wormwood_berrybushcrafting",
     sortOrder: 194,
   },
   {
@@ -2489,6 +2536,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "berries", quantity: 8 },
     ],
     characterOnly: "wormwood",
+    healthCost: 10,
+    builderSkill: "wormwood_juicyberrybushcrafting",
     sortOrder: 195,
   },
   {
@@ -2503,6 +2552,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutreeds", quantity: 4 },
     ],
     characterOnly: "wormwood",
+    healthCost: 15,
+    builderSkill: "wormwood_reedscrafting",
     sortOrder: 196,
   },
   {
@@ -2517,6 +2568,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "plantmeat", quantity: 5 },
     ],
     characterOnly: "wormwood",
+    healthCost: 25,
+    builderSkill: "wormwood_lureplantbulbcrafting",
     sortOrder: 197,
   },
   {
@@ -2530,6 +2583,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "carrot", quantity: 1 },
     ],
     characterOnly: "wormwood",
+    healthCost: 5,
+    builderSkill: "wormwood_allegiance_lunar_mutations_1",
     sortOrder: 199,
   },
   {
@@ -2543,6 +2598,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "lightbulb", quantity: 1 },
     ],
     characterOnly: "wormwood",
+    healthCost: 10,
+    builderSkill: "wormwood_allegiance_lunar_mutations_2",
     sortOrder: 200,
   },
   {
@@ -2556,6 +2613,8 @@ export const allItems: CraftingItem[] = [
       { materialId: "dragonfruit", quantity: 1 },
     ],
     characterOnly: "wormwood",
+    healthCost: 25,
+    builderSkill: "wormwood_allegiance_lunar_mutations_3",
     sortOrder: 201,
   },
   {
@@ -2570,6 +2629,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "armor_bramble", quantity: 1 },
     ],
     characterOnly: "wormwood",
+    builderSkill: "wormwood_allegiance_lunar_plant_gear_1",
     sortOrder: 202,
   },
   {
@@ -2578,10 +2638,12 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "wortox_reviver.png",
     category: ["character", "healing"],
-    station: "none",
+    station: "character",
     materials: [
       { materialId: "wortox_soul", quantity: 10 },
     ],
+    characterOnly: "wortox",
+    builderSkill: "wortox_lifebringer_1",
     sortOrder: 203,
   },
   {
@@ -2590,12 +2652,14 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "wortox_souljar.png",
     category: ["character", "storage"],
-    station: "none",
+    station: "character",
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
       { materialId: "marble", quantity: 2 },
       { materialId: "redgem", quantity: 1 },
     ],
+    characterOnly: "wortox",
+    builderSkill: "wortox_souljar_1",
     sortOrder: 204,
   },
   {
@@ -2604,11 +2668,13 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "wortox_nabbag.png",
     category: ["character", "tools", "weapons"],
-    station: "none",
+    station: "character",
     materials: [
       { materialId: "wortox_soul", quantity: 4 },
       { materialId: "silk", quantity: 2 },
     ],
+    characterOnly: "wortox",
+    builderSkill: "wortox_nabbag",
     sortOrder: 205,
   },
   {
@@ -3256,6 +3322,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutgrass", quantity: 3 },
       { materialId: "spidergland", quantity: 1 },
     ],
+    healthCost: 40,
     sortOrder: 11,
   },
   {
@@ -3715,6 +3782,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutgrass", quantity: 2 },
     ],
     characterOnly: "walter",
+    builderSkill: "walter_camp_rope",
     sortOrder: 130,
   },
   {
@@ -5140,6 +5208,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "boards", quantity: 4 },
       { materialId: "beardhair", quantity: 4 },
     ],
+    healthCost: 40,
     sortOrder: 19,
   },
   {
@@ -7160,6 +7229,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "thulecite_pieces", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7172,6 +7242,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "thulecite", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7185,6 +7256,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "thulecite", quantity: 2 },
       { materialId: "nightmarefuel", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7199,6 +7271,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "nightmarefuel", quantity: 3 },
       { materialId: "orangegem", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7213,6 +7286,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "nightmarefuel", quantity: 3 },
       { materialId: "yellowgem", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7227,6 +7301,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "nightmarefuel", quantity: 3 },
       { materialId: "greengem", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7241,6 +7316,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cane", quantity: 1 },
       { materialId: "orangegem", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7255,6 +7331,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "livinglog", quantity: 2 },
       { materialId: "yellowgem", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7269,6 +7346,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "livinglog", quantity: 2 },
       { materialId: "greengem", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7283,6 +7361,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldenpickaxe", quantity: 1 },
       { materialId: "thulecite", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7297,6 +7376,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "thulecite_pieces", quantity: 4 },
       { materialId: "purplegem", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7310,6 +7390,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "thulecite", quantity: 4 },
       { materialId: "nightmarefuel", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7323,6 +7404,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "thulecite", quantity: 6 },
       { materialId: "nightmarefuel", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7337,6 +7419,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "thulecite", quantity: 4 },
       { materialId: "nightmarefuel", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7351,6 +7434,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "minotaurhorn", quantity: 1 },
       { materialId: "thulecite", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7365,6 +7449,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "dreadstone", quantity: 2 },
       { materialId: "horrorfuel", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7377,6 +7462,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "papyrus", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7389,6 +7475,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "papyrus", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7402,6 +7489,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "featherpencil", quantity: 1 },
       { materialId: "papyrus", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7415,6 +7503,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "coontail", quantity: 1 },
       { materialId: "fishsticks", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7428,6 +7517,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "houndstooth", quantity: 1 },
       { materialId: "monsterlasagna", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7441,6 +7531,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "steelwool", quantity: 1 },
       { materialId: "guacamole", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7454,6 +7545,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "featherhat", quantity: 1 },
       { materialId: "trailmix", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7467,6 +7559,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "lavae_cocoon", quantity: 1 },
       { materialId: "hotchili", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7480,6 +7573,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "glommerfuel", quantity: 1 },
       { materialId: "taffy", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7493,6 +7587,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonbutterfly", quantity: 1 },
       { materialId: "flowersalad", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7506,6 +7601,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "milkywhites", quantity: 1 },
       { materialId: "baconeggs", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7519,6 +7615,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonrocknugget", quantity: 1 },
       { materialId: "purplegem", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7532,6 +7629,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "boards", quantity: 1 },
       { materialId: "rope", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7545,6 +7643,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moon_cap", quantity: 4 },
       { materialId: "red_mushroomhat", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7558,6 +7657,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moon_tree_blossom", quantity: 1 },
       { materialId: "nitre", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7598,6 +7698,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonglass", quantity: 5 },
       { materialId: "purebrilliance", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7611,6 +7712,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonglass", quantity: 6 },
       { materialId: "moonbutterfly", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7624,6 +7726,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonrocknugget", quantity: 1 },
       { materialId: "moonglass", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7637,6 +7740,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonrocknugget", quantity: 1 },
       { materialId: "moon_cap", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7649,6 +7753,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "papyrus", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7661,6 +7766,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "papyrus", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7674,6 +7780,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 4 },
       { materialId: "lunarplant_husk", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7687,6 +7794,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 4 },
       { materialId: "lunarplant_husk", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7701,6 +7809,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "lunarplant_husk", quantity: 4 },
       { materialId: "moonglass_charged", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7714,6 +7823,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 3 },
       { materialId: "lunarplant_husk", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7727,6 +7837,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 4 },
       { materialId: "lunarplant_husk", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7740,6 +7851,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 1 },
       { materialId: "lunarplant_husk", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7753,6 +7865,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 1 },
       { materialId: "lunarplant_husk", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7766,6 +7879,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 1 },
       { materialId: "lunarplant_husk", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7781,6 +7895,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 3 },
       { materialId: "moonrocknugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7796,6 +7911,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 5 },
       { materialId: "moonrocknugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7811,6 +7927,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 3 },
       { materialId: "moonrocknugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7865,6 +7982,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 4 },
       { materialId: "voidcloth", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7878,6 +7996,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 4 },
       { materialId: "voidcloth", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7891,6 +8010,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 5 },
       { materialId: "voidcloth", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7904,6 +8024,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 3 },
       { materialId: "voidcloth", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7917,6 +8038,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 4 },
       { materialId: "voidcloth", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7930,6 +8052,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 1 },
       { materialId: "voidcloth", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7944,6 +8067,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "beeswax", quantity: 3 },
       { materialId: "mosquitosack", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7959,6 +8083,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "dreadstone", quantity: 4 },
       { materialId: "voidcloth", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7974,6 +8099,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "dreadstone", quantity: 8 },
       { materialId: "voidcloth", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -7989,6 +8115,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "dreadstone", quantity: 3 },
       { materialId: "voidcloth", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8002,6 +8129,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "gelblob_bottle", quantity: 3 },
       { materialId: "dreadstone", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8014,6 +8142,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8026,6 +8155,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8038,6 +8168,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8050,6 +8181,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8062,6 +8194,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8074,6 +8207,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8086,6 +8220,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8098,6 +8233,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8110,6 +8246,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8122,6 +8259,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8134,6 +8272,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8146,6 +8285,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8158,6 +8298,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8170,6 +8311,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8182,6 +8324,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8194,6 +8337,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8206,6 +8350,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8218,6 +8363,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8230,6 +8376,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8242,6 +8389,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8254,6 +8402,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8266,6 +8415,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8278,6 +8428,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8290,6 +8441,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8302,6 +8454,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8314,6 +8467,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8326,6 +8480,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8338,6 +8493,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8350,6 +8506,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8362,6 +8519,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8374,6 +8532,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8386,6 +8545,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8398,6 +8558,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8410,6 +8571,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8422,6 +8584,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8434,6 +8597,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8446,6 +8610,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8458,6 +8623,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8470,6 +8636,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8482,6 +8649,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8494,6 +8662,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8506,6 +8675,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8518,6 +8688,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8530,6 +8701,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8542,6 +8714,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8554,6 +8727,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8566,6 +8740,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8578,6 +8753,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8590,6 +8766,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8602,6 +8779,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8614,6 +8792,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8626,6 +8805,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8638,6 +8818,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8650,6 +8831,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8662,6 +8844,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8674,6 +8857,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8686,6 +8870,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8698,6 +8883,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8710,6 +8896,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8722,6 +8909,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8734,6 +8922,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8746,6 +8935,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8758,6 +8948,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8770,6 +8961,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "messagebottleempty", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8783,6 +8975,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cookiecuttershell", quantity: 4 },
       { materialId: "moonrocknugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8797,6 +8990,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "barnacle", quantity: 6 },
       { materialId: "silk", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8811,6 +9005,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonglass", quantity: 5 },
       { materialId: "moonrocknugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8825,6 +9020,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "barnacle", quantity: 2 },
       { materialId: "slurtle_shellpieces", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8836,6 +9032,7 @@ export const allItems: CraftingItem[] = [
     station: "none",
     materials: [
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8850,6 +9047,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "barnacle", quantity: 4 },
       { materialId: "rope", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8863,6 +9061,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "twigs", quantity: 1 },
       { materialId: "slurtle_shellpieces", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8877,6 +9076,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "ash", quantity: 4 },
       { materialId: "moonglass", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8890,6 +9090,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "saltrock", quantity: 1 },
       { materialId: "icestaff", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8903,6 +9104,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "saltrock", quantity: 1 },
       { materialId: "icestaff2", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8916,6 +9118,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "saltrock", quantity: 1 },
       { materialId: "rocks", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8929,6 +9132,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "saltrock", quantity: 1 },
       { materialId: "nonslipgrit", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8942,6 +9146,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "saltrock", quantity: 1 },
       { materialId: "papyrus", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8955,6 +9160,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "saltrock", quantity: 1 },
       { materialId: "desiccant", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8968,6 +9174,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "saltrock", quantity: 5 },
       { materialId: "polly_rogershat", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8982,6 +9189,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "townportaltalisman", quantity: 1 },
       { materialId: "slurtle_shellpieces", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -8995,6 +9203,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "carrot", quantity: 8 },
       { materialId: "rope", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9008,6 +9217,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "carrot", quantity: 4 },
       { materialId: "cutreeds", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9021,6 +9231,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rabbit", quantity: 1 },
       { materialId: "cutgrass", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9033,6 +9244,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "pigskin", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9045,6 +9257,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "ash", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9057,6 +9270,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "ash", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9069,6 +9283,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "ash", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9081,6 +9296,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "ash", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9093,6 +9309,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "beefalowool", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9105,6 +9322,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "beefalowool", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9117,6 +9335,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "pigskin", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9129,6 +9348,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "pigskin", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9141,6 +9361,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "ash", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9153,6 +9374,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "papyrus", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9165,6 +9387,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "papyrus", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9178,6 +9401,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutstone", quantity: 1 },
       { materialId: "wagpunk_bits", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 28,
   },
   {
@@ -9191,6 +9415,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "thulecitebugnet", quantity: 1 },
       { materialId: "wagpunk_bits", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 16,
   },
   {
@@ -9205,6 +9430,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "boards", quantity: 2 },
       { materialId: "wagpunk_bits", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9218,6 +9444,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutstone", quantity: 1 },
       { materialId: "wagpunk_bits", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9231,6 +9458,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonglass", quantity: 2 },
       { materialId: "wagpunk_bits", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9245,6 +9473,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonstorm_static_item", quantity: 1 },
       { materialId: "coolant", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9480,6 +9709,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "log", quantity: 20 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9492,6 +9722,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "rocks", quantity: 15 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9531,6 +9762,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9543,6 +9775,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9555,6 +9788,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9567,6 +9801,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9579,6 +9814,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9591,6 +9827,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9603,6 +9840,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "goldnugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9615,6 +9853,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9627,6 +9866,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9639,6 +9879,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9651,6 +9892,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9663,6 +9905,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 16 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9675,6 +9918,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9687,6 +9931,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9699,6 +9944,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9711,6 +9957,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9723,6 +9970,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9735,6 +9983,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9747,6 +9996,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9759,6 +10009,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "boards", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9771,6 +10022,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9783,6 +10035,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9795,6 +10048,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9807,6 +10061,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9819,6 +10074,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9831,6 +10087,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9843,6 +10100,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9855,6 +10113,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9867,6 +10126,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9880,6 +10140,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 2 },
       { materialId: "petals", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9894,6 +10155,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 2 },
       { materialId: "kelp", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9908,6 +10170,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 2 },
       { materialId: "beefalowool", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9922,6 +10185,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 2 },
       { materialId: "steelwool", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9935,6 +10199,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 2 },
       { materialId: "petals", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9949,6 +10214,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 2 },
       { materialId: "kelp", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9963,6 +10229,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 2 },
       { materialId: "beefalowool", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9977,6 +10244,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "silk", quantity: 2 },
       { materialId: "steelwool", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -9989,6 +10257,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10001,6 +10270,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10013,6 +10283,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10025,6 +10296,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10037,6 +10309,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 12 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10049,6 +10322,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 12 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10061,6 +10335,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10073,6 +10348,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10087,6 +10363,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "beefalowool", quantity: 2 },
       { materialId: "goldnugget", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10100,6 +10377,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "boards", quantity: 2 },
       { materialId: "goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10114,6 +10392,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 1 },
       { materialId: "silk", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10126,6 +10405,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10138,6 +10418,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10150,6 +10431,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 5 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10162,6 +10444,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10174,6 +10457,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10186,6 +10470,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10198,6 +10483,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10210,6 +10496,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10222,6 +10509,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10234,6 +10522,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10246,6 +10535,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10258,6 +10548,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10270,6 +10561,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10282,6 +10574,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10294,6 +10587,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10306,6 +10600,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10318,6 +10613,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10330,6 +10626,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10342,6 +10639,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10354,6 +10652,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 16 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10366,6 +10665,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 4 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10378,6 +10678,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 6 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10390,6 +10691,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10402,6 +10704,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10414,6 +10717,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10426,6 +10730,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10438,6 +10743,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10450,6 +10756,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10462,6 +10769,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "lucky_goldnugget", quantity: 8 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10474,6 +10782,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 12 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10486,6 +10795,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 12 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10498,6 +10808,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 12 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10510,6 +10821,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 24 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10522,6 +10834,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 48 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10534,6 +10847,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 48 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10546,6 +10860,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 12 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10558,6 +10873,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 12 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10570,6 +10886,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 18 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10582,6 +10899,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 18 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10594,6 +10912,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 18 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10606,6 +10925,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 24 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10618,6 +10938,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 24 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10630,6 +10951,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 36 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10642,6 +10964,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 36 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10654,6 +10977,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 36 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10666,6 +10990,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 36 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10678,6 +11003,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "carnival_prizeticket", quantity: 48 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10691,6 +11017,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 1 },
       { materialId: "seeds", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10704,6 +11031,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 1 },
       { materialId: "seeds", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10716,6 +11044,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "seeds", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10728,6 +11057,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10741,6 +11071,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 1 },
       { materialId: "seeds", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10754,6 +11085,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 1 },
       { materialId: "seeds", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10767,6 +11099,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 1 },
       { materialId: "seeds", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10780,6 +11113,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 1 },
       { materialId: "seeds", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10793,6 +11127,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 1 },
       { materialId: "seeds", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10806,6 +11141,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 1 },
       { materialId: "seeds", quantity: 3 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10844,6 +11180,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "froglegs", quantity: 1 },
       { materialId: "goldnugget", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10857,6 +11194,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "mosquito", quantity: 1 },
       { materialId: "red_cap", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10870,6 +11208,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "crow", quantity: 1 },
       { materialId: "petals_evil", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10883,6 +11222,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rottenegg", quantity: 1 },
       { materialId: "charcoal", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10896,6 +11236,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonbutterflywings", quantity: 1 },
       { materialId: "moon_tree_blossom", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10909,6 +11250,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "batwing", quantity: 1 },
       { materialId: "livinglog", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10975,6 +11317,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wintersfeastfuel", quantity: 1 },
       { materialId: "mosquitosack", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -10988,6 +11331,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wintersfeastfuel", quantity: 1 },
       { materialId: "foliage", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11001,6 +11345,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wintersfeastfuel", quantity: 1 },
       { materialId: "cutreeds", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11015,6 +11360,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "spoiled_fish_small", quantity: 1 },
       { materialId: "petals", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11029,6 +11375,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "spoiled_food", quantity: 1 },
       { materialId: "boneshard", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11043,6 +11390,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "twigs", quantity: 1 },
       { materialId: "cutgrass", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11057,6 +11405,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "spoiled_fish", quantity: 1 },
       { materialId: "driftwood_log", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11071,6 +11420,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "petals_evil", quantity: 1 },
       { materialId: "ice", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11084,6 +11434,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wintersfeastfuel", quantity: 1 },
       { materialId: "rock_avocado_fruit", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11097,6 +11448,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wintersfeastfuel", quantity: 1 },
       { materialId: "moon_tree_blossom", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11111,6 +11463,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "flint", quantity: 1 },
       { materialId: "saltrock", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11124,6 +11477,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wintersfeastfuel", quantity: 1 },
       { materialId: "butterflywings", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11138,6 +11492,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "ash", quantity: 1 },
       { materialId: "phlegm", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11152,6 +11507,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "log", quantity: 1 },
       { materialId: "charcoal", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11165,6 +11521,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wintersfeastfuel", quantity: 1 },
       { materialId: "beardhair", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11178,6 +11535,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wintersfeastfuel", quantity: 1 },
       { materialId: "rocks", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11191,6 +11549,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "wintersfeastfuel", quantity: 1 },
       { materialId: "stinger", quantity: 2 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11205,6 +11564,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "acorn", quantity: 1 },
       { materialId: "pinecone", quantity: 1 },
     ],
+    nounlock: true,
     sortOrder: 999,
   },
   {
@@ -11348,6 +11708,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "twigs", quantity: 3 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_1",
     sortOrder: 0,
   },
   {
@@ -11361,6 +11722,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "log", quantity: 1 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_1",
     sortOrder: 1,
   },
   {
@@ -11374,6 +11736,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "redgem", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_2",
     sortOrder: 4,
   },
   {
@@ -11387,6 +11750,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "bluegem", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_2",
     sortOrder: 5,
   },
   {
@@ -11401,6 +11765,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "redgem", quantity: 1 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_2",
     sortOrder: 6,
   },
   {
@@ -11414,6 +11779,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purplegem", quantity: 3 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_5",
     sortOrder: 7,
   },
   {
@@ -11427,6 +11793,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "orangegem", quantity: 3 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_5",
     sortOrder: 8,
   },
   {
@@ -11440,6 +11807,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "yellowgem", quantity: 3 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_6",
     sortOrder: 9,
   },
   {
@@ -11458,6 +11826,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "bluegem", quantity: 1 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_6",
     sortOrder: 10,
   },
   {
@@ -11471,6 +11840,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "rocks", quantity: 3 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_3",
     sortOrder: 2,
   },
   {
@@ -11484,6 +11854,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "flint", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_3",
     sortOrder: 3,
   },
   {
@@ -11497,6 +11868,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "nitre", quantity: 3 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_7",
     sortOrder: 13,
   },
   {
@@ -11510,6 +11882,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "goldnugget", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_7",
     sortOrder: 14,
   },
   {
@@ -11523,6 +11896,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "cutstone", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_8",
     sortOrder: 15,
   },
   {
@@ -11536,6 +11910,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "marble", quantity: 1 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_8",
     sortOrder: 16,
   },
   {
@@ -11549,6 +11924,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "marble", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_8",
     sortOrder: 17,
   },
   {
@@ -11562,6 +11938,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "smallmeat", quantity: 3 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_4",
     sortOrder: 11,
   },
   {
@@ -11575,6 +11952,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "meat", quantity: 1 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_4",
     sortOrder: 12,
   },
   {
@@ -11588,6 +11966,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "beefalowool", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_9",
     sortOrder: 18,
   },
   {
@@ -11601,6 +11980,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "beardhair", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_9",
     sortOrder: 19,
   },
   {
@@ -11614,6 +11994,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "houndstooth", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_10",
     sortOrder: 20,
   },
   {
@@ -11627,6 +12008,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "boneshard", quantity: 2 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_10",
     sortOrder: 21,
   },
   {
@@ -11640,6 +12022,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "spoiled_food", quantity: 6 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_alchemy_10",
     sortOrder: 22,
   },
   {
@@ -11653,6 +12036,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "dreadstone", quantity: 1 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_allegiance_shadow",
     sortOrder: 23,
   },
   {
@@ -11666,6 +12050,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 3 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_allegiance_shadow",
     sortOrder: 24,
   },
   {
@@ -11679,6 +12064,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "horrorfuel", quantity: 1 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_allegiance_shadow",
     sortOrder: 25,
   },
   {
@@ -11692,6 +12078,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "moonglass_charged", quantity: 3 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_allegiance_lunar",
     sortOrder: 26,
   },
   {
@@ -11705,6 +12092,7 @@ export const allItems: CraftingItem[] = [
       { materialId: "purebrilliance", quantity: 1 },
     ],
     characterOnly: "wilson",
+    builderSkill: "wilson_allegiance_lunar",
     sortOrder: 27,
   },
 ];

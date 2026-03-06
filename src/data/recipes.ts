@@ -1,5 +1,5 @@
 export type CookingStation = "cookpot" | "portablecookpot";
-export type FoodType = "meat" | "veggie" | "goodies" | "roughage" | "generic";
+export type FoodType = "meat" | "veggie" | "goodies" | "roughage" | "generic" | "nonfood";
 
 export interface CookingRecipe {
   id: string;
@@ -1178,5 +1178,24 @@ export const cookingRecipes: CookingRecipe[] = [
     station: "portablecookpot",
     potLevel: "high",
     specialEffect: "electric_attack",
+  },
+
+  // ============================================================
+  // Non-Food Cookpot Recipes (from preparednonfoods.lua)
+  // ============================================================
+  {
+    id: "batnosehat",
+    name: "Milkmade Hat",
+    requirements: "Batnose ×1, Kelp ×1, Dairy ≥ 1",
+    foodType: "nonfood",
+    health: 0,
+    hunger: 0,
+    sanity: 0,
+    perishDays: 15,
+    cookTime: 2,
+    priority: 55,
+    station: "cookpot",
+    specialEffect: "hunger_regen",
+    cardIngredients: [["batnose", 1], ["kelp", 1], ["goatmilk", 1], ["milkywhites", 1]],
   },
 ];

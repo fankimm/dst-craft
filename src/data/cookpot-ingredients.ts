@@ -21,6 +21,7 @@ export interface CookpotIngredient {
   cookable?: boolean;    // auto-generate cooked variant
   dryable?: boolean;     // auto-generate dried variant
   cookedImage?: string;  // override for cooked variant image
+  rawCookable?: boolean; // false = raw form cannot be used in crock pot (only dried/cooked)
 }
 
 // ---------------------------------------------------------------------------
@@ -114,9 +115,9 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "boneshard", name: "Bone Shards", nameKo: "뼛조각", tags: { inedible: 1 }, category: "misc" },
   { id: "refined_dust", name: "Powdercake Dust", nameKo: "파우더 케이크 가루", tags: { inedible: 1 }, category: "misc" },
   { id: "forgetmelots", name: "Forget-Me-Lots", nameKo: "건망초", tags: { decoration: 1 }, category: "misc", dryable: true },
-  { id: "petals", name: "Petals", nameKo: "꽃잎", tags: { decoration: 0.5 }, category: "misc", dryable: true },
-  { id: "petals_evil", name: "Dark Petals", nameKo: "어둠의 꽃잎", tags: { decoration: 0.5 }, category: "misc", dryable: true },
-  { id: "foliage", name: "Foliage", nameKo: "나뭇잎", tags: { decoration: 0.5 }, category: "misc", dryable: true },
+  { id: "petals", name: "Petals", nameKo: "꽃잎", tags: { decoration: 0.5 }, category: "misc", dryable: true, rawCookable: false },
+  { id: "petals_evil", name: "Dark Petals", nameKo: "어둠의 꽃잎", tags: { decoration: 0.5 }, category: "misc", dryable: true, rawCookable: false },
+  { id: "foliage", name: "Foliage", nameKo: "나뭇잎", tags: { decoration: 0.5 }, category: "misc", dryable: true, rawCookable: false },
 ];
 
 // ---------------------------------------------------------------------------
@@ -174,7 +175,10 @@ const variants = generateVariants(baseIngredients);
 // Export: all ingredients (base + variants)
 // ---------------------------------------------------------------------------
 
-export const cookpotIngredients: CookpotIngredient[] = [...baseIngredients, ...variants];
+export const cookpotIngredients: CookpotIngredient[] = [
+  ...baseIngredients.filter((i) => i.rawCookable !== false),
+  ...variants,
+];
 
 /** Lookup by id */
 const ingredientMap = new Map(cookpotIngredients.map((i) => [i.id, i]));

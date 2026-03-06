@@ -139,6 +139,30 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             />
           ))}
         </div>
+
+        {/* Extra info: health cost, skill tree, nounlock */}
+        {(item.healthCost || item.builderSkill || item.nounlock) && (
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-1 text-[11px]">
+            {item.healthCost && (
+              <span className="inline-flex items-center gap-1 text-red-600 dark:text-red-400">
+                <img src={assetPath("/images/ui/health.png")} alt="" className="size-3.5" />
+                {t(resolvedLocale, "health_cost")} -{item.healthCost}
+              </span>
+            )}
+            {item.builderSkill && (
+              <span className="inline-flex items-center gap-1 text-violet-600 dark:text-violet-400">
+                <svg className="size-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M8 1v4M8 11v4M1 8h4M11 8h4M3.5 3.5l2.8 2.8M9.7 9.7l2.8 2.8M12.5 3.5l-2.8 2.8M6.3 9.7l-2.8 2.8"/></svg>
+                {t(resolvedLocale, "skill_tree_required")}
+              </span>
+            )}
+            {item.nounlock && !item.characterOnly && (
+              <span className="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400">
+                <svg className="size-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg>
+                {t(resolvedLocale, "station_required")}
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
