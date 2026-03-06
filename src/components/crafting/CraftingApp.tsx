@@ -20,7 +20,9 @@ import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
 import { Footer } from "./Footer";
 import { X } from "lucide-react";
-import { trackVisit, initDurationTracking, trackEvent } from "@/lib/analytics";
+import { trackVisit, initDurationTracking, trackEvent, trackItemClick } from "@/lib/analytics";
+import { usePopularity } from "@/hooks/use-popularity";
+import { TrendingUp } from "lucide-react";
 
 export function CraftingApp() {
   const {
@@ -43,6 +45,9 @@ export function CraftingApp() {
   const { isAdmin } = useAuth();
   const { favorites } = useFavorites();
 
+  const { getClicks } = usePopularity();
+  const [sortByPopular, setSortByPopular] = useState(false);
+
   const craftingFavCount = useMemo(
     () => [...favorites].filter((id) => getItemById(id)).length,
     [favorites],
@@ -59,7 +64,13 @@ export function CraftingApp() {
     isSearching,
   } = useSearch();
 
+  const handleSelectItem = useCallback((item: import("@/lib/types").CraftingItem) => {
+    setItem(item);
+    trackItemClick(item.id);
+  }, [setItem]);
+
   const handleSelectCategory = useCallback((id: CategoryId | "favorites") => {
+    setSortByPopular(false);
     setCategory(id as CategoryId);
   }, [setCategory]);
 
@@ -153,7 +164,12 @@ export function CraftingApp() {
     return getItemsByCategory(selectedCategory);
   }, [selectedCategory, selectedCharacter, favorites]);
 
-  const displayItems = isSearching ? searchResults : categoryItems;
+  const sortedCategoryItems = useMemo(() => {
+    if (!sortByPopular) return categoryItems;
+    return [...categoryItems].sort((a, b) => getClicks(b.id) - getClicks(a.id));
+  }, [categoryItems, sortByPopular, getClicks]);
+
+  const displayItems = isSearching ? searchResults : sortedCategoryItems;
 
   const detailPanel = panelItem && (
     <>
@@ -207,7 +223,7 @@ export function CraftingApp() {
               <ItemGrid
                 items={searchResults}
                 selectedItem={selectedItem}
-                onSelectItem={setItem}
+                onSelectItem={handleSelectItem}
               />
             ) : (
               <CategoryGrid
@@ -238,6 +254,19 @@ export function CraftingApp() {
         customLabel={(selectedCategory as string) === "favorites" ? t(resolvedLocale, "favorites") : undefined}
         onHomeClick={handleGoHome}
         onCategoryClick={selectedCharacter ? goToCategory : undefined}
+        actions={!isSearching && selectedCategory !== "character" || (selectedCategory === "character" && selectedCharacter) ? (
+          <button
+            onClick={() => setSortByPopular((v) => !v)}
+            className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-colors ${
+              sortByPopular
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            }`}
+          >
+            <TrendingUp className="size-3.5" />
+            {t(resolvedLocale, "sort_popular")}
+          </button>
+        ) : undefined}
       />
 
       {/* Scrollable content area */}
@@ -255,7 +284,7 @@ export function CraftingApp() {
             <ItemGrid
               items={displayItems}
               selectedItem={selectedItem}
-              onSelectItem={setItem}
+              onSelectItem={handleSelectItem}
             />
           )}
           <Footer />

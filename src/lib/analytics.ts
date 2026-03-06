@@ -110,6 +110,15 @@ export async function submitRating(rating: number): Promise<boolean> {
   }
 }
 
+/** Track an item click for popularity ranking */
+export function trackItemClick(itemId: string) {
+  if (!WORKER_URL) return;
+  navigator.sendBeacon(
+    `${WORKER_URL}/event`,
+    JSON.stringify({ type: "item_click", itemId }),
+  );
+}
+
 /** Track a generic event */
 export function trackEvent(type: "search" | "pwa_install" | "share" | "github_star_click", skipTracking?: boolean) {
   if (!WORKER_URL || skipTracking) return;

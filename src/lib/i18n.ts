@@ -118,6 +118,8 @@ const translations = {
     skill_tree_required: "스킬트리",
     station_required: "스테이션 필요",
     prototypable: "프로토타입 가능",
+    sort_default: "기본",
+    sort_popular: "인기순",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -225,6 +227,8 @@ const translations = {
     skill_tree_required: "Skill Tree",
     station_required: "Station Required",
     prototypable: "Prototypable",
+    sort_default: "Default",
+    sort_popular: "Popular",
   },
 } as const;
 

@@ -14,6 +14,7 @@ interface CategoryHeaderProps {
   searchBar: ReactNode;
   isSearching?: boolean;
   customLabel?: string;
+  actions?: ReactNode;
   onHomeClick: () => void;
   onCategoryClick?: () => void;
   className?: string;
@@ -26,6 +27,7 @@ export function CategoryHeader({
   searchBar,
   isSearching,
   customLabel,
+  actions,
   onHomeClick,
   onCategoryClick,
   className,
@@ -50,6 +52,7 @@ export function CategoryHeader({
           onHomeClick={onHomeClick}
           onCategoryClick={onCategoryClick}
         />
+        {actions && <div className="ml-auto shrink-0">{actions}</div>}
       </div>
       {searchBar}
     </div>

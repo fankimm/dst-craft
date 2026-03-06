@@ -218,6 +218,9 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         commands.push(["INCR", "dst:events:share"]);
       } else if (type === "github_star_click") {
         commands.push(["INCR", "dst:events:github_star_click"]);
+      } else if (type === "item_click" && typeof body.itemId === "string") {
+        const itemId = (body.itemId as string).slice(0, 100);
+        commands.push(["ZINCRBY", "dst:clicks", "1", itemId]);
       } else if (type === "duration" && typeof body.value === "number") {
         const duration = Math.min(Math.max(Math.round(body.value), 0), 3600);
         commands.push(
@@ -230,6 +233,22 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         await redisPipeline(env, commands);
       }
       return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
+    }
+
+    // GET /popular — top clicked items (public, cached)
+    if (url.pathname === "/popular" && request.method === "GET") {
+      const limit = Math.min(Number(url.searchParams.get("limit") ?? "200"), 500);
+      const result = await redisPipeline(env, [
+        ["ZREVRANGE", "dst:clicks", "0", `${limit - 1}`, "WITHSCORES"],
+      ]) as any;
+      const raw: string[] = result?.[0]?.result ?? [];
+      const items: { id: string; clicks: number }[] = [];
+      for (let i = 0; i < raw.length; i += 2) {
+        items.push({ id: raw[i], clicks: Number(raw[i + 1]) });
+      }
+      return new Response(JSON.stringify({ items }), {
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" },
+      });
     }
 
     // POST /rate — submit a star rating (1~5)
