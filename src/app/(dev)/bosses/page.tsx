@@ -217,6 +217,59 @@ const bosses: Boss[] = [
   },
 ];
 
+/** Korean names for loot items (from ko.po) */
+const lootNameKo: Record<string, string> = {
+  meat: "고기", monstermeat: "괴물고기", charcoal: "숯", goldnugget: "금",
+  silk: "거미줄", bluegem: "푸른 보석", yellowgem: "노란 보석",
+  nightmarefuel: "악몽 연료", honey: "꿀", honeycomb: "벌집", stinger: "벌침",
+  deerclops_eyeball: "외눈사슴의 눈알", drumstick: "닭다리",
+  goose_feather: "솜깃", bearger_fur: "두꺼운 모피",
+  dragon_scales: "비늘", lavae_egg: "용암이 알",
+  royal_jelly: "로열 젤리", hivehat: "여왕벌 왕관",
+  winter_food3: "지팡이 사탕", shroom_skin: "버섯 가죽",
+  shadowheart: "그림자 심장", thurible: "그림자 향로",
+  armorskeleton: "뼈 갑옷", skeletonhat: "뼈 투구",
+  malbatross_beak: "꽉새치 부리",
+  shieldofterror: "공포의 방패", milkywhites: "흰자위",
+  armorruins: "툴레사이트 갑옷", ruinshat: "툴레사이트 왕관", ruins_bat: "툴레사이트 몽둥이",
+  spidereggsack: "거미 알", spiderhat: "거미 모자",
+  dragonflyfurnace: "용비늘 화로", bundlewrap: "포장지",
+  trident: "시끄러운 삼지창", townportal: "게으른 도망자", antlionhat: "땅엎기 투구",
+  armordreadstone: "공포석 갑옷", dreadstonehat: "공포석 투구",
+  wall_dreadstone_item: "공포석 벽",
+  support_pillar_dreadstone_scaffold: "공포석 기둥 비계",
+  support_pillar_scaffold: "기둥 비계",
+  red_mushroomhat: "빨간 버섯갓", green_mushroomhat: "녹색 버섯갓", blue_mushroomhat: "파란 버섯갓",
+  mushroom_light: "버섯등", mushroom_light2: "발광갓", sleepbomb: "잠주머니",
+  chesspiece_deerclops_sketch: "외눈사슴 조각상 스케치",
+  chesspiece_bearger_sketch: "곰소리 조각상 스케치",
+  chesspiece_moosegoose_sketch: "큰사슴/거위 조각상 스케치",
+  chesspiece_dragonfly_sketch: "용파리 조각상 스케치",
+  chesspiece_beequeen_sketch: "여왕벌 조각상 스케치",
+  chesspiece_klaus_sketch: "클라우스 조각상 스케치",
+  chesspiece_toadstool_sketch: "독꺼비버섯 조각상 스케치",
+  chesspiece_stalker_sketch: "고대의 연료직공 조각상 스케치",
+  chesspiece_crabking_sketch: "대게왕 조각상 스케치",
+  chesspiece_malbatross_sketch: "꽉새치 조각상 스케치",
+  chesspiece_twinsofterror_sketch: "공포의 쌍둥이 조각상 스케치",
+  chesspiece_antlion_sketch: "개미사자 조각상 스케치",
+  chesspiece_daywalker_sketch: "악몽화된 늑대돼지 조각상 스케치",
+  chesspiece_minotaur_sketch: "고대 수호자 조각상 스케치",
+};
+
+/** Resolve image path for a loot item */
+function lootImage(itemId: string): string {
+  const base = itemId.replace(/_blueprint$/, "");
+  // Sketches without unique icons use the generic sketch.png
+  if (base.endsWith("_sketch")) {
+    return `/images/game-items/${base}.png`;
+  }
+  return `/images/game-items/${base}.png`;
+}
+
+/** Fallback image for sketches */
+const SKETCH_FALLBACK = "/images/game-items/sketch.png";
+
 // Group by category
 const grouped: Record<string, Boss[]> = {};
 for (const boss of bosses) {
@@ -261,7 +314,10 @@ export default function BossesPage() {
                   <div style={{ padding: "8px 16px 12px" }}>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                       {boss.loot.map((loot, i) => {
-                        const displayName = loot.item.replace(/_blueprint$/, "").replace(/_sketch$/, " sketch").replace(/_/g, " ");
+                        const baseId = loot.item.replace(/_blueprint$/, "");
+                        const koName = lootNameKo[baseId] ?? lootNameKo[loot.item];
+                        const displayName = koName ?? baseId.replace(/_/g, " ");
+                        const isSketch = baseId.endsWith("_sketch");
                         return (
                           <div
                             key={i}
@@ -278,18 +334,25 @@ export default function BossesPage() {
                           >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src={`/images/game-items/${loot.item.replace(/_blueprint$/, "")}.png`}
+                              src={lootImage(loot.item)}
                               alt={loot.item}
                               width={24}
                               height={24}
                               style={{ flexShrink: 0 }}
-                              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                              onError={(e) => {
+                                const img = e.target as HTMLImageElement;
+                                if (isSketch && img.src !== SKETCH_FALLBACK) {
+                                  img.src = SKETCH_FALLBACK;
+                                } else {
+                                  img.style.display = "none";
+                                }
+                              }}
                             />
                             <span style={{ color: loot.blueprint ? "#6ba3e8" : "#ccc" }}>
                               {displayName}
+                              {loot.blueprint && <span style={{ color: "#3975ce", marginLeft: 4, fontWeight: 600 }}>BP</span>}
                               {(loot.count ?? 0) > 1 && <span style={{ color: "#888" }}> ×{loot.count}</span>}
                               {loot.chance < 1 && <span style={{ color: "#f59e0b" }}> {Math.round(loot.chance * 100)}%</span>}
-                              {loot.blueprint && <span style={{ color: "#3975ce", marginLeft: 4, fontWeight: 600 }}>BP</span>}
                             </span>
                           </div>
                         );
