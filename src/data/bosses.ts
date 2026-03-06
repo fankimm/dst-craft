@@ -20,7 +20,7 @@ export const bosses: Boss[] = [
   {
     id: "deerclops",
     name: "Deerclops",
-    nameKo: "외눈 사슴",
+    nameKo: "외눈사슴",
     category: "seasonal",
     image: "deerclops.png",
     loot: [
@@ -32,7 +32,7 @@ export const bosses: Boss[] = [
   {
     id: "moose",
     name: "Moose/Goose",
-    nameKo: "무스/거위",
+    nameKo: "큰거위사슴/큰사슴거위",
     category: "seasonal",
     image: "moose.png",
     loot: [
@@ -46,7 +46,7 @@ export const bosses: Boss[] = [
   {
     id: "bearger",
     name: "Bearger",
-    nameKo: "곰거",
+    nameKo: "곰소리",
     category: "seasonal",
     image: "bearger.png",
     loot: [
@@ -118,7 +118,7 @@ export const bosses: Boss[] = [
   {
     id: "toadstool",
     name: "Toadstool",
-    nameKo: "두꺼비버섯",
+    nameKo: "독꺼비버섯",
     category: "raid",
     image: "toadstool.png",
     loot: [
@@ -135,7 +135,7 @@ export const bosses: Boss[] = [
   {
     id: "stalker_atrium",
     name: "Ancient Fuelweaver",
-    nameKo: "고대 연료직공",
+    nameKo: "고대의 연료직공",
     category: "raid",
     image: "stalker_atrium.png",
     loot: [
@@ -151,7 +151,7 @@ export const bosses: Boss[] = [
   {
     id: "crabking",
     name: "Crab King",
-    nameKo: "게 왕",
+    nameKo: "대게왕",
     category: "raid",
     image: "crabking.png",
     loot: [
@@ -162,7 +162,7 @@ export const bosses: Boss[] = [
   {
     id: "daywalker",
     name: "Nightmare Werepig",
-    nameKo: "악몽 돼지인간",
+    nameKo: "악몽화된 늑대돼지",
     category: "raid",
     image: "daywalker.png",
     loot: [
@@ -176,7 +176,7 @@ export const bosses: Boss[] = [
   {
     id: "malbatross",
     name: "Malbatross",
-    nameKo: "말바트로스",
+    nameKo: "꽉새치",
     category: "ocean",
     image: "malbatross.png",
     loot: [
@@ -191,7 +191,7 @@ export const bosses: Boss[] = [
   {
     id: "minotaur",
     name: "Ancient Guardian",
-    nameKo: "고대 수호자",
+    nameKo: "고대의 수호자",
     category: "dungeon",
     image: "minotaur.png",
     loot: [
@@ -220,7 +220,7 @@ export const bosses: Boss[] = [
   {
     id: "twinsofterror",
     name: "Twins of Terror",
-    nameKo: "공포의 쌍둥이",
+    nameKo: "레티나이저/스파즈마티즘",
     category: "event",
     image: ["retinazor.png", "spazmatism.png"],
     loot: [
@@ -249,7 +249,7 @@ export const bosses: Boss[] = [
   {
     id: "spiderqueen",
     name: "Spider Queen",
-    nameKo: "거미 여왕",
+    nameKo: "여왕 거미",
     category: "mini",
     image: "spiderqueen.png",
     loot: [

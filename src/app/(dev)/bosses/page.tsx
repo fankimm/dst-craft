@@ -23,7 +23,7 @@ const bosses: Boss[] = [
   {
     id: "deerclops",
     name: "Deerclops",
-    nameKo: "외눈 사슴",
+    nameKo: "외눈사슴",
     category: "시즌 보스",
     image: "deerclops.png",
     loot: [
@@ -35,7 +35,7 @@ const bosses: Boss[] = [
   {
     id: "moose",
     name: "Moose/Goose",
-    nameKo: "무스/거위",
+    nameKo: "큰거위사슴/큰사슴거위",
     category: "시즌 보스",
     image: "moose.png",
     loot: [
@@ -49,7 +49,7 @@ const bosses: Boss[] = [
   {
     id: "bearger",
     name: "Bearger",
-    nameKo: "곰거",
+    nameKo: "곰소리",
     category: "시즌 보스",
     image: "bearger.png",
     loot: [
@@ -110,7 +110,7 @@ const bosses: Boss[] = [
   {
     id: "toadstool",
     name: "Toadstool",
-    nameKo: "두꺼비버섯",
+    nameKo: "독꺼비버섯",
     category: "레이드 보스",
     image: "toadstool.png",
     loot: [
@@ -127,7 +127,7 @@ const bosses: Boss[] = [
   {
     id: "stalker_atrium",
     name: "Ancient Fuelweaver",
-    nameKo: "고대 연료직공",
+    nameKo: "고대의 연료직공",
     category: "레이드 보스",
     image: "stalker_atrium.png",
     loot: [
@@ -143,7 +143,7 @@ const bosses: Boss[] = [
   {
     id: "crabking",
     name: "Crab King",
-    nameKo: "게 왕",
+    nameKo: "대게왕",
     category: "레이드 보스",
     image: "crabking.png",
     loot: [
@@ -154,7 +154,7 @@ const bosses: Boss[] = [
   {
     id: "malbatross",
     name: "Malbatross",
-    nameKo: "말바트로스",
+    nameKo: "꽉새치",
     category: "해양 보스",
     image: "malbatross.png",
     loot: [
@@ -184,7 +184,7 @@ const bosses: Boss[] = [
   {
     id: "twinsofterror",
     name: "Twins of Terror",
-    nameKo: "공포의 쌍둥이",
+    nameKo: "레티나이저/스파즈마티즘",
     category: "이벤트 보스",
     image: ["retinazor.png", "spazmatism.png"],
     loot: [
@@ -228,7 +228,7 @@ const bosses: Boss[] = [
   {
     id: "daywalker",
     name: "Nightmare Werepig",
-    nameKo: "악몽 돼지인간",
+    nameKo: "악몽화된 늑대돼지",
     category: "레이드 보스",
     image: "daywalker.png",
     loot: [
@@ -242,7 +242,7 @@ const bosses: Boss[] = [
   {
     id: "minotaur",
     name: "Ancient Guardian",
-    nameKo: "고대 수호자",
+    nameKo: "고대의 수호자",
     category: "던전 보스",
     image: "minotaur.png",
     loot: [
@@ -256,7 +256,7 @@ const bosses: Boss[] = [
   {
     id: "spiderqueen",
     name: "Spider Queen",
-    nameKo: "거미 여왕",
+    nameKo: "여왕 거미",
     category: "미니 보스",
     image: "spiderqueen.png",
     loot: [

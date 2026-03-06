@@ -6,6 +6,9 @@
 - 작업 중 발견한 프로젝트 구조, 배포 방식, 기술 스택 등 중요한 정보는 이 CLAUDE.md에 자동으로 추가/갱신할 것
 
 ## UI Design Rules
+- **새 화면/컴포넌트 작성 전 반드시 `docs/ui.md` 참고** — 기존 UI 패턴과 통일성 유지
+- 게임 아이템 나열(재료, 전리품 등)은 반드시 `ItemSlot` 사용, 메타 정보(카테고리, 속성)는 `TagChip` 사용
+- 기존 컴포넌트로 표현 가능한 경우 새 UI를 만들지 말 것 — 통일성 우선
 - 아이콘/이미지 선택 시 **게임 내 이미지를 항상 우선** 사용할 것 (lucide/SVG 아이콘은 게임 이미지가 없을 때만 fallback)
 - 개발/디버그 전용 페이지나 도구를 만들면 **DevMenu에 자동으로 항목 추가**할 것 (`src/components/AppShell.tsx`의 `DevMenu` → `items` 배열)
 
@@ -35,6 +38,7 @@
 - `worker/index.ts` — Cloudflare Worker (API 엔드포인트)
 - `worker/wrangler.toml` — Worker 설정
 - `docs/terminology.md` — UI 용어집
+- `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
 
 ## Deploy Checklist
 배포 전 반드시 확인:
