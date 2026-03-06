@@ -525,24 +525,13 @@ export function CookingApp({
       {/* Recipe grid */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
         <div className="flex flex-col min-h-full">
-          {displayRecipes.length === 0 ? (
-            <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
-              {t(resolvedLocale, "noItems")}
-            </div>
-          ) : (
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-              {displayRecipes.map((recipe) => (
-                <RecipeCard
-                  key={recipe.id}
-                  recipe={recipe}
-                  locale={resolvedLocale}
-                  onClick={() => { selectRecipe(recipe.id); trackItemClick(recipe.id); }}
-                  isFav={isFavorite(recipe.id)}
-                  onToggleFav={() => toggleFavorite(recipe.id)}
-                />
-              ))}
-            </div>
-          )}
+          <RecipeGrid
+            recipes={displayRecipes}
+            locale={resolvedLocale}
+            onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); }}
+            isFavorite={isFavorite}
+            onToggleFav={toggleFavorite}
+          />
           <Footer />
         </div>
       </div>
@@ -680,6 +669,74 @@ function CookingSearchInput({
 // ---------------------------------------------------------------------------
 // Recipe card (matches ItemIcon style)
 // ---------------------------------------------------------------------------
+
+const RECIPE_PAGE_SIZE = 36;
+
+function RecipeGrid({
+  recipes,
+  locale,
+  onSelect,
+  isFavorite,
+  onToggleFav,
+}: {
+  recipes: CookingRecipe[];
+  locale: Locale;
+  onSelect: (recipe: CookingRecipe) => void;
+  isFavorite: (id: string) => boolean;
+  onToggleFav: (id: string) => void;
+}) {
+  const [visibleCount, setVisibleCount] = useState(RECIPE_PAGE_SIZE);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setVisibleCount(RECIPE_PAGE_SIZE);
+  }, [recipes]);
+
+  const loadMore = useCallback(() => {
+    setVisibleCount((prev) => Math.min(prev + RECIPE_PAGE_SIZE, recipes.length));
+  }, [recipes.length]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || visibleCount >= recipes.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => { if (entries[0].isIntersecting) loadMore(); },
+      { rootMargin: "200px" },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [visibleCount, recipes.length, loadMore]);
+
+  if (recipes.length === 0) {
+    return (
+      <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
+        {t(locale, "noItems")}
+      </div>
+    );
+  }
+
+  const visible = recipes.length > RECIPE_PAGE_SIZE ? recipes.slice(0, visibleCount) : recipes;
+
+  return (
+    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+      {visible.map((recipe) => (
+        <RecipeCard
+          key={recipe.id}
+          recipe={recipe}
+          locale={locale}
+          onClick={() => onSelect(recipe)}
+          isFav={isFavorite(recipe.id)}
+          onToggleFav={() => onToggleFav(recipe.id)}
+        />
+      ))}
+      {visibleCount < recipes.length && (
+        <div ref={sentinelRef} className="col-span-full flex justify-center py-4">
+          <div className="size-5 border-2 border-muted-foreground/30 border-t-muted-foreground rounded-full animate-spin" />
+        </div>
+      )}
+    </div>
+  );
+}
 
 function RecipeCard({
   recipe,

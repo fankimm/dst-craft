@@ -8,6 +8,7 @@ import { CookpotApp } from "./cookpot/CookpotApp";
 import { SettingsPage } from "./settings/SettingsPage";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { useSettings } from "@/hooks/use-settings";
+import { useAuth } from "@/hooks/use-auth";
 import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -32,6 +33,7 @@ function readTabFromUrl(): TabId {
 export function AppShell() {
   const [activeTab, setActiveTab] = useState<TabId>("crafting");
   const { resolvedLocale } = useSettings();
+  const { isAdmin } = useAuth();
   const [toast, setToast] = useState<string | null>(null);
   const [pendingRecipeId, setPendingRecipeId] = useState<string | null>(null);
   const [showReview, setShowReview] = useState(false);
@@ -159,7 +161,7 @@ export function AppShell() {
       <ReviewPrompt open={showReview} onClose={handleReviewClose} locale={resolvedLocale} />
 
       {/* Dev menu */}
-      {process.env.NODE_ENV === "development" && (
+      {(process.env.NODE_ENV === "development" || isAdmin) && (
         <DevMenu onOpenReview={() => setShowReview(true)} />
       )}
 
@@ -237,6 +239,8 @@ function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
       },
     },
     { label: "스킬 아이콘 목록", action: () => window.open("/skill-icons", "_blank") },
+    { label: "블루프린트 아이템", action: () => window.open("/blueprints", "_blank") },
+    { label: "보스 전리품", action: () => window.open("/bosses", "_blank") },
   ];
 
   return (

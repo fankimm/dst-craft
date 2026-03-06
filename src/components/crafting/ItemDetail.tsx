@@ -136,7 +136,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             />
           )}
           {/* Blueprint badge */}
-          {item.nounlock && !item.characterOnly && (
+          {item.blueprint && !item.characterOnly && (
             <TagChip
               label={t(resolvedLocale, "blueprint_required")}
               icon="game-items/blueprint.png"

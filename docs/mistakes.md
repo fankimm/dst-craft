@@ -2,13 +2,15 @@
 
 ## 게임 데이터
 
-### nounlock 67개 누락
-- **문제**: 용비늘 화로 등 67개 아이템에 `nounlock: true` 누락
-- **원인**: `nounlock=true` 파라미터만 체크하고 `TECH.LOST` 기술 레벨을 놓침
-- **교훈**: DST에서 블루프린트 필요 아이템은 두 가지 방법으로 정의됨:
-  1. `TECH.LOST` — 기술 레벨이 LOST (보스 드롭 블루프린트 등)
-  2. `nounlock=true` — 레시피 옵션에 직접 명시 (양념류, 캐릭터 전용 등)
-- **검증**: `grep "TECH.LOST" recipes.lua` + `grep "nounlock=true" recipes.lua` 모두 확인할 것
+### nounlock ≠ blueprint 혼동
+- **문제**: `nounlock: true`인 아이템 전부에 블루프린트 뱃지를 표시함
+- **원인**: `nounlock`(프로토타입 불가)과 `TECH.LOST`(블루프린트 필요)를 구분하지 않음
+- **교훈**: DST 레시피의 두 가지 속성은 별개:
+  1. `nounlock=true` — 프로토타입 불가 (매번 스테이션 필요, 양념류/캐릭터 전용 등)
+  2. `TECH.LOST` — 블루프린트 필요 (보스 드롭 등으로 블루프린트를 얻어야 제작 가능)
+  - `TECH.LOST`인 아이템은 `nounlock`이기도 하지만, 역은 성립하지 않음
+- **해결**: 데이터 모델에 `blueprint: boolean` 필드 분리, `TECH.LOST` 기준으로만 블루프린트 뱃지 표시
+- **검증**: `grep "TECH.LOST" recipes.lua`로 블루프린트 아이템, `grep "nounlock=true" recipes.lua`로 프로토타입 불가 아이템 별도 확인
 
 ### 스킬 이름 ID 불일치
 - **문제**: `builderSkill` ID ≠ ko.po 키 ≠ 아이콘 파일명

@@ -54,6 +54,7 @@ export interface CraftingItem {
   characterOnly?: string;
   healthCost?: number;
   nounlock?: boolean;
+  blueprint?: boolean;
   builderSkill?: string;
   sortOrder: number;
 }
