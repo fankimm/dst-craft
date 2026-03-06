@@ -36,7 +36,7 @@ function categoryImage(catId: BossCategoryId): string {
   return boss ? bossFirstImage(boss) : "/images/bosses/deerclops.png";
 }
 
-const SEASONAL_BOSS_IMAGES = ["deerclops.png", "moose.png", "bearger.png", "antlion.png"];
+const ALL_CATEGORY_IMAGE = "/images/category-icons/bosses_all.png";
 
 // ---------------------------------------------------------------------------
 // BossesApp
@@ -149,26 +149,12 @@ export function BossesApp() {
                   className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
                   onClick={() => handleSelectCategory(cat.id)}
                 >
-                  {cat.id === "all" ? (
-                    <div className="grid grid-cols-2 gap-0.5 size-12 sm:size-14">
-                      {SEASONAL_BOSS_IMAGES.map((img) => (
-                        <img
-                          key={img}
-                          src={assetPath(`/images/bosses/${img}`)}
-                          alt=""
-                          className="size-full object-contain"
-                          draggable={false}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <img
-                      src={assetPath(categoryImage(cat.id))}
-                      alt=""
-                      className="size-12 sm:size-14 object-contain"
-                      draggable={false}
-                    />
-                  )}
+                  <img
+                    src={assetPath(cat.id === "all" ? ALL_CATEGORY_IMAGE : categoryImage(cat.id))}
+                    alt=""
+                    className="size-12 sm:size-14 object-contain"
+                    draggable={false}
+                  />
                   <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
                     {categoryLabel(cat.id, resolvedLocale)}
                   </span>

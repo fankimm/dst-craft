@@ -40,7 +40,7 @@ const COOK_TIME_BASE = 40; // seconds per cookTime unit
 
 const HEALTH_THRESHOLD = 40;
 const SANITY_THRESHOLD = 15;
-const HUNGER_THRESHOLD = 75;
+const HUNGER_THRESHOLD = 62.5;
 
 const cookpotCount = cookingRecipes.filter((r) => r.station === "cookpot").length;
 const portableCount = cookingRecipes.filter((r) => r.station === "portablecookpot").length;
@@ -49,7 +49,7 @@ const sanityRecommendCount = cookingRecipes.filter((r) => r.sanity >= SANITY_THR
 const hungerRecommendCount = cookingRecipes.filter((r) => r.hunger >= HUNGER_THRESHOLD).length;
 
 const cookingCategories: CookingCategory[] = [
-  { id: "all", labelKey: "cooking_all", image: "game-items/meatballs.png", count: cookingRecipes.length },
+  { id: "all", labelKey: "cooking_all", image: "category-icons/cooking_all.png", count: cookingRecipes.length },
   { id: "cookpot", labelKey: "cooking_cookpot", image: "game-items/cookpot.png", count: cookpotCount },
   { id: "portablecookpot", labelKey: "cooking_portablecookpot", image: "game-items/portablecookpot_item.png", count: portableCount },
   { id: "recommend_health", labelKey: "cooking_recommend_health", image: "ui/health.png", count: healthRecommendCount },
