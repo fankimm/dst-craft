@@ -2,7 +2,9 @@
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, X, ArrowUpDown } from "lucide-react";
+import { trackItemClick } from "@/lib/analytics";
+import { usePopularity } from "@/hooks/use-popularity";
 import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
 import { cookpotIngredients, ingredientImage } from "@/data/cookpot-ingredients";
 import { useSettings } from "@/hooks/use-settings";
@@ -188,6 +190,9 @@ export function CookingApp({
     [favorites],
   );
 
+  const { getClicks } = usePopularity();
+  const [sortByPopular, setSortByPopular] = useState(false);
+
   // Local transient state (search, filters, animation)
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -260,6 +265,7 @@ export function CookingApp({
     selectCategory(id);
     setSearchQuery("");
     setActiveFilter(null);
+    setSortByPopular(false);
   }, [selectCategory]);
 
   const handleClosePanel = useCallback(() => {
@@ -376,6 +382,11 @@ export function CookingApp({
 
     return recipes;
   }, [selectedCategory, activeFilter, debouncedQuery, resolvedLocale, favorites]);
+
+  const displayRecipes = useMemo(() => {
+    if (!sortByPopular) return filteredRecipes;
+    return [...filteredRecipes].sort((a, b) => getClicks(b.id) - getClicks(a.id));
+  }, [filteredRecipes, sortByPopular, getClicks]);
 
   // Current category info
   const currentCat = selectedCategory
@@ -499,11 +510,20 @@ export function CookingApp({
     <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
       {/* Header */}
       <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
-        <CookingBreadcrumb
-          locale={resolvedLocale}
-          categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
-          onHomeClick={handleGoHome}
-        />
+        <div className="flex items-center gap-2 min-w-0">
+          <CookingBreadcrumb
+            locale={resolvedLocale}
+            categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
+            onHomeClick={handleGoHome}
+          />
+          <div className="ml-auto shrink-0">
+            <CookingSortDropdown
+              value={sortByPopular ? "popular" : "default"}
+              onChange={(v) => setSortByPopular(v === "popular")}
+              locale={resolvedLocale}
+            />
+          </div>
+        </div>
         <CookingSearchInput value={searchQuery} debouncedValue={debouncedQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} onSelectIngredient={handleSearchSelectIngredient} />
       </div>
 
@@ -513,18 +533,18 @@ export function CookingApp({
       {/* Recipe grid */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
         <div className="flex flex-col min-h-full">
-          {filteredRecipes.length === 0 ? (
+          {displayRecipes.length === 0 ? (
             <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
               {t(resolvedLocale, "noItems")}
             </div>
           ) : (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-              {filteredRecipes.map((recipe) => (
+              {displayRecipes.map((recipe) => (
                 <RecipeCard
                   key={recipe.id}
                   recipe={recipe}
                   locale={resolvedLocale}
-                  onClick={() => selectRecipe(recipe.id)}
+                  onClick={() => { selectRecipe(recipe.id); trackItemClick(recipe.id); }}
                   isFav={isFavorite(recipe.id)}
                   onToggleFav={() => toggleFavorite(recipe.id)}
                 />
@@ -1018,6 +1038,62 @@ function StatBox({
 // ---------------------------------------------------------------------------
 // Tag helpers
 // ---------------------------------------------------------------------------
+
+function CookingSortDropdown({ value, onChange, locale }: {
+  value: "default" | "popular";
+  onChange: (v: "default" | "popular") => void;
+  locale: Locale;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const options = [
+    { key: "default" as const, label: t(locale, "sort_default") },
+    { key: "popular" as const, label: t(locale, "sort_popular") },
+  ];
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-colors ${
+          value === "popular"
+            ? "bg-primary text-primary-foreground"
+            : "text-muted-foreground hover:text-foreground hover:bg-muted"
+        }`}
+      >
+        <ArrowUpDown className="size-3.5" />
+        {options.find((o) => o.key === value)!.label}
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 z-50 min-w-[100px] rounded-md border border-border bg-popover shadow-md py-1">
+          {options.map((opt) => (
+            <button
+              key={opt.key}
+              onClick={() => { onChange(opt.key); setOpen(false); }}
+              className={`w-full text-left px-3 py-1.5 text-xs transition-colors ${
+                value === opt.key
+                  ? "bg-accent text-accent-foreground font-medium"
+                  : "text-popover-foreground hover:bg-accent/50"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const foodTypeIcons: Record<string, string> = {
   meat: "game-items/meat.png",

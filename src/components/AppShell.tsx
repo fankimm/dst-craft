@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { CraftingApp } from "./crafting/CraftingApp";
 import { CookingApp } from "./cooking/CookingApp";
@@ -158,6 +158,11 @@ export function AppShell() {
       {/* Review Prompt */}
       <ReviewPrompt open={showReview} onClose={handleReviewClose} locale={resolvedLocale} />
 
+      {/* Dev menu */}
+      {process.env.NODE_ENV === "development" && (
+        <DevMenu onOpenReview={() => setShowReview(true)} />
+      )}
+
       {/* Toast */}
       {toast && (
         <div className="fixed bottom-16 inset-x-0 flex justify-center z-50 pointer-events-none">
@@ -166,6 +171,101 @@ export function AppShell() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Dev-only floating menu (stripped from production builds)
+// ---------------------------------------------------------------------------
+
+function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [pos, setPos] = useState({ x: 12, y: 80 }); // bottom-right offset
+  const ref = useRef<HTMLDivElement>(null);
+  const pressed = useRef(false);
+  const dragging = useRef(false);
+  const dragStart = useRef({ px: 0, py: 0, sx: 0, sy: 0 });
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    pressed.current = true;
+    dragging.current = false;
+    dragStart.current = { px: e.clientX, py: e.clientY, sx: pos.x, sy: pos.y };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }, [pos]);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!pressed.current) return;
+    const dx = e.clientX - dragStart.current.px;
+    const dy = e.clientY - dragStart.current.py;
+    if (!dragging.current && Math.abs(dx) + Math.abs(dy) < 5) return;
+    dragging.current = true;
+    setPos({
+      x: Math.max(0, Math.min(window.innerWidth - 40, dragStart.current.sx - dx)),
+      y: Math.max(0, Math.min(window.innerHeight - 40, dragStart.current.sy - dy)),
+    });
+  }, []);
+
+  const onPointerUp = useCallback(() => {
+    pressed.current = false;
+    if (!dragging.current) return;
+    setTimeout(() => { dragging.current = false; }, 0);
+  }, []);
+
+  const handleClick = useCallback(() => {
+    if (dragging.current) return;
+    setOpen((v) => !v);
+  }, []);
+
+  const items = [
+    { label: "Review Prompt", action: onOpenReview },
+    {
+      label: "Reset Review State",
+      action: () => {
+        localStorage.removeItem("dst:review-dismissed");
+        localStorage.removeItem("dst:visit-count");
+        sessionStorage.removeItem("dst:review-counted");
+      },
+    },
+  ];
+
+  return (
+    <div ref={ref} className="fixed z-[60]" style={{ right: pos.x, bottom: pos.y }}>
+      {open && (
+        <div className="absolute bottom-10 right-0 mb-1 min-w-[160px] rounded-lg border border-border bg-popover shadow-xl py-1 animate-in fade-in slide-in-from-bottom-2 duration-150">
+          <div className="px-3 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Dev Menu</div>
+          {items.map((item) => (
+            <button
+              key={item.label}
+              onClick={() => { item.action(); setOpen(false); }}
+              className="w-full text-left px-3 py-2 text-xs text-popover-foreground hover:bg-accent/50 transition-colors"
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
+      <button
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onClick={handleClick}
+        className={cn(
+          "size-9 rounded-full flex items-center justify-center shadow-lg transition-all touch-none select-none bg-white border-2 border-black",
+          open && "ring-2 ring-primary"
+        )}
+      >
+        <img src="/images/game-items/hammer.png" alt="Dev" className="size-7" draggable={false} />
+      </button>
     </div>
   );
 }

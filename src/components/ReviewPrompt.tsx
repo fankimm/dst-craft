@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { Star, Github, Share2, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -17,7 +17,11 @@ interface ReviewPromptProps {
 export function ReviewPrompt({ open, onClose, locale }: ReviewPromptProps) {
   const [rating, setRating] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-  const canShare = typeof navigator !== "undefined" && !!navigator.share;
+  const [canShare, setCanShare] = useState(false);
+
+  useEffect(() => {
+    setCanShare(!!navigator.share);
+  }, []);
 
   const dismiss = useCallback(() => {
     localStorage.setItem("dst:review-dismissed", "1");
@@ -118,18 +122,18 @@ export function ReviewPrompt({ open, onClose, locale }: ReviewPromptProps) {
               <div className="flex gap-3 w-full">
                 <button
                   onClick={handleGitHubStar}
-                  className="flex-1 flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2.5 text-sm font-medium text-foreground hover:bg-surface-hover transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2.5 text-sm font-medium text-foreground hover:bg-surface-hover transition-colors whitespace-nowrap"
                 >
-                  <Github className="size-4" />
-                  {t(locale, "review_github_star")}
+                  <Github className="size-4 shrink-0" />
+                  <span className="truncate">{t(locale, "review_github_star")}</span>
                 </button>
                 {canShare && (
                   <button
                     onClick={handleShare}
-                    className="flex-1 flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2.5 text-sm font-medium text-foreground hover:bg-surface-hover transition-colors"
+                    className="flex-1 flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-3 py-2.5 text-sm font-medium text-foreground hover:bg-surface-hover transition-colors whitespace-nowrap"
                   >
-                    <Share2 className="size-4" />
-                    {t(locale, "review_share")}
+                    <Share2 className="size-4 shrink-0" />
+                    <span className="truncate">{t(locale, "review_share")}</span>
                   </button>
                 )}
               </div>

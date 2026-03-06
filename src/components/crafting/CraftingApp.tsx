@@ -22,7 +22,7 @@ import { Footer } from "./Footer";
 import { X } from "lucide-react";
 import { trackVisit, initDurationTracking, trackEvent, trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
-import { TrendingUp } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 export function CraftingApp() {
   const {
@@ -72,7 +72,14 @@ export function CraftingApp() {
   const handleSelectCategory = useCallback((id: CategoryId | "favorites") => {
     setSortByPopular(false);
     setCategory(id as CategoryId);
+    if (id !== "favorites") trackItemClick(`cat:${id}`);
   }, [setCategory]);
+
+  const handleSelectCharacter = useCallback((characterId: string | null) => {
+    setSortByPopular(false);
+    setCharacter(characterId);
+    if (characterId && characterId !== "all") trackItemClick(`char:${characterId}`);
+  }, [setCharacter]);
 
   // Track visit + duration + PWA install on first load
   useEffect(() => {
@@ -214,6 +221,13 @@ export function CraftingApp() {
                 <Breadcrumb onHomeClick={handleGoHome} />
               )}
             </div>
+            {!isSearching && (
+              <SortDropdown
+                value={sortByPopular ? "popular" : "default"}
+                onChange={(v) => setSortByPopular(v === "popular")}
+                locale={resolvedLocale}
+              />
+            )}
           </div>
           {searchBar}
         </div>
@@ -229,6 +243,8 @@ export function CraftingApp() {
               <CategoryGrid
                 categories={categories}
                 favCount={craftingFavCount}
+                sortByPopular={sortByPopular}
+                getClicks={getClicks}
                 onSelectCategory={handleSelectCategory}
               />
             )}
@@ -254,18 +270,12 @@ export function CraftingApp() {
         customLabel={(selectedCategory as string) === "favorites" ? t(resolvedLocale, "favorites") : undefined}
         onHomeClick={handleGoHome}
         onCategoryClick={selectedCharacter ? goToCategory : undefined}
-        actions={!isSearching && selectedCategory !== "character" || (selectedCategory === "character" && selectedCharacter) ? (
-          <button
-            onClick={() => setSortByPopular((v) => !v)}
-            className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-colors ${
-              sortByPopular
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted"
-            }`}
-          >
-            <TrendingUp className="size-3.5" />
-            {t(resolvedLocale, "sort_popular")}
-          </button>
+        actions={!isSearching ? (
+          <SortDropdown
+            value={sortByPopular ? "popular" : "default"}
+            onChange={(v) => setSortByPopular(v === "popular")}
+            locale={resolvedLocale}
+          />
         ) : undefined}
       />
 
@@ -277,7 +287,9 @@ export function CraftingApp() {
             <CharacterSelector
               characters={characters}
               selectedCharacter={selectedCharacter}
-              onSelectCharacter={setCharacter}
+              sortByPopular={sortByPopular}
+              getClicks={getClicks}
+              onSelectCharacter={handleSelectCharacter}
             />
           ) : (
             /* Item grid */
@@ -292,6 +304,66 @@ export function CraftingApp() {
       </div>
 
       {detailPanel}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Sort dropdown
+// ---------------------------------------------------------------------------
+
+function SortDropdown({ value, onChange, locale }: {
+  value: "default" | "popular";
+  onChange: (v: "default" | "popular") => void;
+  locale: import("@/lib/i18n").Locale;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const options = [
+    { key: "default" as const, label: t(locale, "sort_default") },
+    { key: "popular" as const, label: t(locale, "sort_popular") },
+  ];
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-colors ${
+          value === "popular"
+            ? "bg-primary text-primary-foreground"
+            : "text-muted-foreground hover:text-foreground hover:bg-muted"
+        }`}
+      >
+        <ArrowUpDown className="size-3.5" />
+        {options.find((o) => o.key === value)!.label}
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 z-50 min-w-[100px] rounded-md border border-border bg-popover shadow-md py-1">
+          {options.map((opt) => (
+            <button
+              key={opt.key}
+              onClick={() => { onChange(opt.key); setOpen(false); }}
+              className={`w-full text-left px-3 py-1.5 text-xs transition-colors ${
+                value === opt.key
+                  ? "bg-accent text-accent-foreground font-medium"
+                  : "text-popover-foreground hover:bg-accent/50"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

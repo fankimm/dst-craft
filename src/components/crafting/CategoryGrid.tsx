@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import type { Category, CategoryId } from "@/lib/types";
 import { useSettings } from "@/hooks/use-settings";
 import { categoryName, t } from "@/lib/i18n";
@@ -8,15 +9,24 @@ import { assetPath } from "@/lib/asset-path";
 interface CategoryGridProps {
   categories: Category[];
   favCount: number;
+  sortByPopular?: boolean;
+  getClicks?: (id: string) => number;
   onSelectCategory: (id: CategoryId | "favorites") => void;
 }
 
 export function CategoryGrid({
   categories,
   favCount,
+  sortByPopular,
+  getClicks,
   onSelectCategory,
 }: CategoryGridProps) {
   const { resolvedLocale } = useSettings();
+
+  const sortedCategories = useMemo(() => {
+    if (!sortByPopular || !getClicks) return categories;
+    return [...categories].sort((a, b) => getClicks(`cat:${b.id}`) - getClicks(`cat:${a.id}`));
+  }, [categories, sortByPopular, getClicks]);
 
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
@@ -41,7 +51,7 @@ export function CategoryGrid({
           </span>
         </button>
       )}
-      {categories.map((cat) => (
+      {sortedCategories.map((cat) => (
         <button
           key={cat.id}
           className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import type { Character } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -10,6 +11,8 @@ import { assetPath } from "@/lib/asset-path";
 interface CharacterSelectorProps {
   characters: Character[];
   selectedCharacter: string | null;
+  sortByPopular?: boolean;
+  getClicks?: (id: string) => number;
   onSelectCharacter: (characterId: string | null) => void;
 }
 
@@ -62,9 +65,16 @@ function CharacterAvatar({
 export function CharacterSelector({
   characters,
   selectedCharacter,
+  sortByPopular,
+  getClicks,
   onSelectCharacter,
 }: CharacterSelectorProps) {
   const { resolvedLocale } = useSettings();
+
+  const sortedCharacters = useMemo(() => {
+    if (!sortByPopular || !getClicks) return characters;
+    return [...characters].sort((a, b) => getClicks(`char:${b.id}`) - getClicks(`char:${a.id}`));
+  }, [characters, sortByPopular, getClicks]);
 
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4">
@@ -81,7 +91,7 @@ export function CharacterSelector({
         </span>
       </button>
 
-      {characters.map((character) => (
+      {sortedCharacters.map((character) => (
         <CharacterAvatar
           key={character.id}
           character={character}
