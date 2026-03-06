@@ -15,6 +15,32 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.4.3",
+    date: "2026-03-06",
+    dev: [
+      "요리 상세 스탯(체력/허기/정신력) UI를 카드형 → 가로 인라인으로 변경",
+      "유통기한/조리시간/온도를 가로 인라인 한 줄로 통합, flex-1 균등 배치",
+      "온도 라벨 'Temp' 번역 누락 수정 → i18n cooking_temp 키 추가",
+      "단위 텍스트(일, 초) text-muted-foreground 적용",
+      "재료 수량 표기 ×2 → 2 로 간소화 (비교 연산자 ≥ 등은 유지)",
+      "데브 메뉴: 스탯 디자인 비교 페이지 추가",
+    ],
+    changes: {
+      ko: [
+        "요리 상세 스탯 UI 개선 — 가로 인라인 레이아웃으로 변경",
+        "유통기한·조리시간·온도를 한 줄로 통합 표시",
+        "온도 라벨 한국어 번역 추가",
+        "재료 수량 표기 간소화 (×2 → 2)",
+      ],
+      en: [
+        "Cooking detail stat UI redesign — horizontal inline layout",
+        "Perish/cook time/temperature merged into a single row",
+        "Added Korean translation for temperature label",
+        "Simplified ingredient quantity display (×2 → 2)",
+      ],
+    },
+  },
+  {
     version: "0.4.2",
     date: "2026-03-06",
     dev: [

@@ -859,8 +859,8 @@ function RecipeDetail({
         </div>
       </div>
 
-      {/* Stats grid */}
-      <div className="grid grid-cols-3 gap-3">
+      {/* Stats inline */}
+      <div className="flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
         <StatBox
           iconSrc={assetPath("/images/ui/health.png")}
           label={t(locale, "cooking_health")}
@@ -874,6 +874,7 @@ function RecipeDetail({
           value={recipe.hunger}
           formatted={formatStat(recipe.hunger)}
           colorClass={statColor(recipe.hunger)}
+          divider
         />
         <StatBox
           iconSrc={assetPath("/images/ui/sanity.png")}
@@ -881,55 +882,58 @@ function RecipeDetail({
           value={recipe.sanity}
           formatted={formatStat(recipe.sanity)}
           colorClass={statColor(recipe.sanity)}
+          divider
         />
       </div>
 
-      {/* Info rows */}
-      <div className="space-y-2 text-sm">
-        <div className="flex items-center justify-between">
-          <span className="inline-flex items-center gap-1 text-muted-foreground">
-            <img src={assetPath("/images/ui/perish.png")} alt="" className="size-4 object-contain" />
-            {t(locale, "cooking_perish")}
-          </span>
-          <span>
-            {recipe.perishDays == null
-              ? t(locale, "cooking_no_perish")
-              : `${recipe.perishDays}${t(locale, "cooking_days")}`}
-          </span>
+      {/* Info row — perish / cooktime / temp inline */}
+      <div className="flex items-center rounded-lg border border-border bg-surface py-2.5 text-sm">
+        <div className="flex-1 flex items-center justify-center gap-1.5">
+          <img src={assetPath("/images/ui/perish.png")} alt="" className="size-4 object-contain" />
+          <div>
+            <div className="font-semibold tabular-nums leading-tight">
+              {recipe.perishDays == null
+                ? t(locale, "cooking_no_perish")
+                : <>{recipe.perishDays}<span className="text-muted-foreground font-normal">{t(locale, "cooking_days")}</span></>}
+            </div>
+            <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_perish")}</div>
+          </div>
         </div>
-        <div className="flex items-center justify-between">
-          <span className="inline-flex items-center gap-1 text-muted-foreground">
-            <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" />
-            {t(locale, "cooking_cooktime")}
-          </span>
-          <span>{cookSeconds}{t(locale, "cooking_seconds")}</span>
+        <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
+          <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" />
+          <div>
+            <div className="font-semibold tabular-nums leading-tight">{cookSeconds}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></div>
+            <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_cooktime")}</div>
+          </div>
         </div>
         {recipe.temperature != null && (
-          <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-1 text-muted-foreground">
-              <img
-                src={assetPath(`/images/game-items/${recipe.temperature > 0 ? "campfire" : "ice"}.png`)}
-                alt=""
-                className="size-4 object-contain"
-              />
-              Temp
-            </span>
-            <span>
-              {recipe.temperature > 0 ? "+" : ""}{recipe.temperature}°
-              {recipe.temperatureDuration != null && ` / ${recipe.temperatureDuration}${t(locale, "cooking_seconds")}`}
-            </span>
-          </div>
-        )}
-        {recipe.specialEffect && (
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">{t(locale, "cooking_effect")}</span>
-            <TagChip
-              label={effectLabel(recipe.specialEffect, locale)}
-              onClick={onEffectClick ? () => onEffectClick(recipe.specialEffect!) : undefined}
+          <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
+            <img
+              src={assetPath(`/images/game-items/${recipe.temperature > 0 ? "campfire" : "ice"}.png`)}
+              alt=""
+              className="size-4 object-contain"
             />
+            <div>
+              <div className="font-semibold tabular-nums leading-tight">
+                {recipe.temperature > 0 ? "+" : ""}{recipe.temperature}°
+                {recipe.temperatureDuration != null && <>{" / "}{recipe.temperatureDuration}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></>}
+              </div>
+              <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_temp")}</div>
+            </div>
           </div>
         )}
       </div>
+
+      {/* Special effect */}
+      {recipe.specialEffect && (
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">{t(locale, "cooking_effect")}</span>
+          <TagChip
+            label={effectLabel(recipe.specialEffect, locale)}
+            onClick={onEffectClick ? () => onEffectClick(recipe.specialEffect!) : undefined}
+          />
+        </div>
+      )}
 
       {/* Requirements — split into needed / excluded */}
       {recipe.requirements && <RequirementsSections text={recipe.requirements} locale={locale} />}
@@ -999,7 +1003,8 @@ function parseReqEntry(text: string): { name: string; badge?: string } {
   // Match patterns: "Name ×2", "Name ≥ 3", "Name > 2", "Name < 1", "Name ≤ 1"
   const m = clean.match(/^(.+?)\s*(×|≥|>|<|≤)\s*(\d+(?:\.\d+)?)$/);
   if (m) {
-    return { name: m[1].trim(), badge: `${m[2]}${m[3]}` };
+    const op = m[2];
+    return { name: m[1].trim(), badge: op === "×" ? m[3] : `${op}${m[3]}` };
   }
   return { name: clean };
 }
@@ -1072,18 +1077,22 @@ function StatBox({
   label,
   formatted,
   colorClass,
+  divider,
 }: {
   iconSrc: string;
   label: string;
   value: number;
   formatted: string;
   colorClass: string;
+  divider?: boolean;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-surface p-2.5 text-center">
-      <img src={iconSrc} alt={label} className="size-6 mx-auto object-contain" />
-      <div className={cn("text-sm font-semibold tabular-nums mt-1", colorClass)}>{formatted}</div>
-      <div className="text-[10px] text-muted-foreground mt-0.5">{label}</div>
+    <div className={cn("flex items-center gap-1.5", divider && "border-l border-border pl-4")}>
+      <img src={iconSrc} alt={label} className="size-5 object-contain" />
+      <div>
+        <div className={cn("text-sm font-semibold tabular-nums leading-tight", colorClass)}>{formatted}</div>
+        <div className="text-[10px] text-muted-foreground leading-tight">{label}</div>
+      </div>
     </div>
   );
 }
