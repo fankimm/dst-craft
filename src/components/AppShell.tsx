@@ -136,7 +136,7 @@ export function AppShell() {
   }, [resolvedLocale]);
 
   return (
-    <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden pb-[env(safe-area-inset-bottom)]">
+    <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
       {/* Tab bar */}
       <div className="flex items-center border-b border-border bg-background shrink-0 pt-[env(safe-area-inset-top)]">
         {tabs.map((tab) => {
