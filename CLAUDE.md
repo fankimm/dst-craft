@@ -17,6 +17,11 @@
 - Next.js 16 (App Router, Static Export) + TypeScript + Tailwind CSS v4 + shadcn/ui
 - Vercel 배포, PWA 지원
 
+## Branch & Deploy Strategy
+- **`main` 브랜치**: Vercel Production 배포 (push 시 자동)
+- **`커푸` (커밋+푸시) 요청 시**: `main` 브랜치에 push
+- Vercel Preview(staging) 배포는 유료 플랜 필요 — 현재 미사용
+
 ## Architecture
 - **프론트엔드**: `src/` — Next.js App Router, Vercel 자동 배포 (main 브랜치 push)
 - **백엔드 Worker**: `worker/` — 같은 레포 내 Cloudflare Worker (analytics + 인증 + 즐겨찾기 API)
