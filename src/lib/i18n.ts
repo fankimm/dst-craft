@@ -14,7 +14,7 @@ export type LocaleSetting = Locale | "system";
 
 const translations = {
   ko: {
-    craftingGuide: "제작 가이드",
+    craftingGuide: "제작",
     searchPlaceholder: "아이템 검색...",
     searchResults: "검색 결과",
     selectItem: "아이템을 선택하세요",
