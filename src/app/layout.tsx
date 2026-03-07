@@ -127,7 +127,6 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#000000",
-  viewportFit: "cover",
 };
 
 const themeScript = `
@@ -257,7 +256,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased pb-[env(safe-area-inset-bottom)]`}
+        className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased`}
       >
         <div
           id="app-loading"
