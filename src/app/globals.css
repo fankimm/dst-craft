@@ -57,7 +57,7 @@
 @layer base {
   :root {
     --radius: 0.75rem;
-    --background: oklch(0.985 0 0);
+    --background: #fafafa;
     --foreground: oklch(0.145 0.005 286);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0.005 286);
@@ -97,7 +97,7 @@
 
   /* Dark theme */
   .dark {
-    --background: oklch(0.145 0.005 286);
+    --background: #0a0a0c;
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.21 0.006 286);
     --card-foreground: oklch(0.985 0 0);
