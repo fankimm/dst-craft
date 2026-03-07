@@ -127,7 +127,6 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#000000",
-  viewportFit: "cover",
 };
 
 const themeScript = `
@@ -138,7 +137,7 @@ const themeScript = `
     if (d) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
     var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute('content', d ? '#0a0a0c' : '#fafafa');
+    if (m) m.setAttribute('content', '#000000');
   } catch(e) {}
   try {
     var s = localStorage.getItem('dst-locale');
