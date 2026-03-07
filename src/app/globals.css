@@ -138,22 +138,9 @@
   * {
     @apply border-border outline-ring/50;
   }
-  html, body {
+  body {
     @apply bg-background text-foreground;
   }
-}
-
-/* iOS safe area bottom cover */
-body::after {
-  content: '';
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: env(safe-area-inset-bottom);
-  background-color: var(--background);
-  z-index: 9999;
-  pointer-events: none;
 }
 
 /* Custom scrollbar */

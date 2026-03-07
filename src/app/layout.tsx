@@ -138,8 +138,7 @@ const themeScript = `
     if (d) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
     var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute('content', d ? '#222025' : '#f9f9f9');
-    document.documentElement.style.backgroundColor = d ? '#222025' : '#f9f9f9';
+    if (m) m.setAttribute('content', d ? '#0a0a0c' : '#fafafa');
   } catch(e) {}
   try {
     var s = localStorage.getItem('dst-locale');
