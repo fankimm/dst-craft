@@ -197,9 +197,6 @@ export function AppShell() {
         <DevMenu onOpenReview={() => setShowReview(true)} />
       )}
 
-      {/* Bottom safe area cover */}
-      <div className="fixed bottom-0 inset-x-0 h-[env(safe-area-inset-bottom)] bg-background z-40 pointer-events-none" />
-
       {/* Toast */}
       {toast && (
         <div className="fixed bottom-16 inset-x-0 flex justify-center z-50 pointer-events-none">
