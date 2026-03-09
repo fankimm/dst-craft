@@ -486,7 +486,7 @@ function BossDetail({
   const images = Array.isArray(boss.image) ? boss.image : [boss.image];
 
   return (
-    <div className="p-4 pt-3 pb-8 space-y-4">
+    <div className="p-4 pt-3 space-y-4" style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 1rem))" }}>
       {/* Header */}
       <div className="flex items-start gap-4">
         <div className="flex items-center shrink-0">

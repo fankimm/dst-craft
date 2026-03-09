@@ -139,8 +139,13 @@ export function AppShell() {
 
   return (
     <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
+      {/* Status bar cover — sits above overlays so status bar area never dims */}
+      <div
+        className="fixed top-0 inset-x-0 bg-background z-[60]"
+        style={{ height: "env(safe-area-inset-top, 0px)" }}
+      />
       {/* Tab bar */}
-      <div className="flex items-center border-b border-border bg-background shrink-0 pt-0">
+      <div className="flex items-center border-b border-border bg-background shrink-0" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (

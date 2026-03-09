@@ -130,7 +130,7 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
       </div>
 
       {/* Ingredient grid — fixed height so layout doesn't jump */}
-      <div className="overflow-y-auto overscroll-contain px-3 pb-8" style={{ height: "40dvh" }}>
+      <div className="overflow-y-auto overscroll-contain px-3" style={{ height: "40dvh", paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 1rem))" }}>
         {filtered.length === 0 ? (
           <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
             {t(locale, "noItems")}

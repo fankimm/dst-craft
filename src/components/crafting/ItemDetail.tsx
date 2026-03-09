@@ -41,7 +41,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
   }
 
   return (
-    <div className="flex gap-4 p-4 pb-8">
+    <div className="flex gap-4 p-4" style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 1rem))" }}>
       {/* Item image */}
       <div className="flex items-start justify-center shrink-0">
         <div className="flex items-center justify-center size-16 rounded-md border border-input bg-surface">

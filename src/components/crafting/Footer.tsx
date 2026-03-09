@@ -2,7 +2,7 @@ import { Github, Mail, Heart } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="mt-auto flex flex-col items-center gap-2 px-4 pt-3 pb-6 text-xs text-muted-foreground/60 border-t border-border/50">
+    <footer className="mt-auto flex flex-col items-center gap-2 px-4 pt-3 text-xs text-muted-foreground/60 border-t border-border/50" style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom, 0.75rem))" }}>
       <div className="flex items-center gap-3">
         <a
           href="/browse"

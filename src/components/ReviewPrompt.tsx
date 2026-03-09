@@ -71,7 +71,7 @@ export function ReviewPrompt({ open, onClose, locale }: ReviewPromptProps) {
           open ? "translate-y-0" : "translate-y-full"
         )}
       >
-        <div className="flex flex-col items-center px-6 pt-6 pb-8 gap-4">
+        <div className="flex flex-col items-center px-6 pt-6 gap-4" style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom, 0.5rem))" }}>
           {submitted ? (
             <p className="text-lg font-semibold text-foreground py-8">
               {t(locale, "review_thanks")}
