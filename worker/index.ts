@@ -265,6 +265,26 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
     }
 
+    // GET /rating — public average rating
+    if (url.pathname === "/rating" && request.method === "GET") {
+      const raw = await redisPipeline(env, [["HGETALL", "dst:ratings"]]);
+      const arr = (raw as unknown as string[][])[0] as string[] | null;
+      let total = 0;
+      let sum = 0;
+      if (Array.isArray(arr)) {
+        for (let i = 0; i < arr.length; i += 2) {
+          const star = parseInt(arr[i], 10);
+          const count = parseInt(arr[i + 1], 10) || 0;
+          total += count;
+          sum += star * count;
+        }
+      }
+      const avg = total > 0 ? Math.round((sum / total) * 10) / 10 : 0;
+      return new Response(JSON.stringify({ avg, total }), {
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" },
+      });
+    }
+
     // GET /stats — fetch analytics data (admin only)
     if (url.pathname === "/stats" && request.method === "GET") {
       const auth = request.headers.get("Authorization") ?? "";

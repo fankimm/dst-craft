@@ -110,6 +110,18 @@ export async function submitRating(rating: number): Promise<boolean> {
   }
 }
 
+/** Fetch public average rating */
+export async function fetchPublicRating(): Promise<{ avg: number; total: number } | null> {
+  if (!WORKER_URL) return null;
+  try {
+    const res = await fetch(`${WORKER_URL}/rating`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
 /** Track an item click for popularity ranking */
 export function trackItemClick(itemId: string) {
   if (!WORKER_URL) return;

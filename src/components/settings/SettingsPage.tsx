@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { Sun, Moon, Monitor, ChevronRight, LogOut, BarChart3, Download, Share, Plus, ChevronDown, Heart } from "lucide-react";
+import { Sun, Moon, Monitor, ChevronRight, LogOut, BarChart3, Download, Share, Plus, ChevronDown, Heart, Star } from "lucide-react";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import type { LocaleSetting } from "@/lib/i18n";
@@ -10,6 +10,7 @@ import { t, supportedLocales, localeLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { APP_VERSION } from "@/lib/version";
 import { Footer } from "../crafting/Footer";
+import { fetchPublicRating, submitRating } from "@/lib/analytics";
 
 const themeOptions: { value: ThemeSetting; icon: typeof Sun; labelKey: "light" | "dark" | "system" }[] = [
   { value: "light", icon: Sun, labelKey: "light" },
@@ -31,6 +32,40 @@ export function SettingsPage() {
   const { theme, locale, resolvedLocale, setTheme, setLocale } = useSettings();
   const { user, loading: authLoading, gisReady, isAdmin, logout, renderGoogleButton } = useAuth();
   const googleBtnRef = useRef<HTMLDivElement>(null);
+
+  // Rating state
+  const [avgRating, setAvgRating] = useState(0);
+  const [totalRatings, setTotalRatings] = useState(0);
+  const [myRating, setMyRating] = useState(0);
+  const [ratingSubmitted, setRatingSubmitted] = useState(false);
+
+  useEffect(() => {
+    // Load my rating from localStorage
+    const saved = localStorage.getItem("dst:my-rating");
+    if (saved) setMyRating(Number(saved));
+    // Fetch public average
+    fetchPublicRating().then((data) => {
+      if (data) {
+        setAvgRating(data.avg);
+        setTotalRatings(data.total);
+      }
+    });
+  }, []);
+
+  const handleRate = useCallback(async (star: number) => {
+    setMyRating(star);
+    setRatingSubmitted(true);
+    localStorage.setItem("dst:my-rating", String(star));
+    localStorage.setItem("dst:review-dismissed", "permanent");
+    await submitRating(star);
+    // Refresh average
+    const data = await fetchPublicRating();
+    if (data) {
+      setAvgRating(data.avg);
+      setTotalRatings(data.total);
+    }
+    setTimeout(() => setRatingSubmitted(false), 1500);
+  }, []);
 
   // PWA install state
   const [isPwa, setIsPwa] = useState(true); // default true to avoid flash
@@ -229,6 +264,63 @@ export function SettingsPage() {
                 ))}
               </select>
               <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            </div>
+          </div>
+
+          {/* Rating */}
+          <div className="space-y-2">
+            <h2 className="text-sm font-semibold">{t(resolvedLocale, "rating_title")}</h2>
+            <div className="rounded-lg border border-border p-4 space-y-3">
+              {/* Average display */}
+              <div className="flex items-center gap-3">
+                <span className="text-2xl font-bold tabular-nums">{avgRating > 0 ? avgRating.toFixed(1) : "—"}</span>
+                <div className="flex flex-col gap-0.5">
+                  <div className="flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={cn(
+                          "size-4",
+                          star <= Math.round(avgRating)
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "text-muted-foreground/30"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  {totalRatings > 0 && (
+                    <span className="text-xs text-muted-foreground">
+                      {totalRatings}{t(resolvedLocale, "rating_count")}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* My rating */}
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground shrink-0">{t(resolvedLocale, "rating_my")}</span>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => handleRate(star)}
+                      className="p-0.5 touch-manipulation transition-transform active:scale-90"
+                    >
+                      <Star
+                        className={cn(
+                          "size-6 transition-colors",
+                          star <= myRating
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "text-muted-foreground/30"
+                        )}
+                      />
+                    </button>
+                  ))}
+                </div>
+                {ratingSubmitted && (
+                  <span className="text-xs text-green-500 animate-in fade-in">{t(resolvedLocale, "review_thanks")}</span>
+                )}
+              </div>
             </div>
           </div>
 
