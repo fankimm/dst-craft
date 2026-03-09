@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const WORKER_URL = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
 
@@ -40,9 +40,12 @@ export function usePopularity() {
     fetchPopularity().then(() => setReady(true));
   }, []);
 
+  // Stable reference — cachedData is module-level and only set once
+  const getClicks = useCallback((id: string) => cachedData?.get(id) ?? 0, [ready]);
+
   return {
     ready,
-    getClicks: (id: string) => cachedData?.get(id) ?? 0,
+    getClicks,
     popularityMap: cachedData,
   };
 }
