@@ -11,6 +11,8 @@ import { useFavorites } from "@/hooks/use-favorites";
 import { t, itemName, itemAltName, itemDesc, categoryName, characterName, stationName, skillName } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
+import { usePopularity } from "@/hooks/use-popularity";
+import { Eye } from "lucide-react";
 
 // Higher-tier stations that can also craft items of the base station
 const stationUpgrades: Partial<Record<CraftingStation, CraftingStation[]>> = {
@@ -31,6 +33,8 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { getClicks } = usePopularity();
+  const clicks = item ? getClicks(item.id) : 0;
 
   if (!item) {
     return (
@@ -78,6 +82,12 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
           {itemAltName(item, resolvedLocale) && (
             <p className="text-xs text-muted-foreground">
               {itemAltName(item, resolvedLocale)}
+            </p>
+          )}
+          {clicks > 0 && (
+            <p className="flex items-center gap-1 text-[11px] text-muted-foreground/50">
+              <Eye className="size-3" />
+              <span className="tabular-nums">{clicks.toLocaleString()}</span>
             </p>
           )}
         </div>

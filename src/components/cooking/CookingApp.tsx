@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
-import { ChevronRight, X, ArrowUpDown } from "lucide-react";
+import { ChevronRight, X, ArrowUpDown, Eye } from "lucide-react";
 import { trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
@@ -423,6 +423,7 @@ export function CookingApp({
           onEffectClick={handleEffectClick}
           isFav={isFavorite(panelRecipe.id)}
           onToggleFav={() => toggleFavorite(panelRecipe.id)}
+          clicks={getClicks(panelRecipe.id)}
         />
         <SupportPill />
       </div>
@@ -808,6 +809,7 @@ function RecipeDetail({
   onEffectClick,
   isFav,
   onToggleFav,
+  clicks,
 }: {
   recipe: CookingRecipe;
   locale: Locale;
@@ -816,6 +818,7 @@ function RecipeDetail({
   onEffectClick?: (effect: string) => void;
   isFav: boolean;
   onToggleFav: () => void;
+  clicks: number;
 }) {
   const localName = foodName(recipe, locale);
   const showAltName = locale !== "en" && localName !== recipe.name;
@@ -843,6 +846,12 @@ function RecipeDetail({
           </div>
           {showAltName && (
             <p className="text-sm text-muted-foreground">{recipe.name}</p>
+          )}
+          {clicks > 0 && (
+            <p className="flex items-center gap-1 text-[11px] text-muted-foreground/50 mt-0.5">
+              <Eye className="size-3" />
+              <span className="tabular-nums">{clicks.toLocaleString()}</span>
+            </p>
           )}
           <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
             <TagChip

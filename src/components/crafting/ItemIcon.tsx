@@ -8,6 +8,13 @@ import { useFavorites } from "@/hooks/use-favorites";
 import { itemName } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
 import { getCharacterById } from "@/lib/crafting-data";
+import { useAuth } from "@/hooks/use-auth";
+import { usePopularity } from "@/hooks/use-popularity";
+
+function formatClicks(n: number): string {
+  if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k`;
+  return String(n);
+}
 
 interface ItemIconProps {
   item: CraftingItem;
@@ -19,6 +26,9 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { isAdmin } = useAuth();
+  const { getClicks } = usePopularity();
+  const clicks = getClicks(item.id);
   const fav = isFavorite(item.id);
 
   return (
@@ -68,6 +78,11 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
       <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight line-clamp-2">
         {itemName(item, resolvedLocale)}
       </span>
+      {isAdmin && clicks > 0 && (
+        <span className="absolute bottom-1 right-1 text-[9px] text-muted-foreground/60 tabular-nums">
+          {formatClicks(clicks)}
+        </span>
+      )}
     </button>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, X, Eye } from "lucide-react";
 import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
 import { useSettings } from "@/hooks/use-settings";
