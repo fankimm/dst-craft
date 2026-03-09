@@ -498,7 +498,13 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       };
 
       // Purge all admin IP entries from visitor logs
-      const adminIp = request.headers.get("CF-Connecting-IP") ?? "";
+      const adminIp =
+        request.headers.get("CF-Connecting-IP") ||
+        request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+        request.headers.get("x-real-ip") ||
+        "";
+      (data as any)._adminIp = adminIp || "(undetected)";
+      (data as any)._purgedCount = 0;
       if (adminIp) {
         // Fetch full visitor list (up to 200 entries)
         const fullListRes = await redisPipeline(env, [["LRANGE", "dst:visitors", "0", "-1"]]);
@@ -515,9 +521,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         if (purgeCommands.length > 0) {
           await redisPipeline(env, purgeCommands);
         }
-        // Remove from response too
         data.recentVisitors = data.recentVisitors.filter((v: any) => v.ip !== adminIp);
-        (data as any)._adminIp = adminIp;
         (data as any)._purgedCount = purgeCommands.length;
       }
 

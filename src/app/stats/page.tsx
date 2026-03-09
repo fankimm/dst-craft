@@ -156,7 +156,7 @@ export default function StatsPage() {
       const extra = result as any;
       const purged = extra._purgedCount ?? 0;
       const ip = extra._adminIp ?? "";
-      showToast(purged > 0 ? `IP ${ip} — ${purged}건 삭제됨` : `데이터 로드 완료 (IP: ${ip})`);
+      showToast(purged > 0 ? `${ip} — ${purged}건 삭제` : `로드 완료 · ${ip}`);
     }
   }
 
