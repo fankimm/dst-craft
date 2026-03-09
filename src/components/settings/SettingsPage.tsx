@@ -37,7 +37,7 @@ export function SettingsPage() {
   const [avgRating, setAvgRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
   const [myRating, setMyRating] = useState(0);
-  const [ratingSubmitted, setRatingSubmitted] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
 
   useEffect(() => {
     // Load my rating from localStorage
@@ -54,18 +54,17 @@ export function SettingsPage() {
 
   const handleRate = useCallback(async (star: number) => {
     setMyRating(star);
-    setRatingSubmitted(true);
     localStorage.setItem("dst:my-rating", String(star));
     localStorage.setItem("dst:review-dismissed", "permanent");
+    setToast(t(resolvedLocale, "review_thanks"));
+    setTimeout(() => setToast(null), 2000);
     await submitRating(star);
-    // Refresh average
     const data = await fetchPublicRating();
     if (data) {
       setAvgRating(data.avg);
       setTotalRatings(data.total);
     }
-    setTimeout(() => setRatingSubmitted(false), 1500);
-  }, []);
+  }, [resolvedLocale]);
 
   // PWA install state
   const [isPwa, setIsPwa] = useState(true); // default true to avoid flash
@@ -317,9 +316,6 @@ export function SettingsPage() {
                     </button>
                   ))}
                 </div>
-                {ratingSubmitted && (
-                  <span className="text-xs text-green-500 animate-in fade-in">{t(resolvedLocale, "review_thanks")}</span>
-                )}
               </div>
             </div>
           </div>
@@ -365,6 +361,15 @@ export function SettingsPage() {
         <p className="text-center text-xs text-muted-foreground/50 py-2">v{APP_VERSION}</p>
         <Footer />
       </div>
+
+      {/* Toast */}
+      {toast && (
+        <div className="fixed top-20 inset-x-0 flex justify-center z-50 pointer-events-none">
+          <div className="bg-foreground text-background text-xs font-medium px-4 py-2 rounded-full shadow-lg animate-in fade-in duration-200">
+            {toast}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

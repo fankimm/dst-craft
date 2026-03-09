@@ -132,6 +132,12 @@ export default function StatsPage() {
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState(7);
   const [excludeKR, setExcludeKR] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+
+  function showToast(msg: string) {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  }
 
   // Redirect non-admin users
   useEffect(() => {
@@ -146,6 +152,12 @@ export default function StatsPage() {
     const result = await fetchAnalytics(token, d, exclude ? "KR" : undefined);
     setData(result);
     setLoading(false);
+    if (result) {
+      const extra = result as any;
+      const purged = extra._purgedCount ?? 0;
+      const ip = extra._adminIp ?? "";
+      showToast(purged > 0 ? `IP ${ip} — ${purged}건 삭제됨` : `데이터 로드 완료 (IP: ${ip})`);
+    }
   }
 
   useEffect(() => {
@@ -432,6 +444,15 @@ export default function StatsPage() {
           </>
         )}
       </div>
+
+      {/* Toast */}
+      {toast && (
+        <div className="fixed top-20 inset-x-0 flex justify-center z-50 pointer-events-none">
+          <div className="bg-foreground text-background text-xs font-medium px-4 py-2 rounded-full shadow-lg animate-in fade-in duration-200">
+            {toast}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
