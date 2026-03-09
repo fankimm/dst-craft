@@ -2,7 +2,7 @@ import { Heart } from "lucide-react";
 
 export function SupportPill() {
   return (
-    <div className="flex justify-center pt-2" style={{ paddingBottom: "calc(0.5rem + env(safe-area-inset-bottom, 0.5rem))" }}>
+    <div className="flex justify-center pt-2" style={{ paddingBottom: "calc(0.25rem + env(safe-area-inset-bottom, 0.25rem))" }}>
       <a
         href="https://ko-fi.com/fankim"
         target="_blank"
