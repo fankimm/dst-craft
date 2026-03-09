@@ -20,6 +20,7 @@ import { useRecent } from "@/hooks/use-recent";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { DetailPanel } from "@/components/ui/DetailPanel";
+import { SortDropdown } from "@/components/ui/SortDropdown";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -118,6 +119,7 @@ export function BossesApp({
 
   const [selectedCategory, setSelectedCategory] = useState<BossCategoryId | null>(null);
   const [selectedBoss, setSelectedBoss] = useState<Boss | null>(null);
+  const [sortByPopular, setSortByPopular] = useState(false);
 
   // Loot search with tags
   const [lootInput, setLootInput] = useState("");
@@ -189,17 +191,23 @@ export function BossesApp({
   }, []);
 
   const filteredBosses = useMemo(() => {
-    if (!selectedCategory || selectedCategory === "all") return bosses;
-    if (selectedCategory === ("favorites" as BossCategoryId)) {
-      return bosses.filter((b) => favorites.has(b.id));
-    }
-    if (selectedCategory === ("recent" as BossCategoryId)) {
+    let result: Boss[];
+    if (!selectedCategory || selectedCategory === "all") {
+      result = bosses;
+    } else if (selectedCategory === ("favorites" as BossCategoryId)) {
+      result = bosses.filter((b) => favorites.has(b.id));
+    } else if (selectedCategory === ("recent" as BossCategoryId)) {
       return recentIds
         .map((id) => bosses.find((b) => b.id === id))
         .filter((b): b is Boss => !!b);
+    } else {
+      result = bosses.filter((b) => b.category === selectedCategory);
     }
-    return bosses.filter((b) => b.category === selectedCategory);
-  }, [selectedCategory, favorites, recentIds]);
+    if (sortByPopular) {
+      return [...result].sort((a, b) => getClicks(`boss:${b.id}`) - getClicks(`boss:${a.id}`));
+    }
+    return result;
+  }, [selectedCategory, favorites, recentIds, sortByPopular, getClicks]);
 
   const detailPanel = panelBoss && (
     <DetailPanel open={panelOpen} onClose={handleClosePanel}>
@@ -364,11 +372,16 @@ export function BossesApp({
   // -----------------------------------------------------------------------
   return (
     <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
-      <div className="border-b border-border bg-background/80 px-4 py-2.5">
+      <div className="border-b border-border bg-background/80 px-4 py-2.5 flex items-center justify-between gap-2">
         <BossBreadcrumb
           locale={resolvedLocale}
           categoryLabel={selectedCategory === ("favorites" as BossCategoryId) ? t(resolvedLocale, "favorites") : selectedCategory === ("recent" as BossCategoryId) ? t(resolvedLocale, "recent") : categoryLabel(selectedCategory, resolvedLocale)}
           onHomeClick={handleGoHome}
+        />
+        <SortDropdown
+          value={sortByPopular ? "popular" : "default"}
+          onChange={(v) => setSortByPopular(v === "popular")}
+          locale={resolvedLocale}
         />
       </div>
 
@@ -381,7 +394,7 @@ export function BossesApp({
                 boss={boss}
                 locale={resolvedLocale}
                 onClick={() => { setSelectedBoss(boss); trackItemClick(`boss:${boss.id}`); addRecent(boss.id); }}
-                clicks={0}
+                clicks={sortByPopular ? getClicks(`boss:${boss.id}`) : 0}
                 isFav={isFavorite(boss.id)}
                 onToggleFav={() => toggleFavorite(boss.id)}
               />
