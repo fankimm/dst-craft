@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
-import { ChevronRight, Clock } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
 import { useSettings } from "@/hooks/use-settings";
@@ -292,7 +292,7 @@ export function BossesApp({
                   onClick={() => setSelectedCategory("recent" as BossCategoryId)}
                 >
                   <div className="flex items-center justify-center size-12 sm:size-14">
-                    <Clock className="size-10 sm:size-12 text-muted-foreground/40" strokeWidth={1.5} />
+                    <img src={assetPath("/images/game-items/pocketwatch_recall.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
                   </div>
                   <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
                     {t(resolvedLocale, "recent")}

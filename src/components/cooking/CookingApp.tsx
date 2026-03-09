@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
-import { ChevronRight, Clock } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
@@ -432,7 +432,7 @@ export function CookingApp({
                   onClick={() => handleSelectCategory("recent" as CookingCategoryId)}
                 >
                   <div className="flex items-center justify-center size-12 sm:size-14">
-                    <Clock className="size-10 sm:size-12 text-muted-foreground/40" strokeWidth={1.5} />
+                    <img src={assetPath("/images/game-items/pocketwatch_recall.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
                   </div>
                   <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
                     {t(resolvedLocale, "recent")}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import { Clock } from "lucide-react";
 import type { Category, CategoryId } from "@/lib/types";
 import { useSettings } from "@/hooks/use-settings";
 import { categoryName, t } from "@/lib/i18n";
@@ -61,7 +60,7 @@ export function CategoryGrid({
           onClick={() => onSelectCategory("recent")}
         >
           <div className="flex items-center justify-center size-12 sm:size-14">
-            <Clock className="size-10 sm:size-12 text-muted-foreground/40" strokeWidth={1.5} />
+            <img src={assetPath("/images/game-items/pocketwatch_recall.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
           </div>
           <span className="text-xs sm:text-sm text-foreground/80 font-medium">
             {t(resolvedLocale, "recent")}
