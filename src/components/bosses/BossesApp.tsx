@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { ChevronRight, X, Eye, Clock } from "lucide-react";
+import { ChevronRight, X, Clock } from "lucide-react";
 import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
 import { useSettings } from "@/hooks/use-settings";
@@ -555,7 +555,7 @@ function BossDetail({
           )}
           {clicks > 0 && (
             <p className="flex items-center gap-1 text-[11px] text-muted-foreground/50">
-              <Eye className="size-3" />
+              <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-3 object-contain" />
               <span className="tabular-nums">{clicks.toLocaleString()}</span>
             </p>
           )}

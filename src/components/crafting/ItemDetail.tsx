@@ -12,7 +12,6 @@ import { t, itemName, itemAltName, itemDesc, categoryName, characterName, statio
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { usePopularity } from "@/hooks/use-popularity";
-import { Eye } from "lucide-react";
 
 // Higher-tier stations that can also craft items of the base station
 const stationUpgrades: Partial<Record<CraftingStation, CraftingStation[]>> = {
@@ -86,7 +85,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
           )}
           {clicks > 0 && (
             <p className="flex items-center gap-1 text-[11px] text-muted-foreground/50">
-              <Eye className="size-3" />
+              <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-3 object-contain" />
               <span className="tabular-nums">{clicks.toLocaleString()}</span>
             </p>
           )}
