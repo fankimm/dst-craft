@@ -138,7 +138,7 @@ export function AppShell() {
   }, [resolvedLocale]);
 
   return (
-    <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
+    <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       {/* Status bar cover — sits above overlays so status bar area never dims */}
       <div
         className="fixed top-0 inset-x-0 bg-background z-[60]"
