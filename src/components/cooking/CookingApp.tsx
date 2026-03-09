@@ -761,7 +761,7 @@ function RecipeCard({
         {localName}
       </span>
       {!!clicks && clicks > 0 && (
-        <span className="absolute bottom-1 right-1 text-[9px] text-muted-foreground/60 tabular-nums">
+        <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80 tabular-nums">
           {clicks >= 1000 ? `${(clicks / 1000).toFixed(1).replace(/\.0$/, "")}k` : clicks}
         </span>
       )}
