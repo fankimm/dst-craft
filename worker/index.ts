@@ -503,17 +503,28 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
         request.headers.get("x-real-ip") ||
         "";
-      (data as any)._adminIp = adminIp || "(undetected)";
-      (data as any)._purgedCount = 0;
+
+      // Accumulate admin IPs in a Redis set (persists across sessions/networks)
       if (adminIp) {
-        // Fetch full visitor list (up to 200 entries)
+        await redisPipeline(env, [["SADD", "dst:admin-ips", adminIp]]);
+      }
+
+      // Fetch all known admin IPs
+      const adminIpsRes = await redisPipeline(env, [["SMEMBERS", "dst:admin-ips"]]);
+      const adminIps = new Set<string>(((adminIpsRes as any)?.[0]?.result as string[]) ?? []);
+
+      (data as any)._adminIp = adminIp || "(undetected)";
+      (data as any)._adminIps = [...adminIps];
+      (data as any)._purgedCount = 0;
+
+      if (adminIps.size > 0) {
         const fullListRes = await redisPipeline(env, [["LRANGE", "dst:visitors", "0", "-1"]]);
         const fullList = ((fullListRes as any)?.[0]?.result as string[]) ?? [];
         const purgeCommands: string[][] = [];
         for (const raw of fullList) {
           try {
             const parsed = JSON.parse(raw);
-            if (parsed.ip === adminIp) {
+            if (adminIps.has(parsed.ip)) {
               purgeCommands.push(["LREM", "dst:visitors", "0", raw]);
             }
           } catch { /* skip */ }
@@ -521,7 +532,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         if (purgeCommands.length > 0) {
           await redisPipeline(env, purgeCommands);
         }
-        data.recentVisitors = data.recentVisitors.filter((v: any) => v.ip !== adminIp);
+        data.recentVisitors = data.recentVisitors.filter((v: any) => !adminIps.has(v.ip));
         (data as any)._purgedCount = purgeCommands.length;
       }
 
@@ -570,25 +581,15 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         env.JWT_SECRET,
       );
 
-      // Admin: purge this IP from analytics to avoid polluting stats
+      // Admin: register IP and purge all known admin IPs from analytics
       if (isAdmin) {
-        const adminIp = request.headers.get("CF-Connecting-IP") ?? "";
+        const adminIp =
+          request.headers.get("CF-Connecting-IP") ||
+          request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+          request.headers.get("x-real-ip") ||
+          "";
         if (adminIp) {
-          // Remove visitor log entries matching this IP
-          const visitorListRaw = await redisPipeline(env, [["LRANGE", "dst:visitors", "0", "-1"]]) as { result: any }[];
-          const entries = (visitorListRaw[0]?.result as string[]) ?? [];
-          const purgeCommands: string[][] = [];
-          for (const entry of entries) {
-            try {
-              const parsed = JSON.parse(entry);
-              if (parsed.ip === adminIp) {
-                purgeCommands.push(["LREM", "dst:visitors", "0", entry]);
-              }
-            } catch { /* skip malformed entries */ }
-          }
-          if (purgeCommands.length > 0) {
-            await redisPipeline(env, purgeCommands);
-          }
+          await redisPipeline(env, [["SADD", "dst:admin-ips", adminIp]]);
         }
       }
 
