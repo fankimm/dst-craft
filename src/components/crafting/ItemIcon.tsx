@@ -8,11 +8,7 @@ import { useFavorites } from "@/hooks/use-favorites";
 import { itemName } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
 import { getCharacterById } from "@/lib/crafting-data";
-
-function formatClicks(n: number): string {
-  if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k`;
-  return String(n);
-}
+import { FavClickBadge } from "@/components/ui/FavClickBadge";
 
 interface ItemIconProps {
   item: CraftingItem;
@@ -37,15 +33,7 @@ export function ItemIcon({ item, isSelected, onClick, clicks }: ItemIconProps) {
           : "border-border hover:border-ring"
       )}
     >
-      {/* Favorite toggle */}
-      <div
-        onClick={(e) => { e.stopPropagation(); toggleFavorite(item.id); }}
-        className="absolute top-1 left-1 p-0.5 rounded-full transition-colors z-10 cursor-pointer"
-        role="button"
-        aria-label="favorite"
-      >
-        <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-3.5 sm:size-4", !fav && "opacity-30 grayscale")} />
-      </div>
+      <FavClickBadge isFav={fav} onToggleFav={() => toggleFavorite(item.id)} clicks={clicks} />
       {item.characterOnly && (() => {
         const char = getCharacterById(item.characterOnly);
         return char ? (
@@ -74,12 +62,6 @@ export function ItemIcon({ item, isSelected, onClick, clicks }: ItemIconProps) {
       <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight line-clamp-2">
         {itemName(item, resolvedLocale)}
       </span>
-      {!!clicks && clicks > 0 && (
-        <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground/50 tabular-nums mt--0.5">
-          <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-2.5 object-contain" />
-          {formatClicks(clicks)}
-        </span>
-      )}
     </button>
   );
 }

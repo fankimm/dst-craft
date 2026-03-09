@@ -24,6 +24,7 @@ import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { SortDropdown } from "@/components/ui/SortDropdown";
+import { FavClickBadge } from "@/components/ui/FavClickBadge";
 import { statColor, formatStat } from "@/lib/stat-utils";
 
 // ---------------------------------------------------------------------------
@@ -735,15 +736,7 @@ function RecipeCard({
       onClick={onClick}
       className="relative flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover border-border hover:border-ring"
     >
-      {/* Favorite toggle */}
-      <div
-        onClick={(e) => { e.stopPropagation(); onToggleFav(); }}
-        className="absolute top-1 left-1 p-0.5 rounded-full transition-colors z-10 cursor-pointer"
-        role="button"
-        aria-label="favorite"
-      >
-        <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-3.5 sm:size-4", !isFav && "opacity-30 grayscale")} />
-      </div>
+      <FavClickBadge isFav={isFav} onToggleFav={onToggleFav} clicks={clicks} />
       {recipe.station === "portablecookpot" && (
         <img
           src={assetPath("/images/category-icons/characters/warly.png")}
@@ -760,12 +753,6 @@ function RecipeCard({
       <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight line-clamp-2">
         {localName}
       </span>
-      {!!clicks && clicks > 0 && (
-        <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground/50 tabular-nums">
-          <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-2.5 object-contain" />
-          {clicks >= 1000 ? `${(clicks / 1000).toFixed(1).replace(/\.0$/, "")}k` : clicks}
-        </span>
-      )}
     </button>
   );
 }
