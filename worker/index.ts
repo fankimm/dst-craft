@@ -542,6 +542,28 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         env.JWT_SECRET,
       );
 
+      // Admin: purge this IP from analytics to avoid polluting stats
+      if (isAdmin) {
+        const adminIp = request.headers.get("CF-Connecting-IP") ?? "";
+        if (adminIp) {
+          // Remove visitor log entries matching this IP
+          const visitorListRaw = await redisPipeline(env, [["LRANGE", "dst:visitors", "0", "-1"]]) as { result: any }[];
+          const entries = (visitorListRaw[0]?.result as string[]) ?? [];
+          const purgeCommands: string[][] = [];
+          for (const entry of entries) {
+            try {
+              const parsed = JSON.parse(entry);
+              if (parsed.ip === adminIp) {
+                purgeCommands.push(["LREM", "dst:visitors", "0", entry]);
+              }
+            } catch { /* skip malformed entries */ }
+          }
+          if (purgeCommands.length > 0) {
+            await redisPipeline(env, purgeCommands);
+          }
+        }
+      }
+
       return new Response(
         JSON.stringify({ token: jwt, user: { sub, email, name, picture } }),
         { headers: { ...headers, "Content-Type": "application/json" } },
