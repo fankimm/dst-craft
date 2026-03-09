@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SupportPill } from "./SupportPill";
@@ -16,6 +16,20 @@ interface DetailPanelProps {
  * Pair with `useDetailPanel` hook for animation state management.
  */
 export function DetailPanel({ open, onClose, children }: DetailPanelProps) {
+  // Lock background scroll when panel is open
+  useEffect(() => {
+    if (!open) return;
+    // Find the scrollable container behind the panel
+    const scrollContainer = document.querySelector<HTMLElement>("[data-scroll-container]");
+    if (scrollContainer) {
+      scrollContainer.style.overflow = "hidden";
+      return () => { scrollContainer.style.overflow = ""; };
+    }
+    // Fallback: lock body
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   return (
     <>
       <div

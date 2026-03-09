@@ -225,7 +225,7 @@ export function CraftingApp({
           </div>
           {searchBar}
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
           <div className="flex flex-col min-h-full">
             {isSearching ? (
               <ItemGrid
@@ -275,7 +275,7 @@ export function CraftingApp({
       />
 
       {/* Scrollable content area */}
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
         <div className="flex flex-col min-h-full">
           {/* Character selector (only when no character selected yet) */}
           {selectedCategory === "character" && !selectedCharacter && !isSearching ? (
