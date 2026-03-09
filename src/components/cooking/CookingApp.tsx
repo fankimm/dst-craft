@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
-import { ChevronRight, X, ArrowUpDown, Clock } from "lucide-react";
+import { ChevronRight, Clock } from "lucide-react";
 import { trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
@@ -17,9 +17,14 @@ import { Footer } from "../crafting/Footer";
 import { ItemSlot } from "../ui/ItemSlot";
 import { SearchWithSuggestions, type SearchSuggestion } from "../ui/SearchWithSuggestions";
 import { TagChip } from "../ui/TagChip";
-import { SupportPill } from "../ui/SupportPill";
 import { useAuth } from "@/hooks/use-auth";
+import { ViewCount } from "@/components/ui/ViewCount";
 import { useRecent } from "@/hooks/use-recent";
+import { useDetailPanel } from "@/hooks/use-detail-panel";
+import { useSlideAnimation } from "@/hooks/use-slide-animation";
+import { DetailPanel } from "@/components/ui/DetailPanel";
+import { SortDropdown } from "@/components/ui/SortDropdown";
+import { statColor, formatStat } from "@/lib/stat-utils";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -71,16 +76,6 @@ function effectLabel(effect: string, locale: Locale): string {
 // Helpers
 // ---------------------------------------------------------------------------
 
-function statColor(value: number): string {
-  if (value > 0) return "text-green-600 dark:text-green-400";
-  if (value < 0) return "text-red-500 dark:text-red-400";
-  return "text-muted-foreground";
-}
-
-function formatStat(value: number): string {
-  if (value > 0) return `+${value}`;
-  return String(value);
-}
 
 function isRecommendCategory(id: CookingCategoryId): boolean {
   return id === "recommend_health" || id === "recommend_sanity" || id === "recommend_hunger";
@@ -201,25 +196,7 @@ export function CookingApp({
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Slide animation
-  const [slideDir, setSlideDir] = useState<"right" | "left" | null>(null);
-  const prevCat = useRef(selectedCategory);
-
-  useEffect(() => {
-    if (prevCat.current !== selectedCategory) {
-      setSlideDir(selectedCategory === null ? "left" : "right");
-      prevCat.current = selectedCategory;
-    }
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    if (!slideDir) return;
-    const timer = setTimeout(() => setSlideDir(null), 260);
-    return () => clearTimeout(timer);
-  }, [slideDir]);
-
-  const slideClass =
-    slideDir === "right" ? "animate-slide-right" : slideDir === "left" ? "animate-slide-left" : "";
+  const slideClass = useSlideAnimation(selectedCategory, (v) => v === null);
 
   // Handle pending recipe from cookpot tab
   useEffect(() => {
@@ -233,24 +210,7 @@ export function CookingApp({
     onClearPendingRecipe?.();
   }, [pendingRecipeId, onClearPendingRecipe, openRecipeFromExternal]);
 
-  // Detail panel animation
-  const [panelRecipe, setPanelRecipe] = useState<CookingRecipe | null>(null);
-  const [panelOpen, setPanelOpen] = useState(false);
-
-  useEffect(() => {
-    if (selectedRecipe) {
-      setPanelRecipe(selectedRecipe);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setPanelOpen(true));
-      });
-    } else {
-      setPanelOpen(false);
-      const timer = setTimeout(() => setPanelRecipe(null), 180);
-      return () => clearTimeout(timer);
-    }
-  }, [selectedRecipe]);
-
-  // theme-color is always #000000 — no overlay sync needed
+  const { panelItem: panelRecipe, panelOpen } = useDetailPanel(selectedRecipe);
 
   const handleGoHome = useCallback(() => {
     goHome();
@@ -403,39 +363,18 @@ export function CookingApp({
 
   // Detail panel
   const detailPanel = panelRecipe && (
-    <>
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-180",
-          panelOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        )}
-        onClick={handleClosePanel}
+    <DetailPanel open={panelOpen} onClose={handleClosePanel}>
+      <RecipeDetail
+        recipe={panelRecipe}
+        locale={resolvedLocale}
+        onFoodTypeClick={handleFoodTypeClick}
+        onStationClick={handleStationClick}
+        onEffectClick={handleEffectClick}
+        isFav={isFavorite(panelRecipe.id)}
+        onToggleFav={() => toggleFavorite(panelRecipe.id)}
+        clicks={getClicks(panelRecipe.id)}
       />
-      <div
-        className={cn(
-          "fixed inset-x-0 bottom-0 z-50 rounded-t-xl border-t border-border bg-card max-h-[80dvh] overflow-y-auto overscroll-contain transition-transform duration-180 ease-out",
-          panelOpen ? "translate-y-0" : "translate-y-full"
-        )}
-      >
-        <button
-          onClick={handleClosePanel}
-          className="absolute top-2 right-2 z-10 p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <X className="size-4" />
-        </button>
-        <RecipeDetail
-          recipe={panelRecipe}
-          locale={resolvedLocale}
-          onFoodTypeClick={handleFoodTypeClick}
-          onStationClick={handleStationClick}
-          onEffectClick={handleEffectClick}
-          isFav={isFavorite(panelRecipe.id)}
-          onToggleFav={() => toggleFavorite(panelRecipe.id)}
-          clicks={getClicks(panelRecipe.id)}
-        />
-        <SupportPill />
-      </div>
-    </>
+    </DetailPanel>
   );
 
   // Filter chip component
@@ -541,7 +480,7 @@ export function CookingApp({
             onHomeClick={handleGoHome}
           />
           <div className="ml-auto shrink-0">
-            <CookingSortDropdown
+            <SortDropdown
               value={sortByPopular ? "popular" : "default"}
               onChange={(v) => setSortByPopular(v === "popular")}
               locale={resolvedLocale}
@@ -880,12 +819,7 @@ function RecipeDetail({
           {showAltName && (
             <p className="text-sm text-muted-foreground">{recipe.name}</p>
           )}
-          {clicks > 0 && (
-            <p className="flex items-center gap-1 text-[11px] text-muted-foreground/50 mt-0.5">
-              <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-3 object-contain" />
-              <span className="tabular-nums">{clicks.toLocaleString()}</span>
-            </p>
-          )}
+          <ViewCount clicks={clicks} className="mt-0.5" />
           <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
             <TagChip
               label={foodTypeLabelKeys[recipe.foodType] ? t(locale, foodTypeLabelKeys[recipe.foodType]) : recipe.foodType}
@@ -1164,62 +1098,6 @@ function StatBox({
 // ---------------------------------------------------------------------------
 // Tag helpers
 // ---------------------------------------------------------------------------
-
-function CookingSortDropdown({ value, onChange, locale }: {
-  value: "default" | "popular";
-  onChange: (v: "default" | "popular") => void;
-  locale: Locale;
-}) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
-
-  const options = [
-    { key: "default" as const, label: t(locale, "sort_default") },
-    { key: "popular" as const, label: t(locale, "sort_popular") },
-  ];
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-colors ${
-          value === "popular"
-            ? "bg-primary text-primary-foreground"
-            : "text-muted-foreground hover:text-foreground hover:bg-muted"
-        }`}
-      >
-        <ArrowUpDown className="size-3.5" />
-        {options.find((o) => o.key === value)!.label}
-      </button>
-      {open && (
-        <div className="absolute right-0 top-full mt-1 z-50 min-w-[100px] rounded-md border border-border bg-popover shadow-md py-1">
-          {options.map((opt) => (
-            <button
-              key={opt.key}
-              onClick={() => { onChange(opt.key); setOpen(false); }}
-              className={`w-full text-left px-3 py-1.5 text-xs transition-colors ${
-                value === opt.key
-                  ? "bg-accent text-accent-foreground font-medium"
-                  : "text-popover-foreground hover:bg-accent/50"
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
 
 const foodTypeIcons: Record<string, string> = {
   meat: "game-items/meat.png",

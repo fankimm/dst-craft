@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useCallback, useState, useRef, useEffect } from "react";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import { categories } from "@/data/categories";
 import { characters } from "@/data/characters";
 import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById, getItemById, stationImages } from "@/lib/crafting-data";
@@ -9,7 +9,7 @@ import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import { useFavorites } from "@/hooks/use-favorites";
-import { t, itemName, categoryName } from "@/lib/i18n";
+import { t, categoryName } from "@/lib/i18n";
 import type { CategoryId } from "@/lib/types";
 import { CategoryGrid } from "./CategoryGrid";
 import { CategoryHeader } from "./CategoryHeader";
@@ -19,12 +19,15 @@ import { ItemGrid } from "./ItemGrid";
 import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
 import { Footer } from "./Footer";
-import { X } from "lucide-react";
 import { trackVisit, initDurationTracking, trackEvent, trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
-import { ArrowUpDown } from "lucide-react";
-import { SupportPill } from "@/components/ui/SupportPill";
 import { useRecent } from "@/hooks/use-recent";
+import { useDetailPanel } from "@/hooks/use-detail-panel";
+import { useSlideAnimation } from "@/hooks/use-slide-animation";
+import { DetailPanel } from "@/components/ui/DetailPanel";
+import { SortDropdown } from "@/components/ui/SortDropdown";
+
+const isHome = (v: boolean) => v;
 
 export function CraftingApp({
   pendingItemId,
@@ -43,11 +46,9 @@ export function CraftingApp({
     setCategory,
     setItem,
     setCharacter,
-    goBack,
     goHome,
     goToCategory,
     navigateToItem,
-    jumpToCategory,
     jumpToCharacter,
   } = useCraftingState();
 
@@ -115,45 +116,8 @@ export function CraftingApp({
     return () => window.removeEventListener("appinstalled", handlePWA);
   }, [isAdmin]);
 
-  // --- Slide transition ---
-  const [slideDir, setSlideDir] = useState<"right" | "left" | null>(null);
-  const prevGrid = useRef(showCategoryGrid);
-
-  // Detect view change and apply animation
-  useEffect(() => {
-    if (prevGrid.current !== showCategoryGrid) {
-      setSlideDir(showCategoryGrid ? "left" : "right");
-      prevGrid.current = showCategoryGrid;
-    }
-  }, [showCategoryGrid]);
-
-  // Clear animation class after it finishes
-  useEffect(() => {
-    if (!slideDir) return;
-    const timer = setTimeout(() => setSlideDir(null), 260);
-    return () => clearTimeout(timer);
-  }, [slideDir]);
-
-  const slideClass = slideDir === "right" ? "animate-slide-right" : slideDir === "left" ? "animate-slide-left" : "";
-
-  // --- Detail panel animation ---
-  const [panelItem, setPanelItem] = useState<typeof selectedItem>(null);
-  const [panelOpen, setPanelOpen] = useState(false);
-
-  useEffect(() => {
-    if (selectedItem) {
-      setPanelItem(selectedItem);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setPanelOpen(true));
-      });
-    } else {
-      setPanelOpen(false);
-      const timer = setTimeout(() => setPanelItem(null), 180);
-      return () => clearTimeout(timer);
-    }
-  }, [selectedItem]);
-
-  // theme-color is always #000000 — no overlay sync needed
+  const slideClass = useSlideAnimation(showCategoryGrid, isHome);
+  const { panelItem, panelOpen } = useDetailPanel(selectedItem);
 
   const handleGoHome = useCallback(() => {
     clearSearch();
@@ -218,19 +182,9 @@ export function CraftingApp({
   const displayItems = isSearching ? searchResults : sortedCategoryItems;
 
   const detailPanel = panelItem && (
-    <>
-      <div
-        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-180 ${panelOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-        onClick={() => setItem(null)}
-      />
-      <div className={`fixed inset-x-0 bottom-0 z-50 rounded-t-xl border-t border-border bg-card max-h-[80dvh] overflow-y-auto overscroll-contain transition-transform duration-180 ease-out ${panelOpen ? "translate-y-0" : "translate-y-full"}`}>
-        <button onClick={() => setItem(null)} className="absolute top-2 right-2 z-10 p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors">
-          <X className="size-4" />
-        </button>
-        <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} />
-        <SupportPill />
-      </div>
-    </>
+    <DetailPanel open={panelOpen} onClose={() => setItem(null)}>
+      <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} />
+    </DetailPanel>
   );
 
   const searchBar = (
@@ -345,66 +299,6 @@ export function CraftingApp({
       </div>
 
       {detailPanel}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Sort dropdown
-// ---------------------------------------------------------------------------
-
-function SortDropdown({ value, onChange, locale }: {
-  value: "default" | "popular";
-  onChange: (v: "default" | "popular") => void;
-  locale: import("@/lib/i18n").Locale;
-}) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
-
-  const options = [
-    { key: "default" as const, label: t(locale, "sort_default") },
-    { key: "popular" as const, label: t(locale, "sort_popular") },
-  ];
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-colors ${
-          value === "popular"
-            ? "bg-primary text-primary-foreground"
-            : "text-muted-foreground hover:text-foreground hover:bg-muted"
-        }`}
-      >
-        <ArrowUpDown className="size-3.5" />
-        {options.find((o) => o.key === value)!.label}
-      </button>
-      {open && (
-        <div className="absolute right-0 top-full mt-1 z-50 min-w-[100px] rounded-md border border-border bg-popover shadow-md py-1">
-          {options.map((opt) => (
-            <button
-              key={opt.key}
-              onClick={() => { onChange(opt.key); setOpen(false); }}
-              className={`w-full text-left px-3 py-1.5 text-xs transition-colors ${
-                value === opt.key
-                  ? "bg-accent text-accent-foreground font-medium"
-                  : "text-popover-foreground hover:bg-accent/50"
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

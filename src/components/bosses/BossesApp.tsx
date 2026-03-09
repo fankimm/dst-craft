@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
-import { ChevronRight, X, Clock } from "lucide-react";
+import { ChevronRight, Clock } from "lucide-react";
 import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
 import { useSettings } from "@/hooks/use-settings";
@@ -11,11 +11,14 @@ import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { TagChip } from "@/components/ui/TagChip";
-import { SupportPill } from "@/components/ui/SupportPill";
 import { trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { useAuth } from "@/hooks/use-auth";
+import { ViewCount } from "@/components/ui/ViewCount";
 import { useRecent } from "@/hooks/use-recent";
+import { useDetailPanel } from "@/hooks/use-detail-panel";
+import { useSlideAnimation } from "@/hooks/use-slide-animation";
+import { DetailPanel } from "@/components/ui/DetailPanel";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -152,42 +155,9 @@ export function BossesApp({
     );
   }, [lootTags]);
 
-  // Slide animation
-  const [slideDir, setSlideDir] = useState<"right" | "left" | null>(null);
-  const prevCat = useRef<BossCategoryId | null>(null);
+  const slideClass = useSlideAnimation(selectedCategory, (v) => v === null);
 
-  useEffect(() => {
-    if (prevCat.current !== selectedCategory) {
-      setSlideDir(selectedCategory === null ? "left" : "right");
-      prevCat.current = selectedCategory;
-    }
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    if (!slideDir) return;
-    const timer = setTimeout(() => setSlideDir(null), 260);
-    return () => clearTimeout(timer);
-  }, [slideDir]);
-
-  const slideClass =
-    slideDir === "right" ? "animate-slide-right" : slideDir === "left" ? "animate-slide-left" : "";
-
-  // Detail panel animation
-  const [panelBoss, setPanelBoss] = useState<Boss | null>(null);
-  const [panelOpen, setPanelOpen] = useState(false);
-
-  useEffect(() => {
-    if (selectedBoss) {
-      setPanelBoss(selectedBoss);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setPanelOpen(true));
-      });
-    } else {
-      setPanelOpen(false);
-      const timer = setTimeout(() => setPanelBoss(null), 180);
-      return () => clearTimeout(timer);
-    }
-  }, [selectedBoss]);
+  const { panelItem: panelBoss, panelOpen } = useDetailPanel(selectedBoss);
 
   const handleGoHome = useCallback(() => {
     setSelectedCategory(null);
@@ -221,32 +191,10 @@ export function BossesApp({
     return bosses.filter((b) => b.category === selectedCategory);
   }, [selectedCategory, recentIds]);
 
-  // Detail panel
   const detailPanel = panelBoss && (
-    <>
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-180",
-          panelOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        )}
-        onClick={handleClosePanel}
-      />
-      <div
-        className={cn(
-          "fixed inset-x-0 bottom-0 z-50 rounded-t-xl border-t border-border bg-card max-h-[80dvh] overflow-y-auto overscroll-contain transition-transform duration-180 ease-out",
-          panelOpen ? "translate-y-0" : "translate-y-full"
-        )}
-      >
-        <button
-          onClick={handleClosePanel}
-          className="absolute top-2 right-2 z-10 p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <X className="size-4" />
-        </button>
-        <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} clicks={getClicks(`boss:${panelBoss.id}`)} />
-        <SupportPill />
-      </div>
-    </>
+    <DetailPanel open={panelOpen} onClose={handleClosePanel}>
+      <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} clicks={getClicks(`boss:${panelBoss.id}`)} />
+    </DetailPanel>
   );
 
   const lootSearchBar = (
@@ -553,12 +501,7 @@ function BossDetail({
           {showAltName && (
             <p className="text-sm text-muted-foreground">{boss.name}</p>
           )}
-          {clicks > 0 && (
-            <p className="flex items-center gap-1 text-[11px] text-muted-foreground/50">
-              <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-3 object-contain" />
-              <span className="tabular-nums">{clicks.toLocaleString()}</span>
-            </p>
-          )}
+          <ViewCount clicks={clicks} />
           <div className="mt-1">
             <TagChip
               label={categoryLabel(boss.category, locale)}

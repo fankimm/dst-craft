@@ -6,6 +6,7 @@ import { ChevronRight, X, RotateCcw, Shuffle, ExternalLink } from "lucide-react"
 import { useSettings } from "@/hooks/use-settings";
 import { t, foodName, ingredientName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { statColor, formatStat } from "@/lib/stat-utils";
 import { assetPath } from "@/lib/asset-path";
 import { ingredientImage, type CookpotIngredient } from "@/data/cookpot-ingredients";
 import { simulate } from "@/lib/cookpot-engine";
@@ -26,16 +27,6 @@ type Slots = (CookpotIngredient | null)[];
 // Helpers
 // ---------------------------------------------------------------------------
 
-function statColor(value: number): string {
-  if (value > 0) return "text-green-600 dark:text-green-400";
-  if (value < 0) return "text-red-500 dark:text-red-400";
-  return "text-muted-foreground";
-}
-
-function formatStat(value: number): string {
-  if (value > 0) return `+${value}`;
-  return String(value);
-}
 
 const COOK_TIME_BASE = 40;
 
