@@ -14,26 +14,6 @@ export function Footer() {
         <span>Support this project</span>
       </a>
 
-      {/* Links */}
-      <div className="flex items-center gap-3">
-        <a href="/browse" className="hover:text-muted-foreground transition-colors">
-          Browse All
-        </a>
-        <span className="text-border/40">·</span>
-        <a href="/cookpot" className="hover:text-muted-foreground transition-colors">
-          Cookpot Sim
-        </a>
-        <span className="text-border/40">·</span>
-        <a
-          href="https://github.com/fankimm/dst-craft/issues"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-muted-foreground transition-colors"
-        >
-          Bug Report
-        </a>
-      </div>
-
       {/* Icons */}
       <div className="flex items-center gap-4">
         <a
@@ -53,6 +33,12 @@ export function Footer() {
           <Mail className="size-3.5" />
         </a>
       </div>
+
+      {/* SEO internal links — hidden from users, visible to crawlers */}
+      <nav className="sr-only" aria-hidden="true">
+        <a href="/browse">Browse All Items</a>
+        <a href="/cookpot">Cookpot Simulator</a>
+      </nav>
     </footer>
   );
 }
