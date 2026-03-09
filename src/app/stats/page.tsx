@@ -58,6 +58,80 @@ function PercentBar({ label, count, total, icon }: { label: string; count: numbe
   );
 }
 
+/** SVG Area Chart for cumulative daily trend */
+function CumulativeChart({ data }: { data: { date: string; pv: number; uv: number }[] }) {
+  const days = [...data].reverse(); // oldest → newest
+  if (days.length < 2) return null;
+
+  // Build cumulative sums
+  const cumDays = days.reduce<{ date: string; pv: number; uv: number }[]>((acc, d) => {
+    const prev = acc.length > 0 ? acc[acc.length - 1] : { pv: 0, uv: 0 };
+    acc.push({ date: d.date, pv: prev.pv + d.pv, uv: prev.uv + d.uv });
+    return acc;
+  }, []);
+
+  const maxVal = Math.max(cumDays[cumDays.length - 1].pv, cumDays[cumDays.length - 1].uv, 1);
+
+  const W = 600;
+  const H = 200;
+  const padTop = 20;
+  const padBottom = 30;
+  const padLeft = 40;
+  const padRight = 30;
+  const chartW = W - padLeft - padRight;
+  const chartH = H - padTop - padBottom;
+
+  const labelStep = cumDays.length <= 10 ? 1 : cumDays.length <= 20 ? 2 : Math.ceil(cumDays.length / 10);
+
+  function x(i: number) {
+    return padLeft + (i / (cumDays.length - 1)) * chartW;
+  }
+  function y(val: number) {
+    return padTop + chartH - (val / maxVal) * chartH;
+  }
+
+  function areaPath(key: "pv" | "uv") {
+    const pts = cumDays.map((d, i) => `${x(i)},${y(d[key])}`);
+    return `M${pts.join(" L")} L${x(cumDays.length - 1)},${padTop + chartH} L${x(0)},${padTop + chartH} Z`;
+  }
+
+  function linePath(key: "pv" | "uv") {
+    const pts = cumDays.map((d, i) => `${x(i)},${y(d[key])}`);
+    return `M${pts.join(" L")}`;
+  }
+
+  const showValues = cumDays.length <= 14;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
+      {/* PV area */}
+      <path d={areaPath("pv")} className="fill-primary/20" />
+      <path d={linePath("pv")} className="stroke-primary/60" fill="none" strokeWidth="2" />
+      {/* UV area */}
+      <path d={areaPath("uv")} className="fill-green-500/20" />
+      <path d={linePath("uv")} className="stroke-green-500/60" fill="none" strokeWidth="2" />
+      {/* Data points + labels */}
+      {cumDays.map((d, i) => (
+        <g key={d.date}>
+          <circle cx={x(i)} cy={y(d.pv)} r={showValues ? 3 : 2} className="fill-primary/80" />
+          {showValues && (
+            <text x={x(i)} y={y(d.pv) - 8} textAnchor="middle" className="fill-foreground text-[10px] font-medium">{d.pv}</text>
+          )}
+          <circle cx={x(i)} cy={y(d.uv)} r={showValues ? 3 : 2} className="fill-green-500/80" />
+          {showValues && (
+            <text x={x(i)} y={y(d.uv) + 14} textAnchor="middle" className="fill-green-600 dark:fill-green-400 text-[10px] font-medium">{d.uv}</text>
+          )}
+          {i % labelStep === 0 && (
+            <text x={x(i)} y={H - 5} textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              {d.date.slice(5)}
+            </text>
+          )}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 /** SVG Area Chart for daily trend */
 function AreaChart({ data }: { data: { date: string; pv: number; uv: number }[] }) {
   const days = [...data].reverse(); // oldest → newest
@@ -319,6 +393,19 @@ export default function StatsPage() {
               <div className="flex gap-4 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1"><span className="inline-block w-3 h-2 bg-primary/60 rounded" /> PV (페이지뷰)</span>
                 <span className="flex items-center gap-1"><span className="inline-block w-3 h-2 bg-green-500/60 rounded" /> UV (순 방문자)</span>
+              </div>
+            </div>
+
+            {/* Cumulative Daily Chart */}
+            <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+              <h2 className="text-sm font-semibold flex items-center gap-2">
+                <TrendingUp className="size-4" />
+                일자별 누적 접속자
+              </h2>
+              <CumulativeChart data={data.dailyTrend} />
+              <div className="flex gap-4 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1"><span className="inline-block w-3 h-2 bg-primary/60 rounded" /> 누적 PV</span>
+                <span className="flex items-center gap-1"><span className="inline-block w-3 h-2 bg-green-500/60 rounded" /> 누적 UV</span>
               </div>
             </div>
 
