@@ -24,14 +24,14 @@ export function ReviewPrompt({ open, onClose, locale }: ReviewPromptProps) {
   }, []);
 
   const dismiss = useCallback(() => {
-    localStorage.setItem("dst:review-dismissed", "1");
+    localStorage.setItem("dst:review-dismissed", String(Date.now()));
     onClose();
   }, [onClose]);
 
   const handleRate = useCallback(async (star: number) => {
     setRating(star);
     setSubmitted(true);
-    localStorage.setItem("dst:review-dismissed", "1");
+    localStorage.setItem("dst:review-dismissed", "permanent");
     await submitRating(star);
     setTimeout(() => {
       onClose();
@@ -63,7 +63,6 @@ export function ReviewPrompt({ open, onClose, locale }: ReviewPromptProps) {
           "fixed inset-0 z-40 bg-black/50 transition-opacity duration-180",
           open ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
-        onClick={dismiss}
       />
       {/* Panel */}
       <div

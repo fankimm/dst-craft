@@ -55,18 +55,20 @@ export function AppShell() {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
-  // Review prompt trigger — count visits, show after 5+
+  // Review prompt trigger — show after 60s of active usage
   useEffect(() => {
-    if (sessionStorage.getItem("dst:review-counted")) return;
-    sessionStorage.setItem("dst:review-counted", "1");
-
-    const count = (parseInt(localStorage.getItem("dst:visit-count") ?? "0", 10) || 0) + 1;
-    localStorage.setItem("dst:visit-count", String(count));
-
-    if (count >= 5 && !localStorage.getItem("dst:review-dismissed")) {
-      const timer = setTimeout(() => setShowReview(true), 2000);
-      return () => clearTimeout(timer);
+    const dismissed = localStorage.getItem("dst:review-dismissed");
+    if (dismissed) {
+      const dismissedAt = parseInt(dismissed, 10);
+      if (!isNaN(dismissedAt) && Date.now() - dismissedAt < 7 * 24 * 60 * 60 * 1000) return;
     }
+    if (sessionStorage.getItem("dst:review-shown")) return;
+
+    const timer = setTimeout(() => {
+      sessionStorage.setItem("dst:review-shown", "1");
+      setShowReview(true);
+    }, 60_000);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleReviewClose = useCallback(() => {
@@ -266,8 +268,7 @@ function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
       label: "리뷰 상태 초기화",
       action: () => {
         localStorage.removeItem("dst:review-dismissed");
-        localStorage.removeItem("dst:visit-count");
-        sessionStorage.removeItem("dst:review-counted");
+        sessionStorage.removeItem("dst:review-shown");
       },
     },
     { label: "스킬 아이콘 목록", action: () => window.open("/skill-icons", "_blank") },
