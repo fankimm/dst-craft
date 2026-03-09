@@ -4,6 +4,13 @@ export function Footer() {
   return (
     <footer className="mt-auto flex items-center justify-center gap-4 px-4 pt-3 pb-3 text-xs text-muted-foreground/60 border-t border-border/50">
       <a
+        href="/browse"
+        className="hover:text-muted-foreground transition-colors"
+      >
+        Browse All
+      </a>
+      <span className="text-border">|</span>
+      <a
         href="https://github.com/fankimm/dst-craft"
         target="_blank"
         rel="noopener noreferrer"

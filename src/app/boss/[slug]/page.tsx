@@ -1,7 +1,14 @@
 import { bosses, lootImage, lootDisplayName } from "@/data/bosses";
+import { allItems } from "@/data/items";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+
+function idToSlug(id: string) {
+  return id.replaceAll("_", "-");
+}
+
+const craftableIds = new Set(allItems.map((i) => i.id));
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -146,19 +153,17 @@ export default async function BossPage({
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {boss.loot.map((loot, i) => {
               const nameEn = lootDisplayName(loot.item, "en");
-              const nameKo = lootDisplayName(loot.item, "ko");
+              const nameKoVal = lootDisplayName(loot.item, "ko");
               const imgSrc = lootImage(loot.item);
               const isBlueprint = loot.blueprint;
               const chanceLabel =
                 loot.chance >= 1
                   ? "100%"
                   : `${Math.round(loot.chance * 100)}%`;
+              const isCraftable = craftableIds.has(loot.item);
 
-              return (
-                <div
-                  key={`${loot.item}-${i}`}
-                  className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2"
-                >
+              const inner = (
+                <>
                   <div className="relative shrink-0">
                     <img
                       src={imgSrc}
@@ -173,9 +178,9 @@ export default async function BossPage({
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-medium text-foreground leading-tight truncate">
-                      {nameKo !== nameEn ? nameKo : nameEn}
+                      {nameKoVal !== nameEn ? nameKoVal : nameEn}
                     </p>
-                    {nameKo !== nameEn && (
+                    {nameKoVal !== nameEn && (
                       <p className="text-[10px] text-muted-foreground truncate">
                         {nameEn}
                       </p>
@@ -191,7 +196,16 @@ export default async function BossPage({
                       )}
                     </div>
                   </div>
-                </div>
+                </>
+              );
+
+              const cls = "flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2";
+              return isCraftable ? (
+                <Link key={`${loot.item}-${i}`} href={`/item/${idToSlug(loot.item)}`} className={`${cls} hover:border-ring transition-colors`}>
+                  {inner}
+                </Link>
+              ) : (
+                <div key={`${loot.item}-${i}`} className={cls}>{inner}</div>
               );
             })}
           </div>

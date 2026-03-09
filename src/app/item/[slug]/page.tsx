@@ -102,6 +102,17 @@ export default async function ItemPage({
     item.category.includes(c.id as never)
   );
 
+  // Find items that use this item as a material (for cross-links)
+  const usedIn = allItems.filter((other) =>
+    other.materials.some((m) => m.materialId === item.id)
+  ).slice(0, 8);
+
+  // Check if materials are also craftable items (for linking)
+  const materialItems = item.materials.map((m) => ({
+    ...m,
+    item: allItems.find((x) => x.id === m.materialId),
+  }));
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -231,15 +242,12 @@ export default async function ItemPage({
             Materials Required
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {item.materials.map((m) => {
+            {materialItems.map((m) => {
               const mat = materials.find((x) => x.id === m.materialId);
               const matNameKo =
                 ko.materials[m.materialId]?.name ?? ko.items[m.materialId]?.name;
-              return (
-                <div
-                  key={m.materialId}
-                  className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2"
-                >
+              const inner = (
+                <>
                   <div className="relative shrink-0">
                     <img
                       src={`/images/game-items/${mat?.image ?? m.materialId + ".png"}`}
@@ -260,7 +268,15 @@ export default async function ItemPage({
                       </p>
                     )}
                   </div>
-                </div>
+                </>
+              );
+              const cls = "flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2";
+              return m.item ? (
+                <Link key={m.materialId} href={`/item/${idToSlug(m.materialId)}`} className={`${cls} hover:border-ring transition-colors`}>
+                  {inner}
+                </Link>
+              ) : (
+                <div key={m.materialId} className={cls}>{inner}</div>
               );
             })}
           </div>
@@ -286,6 +302,43 @@ export default async function ItemPage({
                   {cat.name}
                 </span>
               ))}
+            </div>
+          </section>
+        )}
+
+        {/* Used in */}
+        {usedIn.length > 0 && (
+          <section>
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+              Used In
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {usedIn.map((other) => {
+                const otherNameKo = ko.items[other.id]?.name;
+                return (
+                  <Link
+                    key={other.id}
+                    href={`/item/${idToSlug(other.id)}`}
+                    className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2 hover:border-ring transition-colors"
+                  >
+                    <img
+                      src={`/images/game-items/${other.image}`}
+                      alt={other.name}
+                      className="size-10 object-contain shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-xs font-medium text-foreground leading-tight truncate">
+                        {otherNameKo ?? other.name}
+                      </p>
+                      {otherNameKo && (
+                        <p className="text-[10px] text-muted-foreground truncate">
+                          {other.name}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         )}
