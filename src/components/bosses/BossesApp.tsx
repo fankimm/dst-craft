@@ -14,6 +14,7 @@ import { TagChip } from "@/components/ui/TagChip";
 import { trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { useAuth } from "@/hooks/use-auth";
+import { useFavorites } from "@/hooks/use-favorites";
 import { ViewCount } from "@/components/ui/ViewCount";
 import { useRecent } from "@/hooks/use-recent";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
@@ -107,7 +108,13 @@ export function BossesApp({
   const { resolvedLocale } = useSettings();
   const { isAdmin } = useAuth();
   const { getClicks } = usePopularity();
+  const { favorites, isFavorite, toggleFavorite } = useFavorites();
   const { recentIds, addRecent } = useRecent("bosses");
+
+  const bossFavCount = useMemo(
+    () => bosses.filter((b) => favorites.has(b.id)).length,
+    [favorites],
+  );
 
   const [selectedCategory, setSelectedCategory] = useState<BossCategoryId | null>(null);
   const [selectedBoss, setSelectedBoss] = useState<Boss | null>(null);
@@ -183,17 +190,20 @@ export function BossesApp({
 
   const filteredBosses = useMemo(() => {
     if (!selectedCategory || selectedCategory === "all") return bosses;
+    if (selectedCategory === ("favorites" as BossCategoryId)) {
+      return bosses.filter((b) => favorites.has(b.id));
+    }
     if (selectedCategory === ("recent" as BossCategoryId)) {
       return recentIds
         .map((id) => bosses.find((b) => b.id === id))
         .filter((b): b is Boss => !!b);
     }
     return bosses.filter((b) => b.category === selectedCategory);
-  }, [selectedCategory, recentIds]);
+  }, [selectedCategory, favorites, recentIds]);
 
   const detailPanel = panelBoss && (
     <DetailPanel open={panelOpen} onClose={handleClosePanel}>
-      <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} clicks={getClicks(`boss:${panelBoss.id}`)} />
+      <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} clicks={getClicks(`boss:${panelBoss.id}`)} isFav={isFavorite(panelBoss.id)} onToggleFav={() => toggleFavorite(panelBoss.id)} />
     </DetailPanel>
   );
 
@@ -253,6 +263,8 @@ export function BossesApp({
                     boss={boss}
                     locale={resolvedLocale}
                     onClick={() => { setSelectedBoss(boss); addRecent(boss.id); }}
+                    isFav={isFavorite(boss.id)}
+                    onToggleFav={() => toggleFavorite(boss.id)}
                   />
                 ))}
               </div>
@@ -285,6 +297,27 @@ export function BossesApp({
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
           <div className="flex flex-col min-h-full">
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+              {/* Favorites tile */}
+              {bossFavCount > 0 && (
+                <button
+                  className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+                  onClick={() => setSelectedCategory("favorites" as BossCategoryId)}
+                >
+                  <div className="relative flex items-center justify-center size-12 sm:size-14">
+                    <img
+                      src={assetPath("/images/ui/health.png")}
+                      alt=""
+                      className="size-10 sm:size-12 object-contain"
+                    />
+                    <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80">
+                      {bossFavCount}
+                    </span>
+                  </div>
+                  <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
+                    {t(resolvedLocale, "favorites")}
+                  </span>
+                </button>
+              )}
               {/* Recent tile */}
               {recentIds.length > 0 && (
                 <button
@@ -292,7 +325,7 @@ export function BossesApp({
                   onClick={() => setSelectedCategory("recent" as BossCategoryId)}
                 >
                   <div className="flex items-center justify-center size-12 sm:size-14">
-                    <img src={assetPath("/images/game-items/pocketwatch_recall.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
+                    <img src={assetPath("/images/game-items/pocketwatch_warp.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
                   </div>
                   <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
                     {t(resolvedLocale, "recent")}
@@ -334,7 +367,7 @@ export function BossesApp({
       <div className="border-b border-border bg-background/80 px-4 py-2.5">
         <BossBreadcrumb
           locale={resolvedLocale}
-          categoryLabel={selectedCategory === ("recent" as BossCategoryId) ? t(resolvedLocale, "recent") : categoryLabel(selectedCategory, resolvedLocale)}
+          categoryLabel={selectedCategory === ("favorites" as BossCategoryId) ? t(resolvedLocale, "favorites") : selectedCategory === ("recent" as BossCategoryId) ? t(resolvedLocale, "recent") : categoryLabel(selectedCategory, resolvedLocale)}
           onHomeClick={handleGoHome}
         />
       </div>
@@ -349,6 +382,8 @@ export function BossesApp({
                 locale={resolvedLocale}
                 onClick={() => { setSelectedBoss(boss); trackItemClick(`boss:${boss.id}`); addRecent(boss.id); }}
                 clicks={isAdmin ? getClicks(`boss:${boss.id}`) : 0}
+                isFav={isFavorite(boss.id)}
+                onToggleFav={() => toggleFavorite(boss.id)}
               />
             ))}
           </div>
@@ -418,11 +453,15 @@ function BossCard({
   locale,
   onClick,
   clicks,
+  isFav,
+  onToggleFav,
 }: {
   boss: Boss;
   locale: Locale;
   onClick: () => void;
   clicks?: number;
+  isFav?: boolean;
+  onToggleFav?: () => void;
 }) {
   const images = Array.isArray(boss.image) ? boss.image : [boss.image];
 
@@ -431,6 +470,17 @@ function BossCard({
       onClick={onClick}
       className="relative flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover border-border hover:border-ring"
     >
+      {/* Favorite toggle */}
+      {onToggleFav && (
+        <div
+          onClick={(e) => { e.stopPropagation(); onToggleFav(); }}
+          className="absolute top-1 left-1 p-0.5 rounded-full transition-colors z-10 cursor-pointer"
+          role="button"
+          aria-label="favorite"
+        >
+          <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-3.5 sm:size-4", !isFav && "opacity-30 grayscale")} />
+        </div>
+      )}
       <div className="flex items-center justify-center">
         {images.map((img, i) => (
           <img
@@ -468,11 +518,15 @@ function BossDetail({
   locale,
   onViewCraftingItem,
   clicks,
+  isFav,
+  onToggleFav,
 }: {
   boss: Boss;
   locale: Locale;
   onViewCraftingItem?: (itemId: string) => void;
   clicks: number;
+  isFav: boolean;
+  onToggleFav: () => void;
 }) {
   const localName = bossName(boss, locale);
   const showAltName = locale !== "en" && localName !== boss.name;
@@ -497,7 +551,12 @@ function BossDetail({
           ))}
         </div>
         <div className="flex-1 min-w-0 pt-1">
-          <h3 className="text-base font-semibold">{localName}</h3>
+          <div className="flex items-center gap-1.5">
+            <h3 className="text-base font-semibold">{localName}</h3>
+            <button onClick={onToggleFav} className="shrink-0 p-0.5" aria-label="favorite">
+              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} />
+            </button>
+          </div>
           {showAltName && (
             <p className="text-sm text-muted-foreground">{boss.name}</p>
           )}

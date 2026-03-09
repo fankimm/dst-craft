@@ -15,6 +15,32 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.5.1",
+    date: "2026-03-09",
+    dev: [
+      "보스 탭 즐겨찾기 기능 추가 (useFavorites 훅 연동, BossCard/BossDetail에 하트 토글)",
+      "최근 조회 아이콘을 역행의 시계(pocketwatch_warp.png)로 변경 (제작/요리/보스 전체)",
+      "공통 컴포넌트/훅 대규모 리팩토링: DetailPanel, SortDropdown, ViewCount, useDetailPanel, useSlideAnimation, stat-utils 추출",
+      "BackToHome 컴포넌트에 iOS safe-area-inset-top 패딩 추가",
+      "Footer/SupportPill 하단 여백 축소",
+      "Admin 클릭 카운트 배지 스타일을 rounded-full 뱃지로 변경",
+    ],
+    changes: {
+      ko: [
+        "보스 탭 즐겨찾기 기능 추가",
+        "최근 조회 아이콘 변경 (역행의 시계)",
+        "릴리즈/통계 페이지 상단 상태바 겹침 수정",
+        "푸터 하단 여백 조정",
+      ],
+      en: [
+        "Added favorites to Bosses tab",
+        "Changed recent icon to Backstep Watch",
+        "Fixed status bar overlap on releases/stats pages",
+        "Adjusted footer bottom padding",
+      ],
+    },
+  },
+  {
     version: "0.5.0",
     date: "2026-03-09",
     dev: [

@@ -60,7 +60,7 @@ export function CategoryGrid({
           onClick={() => onSelectCategory("recent")}
         >
           <div className="flex items-center justify-center size-12 sm:size-14">
-            <img src={assetPath("/images/game-items/pocketwatch_recall.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
+            <img src={assetPath("/images/game-items/pocketwatch_warp.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
           </div>
           <span className="text-xs sm:text-sm text-foreground/80 font-medium">
             {t(resolvedLocale, "recent")}
