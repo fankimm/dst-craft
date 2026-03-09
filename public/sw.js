@@ -1,4 +1,4 @@
-const CACHE_NAME = "dst-crafting-v6";
+const CACHE_NAME = "dst-crafting-v7";
 const BASE = new URL(self.location.href).pathname.replace(/\/sw\.js$/, "");
 
 self.addEventListener("install", (event) => {
