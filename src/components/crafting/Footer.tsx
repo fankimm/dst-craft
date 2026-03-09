@@ -11,6 +11,13 @@ export function Footer() {
       </a>
       <span className="text-border">|</span>
       <a
+        href="/cookpot"
+        className="hover:text-muted-foreground transition-colors"
+      >
+        Cookpot Sim
+      </a>
+      <span className="text-border">|</span>
+      <a
         href="https://github.com/fankimm/dst-craft"
         target="_blank"
         rel="noopener noreferrer"
