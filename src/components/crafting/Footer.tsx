@@ -2,7 +2,7 @@ import { Github, Mail, Heart } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="mt-auto flex items-center justify-center gap-4 px-4 pt-3 pb-6 text-xs text-muted-foreground/60 border-t border-border/50">
+    <footer className="mt-auto flex flex-wrap items-center justify-center gap-x-4 gap-y-1 px-4 pt-3 pb-6 text-xs text-muted-foreground/60 border-t border-border/50">
       <a
         href="/browse"
         className="hover:text-muted-foreground transition-colors"
