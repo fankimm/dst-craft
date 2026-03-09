@@ -292,6 +292,7 @@ export function CraftingApp({
               items={displayItems}
               selectedItem={selectedItem}
               onSelectItem={handleSelectItem}
+              getClicks={sortByPopular ? getClicks : undefined}
             />
           )}
           <Footer />

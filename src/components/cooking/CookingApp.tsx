@@ -502,7 +502,7 @@ export function CookingApp({
             onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); addRecent(recipe.id); }}
             isFavorite={isFavorite}
             onToggleFav={toggleFavorite}
-            getClicks={isAdmin ? getClicks : undefined}
+            getClicks={sortByPopular ? getClicks : undefined}
           />
           <Footer />
         </div>
@@ -761,7 +761,8 @@ function RecipeCard({
         {localName}
       </span>
       {!!clicks && clicks > 0 && (
-        <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80 tabular-nums">
+        <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground/50 tabular-nums">
+          <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-2.5 object-contain" />
           {clicks >= 1000 ? `${(clicks / 1000).toFixed(1).replace(/\.0$/, "")}k` : clicks}
         </span>
       )}

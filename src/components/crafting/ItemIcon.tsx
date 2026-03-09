@@ -8,8 +8,6 @@ import { useFavorites } from "@/hooks/use-favorites";
 import { itemName } from "@/lib/i18n";
 import { assetPath } from "@/lib/asset-path";
 import { getCharacterById } from "@/lib/crafting-data";
-import { useAuth } from "@/hooks/use-auth";
-import { usePopularity } from "@/hooks/use-popularity";
 
 function formatClicks(n: number): string {
   if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k`;
@@ -20,15 +18,13 @@ interface ItemIconProps {
   item: CraftingItem;
   isSelected: boolean;
   onClick: () => void;
+  clicks?: number;
 }
 
-export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
+export function ItemIcon({ item, isSelected, onClick, clicks }: ItemIconProps) {
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { isAdmin } = useAuth();
-  const { getClicks } = usePopularity();
-  const clicks = getClicks(item.id);
   const fav = isFavorite(item.id);
 
   return (
@@ -78,8 +74,9 @@ export function ItemIcon({ item, isSelected, onClick }: ItemIconProps) {
       <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight line-clamp-2">
         {itemName(item, resolvedLocale)}
       </span>
-      {isAdmin && clicks > 0 && (
-        <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80 tabular-nums">
+      {!!clicks && clicks > 0 && (
+        <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground/50 tabular-nums mt--0.5">
+          <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-2.5 object-contain" />
           {formatClicks(clicks)}
         </span>
       )}

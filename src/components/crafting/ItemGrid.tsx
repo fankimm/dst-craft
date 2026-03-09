@@ -14,6 +14,7 @@ interface ItemGridProps {
   selectedItem: CraftingItem | null;
   onSelectItem: (item: CraftingItem) => void;
   className?: string;
+  getClicks?: (id: string) => number;
 }
 
 export function ItemGrid({
@@ -21,6 +22,7 @@ export function ItemGrid({
   selectedItem,
   onSelectItem,
   className,
+  getClicks,
 }: ItemGridProps) {
   const { resolvedLocale } = useSettings();
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
@@ -70,6 +72,7 @@ export function ItemGrid({
           item={item}
           isSelected={selectedItem?.id === item.id}
           onClick={() => onSelectItem(item)}
+          clicks={getClicks?.(item.id)}
         />
       ))}
       {visibleCount < items.length && (
