@@ -23,6 +23,7 @@ import { X } from "lucide-react";
 import { trackVisit, initDurationTracking, trackEvent, trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { ArrowUpDown } from "lucide-react";
+import { SupportPill } from "@/components/ui/SupportPill";
 
 export function CraftingApp({
   pendingItemId,
@@ -205,6 +206,7 @@ export function CraftingApp({
           <X className="size-4" />
         </button>
         <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} />
+        <SupportPill />
       </div>
     </>
   );

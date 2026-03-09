@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { TagChip } from "@/components/ui/TagChip";
+import { SupportPill } from "@/components/ui/SupportPill";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -224,6 +225,7 @@ export function BossesApp({
           <X className="size-4" />
         </button>
         <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} />
+        <SupportPill />
       </div>
     </>
   );
@@ -486,7 +488,7 @@ function BossDetail({
   const images = Array.isArray(boss.image) ? boss.image : [boss.image];
 
   return (
-    <div className="p-4 pt-3 space-y-4" style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 1rem))" }}>
+    <div className="p-4 pt-3 space-y-4">
       {/* Header */}
       <div className="flex items-start gap-4">
         <div className="flex items-center shrink-0">
