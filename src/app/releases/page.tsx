@@ -15,6 +15,45 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.5.0",
+    date: "2026-03-09",
+    dev: [
+      "iOS Safe Area: viewport-fit: cover + z-60 status bar cover div로 상세 패널 오픈 시 상태바 딤 방지",
+      "하단 safe-area-inset-bottom 패딩 Footer/SupportPill에서 개별 처리",
+      "Footer 리디자인: Ko-fi 도네이션 버튼 부각 + GitHub/Mail 아이콘 + sr-only SEO 링크",
+      "SupportPill 컴포넌트 신규 — 모든 상세 패널 하단에 Ko-fi 도네이션 버튼 추가",
+      "브레드크럼 개선: 탭 이름(Crafting Guide 등)을 중간 세그먼트로 추가",
+      "탭 재탭 시 해당 탭 홈으로 이동 (dst-tab-go-home 커스텀 이벤트)",
+      "클릭 수 표시: admin은 그리드 아이템에 카운트 표시, 전체 유저는 상세에서 조회수 표시",
+      "요리솥 시뮬레이션 결과 추적 (trackItemClick sim: prefix) + 결과 카드에 cooked 횟수 표시",
+      "최근 조회 카테고리: 모든 탭(제작/요리/보스)에 localStorage 기반 최근 본 항목 카테고리 추가",
+      "use-recent.ts 훅 신규 (localStorage, MAX_RECENT=30)",
+      "i18n: recent 키 추가",
+    ],
+    changes: {
+      ko: [
+        "iOS 상태바 딤 현상 수정",
+        "푸터 디자인 개선 — 후원 버튼 부각",
+        "모든 상세 패널 하단에 후원 버튼 추가",
+        "브레드크럼에 탭 이름 표시",
+        "탭 재탭 시 홈으로 이동",
+        "아이템 조회수 표시 (상세 패널)",
+        "요리솥 시뮬레이션 결과 횟수 표시",
+        "최근 조회 카테고리 추가 (제작/요리/보스 전체 탭)",
+      ],
+      en: [
+        "Fixed iOS status bar dimming when panels open",
+        "Footer redesign — donation button prominence",
+        "Added donation button to all detail panels",
+        "Breadcrumb now shows tab name",
+        "Re-tap active tab to go home",
+        "Item view count display (detail panels)",
+        "Cookpot simulation result tracking",
+        "Recently viewed category added to all tabs",
+      ],
+    },
+  },
+  {
     version: "0.4.3",
     date: "2026-03-06",
     dev: [

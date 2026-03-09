@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { Clock } from "lucide-react";
 import type { Category, CategoryId } from "@/lib/types";
 import { useSettings } from "@/hooks/use-settings";
 import { categoryName, t } from "@/lib/i18n";
@@ -9,14 +10,16 @@ import { assetPath } from "@/lib/asset-path";
 interface CategoryGridProps {
   categories: Category[];
   favCount: number;
+  recentCount?: number;
   sortByPopular?: boolean;
   getClicks?: (id: string) => number;
-  onSelectCategory: (id: CategoryId | "favorites") => void;
+  onSelectCategory: (id: CategoryId | "favorites" | "recent") => void;
 }
 
 export function CategoryGrid({
   categories,
   favCount,
+  recentCount,
   sortByPopular,
   getClicks,
   onSelectCategory,
@@ -48,6 +51,20 @@ export function CategoryGrid({
           </div>
           <span className="text-xs sm:text-sm text-foreground/80 font-medium">
             {t(resolvedLocale, "favorites")}
+          </span>
+        </button>
+      )}
+      {/* Recent tile */}
+      {!!recentCount && recentCount > 0 && (
+        <button
+          className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+          onClick={() => onSelectCategory("recent")}
+        >
+          <div className="flex items-center justify-center size-12 sm:size-14">
+            <Clock className="size-10 sm:size-12 text-muted-foreground/40" strokeWidth={1.5} />
+          </div>
+          <span className="text-xs sm:text-sm text-foreground/80 font-medium">
+            {t(resolvedLocale, "recent")}
           </span>
         </button>
       )}

@@ -8,7 +8,7 @@ import type { CookingStation } from "@/data/recipes";
 // ---------------------------------------------------------------------------
 
 export type RecommendCategoryId = "recommend_health" | "recommend_sanity" | "recommend_hunger";
-export type CookingCategoryId = "all" | "favorites" | CookingStation | RecommendCategoryId;
+export type CookingCategoryId = "all" | "favorites" | "recent" | CookingStation | RecommendCategoryId;
 
 // ---------------------------------------------------------------------------
 // URL helpers

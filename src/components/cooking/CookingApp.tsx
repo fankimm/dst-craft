@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
-import { ChevronRight, X, ArrowUpDown, Eye } from "lucide-react";
+import { ChevronRight, X, ArrowUpDown, Eye, Clock } from "lucide-react";
 import { trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
@@ -19,6 +19,7 @@ import { SearchWithSuggestions, type SearchSuggestion } from "../ui/SearchWithSu
 import { TagChip } from "../ui/TagChip";
 import { SupportPill } from "../ui/SupportPill";
 import { useAuth } from "@/hooks/use-auth";
+import { useRecent } from "@/hooks/use-recent";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -186,6 +187,7 @@ export function CookingApp({
 
   const { getClicks } = usePopularity();
   const { isAdmin } = useAuth();
+  const { recentIds, addRecent } = useRecent("cooking");
   const [sortByPopular, setSortByPopular] = useState(false);
 
   // Local transient state (search, filters, animation)
@@ -322,7 +324,11 @@ export function CookingApp({
     let recipes = cookingRecipes;
 
     // Category filter
-    if (selectedCategory === "favorites") {
+    if (selectedCategory === "recent") {
+      recipes = recentIds
+        .map((id) => cookingRecipes.find((r) => r.id === id))
+        .filter((r): r is CookingRecipe => !!r);
+    } else if (selectedCategory === "favorites") {
       recipes = recipes.filter((r) => favorites.has(r.id));
     } else if (selectedCategory && selectedCategory !== "all") {
       if (isRecommendCategory(selectedCategory)) {
@@ -383,7 +389,7 @@ export function CookingApp({
     }
 
     return recipes;
-  }, [selectedCategory, activeFilter, debouncedQuery, resolvedLocale, favorites]);
+  }, [selectedCategory, activeFilter, debouncedQuery, resolvedLocale, favorites, recentIds]);
 
   const displayRecipes = useMemo(() => {
     if (!sortByPopular) return filteredRecipes;
@@ -480,6 +486,20 @@ export function CookingApp({
                   </span>
                 </button>
               )}
+              {/* Recent tile */}
+              {recentIds.length > 0 && (
+                <button
+                  className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+                  onClick={() => handleSelectCategory("recent" as CookingCategoryId)}
+                >
+                  <div className="flex items-center justify-center size-12 sm:size-14">
+                    <Clock className="size-10 sm:size-12 text-muted-foreground/40" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
+                    {t(resolvedLocale, "recent")}
+                  </span>
+                </button>
+              )}
               {cookingCategories.map((cat) => (
                 <button
                   key={cat.id}
@@ -517,7 +537,7 @@ export function CookingApp({
         <div className="flex items-center gap-2 min-w-0">
           <CookingBreadcrumb
             locale={resolvedLocale}
-            categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
+            categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : selectedCategory === "recent" ? t(resolvedLocale, "recent") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
             onHomeClick={handleGoHome}
           />
           <div className="ml-auto shrink-0">
@@ -540,7 +560,7 @@ export function CookingApp({
           <RecipeGrid
             recipes={displayRecipes}
             locale={resolvedLocale}
-            onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); }}
+            onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); addRecent(recipe.id); }}
             isFavorite={isFavorite}
             onToggleFav={toggleFavorite}
             getClicks={isAdmin ? getClicks : undefined}

@@ -24,6 +24,7 @@ import { trackVisit, initDurationTracking, trackEvent, trackItemClick } from "@/
 import { usePopularity } from "@/hooks/use-popularity";
 import { ArrowUpDown } from "lucide-react";
 import { SupportPill } from "@/components/ui/SupportPill";
+import { useRecent } from "@/hooks/use-recent";
 
 export function CraftingApp({
   pendingItemId,
@@ -53,6 +54,7 @@ export function CraftingApp({
   const { resolvedLocale } = useSettings();
   const { isAdmin } = useAuth();
   const { favorites } = useFavorites();
+  const { recentIds, addRecent } = useRecent("crafting");
 
   // External navigation (e.g. boss → crafting item)
   useEffect(() => {
@@ -84,12 +86,17 @@ export function CraftingApp({
   const handleSelectItem = useCallback((item: import("@/lib/types").CraftingItem) => {
     setItem(item);
     trackItemClick(item.id);
-  }, [setItem]);
+    addRecent(item.id);
+  }, [setItem, addRecent]);
 
-  const handleSelectCategory = useCallback((id: CategoryId | "favorites") => {
+  const handleSelectCategory = useCallback((id: CategoryId | "favorites" | "recent") => {
     setSortByPopular(false);
-    setCategory(id as CategoryId);
-    if (id !== "favorites") trackItemClick(`cat:${id}`);
+    if (id === "recent") {
+      setCategory("recent" as CategoryId);
+    } else {
+      setCategory(id as CategoryId);
+      if (id !== "favorites") trackItemClick(`cat:${id}`);
+    }
   }, [setCategory]);
 
   const handleSelectCharacter = useCallback((characterId: string | null) => {
@@ -177,7 +184,15 @@ export function CraftingApp({
   const currentCategory = getCategoryById(selectedCategory);
   const currentCharacter = selectedCharacter ? getCharacterById(selectedCharacter) : null;
 
+  const recentItems = useMemo(
+    () => recentIds.map((id) => getItemById(id)).filter((item): item is NonNullable<typeof item> => !!item),
+    [recentIds],
+  );
+
   const categoryItems = useMemo(() => {
+    if ((selectedCategory as string) === "recent") {
+      return recentItems;
+    }
     if ((selectedCategory as string) === "favorites") {
       return [...favorites]
         .map((id) => getItemById(id))
@@ -268,6 +283,7 @@ export function CraftingApp({
               <CategoryGrid
                 categories={categories}
                 favCount={craftingFavCount}
+                recentCount={recentIds.length}
                 sortByPopular={sortByPopular}
                 getClicks={getClicks}
                 onSelectCategory={handleSelectCategory}
@@ -292,7 +308,7 @@ export function CraftingApp({
         characterId={selectedCharacter}
         searchBar={searchBar}
         isSearching={isSearching}
-        customLabel={(selectedCategory as string) === "favorites" ? t(resolvedLocale, "favorites") : undefined}
+        customLabel={(selectedCategory as string) === "favorites" ? t(resolvedLocale, "favorites") : (selectedCategory as string) === "recent" ? t(resolvedLocale, "recent") : undefined}
         onHomeClick={handleGoHome}
         onCategoryClick={selectedCharacter ? goToCategory : undefined}
         actions={!isSearching ? (

@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { ChevronRight, X, Eye } from "lucide-react";
+import { ChevronRight, X, Eye, Clock } from "lucide-react";
 import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
 import { useSettings } from "@/hooks/use-settings";
@@ -15,6 +15,7 @@ import { SupportPill } from "@/components/ui/SupportPill";
 import { trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { useAuth } from "@/hooks/use-auth";
+import { useRecent } from "@/hooks/use-recent";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -103,6 +104,7 @@ export function BossesApp({
   const { resolvedLocale } = useSettings();
   const { isAdmin } = useAuth();
   const { getClicks } = usePopularity();
+  const { recentIds, addRecent } = useRecent("bosses");
 
   const [selectedCategory, setSelectedCategory] = useState<BossCategoryId | null>(null);
   const [selectedBoss, setSelectedBoss] = useState<Boss | null>(null);
@@ -211,8 +213,13 @@ export function BossesApp({
 
   const filteredBosses = useMemo(() => {
     if (!selectedCategory || selectedCategory === "all") return bosses;
+    if (selectedCategory === ("recent" as BossCategoryId)) {
+      return recentIds
+        .map((id) => bosses.find((b) => b.id === id))
+        .filter((b): b is Boss => !!b);
+    }
     return bosses.filter((b) => b.category === selectedCategory);
-  }, [selectedCategory]);
+  }, [selectedCategory, recentIds]);
 
   // Detail panel
   const detailPanel = panelBoss && (
@@ -297,7 +304,7 @@ export function BossesApp({
                     key={boss.id}
                     boss={boss}
                     locale={resolvedLocale}
-                    onClick={() => setSelectedBoss(boss)}
+                    onClick={() => { setSelectedBoss(boss); addRecent(boss.id); }}
                   />
                 ))}
               </div>
@@ -330,6 +337,20 @@ export function BossesApp({
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
           <div className="flex flex-col min-h-full">
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+              {/* Recent tile */}
+              {recentIds.length > 0 && (
+                <button
+                  className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+                  onClick={() => setSelectedCategory("recent" as BossCategoryId)}
+                >
+                  <div className="flex items-center justify-center size-12 sm:size-14">
+                    <Clock className="size-10 sm:size-12 text-muted-foreground/40" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
+                    {t(resolvedLocale, "recent")}
+                  </span>
+                </button>
+              )}
               {bossCategories.map((cat) => (
                 <button
                   key={cat.id}
@@ -365,7 +386,7 @@ export function BossesApp({
       <div className="border-b border-border bg-background/80 px-4 py-2.5">
         <BossBreadcrumb
           locale={resolvedLocale}
-          categoryLabel={categoryLabel(selectedCategory, resolvedLocale)}
+          categoryLabel={selectedCategory === ("recent" as BossCategoryId) ? t(resolvedLocale, "recent") : categoryLabel(selectedCategory, resolvedLocale)}
           onHomeClick={handleGoHome}
         />
       </div>
@@ -378,7 +399,7 @@ export function BossesApp({
                 key={boss.id}
                 boss={boss}
                 locale={resolvedLocale}
-                onClick={() => { setSelectedBoss(boss); trackItemClick(`boss:${boss.id}`); }}
+                onClick={() => { setSelectedBoss(boss); trackItemClick(`boss:${boss.id}`); addRecent(boss.id); }}
                 clicks={isAdmin ? getClicks(`boss:${boss.id}`) : 0}
               />
             ))}

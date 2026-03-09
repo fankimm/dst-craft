@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChevronRight, X, RotateCcw, Shuffle, ExternalLink } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
@@ -12,6 +12,8 @@ import { simulate } from "@/lib/cookpot-engine";
 import type { CookingRecipe } from "@/data/recipes";
 import { IngredientPicker } from "./IngredientPicker";
 import { Footer } from "../crafting/Footer";
+import { trackItemClick } from "@/lib/analytics";
+import { usePopularity } from "@/hooks/use-popularity";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -56,6 +58,19 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
     if (!allFilled) return null;
     return simulate(filledIngredients, station);
   }, [allFilled, filledIngredients, station]);
+
+  // Track simulation results
+  const prevResultId = useRef<string | null>(null);
+  useEffect(() => {
+    if (!result) { prevResultId.current = null; return; }
+    const topId = result.recipes[0]?.id;
+    if (topId && topId !== "wetgoop" && topId !== prevResultId.current) {
+      trackItemClick(`sim:${topId}`);
+      prevResultId.current = topId;
+    }
+  }, [result]);
+
+  const { getClicks } = usePopularity();
 
   // Handlers
   const handleAddIngredient = useCallback((ingredient: CookpotIngredient) => {
@@ -110,7 +125,7 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
             <div className="flex gap-2">
               {/* Left: result card or empty placeholder — 50% */}
               <div className="w-1/2 min-w-0">
-                <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} onViewRecipe={onViewRecipe} />
+                <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} onViewRecipe={onViewRecipe} getSimClicks={(id) => getClicks(`sim:${id}`)} />
               </div>
 
               {/* Right: vertical slots + clear button — 50% */}
@@ -266,11 +281,13 @@ function ResultPanel({
   allFilled,
   locale,
   onViewRecipe,
+  getSimClicks,
 }: {
   result: ReturnType<typeof simulate> | null;
   allFilled: boolean;
   locale: Locale;
   onViewRecipe?: (recipeId: string) => void;
+  getSimClicks: (id: string) => number;
 }) {
   // No result — show dashed placeholder
   if (!allFilled || !result || result.recipes.length === 0) {
@@ -301,6 +318,7 @@ function ResultPanel({
           locale={locale}
           isWetGoop={recipe.id === "wetgoop"}
           onViewRecipe={onViewRecipe}
+          simCount={getSimClicks(recipe.id)}
         />
       ))}
     </div>
@@ -316,11 +334,13 @@ function ResultCard({
   locale,
   isWetGoop,
   onViewRecipe,
+  simCount,
 }: {
   recipe: CookingRecipe;
   locale: Locale;
   isWetGoop: boolean;
   onViewRecipe?: (recipeId: string) => void;
+  simCount: number;
 }) {
   const localName = foodName(recipe, locale);
   const showAltName = locale !== "en" && localName !== recipe.name;
@@ -376,6 +396,11 @@ function ResultCard({
                 ? t(locale, "cooking_no_perish")
                 : `${recipe.perishDays}${t(locale, "cooking_days")}`}
             </span>
+            {simCount > 0 && (
+              <span className="inline-flex items-center gap-0.5 text-muted-foreground/50">
+                {simCount.toLocaleString()} cooked
+              </span>
+            )}
           </div>
         </div>
       </div>
