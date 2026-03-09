@@ -18,6 +18,7 @@ import { ItemSlot } from "../ui/ItemSlot";
 import { SearchWithSuggestions, type SearchSuggestion } from "../ui/SearchWithSuggestions";
 import { TagChip } from "../ui/TagChip";
 import { SupportPill } from "../ui/SupportPill";
+import { useAuth } from "@/hooks/use-auth";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -184,6 +185,7 @@ export function CookingApp({
   );
 
   const { getClicks } = usePopularity();
+  const { isAdmin } = useAuth();
   const [sortByPopular, setSortByPopular] = useState(false);
 
   // Local transient state (search, filters, animation)
@@ -541,6 +543,7 @@ export function CookingApp({
             onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); }}
             isFavorite={isFavorite}
             onToggleFav={toggleFavorite}
+            getClicks={isAdmin ? getClicks : undefined}
           />
           <Footer />
         </div>
@@ -688,12 +691,14 @@ function RecipeGrid({
   onSelect,
   isFavorite,
   onToggleFav,
+  getClicks,
 }: {
   recipes: CookingRecipe[];
   locale: Locale;
   onSelect: (recipe: CookingRecipe) => void;
   isFavorite: (id: string) => boolean;
   onToggleFav: (id: string) => void;
+  getClicks?: (id: string) => number;
 }) {
   const [visibleCount, setVisibleCount] = useState(RECIPE_PAGE_SIZE);
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -737,6 +742,7 @@ function RecipeGrid({
           onClick={() => onSelect(recipe)}
           isFav={isFavorite(recipe.id)}
           onToggleFav={() => onToggleFav(recipe.id)}
+          clicks={getClicks?.(recipe.id)}
         />
       ))}
       {visibleCount < recipes.length && (
@@ -754,12 +760,14 @@ function RecipeCard({
   onClick,
   isFav,
   onToggleFav,
+  clicks,
 }: {
   recipe: CookingRecipe;
   locale: Locale;
   onClick: () => void;
   isFav: boolean;
   onToggleFav: () => void;
+  clicks?: number;
 }) {
   const localName = foodName(recipe, locale);
 
@@ -793,6 +801,11 @@ function RecipeCard({
       <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight line-clamp-2">
         {localName}
       </span>
+      {!!clicks && clicks > 0 && (
+        <span className="absolute bottom-1 right-1 text-[9px] text-muted-foreground/60 tabular-nums">
+          {clicks >= 1000 ? `${(clicks / 1000).toFixed(1).replace(/\.0$/, "")}k` : clicks}
+        </span>
+      )}
     </button>
   );
 }

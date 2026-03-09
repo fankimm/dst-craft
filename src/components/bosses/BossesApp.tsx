@@ -12,6 +12,9 @@ import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { TagChip } from "@/components/ui/TagChip";
 import { SupportPill } from "@/components/ui/SupportPill";
+import { trackItemClick } from "@/lib/analytics";
+import { usePopularity } from "@/hooks/use-popularity";
+import { useAuth } from "@/hooks/use-auth";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -98,6 +101,8 @@ export function BossesApp({
   onClearPendingLoot?: () => void;
 }) {
   const { resolvedLocale } = useSettings();
+  const { isAdmin } = useAuth();
+  const { getClicks } = usePopularity();
 
   const [selectedCategory, setSelectedCategory] = useState<BossCategoryId | null>(null);
   const [selectedBoss, setSelectedBoss] = useState<Boss | null>(null);
@@ -231,7 +236,7 @@ export function BossesApp({
         >
           <X className="size-4" />
         </button>
-        <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} />
+        <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} clicks={getClicks(`boss:${panelBoss.id}`)} />
         <SupportPill />
       </div>
     </>
@@ -373,7 +378,8 @@ export function BossesApp({
                 key={boss.id}
                 boss={boss}
                 locale={resolvedLocale}
-                onClick={() => setSelectedBoss(boss)}
+                onClick={() => { setSelectedBoss(boss); trackItemClick(`boss:${boss.id}`); }}
+                clicks={isAdmin ? getClicks(`boss:${boss.id}`) : 0}
               />
             ))}
           </div>
@@ -442,10 +448,12 @@ function BossCard({
   boss,
   locale,
   onClick,
+  clicks,
 }: {
   boss: Boss;
   locale: Locale;
   onClick: () => void;
+  clicks?: number;
 }) {
   const images = Array.isArray(boss.image) ? boss.image : [boss.image];
 
@@ -473,6 +481,11 @@ function BossCard({
       <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight line-clamp-2">
         {bossName(boss, locale)}
       </span>
+      {!!clicks && clicks > 0 && (
+        <span className="absolute bottom-1 right-1 text-[9px] text-muted-foreground/60 tabular-nums">
+          {clicks >= 1000 ? `${(clicks / 1000).toFixed(1).replace(/\.0$/, "")}k` : clicks}
+        </span>
+      )}
     </button>
   );
 }
@@ -485,10 +498,12 @@ function BossDetail({
   boss,
   locale,
   onViewCraftingItem,
+  clicks,
 }: {
   boss: Boss;
   locale: Locale;
   onViewCraftingItem?: (itemId: string) => void;
+  clicks: number;
 }) {
   const localName = bossName(boss, locale);
   const showAltName = locale !== "en" && localName !== boss.name;
@@ -516,6 +531,12 @@ function BossDetail({
           <h3 className="text-base font-semibold">{localName}</h3>
           {showAltName && (
             <p className="text-sm text-muted-foreground">{boss.name}</p>
+          )}
+          {clicks > 0 && (
+            <p className="flex items-center gap-1 text-[11px] text-muted-foreground/50">
+              <Eye className="size-3" />
+              <span className="tabular-nums">{clicks.toLocaleString()}</span>
+            </p>
           )}
           <div className="mt-1">
             <TagChip
