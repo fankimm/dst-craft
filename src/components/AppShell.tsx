@@ -76,7 +76,12 @@ export function AppShell() {
   }, []);
 
   // Tab click handler — pushState + setActiveTab
+  // Re-tapping active tab navigates to tab home
   const handleTabClick = useCallback((tabId: TabId) => {
+    if (tabId === activeTab) {
+      window.dispatchEvent(new CustomEvent("dst-tab-go-home"));
+      return;
+    }
     let url: string;
     if (tabId === "crafting") {
       // Crafting uses no tab param (backwards compat) — clear all params
@@ -86,7 +91,7 @@ export function AppShell() {
     }
     window.history.pushState({ _appNav: true }, "", url);
     setActiveTab(tabId);
-  }, []);
+  }, [activeTab]);
 
   // Cookpot → Cooking recipe shortcut
   const handleViewRecipe = useCallback((recipeId: string) => {

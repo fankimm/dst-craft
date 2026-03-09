@@ -189,6 +189,13 @@ export function BossesApp({
     setLootTags([]);
   }, []);
 
+  // Re-tap active tab → go home
+  useEffect(() => {
+    const handler = () => handleGoHome();
+    window.addEventListener("dst-tab-go-home", handler);
+    return () => window.removeEventListener("dst-tab-go-home", handler);
+  }, [handleGoHome]);
+
   const handleSelectCategory = useCallback((id: BossCategoryId) => {
     setSelectedCategory(id);
   }, []);

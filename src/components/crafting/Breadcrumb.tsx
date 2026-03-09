@@ -45,15 +45,18 @@ export function Breadcrumb({
   segments.push({ label: "__home__", onClick: onHomeClick });
 
   if (isSearching) {
+    // Home > Crafting Guide > Search Results
+    segments.push({ label: t(resolvedLocale, "craftingGuide"), onClick: onHomeClick });
     segments.push({ label: searchLabel || "Search" });
   } else if (customLabel) {
-    // e.g. Home > Crafting Guide > Favorites
+    // Home > Crafting Guide > Favorites
     segments.push({ label: t(resolvedLocale, "craftingGuide"), onClick: onHomeClick });
     segments.push({ label: customLabel });
   } else if (category) {
     const catName = categoryName(category, resolvedLocale);
     if (characterId) {
-      // Home > Category > Character
+      // Home > Crafting Guide > Category > Character
+      segments.push({ label: t(resolvedLocale, "craftingGuide"), onClick: onHomeClick });
       segments.push({ label: catName, onClick: onCategoryClick });
       const charLabel =
         characterId === "all"
@@ -63,7 +66,8 @@ export function Breadcrumb({
             : characterId;
       segments.push({ label: charLabel });
     } else {
-      // Home > Category
+      // Home > Crafting Guide > Category
+      segments.push({ label: t(resolvedLocale, "craftingGuide"), onClick: onHomeClick });
       segments.push({ label: catName });
     }
   }

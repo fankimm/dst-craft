@@ -7,9 +7,9 @@ export function SupportPill() {
         href="https://ko-fi.com/fankim"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-1.5 rounded-full border border-border/40 px-3 py-1 text-[11px] text-muted-foreground/50 hover:text-muted-foreground hover:border-border/60 transition-colors"
+        className="flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1 text-[11px] text-muted-foreground/70 hover:text-muted-foreground hover:border-border transition-colors"
       >
-        <Heart className="size-2.5 fill-rose-300/60 text-rose-300/60" />
+        <Heart className="size-2.5 fill-rose-400/70 text-rose-400/70" />
         <span>Support this project</span>
       </a>
     </div>

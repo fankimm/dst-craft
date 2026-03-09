@@ -153,6 +153,13 @@ export function CraftingApp({
     goHome();
   }, [clearSearch, goHome]);
 
+  // Re-tap active tab → go home
+  useEffect(() => {
+    const handler = () => handleGoHome();
+    window.addEventListener("dst-tab-go-home", handler);
+    return () => window.removeEventListener("dst-tab-go-home", handler);
+  }, [handleGoHome]);
+
   const handleStationClick = useCallback((stationLabel: string, station?: string) => {
     const image = station ? (stationImages[station as keyof typeof stationImages] ?? undefined) : undefined;
     addSearchTag({ text: stationLabel, type: "station", image });
