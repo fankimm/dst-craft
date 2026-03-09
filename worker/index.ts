@@ -497,12 +497,12 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         totalRatings,
       };
 
-      // Purge all admin IP entries from visitor logs (non-blocking)
+      // Purge all admin IP entries from visitor logs
       const adminIp = request.headers.get("CF-Connecting-IP") ?? "";
       if (adminIp) {
         // Fetch full visitor list (up to 200 entries)
-        const fullListRaw = await redisPipeline(env, [["LRANGE", "dst:visitors", "0", "-1"]]) as { result: any }[];
-        const fullList = (fullListRaw[0]?.result as string[]) ?? [];
+        const fullListRes = await redisPipeline(env, [["LRANGE", "dst:visitors", "0", "-1"]]);
+        const fullList = ((fullListRes as any)?.[0]?.result as string[]) ?? [];
         const purgeCommands: string[][] = [];
         for (const raw of fullList) {
           try {
@@ -513,10 +513,12 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
           } catch { /* skip */ }
         }
         if (purgeCommands.length > 0) {
-          redisPipeline(env, purgeCommands).catch(() => {});
+          await redisPipeline(env, purgeCommands);
         }
-        // Also remove from response so admin doesn't see own entries
-        recentVisitors = recentVisitors.filter((v: any) => v.ip !== adminIp);
+        // Remove from response too
+        data.recentVisitors = data.recentVisitors.filter((v: any) => v.ip !== adminIp);
+        (data as any)._adminIp = adminIp;
+        (data as any)._purgedCount = purgeCommands.length;
       }
 
       return new Response(JSON.stringify(data), {
