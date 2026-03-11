@@ -76,4 +76,13 @@ export interface Character {
   id: string;
   name: string;
   portrait: string;
+  nameKo?: string;
+  motto?: string;
+  mottoKo?: string;
+  health: number;
+  hunger: number;
+  sanity: number;
+  perks: string[];
+  perksKo: string[];
+  difficulty: "easy" | "normal" | "hard";
 }

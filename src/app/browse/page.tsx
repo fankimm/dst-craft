@@ -1,6 +1,7 @@
 import { allItems } from "@/data/items";
 import { cookingRecipes } from "@/data/recipes";
 import { bosses } from "@/data/bosses";
+import { characters } from "@/data/characters";
 import { categories } from "@/data/categories";
 import { ko } from "@/data/locales/ko";
 import type { Metadata } from "next";
@@ -140,6 +141,30 @@ export default function BrowsePage() {
                   <span className="text-muted-foreground text-xs ml-1">
                     {b.nameKo}
                   </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* ── Characters ── */}
+        <section>
+          <h2 className="text-lg font-semibold mb-4">
+            Characters ({characters.length})
+          </h2>
+          <ul className="columns-2 sm:columns-3 md:columns-4 gap-x-4 text-sm">
+            {characters.map((c) => (
+              <li key={c.id} className="mb-1 break-inside-avoid">
+                <Link
+                  href={`/character/${c.id}`}
+                  className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
+                >
+                  {c.name}
+                  {c.nameKo && (
+                    <span className="text-muted-foreground text-xs ml-1">
+                      {c.nameKo}
+                    </span>
+                  )}
                 </Link>
               </li>
             ))}

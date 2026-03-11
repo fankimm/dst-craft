@@ -348,3 +348,105 @@ export function generateItemSeoText(
 
   return { howToCraft, usesAndTips, faq };
 }
+
+// ===========================
+// CHARACTER SEO
+// ===========================
+
+const difficultyDescriptions: Record<string, string> = {
+  easy: "a beginner-friendly character",
+  normal: "a character with moderate complexity",
+  hard: "a challenging character suited for experienced players",
+};
+
+export interface CharacterSeoContent {
+  overview: string;
+  perksDescription: string;
+  playstyle: string;
+  faq: { question: string; answer: string }[];
+}
+
+export function generateCharacterSeoText(
+  char: {
+    name: string;
+    health: number;
+    hunger: number;
+    sanity: number;
+    perks: string[];
+    difficulty: "easy" | "normal" | "hard";
+    motto?: string;
+  },
+  exclusiveItemCount: number,
+): CharacterSeoContent {
+  const diffDesc = difficultyDescriptions[char.difficulty] ?? "a playable character";
+
+  // Overview
+  let overview = `${char.name} is ${diffDesc} in Don't Starve Together. `;
+  if (char.motto) {
+    overview += `Their motto is: "${char.motto}" `;
+  }
+  overview += `${char.name} has ${char.health} Health, ${char.hunger} Hunger, and ${char.sanity} Sanity. `;
+  if (exclusiveItemCount > 0) {
+    overview += `${char.name} has ${exclusiveItemCount} exclusive craftable items that other characters cannot make.`;
+  }
+
+  // Perks description
+  let perksDescription = `${char.name} stands out with unique abilities. `;
+  perksDescription += char.perks.join(". ") + ". ";
+  if (char.difficulty === "easy") {
+    perksDescription += `These traits make ${char.name} an excellent choice for players new to Don't Starve Together.`;
+  } else if (char.difficulty === "hard") {
+    perksDescription += `These mechanics add complexity, making ${char.name} a rewarding challenge for veteran players.`;
+  } else {
+    perksDescription += `This balanced kit makes ${char.name} a versatile choice for most playstyles.`;
+  }
+
+  // Playstyle
+  let playstyle = "";
+  const hasHighHealth = char.health >= 200;
+  const hasLowHealth = char.health < 100;
+  const hasHighSanity = char.sanity >= 200;
+  const hasHighHunger = char.hunger >= 200;
+
+  if (hasHighHealth) {
+    playstyle += `With ${char.health} health, ${char.name} is well-suited for combat-heavy playstyles. `;
+  } else if (hasLowHealth) {
+    playstyle += `With only ${char.health} health, ${char.name} requires careful play to avoid taking damage. `;
+  }
+  if (hasHighSanity) {
+    playstyle += `A sanity pool of ${char.sanity} gives ${char.name} more room to explore dangerous areas. `;
+  }
+  if (hasHighHunger) {
+    playstyle += `The large hunger capacity of ${char.hunger} means ${char.name} needs a reliable food supply. `;
+  }
+  playstyle += `Overall, ${char.name} is best played by those who enjoy ${char.difficulty === "easy" ? "a straightforward survival experience" : char.difficulty === "hard" ? "mastering complex mechanics for powerful rewards" : "a balanced approach to survival and exploration"}.`;
+
+  // FAQ
+  const faq: { question: string; answer: string }[] = [
+    {
+      question: `What are ${char.name}'s perks in DST?`,
+      answer: char.perks.join(". ") + ".",
+    },
+    {
+      question: `What are ${char.name}'s stats?`,
+      answer: `${char.name} has ${char.health} Health, ${char.hunger} Hunger, and ${char.sanity} Sanity.`,
+    },
+    {
+      question: `Is ${char.name} good for beginners?`,
+      answer: char.difficulty === "easy"
+        ? `Yes! ${char.name} is one of the best characters for beginners in Don't Starve Together.`
+        : char.difficulty === "hard"
+          ? `${char.name} is considered a challenging character and is recommended for experienced players.`
+          : `${char.name} has moderate complexity and can be a good choice once you understand the basics of the game.`,
+    },
+  ];
+
+  if (exclusiveItemCount > 0) {
+    faq.push({
+      question: `How many exclusive items does ${char.name} have?`,
+      answer: `${char.name} has ${exclusiveItemCount} exclusive craftable items that only they can craft.`,
+    });
+  }
+
+  return { overview, perksDescription, playstyle, faq };
+}

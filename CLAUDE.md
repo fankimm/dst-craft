@@ -47,6 +47,9 @@
 - `src/lib/` — 유틸리티 (types, i18n, crafting-data, utils, favorites-api)
 - `src/lib/version.ts` — 앱 버전 (`APP_VERSION`)
 - `src/app/releases/page.tsx` — 릴리즈 노트 페이지
+- `src/lib/seo-text.ts` — SEO 텍스트 자동 생성 (food/boss/item/character)
+- `src/app/character/[slug]/page.tsx` — 캐릭터 개별 SEO 페이지
+- `src/app/characters/page.tsx` — 캐릭터 목록 페이지
 - `worker/index.ts` — Cloudflare Worker (API 엔드포인트)
 - `worker/wrangler.toml` — Worker 설정
 - `docs/terminology.md` — UI 용어집

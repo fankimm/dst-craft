@@ -15,6 +15,28 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.7.0",
+    date: "2026-03-11",
+    dev: [
+      "캐릭터 데이터 보강: stats(HP/Hunger/Sanity), perks, motto, difficulty, 한국어 번역 추가",
+      "캐릭터 목록 페이지 (/characters) — 전체 캐릭터 그리드, 난이도·스탯 표시",
+      "캐릭터 개별 페이지 (/character/[slug]) — SEO 텍스트(Overview, Abilities, Playstyle), FAQ(FAQPage schema), 전용 아이템 링크, 관련 캐릭터 내부 링크",
+      "캐릭터 SEO 텍스트 생성기 (generateCharacterSeoText) 추가",
+      "sitemap.ts에 캐릭터 페이지 추가",
+      "browse 페이지에 캐릭터 섹션 추가",
+    ],
+    changes: {
+      ko: [
+        "캐릭터 가이드 페이지 추가 — 19명 캐릭터별 스탯, 능력, 전용 아이템, FAQ",
+        "캐릭터 목록 페이지 추가 (/characters)",
+      ],
+      en: [
+        "Added character guide pages — stats, perks, exclusive items, and FAQ for all 19 characters",
+        "Added characters listing page (/characters)",
+      ],
+    },
+  },
+  {
     version: "0.6.0",
     date: "2026-03-11",
     dev: [
