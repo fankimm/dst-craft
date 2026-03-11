@@ -15,6 +15,34 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.7.1",
+    date: "2026-03-11",
+    dev: [
+      "설정 페이지 별점 섹션에 평가 분포 차트 추가 (별점 준 사용자 한정)",
+      "설정 페이지에 국가별 접속 TOP 5 슬라이드 티커 추가",
+      "Worker /rating 응답에 ratings 분포 데이터 추가",
+      "Worker /top-countries 공개 엔드포인트 추가",
+      "Worker 공개 엔드포인트 Redis pipeline 응답 파싱 버그 수정",
+      "별점 평가 후 리뷰 프롬프트 반복 표시 버그 수정 (permanent dismiss 처리)",
+      "별점 유도 패널에서 평가 시 즉시 닫고 상단 토스트로 변경",
+      "통계 페이지 국가명에서 국가 코드 괄호 표기 제거",
+    ],
+    changes: {
+      ko: [
+        "설정 페이지에 별점 분포 차트 추가",
+        "설정 페이지에 국가별 접속 순위 TOP 5 표시",
+        "별점 평가 후 리뷰 요청이 반복되던 버그 수정",
+        "별점 유도 패널 UX 개선 — 평가 시 즉시 닫힘",
+      ],
+      en: [
+        "Added rating distribution chart in settings",
+        "Added top 5 countries ticker in settings",
+        "Fixed review prompt repeating after rating",
+        "Improved rating prompt UX — closes immediately after rating",
+      ],
+    },
+  },
+  {
     version: "0.7.0",
     date: "2026-03-11",
     dev: [

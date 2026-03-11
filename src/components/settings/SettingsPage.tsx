@@ -27,65 +27,36 @@ function countryName(code: string): string {
   return ko && ko !== upper ? ko : upper;
 }
 
-/** Single flip board row — cycles through items one at a time */
-function FlipBoard({ items }: { items: { rank: number; flag: string; name: string; count: number }[] }) {
+/** Slide-up ticker — 한 줄씩 위로 슬라이드하며 순환 */
+function CountryTicker({ items }: { items: { rank: number; flag: string; name: string; count: number }[] }) {
   const [index, setIndex] = useState(0);
-  const [phase, setPhase] = useState<"show" | "flip-out" | "flip-in">("show");
 
   useEffect(() => {
     if (items.length <= 1) return;
     const interval = setInterval(() => {
-      setPhase("flip-out");
-      setTimeout(() => {
-        setIndex((prev) => (prev + 1) % items.length);
-        setPhase("flip-in");
-        setTimeout(() => setPhase("show"), 200);
-      }, 200);
+      setIndex((prev) => (prev + 1) % items.length);
     }, 3000);
     return () => clearInterval(interval);
   }, [items.length]);
 
-  const item = items[index];
-  if (!item) return null;
-
   return (
-    <div className="rounded-lg border border-border bg-zinc-950 dark:bg-zinc-900 px-3 py-2 shadow-inner overflow-hidden">
-      <div
-        className={cn(
-          "flex items-center gap-2 font-mono text-sm transition-transform duration-200 origin-center",
-          phase === "flip-out" && "[transform:rotateX(90deg)]",
-          phase === "flip-in" && "[transform:rotateX(-90deg)]",
-          phase === "show" && "[transform:rotateX(0deg)]",
-        )}
-        style={{ perspective: "200px" }}
-      >
-        {/* Rank */}
-        <span className="inline-flex items-center justify-center bg-zinc-800 dark:bg-zinc-700 text-amber-400 font-bold text-xs rounded h-6 w-6 shrink-0">
-          {item.rank}
-        </span>
-        {/* Flag + Name */}
-        <span className="flex items-center gap-1.5 text-amber-400 font-bold text-sm truncate">
-          <span className="text-base">{item.flag}</span>
-          {item.name}
-        </span>
-        <span className="flex-1" />
-        {/* Count */}
-        <span className="text-amber-400/70 text-xs tabular-nums shrink-0">
-          {item.count.toLocaleString()}
-        </span>
-        {/* Dots indicator */}
-        <span className="flex gap-0.5 ml-1 shrink-0">
-          {items.map((_, i) => (
-            <span
-              key={i}
-              className={cn(
-                "size-1 rounded-full transition-colors",
-                i === index ? "bg-amber-400" : "bg-zinc-600"
-              )}
-            />
-          ))}
-        </span>
-      </div>
+    <div className="rounded-lg border border-border bg-card px-3 overflow-hidden h-9 relative">
+      {items.map((item, i) => (
+        <div
+          key={item.rank}
+          className={cn(
+            "absolute inset-x-3 flex items-center gap-2 h-9 transition-all duration-500 ease-in-out",
+            i === index && "translate-y-0 opacity-100",
+            i !== index && "translate-y-full opacity-0",
+          )}
+        >
+          <span className="text-xs font-bold text-muted-foreground w-4 text-right">{item.rank}</span>
+          <span className="text-sm">{item.flag}</span>
+          <span className="text-sm font-medium truncate">{item.name}</span>
+          <span className="flex-1" />
+          <span className="text-xs text-muted-foreground tabular-nums">{item.count.toLocaleString()}</span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -433,7 +404,7 @@ export function SettingsPage() {
                 <Globe className="size-4" />
                 접속 국가 TOP 5
               </h2>
-              <FlipBoard
+              <CountryTicker
                 items={topCountries.map((c, i) => ({
                   rank: i + 1,
                   flag: countryFlag(c.code),

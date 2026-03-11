@@ -286,6 +286,7 @@ function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
     { label: "블루프린트 아이템", action: () => window.open("/blueprints", "_blank") },
     { label: "보스 전리품", action: () => window.open("/bosses", "_blank") },
     { label: "스탯 디자인 비교", action: () => window.open("/dev/stat-designs", "_blank") },
+    { label: "플립보드 미리보기", action: () => window.open("/flip-board", "_blank") },
   ];
 
   return (
