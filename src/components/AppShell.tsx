@@ -58,6 +58,7 @@ export function AppShell() {
   // Review prompt trigger — show after 60s of active usage
   useEffect(() => {
     const dismissed = localStorage.getItem("dst:review-dismissed");
+    if (dismissed === "permanent") return;
     if (dismissed) {
       const dismissedAt = parseInt(dismissed, 10);
       if (!isNaN(dismissedAt) && Date.now() - dismissedAt < 7 * 24 * 60 * 60 * 1000) return;
