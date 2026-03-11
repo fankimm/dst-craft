@@ -267,8 +267,8 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
 
     // GET /top-countries — public top 5 countries
     if (url.pathname === "/top-countries" && request.method === "GET") {
-      const raw = await redisPipeline(env, [["HGETALL", "dst:geo:countries"]]);
-      const arr = (raw as unknown as string[][])[0] as string[] | null;
+      const raw = await redisPipeline(env, [["HGETALL", "dst:geo:countries"]]) as { result: any }[];
+      const arr = raw[0]?.result as string[] | null;
       const countries: { code: string; count: number }[] = [];
       if (Array.isArray(arr)) {
         for (let i = 0; i < arr.length; i += 2) {
@@ -284,8 +284,8 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
 
     // GET /rating — public average rating
     if (url.pathname === "/rating" && request.method === "GET") {
-      const raw = await redisPipeline(env, [["HGETALL", "dst:ratings"]]);
-      const arr = (raw as unknown as string[][])[0] as string[] | null;
+      const raw = await redisPipeline(env, [["HGETALL", "dst:ratings"]]) as { result: any }[];
+      const arr = raw[0]?.result as string[] | null;
       let total = 0;
       let sum = 0;
       if (Array.isArray(arr)) {
