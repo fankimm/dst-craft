@@ -373,20 +373,26 @@ export function SettingsPage() {
                 <span className="text-xs text-muted-foreground shrink-0">{t(resolvedLocale, "rating_my")}</span>
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      onClick={() => handleRate(star)}
-                      className="p-0.5 touch-manipulation transition-transform active:scale-90"
-                    >
-                      <Star
-                        className={cn(
-                          "size-6 transition-colors",
-                          star <= myRating
-                            ? "fill-yellow-400 text-yellow-400"
-                            : "text-muted-foreground/30"
-                        )}
-                      />
-                    </button>
+                    myRating > 0 ? (
+                      <span key={star} className="p-0.5">
+                        <Star
+                          className={cn(
+                            "size-6",
+                            star <= myRating
+                              ? "fill-yellow-400 text-yellow-400"
+                              : "text-muted-foreground/30"
+                          )}
+                        />
+                      </span>
+                    ) : (
+                      <button
+                        key={star}
+                        onClick={() => handleRate(star)}
+                        className="p-0.5 touch-manipulation transition-transform active:scale-90"
+                      >
+                        <Star className="size-6 text-muted-foreground/30 transition-colors" />
+                      </button>
+                    )
                   ))}
                 </div>
               </div>
