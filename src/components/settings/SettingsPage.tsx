@@ -321,6 +321,24 @@ export function SettingsPage() {
             </div>
           </div>
 
+          {/* Top Countries */}
+          {topCountries.length > 0 && (
+            <div className="space-y-2">
+              <h2 className="text-sm font-semibold flex items-center gap-2">
+                <Globe className="size-4" />
+                접속 국가 TOP 5
+              </h2>
+              <CountryTicker
+                items={topCountries.map((c, i) => ({
+                  rank: i + 1,
+                  flag: countryFlag(c.code),
+                  name: countryName(c.code),
+                  count: c.count,
+                }))}
+              />
+            </div>
+          )}
+
           {/* Rating */}
           <div className="space-y-2">
             <h2 className="text-sm font-semibold">{t(resolvedLocale, "rating_title")}</h2>
@@ -396,24 +414,6 @@ export function SettingsPage() {
               )}
             </div>
           </div>
-
-          {/* Top Countries — flip board */}
-          {topCountries.length > 0 && (
-            <div className="space-y-2">
-              <h2 className="text-sm font-semibold flex items-center gap-2">
-                <Globe className="size-4" />
-                접속 국가 TOP 5
-              </h2>
-              <CountryTicker
-                items={topCountries.map((c, i) => ({
-                  rank: i + 1,
-                  flag: countryFlag(c.code),
-                  name: countryName(c.code),
-                  count: c.count,
-                }))}
-              />
-            </div>
-          )}
 
           {/* Insight (admin only) */}
           {isAdmin && (
