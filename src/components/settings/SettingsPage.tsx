@@ -20,11 +20,11 @@ function countryFlag(code: string): string {
   return String.fromCodePoint(0x1F1E6 + upper.charCodeAt(0) - 65, 0x1F1E6 + upper.charCodeAt(1) - 65);
 }
 
-const regionNames = new Intl.DisplayNames(["ko"], { type: "region" });
-function countryName(code: string): string {
+function countryName(code: string, locale: string): string {
   const upper = code.toUpperCase();
-  const ko = regionNames.of(upper);
-  return ko && ko !== upper ? ko : upper;
+  const displayNames = new Intl.DisplayNames([locale], { type: "region" });
+  const name = displayNames.of(upper);
+  return name && name !== upper ? name : upper;
 }
 
 /** Slide-up ticker — 한 줄씩 위로 슬라이드하며 순환 */
@@ -326,13 +326,13 @@ export function SettingsPage() {
             <div className="space-y-2">
               <h2 className="text-sm font-semibold flex items-center gap-2">
                 <Globe className="size-4" />
-                접속 국가 TOP 5
+                {t(resolvedLocale, "top_countries")}
               </h2>
               <CountryTicker
                 items={topCountries.map((c, i) => ({
                   rank: i + 1,
                   flag: countryFlag(c.code),
-                  name: countryName(c.code),
+                  name: countryName(c.code, resolvedLocale),
                   count: c.count,
                 }))}
               />
@@ -406,7 +406,7 @@ export function SettingsPage() {
                             style={{ width: `${pct}%` }}
                           />
                         </div>
-                        <span className="w-12 text-right text-muted-foreground tabular-nums">{count}건</span>
+                        <span className="w-12 text-right text-muted-foreground tabular-nums">{count}{t(resolvedLocale, "rating_dist_count")}</span>
                       </div>
                     );
                   })}
