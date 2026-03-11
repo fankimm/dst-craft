@@ -27,7 +27,7 @@ const regionNames = new Intl.DisplayNames(["ko"], { type: "region" });
 function countryName(code: string): string {
   const upper = code.toUpperCase();
   const ko = regionNames.of(upper);
-  return ko && ko !== upper ? `${ko} (${upper})` : upper;
+  return ko && ko !== upper ? ko : upper;
 }
 
 const osIcons: Record<string, string> = {
