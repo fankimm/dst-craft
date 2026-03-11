@@ -16,7 +16,6 @@ interface ReviewPromptProps {
 
 export function ReviewPrompt({ open, onClose, locale }: ReviewPromptProps) {
   const [rating, setRating] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
   const [canShare, setCanShare] = useState(false);
 
   useEffect(() => {
@@ -28,15 +27,17 @@ export function ReviewPrompt({ open, onClose, locale }: ReviewPromptProps) {
     onClose();
   }, [onClose]);
 
+  const [toast, setToast] = useState<string | null>(null);
+
   const handleRate = useCallback(async (star: number) => {
     setRating(star);
-    setSubmitted(true);
+    localStorage.setItem("dst:my-rating", String(star));
     localStorage.setItem("dst:review-dismissed", "permanent");
+    onClose();
+    setToast(t(locale, "review_thanks"));
+    setTimeout(() => setToast(null), 2000);
     await submitRating(star);
-    setTimeout(() => {
-      onClose();
-    }, 1500);
-  }, [onClose]);
+  }, [onClose, locale]);
 
   const handleGitHubStar = useCallback(() => {
     trackEvent("github_star_click");
@@ -72,12 +73,6 @@ export function ReviewPrompt({ open, onClose, locale }: ReviewPromptProps) {
         )}
       >
         <div className="flex flex-col items-center px-6 pt-6 gap-4" style={{ paddingBottom: "calc(1.5rem + env(safe-area-inset-bottom, 0.5rem))" }}>
-          {submitted ? (
-            <p className="text-lg font-semibold text-foreground py-8">
-              {t(locale, "review_thanks")}
-            </p>
-          ) : (
-            <>
               {/* App icon */}
               <Image
                 src="/icons/icon-192.png"
@@ -155,10 +150,17 @@ export function ReviewPrompt({ open, onClose, locale }: ReviewPromptProps) {
               >
                 {t(locale, "review_later")}
               </button>
-            </>
-          )}
         </div>
       </div>
+
+      {/* Toast */}
+      {toast && (
+        <div className="fixed top-20 inset-x-0 flex justify-center z-[60] pointer-events-none">
+          <div className="bg-foreground text-background text-xs font-medium px-4 py-2 rounded-full shadow-lg animate-in fade-in duration-200">
+            {toast}
+          </div>
+        </div>
+      )}
     </>
   );
 }
