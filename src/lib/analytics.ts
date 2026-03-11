@@ -122,6 +122,18 @@ export async function fetchPublicRating(): Promise<{ avg: number; total: number;
   }
 }
 
+/** Fetch top countries (public, cached) */
+export async function fetchTopCountries(): Promise<{ code: string; count: number }[]> {
+  if (!WORKER_URL) return [];
+  try {
+    const res = await fetch(`${WORKER_URL}/top-countries`);
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
 /** Track an item click for popularity ranking */
 export function trackItemClick(itemId: string) {
   if (!WORKER_URL) return;

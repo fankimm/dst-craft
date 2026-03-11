@@ -265,6 +265,23 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
     }
 
+    // GET /top-countries — public top 5 countries
+    if (url.pathname === "/top-countries" && request.method === "GET") {
+      const raw = await redisPipeline(env, [["HGETALL", "dst:geo:countries"]]);
+      const arr = (raw as unknown as string[][])[0] as string[] | null;
+      const countries: { code: string; count: number }[] = [];
+      if (Array.isArray(arr)) {
+        for (let i = 0; i < arr.length; i += 2) {
+          countries.push({ code: arr[i], count: parseInt(arr[i + 1], 10) || 0 });
+        }
+      }
+      countries.sort((a, b) => b.count - a.count);
+      const top5 = countries.slice(0, 5);
+      return new Response(JSON.stringify(top5), {
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=600" },
+      });
+    }
+
     // GET /rating — public average rating
     if (url.pathname === "/rating" && request.method === "GET") {
       const raw = await redisPipeline(env, [["HGETALL", "dst:ratings"]]);

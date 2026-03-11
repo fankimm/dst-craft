@@ -10,7 +10,63 @@ import { t, supportedLocales, localeLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { APP_VERSION } from "@/lib/version";
 import { Footer } from "../crafting/Footer";
-import { fetchPublicRating, submitRating } from "@/lib/analytics";
+import { fetchPublicRating, submitRating, fetchTopCountries } from "@/lib/analytics";
+import { Globe } from "lucide-react";
+
+/** ISO 3166-1 alpha-2 → flag emoji */
+function countryFlag(code: string): string {
+  const upper = code.toUpperCase();
+  if (upper.length !== 2) return "\u{1F3F3}\uFE0F";
+  return String.fromCodePoint(0x1F1E6 + upper.charCodeAt(0) - 65, 0x1F1E6 + upper.charCodeAt(1) - 65);
+}
+
+const regionNames = new Intl.DisplayNames(["ko"], { type: "region" });
+function countryName(code: string): string {
+  const upper = code.toUpperCase();
+  const ko = regionNames.of(upper);
+  return ko && ko !== upper ? ko : upper;
+}
+
+/** Single flip cell */
+function FlipCell({ char, delay }: { char: string; delay: number }) {
+  const [displayed, setDisplayed] = useState(" ");
+  const [flipping, setFlipping] = useState(false);
+
+  useEffect(() => {
+    if (char === displayed) return;
+    const timeout = setTimeout(() => {
+      setFlipping(true);
+      setTimeout(() => {
+        setDisplayed(char);
+        setFlipping(false);
+      }, 150);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [char, delay, displayed]);
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center justify-center bg-zinc-900 dark:bg-zinc-800 text-amber-400 font-mono font-bold text-[11px] leading-none rounded-[2px] h-[18px] min-w-[11px] px-[2px] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-transform duration-150",
+        flipping && "scale-y-0"
+      )}
+    >
+      {displayed}
+    </span>
+  );
+}
+
+/** A row of flip cells for a text string */
+function FlipText({ text, baseDelay }: { text: string; baseDelay: number }) {
+  const chars = text.split("");
+  return (
+    <span className="inline-flex gap-[1px]">
+      {chars.map((c, i) => (
+        <FlipCell key={i} char={c} delay={baseDelay + i * 40} />
+      ))}
+    </span>
+  );
+}
 
 const themeOptions: { value: ThemeSetting; icon: typeof Sun; labelKey: "light" | "dark" | "system" }[] = [
   { value: "light", icon: Sun, labelKey: "light" },
@@ -39,6 +95,7 @@ export function SettingsPage() {
   const [ratingDist, setRatingDist] = useState<Record<string, number>>({});
   const [myRating, setMyRating] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
+  const [topCountries, setTopCountries] = useState<{ code: string; count: number }[]>([]);
 
   useEffect(() => {
     // Load my rating from localStorage
@@ -52,6 +109,8 @@ export function SettingsPage() {
         if (data.ratings) setRatingDist(data.ratings);
       }
     });
+    // Fetch top countries
+    fetchTopCountries().then(setTopCountries);
   }, []);
 
   const handleRate = useCallback(async (star: number) => {
@@ -344,6 +403,38 @@ export function SettingsPage() {
               )}
             </div>
           </div>
+
+          {/* Top Countries — flip board */}
+          {topCountries.length > 0 && (
+            <div className="space-y-2">
+              <h2 className="text-sm font-semibold flex items-center gap-2">
+                <Globe className="size-4" />
+                접속 국가 TOP 5
+              </h2>
+              <div className="rounded-lg border border-border bg-zinc-950 dark:bg-zinc-900 p-3 space-y-1.5 shadow-inner">
+                {topCountries.map((c, i) => {
+                  const name = countryName(c.code);
+                  const flag = countryFlag(c.code);
+                  const rank = `${i + 1}`;
+                  const label = `${flag} ${name}`;
+                  const countStr = c.count.toLocaleString();
+                  // Pad to fixed width for alignment
+                  const maxNameLen = 10;
+                  const padded = label.length < maxNameLen
+                    ? label + " ".repeat(maxNameLen - label.length)
+                    : label.slice(0, maxNameLen);
+                  return (
+                    <div key={c.code} className="flex items-center gap-2">
+                      <FlipText text={rank} baseDelay={i * 300} />
+                      <FlipText text={padded} baseDelay={i * 300 + 80} />
+                      <span className="flex-1" />
+                      <FlipText text={countStr} baseDelay={i * 300 + 160} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Insight (admin only) */}
           {isAdmin && (
