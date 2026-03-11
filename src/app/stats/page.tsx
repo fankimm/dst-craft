@@ -21,28 +21,13 @@ function countryFlag(code: string): string {
   return String.fromCodePoint(cp1, cp2);
 }
 
-/** ISO 3166-1 alpha-2 → 한국어 국가명 */
-const countryNameKo: Record<string, string> = {
-  KR: "한국", US: "미국", JP: "일본", CN: "중국", TW: "대만",
-  HK: "홍콩", GB: "영국", DE: "독일", FR: "프랑스", CA: "캐나다",
-  AU: "호주", BR: "브라질", RU: "러시아", IN: "인도", SG: "싱가포르",
-  TH: "태국", VN: "베트남", PH: "필리핀", MY: "말레이시아", ID: "인도네시아",
-  IT: "이탈리아", ES: "스페인", NL: "네덜란드", SE: "스웨덴", NO: "노르웨이",
-  FI: "핀란드", DK: "덴마크", PL: "폴란드", CZ: "체코", AT: "오스트리아",
-  CH: "스위스", BE: "벨기에", PT: "포르투갈", IE: "아일랜드", NZ: "뉴질랜드",
-  MX: "멕시코", AR: "아르헨티나", CL: "칠레", CO: "콜롬비아", PE: "페루",
-  TR: "튀르키예", SA: "사우디아라비아", AE: "아랍에미리트", IL: "이스라엘",
-  EG: "이집트", ZA: "남아프리카", UA: "우크라이나", RO: "루마니아",
-  HU: "헝가리", GR: "그리스", HR: "크로아티아", SK: "슬로바키아",
-  BG: "불가리아", RS: "세르비아", LT: "리투아니아", LV: "라트비아",
-  EE: "에스토니아", SI: "슬로베니아", IS: "아이슬란드", LU: "룩셈부르크",
-  MT: "몰타", CY: "키프로스", MO: "마카오", KH: "캄보디아", MM: "미얀마",
-  LA: "라오스", BD: "방글라데시", PK: "파키스탄", LK: "스리랑카",
-  NP: "네팔", MN: "몽골", KZ: "카자흐스탄", UZ: "우즈베키스탄",
-};
+/** ISO 3166-1 alpha-2 → 한국어 국가명 (Intl API) */
+const regionNames = new Intl.DisplayNames(["ko"], { type: "region" });
 
 function countryName(code: string): string {
-  return countryNameKo[code.toUpperCase()] ?? code;
+  const upper = code.toUpperCase();
+  const ko = regionNames.of(upper);
+  return ko && ko !== upper ? `${ko} (${upper})` : upper;
 }
 
 const osIcons: Record<string, string> = {
