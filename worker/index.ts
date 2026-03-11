@@ -280,7 +280,13 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         }
       }
       const avg = total > 0 ? Math.round((sum / total) * 10) / 10 : 0;
-      return new Response(JSON.stringify({ avg, total }), {
+      const ratings: Record<string, number> = {};
+      if (Array.isArray(arr)) {
+        for (let i = 0; i < arr.length; i += 2) {
+          ratings[arr[i]] = parseInt(arr[i + 1], 10) || 0;
+        }
+      }
+      return new Response(JSON.stringify({ avg, total, ratings }), {
         headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" },
       });
     }

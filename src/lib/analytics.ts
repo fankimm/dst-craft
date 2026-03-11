@@ -111,7 +111,7 @@ export async function submitRating(rating: number): Promise<boolean> {
 }
 
 /** Fetch public average rating */
-export async function fetchPublicRating(): Promise<{ avg: number; total: number } | null> {
+export async function fetchPublicRating(): Promise<{ avg: number; total: number; ratings?: Record<string, number> } | null> {
   if (!WORKER_URL) return null;
   try {
     const res = await fetch(`${WORKER_URL}/rating`);

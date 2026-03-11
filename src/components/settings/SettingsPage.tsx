@@ -36,6 +36,7 @@ export function SettingsPage() {
   // Rating state
   const [avgRating, setAvgRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
+  const [ratingDist, setRatingDist] = useState<Record<string, number>>({});
   const [myRating, setMyRating] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
 
@@ -48,6 +49,7 @@ export function SettingsPage() {
       if (data) {
         setAvgRating(data.avg);
         setTotalRatings(data.total);
+        if (data.ratings) setRatingDist(data.ratings);
       }
     });
   }, []);
@@ -63,6 +65,7 @@ export function SettingsPage() {
     if (data) {
       setAvgRating(data.avg);
       setTotalRatings(data.total);
+      if (data.ratings) setRatingDist(data.ratings);
     }
   }, [resolvedLocale]);
 
@@ -317,6 +320,28 @@ export function SettingsPage() {
                   ))}
                 </div>
               </div>
+
+              {/* Rating distribution — only for users who rated */}
+              {myRating > 0 && totalRatings > 0 && (
+                <div className="space-y-1.5 pt-2 border-t border-border">
+                  {[5, 4, 3, 2, 1].map((star) => {
+                    const count = ratingDist[String(star)] ?? 0;
+                    const pct = totalRatings > 0 ? Math.round((count / totalRatings) * 100) : 0;
+                    return (
+                      <div key={star} className="flex items-center gap-2 text-xs">
+                        <span className="w-6 text-right text-muted-foreground">{star}★</span>
+                        <div className="flex-1 h-2.5 bg-surface rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-yellow-400/70 rounded-full transition-all"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                        <span className="w-12 text-right text-muted-foreground tabular-nums">{count}건</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 
