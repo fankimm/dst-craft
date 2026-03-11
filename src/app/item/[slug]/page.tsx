@@ -4,6 +4,7 @@ import { characters } from "@/data/characters";
 import { categories } from "@/data/categories";
 import { ko } from "@/data/locales/ko";
 import { stationImages } from "@/lib/crafting-data";
+import { generateItemSeoText } from "@/lib/seo-text";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -31,7 +32,6 @@ export async function generateMetadata({
   if (!item) return {};
 
   const nameKo = ko.items[item.id]?.name;
-  const descKo = ko.items[item.id]?.desc;
   const matList = item.materials
     .map((m) => {
       const mat = materials.find((x) => x.id === m.materialId);
@@ -43,7 +43,7 @@ export async function generateMetadata({
     ? `${item.name} (${nameKo}) — Don't Starve Together Crafting Recipe`
     : `${item.name} — Don't Starve Together Crafting Recipe`;
 
-  const description = `How to craft ${item.name} in Don't Starve Together. ${item.description} Materials needed: ${matList}.${descKo ? ` ${descKo}` : ""}`;
+  const description = `How to craft ${item.name} in Don't Starve Together. ${item.description} Materials: ${matList}. See crafting station, uses, and tips.`;
 
   return {
     title,
@@ -113,6 +113,31 @@ export default async function ItemPage({
     item: allItems.find((x) => x.id === m.materialId),
   }));
 
+  // Generate SEO text
+  const seoMaterials = item.materials.map((m) => {
+    const mat = materials.find((x) => x.id === m.materialId);
+    return {
+      name: mat?.name ?? m.materialId,
+      quantity: m.quantity,
+      slug: allItems.find((x) => x.id === m.materialId) ? idToSlug(m.materialId) : undefined,
+    };
+  });
+  const usedInNames = usedIn.map((u) => u.name);
+  const seo = generateItemSeoText(
+    {
+      name: item.name,
+      description: item.description,
+      station: item.station,
+      materials: seoMaterials,
+      characterOnly: item.characterOnly,
+      category: item.category,
+      healthCost: (item as any).healthCost,
+    },
+    stationLabel,
+    character?.name,
+    usedInNames,
+  );
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -148,11 +173,28 @@ export default async function ItemPage({
     ],
   };
 
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: seo.faq.map((q) => ({
+      "@type": "Question",
+      name: q.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: q.answer,
+      },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
 
       {/* Header */}
@@ -180,7 +222,7 @@ export default async function ItemPage({
           </div>
           <div className="flex-1 min-w-0 pt-1">
             <h1 className="text-2xl font-bold text-foreground leading-tight">
-              {item.name}
+              {item.name} | Don&apos;t Starve Together Crafting Guide
             </h1>
             {nameKo && (
               <p className="text-base text-muted-foreground mt-0.5">{nameKo}</p>
@@ -194,6 +236,16 @@ export default async function ItemPage({
               </p>
             )}
           </div>
+        </section>
+
+        {/* How to Craft — SEO text */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-2">
+            How to Craft {item.name}
+          </h2>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {seo.howToCraft}
+          </p>
         </section>
 
         {/* Character exclusive */}
@@ -282,6 +334,16 @@ export default async function ItemPage({
           </div>
         </section>
 
+        {/* Uses and Tips — SEO text */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-2">
+            {item.name} Uses and Tips
+          </h2>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {seo.usesAndTips}
+          </p>
+        </section>
+
         {/* Categories */}
         {itemCategories.length > 0 && (
           <section>
@@ -342,6 +404,25 @@ export default async function ItemPage({
             </div>
           </section>
         )}
+
+        {/* FAQ — SEO */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-3">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-3">
+            {seo.faq.map((q, i) => (
+              <details key={i} className="rounded-lg border border-border bg-surface group">
+                <summary className="px-4 py-3 text-sm font-medium text-foreground cursor-pointer select-none">
+                  {q.question}
+                </summary>
+                <p className="px-4 pb-3 text-sm text-foreground/80 leading-relaxed">
+                  {q.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
 
         {/* CTA */}
         <section className="rounded-xl border border-border bg-surface p-5 text-center space-y-2">

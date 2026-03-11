@@ -1,5 +1,6 @@
 import { bosses, lootImage, lootDisplayName } from "@/data/bosses";
 import { allItems } from "@/data/items";
+import { generateBossSeoText } from "@/lib/seo-text";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -47,8 +48,8 @@ export async function generateMetadata({
     ...new Set(boss.loot.map((l) => lootDisplayName(l.item, "en"))),
   ].join(", ");
 
-  const title = `${boss.name} (${boss.nameKo}) — Don't Starve Together Boss Drops`;
-  const description = `${boss.name} drops and loot in Don't Starve Together. ${categoryLabels[boss.category] ?? boss.category}. Loot: ${lootList}.`;
+  const title = `${boss.name} (${boss.nameKo}) — Don't Starve Together Boss Guide`;
+  const description = `How to defeat ${boss.name} in Don't Starve Together. ${categoryLabels[boss.category] ?? boss.category} — drops: ${lootList}. Strategy, loot table, and tips.`;
 
   const image = Array.isArray(boss.image) ? boss.image[0] : boss.image;
 
@@ -83,6 +84,18 @@ export default async function BossPage({
     (l, i, arr) => arr.findIndex((x) => x.item === l.item) === i
   );
 
+  // Generate SEO text
+  const lootNames = uniqueLoot.map((l) => ({
+    item: l.item,
+    nameEn: lootDisplayName(l.item, "en"),
+  }));
+  const seo = generateBossSeoText(boss, lootNames);
+
+  // Related bosses (same category, excluding self)
+  const relatedBosses = bosses
+    .filter((b) => b.category === boss.category && b.id !== boss.id)
+    .slice(0, 4);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "GamePlayMode",
@@ -93,11 +106,28 @@ export default async function BossPage({
     image: `${SITE_URL}/images/bosses/${images[0]}`,
   };
 
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: seo.faq.map((q) => ({
+      "@type": "Question",
+      name: q.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: q.answer,
+      },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
 
       {/* Header */}
@@ -132,7 +162,7 @@ export default async function BossPage({
           </div>
           <div className="flex-1 min-w-0 pt-1">
             <h1 className="text-2xl font-bold text-foreground leading-tight">
-              {boss.name}
+              {boss.name} | Don&apos;t Starve Together Boss Guide
             </h1>
             <p className="text-base text-muted-foreground mt-0.5">
               {boss.nameKo}
@@ -143,6 +173,16 @@ export default async function BossPage({
               {categoryLabel}
             </span>
           </div>
+        </section>
+
+        {/* Overview — SEO text */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-2">
+            About {boss.name}
+          </h2>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {seo.overview}
+          </p>
         </section>
 
         {/* Loot table */}
@@ -210,6 +250,80 @@ export default async function BossPage({
             })}
           </div>
         </section>
+
+        {/* Loot Description — SEO text */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-2">
+            {boss.name} Loot and Drops
+          </h2>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {seo.lootDescription}
+          </p>
+        </section>
+
+        {/* Strategy — SEO text */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-2">
+            How to Defeat {boss.name}
+          </h2>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {seo.strategy}
+          </p>
+        </section>
+
+        {/* FAQ — SEO */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-3">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-3">
+            {seo.faq.map((q, i) => (
+              <details key={i} className="rounded-lg border border-border bg-surface group">
+                <summary className="px-4 py-3 text-sm font-medium text-foreground cursor-pointer select-none">
+                  {q.question}
+                </summary>
+                <p className="px-4 pb-3 text-sm text-foreground/80 leading-relaxed">
+                  {q.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* Related Bosses — internal links */}
+        {relatedBosses.length > 0 && (
+          <section>
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+              Other {categoryLabel}es
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {relatedBosses.map((b) => {
+                const img = Array.isArray(b.image) ? b.image[0] : b.image;
+                return (
+                  <Link
+                    key={b.id}
+                    href={`/boss/${b.id}`}
+                    className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
+                  >
+                    <img
+                      src={`/images/bosses/${img}`}
+                      alt={b.name}
+                      className="size-10 object-contain"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-xs font-medium text-foreground truncate">
+                        {b.nameKo}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground truncate">
+                        {b.name}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* CTA */}
         <section className="rounded-xl border border-border bg-surface p-5 text-center space-y-2">

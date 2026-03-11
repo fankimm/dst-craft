@@ -15,6 +15,30 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.6.0",
+    date: "2026-03-11",
+    dev: [
+      "SEO 텍스트 자동 생성 시스템 (src/lib/seo-text.ts) — food/boss/item 페이지 전체 적용",
+      "Food 페이지: How to Cook, Stats Explanation, Best Ingredients 섹션 + FAQ(details/summary) + FAQPage schema + Related Recipes 내부 링크",
+      "Boss 페이지: Overview, Loot Description, Strategy 섹션 + FAQ + FAQPage schema + Related Bosses 내부 링크",
+      "Item 페이지: How to Craft, Uses and Tips 섹션 + FAQ + FAQPage schema",
+      "모든 페이지 H1에 SEO 키워드 포함 (Recipe | DST, Boss Guide, Crafting Guide)",
+      "meta description 강화 — 'Learn how to...' + 'See ingredients, stats, and tips' 형태로 변경",
+      "통계 페이지에 일자별 누적 접속자 그래프 추가",
+      "admin IP 누적 세트(dst:admin-ips) Worker 버그 수정",
+    ],
+    changes: {
+      ko: [
+        "음식/보스/아이템 개별 페이지에 설명 텍스트, FAQ, 관련 항목 링크 추가 (SEO 강화)",
+        "통계 페이지에 일자별 누적 접속자 그래프 추가",
+      ],
+      en: [
+        "Added SEO text sections (How to cook/craft, FAQ, tips) to all food/boss/item pages",
+        "Added cumulative visitors chart to stats page",
+      ],
+    },
+  },
+  {
     version: "0.5.1",
     date: "2026-03-09",
     dev: [

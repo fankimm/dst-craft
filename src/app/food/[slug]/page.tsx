@@ -1,6 +1,7 @@
 import { cookingRecipes } from "@/data/recipes";
 import { cookpotIngredients } from "@/data/cookpot-ingredients";
 import { ko } from "@/data/locales/ko";
+import { generateFoodSeoText } from "@/lib/seo-text";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -34,7 +35,7 @@ export async function generateMetadata({
 
   const stationLabel =
     recipe.station === "portablecookpot" ? "Portable Crock Pot" : "Crock Pot";
-  const description = `${recipe.name} crock pot recipe in Don't Starve Together. ${stationLabel} — Health: ${recipe.health > 0 ? "+" : ""}${recipe.health}, Hunger: +${recipe.hunger}, Sanity: ${recipe.sanity > 0 ? "+" : ""}${recipe.sanity}. Requirements: ${recipe.requirements}.`;
+  const description = `Learn how to cook ${recipe.name} in Don't Starve Together. ${stationLabel} recipe — Health: ${recipe.health > 0 ? "+" : ""}${recipe.health}, Hunger: +${recipe.hunger}, Sanity: ${recipe.sanity > 0 ? "+" : ""}${recipe.sanity}. See ingredients, stats, and tips.`;
 
   return {
     title,
@@ -85,6 +86,15 @@ export default async function FoodPage({
     ? "portablecookpot_item.png"
     : "cookpot.png";
 
+  // Generate SEO text
+  const ingredientNames = cookpotIngredients.map((i) => ({ id: i.id, name: i.name }));
+  const seo = generateFoodSeoText(recipe, ingredientNames);
+
+  // Find related recipes (same foodType, excluding self)
+  const relatedRecipes = cookingRecipes
+    .filter((r) => r.foodType === recipe.foodType && r.id !== recipe.id)
+    .slice(0, 4);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Recipe",
@@ -104,11 +114,28 @@ export default async function FoodPage({
     },
   };
 
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: seo.faq.map((q) => ({
+      "@type": "Question",
+      name: q.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: q.answer,
+      },
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
 
       {/* Header */}
@@ -136,7 +163,7 @@ export default async function FoodPage({
           </div>
           <div className="flex-1 min-w-0 pt-1">
             <h1 className="text-2xl font-bold text-foreground leading-tight">
-              {recipe.name}
+              {recipe.name} Recipe | Don&apos;t Starve Together
             </h1>
             {nameKo && (
               <p className="text-base text-muted-foreground mt-0.5">{nameKo}</p>
@@ -156,6 +183,16 @@ export default async function FoodPage({
               )}
             </div>
           </div>
+        </section>
+
+        {/* How to Cook — SEO text */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-2">
+            How to Cook {recipe.name}
+          </h2>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {seo.howToCook}
+          </p>
         </section>
 
         {/* Stats */}
@@ -183,6 +220,16 @@ export default async function FoodPage({
               color="blue"
             />
           </div>
+        </section>
+
+        {/* Stats Explanation — SEO text */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-2">
+            {recipe.name} Stats
+          </h2>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {seo.statsExplanation}
+          </p>
         </section>
 
         {/* Info row */}
@@ -260,6 +307,18 @@ export default async function FoodPage({
           </section>
         )}
 
+        {/* Best Ingredients — SEO text */}
+        {seo.bestIngredients && (
+          <section>
+            <h2 className="text-base font-semibold text-foreground mb-2">
+              Best Ingredients for {recipe.name}
+            </h2>
+            <p className="text-sm text-foreground/80 leading-relaxed">
+              {seo.bestIngredients}
+            </p>
+          </section>
+        )}
+
         {/* Cooking station */}
         <section>
           <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
@@ -274,6 +333,62 @@ export default async function FoodPage({
             <span className="text-sm font-medium">{stationLabel}</span>
           </div>
         </section>
+
+        {/* FAQ — SEO */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-3">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-3">
+            {seo.faq.map((q, i) => (
+              <details key={i} className="rounded-lg border border-border bg-surface group">
+                <summary className="px-4 py-3 text-sm font-medium text-foreground cursor-pointer select-none">
+                  {q.question}
+                </summary>
+                <p className="px-4 pb-3 text-sm text-foreground/80 leading-relaxed">
+                  {q.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        {/* Related Recipes — internal links */}
+        {relatedRecipes.length > 0 && (
+          <section>
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+              Related {foodTypeLabels[recipe.foodType] ?? ""} Recipes
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {relatedRecipes.map((r) => {
+                const rNameKo = ko.foods?.[r.id]?.name;
+                return (
+                  <Link
+                    key={r.id}
+                    href={`/food/${idToSlug(r.id)}`}
+                    className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
+                  >
+                    <img
+                      src={`/images/game-items/${r.id}.png`}
+                      alt={r.name}
+                      className="size-10 object-contain"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-xs font-medium text-foreground truncate">
+                        {rNameKo ?? r.name}
+                      </p>
+                      {rNameKo && (
+                        <p className="text-[10px] text-muted-foreground truncate">
+                          {r.name}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* CTA */}
         <section className="rounded-xl border border-border bg-surface p-5 text-center space-y-2">
