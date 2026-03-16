@@ -22,7 +22,7 @@ function countryFlag(code: string): string {
 
 function countryName(code: string, locale: string): string {
   const upper = code.toUpperCase();
-  const displayNames = new Intl.DisplayNames([locale], { type: "region" });
+  const displayNames = new Intl.DisplayNames([locale.replace(/_/g, "-")], { type: "region" });
   const name = displayNames.of(upper);
   return name && name !== upper ? name : upper;
 }
