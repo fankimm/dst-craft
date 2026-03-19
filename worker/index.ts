@@ -308,15 +308,13 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       });
     }
 
-    // GET /stats — fetch analytics data (admin only)
+    // GET /stats — fetch analytics data (public, admin gets extra details)
     if (url.pathname === "/stats" && request.method === "GET") {
       const auth = request.headers.get("Authorization") ?? "";
-      if (!auth.startsWith("Bearer ")) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
-      }
-      const jwtPayload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
-      if (!jwtPayload || jwtPayload.role !== "admin") {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      let isAdmin = false;
+      if (auth.startsWith("Bearer ")) {
+        const jwtPayload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+        isAdmin = !!(jwtPayload && jwtPayload.role === "admin");
       }
 
       const date = today();
@@ -499,14 +497,14 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         recentVisitors = recentVisitors.filter((v: any) => v.country !== excludeCountry);
       }
 
-      const data = {
+      const data: Record<string, any> = {
         totalPageViews: totalPV,
         totalUniqueVisitors: totalUV,
         todayPageViews: todayPV,
         todayUniqueVisitors: todayUV,
         dailyTrend,
         countries,
-        recentVisitors,
+        recentVisitors: isAdmin ? recentVisitors : [],
         device,
         os,
         referrers,
@@ -518,49 +516,53 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         ratings,
         avgRating,
         totalRatings,
+        isAdmin,
       };
 
-      // Purge all admin IP entries from visitor logs
-      const adminIp =
-        request.headers.get("CF-Connecting-IP") ||
-        request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-        request.headers.get("x-real-ip") ||
-        "";
+      // Admin-only: purge admin IP entries from visitor logs
+      if (isAdmin) {
+        const adminIp =
+          request.headers.get("CF-Connecting-IP") ||
+          request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+          request.headers.get("x-real-ip") ||
+          "";
 
-      // Accumulate admin IPs in a Redis set (persists across sessions/networks)
-      if (adminIp) {
-        await redisPipeline(env, [["SADD", "dst:admin-ips", adminIp]]);
+        // Accumulate admin IPs in a Redis set (persists across sessions/networks)
+        if (adminIp) {
+          await redisPipeline(env, [["SADD", "dst:admin-ips", adminIp]]);
+        }
+
+        // Fetch all known admin IPs
+        const adminIpsRes = await redisPipeline(env, [["SMEMBERS", "dst:admin-ips"]]);
+        const adminIps = new Set<string>(((adminIpsRes as any)?.[0]?.result as string[]) ?? []);
+
+        data._adminIp = adminIp || "(undetected)";
+        data._adminIps = [...adminIps];
+        data._purgedCount = 0;
+
+        if (adminIps.size > 0) {
+          const fullListRes = await redisPipeline(env, [["LRANGE", "dst:visitors", "0", "-1"]]);
+          const fullList = ((fullListRes as any)?.[0]?.result as string[]) ?? [];
+          const purgeCommands: string[][] = [];
+          for (const raw of fullList) {
+            try {
+              const parsed = JSON.parse(raw);
+              if (adminIps.has(parsed.ip)) {
+                purgeCommands.push(["LREM", "dst:visitors", "0", raw]);
+              }
+            } catch { /* skip */ }
+          }
+          if (purgeCommands.length > 0) {
+            await redisPipeline(env, purgeCommands);
+          }
+          data.recentVisitors = data.recentVisitors.filter((v: any) => !adminIps.has(v.ip));
+          data._purgedCount = purgeCommands.length;
+        }
       }
 
-      // Fetch all known admin IPs
-      const adminIpsRes = await redisPipeline(env, [["SMEMBERS", "dst:admin-ips"]]);
-      const adminIps = new Set<string>(((adminIpsRes as any)?.[0]?.result as string[]) ?? []);
-
-      (data as any)._adminIp = adminIp || "(undetected)";
-      (data as any)._adminIps = [...adminIps];
-      (data as any)._purgedCount = 0;
-
-      if (adminIps.size > 0) {
-        const fullListRes = await redisPipeline(env, [["LRANGE", "dst:visitors", "0", "-1"]]);
-        const fullList = ((fullListRes as any)?.[0]?.result as string[]) ?? [];
-        const purgeCommands: string[][] = [];
-        for (const raw of fullList) {
-          try {
-            const parsed = JSON.parse(raw);
-            if (adminIps.has(parsed.ip)) {
-              purgeCommands.push(["LREM", "dst:visitors", "0", raw]);
-            }
-          } catch { /* skip */ }
-        }
-        if (purgeCommands.length > 0) {
-          await redisPipeline(env, purgeCommands);
-        }
-        data.recentVisitors = data.recentVisitors.filter((v: any) => !adminIps.has(v.ip));
-        (data as any)._purgedCount = purgeCommands.length;
-      }
-
+      const cacheControl = isAdmin ? "no-store" : "public, max-age=60";
       return new Response(JSON.stringify(data), {
-        headers: { ...headers, "Content-Type": "application/json" },
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": cacheControl },
       });
     }
 

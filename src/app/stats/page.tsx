@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { fetchAnalytics, type AnalyticsData } from "@/lib/analytics";
 import { useAuth } from "@/hooks/use-auth";
 import {
@@ -209,8 +208,7 @@ function AreaChart({ data }: { data: { date: string; pv: number; uv: number }[] 
 }
 
 export default function StatsPage() {
-  const { token, isAdmin, loading: authLoading } = useAuth();
-  const router = useRouter();
+  const { token, isAdmin } = useAuth();
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState(7);
@@ -222,20 +220,12 @@ export default function StatsPage() {
     setTimeout(() => setToast(null), 3000);
   }
 
-  // Redirect non-admin users
-  useEffect(() => {
-    if (!authLoading && !isAdmin) {
-      router.replace("/");
-    }
-  }, [authLoading, isAdmin, router]);
-
   async function load(d = days, exclude = excludeKR) {
-    if (!token) return;
     setLoading(true);
-    const result = await fetchAnalytics(token, d, exclude ? "KR" : undefined);
+    const result = await fetchAnalytics(token ?? null, d, exclude ? "KR" : undefined);
     setData(result);
     setLoading(false);
-    if (result) {
+    if (result && isAdmin) {
       const extra = result as any;
       const purged = extra._purgedCount ?? 0;
       const ip = extra._adminIp ?? "";
@@ -244,9 +234,7 @@ export default function StatsPage() {
   }
 
   useEffect(() => {
-    if (token && isAdmin) {
-      load();
-    }
+    load();
   }, [token, isAdmin]);
 
   function handleDaysChange(d: number) {
@@ -257,15 +245,6 @@ export default function StatsPage() {
   function handleExcludeKR(checked: boolean) {
     setExcludeKR(checked);
     load(days, checked);
-  }
-
-  // Don't render anything for non-admin
-  if (authLoading || !isAdmin) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground text-sm">
-        {authLoading ? "\uBD88\uB7EC\uC624\uB294 \uC911..." : "\uC811\uADFC \uAD8C\uD55C\uC774 \uC5C6\uC2B5\uB2C8\uB2E4"}
-      </div>
-    );
   }
 
   const sortedCountries = data
@@ -326,23 +305,25 @@ export default function StatsPage() {
               <StatCard icon={Search} label="검색 사용" value={data.searchCount} sub="세션" />
               <StatCard icon={Smartphone} label="모바일 비율" value={`${mobilePct}%`} sub={`${mobileCount} 모바일 / ${desktopCount} PC`} />
               <StatCard icon={Download} label="PWA 설치" value={data.pwaInstalls} />
-              <button
-                onClick={() => handleExcludeKR(!excludeKR)}
-                className={cn(
-                  "rounded-lg border p-4 space-y-1 text-left transition-colors",
-                  excludeKR
-                    ? "border-primary/40 bg-primary/5"
-                    : "border-border bg-card"
-                )}
-              >
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Globe className="size-4" />
-                  <span className="text-xs font-medium">KR 제외</span>
-                </div>
-                <p className={cn("text-2xl font-bold", excludeKR ? "text-primary" : "text-muted-foreground")}>
-                  {excludeKR ? "ON" : "OFF"}
-                </p>
-              </button>
+              {isAdmin && (
+                <button
+                  onClick={() => handleExcludeKR(!excludeKR)}
+                  className={cn(
+                    "rounded-lg border p-4 space-y-1 text-left transition-colors",
+                    excludeKR
+                      ? "border-primary/40 bg-primary/5"
+                      : "border-border bg-card"
+                  )}
+                >
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Globe className="size-4" />
+                    <span className="text-xs font-medium">KR 제외</span>
+                  </div>
+                  <p className={cn("text-2xl font-bold", excludeKR ? "text-primary" : "text-muted-foreground")}>
+                    {excludeKR ? "ON" : "OFF"}
+                  </p>
+                </button>
+              )}
             </div>
 
             {/* Ratings */}
@@ -491,52 +472,54 @@ export default function StatsPage() {
               )}
             </div>
 
-            {/* Recent Visitors Table */}
-            <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-              <h2 className="text-sm font-semibold">접속자 상세</h2>
-              {data.recentVisitors.length === 0 ? (
-                <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="border-b border-border text-left text-muted-foreground">
-                        <th className="pb-2 pr-3 font-medium">시간</th>
-                        <th className="pb-2 pr-3 font-medium">IP</th>
-                        <th className="pb-2 pr-3 font-medium">국가</th>
-                        <th className="pb-2 pr-3 font-medium">지역</th>
-                        <th className="pb-2 pr-3 font-medium">도시</th>
-                        <th className="pb-2 pr-3 font-medium">기기</th>
-                        <th className="pb-2 font-medium">OS</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.recentVisitors.map((v, i) => (
-                        <tr key={i} className="border-b border-border/30 last:border-0">
-                          <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap">
-                            {new Date(v.time).toLocaleString("ko-KR", {
-                              month: "numeric",
-                              day: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              second: "2-digit",
-                            })}
-                          </td>
-                          <td className="py-2 pr-3 font-mono text-foreground/80">{v.ip}</td>
-                          <td className="py-2 pr-3 whitespace-nowrap">
-                            {countryFlag(v.country)} {countryName(v.country)}
-                          </td>
-                          <td className="py-2 pr-3 text-muted-foreground">{v.region}</td>
-                          <td className="py-2 pr-3 text-muted-foreground">{v.city}</td>
-                          <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "\u{1F4F1}" : "\u{1F5A5}\uFE0F"}</td>
-                          <td className="py-2 text-muted-foreground">{v.os ?? ""}</td>
+            {/* Recent Visitors Table (admin only) */}
+            {isAdmin && (
+              <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+                <h2 className="text-sm font-semibold">접속자 상세</h2>
+                {data.recentVisitors.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b border-border text-left text-muted-foreground">
+                          <th className="pb-2 pr-3 font-medium">시간</th>
+                          <th className="pb-2 pr-3 font-medium">IP</th>
+                          <th className="pb-2 pr-3 font-medium">국가</th>
+                          <th className="pb-2 pr-3 font-medium">지역</th>
+                          <th className="pb-2 pr-3 font-medium">도시</th>
+                          <th className="pb-2 pr-3 font-medium">기기</th>
+                          <th className="pb-2 font-medium">OS</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
+                      </thead>
+                      <tbody>
+                        {data.recentVisitors.map((v, i) => (
+                          <tr key={i} className="border-b border-border/30 last:border-0">
+                            <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap">
+                              {new Date(v.time).toLocaleString("ko-KR", {
+                                month: "numeric",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                second: "2-digit",
+                              })}
+                            </td>
+                            <td className="py-2 pr-3 font-mono text-foreground/80">{v.ip}</td>
+                            <td className="py-2 pr-3 whitespace-nowrap">
+                              {countryFlag(v.country)} {countryName(v.country)}
+                            </td>
+                            <td className="py-2 pr-3 text-muted-foreground">{v.region}</td>
+                            <td className="py-2 pr-3 text-muted-foreground">{v.city}</td>
+                            <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "\u{1F4F1}" : "\u{1F5A5}\uFE0F"}</td>
+                            <td className="py-2 text-muted-foreground">{v.os ?? ""}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>

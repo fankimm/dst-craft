@@ -421,19 +421,17 @@ export function SettingsPage() {
             </div>
           </div>
 
-          {/* Insight (admin only) */}
-          {isAdmin && (
-            <a
-              href="/stats"
-              className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
-            >
-              <span className="flex items-center gap-2">
-                <BarChart3 className="size-4" />
-                {t(resolvedLocale, "insight")}
-              </span>
-              <ChevronRight className="size-4" />
-            </a>
-          )}
+          {/* Insight */}
+          <a
+            href="/stats"
+            className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
+          >
+            <span className="flex items-center gap-2">
+              <BarChart3 className="size-4" />
+              {t(resolvedLocale, "insight")}
+            </span>
+            <ChevronRight className="size-4" />
+          </a>
 
           {/* Release Notes */}
           <a

@@ -153,15 +153,17 @@ export function trackEvent(type: "search" | "pwa_install" | "share" | "github_st
   );
 }
 
-/** Fetch analytics data for the stats page (requires admin JWT) */
-export async function fetchAnalytics(token: string, days = 7, excludeCountry?: string): Promise<AnalyticsData | null> {
-  if (!WORKER_URL || !token) return null;
+/** Fetch analytics data for the stats page (public; admin token enables extra details) */
+export async function fetchAnalytics(token: string | null, days = 7, excludeCountry?: string): Promise<AnalyticsData | null> {
+  if (!WORKER_URL) return null;
 
   try {
     const params = new URLSearchParams({ days: String(days) });
     if (excludeCountry) params.set("excludeCountry", excludeCountry);
+    const fetchHeaders: Record<string, string> = {};
+    if (token) fetchHeaders.Authorization = `Bearer ${token}`;
     const res = await fetch(`${WORKER_URL}/stats?${params}`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: fetchHeaders,
     });
     if (!res.ok) return null;
     return await res.json();
