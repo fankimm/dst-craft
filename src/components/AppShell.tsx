@@ -92,6 +92,7 @@ export function AppShell() {
     }
     window.history.pushState({ _appNav: true }, "", url);
     setActiveTab(tabId);
+    window.dispatchEvent(new CustomEvent("dst-tab-switch"));
   }, [activeTab]);
 
   // Cookpot → Cooking recipe shortcut

@@ -135,6 +135,10 @@ export function BossesApp({
       const label = resolvedLocale === "ko" ? lootItem.nameKo : lootItem.nameEn;
       setLootTags([{ itemId: lootItem.id, label, image: lootItem.image.replace(/^\/images\//, "") }]);
       setSelectedCategory(null);
+    } else {
+      // Blueprint not found in boss loot — search by item name as fallback
+      setLootInput(pendingLootItemId.replaceAll("_", " "));
+      setSelectedCategory(null);
     }
     onClearPendingLoot?.();
   }, [pendingLootItemId, onClearPendingLoot, resolvedLocale]);

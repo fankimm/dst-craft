@@ -39,7 +39,11 @@ export function useCraftingState() {
     const onPopState = () => {
       // Skip if URL belongs to another tab (cooking, cookpot, settings)
       const tab = new URLSearchParams(window.location.search).get("tab");
-      if (tab) return;
+      if (tab) {
+        // Another tab is active — clear crafting selection so panel closes
+        setUrlState({ cat: null, item: null, char: null });
+        return;
+      }
       setUrlState(readUrlState());
     };
     window.addEventListener("popstate", onPopState);
@@ -49,9 +53,20 @@ export function useCraftingState() {
       if (e.persisted && !tab) setUrlState(readUrlState());
     };
     window.addEventListener("pageshow", onPageShow);
+    // Also listen for tab switches (pushState doesn't fire popstate)
+    const onTabSwitch = () => {
+      const tab = new URLSearchParams(window.location.search).get("tab");
+      if (tab) {
+        setUrlState({ cat: null, item: null, char: null });
+      } else {
+        setUrlState(readUrlState());
+      }
+    };
+    window.addEventListener("dst-tab-switch", onTabSwitch);
     return () => {
       window.removeEventListener("popstate", onPopState);
       window.removeEventListener("pageshow", onPageShow);
+      window.removeEventListener("dst-tab-switch", onTabSwitch);
     };
   }, []);
 
