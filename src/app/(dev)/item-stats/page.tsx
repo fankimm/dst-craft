@@ -28,7 +28,8 @@ function statLabel(key: keyof ItemStats): string {
   return map[key] ?? key;
 }
 
-function formatStat(key: string, value: number | string): string {
+function formatStat(key: string, value: number | string | { ko: string; en: string }): string {
+  if (typeof value === "object" && value !== null && "ko" in value) return value.ko;
   if (typeof value === "string") return value;
   if (key === "absorption" || key === "waterproof")
     return `${Math.round(value * 100)}%`;

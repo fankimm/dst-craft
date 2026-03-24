@@ -108,6 +108,70 @@ function DesignC({ data }: { data: typeof stats }) {
 }
 
 // ---------------------------------------------------------------------------
+// Beta indicator designs — 스탯 섹션에 "데이터 불완전" 표시
+// ---------------------------------------------------------------------------
+
+const sampleStats = [
+  { label: "공격력", value: "34" },
+  { label: "내구도", value: "150" },
+];
+
+function SampleStatRows() {
+  return (
+    <div className="flex flex-col gap-0.5">
+      {sampleStats.map((s) => (
+        <div key={s.label} className="flex items-center gap-2 text-xs">
+          <span className="text-muted-foreground">{s.label}</span>
+          <span className="font-semibold tabular-nums text-foreground">{s.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function BetaA() {
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center gap-1.5">
+        <span className="text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-600 dark:text-amber-400 rounded px-1.5 py-0.5 leading-none">Beta</span>
+      </div>
+      <SampleStatRows />
+    </div>
+  );
+}
+
+function BetaB() {
+  return (
+    <div className="space-y-1 opacity-60">
+      <SampleStatRows />
+    </div>
+  );
+}
+
+function BetaC() {
+  return (
+    <div className="space-y-1">
+      <div className="border border-dashed border-border rounded-md px-2.5 py-2 space-y-1">
+        <SampleStatRows />
+        <p className="text-[10px] text-muted-foreground">* 스탯 정보는 부정확할 수 있습니다</p>
+      </div>
+    </div>
+  );
+}
+
+function BetaD() {
+  return (
+    <div className="space-y-1">
+      <SampleStatRows />
+      <div className="inline-flex items-center gap-1 rounded-full border border-border bg-surface px-2 py-0.5 text-[10px] text-muted-foreground">
+        <span className="size-1.5 rounded-full bg-amber-500 shrink-0" />
+        스탯 Beta
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
 
@@ -122,6 +186,30 @@ export default function StatDesignsPage() {
     <div className="min-h-screen bg-background text-foreground p-4 max-w-md mx-auto space-y-8">
       <h1 className="text-lg font-bold">스탯 디자인 비교</h1>
 
+      {/* Beta indicator designs */}
+      <section className="space-y-4">
+        <h2 className="text-sm font-medium text-muted-foreground border-b border-border pb-1">Beta 표시 디자인</h2>
+        <div className="space-y-5">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-2">A. 상단 Beta 뱃지</p>
+            <BetaA />
+          </div>
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-2">B. 전체 투명도 (opacity-60)</p>
+            <BetaB />
+          </div>
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-2">C. 점선 테두리 + 안내문</p>
+            <BetaC />
+          </div>
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-2">D. 하단 TagChip 스타일</p>
+            <BetaD />
+          </div>
+        </div>
+      </section>
+
+      {/* Original stat designs */}
       {datasets.map((ds) => (
         <section key={ds.label} className="space-y-4">
           <h2 className="text-sm font-medium text-muted-foreground border-b border-border pb-1">{ds.label}</h2>

@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.7.2",
+    date: "2026-03-24",
+    dev: [
+      "ItemDetail에 아이템 스탯 표시 추가 (공격력, 내구도, 방어력 등)",
+      "item-stats.ts 데이터 보강 (slots, usage 다국어, shadow_bonus 실제 데미지 계산 표시)",
+      "Beta 뱃지로 스탯 데이터 불완전 표시",
+      "DevMenu 외부 클릭 감지 mousedown → pointerdown 수정 (모바일 대응)",
+      "dev/stat-designs 페이지에 Beta 표시 디자인 비교 추가",
+    ],
+    changes: {
+      ko: [
+        "아이템 상세에 스탯 정보 표시 (공격력, 내구도, 방어력, 이동속도 등)",
+        "스탯 데이터 보강 (107개 → 확장)",
+      ],
+      en: [
+        "Item detail now shows stats (damage, durability, armor, speed, etc.)",
+        "Expanded item stat data coverage",
+      ],
+    },
+  },
+  {
     version: "0.7.1",
     date: "2026-03-11",
     dev: [
