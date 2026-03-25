@@ -685,6 +685,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         message,
         time: new Date().toISOString(),
         country: request.headers.get("CF-IPCountry") ?? "",
+        ip,
       });
 
       await redisPipeline(env, [
