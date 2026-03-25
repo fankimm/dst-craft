@@ -5,6 +5,8 @@ interface Env {
   GOOGLE_CLIENT_ID: string;
   JWT_SECRET: string;
   ADMIN_EMAILS: string;
+  TELEGRAM_BOT_TOKEN: string;
+  TELEGRAM_CHAT_ID: string;
 }
 
 function corsHeaders(origin: string, allowed: string): HeadersInit {
@@ -695,6 +697,17 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         ["LTRIM", "dst:feedback", "0", "499"],
         ["SET", rateLimitKey, "1", "EX", "3600"],
       ]);
+
+      // Telegram notification (fire-and-forget)
+      if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
+        const country = request.headers.get("CF-IPCountry") ?? "";
+        const text = `📩 새 피드백\n\n${message}\n\n🌍 ${country} · 🕐 ${new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })}`;
+        fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text }),
+        }).catch(() => {});
+      }
 
       return new Response(JSON.stringify({ ok: true }), {
         headers: { ...headers, "Content-Type": "application/json" },
