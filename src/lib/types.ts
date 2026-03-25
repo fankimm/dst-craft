@@ -39,6 +39,10 @@ export type CategoryId =
   | "fishing"
   | "seafaring"
   | "beefalo"
+  | "celestial"
+  | "lunar_forge"
+  | "shadow_forge"
+  | "critter_lab"
   | "winter"
   | "summer"
   | "rain";

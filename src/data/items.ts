@@ -96,7 +96,7 @@ export const allItems: CraftingItem[] = [
     name: "Garlic Powder",
     description: "The best offense is defensive halitosis.",
     image: "spice_garlic.png",
-    category: ["structures"],
+    category: ["cooking"],
     station: "portableblender",
     materials: [
       { materialId: "garlic", quantity: 3 },
@@ -110,7 +110,7 @@ export const allItems: CraftingItem[] = [
     name: "Honey Crystals",
     description: "A dash of sweetness for peace of mind.",
     image: "spice_sugar.png",
-    category: ["structures"],
+    category: ["cooking"],
     station: "portableblender",
     materials: [
       { materialId: "honey", quantity: 3 },
@@ -124,7 +124,7 @@ export const allItems: CraftingItem[] = [
     name: "Chili Flakes",
     description: "Spicy flakes that pack a punch.",
     image: "spice_chili.png",
-    category: ["structures"],
+    category: ["cooking"],
     station: "portableblender",
     materials: [
       { materialId: "pepper", quantity: 3 },
@@ -138,7 +138,7 @@ export const allItems: CraftingItem[] = [
     name: "Seasoning Salt",
     description: "A salty addition for a hearty meal.",
     image: "spice_salt.png",
-    category: ["structures"],
+    category: ["cooking"],
     station: "portableblender",
     materials: [
       { materialId: "saltrock", quantity: 3 },
@@ -1256,7 +1256,7 @@ export const allItems: CraftingItem[] = [
     name: "Moonshots",
     description: "Shatter expectations.",
     image: "slingshotammo_moonglass.png",
-    category: ["character"],
+    category: ["character", "celestial"],
     station: "celestial",
     materials: [
       { materialId: "moonglass", quantity: 1 },
@@ -1271,7 +1271,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightshade Husk Rounds",
     description: "Settle your vine-detta!",
     image: "slingshotammo_lunarplanthusk.png",
-    category: ["character"],
+    category: ["character", "lunar_forge"],
     station: "lunar_forge",
     materials: [
       { materialId: "lunarplant_husk", quantity: 1 },
@@ -1286,7 +1286,7 @@ export const allItems: CraftingItem[] = [
     name: "Pure Brilliance Rounds",
     description: "You'll be over the Moon with these.",
     image: "slingshotammo_purebrilliance.png",
-    category: ["character"],
+    category: ["character", "lunar_forge"],
     station: "lunar_forge",
     materials: [
       { materialId: "purebrilliance", quantity: 1 },
@@ -1301,7 +1301,7 @@ export const allItems: CraftingItem[] = [
     name: "Ickies",
     description: "Sticky and icky!",
     image: "slingshotammo_gelblob.png",
-    category: ["character"],
+    category: ["character", "shadow_forge"],
     station: "shadow_forge",
     materials: [
       { materialId: "gelblob_bottle", quantity: 1 },
@@ -1316,7 +1316,7 @@ export const allItems: CraftingItem[] = [
     name: "Pure Horror Rounds",
     description: "Reinforcements against dark forces.",
     image: "slingshotammo_horrorfuel.png",
-    category: ["character"],
+    category: ["character", "shadow_forge"],
     station: "shadow_forge",
     materials: [
       { materialId: "horrorfuel", quantity: 1 },
@@ -1491,7 +1491,7 @@ export const allItems: CraftingItem[] = [
     name: "Slingshot Handle Voidcloth",
     description: "",
     image: "slingshot_handle_voidcloth.png",
-    category: ["character"],
+    category: ["character", "shadow_forge"],
     station: "shadow_forge",
     materials: [
       { materialId: "voidcloth", quantity: 1 },
@@ -7619,7 +7619,7 @@ export const allItems: CraftingItem[] = [
     name: "Kittykit",
     description: "Befriend a clever Kittykit.",
     image: "critter_kitten_builder.png",
-    category: ["structures"],
+    category: ["critter_lab"],
     station: "critter_lab",
     materials: [
       { materialId: "coontail", quantity: 1 },
@@ -7633,7 +7633,7 @@ export const allItems: CraftingItem[] = [
     name: "Vargling",
     description: "Befriend a loyal Vargling.",
     image: "critter_puppy_builder.png",
-    category: ["structures"],
+    category: ["critter_lab"],
     station: "critter_lab",
     materials: [
       { materialId: "houndstooth", quantity: 1 },
@@ -7647,7 +7647,7 @@ export const allItems: CraftingItem[] = [
     name: "Ewelet",
     description: "Befriend a fluffy Ewelet.",
     image: "critter_lamb_builder.png",
-    category: ["structures"],
+    category: ["critter_lab"],
     station: "critter_lab",
     materials: [
       { materialId: "steelwool", quantity: 1 },
@@ -7661,7 +7661,7 @@ export const allItems: CraftingItem[] = [
     name: "Giblet",
     description: "Befriend a hoppy Giblet.",
     image: "critter_perdling_builder.png",
-    category: ["structures"],
+    category: ["critter_lab"],
     station: "critter_lab",
     materials: [
       { materialId: "featherhat", quantity: 1 },
@@ -7675,7 +7675,7 @@ export const allItems: CraftingItem[] = [
     name: "Broodling",
     description: "Befriend a noble Broodling.",
     image: "critter_dragonling_builder.png",
-    category: ["structures"],
+    category: ["critter_lab"],
     station: "critter_lab",
     materials: [
       { materialId: "lavae_cocoon", quantity: 1 },
@@ -7689,7 +7689,7 @@ export const allItems: CraftingItem[] = [
     name: "Glomglom",
     description: "Befriend a bouncy Glomglom.",
     image: "critter_glomling_builder.png",
-    category: ["structures"],
+    category: ["critter_lab"],
     station: "critter_lab",
     materials: [
       { materialId: "glommerfuel", quantity: 1 },
@@ -7703,7 +7703,7 @@ export const allItems: CraftingItem[] = [
     name: "Mothling",
     description: "Befriend a delicate Mothling.",
     image: "critter_lunarmothling_builder.png",
-    category: ["structures"],
+    category: ["critter_lab"],
     station: "critter_lab",
     materials: [
       { materialId: "moonbutterfly", quantity: 1 },
@@ -7717,7 +7717,7 @@ export const allItems: CraftingItem[] = [
     name: "Friendly Peeper",
     description: "Summon a friendly ocular companion.",
     image: "critter_eyeofterror_builder.png",
-    category: ["structures"],
+    category: ["critter_lab"],
     station: "critter_lab",
     materials: [
       { materialId: "milkywhites", quantity: 1 },
@@ -7731,7 +7731,7 @@ export const allItems: CraftingItem[] = [
     name: "Moon Rock Idol",
     description: "A key figure.",
     image: "moonrockidol.png",
-    category: ["structures"],
+    category: ["celestial", "magic"],
     station: "celestial",
     materials: [
       { materialId: "moonrocknugget", quantity: 1 },
@@ -7745,7 +7745,7 @@ export const allItems: CraftingItem[] = [
     name: "Portal Paraphernalia",
     description: "The best laid plans.",
     image: "multiplayer_portal_moonrock_constr_plans.png",
-    category: ["structures"],
+    category: ["celestial", "structures"],
     station: "celestial",
     materials: [
       { materialId: "boards", quantity: 1 },
@@ -7759,7 +7759,7 @@ export const allItems: CraftingItem[] = [
     name: "Lunar Funcap",
     description: "It's like eating all kinds of mushrooms.",
     image: "moon_mushroomhat.png",
-    category: ["structures"],
+    category: ["celestial", "clothing"],
     station: "celestial",
     materials: [
       { materialId: "moon_cap", quantity: 4 },
@@ -7773,7 +7773,7 @@ export const allItems: CraftingItem[] = [
     name: "Bath Bomb",
     description: "Flowers, for springs? Groundbreaking.",
     image: "bathbomb.png",
-    category: ["structures"],
+    category: ["celestial"],
     station: "celestial",
     materials: [
       { materialId: "moon_tree_blossom", quantity: 1 },
@@ -7787,7 +7787,7 @@ export const allItems: CraftingItem[] = [
     name: "Moon Glass Axe",
     description: "Fragile but effective.",
     image: "moonglassaxe.png",
-    category: ["tools"],
+    category: ["celestial", "tools"],
     station: "celestial",
     materials: [
       { materialId: "twigs", quantity: 2 },
@@ -7800,7 +7800,7 @@ export const allItems: CraftingItem[] = [
     name: "Glass Cutter",
     description: "Cutting edge weaponry.",
     image: "glasscutter.png",
-    category: ["weapons"],
+    category: ["celestial", "weapons"],
     station: "celestial",
     materials: [
       { materialId: "log", quantity: 1 },
@@ -7813,7 +7813,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightsmithy Kit",
     description: "Forge otherworldly items.",
     image: "lunar_forge_kit.png",
-    category: ["structures"],
+    category: ["celestial", "prototypers"],
     station: "celestial",
     materials: [
       { materialId: "moonrocknugget", quantity: 5 },
@@ -7828,7 +7828,7 @@ export const allItems: CraftingItem[] = [
     name: "Carpentry Blade Moonglass",
     description: "",
     image: "carpentry_blade_moonglass.png",
-    category: ["structures"],
+    category: ["celestial"],
     station: "celestial",
     materials: [
       { materialId: "moonglass", quantity: 6 },
@@ -7842,7 +7842,7 @@ export const allItems: CraftingItem[] = [
     name: "Moon Crater Turf",
     description: "The cratered surface of the moon.",
     image: "turf_meteor.png",
-    category: ["structures"],
+    category: ["celestial", "decorations"],
     station: "celestial",
     materials: [
       { materialId: "moonrocknugget", quantity: 1 },
@@ -7856,7 +7856,7 @@ export const allItems: CraftingItem[] = [
     name: "Mutated Fungal Turf",
     description: "The mutated fungal floor of a cave.",
     image: "turf_fungus_moon.png",
-    category: ["structures"],
+    category: ["celestial", "decorations"],
     station: "celestial",
     materials: [
       { materialId: "moonrocknugget", quantity: 1 },
@@ -7870,7 +7870,7 @@ export const allItems: CraftingItem[] = [
     name: "Moon Moth Figure Sketch",
     description: "A sculpture sketch of a Moon Moth.",
     image: "chesspiece_butterfly_sketch.png",
-    category: ["structures"],
+    category: ["celestial", "decorations"],
     station: "celestial",
     materials: [
       { materialId: "papyrus", quantity: 1 },
@@ -7883,7 +7883,7 @@ export const allItems: CraftingItem[] = [
     name: "\"Moon\" Figure Sketch",
     description: "A sculpture sketch of the moon itself.",
     image: "chesspiece_moon_sketch.png",
-    category: ["structures"],
+    category: ["celestial", "decorations"],
     station: "celestial",
     materials: [
       { materialId: "papyrus", quantity: 1 },
@@ -7896,7 +7896,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightshade Armor",
     description: "Surround yourself in formidable lunar leaves.",
     image: "armor_lunarplant.png",
-    category: ["structures"],
+    category: ["lunar_forge", "armor"],
     station: "lunar_forge",
     materials: [
       { materialId: "purebrilliance", quantity: 4 },
@@ -7910,7 +7910,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightshade Helm",
     description: "Luminescent protection for your precious cranium.",
     image: "lunarplanthat.png",
-    category: ["structures"],
+    category: ["lunar_forge", "armor"],
     station: "lunar_forge",
     materials: [
       { materialId: "purebrilliance", quantity: 4 },
@@ -7924,7 +7924,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightshade Bomb",
     description: "Use unstable lunar energy for explosive results.",
     image: "bomb_lunarplant.png",
-    category: ["structures"],
+    category: ["lunar_forge", "weapons"],
     station: "lunar_forge",
     materials: [
       { materialId: "purebrilliance", quantity: 4 },
@@ -7939,7 +7939,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightshade Staff",
     description: "Stay rooted to the spot and attack from afar.",
     image: "staff_lunarplant.png",
-    category: ["structures"],
+    category: ["lunar_forge", "weapons"],
     station: "lunar_forge",
     materials: [
       { materialId: "purebrilliance", quantity: 3 },
@@ -7953,7 +7953,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightshade Sword",
     description: "A sword of lunar light.",
     image: "sword_lunarplant.png",
-    category: ["structures"],
+    category: ["lunar_forge", "weapons"],
     station: "lunar_forge",
     materials: [
       { materialId: "purebrilliance", quantity: 4 },
@@ -7967,7 +7967,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightshade Smasher",
     description: "Mine and demolish to your heart's content.",
     image: "pickaxe_lunarplant.png",
-    category: ["structures"],
+    category: ["lunar_forge", "tools"],
     station: "lunar_forge",
     materials: [
       { materialId: "purebrilliance", quantity: 1 },
@@ -7981,7 +7981,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightshade Shoevel",
     description: "The groundbreaking results of cross-pollination between a shovel and a garden hoe.",
     image: "shovel_lunarplant.png",
-    category: ["structures"],
+    category: ["lunar_forge", "tools"],
     station: "lunar_forge",
     materials: [
       { materialId: "purebrilliance", quantity: 1 },
@@ -7995,7 +7995,7 @@ export const allItems: CraftingItem[] = [
     name: "Brightshade Repair Kit",
     description: "Fix up damaged equipment.",
     image: "lunarplant_kit.png",
-    category: ["structures"],
+    category: ["lunar_forge"],
     station: "lunar_forge",
     materials: [
       { materialId: "purebrilliance", quantity: 1 },
@@ -8009,7 +8009,7 @@ export const allItems: CraftingItem[] = [
     name: "Beargerfur Sack",
     description: "",
     image: "beargerfur_sack.png",
-    category: ["structures"],
+    category: ["lunar_forge", "storage"],
     station: "lunar_forge",
     materials: [
       { materialId: "security_pulse_cage_full", quantity: 1 },
@@ -8025,7 +8025,7 @@ export const allItems: CraftingItem[] = [
     name: "Deerclopseyeball Sentryward Kit",
     description: "",
     image: "deerclopseyeball_sentryward_kit.png",
-    category: ["structures"],
+    category: ["lunar_forge", "structures"],
     station: "lunar_forge",
     materials: [
       { materialId: "security_pulse_cage_full", quantity: 1 },
@@ -8041,7 +8041,7 @@ export const allItems: CraftingItem[] = [
     name: "Houndstooth Blowpipe",
     description: "",
     image: "houndstooth_blowpipe.png",
-    category: ["structures"],
+    category: ["lunar_forge", "weapons"],
     station: "lunar_forge",
     materials: [
       { materialId: "security_pulse_cage_full", quantity: 1 },
@@ -8104,7 +8104,7 @@ export const allItems: CraftingItem[] = [
     name: "Armor Voidcloth",
     description: "",
     image: "armor_voidcloth.png",
-    category: ["structures"],
+    category: ["shadow_forge", "armor"],
     station: "shadow_forge",
     materials: [
       { materialId: "horrorfuel", quantity: 4 },
@@ -8118,7 +8118,7 @@ export const allItems: CraftingItem[] = [
     name: "Voidclothhat",
     description: "",
     image: "voidclothhat.png",
-    category: ["structures"],
+    category: ["shadow_forge", "armor"],
     station: "shadow_forge",
     materials: [
       { materialId: "horrorfuel", quantity: 4 },
@@ -8132,7 +8132,7 @@ export const allItems: CraftingItem[] = [
     name: "Voidcloth Umbrella",
     description: "",
     image: "voidcloth_umbrella.png",
-    category: ["structures"],
+    category: ["shadow_forge", "clothing", "rain"],
     station: "shadow_forge",
     materials: [
       { materialId: "horrorfuel", quantity: 5 },
@@ -8146,7 +8146,7 @@ export const allItems: CraftingItem[] = [
     name: "Voidcloth Scythe",
     description: "",
     image: "voidcloth_scythe.png",
-    category: ["structures"],
+    category: ["shadow_forge", "tools"],
     station: "shadow_forge",
     materials: [
       { materialId: "horrorfuel", quantity: 3 },
@@ -8160,7 +8160,7 @@ export const allItems: CraftingItem[] = [
     name: "Voidcloth Boomerang",
     description: "",
     image: "voidcloth_boomerang.png",
-    category: ["structures"],
+    category: ["shadow_forge", "weapons"],
     station: "shadow_forge",
     materials: [
       { materialId: "horrorfuel", quantity: 4 },
@@ -8174,7 +8174,7 @@ export const allItems: CraftingItem[] = [
     name: "Voidcloth Kit",
     description: "",
     image: "voidcloth_kit.png",
-    category: ["structures"],
+    category: ["shadow_forge"],
     station: "shadow_forge",
     materials: [
       { materialId: "horrorfuel", quantity: 1 },
@@ -8188,7 +8188,7 @@ export const allItems: CraftingItem[] = [
     name: "Beeswax Spray",
     description: "",
     image: "beeswax_spray.png",
-    category: ["structures"],
+    category: ["shadow_forge"],
     station: "shadow_forge",
     materials: [
       { materialId: "horrorfuel", quantity: 5 },
@@ -8203,7 +8203,7 @@ export const allItems: CraftingItem[] = [
     name: "Shadow Beef Bell",
     description: "",
     image: "shadow_beef_bell.png",
-    category: ["structures"],
+    category: ["shadow_forge", "beefalo"],
     station: "shadow_forge",
     materials: [
       { materialId: "shadowheart_infused", quantity: 1 },
@@ -8219,7 +8219,7 @@ export const allItems: CraftingItem[] = [
     name: "Saddle Shadow",
     description: "",
     image: "saddle_shadow.png",
-    category: ["structures"],
+    category: ["shadow_forge", "beefalo"],
     station: "shadow_forge",
     materials: [
       { materialId: "shadowheart_infused", quantity: 1 },
@@ -8235,7 +8235,7 @@ export const allItems: CraftingItem[] = [
     name: "Shadow Battleaxe",
     description: "",
     image: "shadow_battleaxe.png",
-    category: ["structures"],
+    category: ["shadow_forge", "weapons"],
     station: "shadow_forge",
     materials: [
       { materialId: "shadowheart_infused", quantity: 1 },
@@ -8251,7 +8251,7 @@ export const allItems: CraftingItem[] = [
     name: "Gelblob Storage Kit",
     description: "",
     image: "gelblob_storage_kit.png",
-    category: ["structures"],
+    category: ["shadow_forge", "storage"],
     station: "shadow_forge",
     materials: [
       { materialId: "gelblob_bottle", quantity: 3 },
@@ -8265,7 +8265,7 @@ export const allItems: CraftingItem[] = [
     name: "Carved Hornucopia",
     description: "A sculpture for a starving artist.",
     image: "chesspiece_hornucopia.png",
-    category: ["structures"],
+    category: ["decorations"],
     station: "potter_wheel",
     materials: [
       { materialId: "rocks", quantity: 2 },
@@ -8278,7 +8278,7 @@ export const allItems: CraftingItem[] = [
     name: "Bubble Pipe Carving",
     description: "Stick this on your wheel and sculpt it.",
     image: "chesspiece_pipe.png",
-    category: ["structures"],
+    category: ["decorations"],
     station: "potter_wheel",
     materials: [
       { materialId: "rocks", quantity: 2 },
