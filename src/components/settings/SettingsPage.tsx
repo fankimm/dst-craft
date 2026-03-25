@@ -27,36 +27,43 @@ function countryName(code: string, locale: string): string {
   return name && name !== upper ? name : upper;
 }
 
-/** Slide-up ticker — 한 줄씩 위로 슬라이드하며 순환 */
+/** Slide-up ticker — 현재 항목은 위로 퇴장, 다음 항목은 아래에서 등장 */
 function CountryTicker({ items }: { items: { rank: number; flag: string; name: string; count: number }[] }) {
   const [index, setIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(-1);
 
   useEffect(() => {
     if (items.length <= 1) return;
     const interval = setInterval(() => {
+      setPrevIndex(index);
       setIndex((prev) => (prev + 1) % items.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [items.length]);
+  }, [items.length, index]);
 
   return (
     <div className="rounded-lg border border-border bg-card px-3 overflow-hidden h-9 relative">
-      {items.map((item, i) => (
-        <div
-          key={item.rank}
-          className={cn(
-            "absolute inset-x-3 flex items-center gap-2 h-9 transition-all duration-500 ease-in-out",
-            i === index && "translate-y-0 opacity-100",
-            i !== index && "translate-y-full opacity-0",
-          )}
-        >
-          <span className="text-xs font-bold text-muted-foreground w-4 text-right">{item.rank}</span>
-          <span className="text-sm">{item.flag}</span>
-          <span className="text-sm font-medium truncate">{item.name}</span>
-          <span className="flex-1" />
-          <span className="text-xs text-muted-foreground tabular-nums">{item.count.toLocaleString()}</span>
-        </div>
-      ))}
+      {items.map((item, i) => {
+        const isCurrent = i === index;
+        const isLeaving = i === prevIndex;
+        return (
+          <div
+            key={item.rank}
+            className={cn(
+              "absolute inset-x-3 flex items-center gap-2 h-9 transition-all duration-500 ease-in-out",
+              isCurrent && "translate-y-0 opacity-100",
+              isLeaving && "-translate-y-full opacity-0",
+              !isCurrent && !isLeaving && "translate-y-full opacity-0",
+            )}
+          >
+            <span className="text-xs font-bold text-muted-foreground w-4 text-right">{item.rank}</span>
+            <span className="text-sm">{item.flag}</span>
+            <span className="text-sm font-medium truncate">{item.name}</span>
+            <span className="flex-1" />
+            <span className="text-xs text-muted-foreground tabular-nums">{item.count.toLocaleString()}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
