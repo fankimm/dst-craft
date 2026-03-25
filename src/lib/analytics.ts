@@ -143,6 +143,22 @@ export function trackItemClick(itemId: string) {
   );
 }
 
+/** Submit anonymous feedback */
+export async function submitFeedback(message: string): Promise<boolean> {
+  if (!WORKER_URL) return false;
+  try {
+    const res = await fetch(`${WORKER_URL}/feedback`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message }),
+    });
+    if (res.status === 429) return false;
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 /** Track a generic event */
 export function trackEvent(type: "search" | "pwa_install" | "share" | "github_star_click", skipTracking?: boolean) {
   if (!WORKER_URL || skipTracking) return;

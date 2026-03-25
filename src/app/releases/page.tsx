@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.7.3",
+    date: "2026-03-25",
+    dev: [
+      "설정 페이지에 익명 피드백(의견 보내기) 섹션 추가",
+      "Worker POST /feedback 엔드포인트 추가 (IP 기반 시간당 1회 제한)",
+      "Worker GET /feedback 어드민 전용 피드백 조회 엔드포인트 추가",
+      "analytics.ts에 submitFeedback 클라이언트 함수 추가",
+      "i18n에 feedback 관련 번역 키 6개 추가 (ko, en)",
+    ],
+    changes: {
+      ko: [
+        "설정 페이지에 익명 의견 보내기 기능 추가 (버그 제보, 기능 요청 등)",
+      ],
+      en: [
+        "Added anonymous feedback feature in settings (bug reports, feature requests, etc.)",
+      ],
+    },
+  },
+  {
     version: "0.7.2",
     date: "2026-03-24",
     dev: [

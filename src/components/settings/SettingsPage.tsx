@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { Sun, Moon, Monitor, ChevronRight, LogOut, BarChart3, Download, Share, Plus, ChevronDown, Heart, Star } from "lucide-react";
+import { Sun, Moon, Monitor, ChevronRight, LogOut, BarChart3, Download, Share, Plus, ChevronDown, Heart, Star, MessageSquare, Send } from "lucide-react";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import type { LocaleSetting } from "@/lib/i18n";
@@ -10,7 +10,7 @@ import { t, supportedLocales, localeLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { APP_VERSION } from "@/lib/version";
 import { Footer } from "../crafting/Footer";
-import { fetchPublicRating, submitRating, fetchTopCountries } from "@/lib/analytics";
+import { fetchPublicRating, submitRating, fetchTopCountries, submitFeedback } from "@/lib/analytics";
 import { Globe } from "lucide-react";
 
 /** ISO 3166-1 alpha-2 → flag emoji */
@@ -120,6 +120,29 @@ export function SettingsPage() {
       if (data.ratings) setRatingDist(data.ratings);
     }
   }, [resolvedLocale]);
+
+  // Feedback state
+  const [feedbackMsg, setFeedbackMsg] = useState("");
+  const [feedbackSending, setFeedbackSending] = useState(false);
+
+  const handleFeedback = useCallback(async () => {
+    const msg = feedbackMsg.trim();
+    if (!msg) {
+      setToast(t(resolvedLocale, "feedback_empty"));
+      setTimeout(() => setToast(null), 2000);
+      return;
+    }
+    setFeedbackSending(true);
+    const ok = await submitFeedback(msg);
+    setFeedbackSending(false);
+    if (ok) {
+      setFeedbackMsg("");
+      setToast(t(resolvedLocale, "feedback_thanks"));
+    } else {
+      setToast(t(resolvedLocale, "feedback_too_many"));
+    }
+    setTimeout(() => setToast(null), 2000);
+  }, [feedbackMsg, resolvedLocale]);
 
   // PWA install state
   const [isPwa, setIsPwa] = useState(true); // default true to avoid flash
@@ -418,6 +441,34 @@ export function SettingsPage() {
                   })}
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* Feedback */}
+          <div className="space-y-2">
+            <h2 className="text-sm font-semibold flex items-center gap-2">
+              <MessageSquare className="size-4" />
+              {t(resolvedLocale, "feedback_title")}
+            </h2>
+            <div className="rounded-lg border border-border p-3 space-y-2">
+              <textarea
+                value={feedbackMsg}
+                onChange={(e) => setFeedbackMsg(e.target.value.slice(0, 1000))}
+                placeholder={t(resolvedLocale, "feedback_placeholder")}
+                rows={3}
+                className="w-full resize-none rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-foreground/20"
+              />
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">{feedbackMsg.length}/1000</span>
+                <button
+                  onClick={handleFeedback}
+                  disabled={feedbackSending || !feedbackMsg.trim()}
+                  className="flex items-center gap-1.5 rounded-md bg-foreground text-background px-3 py-1.5 text-xs font-medium transition-colors hover:bg-foreground/90 disabled:opacity-40 disabled:pointer-events-none"
+                >
+                  <Send className="size-3.5" />
+                  {t(resolvedLocale, "feedback_submit")}
+                </button>
+              </div>
             </div>
           </div>
 

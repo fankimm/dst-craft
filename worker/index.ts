@@ -658,5 +658,66 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
     }
 
+    // POST /feedback — submit anonymous feedback
+    if (url.pathname === "/feedback" && request.method === "POST") {
+      const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+
+      // Rate limit: 1 feedback per IP per hour
+      const rateLimitKey = `dst:feedback:rl:${ip}`;
+      const rlCheck = await redisPipeline(env, [["GET", rateLimitKey]]) as { result: any }[];
+      if (rlCheck[0]?.result) {
+        return new Response(JSON.stringify({ error: "Too many requests" }), {
+          status: 429,
+          headers: { ...headers, "Content-Type": "application/json" },
+        });
+      }
+
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const message = (body.message as string)?.trim().slice(0, 1000);
+      if (!message) {
+        return new Response(JSON.stringify({ error: "Message is required" }), {
+          status: 400,
+          headers: { ...headers, "Content-Type": "application/json" },
+        });
+      }
+
+      const entry = JSON.stringify({
+        message,
+        time: new Date().toISOString(),
+        country: request.headers.get("CF-IPCountry") ?? "",
+      });
+
+      await redisPipeline(env, [
+        ["LPUSH", "dst:feedback", entry],
+        ["LTRIM", "dst:feedback", "0", "499"],
+        ["SET", rateLimitKey, "1", "EX", "3600"],
+      ]);
+
+      return new Response(JSON.stringify({ ok: true }), {
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
+
+    // GET /feedback — list feedback (admin only)
+    if (url.pathname === "/feedback" && request.method === "GET") {
+      const auth = request.headers.get("Authorization") ?? "";
+      if (!auth.startsWith("Bearer ")) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const jwtPayload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+      if (!jwtPayload || jwtPayload.role !== "admin") {
+        return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const limit = Math.min(Number(url.searchParams.get("limit") ?? "50"), 500);
+      const results = await redisPipeline(env, [["LRANGE", "dst:feedback", "0", `${limit - 1}`]]) as { result: any }[];
+      const raw = (results[0]?.result as string[]) ?? [];
+      const items = raw.map((r: string) => { try { return JSON.parse(r); } catch { return null; } }).filter(Boolean);
+
+      return new Response(JSON.stringify({ items }), {
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "no-store" },
+      });
+    }
+
     return new Response("Not Found", { status: 404, headers });
 }

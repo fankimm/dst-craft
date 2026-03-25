@@ -153,6 +153,12 @@ const translations = {
     effect_moisture_immunity: "방수",
     effect_heat_resistance: "내열",
     effect_cold_resistance: "내한",
+    feedback_title: "의견 보내기",
+    feedback_placeholder: "버그 제보, 기능 요청, 건의사항 등을 자유롭게 남겨주세요 (익명)",
+    feedback_submit: "보내기",
+    feedback_thanks: "의견이 전달되었습니다!",
+    feedback_too_many: "잠시 후 다시 시도해주세요",
+    feedback_empty: "내용을 입력해주세요",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -294,6 +300,12 @@ const translations = {
     effect_moisture_immunity: "Waterproof",
     effect_heat_resistance: "Heat Resist",
     effect_cold_resistance: "Cold Resist",
+    feedback_title: "Send Feedback",
+    feedback_placeholder: "Bug reports, feature requests, suggestions... (anonymous)",
+    feedback_submit: "Send",
+    feedback_thanks: "Feedback sent!",
+    feedback_too_many: "Please try again later",
+    feedback_empty: "Please enter a message",
   },
 } as const;
 
