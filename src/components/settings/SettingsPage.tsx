@@ -456,7 +456,7 @@ export function SettingsPage() {
                 onChange={(e) => setFeedbackMsg(e.target.value.slice(0, 1000))}
                 placeholder={t(resolvedLocale, "feedback_placeholder")}
                 rows={3}
-                className="w-full resize-none rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-foreground/20"
+                className="w-full resize-none rounded-md border border-border bg-card px-3 py-2 text-base text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-foreground/20"
               />
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">{feedbackMsg.length}/1000</span>

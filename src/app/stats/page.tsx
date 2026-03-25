@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchAnalytics, type AnalyticsData } from "@/lib/analytics";
+import { fetchAnalytics, fetchFeedback, type AnalyticsData } from "@/lib/analytics";
 import { useAuth } from "@/hooks/use-auth";
 import {
   BarChart3, Globe, Users, Eye, RefreshCw,
   Smartphone, Monitor, Clock, Search, Download,
-  RotateCcw, TrendingUp, ExternalLink, Star,
+  RotateCcw, TrendingUp, ExternalLink, Star, MessageSquare,
 } from "lucide-react";
 import { BackToHome } from "@/components/ui/BackToHome";
 import { cn } from "@/lib/utils";
@@ -214,6 +214,7 @@ export default function StatsPage() {
   const [days, setDays] = useState(7);
   const [excludeKR, setExcludeKR] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [feedbackList, setFeedbackList] = useState<{ message: string; time: string; country: string }[]>([]);
 
   function showToast(msg: string) {
     setToast(msg);
@@ -225,11 +226,12 @@ export default function StatsPage() {
     const result = await fetchAnalytics(token ?? null, d, exclude ? "KR" : undefined);
     setData(result);
     setLoading(false);
-    if (result && isAdmin) {
+    if (result && isAdmin && token) {
       const extra = result as any;
       const purged = extra._purgedCount ?? 0;
       const ip = extra._adminIp ?? "";
       showToast(purged > 0 ? `${ip} — ${purged}건 삭제` : `로드 완료 · ${ip}`);
+      fetchFeedback(token).then(setFeedbackList);
     }
   }
 
@@ -471,6 +473,27 @@ export default function StatsPage() {
                 </div>
               )}
             </div>
+
+            {/* Feedback (admin only) */}
+            {isAdmin && feedbackList.length > 0 && (
+              <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+                <h2 className="text-sm font-semibold flex items-center gap-2">
+                  <MessageSquare className="size-4" />
+                  사용자 피드백 ({feedbackList.length})
+                </h2>
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {feedbackList.map((fb, i) => (
+                    <div key={i} className="rounded-md border border-border/50 p-3 space-y-1">
+                      <p className="text-sm text-foreground whitespace-pre-wrap break-words">{fb.message}</p>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <span>{new Date(fb.time).toLocaleString("ko-KR")}</span>
+                        {fb.country && <span>{countryFlag(fb.country)} {countryName(fb.country)}</span>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Recent Visitors Table (admin only) */}
             {isAdmin && (

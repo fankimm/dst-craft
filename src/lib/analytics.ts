@@ -159,6 +159,21 @@ export async function submitFeedback(message: string): Promise<boolean> {
   }
 }
 
+/** Fetch feedback list (admin only) */
+export async function fetchFeedback(token: string): Promise<{ message: string; time: string; country: string }[]> {
+  if (!WORKER_URL) return [];
+  try {
+    const res = await fetch(`${WORKER_URL}/feedback`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return [];
+    const data = await res.json() as { items: { message: string; time: string; country: string }[] };
+    return data.items ?? [];
+  } catch {
+    return [];
+  }
+}
+
 /** Track a generic event */
 export function trackEvent(type: "search" | "pwa_install" | "share" | "github_star_click", skipTracking?: boolean) {
   if (!WORKER_URL || skipTracking) return;
