@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { Sun, Moon, Monitor, ChevronRight, LogOut, BarChart3, Download, Share, Plus, ChevronDown, Heart, Star, MessageSquare, Send } from "lucide-react";
+import { Sun, Moon, Monitor, ChevronRight, LogOut, BarChart3, Download, Share, Plus, ChevronDown, Heart, Star, MessageSquare, Send, Github, Mail } from "lucide-react";
 import { useSettings, type ThemeSetting } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import type { LocaleSetting } from "@/lib/i18n";
@@ -513,6 +513,26 @@ export function SettingsPage() {
             </span>
             <ChevronRight className="size-4" />
           </a>
+
+          {/* GitHub & Email */}
+          <div className="flex gap-2">
+            <a
+              href="https://github.com/fankimm/dst-craft"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-2 rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
+            >
+              <Github className="size-4" />
+              GitHub
+            </a>
+            <a
+              href="mailto:fankim@icloud.com"
+              className="flex-1 flex items-center justify-center gap-2 rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
+            >
+              <Mail className="size-4" />
+              Email
+            </a>
+          </div>
         </div>
 
         <p className="text-center text-xs text-muted-foreground/50 py-2">v{APP_VERSION}</p>
