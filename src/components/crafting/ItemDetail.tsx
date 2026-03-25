@@ -190,6 +190,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
           {/* Category badges (exclude "character" when characterOnly is set) */}
           {item.category
             .filter((catId) => !(item.characterOnly && catId === "character"))
+            .filter((catId) => catId !== item.station)
             .map((catId) => {
               const cat = getCategoryById(catId);
               if (!cat) return null;
