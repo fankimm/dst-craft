@@ -90,6 +90,7 @@ jihwan-kim3 (macOS):
 ## Mistakes & Lessons (오답노트)
 - 작업 중 실수/교훈은 **`docs/mistakes.md`** 에 기록할 것. 같은 실수 반복 방지 목적.
 - 새 작업 전 반드시 참조할 것.
+- **커밋 전 반드시 오답노트 작성 필요 여부를 체크**하고, 해당 작업에서 실수/교훈이 있었으면 오답노트를 먼저 작성한 뒤 커밋할 것.
 
 ## Release Notes Rules
 - 배포(푸시) 또는 매 커밋 시 `src/app/releases/page.tsx`의 릴리즈 노트를 업데이트할 것
