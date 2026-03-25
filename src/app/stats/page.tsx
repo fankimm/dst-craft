@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchAnalytics, fetchFeedback, type AnalyticsData } from "@/lib/analytics";
+import { fetchAnalytics, fetchFeedback, updateFeedbackStatus, type AnalyticsData, type FeedbackItem, type FeedbackStatus } from "@/lib/analytics";
 import { useAuth } from "@/hooks/use-auth";
 import {
   BarChart3, Globe, Users, Eye, RefreshCw,
@@ -214,7 +214,8 @@ export default function StatsPage() {
   const [days, setDays] = useState(7);
   const [excludeKR, setExcludeKR] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-  const [feedbackList, setFeedbackList] = useState<{ message: string; time: string; country: string }[]>([]);
+  const [feedbackList, setFeedbackList] = useState<FeedbackItem[]>([]);
+  const [feedbackFilter, setFeedbackFilter] = useState<FeedbackStatus | "all">("all");
 
   function showToast(msg: string) {
     setToast(msg);
@@ -475,25 +476,86 @@ export default function StatsPage() {
             </div>
 
             {/* Feedback (admin only) */}
-            {isAdmin && feedbackList.length > 0 && (
-              <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-                <h2 className="text-sm font-semibold flex items-center gap-2">
-                  <MessageSquare className="size-4" />
-                  사용자 피드백 ({feedbackList.length})
-                </h2>
-                <div className="space-y-2 max-h-96 overflow-y-auto">
-                  {feedbackList.map((fb, i) => (
-                    <div key={i} className="rounded-md border border-border/50 p-3 space-y-1">
-                      <p className="text-sm text-foreground whitespace-pre-wrap break-words">{fb.message}</p>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <span>{new Date(fb.time).toLocaleString("ko-KR")}</span>
-                        {fb.country && <span>{countryFlag(fb.country)} {countryName(fb.country)}</span>}
-                      </div>
+            {isAdmin && feedbackList.length > 0 && (() => {
+              const statusLabels: Record<FeedbackStatus, string> = { new: "신규", done: "반영", hold: "보류", rejected: "리젝트" };
+              const statusColors: Record<FeedbackStatus, string> = {
+                new: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
+                done: "bg-green-500/15 text-green-600 dark:text-green-400",
+                hold: "bg-yellow-500/15 text-yellow-600 dark:text-yellow-400",
+                rejected: "bg-red-500/15 text-red-600 dark:text-red-400",
+              };
+              const filtered = feedbackFilter === "all" ? feedbackList : feedbackList.filter((fb) => fb.status === feedbackFilter);
+              const counts: Record<string, number> = {};
+              for (const fb of feedbackList) counts[fb.status] = (counts[fb.status] ?? 0) + 1;
+
+              async function handleStatusChange(id: string, status: FeedbackStatus) {
+                if (!token) return;
+                const ok = await updateFeedbackStatus(token, id, status);
+                if (ok) {
+                  setFeedbackList((prev) => prev.map((fb) => fb.id === id ? { ...fb, status } : fb));
+                }
+              }
+
+              return (
+                <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-sm font-semibold flex items-center gap-2">
+                      <MessageSquare className="size-4" />
+                      사용자 피드백 ({feedbackList.length})
+                    </h2>
+                    <div className="flex gap-1">
+                      {(["all", "new", "done", "hold", "rejected"] as const).map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => setFeedbackFilter(s)}
+                          className={cn(
+                            "px-2 py-0.5 text-xs rounded-md transition-colors",
+                            feedbackFilter === s
+                              ? "bg-primary text-primary-foreground"
+                              : "text-muted-foreground hover:bg-surface-hover"
+                          )}
+                        >
+                          {s === "all" ? "전체" : statusLabels[s]}{s !== "all" && counts[s] ? ` ${counts[s]}` : ""}
+                        </button>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+                  <div className="space-y-2 max-h-[32rem] overflow-y-auto">
+                    {filtered.map((fb) => (
+                      <div key={fb.id ?? fb.time} className="rounded-md border border-border/50 p-3 space-y-2">
+                        <p className="text-sm text-foreground whitespace-pre-wrap break-words">{fb.message}</p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <span>{new Date(fb.time).toLocaleString("ko-KR")}</span>
+                            {fb.country && <span>{countryFlag(fb.country)} {countryName(fb.country)}</span>}
+                            {fb.ip && <span className="font-mono">{fb.ip}</span>}
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className={cn("px-1.5 py-0.5 rounded text-[10px] font-medium", statusColors[fb.status ?? "new"])}>
+                              {statusLabels[fb.status ?? "new"]}
+                            </span>
+                            {fb.id && (
+                              <select
+                                value={fb.status ?? "new"}
+                                onChange={(e) => handleStatusChange(fb.id, e.target.value as FeedbackStatus)}
+                                className="text-xs bg-transparent border border-border rounded px-1 py-0.5 text-muted-foreground"
+                              >
+                                {(Object.entries(statusLabels) as [FeedbackStatus, string][]).map(([val, label]) => (
+                                  <option key={val} value={val}>{label}</option>
+                                ))}
+                              </select>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {filtered.length === 0 && (
+                      <p className="text-xs text-muted-foreground text-center py-4">해당 상태의 피드백이 없습니다</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Recent Visitors Table (admin only) */}
             {isAdmin && (

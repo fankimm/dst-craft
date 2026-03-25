@@ -159,18 +159,44 @@ export async function submitFeedback(message: string): Promise<boolean> {
   }
 }
 
+export type FeedbackStatus = "new" | "done" | "hold" | "rejected";
+
+export interface FeedbackItem {
+  id: string;
+  message: string;
+  time: string;
+  country: string;
+  ip: string;
+  status: FeedbackStatus;
+}
+
 /** Fetch feedback list (admin only) */
-export async function fetchFeedback(token: string): Promise<{ message: string; time: string; country: string }[]> {
+export async function fetchFeedback(token: string): Promise<FeedbackItem[]> {
   if (!WORKER_URL) return [];
   try {
     const res = await fetch(`${WORKER_URL}/feedback`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) return [];
-    const data = await res.json() as { items: { message: string; time: string; country: string }[] };
+    const data = await res.json() as { items: FeedbackItem[] };
     return data.items ?? [];
   } catch {
     return [];
+  }
+}
+
+/** Update feedback status (admin only) */
+export async function updateFeedbackStatus(token: string, id: string, status: FeedbackStatus): Promise<boolean> {
+  if (!WORKER_URL) return false;
+  try {
+    const res = await fetch(`${WORKER_URL}/feedback`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ id, status }),
+    });
+    return res.ok;
+  } catch {
+    return false;
   }
 }
 

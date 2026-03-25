@@ -11,7 +11,7 @@ function corsHeaders(origin: string, allowed: string): HeadersInit {
   const isAllowed = origin.startsWith(allowed) || origin === "https://dst-craft.vercel.app" || origin.startsWith("http://localhost:");
   return {
     "Access-Control-Allow-Origin": isAllowed ? origin : "",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
 }
@@ -681,7 +681,9 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         });
       }
 
+      const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
       const entry = JSON.stringify({
+        id,
         message,
         time: new Date().toISOString(),
         country: request.headers.get("CF-IPCountry") ?? "",
@@ -711,12 +713,53 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       }
 
       const limit = Math.min(Number(url.searchParams.get("limit") ?? "50"), 500);
-      const results = await redisPipeline(env, [["LRANGE", "dst:feedback", "0", `${limit - 1}`]]) as { result: any }[];
+      const results = await redisPipeline(env, [
+        ["LRANGE", "dst:feedback", "0", `${limit - 1}`],
+        ["HGETALL", "dst:feedback:status"],
+      ]) as { result: any }[];
       const raw = (results[0]?.result as string[]) ?? [];
-      const items = raw.map((r: string) => { try { return JSON.parse(r); } catch { return null; } }).filter(Boolean);
+      const statusRaw = results[1]?.result as string[] | null;
+      const statusMap: Record<string, string> = {};
+      if (Array.isArray(statusRaw)) {
+        for (let i = 0; i < statusRaw.length; i += 2) {
+          statusMap[statusRaw[i]] = statusRaw[i + 1];
+        }
+      }
+      const items = raw.map((r: string) => {
+        try {
+          const parsed = JSON.parse(r);
+          parsed.status = statusMap[parsed.id] ?? "new";
+          return parsed;
+        } catch { return null; }
+      }).filter(Boolean);
 
       return new Response(JSON.stringify({ items }), {
         headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "no-store" },
+      });
+    }
+
+    // PATCH /feedback — update feedback status (admin only)
+    if (url.pathname === "/feedback" && request.method === "PATCH") {
+      const auth = request.headers.get("Authorization") ?? "";
+      if (!auth.startsWith("Bearer ")) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const jwtPayload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+      if (!jwtPayload || jwtPayload.role !== "admin") {
+        return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const id = body.id as string;
+      const status = body.status as string;
+      const validStatuses = ["new", "done", "hold", "rejected"];
+      if (!id || !validStatuses.includes(status)) {
+        return new Response(JSON.stringify({ error: "Invalid request" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      await redisPipeline(env, [["HSET", "dst:feedback:status", id, status]]);
+      return new Response(JSON.stringify({ ok: true }), {
+        headers: { ...headers, "Content-Type": "application/json" },
       });
     }
 
