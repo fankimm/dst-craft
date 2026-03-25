@@ -157,7 +157,7 @@ const translations = {
     feedback_placeholder: "버그 제보, 기능 요청, 건의사항 등을 자유롭게 남겨주세요 (익명)",
     feedback_submit: "보내기",
     feedback_thanks: "의견이 전달되었습니다!",
-    feedback_too_many: "잠시 후 다시 시도해주세요",
+    feedback_too_many: "1시간에 한 번만 보낼 수 있습니다",
     feedback_empty: "내용을 입력해주세요",
   },
   en: {
@@ -304,7 +304,7 @@ const translations = {
     feedback_placeholder: "Bug reports, feature requests, suggestions... (anonymous)",
     feedback_submit: "Send",
     feedback_thanks: "Feedback sent!",
-    feedback_too_many: "Please try again later",
+    feedback_too_many: "You can only send once per hour",
     feedback_empty: "Please enter a message",
   },
 } as const;
