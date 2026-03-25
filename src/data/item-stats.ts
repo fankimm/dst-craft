@@ -24,7 +24,7 @@ export interface ItemStats {
 }
 
 export const itemStats: Record<string, ItemStats> = {
-  amulet: { uses: 20, dapperness: 0.0333, fuel_time: 360, usage: { ko: "사망 시 자동 부활 (체력 50%)", en: "Auto-revives on death (50% HP)" } },
+  amulet: { uses: 20, dapperness: 0.0333, fuel_time: 360, usage: { ko: "허기→체력 자동 전환 + 사망 시 부활", en: "Converts hunger to HP + revives on death" } },
   archive_resonator_item: { uses: 10 },
   antlionhat: { uses: 400, waterproof: 0.2 },
   armor_bramble: { armor_hp: 525, absorption: 0.8 },
@@ -173,7 +173,7 @@ export const itemStats: Record<string, ItemStats> = {
   oceanfishingrod: { damage: 4.2 },
   onemanband: { fuel_time: 180, perish_time: 180, usage: { ko: "주변 동물 매혹 (최대 5마리)", en: "Charms nearby creatures (up to 5)" } },
   orangeamulet: { uses: 225, usage: { ko: "아이템 자동 줍기 (반경 내)", en: "Auto-picks nearby items" } },
-  orangestaff: { uses: 20, speed_mult: 1.25, usage: { ko: "지면 클릭 시 순간이동", en: "Teleports to clicked location" } },
+  orangestaff: { uses: 20, speed_mult: 1.25, usage: { ko: "지면 클릭 시 순간이동 (정신력 -15)", en: "Teleports to clicked location (-15 Sanity)" } },
   panflute: { uses: 10, usage: { ko: "주변 모든 생물 수면", en: "Puts all nearby creatures to sleep" } },
   pickaxe: { damage: 27.2, uses: 33 },
   pickaxe_lunarplant: { uses: 600, planar_damage: 10, shadow_bonus: 1.1 },
@@ -254,7 +254,7 @@ export const itemStats: Record<string, ItemStats> = {
   trap_teeth: { uses: 10 },
   treasurechest: { speed_mult: 0.15 },
   tentaclespike: { damage: 51, uses: 100 },
-  trident: { damage: 51, uses: 200, usage: { ko: "바다 위에서 범위 공격 가능", en: "AoE attack on water" } },
+  trident: { damage: 34, uses: 150, usage: { ko: "보트 위에서 3배 데미지 (102)", en: "3x damage on boat (102)" } },
   trunkvest_summer: { insulation: 120, perish_time: 7200 },
   trunkvest_winter: { insulation: 240, perish_time: 7200 },
   umbrella: { dapperness: 0.0333, insulation: 120, waterproof: 0.5, fuel_time: 2880 },
@@ -295,7 +295,7 @@ export const itemStats: Record<string, ItemStats> = {
   wx78module_music: { usage: { ko: "정신력 회복 오라", en: "Sanity regen aura" } },
   wx78module_nightvision: { usage: { ko: "야간 시야 확보", en: "Night vision" } },
   wx78module_taser: { usage: { ko: "전기 충격 공격", en: "Electric shock attack" } },
-  yellowamulet: { fuel_time: 480, usage: { ko: "사망 시 자동 부활 (체력 50%)", en: "Auto-revives on death (50% HP)" } },
-  yellowstaff: { uses: 20, usage: { ko: "대상을 별로 변환", en: "Transforms target into gems" } },
+  yellowamulet: { fuel_time: 480, speed_mult: 1.2, dapperness: 0.0333, usage: { ko: "발광 + 이동속도 20% 증가", en: "Emits light, +20% move speed" } },
+  yellowstaff: { uses: 20, usage: { ko: "드워프 스타 소환 (광원+열+정신력)", en: "Summons Dwarf Star (light+heat+sanity)" } },
   yoth_knightstick: { damage: 17, speed_mult: 1.25, fuel_time: 2880 },
 };
