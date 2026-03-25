@@ -70,6 +70,21 @@
 - **올바른 코드**: `(raw as { result: any }[])[0]?.result`
 - **교훈**: 관리자 `/stats` 엔드포인트에서는 이미 `results[i]?.result`로 올바르게 접근하고 있었음. 새 엔드포인트 추가 시 기존 파싱 패턴을 반드시 참조할 것
 
+### 스테이션 태그 아이콘 임시값 방치
+- **문제**: `lunar_forge`, `shadow_forge`, `critter_lab` 스테이션 아이콘이 `magic.png`, `decorations.png` 같은 엉뚱한 아이콘을 사용
+- **원인**: 초기에 해당 스테이션 전용 아이콘이 없어서 임시로 유사 카테고리 아이콘을 넣었는데, 이후 교체하지 않음
+- **교훈**: 임시값(placeholder)을 넣을 때는 TODO 주석을 반드시 달 것. 아이콘/이미지 추가 시 `stationImages` 매핑도 함께 확인
+
+### SW 캐시로 이미지 교체 미반영
+- **문제**: 카테고리 아이콘 PNG를 교체했으나 PWA에서 이전 이미지가 계속 표시
+- **원인**: `sw.js`의 이미지 캐시 전략이 cache-first + 재요청 없음. 한번 캐시되면 SW 캐시 버전을 올리기 전까지 절대 갱신 안 됨
+- **해결**: `CACHE_NAME` 버전 bump (v7→v8)
+- **교훈**: `/images/` 경로의 파일을 교체할 때는 반드시 `sw.js`의 `CACHE_NAME` 버전을 올릴 것
+
+### 카테고리 아이콘 스타일 불일치
+- **문제**: 새 카테고리 아이콘으로 위키의 건물 이미지(풀컬러, 비정형 사이즈)를 사용 → 기존 아이콘(인게임 제작탭 아이콘, 256x256 정사각형, 모노톤 스타일)과 이질적
+- **교훈**: 카테고리 아이콘은 인게임 제작탭의 Station Icon을 사용할 것. 위키에서 `{StationName}_Station_Icon.png`으로 검색 가능. 기존 아이콘과 스타일 통일이 중요
+
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
 - pixel_format 0=DXT1(bcn 1), 1=DXT3(bcn 2), 2=DXT5(bcn 3)
