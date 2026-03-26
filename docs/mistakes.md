@@ -92,6 +92,16 @@
   3. `trident` — damage 51/uses 200으로 적었으나 실제 34/150 (보트 위 3배)
 - **교훈**: 게임 데이터 수치/효과 추가 시 반드시 위키(`dontstarve.wiki.gg`) **또는 인게임 소스코드**에서 팩트체크 후 커밋. 기억에 의존하지 말 것. 소스가 접근 가능하면 소스 우선.
   - 추가 사례: `spear_wathgrithr_lightning` — "3번째 타격마다 번개 소환"이라 적었으나, 실제는 쿨다운 후 돌진(lunge) + 범위 전기 피해. 소스코드 확인으로 발견
+  - 추가 사례: `trident` — 위키 기반으로 damage 34로 수정했으나, tuning.lua에서 확인하니 `wilson_attack * 1.5 = 51`이 맞음. **위키도 틀릴 수 있으므로 소스코드가 최종 권위**
+  - 추가 사례: `featherfan` — uses 9로 되어있었으나 소스에서 15 확인. 데이터 입력 시 소스 미확인
+
+### 방어구/무기 특수 효과 누락
+- **문제**: 소스코드에 특수 효과가 있는데 usage를 안 넣은 아이템 다수 발견
+  - `ruins_bat` — 20% 확률 그림자 촉수 소환 (`SHADOW_TENTACLE_RUINS_BAT_CHANCE = 0.2`)
+  - `armor_lunarplant` — 차원 반사 피해 10/20 (`damagereflect` 컴포넌트)
+  - `armor_voidcloth` — 정신력 부정적 오라 면역 (`neg_aura_modifiers:SetModifier(inst, 0)`)
+  - `nightstick` — 전기 무기 + 광원
+- **교훈**: 스탯 추가 시 prefab 소스코드의 `onattack`, `onequip`, `AddComponent` 호출을 반드시 확인. 수치만 보지 말고 특수 로직도 체크
 
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
