@@ -15,21 +15,34 @@ interface Release {
 
 const releases: Release[] = [
   {
-    version: "0.7.3",
-    date: "2026-03-25",
+    version: "0.8.0",
+    date: "2026-03-26",
     dev: [
-      "설정 페이지에 익명 피드백(의견 보내기) 섹션 추가",
-      "Worker POST /feedback 엔드포인트 추가 (IP 기반 시간당 1회 제한)",
-      "Worker GET /feedback 어드민 전용 피드백 조회 엔드포인트 추가",
-      "analytics.ts에 submitFeedback 클라이언트 함수 추가",
-      "i18n에 feedback 관련 번역 키 6개 추가 (ko, en)",
+      "천상/대황간/그림자 공예/동물 친구 카테고리 4개 추가 + 아이템 54개 재분류",
+      "카테고리 아이콘 인게임 제작탭 아이콘으로 교체 (위키 Station Icon)",
+      "스테이션 태그 아이콘 통일 (celestial, lunar_forge, shadow_forge, critter_lab)",
+      "상세 패널 스테이션-카테고리 태그 중복 표시 제거",
+      "인게임 소스코드 기반 아이템 스탯 전수 검증 (tuning.lua + prefab 소스)",
+      "usage 필드 141개 보강 — 특수 효과, 세트 보너스, on-hit/on-equip 효과 전부 추가",
+      "삼지창/럭셔리팬/부적류 등 수치 오류 수정",
+      "설정 페이지 익명 피드백 기능 + 텔레그램 알림 + 상태 관리",
+      "피드백 textarea iOS 자동 확대 방지",
+      "접속국가 티커 애니메이션 개선",
+      "푸터에서 GitHub/이메일 → 설정 페이지로 이동",
+      "SW 캐시 버전 bump (이미지 교체 반영)",
     ],
     changes: {
       ko: [
-        "설정 페이지에 익명 의견 보내기 기능 추가 (버그 제보, 기능 요청 등)",
+        "천상/대황간/그림자 공예/동물 친구 카테고리 추가",
+        "인게임 소스코드 기반 아이템 특수 효과 전수 추가 (141개 아이템)",
+        "설정 페이지에 익명 의견 보내기 기능 추가",
+        "접속국가 티커 애니메이션 개선",
       ],
       en: [
-        "Added anonymous feedback feature in settings (bug reports, feature requests, etc.)",
+        "Added Celestial/Lunar Forge/Shadow Forge/Critter Den categories",
+        "Added item special effects based on game source code (141 items)",
+        "Added anonymous feedback feature in settings",
+        "Improved country ticker animation",
       ],
     },
   },
