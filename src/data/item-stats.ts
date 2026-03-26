@@ -236,7 +236,7 @@ export const itemStats: Record<string, ItemStats> = {
   spear: { damage: 34, uses: 150 },
   spicepack: { slots: 6 },
   spear_wathgrithr: { damage: 42.5, uses: 200 },
-  spear_wathgrithr_lightning: { damage: 59.5, uses: 150, usage: { ko: "3번째 타격마다 번개 소환", en: "Summons lightning every 3rd hit" } },
+  spear_wathgrithr_lightning: { damage: 59.5, uses: 150, usage: { ko: "쿨다운 후 돌진 공격 (범위 전기 피해), 젖은 적 추가 피해", en: "Lunge attack on cooldown (AoE electric), bonus vs wet targets" } },
   spider_repellent: { uses: 20 },
   staff_lunarplant: { uses: 50, planar_damage: 10, shadow_bonus: 2, usage: { ko: "빛 뿌리 소환 (원거리 공격)", en: "Summons light roots (ranged attack)" } },
   staff_tornado: { uses: 15, usage: { ko: "토네이도 소환 (적 밀어냄)", en: "Summons tornado (pushes enemies)" } },
