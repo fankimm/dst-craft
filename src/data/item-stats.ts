@@ -469,4 +469,8 @@ export const itemStats: Record<string, ItemStats> = {
   shadow_beef_bell: { usage: { ko: "그림자 비팔로 소환", en: "Summons shadow beefalo" } },
   gelblob_storage_kit: { usage: { ko: "젤 블롭 저장 구조물", en: "Gel blob storage structure" } },
   deerclopseyeball_sentryward_kit: { usage: { ko: "디어클롭스 눈알 감시탑", en: "Deerclops eye sentry ward" } },
+
+  // === TURF ===
+  turf_road: { speed_mult: 1.3, usage: { ko: "도로 — 이동속도 30% 증가", en: "Road — 30% movement speed boost" } },
+  turf_dragonfly: { usage: { ko: "용비늘 바닥 — 산불 면역 지면", en: "Scaled flooring — fireproof ground" } },
 };
