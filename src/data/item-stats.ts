@@ -298,4 +298,104 @@ export const itemStats: Record<string, ItemStats> = {
   yellowamulet: { fuel_time: 480, speed_mult: 1.2, dapperness: 0.0333, usage: { ko: "발광 + 이동속도 20% 증가", en: "Emits light, +20% move speed" } },
   yellowstaff: { uses: 20, usage: { ko: "드워프 스타 소환 (광원+열+정신력)", en: "Summons Dwarf Star (light+heat+sanity)" } },
   yoth_knightstick: { damage: 17, speed_mult: 1.25, fuel_time: 2880, usage: { ko: "달리기 시 갤럽 모드 (최대 1.6배 가속, 충돌 시 작업)", en: "Gallop mode while running (up to 1.6x speed, work on collision)" } },
+
+  // === LIGHT SOURCES ===
+  campfire: { usage: { ko: "광원+열 제공 (연료 필요, 비에 약함)", en: "Light+heat source (needs fuel, vulnerable to rain)" } },
+  firepit: { usage: { ko: "영구 화로 — 광원+열+조리 (연료 효율 2배)", en: "Permanent fire pit — light+heat+cooking (fuel 2x efficient)" } },
+  coldfire: { usage: { ko: "냉각 화로 — 광원+냉기 (연료 필요)", en: "Cold fire — light+cooling (needs fuel)" } },
+  coldfirepit: { usage: { ko: "영구 냉각 화로 — 광원+냉기 (연료 효율 2배)", en: "Permanent cold pit — light+cooling (fuel 2x efficient)" } },
+  dragonflyfurnace: { usage: { ko: "영구 광원+열+조리+소각 (연료 불필요, 산불 면역)", en: "Permanent light+heat+cooking+incinerate (no fuel, fireproof)" } },
+  nightlight: { usage: { ko: "악몽 연료로 동작하는 광원 (주변 정신력 감소)", en: "Nightmare fuel light source (drains sanity nearby)" } },
+  mushroom_light: { usage: { ko: "광원 제공 (전구로 연료)", en: "Light source (fueled by light bulbs)" } },
+  mushroom_light2: { usage: { ko: "밝은 광원 제공 (전구로 연료)", en: "Bright light source (fueled by light bulbs)" } },
+  pumpkin_lantern: { usage: { ko: "광원 (부패로 소멸)", en: "Light source (perishes over time)" } },
+
+  // === WEATHER & MEASUREMENT ===
+  winterometer: { usage: { ko: "현재 기온 표시", en: "Shows current temperature" } },
+  rainometer: { usage: { ko: "강수 확률 표시", en: "Shows precipitation chance" } },
+  moondial: { usage: { ko: "달 위상 표시", en: "Shows moon phase" } },
+  lightning_rod: { usage: { ko: "주변 번개 유인 (번개 피해 방지)", en: "Attracts lightning (prevents lightning damage nearby)" } },
+
+  // === STORAGE ===
+  dragonflychest: { slots: 9, usage: { ko: "산불 면역 상자", en: "Fireproof chest" } },
+  bundlewrap: { usage: { ko: "아이템 4개를 하나로 묶어 보관 (부패 정지)", en: "Bundles 4 items into one (stops spoilage)" } },
+  giftwrap: { usage: { ko: "아이템을 선물로 포장 (다른 플레이어에게 전달)", en: "Gift-wraps items for other players" } },
+  chestupgrade_stacksize: { usage: { ko: "상자 슬롯 크기 2배 확장", en: "Doubles chest slot stack sizes" } },
+
+  // === FOOD & FARMING ===
+  cookpot: { usage: { ko: "재료 4개로 요리 (요리솥)", en: "Cook with 4 ingredients (Crock Pot)" } },
+  meatrack: { usage: { ko: "고기류 건조 (보존 기간 연장)", en: "Dries meat (extends preservation)" } },
+  beebox: { usage: { ko: "꿀벌이 꿀 생산 (6일 주기)", en: "Bees produce honey (6 day cycle)" } },
+  birdcage: { usage: { ko: "새를 가두어 먹이 주면 씨앗/알 획득", en: "Cage birds, feed them for seeds/eggs" } },
+  compostingbin: { usage: { ko: "부패 아이템을 퇴비로 변환", en: "Converts spoiled items into compost" } },
+  mushroom_farm: { usage: { ko: "버섯 재배 (통나무에서 자동 성장)", en: "Grows mushrooms on logs automatically" } },
+
+  // === PROTOTYPERS ===
+  researchlab: { usage: { ko: "과학 기계 — 기본 제작법 해금", en: "Science Machine — unlocks basic recipes" } },
+  researchlab2: { usage: { ko: "연금술 엔진 — 고급 제작법 해금", en: "Alchemy Engine — unlocks advanced recipes" } },
+  researchlab3: { usage: { ko: "그림자 조종기 — 마법 고급 해금", en: "Shadow Manipulator — unlocks advanced magic" } },
+  researchlab4: { usage: { ko: "요술 모자 — 마법 기본 해금", en: "Prestihatitator — unlocks basic magic" } },
+  seafaring_prototyper: { usage: { ko: "싱크 탱크 — 항해 제작법 해금", en: "Think Tank — unlocks nautical recipes" } },
+  cartographydesk: { usage: { ko: "지도 제작대 — 지도 공유 가능", en: "Cartography Desk — allows map sharing" } },
+  tacklestation: { usage: { ko: "낚시도구 거치대 — 낚시 장비 해금", en: "Tackle Receptacle — unlocks fishing gear" } },
+  sculptingtable: { usage: { ko: "조각 작업대 — 조각품 제작", en: "Potter's Wheel — crafts sculptures" } },
+  bookstation: { usage: { ko: "책장 — 위커바텀 책 제작", en: "Bookcase — crafts Wickerbottom's books" } },
+  turfcraftingstation: { usage: { ko: "땅다지개 — 바닥 타일 제작", en: "Turf-Crafting Station — crafts turf tiles" } },
+  carpentry_station: { usage: { ko: "목공 작업대 — 목재 가구 제작", en: "Carpentry Station — crafts wooden furniture" } },
+
+  // === HEALING ===
+  reviver: { usage: { ko: "유령 상태 아군 부활 (정신력 소모)", en: "Revives ghost players (costs sanity)" } },
+  lifeinjector: { usage: { ko: "체력 +30 주사", en: "Injects +30 HP" } },
+  resurrectionstatue: { usage: { ko: "사망 시 자동 부활 지점 (1회용)", en: "Auto-resurrect point on death (one-time use)" } },
+
+  // === THROWABLE WEAPONS ===
+  sleepbomb: { usage: { ko: "투척 시 주변 적 수면", en: "Puts nearby enemies to sleep when thrown" } },
+  beemine: { usage: { ko: "설치 시 밟으면 벌 소환", en: "Spawns bees when stepped on" } },
+  waterballoon: { usage: { ko: "투척 시 불 진화 + 대상 젖음", en: "Extinguishes fire + wets target on throw" } },
+
+  // === TOOLS ===
+  razor: { usage: { ko: "수염 면도 (수염 아이템 획득)", en: "Shaves beard (obtains beard hair)" } },
+  sentryward: { usage: { ko: "주변 맵 시야 공유", en: "Shares map vision in an area" } },
+  beef_bell: { usage: { ko: "비팔로 길들이기 시작", en: "Begins beefalo domestication" } },
+  featherpencil: { uses: 4, usage: { ko: "지도에 표식 남기기", en: "Marks locations on map" } },
+
+  // === SPICES (Warly) ===
+  spice_garlic: { usage: { ko: "음식에 적용 — 60초간 흡혈 면역", en: "Apply to food — 60s vampire immunity" } },
+  spice_sugar: { usage: { ko: "음식에 적용 — 60초간 이동속도 +25%", en: "Apply to food — +25% speed for 60s" } },
+  spice_chili: { usage: { ko: "음식에 적용 — 60초간 체온 상승", en: "Apply to food — raises temperature for 60s" } },
+  spice_salt: { usage: { ko: "음식에 적용 — 부패 2배 느림", en: "Apply to food — spoils 2x slower" } },
+
+  // === SEAFARING ===
+  boat_item: { usage: { ko: "보트 설치 (바다 이동용)", en: "Deploys a boat for ocean travel" } },
+  anchor_item: { usage: { ko: "보트에 닻 설치 (정지용)", en: "Installs anchor on boat (stops boat)" } },
+  mast_item: { usage: { ko: "보트에 돛대 설치 (바람 추진)", en: "Installs mast on boat (wind propulsion)" } },
+  mast_malbatross_item: { usage: { ko: "보트에 날개 돛 설치 (빠른 바람 추진)", en: "Installs winged sail on boat (faster wind)" } },
+  steeringwheel_item: { usage: { ko: "보트에 방향타 설치 (조향)", en: "Installs steering wheel on boat" } },
+  mastupgrade_lamp_item: { usage: { ko: "돛대에 광원 설치", en: "Installs light on mast" } },
+  mastupgrade_lightningrod_item: { usage: { ko: "돛대에 피뢰침 설치", en: "Installs lightning rod on mast" } },
+  boat_rotator_kit: { usage: { ko: "보트 방향 전환 장치", en: "Rotates boat direction" } },
+  boat_bumper_shell_kit: { usage: { ko: "보트 범퍼 설치 (충돌 보호)", en: "Installs bumper on boat (collision protection)" } },
+  boat_magnet_kit: { usage: { ko: "자동 항해 장치 (비콘으로 이동)", en: "Auto-navigation device (moves to beacon)" } },
+  boat_magnet_beacon: { usage: { ko: "자동 항해 목표 비콘", en: "Auto-navigation target beacon" } },
+  waterpump: { usage: { ko: "보트 위 불 진화 장치", en: "Fire extinguisher for boats" } },
+  boat_cannon_kit: { usage: { ko: "보트에 대포 설치", en: "Installs cannon on boat" } },
+  cannonball_rock_item: { damage: 200, usage: { ko: "대포 탄환 (200 피해)", en: "Cannon ammo (200 damage)" } },
+
+  // === STRUCTURES ===
+  pighouse: { usage: { ko: "돼지 1마리 거주 (낮에 나옴)", en: "Houses one pig (comes out during day)" } },
+  rabbithouse: { usage: { ko: "토끼 1마리 거주 (밤에 나옴)", en: "Houses one rabbit (comes out at night)" } },
+  mermhouse_crafted: { usage: { ko: "머맨 1마리 거주", en: "Houses one merm" } },
+  scarecrow: { usage: { ko: "새가 농작물 먹는 것 방지", en: "Prevents birds from eating crops" } },
+  heatrock: { usage: { ko: "열 저장 — 화로 근처에서 충전, 휴대 시 보온", en: "Stores heat — charges near fire, warms when carried" } },
+  beefalo_groomer: { usage: { ko: "비팔로 외형 변경 (그루밍)", en: "Changes beefalo appearance (grooming)" } },
+
+  // === CRITTERS ===
+  critter_kitten_builder: { usage: { ko: "새끼 고양이 입양", en: "Adopt a Kittykit" } },
+  critter_puppy_builder: { usage: { ko: "새끼 늑대 입양", en: "Adopt a Vargling" } },
+  critter_lamb_builder: { usage: { ko: "새끼 양 입양", en: "Adopt an Ewelet" } },
+  critter_perdling_builder: { usage: { ko: "새끼 칠면조 입양", en: "Adopt a Giblet" } },
+  critter_dragonling_builder: { usage: { ko: "새끼 용 입양", en: "Adopt a Broodling" } },
+  critter_glomling_builder: { usage: { ko: "글롬글롬 입양", en: "Adopt a Glomglom" } },
+  critter_lunarmothling_builder: { usage: { ko: "나방 입양", en: "Adopt a Mothling" } },
+  critter_eyeofterror_builder: { usage: { ko: "아이 오브 테러 입양", en: "Adopt a Friendly Peeper" } },
 };
