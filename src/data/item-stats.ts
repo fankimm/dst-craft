@@ -24,7 +24,7 @@ export interface ItemStats {
 }
 
 export const itemStats: Record<string, ItemStats> = {
-  amulet: { uses: 20, dapperness: 0.0333, fuel_time: 360, usage: { ko: "허기→체력 자동 전환 + 사망 시 부활", en: "Converts hunger to HP + revives on death" } },
+  amulet: { uses: 20, dapperness: 0.0333, usage: { ko: "30초마다 허기 -5 → 체력 +5 전환 + 사망 시 부활", en: "Converts -5 Hunger to +5 HP every 30s + revives on death" } },
   archive_resonator_item: { uses: 10 },
   antlionhat: { uses: 400, waterproof: 0.2 },
   armor_bramble: { armor_hp: 525, absorption: 0.8 },
@@ -71,7 +71,7 @@ export const itemStats: Record<string, ItemStats> = {
   blowdart_pipe: { damage: 100, uses: 1 },
   blowdart_sleep: { uses: 1, usage: { ko: "대상을 잠재움", en: "Puts target to sleep" } },
   blowdart_yellow: { damage: 60, uses: 1 },
-  blueamulet: { fuel_time: 360, usage: { ko: "주변 과열 방지 + 불 자동 진화", en: "Prevents overheating, extinguishes fires" } },
+  blueamulet: { fuel_time: 360, usage: { ko: "냉각 효과 + 피격 시 공격자 냉각", en: "Cooling aura + chills attackers on hit" } },
   book_bees: { uses: 5 },
   book_birds: { uses: 3 },
   book_brimstone: { uses: 5 },
@@ -190,7 +190,7 @@ export const itemStats: Record<string, ItemStats> = {
   pocketwatch_weapon: { damage: 81.6 },
   portabletent_item: { uses: 10, health_regen: 2, hunger_drain: -1 },
   premiumwateringcan: { uses: 160 },
-  purpleamulet: { fuel_time: 192, usage: { ko: "악몽 연료 흡수 (정신력 ↔ 연료)", en: "Absorbs nightmare fuel (sanity for fuel)" } },
+  purpleamulet: { fuel_time: 192, usage: { ko: "강제 광기 상태 유발 (악몽 연료로 충전)", en: "Forces insanity (refuel with Nightmare Fuel)" } },
   raincoat: { insulation: 60, fuel_time: 4800 },
   rainhat: { waterproof: 0.7 },
   redlantern: { fuel_time: 5760 },
