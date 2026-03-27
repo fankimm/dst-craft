@@ -1819,1340 +1819,4720 @@
   ko: 양봉비책
   app: O
   source: Wickerbottom book. 3 uses. -33 sanity on read. Summons 2 Grumble Bee guards (max 16 total). Guard range radius 2.
+  desc_en: Wickerbottom book (3 uses, -33 sanity). Summons 2 Grumble Bee guards per read, up to 16 total.
+  desc_ko: 위커바텀 책 (3회, 정신력 -33). 읽을 때마다 투덜벌 경비병 2마리를 소환하며, 최대 16마리까지 유지됩니다.
+  desc_ja: ウィッカーボトムの本（3回使用、正気度-33）。読むたびにグランブルビーの護衛を2体召喚、最大16体まで。
+  desc_zh_CN: 薇克巴顿之书（3次使用，理智-33）。每次阅读召唤2只嗡嗡蜂守卫，最多16只。
+  desc_zh_TW: 薇克巴頓之書（3次使用，理智-33）。每次閱讀召喚2隻嗡嗡蜂守衛，最多16隻。
+  desc_fr: Livre de Wickerbottom (3 utilisations, -33 santé mentale). Invoque 2 gardes Grumble Bee par lecture, jusqu'à 16 au total.
+  desc_de: Wickerbottom-Buch (3 Nutzungen, -33 geistige Gesundheit). Beschwört 2 Grumble-Bienen-Wachen pro Lesung, max. 16 insgesamt.
+  desc_it: Libro di Wickerbottom (3 usi, -33 sanità mentale). Evoca 2 guardie Grumble Bee per lettura, fino a 16 totali.
+  desc_pl: Książka Wickerbottom (3 użycia, -33 poczytalności). Przywołuje 2 strażniczki Grumble Bee na odczyt, maks. 16 łącznie.
+  desc_pt_BR: Livro de Wickerbottom (3 usos, -33 sanidade). Invoca 2 guardas Grumble Bee por leitura, até 16 no total.
+  desc_ru: Книга Викерботтом (3 использования, -33 рассудка). Призывает 2 охранных пчёл Грамбл за чтение, до 16 одновременно.
+  desc_es: Libro de Wickerbottom (3 usos, -33 cordura). Invoca 2 guardias Grumble Bee por lectura, hasta 16 en total.
+  desc_es_MX: Libro de Wickerbottom (3 usos, -33 cordura). Invoca 2 guardias Grumble Bee por lectura, hasta 16 en total.
 102.book_birds
   en: Birds of the World
   ko: 세계의 새들
   app: O
   source: Wickerbottom book. 3 uses. -50 sanity on read. Spawns 10-30 birds nearby (radius 10 check, capped at 30 existing). During lunar hailing, spawns dead bird corpses instead.
+  desc_en: Wickerbottom book (3 uses, -50 sanity). Spawns 10-30 birds nearby. During lunar hailing, spawns dead bird corpses instead.
+  desc_ko: 위커바텀 책 (3회, 정신력 -50). 주변에 새 10~30마리를 소환합니다. 달의 우박 중에는 새 사체가 떨어집니다.
+  desc_ja: ウィッカーボトムの本（3回使用、正気度-50）。周囲に10〜30羽の鳥を出現させます。月の雹の間は死んだ鳥が代わりに出現。
+  desc_zh_CN: 薇克巴顿之书（3次使用，理智-50）。在附近生成10-30只鸟。月冰雹期间改为生成鸟类尸体。
+  desc_zh_TW: 薇克巴頓之書（3次使用，理智-50）。在附近生成10-30隻鳥。月冰雹期間改為生成鳥類屍體。
+  desc_fr: Livre de Wickerbottom (3 utilisations, -50 santé mentale). Fait apparaître 10 à 30 oiseaux à proximité. Pendant la grêle lunaire, fait apparaître des cadavres d'oiseaux.
+  desc_de: Wickerbottom-Buch (3 Nutzungen, -50 geistige Gesundheit). Lässt 10-30 Vögel in der Nähe erscheinen. Während Mondhagel erscheinen stattdessen tote Vögel.
+  desc_it: Libro di Wickerbottom (3 usi, -50 sanità mentale). Genera 10-30 uccelli nelle vicinanze. Durante la grandine lunare, genera cadaveri di uccelli.
+  desc_pl: Książka Wickerbottom (3 użycia, -50 poczytalności). Tworzy 10-30 ptaków w pobliżu. Podczas księżycowego gradu pojawiają się zamiast tego martwe ptaki.
+  desc_pt_BR: Livro de Wickerbottom (3 usos, -50 sanidade). Gera 10-30 pássaros próximos. Durante granizo lunar, gera cadáveres de pássaros.
+  desc_ru: Книга Викерботтом (3 использования, -50 рассудка). Создаёт 10-30 птиц поблизости. Во время лунного града вместо них появляются трупы птиц.
+  desc_es: Libro de Wickerbottom (3 usos, -50 cordura). Genera 10-30 pájaros cercanos. Durante el granizo lunar, genera cadáveres de pájaros.
+  desc_es_MX: Libro de Wickerbottom (3 usos, -50 cordura). Genera 10-30 pájaros cercanos. Durante el granizo lunar, genera cadáveres de pájaros.
 103.book_brimstone
   en: The End is Nigh!
   ko: 종말이 다가온다!
   app: O
   source: Wickerbottom book. 5 uses. -33 sanity on read. Calls 16 lightning strikes in a spiral pattern (radius 3-15) over ~8s.
+  desc_en: Wickerbottom book (5 uses, -33 sanity). Calls 16 lightning strikes in a spiral pattern over ~8 seconds.
+  desc_ko: 위커바텀 책 (5회, 정신력 -33). 약 8초에 걸쳐 나선형으로 번개 16회를 내리칩니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-33）。約8秒間で螺旋状に16回の落雷を発生させます。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-33）。在约8秒内以螺旋形式召唤16次闪电。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-33）。在約8秒內以螺旋形式召喚16次閃電。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -33 santé mentale). Invoque 16 éclairs en spirale sur environ 8 secondes.
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -33 geistige Gesundheit). Ruft 16 Blitzeinschläge in Spiralform über ~8 Sekunden herbei.
+  desc_it: Libro di Wickerbottom (5 usi, -33 sanità mentale). Richiama 16 fulmini in una spirale in circa 8 secondi.
+  desc_pl: Książka Wickerbottom (5 użyć, -33 poczytalności). Wywołuje 16 uderzeń piorunów w spirali przez ~8 sekund.
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -33 sanidade). Invoca 16 raios em espiral ao longo de ~8 segundos.
+  desc_ru: Книга Викерботтом (5 использований, -33 рассудка). Вызывает 16 ударов молний по спирали за ~8 секунд.
+  desc_es: Libro de Wickerbottom (5 usos, -33 cordura). Invoca 16 relámpagos en espiral durante ~8 segundos.
+  desc_es_MX: Libro de Wickerbottom (5 usos, -33 cordura). Invoca 16 relámpagos en espiral durante ~8 segundos.
 104.book_fire
   en: Pyrokinetics Explained
   ko: 염화술 해설
   app: O
   source: Wickerbottom book. 3 uses. -33 sanity on read. Extinguishes all fires and smoldering objects within radius 16. Captured fire charges a Fire Pen (spawned if not held).
+  desc_en: Wickerbottom book (3 uses, -33 sanity). Extinguishes all fires within radius 16 and charges a Fire Pen with captured flames.
+  desc_ko: 위커바텀 책 (3회, 정신력 -33). 반경 16 내 모든 불을 끄고, 포획한 불꽃으로 화염 펜을 충전합니다.
+  desc_ja: ウィッカーボトムの本（3回使用、正気度-33）。半径16以内の全ての火を消し、捕獲した炎でファイアペンを充填します。
+  desc_zh_CN: 薇克巴顿之书（3次使用，理智-33）。扑灭半径16内所有火焰，并将捕获的火焰充入火焰笔。
+  desc_zh_TW: 薇克巴頓之書（3次使用，理智-33）。撲滅半徑16內所有火焰，並將捕獲的火焰充入火焰筆。
+  desc_fr: Livre de Wickerbottom (3 utilisations, -33 santé mentale). Éteint tous les feux dans un rayon de 16 et charge un Stylo de feu.
+  desc_de: Wickerbottom-Buch (3 Nutzungen, -33 geistige Gesundheit). Löscht alle Feuer im Radius 16 und lädt einen Feuerstift mit eingefangenen Flammen.
+  desc_it: Libro di Wickerbottom (3 usi, -33 sanità mentale). Estingue tutti i fuochi nel raggio di 16 e carica una Penna di fuoco.
+  desc_pl: Książka Wickerbottom (3 użycia, -33 poczytalności). Gasi wszystkie ognie w promieniu 16 i ładuje Ogniste Pióro schwytanym ogniem.
+  desc_pt_BR: Livro de Wickerbottom (3 usos, -33 sanidade). Extingue todos os fogos no raio de 16 e carrega uma Caneta de Fogo.
+  desc_ru: Книга Викерботтом (3 использования, -33 рассудка). Тушит все огни в радиусе 16 и заряжает Огненное перо захваченным пламенем.
+  desc_es: Libro de Wickerbottom (3 usos, -33 cordura). Extingue todos los fuegos en un radio de 16 y carga una Pluma de fuego.
+  desc_es_MX: Libro de Wickerbottom (3 usos, -33 cordura). Extingue todos los fuegos en un radio de 16 y carga una Pluma de fuego.
 105.book_fish
   en: The Angler's Survival Guide
   ko: 낚시꾼의 생존 비결
   app: O
   source: Wickerbottom book. 3 uses. -33 sanity on read. Spawns 3 schools of ocean fish at offset distance 10 from the reader.
+  desc_en: Wickerbottom book (3 uses, -33 sanity). Spawns 3 schools of ocean fish at distance 10 from the reader.
+  desc_ko: 위커바텀 책 (3회, 정신력 -33). 독자로부터 거리 10 지점에 바다 물고기 떼 3개를 생성합니다.
+  desc_ja: ウィッカーボトムの本（3回使用、正気度-33）。読者から距離10の位置に海魚の群れを3つ出現させます。
+  desc_zh_CN: 薇克巴顿之书（3次使用，理智-33）。在距读者10处生成3群海鱼。
+  desc_zh_TW: 薇克巴頓之書（3次使用，理智-33）。在距讀者10處生成3群海魚。
+  desc_fr: Livre de Wickerbottom (3 utilisations, -33 santé mentale). Fait apparaître 3 bancs de poissons à distance 10 du lecteur.
+  desc_de: Wickerbottom-Buch (3 Nutzungen, -33 geistige Gesundheit). Lässt 3 Fischschwärme in Entfernung 10 vom Leser erscheinen.
+  desc_it: Libro di Wickerbottom (3 usi, -33 sanità mentale). Genera 3 banchi di pesci oceanici a distanza 10 dal lettore.
+  desc_pl: Książka Wickerbottom (3 użycia, -33 poczytalności). Tworzy 3 ławice ryb morskich w odległości 10 od czytelnika.
+  desc_pt_BR: Livro de Wickerbottom (3 usos, -33 sanidade). Gera 3 cardumes de peixes oceânicos a distância 10 do leitor.
+  desc_ru: Книга Викерботтом (3 использования, -33 рассудка). Создаёт 3 косяка океанических рыб на расстоянии 10 от читателя.
+  desc_es: Libro de Wickerbottom (3 usos, -33 cordura). Genera 3 bancos de peces oceánicos a distancia 10 del lector.
+  desc_es_MX: Libro de Wickerbottom (3 usos, -33 cordura). Genera 3 bancos de peces oceánicos a distancia 10 del lector.
 106.book_gardening
   en: Applied Horticulture
   ko: 응용 원예학
   app: X
   type: deconstruct
   source: Wickerbottom book. 5 uses. -33 sanity on read. Grows all plants/trees/crops in radius 30 (unlimited targets, all at once).
+  desc_en: Wickerbottom book (5 uses, -33 sanity). Instantly grows all plants, trees, and crops within radius 30.
+  desc_ko: 위커바텀 책 (5회, 정신력 -33). 반경 30 내 모든 식물, 나무, 작물을 즉시 성장시킵니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-33）。半径30以内の全ての植物・木・作物を即座に成長させます。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-33）。立即使半径30内所有植物、树木和作物生长。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-33）。立即使半徑30內所有植物、樹木和作物生長。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -33 santé mentale). Fait pousser instantanément toutes les plantes, arbres et cultures dans un rayon de 30.
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -33 geistige Gesundheit). Lässt alle Pflanzen, Bäume und Feldfrüchte im Radius 30 sofort wachsen.
+  desc_it: Libro di Wickerbottom (5 usi, -33 sanità mentale). Fa crescere istantaneamente tutte le piante, alberi e colture nel raggio di 30.
+  desc_pl: Książka Wickerbottom (5 użyć, -33 poczytalności). Natychmiast hoduje wszystkie rośliny, drzewa i uprawy w promieniu 30.
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -33 sanidade). Faz crescer instantaneamente todas as plantas, árvores e plantações no raio de 30.
+  desc_ru: Книга Викерботтом (5 использований, -33 рассудка). Мгновенно выращивает все растения, деревья и посевы в радиусе 30.
+  desc_es: Libro de Wickerbottom (5 usos, -33 cordura). Hace crecer instantáneamente todas las plantas, árboles y cultivos en un radio de 30.
+  desc_es_MX: Libro de Wickerbottom (5 usos, -33 cordura). Hace crecer instantáneamente todas las plantas, árboles y cultivos en un radio de 30.
 107.book_horticulture
   en: Horticulture, Abridged
   ko: 원예학 축약판
   app: O
   source: Wickerbottom book. 5 uses. -33 sanity on read. Grows up to 10 plants/crops/mushroom farms in radius 30 (one-at-a-time with 0.1-0.3s delay).
+  desc_en: Wickerbottom book (5 uses, -33 sanity). Grows up to 10 plants and crops within radius 30, one at a time.
+  desc_ko: 위커바텀 책 (5회, 정신력 -33). 반경 30 내 식물과 작물을 최대 10개까지 하나씩 성장시킵니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-33）。半径30以内の植物・作物を最大10個まで順番に成長させます。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-33）。使半径30内最多10株植物和作物逐一生长。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-33）。使半徑30內最多10株植物和作物逐一生長。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -33 santé mentale). Fait pousser jusqu'à 10 plantes et cultures dans un rayon de 30, une à la fois.
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -33 geistige Gesundheit). Lässt bis zu 10 Pflanzen und Feldfrüchte im Radius 30 nacheinander wachsen.
+  desc_it: Libro di Wickerbottom (5 usi, -33 sanità mentale). Fa crescere fino a 10 piante e colture nel raggio di 30, una alla volta.
+  desc_pl: Książka Wickerbottom (5 użyć, -33 poczytalności). Hoduje do 10 roślin i upraw w promieniu 30, jedną po drugiej.
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -33 sanidade). Faz crescer até 10 plantas e plantações no raio de 30, uma de cada vez.
+  desc_ru: Книга Викерботтом (5 использований, -33 рассудка). Выращивает до 10 растений и посевов в радиусе 30 по одному.
+  desc_es: Libro de Wickerbottom (5 usos, -33 cordura). Hace crecer hasta 10 plantas y cultivos en un radio de 30, una a la vez.
+  desc_es_MX: Libro de Wickerbottom (5 usos, -33 cordura). Hace crecer hasta 10 plantas y cultivos en un radio de 30, una a la vez.
 108.book_horticulture_upgraded
   en: Horticulture, Expanded
   ko: 원예학 확장판
   app: O
   source: Wickerbottom book. 3 uses. -33 sanity on read. Grows up to 15 plants/crops in radius 30 with maximize mode (tends + adds 6x nutrients). Sequential with delay.
+  desc_en: Wickerbottom book (3 uses, -33 sanity). Grows up to 15 plants in radius 30 with maximize mode, tending and adding 6x nutrients.
+  desc_ko: 위커바텀 책 (3회, 정신력 -33). 반경 30 내 식물을 최대 15개까지 극대화 모드로 성장시키며, 돌봄과 6배 영양분을 추가합니다.
+  desc_ja: ウィッカーボトムの本（3回使用、正気度-33）。半径30以内の植物を最大15個まで最大化モードで成長させ、世話と6倍の栄養を付与します。
+  desc_zh_CN: 薇克巴顿之书（3次使用，理智-33）。以最大化模式使半径30内最多15株植物生长，同时照料并添加6倍养分。
+  desc_zh_TW: 薇克巴頓之書（3次使用，理智-33）。以最大化模式使半徑30內最多15株植物生長，同時照料並添加6倍養分。
+  desc_fr: Livre de Wickerbottom (3 utilisations, -33 santé mentale). Fait pousser jusqu'à 15 plantes dans un rayon de 30 en mode maximisation, avec entretien et 6x nutriments.
+  desc_de: Wickerbottom-Buch (3 Nutzungen, -33 geistige Gesundheit). Lässt bis zu 15 Pflanzen im Radius 30 im Maximierungsmodus wachsen, pflegt sie und fügt 6x Nährstoffe hinzu.
+  desc_it: Libro di Wickerbottom (3 usi, -33 sanità mentale). Fa crescere fino a 15 piante nel raggio di 30 in modalità massimizzazione, curandole e aggiungendo 6x nutrienti.
+  desc_pl: Książka Wickerbottom (3 użycia, -33 poczytalności). Hoduje do 15 roślin w promieniu 30 w trybie maksymalizacji, pielęgnując i dodając 6x składników odżywczych.
+  desc_pt_BR: Livro de Wickerbottom (3 usos, -33 sanidade). Faz crescer até 15 plantas no raio de 30 em modo maximização, cuidando e adicionando 6x nutrientes.
+  desc_ru: Книга Викерботтом (3 использования, -33 рассудка). Выращивает до 15 растений в радиусе 30 в режиме максимизации, ухаживая и добавляя 6x питательных веществ.
+  desc_es: Libro de Wickerbottom (3 usos, -33 cordura). Hace crecer hasta 15 plantas en un radio de 30 en modo maximización, cuidándolas y añadiendo 6x nutrientes.
+  desc_es_MX: Libro de Wickerbottom (3 usos, -33 cordura). Hace crecer hasta 15 plantas en un radio de 30 en modo maximización, cuidándolas y añadiendo 6x nutrientes.
 109.book_light
   en: Lux Aeterna
   ko: 영원의 빛
   app: O
   source: Wickerbottom book. 3 uses. -33 sanity on read. Triggers a quake and spawns a light source lasting 240s (half a day).
+  desc_en: Wickerbottom book (3 uses, -33 sanity). Triggers a quake and creates a light source lasting 240s (half a day).
+  desc_ko: 위커바텀 책 (3회, 정신력 -33). 지진을 일으키고 240초(반나절) 동안 지속되는 광원을 생성합니다.
+  desc_ja: ウィッカーボトムの本（3回使用、正気度-33）。地震を起こし、240秒（半日）持続する光源を生成します。
+  desc_zh_CN: 薇克巴顿之书（3次使用，理智-33）。触发地震并生成持续240秒（半天）的光源。
+  desc_zh_TW: 薇克巴頓之書（3次使用，理智-33）。觸發地震並生成持續240秒（半天）的光源。
+  desc_fr: Livre de Wickerbottom (3 utilisations, -33 santé mentale). Déclenche un tremblement de terre et crée une source de lumière durant 240s (une demi-journée).
+  desc_de: Wickerbottom-Buch (3 Nutzungen, -33 geistige Gesundheit). Löst ein Beben aus und erzeugt eine Lichtquelle für 240s (einen halben Tag).
+  desc_it: Libro di Wickerbottom (3 usi, -33 sanità mentale). Innesca un terremoto e crea una fonte di luce della durata di 240s (mezzo giorno).
+  desc_pl: Książka Wickerbottom (3 użycia, -33 poczytalności). Wywołuje trzęsienie ziemi i tworzy źródło światła na 240s (pół dnia).
+  desc_pt_BR: Livro de Wickerbottom (3 usos, -33 sanidade). Provoca um terremoto e cria uma fonte de luz por 240s (meio dia).
+  desc_ru: Книга Викерботтом (3 использования, -33 рассудка). Вызывает землетрясение и создаёт источник света на 240с (полдня).
+  desc_es: Libro de Wickerbottom (3 usos, -33 cordura). Provoca un temblor y crea una fuente de luz durante 240s (medio día).
+  desc_es_MX: Libro de Wickerbottom (3 usos, -33 cordura). Provoca un temblor y crea una fuente de luz durante 240s (medio día).
 110.book_light_upgraded
   en: Lux Aeterna Redux
   ko: 영원의 빛 개정판
   app: O
   source: Wickerbottom book. 5 uses. -33 sanity on read. Triggers a quake and spawns a light source lasting 960s (2 full days).
+  desc_en: Wickerbottom book (5 uses, -33 sanity). Triggers a quake and creates a light source lasting 960s (2 full days).
+  desc_ko: 위커바텀 책 (5회, 정신력 -33). 지진을 일으키고 960초(2일) 동안 지속되는 광원을 생성합니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-33）。地震を起こし、960秒（丸2日）持続する光源を生成します。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-33）。触发地震并生成持续960秒（整整2天）的光源。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-33）。觸發地震並生成持續960秒（整整2天）的光源。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -33 santé mentale). Déclenche un tremblement de terre et crée une source de lumière durant 960s (2 jours complets).
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -33 geistige Gesundheit). Löst ein Beben aus und erzeugt eine Lichtquelle für 960s (2 volle Tage).
+  desc_it: Libro di Wickerbottom (5 usi, -33 sanità mentale). Innesca un terremoto e crea una fonte di luce della durata di 960s (2 giorni interi).
+  desc_pl: Książka Wickerbottom (5 użyć, -33 poczytalności). Wywołuje trzęsienie ziemi i tworzy źródło światła na 960s (2 pełne dni).
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -33 sanidade). Provoca um terremoto e cria uma fonte de luz por 960s (2 dias inteiros).
+  desc_ru: Книга Викерботтом (5 использований, -33 рассудка). Вызывает землетрясение и создаёт источник света на 960с (2 полных дня).
+  desc_es: Libro de Wickerbottom (5 usos, -33 cordura). Provoca un temblor y crea una fuente de luz durante 960s (2 días completos).
+  desc_es_MX: Libro de Wickerbottom (5 usos, -33 cordura). Provoca un temblor y crea una fuente de luz durante 960s (2 días completos).
 111.book_moon
   en: Lunar Grimoire
   ko: 월광의 서
   app: O
   source: Wickerbottom book. 3 uses. -50 sanity on read. Forces full moon phase. Does not work in caves or if already full moon.
+  desc_en: Wickerbottom book (3 uses, -50 sanity). Forces the moon to full phase. Does not work in caves or during an existing full moon.
+  desc_ko: 위커바텀 책 (3회, 정신력 -50). 달을 보름달 단계로 강제합니다. 동굴이나 이미 보름달인 경우 작동하지 않습니다.
+  desc_ja: ウィッカーボトムの本（3回使用、正気度-50）。月を満月状態に強制します。洞窟内や既に満月の場合は効果なし。
+  desc_zh_CN: 薇克巴顿之书（3次使用，理智-50）。强制月亮变为满月。在洞穴中或已是满月时无效。
+  desc_zh_TW: 薇克巴頓之書（3次使用，理智-50）。強制月亮變為滿月。在洞穴中或已是滿月時無效。
+  desc_fr: Livre de Wickerbottom (3 utilisations, -50 santé mentale). Force la pleine lune. Ne fonctionne pas dans les grottes ni si la lune est déjà pleine.
+  desc_de: Wickerbottom-Buch (3 Nutzungen, -50 geistige Gesundheit). Erzwingt Vollmond. Funktioniert nicht in Höhlen oder bei bereits vollem Mond.
+  desc_it: Libro di Wickerbottom (3 usi, -50 sanità mentale). Forza la luna piena. Non funziona nelle grotte o se è già luna piena.
+  desc_pl: Książka Wickerbottom (3 użycia, -50 poczytalności). Wymusza pełnię księżyca. Nie działa w jaskiniach ani podczas istniejącej pełni.
+  desc_pt_BR: Livro de Wickerbottom (3 usos, -50 sanidade). Força a lua cheia. Não funciona em cavernas ou se já for lua cheia.
+  desc_ru: Книга Викерботтом (3 использования, -50 рассудка). Принудительно устанавливает полнолуние. Не работает в пещерах или при уже полной луне.
+  desc_es: Libro de Wickerbottom (3 usos, -50 cordura). Fuerza la luna llena. No funciona en cuevas ni si ya hay luna llena.
+  desc_es_MX: Libro de Wickerbottom (3 usos, -50 cordura). Fuerza la luna llena. No funciona en cuevas ni si ya hay luna llena.
 112.book_rain
   en: Practical Rain Rituals
   ko: 실전 기우제
   app: O
   source: Wickerbottom book. 5 uses. -33 sanity on read. Toggles precipitation on/off. Also moisturizes nearby farm soil tiles (1 tile radius).
+  desc_en: Wickerbottom book (5 uses, -33 sanity). Toggles rain on or off and moisturizes nearby farm soil.
+  desc_ko: 위커바텀 책 (5회, 정신력 -33). 비를 켜거나 끄고, 주변 농경지 토양을 적셔줍니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-33）。雨のオン・オフを切り替え、周囲の農地の土壌を湿らせます。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-33）。切换降雨开关，并湿润附近农田土壤。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-33）。切換降雨開關，並濕潤附近農田土壤。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -33 santé mentale). Active ou désactive la pluie et humidifie les sols agricoles proches.
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -33 geistige Gesundheit). Schaltet Regen ein/aus und befeuchtet nahegelegene Ackerflächen.
+  desc_it: Libro di Wickerbottom (5 usi, -33 sanità mentale). Attiva o disattiva la pioggia e inumidisce il terreno agricolo vicino.
+  desc_pl: Książka Wickerbottom (5 użyć, -33 poczytalności). Przełącza deszcz i nawilża pobliską glebę rolną.
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -33 sanidade). Liga ou desliga a chuva e umedece o solo agrícola próximo.
+  desc_ru: Книга Викерботтом (5 использований, -33 рассудка). Включает или выключает дождь и увлажняет ближайшую сельскохозяйственную почву.
+  desc_es: Libro de Wickerbottom (5 usos, -33 cordura). Activa o desactiva la lluvia y humedece el suelo agrícola cercano.
+  desc_es_MX: Libro de Wickerbottom (5 usos, -33 cordura). Activa o desactiva la lluvia y humedece el suelo agrícola cercano.
 113.book_research_station
   en: The Everything Encyclopedia
   ko: 만물의 백과사전
   app: O
   source: Wickerbottom book. 3 uses. -33 sanity on read. Grants temporary tech bonus (Science 2, Magic 2, Seafaring 2) to all players within radius 16.
+  desc_en: Wickerbottom book (3 uses, -33 sanity). Grants Science 2, Magic 2, and Seafaring 2 tech access to all players within radius 16.
+  desc_ko: 위커바텀 책 (3회, 정신력 -33). 반경 16 내 모든 플레이어에게 과학 2, 마법 2, 항해 2 기술 접근 권한을 부여합니다.
+  desc_ja: ウィッカーボトムの本（3回使用、正気度-33）。半径16以内の全プレイヤーに科学2・魔法2・航海2の技術アクセスを付与します。
+  desc_zh_CN: 薇克巴顿之书（3次使用，理智-33）。为半径16内所有玩家授予科学2、魔法2、航海2的技术权限。
+  desc_zh_TW: 薇克巴頓之書（3次使用，理智-33）。為半徑16內所有玩家授予科學2、魔法2、航海2的技術權限。
+  desc_fr: Livre de Wickerbottom (3 utilisations, -33 santé mentale). Accorde Science 2, Magie 2 et Navigation 2 à tous les joueurs dans un rayon de 16.
+  desc_de: Wickerbottom-Buch (3 Nutzungen, -33 geistige Gesundheit). Gewährt allen Spielern im Radius 16 Wissenschaft 2, Magie 2 und Seefahrt 2.
+  desc_it: Libro di Wickerbottom (3 usi, -33 sanità mentale). Concede Scienza 2, Magia 2 e Navigazione 2 a tutti i giocatori nel raggio di 16.
+  desc_pl: Książka Wickerbottom (3 użycia, -33 poczytalności). Daje dostęp do Nauki 2, Magii 2 i Żeglarstwa 2 wszystkim graczom w promieniu 16.
+  desc_pt_BR: Livro de Wickerbottom (3 usos, -33 sanidade). Concede Ciência 2, Magia 2 e Navegação 2 a todos os jogadores no raio de 16.
+  desc_ru: Книга Викерботтом (3 использования, -33 рассудка). Предоставляет Науку 2, Магию 2 и Мореходство 2 всем игрокам в радиусе 16.
+  desc_es: Libro de Wickerbottom (3 usos, -33 cordura). Otorga Ciencia 2, Magia 2 y Navegación 2 a todos los jugadores en un radio de 16.
+  desc_es_MX: Libro de Wickerbottom (3 usos, -33 cordura). Otorga Ciencia 2, Magia 2 y Navegación 2 a todos los jugadores en un radio de 16.
 114.book_silviculture
   en: Applied Silviculture
   ko: 응용 조림학
   app: O
   source: Wickerbottom book. 5 uses. -33 sanity on read. Grows all trees, winter trees, and silviculture-tagged plants in radius 30. Also puts Leifs to sleep for 1000s.
+  desc_en: Wickerbottom book (5 uses, -33 sanity). Grows all trees within radius 30 and puts Treeguards to sleep for 1000s.
+  desc_ko: 위커바텀 책 (5회, 정신력 -33). 반경 30 내 모든 나무를 성장시키고 나무 수호자를 1000초 동안 재웁니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-33）。半径30以内の全ての木を成長させ、ツリーガードを1000秒間眠らせます。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-33）。使半径30内所有树木生长，并使树精卫士沉睡1000秒。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-33）。使半徑30內所有樹木生長，並使樹精衛士沉睡1000秒。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -33 santé mentale). Fait pousser tous les arbres dans un rayon de 30 et endort les Gardiens d'arbres pendant 1000s.
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -33 geistige Gesundheit). Lässt alle Bäume im Radius 30 wachsen und schläfert Baumwächter für 1000s ein.
+  desc_it: Libro di Wickerbottom (5 usi, -33 sanità mentale). Fa crescere tutti gli alberi nel raggio di 30 e addormenta i Guardiani degli alberi per 1000s.
+  desc_pl: Książka Wickerbottom (5 użyć, -33 poczytalności). Hoduje wszystkie drzewa w promieniu 30 i usypia Strażników Drzew na 1000s.
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -33 sanidade). Faz crescer todas as árvores no raio de 30 e adormece os Guardiões de Árvores por 1000s.
+  desc_ru: Книга Викерботтом (5 использований, -33 рассудка). Выращивает все деревья в радиусе 30 и усыпляет Древесных стражей на 1000с.
+  desc_es: Libro de Wickerbottom (5 usos, -33 cordura). Hace crecer todos los árboles en un radio de 30 y duerme a los Guardianes del Árbol durante 1000s.
+  desc_es_MX: Libro de Wickerbottom (5 usos, -33 cordura). Hace crecer todos los árboles en un radio de 30 y duerme a los Guardianes del Árbol durante 1000s.
 115.book_sleep
   en: Sleepytime Stories
   ko: 꿈나라 이야기
   app: O
   source: Wickerbottom book. 5 uses. -33 sanity on read. Puts all sleepable creatures (and players in PVP) to sleep within radius 30. Sleepiness 10, sleep time 20s.
+  desc_en: Wickerbottom book (5 uses, -33 sanity). Puts all sleepable creatures within radius 30 to sleep for 20s.
+  desc_ko: 위커바텀 책 (5회, 정신력 -33). 반경 30 내 잠재울 수 있는 모든 생물을 20초 동안 잠재웁니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-33）。半径30以内の眠らせられる全クリーチャーを20秒間眠らせます。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-33）。使半径30内所有可催眠生物沉睡20秒。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-33）。使半徑30內所有可催眠生物沉睡20秒。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -33 santé mentale). Endort toutes les créatures pouvant dormir dans un rayon de 30 pendant 20s.
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -33 geistige Gesundheit). Schläfert alle schlaffähigen Kreaturen im Radius 30 für 20s ein.
+  desc_it: Libro di Wickerbottom (5 usi, -33 sanità mentale). Addormenta tutte le creature addormentabili nel raggio di 30 per 20s.
+  desc_pl: Książka Wickerbottom (5 użyć, -33 poczytalności). Usypia wszystkie usypialne stworzenia w promieniu 30 na 20s.
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -33 sanidade). Adormece todas as criaturas adormeciveis no raio de 30 por 20s.
+  desc_ru: Книга Викерботтом (5 использований, -33 рассудка). Усыпляет всех поддающихся сну существ в радиусе 30 на 20с.
+  desc_es: Libro de Wickerbottom (5 usos, -33 cordura). Duerme a todas las criaturas dormibles en un radio de 30 durante 20s.
+  desc_es_MX: Libro de Wickerbottom (5 usos, -33 cordura). Duerme a todas las criaturas dormibles en un radio de 30 durante 20s.
 116.book_temperature
   en: Tempering Temperatures
   ko: 온도 길들이기
   app: O
   source: Wickerbottom book. 5 uses. -33 sanity on read. Sets all players within radius 16 to temperature 35, removes all wetness, dries inventory items, and unfreezes nearby entities.
+  desc_en: Wickerbottom book (5 uses, -33 sanity). Sets all nearby players to temperature 35, removes wetness, dries items, and unfreezes entities.
+  desc_ko: 위커바텀 책 (5회, 정신력 -33). 주변 모든 플레이어의 체온을 35로 맞추고, 젖음을 제거하며 아이템을 건조시킵니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-33）。周囲の全プレイヤーの体温を35に設定し、濡れを除去、アイテムを乾燥させます。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-33）。将附近所有玩家体温设为35，移除潮湿，烘干物品并解冻实体。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-33）。將附近所有玩家體溫設為35，移除潮濕，烘乾物品並解凍實體。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -33 santé mentale). Fixe la température de tous les joueurs proches à 35, élimine l'humidité et sèche les objets.
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -33 geistige Gesundheit). Setzt die Temperatur aller Spieler in der Nähe auf 35, entfernt Nässe und trocknet Gegenstände.
+  desc_it: Libro di Wickerbottom (5 usi, -33 sanità mentale). Imposta la temperatura di tutti i giocatori vicini a 35, rimuove l'umidità e asciuga gli oggetti.
+  desc_pl: Książka Wickerbottom (5 użyć, -33 poczytalności). Ustawia temperaturę wszystkich pobliskich graczy na 35, usuwa wilgoć i suszy przedmioty.
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -33 sanidade). Define a temperatura de todos os jogadores próximos para 35, remove umidade e seca itens.
+  desc_ru: Книга Викерботтом (5 использований, -33 рассудка). Устанавливает температуру всех ближайших игроков на 35, убирает влажность и сушит предметы.
+  desc_es: Libro de Wickerbottom (5 usos, -33 cordura). Fija la temperatura de todos los jugadores cercanos en 35, elimina la humedad y seca los objetos.
+  desc_es_MX: Libro de Wickerbottom (5 usos, -33 cordura). Fija la temperatura de todos los jugadores cercanos en 35, elimina la humedad y seca los objetos.
 117.book_tentacles
   en: On Tentacles
   ko: 촉수에 관하여
   app: O
   source: Wickerbottom book. 5 uses. -50 sanity on read. Spawns 3 tentacles at random positions (radius 3-8) around the reader with 0.33s delay between each.
+  desc_en: Wickerbottom book (5 uses, -50 sanity). Spawns 3 tentacles at random positions within radius 3-8 of the reader.
+  desc_ko: 위커바텀 책 (5회, 정신력 -50). 독자 주변 반경 3~8에 촉수 3개를 무작위 위치에 소환합니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-50）。読者の周囲半径3〜8にランダムな位置で触手を3体召喚します。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-50）。在读者周围半径3-8处随机位置生成3条触手。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-50）。在讀者周圍半徑3-8處隨機位置生成3條觸手。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -50 santé mentale). Fait apparaître 3 tentacules à des positions aléatoires dans un rayon de 3 à 8 du lecteur.
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -50 geistige Gesundheit). Lässt 3 Tentakel an zufälligen Positionen im Radius 3-8 um den Leser erscheinen.
+  desc_it: Libro di Wickerbottom (5 usi, -50 sanità mentale). Genera 3 tentacoli in posizioni casuali nel raggio di 3-8 dal lettore.
+  desc_pl: Książka Wickerbottom (5 użyć, -50 poczytalności). Tworzy 3 macki w losowych pozycjach w promieniu 3-8 od czytelnika.
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -50 sanidade). Gera 3 tentáculos em posições aleatórias no raio de 3-8 do leitor.
+  desc_ru: Книга Викерботтом (5 использований, -50 рассудка). Создаёт 3 щупальца в случайных позициях в радиусе 3-8 от читателя.
+  desc_es: Libro de Wickerbottom (5 usos, -50 cordura). Genera 3 tentáculos en posiciones aleatorias en un radio de 3-8 del lector.
+  desc_es_MX: Libro de Wickerbottom (5 usos, -50 cordura). Genera 3 tentáculos en posiciones aleatorias en un radio de 3-8 del lector.
 118.book_web
   en: Overcoming Arachnophobia
   ko: 거미공포증의 극복
   app: O
   source: Wickerbottom book. 5 uses. -33 sanity on read. Creates a web ground patch at reader's position: radius 6, duration 120s, 25% speed penalty to enemies.
+  desc_en: Wickerbottom book (5 uses, -33 sanity). Creates a web patch (radius 6) for 120s that slows enemies by 25%.
+  desc_ko: 위커바텀 책 (5회, 정신력 -33). 반경 6의 거미줄 지대를 120초 동안 생성하여 적을 25% 감속시킵니다.
+  desc_ja: ウィッカーボトムの本（5回使用、正気度-33）。半径6の蜘蛛の巣地帯を120秒間生成し、敵を25%減速させます。
+  desc_zh_CN: 薇克巴顿之书（5次使用，理智-33）。生成半径6的蛛网区域持续120秒，使敌人减速25%。
+  desc_zh_TW: 薇克巴頓之書（5次使用，理智-33）。生成半徑6的蛛網區域持續120秒，使敵人減速25%。
+  desc_fr: Livre de Wickerbottom (5 utilisations, -33 santé mentale). Crée une zone de toile (rayon 6) pendant 120s qui ralentit les ennemis de 25 %.
+  desc_de: Wickerbottom-Buch (5 Nutzungen, -33 geistige Gesundheit). Erzeugt ein Netzfeld (Radius 6) für 120s, das Feinde um 25 % verlangsamt.
+  desc_it: Libro di Wickerbottom (5 usi, -33 sanità mentale). Crea una zona di ragnatela (raggio 6) per 120s che rallenta i nemici del 25%.
+  desc_pl: Książka Wickerbottom (5 użyć, -33 poczytalności). Tworzy pole pajęczyn (promień 6) na 120s, spowalniające wrogów o 25%.
+  desc_pt_BR: Livro de Wickerbottom (5 usos, -33 sanidade). Cria uma zona de teia (raio 6) por 120s que desacelera inimigos em 25%.
+  desc_ru: Книга Викерботтом (5 использований, -33 рассудка). Создаёт паутинную зону (радиус 6) на 120с, замедляющую врагов на 25%.
+  desc_es: Libro de Wickerbottom (5 usos, -33 cordura). Crea una zona de telaraña (radio 6) durante 120s que ralentiza enemigos un 25 %.
+  desc_es_MX: Libro de Wickerbottom (5 usos, -33 cordura). Crea una zona de telaraña (radio 6) durante 120s que ralentiza enemigos un 25 %.
 119.bookstation
   en: Bookcase
   ko: 책장
   app: O
   source: Structure. Prototyper (BOOKCRAFT tech tree). Container for books. Restores 1% durability to stored books every 30s (2% if Wickerbottom is within radius 12). Hammerable (4 hits).
+  desc_en: Crafting station for the Bookcraft tech tree. Stores books and restores 1% durability every 30s (2% near Wickerbottom).
+  desc_ko: 책 제작 기술 트리용 제작대. 책을 보관하며 30초마다 내구도 1%를 복구합니다(위커바텀 근처 시 2%).
+  desc_ja: 本のクラフト技術ツリーのクラフトステーション。本を保管し、30秒ごとに耐久度1%を回復（ウィッカーボトム付近で2%）。
+  desc_zh_CN: 书本制作科技树的工作台。存放书籍并每30秒恢复1%耐久度（薇克巴顿附近为2%）。
+  desc_zh_TW: 書本製作科技樹的工作台。存放書籍並每30秒恢復1%耐久度（薇克巴頓附近為2%）。
+  desc_fr: Station d'artisanat pour l'arbre Bookcraft. Stocke les livres et restaure 1 % de durabilité toutes les 30s (2 % près de Wickerbottom).
+  desc_de: Herstellungsstation für den Buchhandwerk-Technologiebaum. Lagert Bücher und stellt alle 30s 1 % Haltbarkeit wieder her (2 % in Wickerbottoms Nähe).
+  desc_it: Stazione di crafting per l'albero tecnologico Bookcraft. Conserva i libri e ripristina l'1% di durabilità ogni 30s (2% vicino a Wickerbottom).
+  desc_pl: Stacja rzemieślnicza drzewa technologii Bookcraft. Przechowuje książki i przywraca 1% wytrzymałości co 30s (2% w pobliżu Wickerbottom).
+  desc_pt_BR: Estação de criação da árvore Bookcraft. Armazena livros e restaura 1% de durabilidade a cada 30s (2% perto de Wickerbottom).
+  desc_ru: Станция крафта для древа технологий Книжное дело. Хранит книги и восстанавливает 1% прочности каждые 30с (2% рядом с Викерботтом).
+  desc_es: Estación de fabricación del árbol Bookcraft. Almacena libros y restaura 1 % de durabilidad cada 30s (2 % cerca de Wickerbottom).
+  desc_es_MX: Estación de fabricación del árbol Bookcraft. Almacena libros y restaura 1 % de durabilidad cada 30s (2 % cerca de Wickerbottom).
 120.boomerang
   en: Boomerang
   ko: 부메랑
   app: O
   source: Ranged weapon. 27.2 damage (34*0.8). 10 uses. Range 12 (hit range 14). Projectile speed 10. Returns to thrower after hit; can be caught to re-equip.
+  desc_en: Ranged weapon dealing 27.2 damage with 10 uses. Returns to the thrower after hitting and can be caught to re-equip.
+  desc_ko: 27.2 피해의 원거리 무기, 10회 사용. 명중 후 투척자에게 돌아오며 잡으면 재장착됩니다.
+  desc_ja: 27.2ダメージの遠距離武器、10回使用可能。命中後に投げ手に戻り、キャッチして再装備できます。
+  desc_zh_CN: 远程武器，造成27.2伤害，可使用10次。命中后返回投掷者，可接住重新装备。
+  desc_zh_TW: 遠程武器，造成27.2傷害，可使用10次。命中後返回投擲者，可接住重新裝備。
+  desc_fr: Arme à distance infligeant 27.2 dégâts, 10 utilisations. Revient au lanceur après l'impact et peut être rattrapée.
+  desc_de: Fernkampfwaffe mit 27,2 Schaden, 10 Nutzungen. Kehrt nach dem Treffer zum Werfer zurück und kann aufgefangen werden.
+  desc_it: Arma a distanza da 27.2 danni con 10 usi. Torna al lanciatore dopo il colpo e può essere presa al volo.
+  desc_pl: Broń dystansowa zadająca 27.2 obrażeń, 10 użyć. Wraca do rzucającego po trafieniu i można ją złapać.
+  desc_pt_BR: Arma de longo alcance com 27.2 de dano e 10 usos. Retorna ao arremessador após acertar e pode ser pega novamente.
+  desc_ru: Дальнобойное оружие с уроном 27.2, 10 использований. Возвращается к метателю после попадания и может быть поймано.
+  desc_es: Arma a distancia con 27.2 de daño y 10 usos. Regresa al lanzador tras impactar y puede ser atrapada.
+  desc_es_MX: Arma a distancia con 27.2 de daño y 10 usos. Regresa al lanzador tras impactar y puede ser atrapada.
 121.brush
   en: Brush
   ko: 솔
   app: O
   source: Tool/weapon. 27.2 damage (34*0.8), 3 attack wear per hit. 75 uses. Brushes beefalo: +0.4 obedience, +0.0017 domestication per brush action.
+  desc_en: Tool for grooming beefalo (75 uses). Each brush grants +0.4 obedience and +0.0017 domestication. Also usable as a 27.2 damage weapon.
+  desc_ko: 비팔로 손질 도구 (75회). 빗질할 때마다 복종 +0.4, 가축화 +0.0017. 27.2 피해 무기로도 사용 가능합니다.
+  desc_ja: ビーファロー手入れ用ツール（75回使用）。ブラッシングごとに従順+0.4、家畜化+0.0017。27.2ダメージの武器としても使用可能。
+  desc_zh_CN: 牛毛刷工具（75次使用）。每次刷毛增加0.4服从度和0.0017驯化度。也可作为27.2伤害武器使用。
+  desc_zh_TW: 牛毛刷工具（75次使用）。每次刷毛增加0.4服從度和0.0017馴化度。也可作為27.2傷害武器使用。
+  desc_fr: Outil de toilettage pour beefalo (75 utilisations). Chaque brossage donne +0.4 obéissance et +0.0017 domestication. Aussi utilisable comme arme à 27.2 dégâts.
+  desc_de: Werkzeug zur Beefalo-Pflege (75 Nutzungen). Jedes Bürsten gibt +0,4 Gehorsam und +0,0017 Domestizierung. Auch als Waffe mit 27,2 Schaden nutzbar.
+  desc_it: Strumento per la cura dei beefalo (75 usi). Ogni spazzolata dà +0.4 obbedienza e +0.0017 addomesticamento. Usabile anche come arma da 27.2 danni.
+  desc_pl: Narzędzie do pielęgnacji bizonów (75 użyć). Każde szczotkowanie daje +0.4 posłuszeństwa i +0.0017 udomowienia. Może służyć jako broń o 27.2 obrażeń.
+  desc_pt_BR: Ferramenta para cuidar beefalos (75 usos). Cada escovação concede +0.4 obediência e +0.0017 domesticação. Também usável como arma de 27.2 de dano.
+  desc_ru: Инструмент для ухода за бифало (75 использований). Каждая чистка даёт +0.4 послушания и +0.0017 одомашнивания. Также можно использовать как оружие с уроном 27.2.
+  desc_es: Herramienta para cepillar beefalos (75 usos). Cada cepillado otorga +0.4 obediencia y +0.0017 domesticación. También usable como arma de 27.2 de daño.
+  desc_es_MX: Herramienta para cepillar beefalos (75 usos). Cada cepillado otorga +0.4 obediencia y +0.0017 domesticación. También usable como arma de 27.2 de daño.
 122.bugnet
   en: Bug Net
   ko: 잠자리채
   app: O
   source: Tool/weapon. 4.25 damage (34*0.125), 3 attack wear per hit. 10 uses (1 per net action). Catches insects/butterflies/bees.
+  desc_en: Tool for catching insects, butterflies, and bees (10 uses). Deals 4.25 damage when used as a weapon.
+  desc_ko: 곤충, 나비, 벌을 잡는 도구 (10회). 무기로 사용 시 4.25 피해를 줍니다.
+  desc_ja: 昆虫・蝶・蜂を捕まえるツール（10回使用）。武器として使うと4.25ダメージ。
+  desc_zh_CN: 捕捉昆虫、蝴蝶和蜜蜂的工具（10次使用）。作为武器使用时造成4.25伤害。
+  desc_zh_TW: 捕捉昆蟲、蝴蝶和蜜蜂的工具（10次使用）。作為武器使用時造成4.25傷害。
+  desc_fr: Outil pour attraper insectes, papillons et abeilles (10 utilisations). Inflige 4.25 dégâts en tant qu'arme.
+  desc_de: Werkzeug zum Fangen von Insekten, Schmetterlingen und Bienen (10 Nutzungen). Verursacht 4,25 Schaden als Waffe.
+  desc_it: Strumento per catturare insetti, farfalle e api (10 usi). Infligge 4.25 danni come arma.
+  desc_pl: Narzędzie do łapania owadów, motyli i pszczół (10 użyć). Zadaje 4.25 obrażeń jako broń.
+  desc_pt_BR: Ferramenta para capturar insetos, borboletas e abelhas (10 usos). Causa 4.25 de dano como arma.
+  desc_ru: Инструмент для ловли насекомых, бабочек и пчёл (10 использований). Наносит 4.25 урона как оружие.
+  desc_es: Herramienta para atrapar insectos, mariposas y abejas (10 usos). Inflige 4.25 de daño como arma.
+  desc_es_MX: Herramienta para atrapar insectos, mariposas y abejas (10 usos). Inflige 4.25 de daño como arma.
 123.bundlewrap
   en: Bundling Wrap
   ko: 포장지
   app: O
   source: Consumable wrapping item. Stackable (20). Opens a bundling container to wrap up to 4 items into a bundle. Preserves item freshness while wrapped. Burnable.
+  desc_en: Wraps up to 4 items into a bundle that preserves freshness. Stackable to 20, consumed on use.
+  desc_ko: 최대 4개 아이템을 신선도를 유지하는 보따리로 포장합니다. 20개 중첩 가능, 사용 시 소모됩니다.
+  desc_ja: 最大4アイテムを鮮度を保つバンドルに包みます。20個スタック可能、使用時に消費。
+  desc_zh_CN: 将最多4件物品包裹成保鲜捆包。可堆叠20个，使用后消耗。
+  desc_zh_TW: 將最多4件物品包裹成保鮮捆包。可堆疊20個，使用後消耗。
+  desc_fr: Emballe jusqu'à 4 objets dans un paquet qui préserve la fraîcheur. Empilable par 20, consommé à l'utilisation.
+  desc_de: Verpackt bis zu 4 Gegenstände in ein Bündel, das die Frische bewahrt. Stapelbar bis 20, wird beim Benutzen verbraucht.
+  desc_it: Avvolge fino a 4 oggetti in un fagotto che preserva la freschezza. Impilabile fino a 20, consumato all'uso.
+  desc_pl: Pakuje do 4 przedmiotów w tobołek zachowujący świeżość. Stosowalny do 20, zużywany przy użyciu.
+  desc_pt_BR: Embala até 4 itens em um pacote que preserva o frescor. Empilhável até 20, consumido ao usar.
+  desc_ru: Заворачивает до 4 предметов в свёрток, сохраняющий свежесть. Складывается до 20, расходуется при использовании.
+  desc_es: Envuelve hasta 4 objetos en un paquete que preserva la frescura. Apilable hasta 20, se consume al usar.
+  desc_es_MX: Envuelve hasta 4 objetos en un paquete que preserva la frescura. Apilable hasta 20, se consume al usar.
 124.bushhat
   en: Bush Hat
   ko: 덤불 모자
   app: O
   source: Hat. Allows the wearer to hide (become invisible to enemies) by activating the "hide" state. No armor, no durability. Purely stealth utility.
+  desc_en: Hat that grants stealth by hiding the wearer from enemies. No durability limit, purely utility.
+  desc_ko: 착용자를 적에게 숨겨 은신하게 하는 모자. 내구도 제한 없음, 순수 유틸리티.
+  desc_ja: 敵から身を隠すステルス帽子。耐久制限なし、純粋にユーティリティ用。
+  desc_zh_CN: 使佩戴者对敌人隐形的帽子。无耐久限制，纯功能性道具。
+  desc_zh_TW: 使佩戴者對敵人隱形的帽子。無耐久限制，純功能性道具。
+  desc_fr: Chapeau qui rend invisible aux ennemis en activant l'état furtif. Aucune limite de durabilité, purement utilitaire.
+  desc_de: Hut, der den Träger vor Feinden verbirgt. Keine Haltbarkeitsbegrenzung, rein nützlich.
+  desc_it: Cappello che nasconde chi lo indossa ai nemici. Nessun limite di durabilità, puramente utilitario.
+  desc_pl: Kapelusz ukrywający noszącego przed wrogami. Bez limitu wytrzymałości, czysto użytkowy.
+  desc_pt_BR: Chapéu que esconde o usuário dos inimigos. Sem limite de durabilidade, puramente utilitário.
+  desc_ru: Шляпа, скрывающая владельца от врагов. Без ограничения прочности, чисто утилитарная.
+  desc_es: Sombrero que oculta al portador de los enemigos. Sin límite de durabilidad, puramente utilitario.
+  desc_es_MX: Sombrero que oculta al portador de los enemigos. Sin límite de durabilidad, puramente utilitario.
 125.campfire
   en: Campfire
   ko: 모닥불
   app: O
   source: Structure. Light/heat source with cooking function. 4 fuel sections. Max fuel 270s, starts at 135s. Rain drain rate 2.5x. Produces ash (or charcoal at max fuel) when expired.
+  desc_en: Basic light and heat source with cooking capability. Max fuel duration 270s, burns faster in rain (2.5x drain).
+  desc_ko: 요리 기능이 있는 기본 광원/열원. 최대 연료 270초, 비 올 때 2.5배 빨리 소모됩니다.
+  desc_ja: 調理機能付きの基本的な光源・熱源。最大燃料270秒、雨天時2.5倍の速度で消耗。
+  desc_zh_CN: 带烹饪功能的基础光源和热源。最大燃料270秒，雨中消耗加快2.5倍。
+  desc_zh_TW: 帶烹飪功能的基礎光源和熱源。最大燃料270秒，雨中消耗加快2.5倍。
+  desc_fr: Source de lumière et de chaleur basique avec fonction de cuisson. Durée maximale 270s, brûle 2,5x plus vite sous la pluie.
+  desc_de: Grundlegende Licht- und Wärmequelle mit Kochfunktion. Max. Brenndauer 270s, verbrennt bei Regen 2,5x schneller.
+  desc_it: Fonte di luce e calore base con funzione di cottura. Durata massima combustibile 270s, brucia 2.5x più veloce sotto la pioggia.
+  desc_pl: Podstawowe źródło światła i ciepła z funkcją gotowania. Maks. paliwo 270s, spala się 2.5x szybciej w deszczu.
+  desc_pt_BR: Fonte básica de luz e calor com função de cozimento. Duração máxima de combustível 270s, queima 2.5x mais rápido na chuva.
+  desc_ru: Базовый источник света и тепла с функцией готовки. Макс. топливо 270с, горит в 2.5 раза быстрее под дождём.
+  desc_es: Fuente básica de luz y calor con función de cocción. Duración máxima de combustible 270s, se consume 2.5x más rápido bajo la lluvia.
+  desc_es_MX: Fuente básica de luz y calor con función de cocción. Duración máxima de combustible 270s, se consume 2.5x más rápido bajo la lluvia.
 126.candybag
   en: Candy Bag
   ko: 사탕 주머니
   app: O
   source: Body slot container (backpack-type). 16 slots (2x8 grid). Holds candy/food items for Hallowed Nights event. Cannot go inside other containers. Burnable.
+  desc_en: Backpack-type container with 16 slots for Hallowed Nights candy and food items.
+  desc_ko: 할로윈의 밤 사탕 및 음식 전용 16칸 배낭형 컨테이너.
+  desc_ja: ハロウィンナイトのキャンディーと食べ物用16スロットのバックパック型コンテナ。
+  desc_zh_CN: 万圣夜活动专用的16格背包型容器，用于存放糖果和食物。
+  desc_zh_TW: 萬聖夜活動專用的16格背包型容器，用於存放糖果和食物。
+  desc_fr: Conteneur type sac à dos à 16 emplacements pour les bonbons et aliments de la Nuit des Esprits.
+  desc_de: Rucksack-Behälter mit 16 Plätzen für Süßigkeiten und Essen der Hallowed Nights.
+  desc_it: Contenitore tipo zaino con 16 slot per caramelle e cibo dell'evento Hallowed Nights.
+  desc_pl: Pojemnik plecakowy z 16 miejscami na słodycze i jedzenie z wydarzenia Hallowed Nights.
+  desc_pt_BR: Contêiner tipo mochila com 16 espaços para doces e comida do evento Hallowed Nights.
+  desc_ru: Контейнер типа рюкзака на 16 ячеек для конфет и еды события Hallowed Nights.
+  desc_es: Contenedor tipo mochila con 16 espacios para dulces y comida del evento Hallowed Nights.
+  desc_es_MX: Contenedor tipo mochila con 16 espacios para dulces y comida del evento Hallowed Nights.
 127.cane
   en: Walking Cane
   ko: 워킹 케인
   app: O
   source: Weapon/tool. 17 damage (34*0.5). No durability limit. +25% walk speed when equipped.
+  desc_en: Infinite-durability weapon dealing 17 damage. Grants +25% walk speed when equipped.
+  desc_ko: 내구도 무한 무기, 17 피해. 장착 시 이동 속도 +25%.
+  desc_ja: 耐久無限の武器、17ダメージ。装備時に移動速度+25%。
+  desc_zh_CN: 无限耐久武器，造成17伤害。装备时移动速度+25%。
+  desc_zh_TW: 無限耐久武器，造成17傷害。裝備時移動速度+25%。
+  desc_fr: Arme à durabilité infinie infligeant 17 dégâts. +25 % de vitesse de marche lorsqu'elle est équipée.
+  desc_de: Waffe mit unbegrenzter Haltbarkeit, 17 Schaden. +25 % Gehgeschwindigkeit bei Ausrüstung.
+  desc_it: Arma a durabilità infinita da 17 danni. Velocità di camminata +25% quando equipaggiata.
+  desc_pl: Broń o nieskończonej wytrzymałości, 17 obrażeń. +25% prędkości chodu po założeniu.
+  desc_pt_BR: Arma com durabilidade infinita causando 17 de dano. +25% de velocidade ao caminhar quando equipada.
+  desc_ru: Оружие с бесконечной прочностью, 17 урона. +25% скорости ходьбы при экипировке.
+  desc_es: Arma de durabilidad infinita con 17 de daño. +25 % de velocidad al caminar cuando está equipada.
+  desc_es_MX: Arma de durabilidad infinita con 17 de daño. +25 % de velocidad al caminar cuando está equipada.
 128.cannonball_rock_item
   en: Cannonball
   ko: 포탄
   app: O
   source: Ammo for boat cannon. 200 damage on direct hit, splash radius 3 with 60% splash damage (120). Stackable (20). Sinks in water. Creates boat leaks on hit.
+  desc_en: Cannon ammo dealing 200 direct damage and 120 splash damage (radius 3). Stackable to 20. Creates boat leaks on hit.
+  desc_ko: 직격 200, 범위 피해 120(반경 3)의 대포 탄약. 20개 중첩 가능. 명중 시 보트에 누수를 만듭니다.
+  desc_ja: 直撃200ダメージ、範囲120ダメージ（半径3）の大砲弾。20個スタック可能。命中時にボートに漏れを発生。
+  desc_zh_CN: 大炮弹药，直击200伤害，溅射120伤害（半径3）。可堆叠20个。命中时造成船体漏水。
+  desc_zh_TW: 大砲彈藥，直擊200傷害，濺射120傷害（半徑3）。可堆疊20個。命中時造成船體漏水。
+  desc_fr: Munition de canon : 200 dégâts directs et 120 dégâts de zone (rayon 3). Empilable par 20. Crée des fuites sur les bateaux.
+  desc_de: Kanonenmunition mit 200 direktem und 120 Flächenschaden (Radius 3). Stapelbar bis 20. Erzeugt Bootslecks bei Treffern.
+  desc_it: Munizione per cannone: 200 danni diretti e 120 danni ad area (raggio 3). Impilabile fino a 20. Crea falle nelle barche.
+  desc_pl: Amunicja do armaty: 200 obrażeń bezpośrednich i 120 obrażeń obszarowych (promień 3). Stosowalna do 20. Tworzy przecieki w łodziach.
+  desc_pt_BR: Munição de canhão: 200 de dano direto e 120 de dano em área (raio 3). Empilhável até 20. Cria vazamentos em barcos.
+  desc_ru: Пушечный снаряд: 200 прямого урона и 120 урона по площади (радиус 3). Складывается до 20. Создаёт течи в лодках.
+  desc_es: Munición de cañón: 200 de daño directo y 120 de daño en área (radio 3). Apilable hasta 20. Crea fugas en barcos.
+  desc_es_MX: Munición de cañón: 200 de daño directo y 120 de daño en área (radio 3). Apilable hasta 20. Crea fugas en barcos.
 129.carnival_gametoken
   en: Cawnival Token
   ko: 까악제 토큰
   app: O
   source: Cawnival event currency. Stackable (40). Edible (elemental food, 2 hunger). Tradable. Works as mole bait. Used to activate carnival games and decorations.
+  desc_en: Cawnival event currency (stackable to 40). Used to activate games and decorations. Also edible for 2 hunger.
+  desc_ko: 까악제 이벤트 화폐 (40개 중첩). 게임과 장식물 활성화에 사용됩니다. 먹으면 허기 2 회복.
+  desc_ja: カーニバルイベント通貨（40個スタック可能）。ゲームや装飾の起動に使用。食べると空腹2回復。
+  desc_zh_CN: 嘉年华活动货币（可堆叠40个）。用于激活游戏和装饰物。也可食用，恢复2饥饿。
+  desc_zh_TW: 嘉年華活動貨幣（可堆疊40個）。用於激活遊戲和裝飾物。也可食用，恢復2飢餓。
+  desc_fr: Monnaie de l'événement Cawnival (empilable par 40). Sert à activer les jeux et décorations. Comestible pour 2 de faim.
+  desc_de: Cawnival-Eventwährung (stapelbar bis 40). Zum Aktivieren von Spielen und Dekorationen. Essbar für 2 Hunger.
+  desc_it: Valuta dell'evento Cawnival (impilabile fino a 40). Usata per attivare giochi e decorazioni. Commestibile per 2 fame.
+  desc_pl: Waluta wydarzenia Cawnival (stosowalna do 40). Służy do aktywacji gier i dekoracji. Jadalna, daje 2 głodu.
+  desc_pt_BR: Moeda do evento Cawnival (empilhável até 40). Usada para ativar jogos e decorações. Comestível por 2 de fome.
+  desc_ru: Валюта события Карнавала (складывается до 40). Активирует игры и украшения. Съедобна, даёт 2 голода.
+  desc_es: Moneda del evento Cawnival (apilable hasta 40). Sirve para activar juegos y decoraciones. Comestible por 2 de hambre.
+  desc_es_MX: Moneda del evento Cawnival (apilable hasta 40). Sirve para activar juegos y decoraciones. Comestible por 2 de hambre.
 130.carnival_gametoken_multiple
   en: 3 Cawnival Tokens
   ko: 까악제 토큰 3개
   app: O
   source: Crafting recipe that produces 3 Cawnival Tokens at once. Same item as carnival_gametoken, just a bulk recipe.
+  desc_en: Bulk recipe that produces 3 Cawnival Tokens at once.
+  desc_ko: 까악제 토큰 3개를 한 번에 생산하는 대량 레시피.
+  desc_ja: カーニバルトークン3個を一度に生産するまとめレシピ。
+  desc_zh_CN: 一次生产3个嘉年华代币的批量配方。
+  desc_zh_TW: 一次生產3個嘉年華代幣的批量配方。
+  desc_fr: Recette en lot produisant 3 jetons Cawnival à la fois.
+  desc_de: Sammelrezept, das 3 Cawnival-Token auf einmal herstellt.
+  desc_it: Ricetta in blocco che produce 3 gettoni Cawnival contemporaneamente.
+  desc_pl: Receptura hurtowa produkująca 3 żetony Cawnival na raz.
+  desc_pt_BR: Receita em lote que produz 3 Tokens do Cawnival de uma vez.
+  desc_ru: Массовый рецепт, производящий 3 жетона Карнавала за раз.
+  desc_es: Receta en lote que produce 3 fichas del Cawnival a la vez.
+  desc_es_MX: Receta en lote que produce 3 fichas del Cawnival a la vez.
 131.carnival_plaza
   en: Cawnival Tree
   ko: 까악제 나무
   app: X
   type: deconstruct
   source: Cawnival event structure (deployed form). Central tree that spawns crow kids and provides shelter. Choppable. Acts as an activatable structure for the festival.
+  desc_en: Central Cawnival structure that spawns crow kids and provides shelter. Activates the festival when placed.
+  desc_ko: 까마귀 아이들을 소환하고 쉼터를 제공하는 까악제 중심 구조물. 설치 시 축제를 활성화합니다.
+  desc_ja: カラスの子供を出現させ、シェルターを提供するカーニバルの中心構造物。設置するとフェスティバルが始まります。
+  desc_zh_CN: 嘉年华中心结构物，生成小乌鸦并提供庇护。放置后激活节日。
+  desc_zh_TW: 嘉年華中心結構物，生成小烏鴉並提供庇護。放置後激活節日。
+  desc_fr: Structure centrale du Cawnival qui fait apparaître des corbeaux et offre un abri. Active le festival.
+  desc_de: Zentrales Cawnival-Bauwerk, das Krähenkinder erscheinen lässt und Schutz bietet. Aktiviert das Festival.
+  desc_it: Struttura centrale del Cawnival che genera piccoli corvi e fornisce riparo. Attiva il festival.
+  desc_pl: Centralna konstrukcja Cawnival, która przyzywa małe wrony i zapewnia schronienie. Aktywuje festiwal.
+  desc_pt_BR: Estrutura central do Cawnival que gera filhotes de corvo e fornece abrigo. Ativa o festival.
+  desc_ru: Центральное сооружение Карнавала, порождающее воронят и дающее укрытие. Активирует фестиваль.
+  desc_es: Estructura central del Cawnival que genera cuervitos y proporciona refugio. Activa el festival.
+  desc_es_MX: Estructura central del Cawnival que genera cuervitos y proporciona refugio. Activa el festival.
 132.carnival_plaza_kit
   en: Cawnival Sapling
   ko: 까악제 묘목
   app: O
   source: Deployable kit. Places the Cawnival Tree structure (carnival_plaza). Event starter for the Cawnival festival.
+  desc_en: Deployable kit that places the Cawnival Tree structure and starts the festival.
+  desc_ko: 까악제 나무 구조물을 설치하고 축제를 시작하는 배치 키트.
+  desc_ja: カーニバルツリーを設置してフェスティバルを開始するキット。
+  desc_zh_CN: 放置嘉年华树并启动节日的部署套件。
+  desc_zh_TW: 放置嘉年華樹並啟動節日的部署套件。
+  desc_fr: Kit déployable qui place l'arbre Cawnival et lance le festival.
+  desc_de: Platzierbares Kit, das den Cawnival-Baum aufstellt und das Festival startet.
+  desc_it: Kit piazzabile che installa l'albero del Cawnival e avvia il festival.
+  desc_pl: Zestaw do postawienia Drzewa Cawnival i rozpoczęcia festiwalu.
+  desc_pt_BR: Kit implantável que coloca a Árvore do Cawnival e inicia o festival.
+  desc_ru: Набор для установки Дерева Карнавала и начала фестиваля.
+  desc_es: Kit desplegable que coloca el Árbol del Cawnival e inicia el festival.
+  desc_es_MX: Kit desplegable que coloca el Árbol del Cawnival e inicia el festival.
 133.carnival_popcorn
   en: Popcorn
   ko: 팝콘
   app: O
   source: Cawnival event food item. Crafted during the festival. No dedicated prefab file — recipe-only item.
+  desc_en: Cawnival event food item crafted during the festival.
+  desc_ko: 까악제 축제 기간에 제작하는 이벤트 음식.
+  desc_ja: カーニバルフェスティバル中に作れるイベント食品。
+  desc_zh_CN: 嘉年华节日期间制作的活动食品。
+  desc_zh_TW: 嘉年華節日期間製作的活動食品。
+  desc_fr: Nourriture d'événement Cawnival fabriquée pendant le festival.
+  desc_de: Cawnival-Eventessen, das während des Festivals hergestellt wird.
+  desc_it: Cibo dell'evento Cawnival prodotto durante il festival.
+  desc_pl: Jedzenie z wydarzenia Cawnival wytwarzane podczas festiwalu.
+  desc_pt_BR: Comida do evento Cawnival produzida durante o festival.
+  desc_ru: Еда события Карнавала, изготавливаемая во время фестиваля.
+  desc_es: Comida del evento Cawnival fabricada durante el festival.
+  desc_es_MX: Comida del evento Cawnival fabricada durante el festival.
 134.carnival_prizebooth
   en: Prize Booth
   ko: 경품 교환소
   app: X
   type: deconstruct
   source: Cawnival event structure (deployed form). Exchanges prize tickets for rewards. Has prototyper-like proximity activation with light. Hammerable.
+  desc_en: Cawnival structure that exchanges prize tickets for event rewards. Activates when a player is nearby.
+  desc_ko: 경품 티켓을 이벤트 보상으로 교환하는 까악제 구조물. 플레이어가 가까이 가면 활성화됩니다.
+  desc_ja: 景品チケットをイベント報酬と交換するカーニバル構造物。プレイヤーが近づくと起動。
+  desc_zh_CN: 用奖券兑换活动奖励的嘉年华结构物。玩家靠近时激活。
+  desc_zh_TW: 用獎券兌換活動獎勵的嘉年華結構物。玩家靠近時激活。
+  desc_fr: Structure Cawnival qui échange des tickets contre des récompenses. S'active à proximité d'un joueur.
+  desc_de: Cawnival-Struktur, die Preistickets gegen Belohnungen eintauscht. Aktiviert sich bei Spielernähe.
+  desc_it: Struttura Cawnival che scambia biglietti premio con ricompense. Si attiva quando un giocatore è vicino.
+  desc_pl: Konstrukcja Cawnival wymieniająca bilety na nagrody. Aktywuje się, gdy gracz jest w pobliżu.
+  desc_pt_BR: Estrutura do Cawnival que troca tickets de prêmio por recompensas. Ativa quando um jogador está perto.
+  desc_ru: Сооружение Карнавала, обменивающее призовые билеты на награды. Активируется при приближении игрока.
+  desc_es: Estructura del Cawnival que intercambia boletos de premio por recompensas. Se activa al acercarse un jugador.
+  desc_es_MX: Estructura del Cawnival que intercambia boletos de premio por recompensas. Se activa al acercarse un jugador.
 135.carnival_prizebooth_kit
   en: Prize Booth Kit
   ko: 경품 교환소
   app: O
   source: Deployable kit. Places the Prize Booth structure (carnival_prizebooth) for the Cawnival event.
+  desc_en: Deployable kit that places the Prize Booth structure for the Cawnival event.
+  desc_ko: 까악제 이벤트용 경품 교환소 구조물을 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用の景品交換所を設置するキット。
+  desc_zh_CN: 为嘉年华活动放置奖品兑换处的部署套件。
+  desc_zh_TW: 為嘉年華活動放置獎品兌換處的部署套件。
+  desc_fr: Kit déployable qui place le stand de prix pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das den Preisstand für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa lo stand premi per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia Stoiska z Nagrodami na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca o Balcão de Prêmios para o evento Cawnival.
+  desc_ru: Набор для установки Призового стенда для события Карнавала.
+  desc_es: Kit desplegable que coloca el Puesto de Premios para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca el Puesto de Premios para el evento Cawnival.
 136.carnival_seedpacket
   en: Seed Clusters
   ko: 씨앗 강정
   app: O
   source: Cawnival event bundle. Opens to yield 4 corn seeds (10% chance for a 5th bonus seed with luck roll).
+  desc_en: Cawnival bundle that yields 4 corn seeds when opened, with a 10% chance for a bonus 5th seed.
+  desc_ko: 열면 옥수수 씨앗 4개를 얻으며, 10% 확률로 보너스 5번째 씨앗이 추가됩니다.
+  desc_ja: 開封するとトウモロコシの種4個を獲得。10%の確率でボーナスの5個目が追加。
+  desc_zh_CN: 打开后获得4颗玉米种子，有10%概率额外获得第5颗。
+  desc_zh_TW: 打開後獲得4顆玉米種子，有10%機率額外獲得第5顆。
+  desc_fr: Paquet Cawnival donnant 4 graines de maïs à l'ouverture, avec 10 % de chance pour une 5e graine bonus.
+  desc_de: Cawnival-Bündel mit 4 Maissamen beim Öffnen, 10 % Chance auf einen 5. Bonussamen.
+  desc_it: Pacchetto Cawnival che produce 4 semi di mais all'apertura, con il 10% di probabilità di un 5° seme bonus.
+  desc_pl: Paczka Cawnival dająca 4 nasiona kukurydzy po otwarciu, z 10% szansą na 5. bonusowe nasiono.
+  desc_pt_BR: Pacote do Cawnival que rende 4 sementes de milho ao abrir, com 10% de chance de uma 5ª semente bônus.
+  desc_ru: Набор Карнавала, дающий 4 семени кукурузы при открытии, с 10% шансом на бонусное 5-е семя.
+  desc_es: Paquete del Cawnival que da 4 semillas de maíz al abrir, con un 10 % de probabilidad de una 5.ª semilla bonus.
+  desc_es_MX: Paquete del Cawnival que da 4 semillas de maíz al abrir, con un 10 % de probabilidad de una 5.ª semilla bonus.
 137.carnival_vest_a
   en: Chirpy Scarf
   ko: 재잘재잘 스카프
   app: O
   source: Body armor (Cawnival). Summer insulation 120 (medium). Dapperness +3.3/min. Fuel-based durability, lasts 5 days (2400s). Burnable.
+  desc_en: Cawnival body armor with summer insulation 120 and +3.3/min sanity. Lasts 5 days.
+  desc_ko: 여름 단열 120, 정신력 +3.3/분의 까악제 몸통 장비. 5일 동안 지속됩니다.
+  desc_ja: 夏の断熱120、正気度+3.3/分のカーニバルボディアーマー。5日間持続。
+  desc_zh_CN: 嘉年华躯干装备，夏季隔热120，精神+3.3/分。持续5天。
+  desc_zh_TW: 嘉年華軀幹裝備，夏季隔熱120，精神+3.3/分。持續5天。
+  desc_fr: Armure corporelle Cawnival avec isolation estivale 120 et +3.3/min de santé mentale. Dure 5 jours.
+  desc_de: Cawnival-Körperrüstung mit Sommerisolierung 120 und +3,3/Min geistige Gesundheit. Hält 5 Tage.
+  desc_it: Armatura corporea Cawnival con isolamento estivo 120 e +3.3/min di sanità mentale. Dura 5 giorni.
+  desc_pl: Pancerz Cawnival z izolacją letnią 120 i +3.3/min poczytalności. Trwa 5 dni.
+  desc_pt_BR: Armadura corporal do Cawnival com isolamento de verão 120 e +3.3/min de sanidade. Dura 5 dias.
+  desc_ru: Нательная броня Карнавала с летней изоляцией 120 и +3.3/мин рассудка. Длится 5 дней.
+  desc_es: Armadura corporal del Cawnival con aislamiento de verano 120 y +3.3/min de cordura. Dura 5 días.
+  desc_es_MX: Armadura corporal del Cawnival con aislamiento de verano 120 y +3.3/min de cordura. Dura 5 días.
 138.carnival_vest_b
   en: Chirpy Cloak
   ko: 재잘재잘 망토
   app: O
   source: Body armor (Cawnival). Summer insulation 240 (large). Dapperness +3.3/min. Fuel-based durability, lasts 5 days (2400s). Burnable.
+  desc_en: Cawnival body armor with high summer insulation 240 and +3.3/min sanity. Lasts 5 days.
+  desc_ko: 여름 단열 240(높음), 정신력 +3.3/분의 까악제 몸통 장비. 5일 동안 지속됩니다.
+  desc_ja: 夏の断熱240（高）、正気度+3.3/分のカーニバルボディアーマー。5日間持続。
+  desc_zh_CN: 嘉年华躯干装备，高夏季隔热240，精神+3.3/分。持续5天。
+  desc_zh_TW: 嘉年華軀幹裝備，高夏季隔熱240，精神+3.3/分。持續5天。
+  desc_fr: Armure corporelle Cawnival avec haute isolation estivale 240 et +3.3/min de santé mentale. Dure 5 jours.
+  desc_de: Cawnival-Körperrüstung mit hoher Sommerisolierung 240 und +3,3/Min geistige Gesundheit. Hält 5 Tage.
+  desc_it: Armatura corporea Cawnival con alto isolamento estivo 240 e +3.3/min di sanità mentale. Dura 5 giorni.
+  desc_pl: Pancerz Cawnival z wysoką izolacją letnią 240 i +3.3/min poczytalności. Trwa 5 dni.
+  desc_pt_BR: Armadura corporal do Cawnival com alto isolamento de verão 240 e +3.3/min de sanidade. Dura 5 dias.
+  desc_ru: Нательная броня Карнавала с высокой летней изоляцией 240 и +3.3/мин рассудка. Длится 5 дней.
+  desc_es: Armadura corporal del Cawnival con alto aislamiento de verano 240 y +3.3/min de cordura. Dura 5 días.
+  desc_es_MX: Armadura corporal del Cawnival con alto aislamiento de verano 240 y +3.3/min de cordura. Dura 5 días.
 139.carnival_vest_c
   en: Chirpy Capelet
   ko: 재잘재잘 케이플릿
   app: O
   source: Body armor (Cawnival). Summer insulation 240 (large). Dapperness +3.3/min. Fuel-based durability, lasts 5 days (2400s). Burnable.
+  desc_en: Cawnival body armor with high summer insulation 240 and +3.3/min sanity. Lasts 5 days.
+  desc_ko: 여름 단열 240(높음), 정신력 +3.3/분의 까악제 몸통 장비. 5일 동안 지속됩니다.
+  desc_ja: 夏の断熱240（高）、正気度+3.3/分のカーニバルボディアーマー。5日間持続。
+  desc_zh_CN: 嘉年华躯干装备，高夏季隔热240，精神+3.3/分。持续5天。
+  desc_zh_TW: 嘉年華軀幹裝備，高夏季隔熱240，精神+3.3/分。持續5天。
+  desc_fr: Armure corporelle Cawnival avec haute isolation estivale 240 et +3.3/min de santé mentale. Dure 5 jours.
+  desc_de: Cawnival-Körperrüstung mit hoher Sommerisolierung 240 und +3,3/Min geistige Gesundheit. Hält 5 Tage.
+  desc_it: Armatura corporea Cawnival con alto isolamento estivo 240 e +3.3/min di sanità mentale. Dura 5 giorni.
+  desc_pl: Pancerz Cawnival z wysoką izolacją letnią 240 i +3.3/min poczytalności. Trwa 5 dni.
+  desc_pt_BR: Armadura corporal do Cawnival com alto isolamento de verão 240 e +3.3/min de sanidade. Dura 5 dias.
+  desc_ru: Нательная броня Карнавала с высокой летней изоляцией 240 и +3.3/мин рассудка. Длится 5 дней.
+  desc_es: Armadura corporal del Cawnival con alto aislamiento de verano 240 y +3.3/min de cordura. Dura 5 días.
+  desc_es_MX: Armadura corporal del Cawnival con alto aislamiento de verano 240 y +3.3/min de cordura. Dura 5 días.
 140.carnivalcannon_confetti
   en: Confetti Cannon
   ko: 꽃가루 대포
   app: X
   type: deconstruct
   source: Cawnival decoration (deployed form). Fires confetti FX on activation. 4s cooldown. Accepts tokens for chain-fire mode. Hammerable.
+  desc_en: Cawnival decoration that fires confetti on activation with a 4s cooldown. Accepts tokens for chain-fire mode.
+  desc_ko: 활성화 시 꽃가루를 발사하는 까악제 장식물, 재사용 대기 4초. 토큰으로 연속 발사 모드 가능.
+  desc_ja: 起動時に紙吹雪を発射するカーニバル装飾。クールダウン4秒。トークンで連射モード可能。
+  desc_zh_CN: 激活时发射彩纸的嘉年华装饰物，冷却4秒。可用代币启动连发模式。
+  desc_zh_TW: 激活時發射彩紙的嘉年華裝飾物，冷卻4秒。可用代幣啟動連發模式。
+  desc_fr: Décoration Cawnival qui tire des confettis, temps de recharge 4s. Accepte des jetons pour le mode tir en chaîne.
+  desc_de: Cawnival-Dekoration, die Konfetti schießt, 4s Abklingzeit. Nimmt Token für Kettenfeuer-Modus an.
+  desc_it: Decorazione Cawnival che spara coriandoli, ricarica 4s. Accetta gettoni per la modalità fuoco a catena.
+  desc_pl: Dekoracja Cawnival strzelająca konfetti, odnowienie 4s. Przyjmuje żetony do trybu ciągłego ognia.
+  desc_pt_BR: Decoração do Cawnival que dispara confete, recarga de 4s. Aceita tokens para modo de disparo contínuo.
+  desc_ru: Декорация Карнавала, стреляющая конфетти, перезарядка 4с. Принимает жетоны для режима серийной стрельбы.
+  desc_es: Decoración del Cawnival que dispara confeti, recarga de 4s. Acepta fichas para modo de fuego continuo.
+  desc_es_MX: Decoración del Cawnival que dispara confeti, recarga de 4s. Acepta fichas para modo de fuego continuo.
 141.carnivalcannon_confetti_kit
   en: Confetti Cannon Kit
   ko: 꽃가루 대포 키트
   app: O
   source: Deployable kit. Places a Confetti Cannon (carnivalcannon_confetti) for the Cawnival event.
+  desc_en: Deployable kit that places a Confetti Cannon for the Cawnival event.
+  desc_ko: 까악제 이벤트용 꽃가루 대포를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用の紙吹雪キャノンを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置彩纸大炮的部署套件。
+  desc_zh_TW: 為嘉年華活動放置彩紙大砲的部署套件。
+  desc_fr: Kit déployable qui place un canon à confettis pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das eine Konfettikanone für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa un cannone di coriandoli per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia Armaty Konfetti na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca um Canhão de Confete para o evento Cawnival.
+  desc_ru: Набор для установки Пушки конфетти для события Карнавала.
+  desc_es: Kit desplegable que coloca un Cañón de Confeti para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca un Cañón de Confeti para el evento Cawnival.
 142.carnivalcannon_sparkle
   en: Glitter Cannon
   ko: 반짝이 대포
   app: X
   type: deconstruct
   source: Cawnival decoration (deployed form). Fires sparkle FX on activation. 4s cooldown. Accepts tokens for chain-fire mode. Hammerable.
+  desc_en: Cawnival decoration that fires sparkle effects on activation with a 4s cooldown. Accepts tokens for chain-fire mode.
+  desc_ko: 활성화 시 반짝이 효과를 발사하는 까악제 장식물, 재사용 대기 4초. 토큰으로 연속 발사 모드 가능.
+  desc_ja: 起動時にキラキラエフェクトを発射するカーニバル装飾。クールダウン4秒。トークンで連射モード可能。
+  desc_zh_CN: 激活时发射闪光效果的嘉年华装饰物，冷却4秒。可用代币启动连发模式。
+  desc_zh_TW: 激活時發射閃光效果的嘉年華裝飾物，冷卻4秒。可用代幣啟動連發模式。
+  desc_fr: Décoration Cawnival qui tire des étincelles, temps de recharge 4s. Accepte des jetons pour le mode tir en chaîne.
+  desc_de: Cawnival-Dekoration, die Glitzereffekte schießt, 4s Abklingzeit. Nimmt Token für Kettenfeuer-Modus an.
+  desc_it: Decorazione Cawnival che spara effetti scintillanti, ricarica 4s. Accetta gettoni per la modalità fuoco a catena.
+  desc_pl: Dekoracja Cawnival strzelająca efektami blasku, odnowienie 4s. Przyjmuje żetony do trybu ciągłego ognia.
+  desc_pt_BR: Decoração do Cawnival que dispara efeitos de brilho, recarga de 4s. Aceita tokens para modo de disparo contínuo.
+  desc_ru: Декорация Карнавала, стреляющая блёстками, перезарядка 4с. Принимает жетоны для режима серийной стрельбы.
+  desc_es: Decoración del Cawnival que dispara efectos de brillo, recarga de 4s. Acepta fichas para modo de fuego continuo.
+  desc_es_MX: Decoración del Cawnival que dispara efectos de brillo, recarga de 4s. Acepta fichas para modo de fuego continuo.
 143.carnivalcannon_sparkle_kit
   en: Glitter Cannon Kit
   ko: 반짝이 대포 키트
   app: O
   source: Deployable kit. Places a Glitter Cannon (carnivalcannon_sparkle) for the Cawnival event.
+  desc_en: Deployable kit that places a Glitter Cannon for the Cawnival event.
+  desc_ko: 까악제 이벤트용 반짝이 대포를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のグリッターキャノンを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置闪光大炮的部署套件。
+  desc_zh_TW: 為嘉年華活動放置閃光大砲的部署套件。
+  desc_fr: Kit déployable qui place un canon à paillettes pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das eine Glitzerkanone für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa un cannone di glitter per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia Armaty Brokatu na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca um Canhão de Glitter para o evento Cawnival.
+  desc_ru: Набор для установки Блестящей пушки для события Карнавала.
+  desc_es: Kit desplegable que coloca un Cañón de Brillantina para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca un Cañón de Brillantina para el evento Cawnival.
 144.carnivalcannon_streamer
   en: Streamer Cannon
   ko: 색 테이프 대포
   app: X
   type: deconstruct
   source: Cawnival decoration (deployed form). Fires streamer FX on activation. 4s cooldown. Accepts tokens for chain-fire mode. Hammerable.
+  desc_en: Cawnival decoration that fires streamer effects on activation with a 4s cooldown. Accepts tokens for chain-fire mode.
+  desc_ko: 활성화 시 색 테이프 효과를 발사하는 까악제 장식물, 재사용 대기 4초. 토큰으로 연속 발사 모드 가능.
+  desc_ja: 起動時にストリーマーエフェクトを発射するカーニバル装飾。クールダウン4秒。トークンで連射モード可能。
+  desc_zh_CN: 激活时发射彩带效果的嘉年华装饰物，冷却4秒。可用代币启动连发模式。
+  desc_zh_TW: 激活時發射彩帶效果的嘉年華裝飾物，冷卻4秒。可用代幣啟動連發模式。
+  desc_fr: Décoration Cawnival qui tire des banderoles, temps de recharge 4s. Accepte des jetons pour le mode tir en chaîne.
+  desc_de: Cawnival-Dekoration, die Luftschlangen schießt, 4s Abklingzeit. Nimmt Token für Kettenfeuer-Modus an.
+  desc_it: Decorazione Cawnival che spara stelle filanti, ricarica 4s. Accetta gettoni per la modalità fuoco a catena.
+  desc_pl: Dekoracja Cawnival strzelająca serpentynami, odnowienie 4s. Przyjmuje żetony do trybu ciągłego ognia.
+  desc_pt_BR: Decoração do Cawnival que dispara serpentinas, recarga de 4s. Aceita tokens para modo de disparo contínuo.
+  desc_ru: Декорация Карнавала, стреляющая серпантином, перезарядка 4с. Принимает жетоны для режима серийной стрельбы.
+  desc_es: Decoración del Cawnival que dispara serpentinas, recarga de 4s. Acepta fichas para modo de fuego continuo.
+  desc_es_MX: Decoración del Cawnival que dispara serpentinas, recarga de 4s. Acepta fichas para modo de fuego continuo.
 145.carnivalcannon_streamer_kit
   en: Streamer Cannon Kit
   ko: 색 테이프 대포 키트
   app: O
   source: Deployable kit. Places a Streamer Cannon (carnivalcannon_streamer) for the Cawnival event.
+  desc_en: Deployable kit that places a Streamer Cannon for the Cawnival event.
+  desc_ko: 까악제 이벤트용 색 테이프 대포를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のストリーマーキャノンを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置彩带大炮的部署套件。
+  desc_zh_TW: 為嘉年華活動放置彩帶大砲的部署套件。
+  desc_fr: Kit déployable qui place un canon à banderoles pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das eine Luftschlangenkanone für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa un cannone di stelle filanti per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia Armaty Serpentyn na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca um Canhão de Serpentinas para o evento Cawnival.
+  desc_ru: Набор для установки Пушки серпантина для события Карнавала.
+  desc_es: Kit desplegable que coloca un Cañón de Serpentinas para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca un Cañón de Serpentinas para el evento Cawnival.
 146.carnivaldecor_banner
   en: Light Catcher
   ko: 선캐처
   app: X
   type: deconstruct
   source: Cawnival decoration (deployed form). Purely decorative banner with 3 random shape variants. Physics radius 0.25. Hammerable.
+  desc_en: Purely decorative Cawnival banner with 3 random shape variants.
+  desc_ko: 3가지 무작위 형태의 순수 장식용 까악제 배너.
+  desc_ja: 3種類のランダムな形状を持つカーニバルの純粋な装飾バナー。
+  desc_zh_CN: 纯装饰性嘉年华旗帜，有3种随机形状变体。
+  desc_zh_TW: 純裝飾性嘉年華旗幟，有3種隨機形狀變體。
+  desc_fr: Bannière purement décorative du Cawnival avec 3 variantes de forme aléatoires.
+  desc_de: Rein dekoratives Cawnival-Banner mit 3 zufälligen Formvarianten.
+  desc_it: Stendardo puramente decorativo del Cawnival con 3 varianti di forma casuali.
+  desc_pl: Czysto dekoracyjny baner Cawnival z 3 losowymi wariantami kształtu.
+  desc_pt_BR: Faixa puramente decorativa do Cawnival com 3 variantes de forma aleatórias.
+  desc_ru: Чисто декоративный баннер Карнавала с 3 случайными вариантами формы.
+  desc_es: Estandarte puramente decorativo del Cawnival con 3 variantes de forma aleatorias.
+  desc_es_MX: Estandarte puramente decorativo del Cawnival con 3 variantes de forma aleatorias.
 147.carnivaldecor_banner_kit
   en: Light Catcher Kit
   ko: 선캐처 키트
   app: O
   source: Deployable kit. Places a Light Catcher banner (carnivaldecor_banner) for the Cawnival event.
+  desc_en: Deployable kit that places a Light Catcher banner for the Cawnival event.
+  desc_ko: 까악제 이벤트용 선캐처 배너를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のライトキャッチャーバナーを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置光之捕手旗帜的部署套件。
+  desc_zh_TW: 為嘉年華活動放置光之捕手旗幟的部署套件。
+  desc_fr: Kit déployable qui place une bannière Light Catcher pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das ein Lichtfänger-Banner für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa uno stendardo Light Catcher per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia baneru Łapacz Światła na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca uma faixa Caça-Luz para o evento Cawnival.
+  desc_ru: Набор для установки баннера Ловец света для события Карнавала.
+  desc_es: Kit desplegable que coloca un estandarte Atrapa Luz para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca un estandarte Atrapa Luz para el evento Cawnival.
 148.carnivaldecor_eggride1
   en: Mini Ferris Wheel
   ko: 꼬마 관람차
   app: X
   type: deconstruct
   source: Cawnival decoration (deployed form). Animated ride. Activates for 30s on interact, or 2400s (5 days) when fed a token. Hammerable.
+  desc_en: Animated Cawnival ride decoration. Activates for 30s on interact, or 5 days when fed a token.
+  desc_ko: 까악제 놀이기구 장식물. 상호작용 시 30초, 토큰 투입 시 5일 동안 작동합니다.
+  desc_ja: カーニバルのアニメーション付きライド装飾。操作で30秒、トークン投入で5日間起動。
+  desc_zh_CN: 嘉年华动画游乐设施装饰。互动时激活30秒，投入代币时激活5天。
+  desc_zh_TW: 嘉年華動畫遊樂設施裝飾。互動時激活30秒，投入代幣時激活5天。
+  desc_fr: Décoration de manège animé Cawnival. S'active 30s par interaction ou 5 jours avec un jeton.
+  desc_de: Animierte Cawnival-Fahrgeschäft-Dekoration. Aktiviert für 30s bei Interaktion oder 5 Tage mit Token.
+  desc_it: Decorazione giostra animata del Cawnival. Si attiva per 30s all'interazione o 5 giorni con un gettone.
+  desc_pl: Animowana dekoracja-karuzela Cawnival. Aktywuje się na 30s po interakcji lub na 5 dni za żeton.
+  desc_pt_BR: Decoração de passeio animado do Cawnival. Ativa por 30s ao interagir ou 5 dias com token.
+  desc_ru: Анимированный аттракцион Карнавала. Активируется на 30с при взаимодействии или на 5 дней за жетон.
+  desc_es: Decoración de atracción animada del Cawnival. Se activa 30s al interactuar o 5 días con una ficha.
+  desc_es_MX: Decoración de atracción animada del Cawnival. Se activa 30s al interactuar o 5 días con una ficha.
 149.carnivaldecor_eggride1_kit
   en: Mini Ferris Wheel Kit
   ko: 꼬마 관람차 키트
   app: O
   source: Deployable kit. Places a Mini Ferris Wheel (carnivaldecor_eggride1) for the Cawnival event.
+  desc_en: Deployable kit that places a Mini Ferris Wheel for the Cawnival event.
+  desc_ko: 까악제 이벤트용 꼬마 관람차를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のミニ観覧車を設置するキット。
+  desc_zh_CN: 为嘉年华活动放置迷你摩天轮的部署套件。
+  desc_zh_TW: 為嘉年華活動放置迷你摩天輪的部署套件。
+  desc_fr: Kit déployable qui place une mini grande roue pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das ein Mini-Riesenrad für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa una mini ruota panoramica per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia Mini Diabelskiego Młyna na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca uma Mini Roda-Gigante para o evento Cawnival.
+  desc_ru: Набор для установки Мини-колеса обозрения для события Карнавала.
+  desc_es: Kit desplegable que coloca una Mini Noria para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca una Mini Noria para el evento Cawnival.
 150.carnivaldecor_eggride2
   en: Mini Swing Carousel
   ko: 꼬마 회전 그네
   app: X
   type: deconstruct
   source: Cawnival decoration (deployed form). Animated ride. Activates for 30s on interact, or 2400s (5 days) when fed a token. Hammerable.
+  desc_en: Animated Cawnival ride decoration. Activates for 30s on interact, or 5 days when fed a token.
+  desc_ko: 까악제 놀이기구 장식물. 상호작용 시 30초, 토큰 투입 시 5일 동안 작동합니다.
+  desc_ja: カーニバルのアニメーション付きライド装飾。操作で30秒、トークン投入で5日間起動。
+  desc_zh_CN: 嘉年华动画游乐设施装饰。互动时激活30秒，投入代币时激活5天。
+  desc_zh_TW: 嘉年華動畫遊樂設施裝飾。互動時激活30秒，投入代幣時激活5天。
+  desc_fr: Décoration de manège animé Cawnival. S'active 30s par interaction ou 5 jours avec un jeton.
+  desc_de: Animierte Cawnival-Fahrgeschäft-Dekoration. Aktiviert für 30s bei Interaktion oder 5 Tage mit Token.
+  desc_it: Decorazione giostra animata del Cawnival. Si attiva per 30s all'interazione o 5 giorni con un gettone.
+  desc_pl: Animowana dekoracja-karuzela Cawnival. Aktywuje się na 30s po interakcji lub na 5 dni za żeton.
+  desc_pt_BR: Decoração de passeio animado do Cawnival. Ativa por 30s ao interagir ou 5 dias com token.
+  desc_ru: Анимированный аттракцион Карнавала. Активируется на 30с при взаимодействии или на 5 дней за жетон.
+  desc_es: Decoración de atracción animada del Cawnival. Se activa 30s al interactuar o 5 días con una ficha.
+  desc_es_MX: Decoración de atracción animada del Cawnival. Se activa 30s al interactuar o 5 días con una ficha.
 151.carnivaldecor_eggride2_kit
   en: Mini Swing Carousel Kit
   ko: 꼬마 회전 그네 키트
   app: O
   source: Deployable kit. Places a Mini Swing Carousel (carnivaldecor_eggride2) for the Cawnival event.
+  desc_en: Deployable kit that places a Mini Swing Carousel for the Cawnival event.
+  desc_ko: 까악제 이벤트용 꼬마 회전 그네를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のミニスイングカルーセルを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置迷你旋转秋千的部署套件。
+  desc_zh_TW: 為嘉年華活動放置迷你旋轉鞦韆的部署套件。
+  desc_fr: Kit déployable qui place un mini carrousel à balançoires pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das ein Mini-Kettenkarussell für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa una mini giostra a catene per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia Mini Karuzeli Łańcuchowej na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca um Mini Carrossel de Balanço para o evento Cawnival.
+  desc_ru: Набор для установки Мини-карусели с качелями для события Карнавала.
+  desc_es: Kit desplegable que coloca un Mini Carrusel de Columpios para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca un Mini Carrusel de Columpios para el evento Cawnival.
 152.carnivaldecor_eggride3
   en: Mini Pendulum Ride
   ko: 꼬마 바이킹
   app: X
   type: deconstruct
   source: Cawnival decoration (deployed form). Animated ride. Activates for 30s on interact, or 2400s (5 days) when fed a token. Hammerable.
+  desc_en: Animated Cawnival ride decoration. Activates for 30s on interact, or 5 days when fed a token.
+  desc_ko: 까악제 놀이기구 장식물. 상호작용 시 30초, 토큰 투입 시 5일 동안 작동합니다.
+  desc_ja: カーニバルのアニメーション付きライド装飾。操作で30秒、トークン投入で5日間起動。
+  desc_zh_CN: 嘉年华动画游乐设施装饰。互动时激活30秒，投入代币时激活5天。
+  desc_zh_TW: 嘉年華動畫遊樂設施裝飾。互動時激活30秒，投入代幣時激活5天。
+  desc_fr: Décoration de manège animé Cawnival. S'active 30s par interaction ou 5 jours avec un jeton.
+  desc_de: Animierte Cawnival-Fahrgeschäft-Dekoration. Aktiviert für 30s bei Interaktion oder 5 Tage mit Token.
+  desc_it: Decorazione giostra animata del Cawnival. Si attiva per 30s all'interazione o 5 giorni con un gettone.
+  desc_pl: Animowana dekoracja-karuzela Cawnival. Aktywuje się na 30s po interakcji lub na 5 dni za żeton.
+  desc_pt_BR: Decoração de passeio animado do Cawnival. Ativa por 30s ao interagir ou 5 dias com token.
+  desc_ru: Анимированный аттракцион Карнавала. Активируется на 30с при взаимодействии или на 5 дней за жетон.
+  desc_es: Decoración de atracción animada del Cawnival. Se activa 30s al interactuar o 5 días con una ficha.
+  desc_es_MX: Decoración de atracción animada del Cawnival. Se activa 30s al interactuar o 5 días con una ficha.
 153.carnivaldecor_eggride3_kit
   en: Mini Pendulum Ride Kit
   ko: 꼬마 바이킹 키트
   app: O
   source: Deployable kit. Places a Mini Pendulum Ride (carnivaldecor_eggride3) for the Cawnival event.
+  desc_en: Deployable kit that places a Mini Pendulum Ride for the Cawnival event.
+  desc_ko: 까악제 이벤트용 꼬마 바이킹을 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のミニペンデュラムライドを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置迷你海盗船的部署套件。
+  desc_zh_TW: 為嘉年華活動放置迷你海盜船的部署套件。
+  desc_fr: Kit déployable qui place un mini pendule pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das eine Mini-Schiffsschaukel für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa un mini dondolo per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia Mini Statku Piratów na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca um Mini Barco Viking para o evento Cawnival.
+  desc_ru: Набор для установки Мини-маятниковой карусели для события Карнавала.
+  desc_es: Kit desplegable que coloca un Mini Péndulo para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca un Mini Péndulo para el evento Cawnival.
 154.carnivaldecor_eggride4
   en: Mini Tower Drop
   ko: 꼬마 자이로드롭
   app: X
   type: deconstruct
   source: Cawnival decoration (deployed form). Animated ride. Activates for 30s on interact, or 2400s (5 days) when fed a token. Hammerable.
+  desc_en: Animated Cawnival ride decoration. Activates for 30s on interact, or 5 days when fed a token.
+  desc_ko: 까악제 놀이기구 장식물. 상호작용 시 30초, 토큰 투입 시 5일 동안 작동합니다.
+  desc_ja: カーニバルのアニメーション付きライド装飾。操作で30秒、トークン投入で5日間起動。
+  desc_zh_CN: 嘉年华动画游乐设施装饰。互动时激活30秒，投入代币时激活5天。
+  desc_zh_TW: 嘉年華動畫遊樂設施裝飾。互動時激活30秒，投入代幣時激活5天。
+  desc_fr: Décoration de manège animé Cawnival. S'active 30s par interaction ou 5 jours avec un jeton.
+  desc_de: Animierte Cawnival-Fahrgeschäft-Dekoration. Aktiviert für 30s bei Interaktion oder 5 Tage mit Token.
+  desc_it: Decorazione giostra animata del Cawnival. Si attiva per 30s all'interazione o 5 giorni con un gettone.
+  desc_pl: Animowana dekoracja-karuzela Cawnival. Aktywuje się na 30s po interakcji lub na 5 dni za żeton.
+  desc_pt_BR: Decoração de passeio animado do Cawnival. Ativa por 30s ao interagir ou 5 dias com token.
+  desc_ru: Анимированный аттракцион Карнавала. Активируется на 30с при взаимодействии или на 5 дней за жетон.
+  desc_es: Decoración de atracción animada del Cawnival. Se activa 30s al interactuar o 5 días con una ficha.
+  desc_es_MX: Decoración de atracción animada del Cawnival. Se activa 30s al interactuar o 5 días con una ficha.
 155.carnivaldecor_eggride4_kit
   en: Mini Tower Drop Kit
   ko: 꼬마 자이로드롭 키트
   app: O
   source: Deployable kit for carnivaldecor_eggride4; small fuel (15s), stackable 10.
+  desc_en: Deployable kit that places a Mini Tower Drop for the Cawnival event. Stackable to 10.
+  desc_ko: 까악제 이벤트용 꼬마 자이로드롭을 설치하는 배치 키트. 10개 중첩 가능.
+  desc_ja: カーニバルイベント用のミニタワードロップを設置するキット。10個スタック可能。
+  desc_zh_CN: 为嘉年华活动放置迷你跳楼机的部署套件。可堆叠10个。
+  desc_zh_TW: 為嘉年華活動放置迷你跳樓機的部署套件。可堆疊10個。
+  desc_fr: Kit déployable qui place une mini chute libre pour l'événement Cawnival. Empilable par 10.
+  desc_de: Platzierbares Kit, das einen Mini-Freefall-Tower für das Cawnival-Event aufstellt. Stapelbar bis 10.
+  desc_it: Kit piazzabile che installa una mini torre di caduta per l'evento Cawnival. Impilabile fino a 10.
+  desc_pl: Zestaw do postawienia Mini Wieży Spadania na wydarzenie Cawnival. Stosowalny do 10.
+  desc_pt_BR: Kit implantável que coloca uma Mini Torre de Queda para o evento Cawnival. Empilhável até 10.
+  desc_ru: Набор для установки Мини-башни падения для события Карнавала. Складывается до 10.
+  desc_es: Kit desplegable que coloca una Mini Torre de Caída para el evento Cawnival. Apilable hasta 10.
+  desc_es_MX: Kit desplegable que coloca una Mini Torre de Caída para el evento Cawnival. Apilable hasta 10.
 156.carnivaldecor_figure
   en: Carnival Figure
   ko: 축제 인형
   app: X
   type: deconstruct
   source: Cawnival season 1 collectible figure (12 shapes); decor value by rarity: common 12, uncommon 16, rare 20; weighted rarity common 3 / uncommon 2.5 / rare 1; 1 hammer hit to drop kit, burnable.
+  desc_en: Season 1 collectible figure with 12 shapes. Decor value varies by rarity: common 12, uncommon 16, rare 20.
+  desc_ko: 시즌 1 수집용 인형, 12가지 형태. 희귀도별 장식 가치: 일반 12, 고급 16, 희귀 20.
+  desc_ja: シーズン1コレクション用フィギュア、12種の形状。レアリティ別装飾値：コモン12、アンコモン16、レア20。
+  desc_zh_CN: 第一季收藏人偶，12种形状。按稀有度装饰值：普通12，稀有16，珍贵20。
+  desc_zh_TW: 第一季收藏人偶，12種形狀。按稀有度裝飾值：普通12，稀有16，珍貴20。
+  desc_fr: Figurine de collection saison 1 avec 12 formes. Valeur décorative par rareté : commune 12, peu commune 16, rare 20.
+  desc_de: Sammelfigur der Saison 1 mit 12 Formen. Dekorationswert nach Seltenheit: gewöhnlich 12, ungewöhnlich 16, selten 20.
+  desc_it: Statuetta collezionabile stagione 1 con 12 forme. Valore decorativo per rarità: comune 12, non comune 16, rara 20.
+  desc_pl: Figurka kolekcjonerska z sezonu 1, 12 kształtów. Wartość dekoracji wg rzadkości: zwykła 12, niezwykła 16, rzadka 20.
+  desc_pt_BR: Figura colecionável da temporada 1 com 12 formas. Valor decorativo por raridade: comum 12, incomum 16, rara 20.
+  desc_ru: Коллекционная фигурка 1-го сезона, 12 форм. Декоративная ценность по редкости: обычная 12, необычная 16, редкая 20.
+  desc_es: Figura coleccionable de temporada 1 con 12 formas. Valor decorativo por rareza: común 12, poco común 16, rara 20.
+  desc_es_MX: Figura coleccionable de temporada 1 con 12 formas. Valor decorativo por rareza: común 12, poco común 16, rara 20.
 157.carnivaldecor_figure_kit
   en: Green Mystery Box
   ko: 녹색 수수께끼의 상자
   app: O
   source: Deployable kit for carnivaldecor_figure (season 1); opens with unwrap FX to reveal a random figure; small fuel (15s), stackable 10.
+  desc_en: Season 1 mystery box that reveals a random collectible figure when opened. Stackable to 10.
+  desc_ko: 열면 무작위 수집용 인형이 나오는 시즌 1 수수께끼 상자. 10개 중첩 가능.
+  desc_ja: 開封するとランダムなコレクションフィギュアが出るシーズン1ミステリーボックス。10個スタック可能。
+  desc_zh_CN: 打开后随机出现收藏人偶的第一季神秘箱。可堆叠10个。
+  desc_zh_TW: 打開後隨機出現收藏人偶的第一季神秘箱。可堆疊10個。
+  desc_fr: Boîte mystère saison 1 révélant une figurine aléatoire à l'ouverture. Empilable par 10.
+  desc_de: Saison-1-Mysterybox, die beim Öffnen eine zufällige Sammelfigur enthüllt. Stapelbar bis 10.
+  desc_it: Scatola misteriosa stagione 1 che rivela una statuetta casuale all'apertura. Impilabile fino a 10.
+  desc_pl: Tajemnicze pudełko sezonu 1 ujawniające losową figurkę po otwarciu. Stosowalne do 10.
+  desc_pt_BR: Caixa misteriosa da temporada 1 que revela uma figura aleatória ao abrir. Empilhável até 10.
+  desc_ru: Таинственная коробка 1-го сезона, открывающая случайную фигурку. Складывается до 10.
+  desc_es: Caja misteriosa de temporada 1 que revela una figura aleatoria al abrirla. Apilable hasta 10.
+  desc_es_MX: Caja misteriosa de temporada 1 que revela una figura aleatoria al abrirla. Apilable hasta 10.
 158.carnivaldecor_figure_kit_season2
   en: Gold Mystery Box
   ko: 황금 수수께끼의 상자
   app: O
   source: Deployable kit for carnivaldecor_figure_season2 (season 2); opens with unwrap FX to reveal a random figure; small fuel (15s), stackable 10.
+  desc_en: Season 2 mystery box that reveals a random collectible figure when opened. Stackable to 10.
+  desc_ko: 열면 무작위 수집용 인형이 나오는 시즌 2 수수께끼 상자. 10개 중첩 가능.
+  desc_ja: 開封するとランダムなコレクションフィギュアが出るシーズン2ミステリーボックス。10個スタック可能。
+  desc_zh_CN: 打开后随机出现收藏人偶的第二季神秘箱。可堆叠10个。
+  desc_zh_TW: 打開後隨機出現收藏人偶的第二季神秘箱。可堆疊10個。
+  desc_fr: Boîte mystère saison 2 révélant une figurine aléatoire à l'ouverture. Empilable par 10.
+  desc_de: Saison-2-Mysterybox, die beim Öffnen eine zufällige Sammelfigur enthüllt. Stapelbar bis 10.
+  desc_it: Scatola misteriosa stagione 2 che rivela una statuetta casuale all'apertura. Impilabile fino a 10.
+  desc_pl: Tajemnicze pudełko sezonu 2 ujawniające losową figurkę po otwarciu. Stosowalne do 10.
+  desc_pt_BR: Caixa misteriosa da temporada 2 que revela uma figura aleatória ao abrir. Empilhável até 10.
+  desc_ru: Таинственная коробка 2-го сезона, открывающая случайную фигурку. Складывается до 10.
+  desc_es: Caja misteriosa de temporada 2 que revela una figura aleatoria al abrirla. Apilable hasta 10.
+  desc_es_MX: Caja misteriosa de temporada 2 que revela una figura aleatoria al abrirla. Apilable hasta 10.
 159.carnivaldecor_figure_season2
   en: Carnival Figure
   ko: 축제 인형
   app: X
   type: deconstruct
   source: Cawnival season 2 collectible figure (12 shapes); decor value by rarity: common 12, uncommon 16, rare 20; weighted rarity common 3 / uncommon 2.5 / rare 1; 1 hammer hit to drop kit, burnable.
+  desc_en: Season 2 collectible figure with 12 shapes. Decor value varies by rarity: common 12, uncommon 16, rare 20.
+  desc_ko: 시즌 2 수집용 인형, 12가지 형태. 희귀도별 장식 가치: 일반 12, 고급 16, 희귀 20.
+  desc_ja: シーズン2コレクション用フィギュア、12種の形状。レアリティ別装飾値：コモン12、アンコモン16、レア20。
+  desc_zh_CN: 第二季收藏人偶，12种形状。按稀有度装饰值：普通12，稀有16，珍贵20。
+  desc_zh_TW: 第二季收藏人偶，12種形狀。按稀有度裝飾值：普通12，稀有16，珍貴20。
+  desc_fr: Figurine de collection saison 2 avec 12 formes. Valeur décorative par rareté : commune 12, peu commune 16, rare 20.
+  desc_de: Sammelfigur der Saison 2 mit 12 Formen. Dekorationswert nach Seltenheit: gewöhnlich 12, ungewöhnlich 16, selten 20.
+  desc_it: Statuetta collezionabile stagione 2 con 12 forme. Valore decorativo per rarità: comune 12, non comune 16, rara 20.
+  desc_pl: Figurka kolekcjonerska z sezonu 2, 12 kształtów. Wartość dekoracji wg rzadkości: zwykła 12, niezwykła 16, rzadka 20.
+  desc_pt_BR: Figura colecionável da temporada 2 com 12 formas. Valor decorativo por raridade: comum 12, incomum 16, rara 20.
+  desc_ru: Коллекционная фигурка 2-го сезона, 12 форм. Декоративная ценность по редкости: обычная 12, необычная 16, редкая 20.
+  desc_es: Figura coleccionable de temporada 2 con 12 formas. Valor decorativo por rareza: común 12, poco común 16, rara 20.
+  desc_es_MX: Figura coleccionable de temporada 2 con 12 formas. Valor decorativo por rareza: común 12, poco común 16, rara 20.
 160.carnivaldecor_lamp
   en: Midsummer Night Light
   ko: 한여름 밤의 등불
   app: X
   type: deconstruct
   source: Cawnival light decoration with 6 shape variants; decor value 48; activates for 60s on interact or 480s (1 day) when fed a game token; light radius 2 intensity 0.6; 1 hammer hit, burnable.
+  desc_en: Cawnival light decoration with 6 variants and decor value 48. Lights up for 60s on interact or 1 day with a token.
+  desc_ko: 6가지 변형의 까악제 조명 장식, 장식 가치 48. 상호작용 시 60초, 토큰 투입 시 1일 동안 점등.
+  desc_ja: 6種類のバリエーションを持つカーニバルの照明装飾、装飾値48。操作で60秒、トークンで1日間点灯。
+  desc_zh_CN: 嘉年华灯饰，6种变体，装饰值48。互动时亮60秒，投入代币时亮1天。
+  desc_zh_TW: 嘉年華燈飾，6種變體，裝飾值48。互動時亮60秒，投入代幣時亮1天。
+  desc_fr: Décoration lumineuse Cawnival avec 6 variantes et valeur décorative 48. S'allume 60s par interaction ou 1 jour avec un jeton.
+  desc_de: Cawnival-Lichtdekoration mit 6 Varianten und Dekorationswert 48. Leuchtet 60s bei Interaktion oder 1 Tag mit Token.
+  desc_it: Decorazione luminosa Cawnival con 6 varianti e valore decorativo 48. Si illumina per 60s all'interazione o 1 giorno con un gettone.
+  desc_pl: Dekoracja oświetleniowa Cawnival z 6 wariantami i wartością dekoracji 48. Świeci przez 60s po interakcji lub 1 dzień za żeton.
+  desc_pt_BR: Decoração luminosa do Cawnival com 6 variantes e valor decorativo 48. Acende por 60s ao interagir ou 1 dia com token.
+  desc_ru: Световое украшение Карнавала с 6 вариантами и декоративной ценностью 48. Светит 60с при взаимодействии или 1 день за жетон.
+  desc_es: Decoración luminosa del Cawnival con 6 variantes y valor decorativo 48. Se ilumina 60s al interactuar o 1 día con una ficha.
+  desc_es_MX: Decoración luminosa del Cawnival con 6 variantes y valor decorativo 48. Se ilumina 60s al interactuar o 1 día con una ficha.
 161.carnivaldecor_lamp_kit
   en: Midsummer Night Light Kit
   ko: 한여름 밤의 등불 키트
   app: O
   source: Deployable kit for carnivaldecor_lamp; small fuel (15s), stackable 10.
+  desc_en: Deployable kit that places a Midsummer Night Light for the Cawnival event. Stackable to 10.
+  desc_ko: 까악제 이벤트용 한여름 밤의 등불을 설치하는 배치 키트. 10개 중첩 가능.
+  desc_ja: カーニバルイベント用の真夏の夜の灯りを設置するキット。10個スタック可能。
+  desc_zh_CN: 为嘉年华活动放置仲夏夜灯的部署套件。可堆叠10个。
+  desc_zh_TW: 為嘉年華活動放置仲夏夜燈的部署套件。可堆疊10個。
+  desc_fr: Kit déployable qui place une lumière de nuit d'été pour l'événement Cawnival. Empilable par 10.
+  desc_de: Platzierbares Kit, das ein Mittsommernachtlicht für das Cawnival-Event aufstellt. Stapelbar bis 10.
+  desc_it: Kit piazzabile che installa una luce della notte di mezza estate per l'evento Cawnival. Impilabile fino a 10.
+  desc_pl: Zestaw do postawienia Lampy Nocy Letniej na wydarzenie Cawnival. Stosowalny do 10.
+  desc_pt_BR: Kit implantável que coloca uma Luz da Noite de Verão para o evento Cawnival. Empilhável até 10.
+  desc_ru: Набор для установки Светильника летней ночи для события Карнавала. Складывается до 10.
+  desc_es: Kit desplegable que coloca una Luz de Noche de Verano para el evento Cawnival. Apilable hasta 10.
+  desc_es_MX: Kit desplegable que coloca una Luz de Noche de Verano para el evento Cawnival. Apilable hasta 10.
 162.carnivaldecor_plant
   en: Miniature Tree
   ko: 아주 작은 나무
   app: X
   type: deconstruct
   source: Cawnival decoration with 3 shape variants; decor value 24; physics radius 0.25; 1 hammer hit to drop kit, burnable.
+  desc_en: Decorative miniature tree with 3 shape variants and decor value 24.
+  desc_ko: 3가지 형태 변형의 장식용 미니 나무, 장식 가치 24.
+  desc_ja: 3種類の形状バリエーションを持つ装飾用ミニチュアツリー、装飾値24。
+  desc_zh_CN: 装饰性迷你树，3种形状变体，装饰值24。
+  desc_zh_TW: 裝飾性迷你樹，3種形狀變體，裝飾值24。
+  desc_fr: Arbre miniature décoratif avec 3 variantes de forme et valeur décorative 24.
+  desc_de: Dekorativer Miniaturbaum mit 3 Formvarianten und Dekorationswert 24.
+  desc_it: Albero in miniatura decorativo con 3 varianti di forma e valore decorativo 24.
+  desc_pl: Dekoracyjne miniaturowe drzewko z 3 wariantami kształtu i wartością dekoracji 24.
+  desc_pt_BR: Árvore em miniatura decorativa com 3 variantes de forma e valor decorativo 24.
+  desc_ru: Декоративное миниатюрное дерево с 3 вариантами формы и декоративной ценностью 24.
+  desc_es: Árbol miniatura decorativo con 3 variantes de forma y valor decorativo 24.
+  desc_es_MX: Árbol miniatura decorativo con 3 variantes de forma y valor decorativo 24.
 163.carnivaldecor_plant_kit
   en: Miniature Tree Kit
   ko: 아주 작은 나무 키트
   app: O
   source: Deployable kit for carnivaldecor_plant; small fuel (15s), stackable 10.
+  desc_en: Deployable kit that places a Miniature Tree for the Cawnival event. Stackable to 10.
+  desc_ko: 까악제 이벤트용 아주 작은 나무를 설치하는 배치 키트. 10개 중첩 가능.
+  desc_ja: カーニバルイベント用のミニチュアツリーを設置するキット。10個スタック可能。
+  desc_zh_CN: 为嘉年华活动放置迷你树的部署套件。可堆叠10个。
+  desc_zh_TW: 為嘉年華活動放置迷你樹的部署套件。可堆疊10個。
+  desc_fr: Kit déployable qui place un arbre miniature pour l'événement Cawnival. Empilable par 10.
+  desc_de: Platzierbares Kit, das einen Miniaturbaum für das Cawnival-Event aufstellt. Stapelbar bis 10.
+  desc_it: Kit piazzabile che installa un albero in miniatura per l'evento Cawnival. Impilabile fino a 10.
+  desc_pl: Zestaw do postawienia Miniaturowego Drzewka na wydarzenie Cawnival. Stosowalny do 10.
+  desc_pt_BR: Kit implantável que coloca uma Árvore em Miniatura para o evento Cawnival. Empilhável até 10.
+  desc_ru: Набор для установки Миниатюрного дерева для события Карнавала. Складывается до 10.
+  desc_es: Kit desplegable que coloca un Árbol en Miniatura para el evento Cawnival. Apilable hasta 10.
+  desc_es_MX: Kit desplegable que coloca un Árbol en Miniatura para el evento Cawnival. Apilable hasta 10.
 164.carnivalfood_corntea
   en: Corny Slush
   ko: 옥수수 슬러시
   app: O
   source: Cawnival food (veggie, drink tag); 9.375 hunger, 0 health, 5 sanity; cooling -40 temperature for 15s; perishes in 1440s (3 days); stackable 40.
+  desc_en: Cawnival drink that restores 9.375 hunger and 5 sanity. Cools by -40 temperature for 15s. Perishes in 3 days.
+  desc_ko: 까악제 음료, 허기 9.375 및 정신력 5 회복. 15초 동안 체온 -40 냉각 효과. 3일 후 부패.
+  desc_ja: カーニバルドリンク、空腹9.375・正気度5回復。15秒間体温-40の冷却効果。3日で腐敗。
+  desc_zh_CN: 嘉年华饮品，恢复9.375饥饿和5理智。15秒内冷却体温-40。3天后腐烂。
+  desc_zh_TW: 嘉年華飲品，恢復9.375飢餓和5理智。15秒內冷卻體溫-40。3天後腐爛。
+  desc_fr: Boisson Cawnival restaurant 9.375 faim et 5 santé mentale. Refroidit de -40 pendant 15s. Périt en 3 jours.
+  desc_de: Cawnival-Getränk, das 9,375 Hunger und 5 geistige Gesundheit wiederherstellt. Kühlt um -40 für 15s. Verdirbt in 3 Tagen.
+  desc_it: Bevanda Cawnival che ripristina 9.375 fame e 5 sanità mentale. Raffredda di -40 per 15s. Deperisce in 3 giorni.
+  desc_pl: Napój Cawnival przywracający 9.375 głodu i 5 poczytalności. Chłodzi o -40 przez 15s. Psuje się w 3 dni.
+  desc_pt_BR: Bebida do Cawnival que restaura 9.375 de fome e 5 de sanidade. Resfria -40 por 15s. Estraga em 3 dias.
+  desc_ru: Напиток Карнавала, восстанавливающий 9.375 голода и 5 рассудка. Охлаждает на -40 за 15с. Портится за 3 дня.
+  desc_es: Bebida del Cawnival que restaura 9.375 de hambre y 5 de cordura. Enfría -40 durante 15s. Caduca en 3 días.
+  desc_es_MX: Bebida del Cawnival que restaura 9.375 de hambre y 5 de cordura. Enfría -40 durante 15s. Caduca en 3 días.
 165.carnivalgame_feedchicks_kit
   en: Hubbub for Grub Kit
   ko: 오물오물 냠냠 키트
   app: O
   source: Deployable kit for carnivalgame_feedchicks_station; large fuel (180s).
+  desc_en: Deployable kit that places the Hubbub for Grub minigame station for the Cawnival event.
+  desc_ko: 까악제 이벤트용 오물오물 냠냠 미니게임 기기를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のHubbub for Grubミニゲームステーションを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置喂食小鸡迷你游戏站的部署套件。
+  desc_zh_TW: 為嘉年華活動放置餵食小雞迷你遊戲站的部署套件。
+  desc_fr: Kit déployable qui place la station de mini-jeu Hubbub for Grub pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das die Hubbub-for-Grub-Minispielstation für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa la stazione del minigioco Hubbub for Grub per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia stacji minigry Orzeźwienie z Jedzeniem na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca a estação do minijogo Hubbub for Grub para o evento Cawnival.
+  desc_ru: Набор для установки станции мини-игры «Кормёжка» для события Карнавала.
+  desc_es: Kit desplegable que coloca la estación del minijuego Alboroto por Comida para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca la estación del minijuego Alboroto por Comida para el evento Cawnival.
 166.carnivalgame_feedchicks_station
   en: Hubbub for Grub
   ko: 오물오물 냠냠
   app: X
   type: deconstruct
   source: Cawnival minigame station; 30s game timer; spawns 18 nests (12 outer + 6 inner) and 4 food items; 5 nests active at a time; feed hungry chicks to score points and earn prize tickets; 3 hammer hits, accepts game token to start.
+  desc_en: Cawnival minigame (30s timer). Feed hungry chicks in 18 nests to score points and earn prize tickets.
+  desc_ko: 까악제 미니게임 (30초). 18개 둥지의 배고픈 병아리에게 먹이를 줘서 점수를 얻고 경품 티켓을 획득합니다.
+  desc_ja: カーニバルミニゲーム（30秒）。18の巣の空腹なひよこに餌を与えてポイントを稼ぎ、景品チケットを獲得。
+  desc_zh_CN: 嘉年华迷你游戏（30秒）。喂饱18个巢中饥饿的小鸡来得分并获得奖券。
+  desc_zh_TW: 嘉年華迷你遊戲（30秒）。餵飽18個巢中飢餓的小雞來得分並獲得獎券。
+  desc_fr: Mini-jeu Cawnival (30s). Nourrissez les poussins affamés dans 18 nids pour marquer des points et gagner des tickets.
+  desc_de: Cawnival-Minispiel (30s). Füttere hungrige Küken in 18 Nestern, um Punkte zu sammeln und Preistickets zu gewinnen.
+  desc_it: Minigioco Cawnival (30s). Dai da mangiare ai pulcini affamati in 18 nidi per ottenere punti e biglietti premio.
+  desc_pl: Minigra Cawnival (30s). Karm głodne pisklęta w 18 gniazdach, by zdobywać punkty i bilety na nagrody.
+  desc_pt_BR: Minijogo do Cawnival (30s). Alimente pintinhos famintos em 18 ninhos para ganhar pontos e tickets de prêmio.
+  desc_ru: Мини-игра Карнавала (30с). Кормите голодных цыплят в 18 гнёздах, набирайте очки и получайте призовые билеты.
+  desc_es: Minijuego del Cawnival (30s). Alimenta a los pollitos hambrientos en 18 nidos para ganar puntos y boletos de premio.
+  desc_es_MX: Minijuego del Cawnival (30s). Alimenta a los pollitos hambrientos en 18 nidos para ganar puntos y boletos de premio.
 167.carnivalgame_herding_kit
   en: Egg Scramble Kit
   ko: 요리조리 달걀 키트
   app: O
   source: Deployable kit for carnivalgame_herding_station; medium fuel (45s).
+  desc_en: Deployable kit that places the Egg Scramble minigame station for the Cawnival event.
+  desc_ko: 까악제 이벤트용 요리조리 달걀 미니게임 기기를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のEgg Scrambleミニゲームステーションを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置赶鸡蛋迷你游戏站的部署套件。
+  desc_zh_TW: 為嘉年華活動放置趕雞蛋迷你遊戲站的部署套件。
+  desc_fr: Kit déployable qui place la station de mini-jeu Egg Scramble pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das die Egg-Scramble-Minispielstation für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa la stazione del minigioco Egg Scramble per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia stacji minigry Jajeczne Zamieszanie na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca a estação do minijogo Egg Scramble para o evento Cawnival.
+  desc_ru: Набор для установки станции мини-игры «Яичная неразбериха» для события Карнавала.
+  desc_es: Kit desplegable que coloca la estación del minijuego Revoltura de Huevos para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca la estación del minijuego Revoltura de Huevos para el evento Cawnival.
 168.carnivalgame_herding_station
   en: Egg Scramble
   ko: 요리조리 달걀
   app: X
   type: deconstruct
   source: Cawnival minigame station; 30s game timer; launches 12 chicks (walk 4, run 7 speed) that must be herded home to score; each returned chick spawns a new one; awards prize tickets; 3 hammer hits, accepts game token to start.
+  desc_en: Cawnival minigame (30s timer). Herd 12 chicks back home to score points. Each returned chick spawns a new one.
+  desc_ko: 까악제 미니게임 (30초). 12마리 병아리를 집으로 몰아 점수를 획득합니다. 돌아온 병아리마다 새로운 병아리가 생성됩니다.
+  desc_ja: カーニバルミニゲーム（30秒）。12羽のひよこを家に追い返してポイント獲得。戻ったひよこごとに新しいひよこが出現。
+  desc_zh_CN: 嘉年华迷你游戏（30秒）。将12只小鸡赶回家得分。每只返回的小鸡会生成新的一只。
+  desc_zh_TW: 嘉年華迷你遊戲（30秒）。將12隻小雞趕回家得分。每隻返回的小雞會生成新的一隻。
+  desc_fr: Mini-jeu Cawnival (30s). Guidez 12 poussins vers leur maison pour marquer. Chaque poussin ramené en fait apparaître un nouveau.
+  desc_de: Cawnival-Minispiel (30s). Treibe 12 Küken nach Hause, um Punkte zu sammeln. Jedes zurückgebrachte Küken erzeugt ein neues.
+  desc_it: Minigioco Cawnival (30s). Guida 12 pulcini a casa per segnare punti. Ogni pulcino ritornato ne genera uno nuovo.
+  desc_pl: Minigra Cawnival (30s). Zapędź 12 piskląt do domu, by zdobywać punkty. Każde wrócone pisklę tworzy nowe.
+  desc_pt_BR: Minijogo do Cawnival (30s). Conduza 12 pintinhos para casa e marque pontos. Cada pintinho devolvido gera um novo.
+  desc_ru: Мини-игра Карнавала (30с). Загоните 12 цыплят домой для получения очков. Каждый возвращённый цыплёнок порождает нового.
+  desc_es: Minijuego del Cawnival (30s). Arrea 12 pollitos a casa para puntuar. Cada pollito devuelto genera uno nuevo.
+  desc_es_MX: Minijuego del Cawnival (30s). Arrea 12 pollitos a casa para puntuar. Cada pollito devuelto genera uno nuevo.
 169.carnivalgame_memory_kit
   en: Eggs in a Basket Kit
   ko: 바구니 속 달걀 키트
   app: O
   source: Deployable kit for carnivalgame_memory_station; large fuel (180s).
+  desc_en: Deployable kit that places the Eggs in a Basket minigame station for the Cawnival event.
+  desc_ko: 까악제 이벤트용 바구니 속 달걀 미니게임 기기를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のEggs in a Basketミニゲームステーションを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置篮中蛋记忆迷你游戏站的部署套件。
+  desc_zh_TW: 為嘉年華活動放置籃中蛋記憶迷你遊戲站的部署套件。
+  desc_fr: Kit déployable qui place la station de mini-jeu Eggs in a Basket pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das die Eggs-in-a-Basket-Minispielstation für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa la stazione del minigioco Eggs in a Basket per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia stacji minigry Jajka w Koszyku na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca a estação do minijogo Eggs in a Basket para o evento Cawnival.
+  desc_ru: Набор для установки станции мини-игры «Яйца в корзине» для события Карнавала.
+  desc_es: Kit desplegable que coloca la estación del minijuego Huevos en la Cesta para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca la estación del minijuego Huevos en la Cesta para el evento Cawnival.
 170.carnivalgame_memory_station
   en: Eggs in a Basket
   ko: 바구니 속 달걀
   app: X
   type: deconstruct
   source: Cawnival minigame station; 30s game timer; 9 memory cards placed in a grid; each round reveals up to 5 cards to memorize then pick; correct picks score points and earn prize tickets; 3 hammer hits, accepts game token to start.
+  desc_en: Cawnival memory minigame (30s timer). Memorize and match 9 cards in a grid to score points and earn prize tickets.
+  desc_ko: 까악제 기억력 미니게임 (30초). 9장의 카드를 기억하고 맞춰서 점수와 경품 티켓을 획득합니다.
+  desc_ja: カーニバル記憶ミニゲーム（30秒）。9枚のカードを記憶してマッチさせ、ポイントと景品チケットを獲得。
+  desc_zh_CN: 嘉年华记忆迷你游戏（30秒）。在网格中记忆并匹配9张牌来得分并获得奖券。
+  desc_zh_TW: 嘉年華記憶迷你遊戲（30秒）。在網格中記憶並配對9張牌來得分並獲得獎券。
+  desc_fr: Mini-jeu de mémoire Cawnival (30s). Mémorisez et associez 9 cartes dans une grille pour marquer des points et gagner des tickets.
+  desc_de: Cawnival-Gedächtnis-Minispiel (30s). Merke dir 9 Karten und finde Paare, um Punkte und Preistickets zu gewinnen.
+  desc_it: Minigioco di memoria Cawnival (30s). Memorizza e abbina 9 carte in una griglia per ottenere punti e biglietti premio.
+  desc_pl: Minigra pamięciowa Cawnival (30s). Zapamiętaj i dopasuj 9 kart w siatce, by zdobyć punkty i bilety na nagrody.
+  desc_pt_BR: Minijogo de memória do Cawnival (30s). Memorize e combine 9 cartas em uma grade para ganhar pontos e tickets.
+  desc_ru: Мини-игра Карнавала на память (30с). Запоминайте и находите пары из 9 карт, набирая очки и получая призовые билеты.
+  desc_es: Minijuego de memoria del Cawnival (30s). Memoriza y empareja 9 cartas en una cuadrícula para ganar puntos y boletos.
+  desc_es_MX: Minijuego de memoria del Cawnival (30s). Memoriza y empareja 9 cartas en una cuadrícula para ganar puntos y boletos.
 171.carnivalgame_puckdrop_kit
   en: Birdhouse Ball Drop Kit
   ko: 새장에 공떨구기 키트
   app: O
   source: Deployable kit for carnivalgame_puckdrop_station; medium fuel (45s).
+  desc_en: Deployable kit that places the Birdhouse Ball Drop minigame station for the Cawnival event.
+  desc_ko: 까악제 이벤트용 새장에 공떨구기 미니게임 기기를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のBirdhouse Ball Dropミニゲームステーションを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置鸟屋投球迷你游戏站的部署套件。
+  desc_zh_TW: 為嘉年華活動放置鳥屋投球迷你遊戲站的部署套件。
+  desc_fr: Kit déployable qui place la station de mini-jeu Birdhouse Ball Drop pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das die Birdhouse-Ball-Drop-Minispielstation für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa la stazione del minigioco Birdhouse Ball Drop per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia stacji minigry Zrzut Piłki na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca a estação do minijogo Birdhouse Ball Drop para o evento Cawnival.
+  desc_ru: Набор для установки станции мини-игры «Бросок в скворечник» для события Карнавала.
+  desc_es: Kit desplegable que coloca la estación del minijuego Caída de Bola para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca la estación del minijuego Caída de Bola para el evento Cawnival.
 172.carnivalgame_puckdrop_station
   en: Birdhouse Ball Drop
   ko: 새장에 공떨구기
   app: X
   type: deconstruct
   source: Cawnival minigame station; 30s game timer; 5 doors cycle; player presses to stop on a door; inactive timeout 3-5s before auto-pick; spectator reward threshold 14; awards prize tickets; 3 hammer hits, accepts game token to start.
+  desc_en: Cawnival minigame (30s timer). Stop the cycling 5 doors at the right moment to score points and earn prize tickets.
+  desc_ko: 까악제 미니게임 (30초). 순환하는 5개 문을 적절한 순간에 멈춰 점수와 경품 티켓을 획득합니다.
+  desc_ja: カーニバルミニゲーム（30秒）。循環する5つのドアを適切なタイミングで止めてポイントと景品チケットを獲得。
+  desc_zh_CN: 嘉年华迷你游戏（30秒）。在5个循环门中按准时机停下来得分并获得奖券。
+  desc_zh_TW: 嘉年華迷你遊戲（30秒）。在5個循環門中按準時機停下來得分並獲得獎券。
+  desc_fr: Mini-jeu Cawnival (30s). Arrêtez les 5 portes en rotation au bon moment pour marquer des points et gagner des tickets.
+  desc_de: Cawnival-Minispiel (30s). Stoppe die 5 rotierenden Türen im richtigen Moment, um Punkte und Preistickets zu gewinnen.
+  desc_it: Minigioco Cawnival (30s). Ferma le 5 porte rotanti al momento giusto per ottenere punti e biglietti premio.
+  desc_pl: Minigra Cawnival (30s). Zatrzymaj 5 cyklicznie obracających się drzwi w odpowiednim momencie, by zdobyć punkty i bilety.
+  desc_pt_BR: Minijogo do Cawnival (30s). Pare as 5 portas giratórias no momento certo para ganhar pontos e tickets de prêmio.
+  desc_ru: Мини-игра Карнавала (30с). Остановите 5 вращающихся дверей в нужный момент, чтобы набрать очки и получить призовые билеты.
+  desc_es: Minijuego del Cawnival (30s). Detén las 5 puertas giratorias en el momento justo para ganar puntos y boletos de premio.
+  desc_es_MX: Minijuego del Cawnival (30s). Detén las 5 puertas giratorias en el momento justo para ganar puntos y boletos de premio.
 173.carnivalgame_shooting_kit
   en: Nest Defender Kit
   ko: 둥지를 지켜라 키트
   app: O
   source: Deployable kit for carnivalgame_shooting_station; large fuel (180s).
+  desc_en: Deployable kit that places the Nest Defender minigame station for the Cawnival event.
+  desc_ko: 까악제 이벤트용 둥지를 지켜라 미니게임 기기를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のNest Defenderミニゲームステーションを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置守护巢穴迷你游戏站的部署套件。
+  desc_zh_TW: 為嘉年華活動放置守護巢穴迷你遊戲站的部署套件。
+  desc_fr: Kit déployable qui place la station de mini-jeu Nest Defender pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das die Nest-Defender-Minispielstation für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa la stazione del minigioco Nest Defender per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia stacji minigry Obrońca Gniazda na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca a estação do minijogo Nest Defender para o evento Cawnival.
+  desc_ru: Набор для установки станции мини-игры «Защитник гнезда» для события Карнавала.
+  desc_es: Kit desplegable que coloca la estación del minijuego Defensor del Nido para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca la estación del minijuego Defensor del Nido para el evento Cawnival.
 174.carnivalgame_shooting_station
   en: Nest Defender
   ko: 둥지를 지켜라
   app: X
   type: deconstruct
   source: Cawnival minigame station (deployed form). Shooting gallery minigame. Awards prize tickets on completion. Hammerable.
+  desc_en: Cawnival shooting gallery minigame. Awards prize tickets on completion.
+  desc_ko: 까악제 사격 미니게임. 완료 시 경품 티켓을 지급합니다.
+  desc_ja: カーニバルの射的ミニゲーム。完了時に景品チケットを授与。
+  desc_zh_CN: 嘉年华射击场迷你游戏。完成后奖励奖券。
+  desc_zh_TW: 嘉年華射擊場迷你遊戲。完成後獎勵獎券。
+  desc_fr: Mini-jeu de tir Cawnival. Donne des tickets de prix une fois terminé.
+  desc_de: Cawnival-Schießbuden-Minispiel. Vergibt Preistickets bei Abschluss.
+  desc_it: Minigioco tiro a segno del Cawnival. Assegna biglietti premio al completamento.
+  desc_pl: Minigra strzelecka Cawnival. Przyznaje bilety na nagrody po ukończeniu.
+  desc_pt_BR: Minijogo de tiro ao alvo do Cawnival. Concede tickets de prêmio ao completar.
+  desc_ru: Мини-игра Карнавала — тир. Вручает призовые билеты по завершении.
+  desc_es: Minijuego de tiro al blanco del Cawnival. Otorga boletos de premio al completar.
+  desc_es_MX: Minijuego de tiro al blanco del Cawnival. Otorga boletos de premio al completar.
 175.carnivalgame_wheelspin_kit
   en: Cuckoo Spinwheel Kit
   ko: 뻐꾸기 돌림판 키트
   app: O
   source: Deployable kit. Places the Cuckoo Spinwheel minigame station (carnivalgame_wheelspin_station) for the Cawnival event.
+  desc_en: Deployable kit that places the Cuckoo Spinwheel minigame station for the Cawnival event.
+  desc_ko: 까악제 이벤트용 뻐꾸기 돌림판 미니게임 기기를 설치하는 배치 키트.
+  desc_ja: カーニバルイベント用のカッコースピンホイールミニゲームステーションを設置するキット。
+  desc_zh_CN: 为嘉年华活动放置布谷鸟转盘迷你游戏站的部署套件。
+  desc_zh_TW: 為嘉年華活動放置布穀鳥轉盤迷你遊戲站的部署套件。
+  desc_fr: Kit déployable qui place la station de mini-jeu Cuckoo Spinwheel pour l'événement Cawnival.
+  desc_de: Platzierbares Kit, das die Kuckucks-Drehrad-Minispielstation für das Cawnival-Event aufstellt.
+  desc_it: Kit piazzabile che installa la stazione del minigioco Cuckoo Spinwheel per l'evento Cawnival.
+  desc_pl: Zestaw do postawienia stacji minigry Kukułkowe Koło na wydarzenie Cawnival.
+  desc_pt_BR: Kit implantável que coloca a estação do minijogo Cuckoo Spinwheel para o evento Cawnival.
+  desc_ru: Набор для установки станции мини-игры «Кукушкино колесо» для события Карнавала.
+  desc_es: Kit desplegable que coloca la estación del minijuego Ruleta del Cucú para el evento Cawnival.
+  desc_es_MX: Kit desplegable que coloca la estación del minijuego Ruleta del Cucú para el evento Cawnival.
 176.carnivalgame_wheelspin_station
   en: Cuckoo Spinwheel
   ko: 뻐꾸기 돌림판
   app: X
   type: deconstruct
   source: Cawnival minigame station (deployed form). Wheel spinning minigame. Awards prize tickets on completion. Hammerable.
+  desc_en: Cawnival wheel spinning minigame. Awards prize tickets on completion.
+  desc_ko: 까악제 돌림판 미니게임. 완료 시 경품 티켓을 지급합니다.
+  desc_ja: カーニバルの回転ホイールミニゲーム。完了時に景品チケットを授与。
+  desc_zh_CN: 嘉年华转盘迷你游戏。完成后奖励奖券。
+  desc_zh_TW: 嘉年華轉盤迷你遊戲。完成後獎勵獎券。
+  desc_fr: Mini-jeu de roue tournante Cawnival. Donne des tickets de prix une fois terminé.
+  desc_de: Cawnival-Drehrad-Minispiel. Vergibt Preistickets bei Abschluss.
+  desc_it: Minigioco ruota girevole del Cawnival. Assegna biglietti premio al completamento.
+  desc_pl: Minigra z kołem fortuny Cawnival. Przyznaje bilety na nagrody po ukończeniu.
+  desc_pt_BR: Minijogo de roda giratória do Cawnival. Concede tickets de prêmio ao completar.
+  desc_ru: Мини-игра Карнавала — колесо фортуны. Вручает призовые билеты по завершении.
+  desc_es: Minijuego de rueda giratoria del Cawnival. Otorga boletos de premio al completar.
+  desc_es_MX: Minijuego de rueda giratoria del Cawnival. Otorga boletos de premio al completar.
 177.carpentry_blade_moonglass
   en: Moon Glass Saw Blade
   ko: 달유리 톱날
   app: O
   source: Sawhorse upgrade component. Inserts into the Carpentry Station to unlock CARPENTRY_STATION_STONE tech tree (higher tier carpentry recipes). No direct combat stats.
+  desc_en: Upgrade component for the Sawhorse. Unlocks the higher-tier Carpentry Station Stone tech tree when inserted.
+  desc_ko: 톱마탕 업그레이드 부품. 삽입 시 상위 목공 기술 트리(석재 등급)를 해금합니다.
+  desc_ja: ソーホースのアップグレード部品。挿入すると上位の木工技術ツリー（石材級）を解除。
+  desc_zh_CN: 锯木架升级组件。插入后解锁高级木工科技树（石材级）。
+  desc_zh_TW: 鋸木架升級組件。插入後解鎖高級木工科技樹（石材級）。
+  desc_fr: Composant d'amélioration pour le chevalet. Débloque l'arbre technologique Menuiserie avancée une fois inséré.
+  desc_de: Upgrade-Komponente für den Sägebock. Schaltet bei Einsetzen den höherstufigen Steinschreinerei-Technologiebaum frei.
+  desc_it: Componente di aggiornamento per il Cavalletto. Inserito, sblocca l'albero tecnologico Carpenteria Pietra di livello superiore.
+  desc_pl: Komponent ulepszenia dla Kobyłki. Po włożeniu odblokowuje wyższy drzewko technologii Stolarstwo Kamienne.
+  desc_pt_BR: Componente de melhoria para o Cavalete. Desbloqueia a árvore tecnológica Carpintaria de Pedra ao ser inserido.
+  desc_ru: Компонент улучшения для Козлов. При установке открывает продвинутое древо технологий Столярного дела (каменный уровень).
+  desc_es: Componente de mejora para el Caballete. Desbloquea el árbol tecnológico Carpintería de Piedra al insertarlo.
+  desc_es_MX: Componente de mejora para el Caballete. Desbloquea el árbol tecnológico Carpintería de Piedra al insertarlo.
 178.carpentry_station
   en: Sawhorse
   ko: 톱마탕
   app: O
   source: Structure. Prototyper for CARPENTRY tech tree. Accepts blade upgrades (e.g., Moon Glass Saw Blade) to unlock CARPENTRY_STATION_STONE tier. Hammerable. Burnable.
+  desc_en: Crafting station for the Carpentry tech tree. Accepts blade upgrades to unlock higher-tier recipes.
+  desc_ko: 목공 기술 트리 제작대. 톱날 업그레이드를 장착하면 상위 레시피가 해금됩니다.
+  desc_ja: 木工技術ツリーのクラフトステーション。刃のアップグレードを受け入れ、上位レシピを解除。
+  desc_zh_CN: 木工科技树的工作台。安装刀片升级后解锁更高级的配方。
+  desc_zh_TW: 木工科技樹的工作台。安裝刀片升級後解鎖更高級的配方。
+  desc_fr: Station d'artisanat pour l'arbre Menuiserie. Accepte des améliorations de lame pour débloquer des recettes supérieures.
+  desc_de: Herstellungsstation für den Schreinerei-Technologiebaum. Nimmt Klingen-Upgrades an, um höherstufige Rezepte freizuschalten.
+  desc_it: Stazione di crafting per l'albero tecnologico Carpenteria. Accetta upgrade delle lame per sbloccare ricette superiori.
+  desc_pl: Stacja rzemieślnicza drzewa technologii Stolarstwa. Przyjmuje ulepszenia ostrzy, odblokowując wyższe receptury.
+  desc_pt_BR: Estação de criação da árvore Carpintaria. Aceita melhorias de lâmina para desbloquear receitas superiores.
+  desc_ru: Станция крафта для древа технологий Столярное дело. Принимает улучшения лезвий для разблокировки продвинутых рецептов.
+  desc_es: Estación de fabricación del árbol Carpintería. Acepta mejoras de hoja para desbloquear recetas superiores.
+  desc_es_MX: Estación de fabricación del árbol Carpintería. Acepta mejoras de hoja para desbloquear recetas superiores.
 179.cartographydesk
   en: Cartographer's Desk
   ko: 지도 제작대
   app: O
   source: Structure. Prototyper for CARTOGRAPHYDESK tech tree. Used to craft map-related items. Hammerable. Burnable.
+  desc_en: Crafting station for the Cartography tech tree. Used to craft map-related items.
+  desc_ko: 지도 제작 기술 트리 제작대. 지도 관련 아이템을 제작하는 데 사용됩니다.
+  desc_ja: 地図作成技術ツリーのクラフトステーション。地図関連アイテムの作成に使用。
+  desc_zh_CN: 制图科技树的工作台。用于制作地图相关物品。
+  desc_zh_TW: 製圖科技樹的工作台。用於製作地圖相關物品。
+  desc_fr: Station d'artisanat pour l'arbre Cartographie. Sert à fabriquer des objets liés aux cartes.
+  desc_de: Herstellungsstation für den Kartografie-Technologiebaum. Zum Herstellen kartenrelevanter Gegenstände.
+  desc_it: Stazione di crafting per l'albero tecnologico Cartografia. Usata per creare oggetti legati alle mappe.
+  desc_pl: Stacja rzemieślnicza drzewa technologii Kartografii. Służy do wytwarzania przedmiotów związanych z mapami.
+  desc_pt_BR: Estação de criação da árvore Cartografia. Usada para criar itens relacionados a mapas.
+  desc_ru: Станция крафта для древа технологий Картография. Используется для создания предметов, связанных с картами.
+  desc_es: Estación de fabricación del árbol Cartografía. Sirve para fabricar objetos relacionados con mapas.
+  desc_es_MX: Estación de fabricación del árbol Cartografía. Sirve para fabricar objetos relacionados con mapas.
 180.catcoonhat
   en: Cat Cap
   ko: 고양이 모자
   app: O
   source: Hat. Fuel-based durability, lasts 10 days (4800s). Dapperness +5.3/min (medium). Winter insulation 60 (small).
+  desc_en: Hat with +5.3/min sanity and winter insulation 60. Lasts 10 days.
+  desc_ko: 정신력 +5.3/분, 겨울 단열 60의 모자. 10일 동안 지속됩니다.
+  desc_ja: 正気度+5.3/分、冬の断熱60の帽子。10日間持続。
+  desc_zh_CN: 精神+5.3/分、冬季隔热60的帽子。持续10天。
+  desc_zh_TW: 精神+5.3/分、冬季隔熱60的帽子。持續10天。
+  desc_fr: Chapeau avec +5.3/min de santé mentale et isolation hivernale 60. Dure 10 jours.
+  desc_de: Hut mit +5,3/Min geistige Gesundheit und Winterisolierung 60. Hält 10 Tage.
+  desc_it: Cappello con +5.3/min di sanità mentale e isolamento invernale 60. Dura 10 giorni.
+  desc_pl: Kapelusz z +5.3/min poczytalności i izolacją zimową 60. Trwa 10 dni.
+  desc_pt_BR: Chapéu com +5.3/min de sanidade e isolamento de inverno 60. Dura 10 dias.
+  desc_ru: Шляпа с +5.3/мин рассудка и зимней изоляцией 60. Длится 10 дней.
+  desc_es: Sombrero con +5.3/min de cordura y aislamiento invernal 60. Dura 10 días.
+  desc_es_MX: Sombrero con +5.3/min de cordura y aislamiento invernal 60. Dura 10 días.
 181.cattoy_mouse
   en: Wind-up Mouse Toy
   ko: 태엽 생쥐 장난감
   app: O
   source: Cat toy item. Attracts and entertains catcoons/kitcoons (cattoy + kitcoonfollowtoy tags). Moves at run speed 7 when played with. Burnable. Sinks in water.
+  desc_en: Toy that attracts and entertains catcoons and kitcoons. Moves at speed 7 when played with.
+  desc_ko: 캣쿤과 키트쿤을 유인하고 즐겁게 하는 장난감. 놀이 시 속도 7로 이동합니다.
+  desc_ja: キャットクーンとキットクーンを引き寄せて楽しませるおもちゃ。遊ぶ時は速度7で移動。
+  desc_zh_CN: 吸引并娱乐浣猫和小浣猫的玩具。玩耍时以速度7移动。
+  desc_zh_TW: 吸引並娛樂浣貓和小浣貓的玩具。玩耍時以速度7移動。
+  desc_fr: Jouet qui attire et amuse les catcoons et kitcoons. Se déplace à vitesse 7 en jeu.
+  desc_de: Spielzeug, das Catcoons und Kitcoons anlockt und unterhält. Bewegt sich beim Spielen mit Geschwindigkeit 7.
+  desc_it: Giocattolo che attira e diverte catcoon e kitcoon. Si muove a velocità 7 durante il gioco.
+  desc_pl: Zabawka przyciągająca i bawiąca catcoony i kitcoony. Porusza się z prędkością 7 podczas zabawy.
+  desc_pt_BR: Brinquedo que atrai e diverte catcoons e kitcoons. Move-se a velocidade 7 durante a brincadeira.
+  desc_ru: Игрушка, привлекающая и развлекающая кэткунов и киткунов. Движется со скоростью 7 во время игры.
+  desc_es: Juguete que atrae y entretiene a catcoons y kitcoons. Se mueve a velocidad 7 al jugar.
+  desc_es_MX: Juguete que atrae y entretiene a catcoons y kitcoons. Se mueve a velocidad 7 al jugar.
 182.chesspiece_anchor_builder
   en: Anchor Figure
   ko: 닻 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 3. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 3, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 3, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト3、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量3，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量3，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 3, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 3, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 3, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 3, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 3, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 3, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
 183.chesspiece_anchor_sketch
   en: Anchor Figure Sketch
   ko: 닻 조각상 도면
   app: O
   source: Blueprint item. Teaches the recipe for the Anchor Figure (chesspiece_anchor_builder). Consumed on use.
+  desc_en: Blueprint that teaches the Anchor Figure recipe. Consumed on use.
+  desc_ko: 닻 조각상 레시피를 가르쳐주는 도면. 사용 시 소모됩니다.
+  desc_ja: アンカーフィギュアのレシピを教える設計図。使用時に消費。
+  desc_zh_CN: 教授锚雕像配方的蓝图。使用后消耗。
+  desc_zh_TW: 教授錨雕像配方的藍圖。使用後消耗。
+  desc_fr: Plan qui enseigne la recette de la figurine Ancre. Consommé à l'utilisation.
+  desc_de: Bauplan, der das Rezept für die Ankerfigur lehrt. Wird beim Benutzen verbraucht.
+  desc_it: Progetto che insegna la ricetta della Figura Ancora. Consumato all'uso.
+  desc_pl: Plan uczący receptury Figurki Kotwicy. Zużywany przy użyciu.
+  desc_pt_BR: Projeto que ensina a receita da Figura de Âncora. Consumido ao usar.
+  desc_ru: Чертёж, обучающий рецепту фигуры Якоря. Расходуется при использовании.
+  desc_es: Plano que enseña la receta de la Figura de Ancla. Se consume al usar.
+  desc_es_MX: Plano que enseña la receta de la Figura de Ancla. Se consume al usar.
 184.chesspiece_antlion_builder
   en: Antlion Figure
   ko: 개미사자 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 4. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 4, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 4, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト4、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量4，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量4，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 4, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 4, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 4, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 4, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 4, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 4, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 4, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 4, martillable para materiales.
 185.chesspiece_bearger_builder
   en: Bearger Figure
   ko: 곰소리 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 4. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 4, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 4, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト4、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量4，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量4，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 4, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 4, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 4, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 4, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 4, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 4, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 4, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 4, martillable para materiales.
 186.chesspiece_bearger_mutated_builder
   en: Armored Bearger Figure
   ko: 무장 곰소리 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 4. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 4, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 4, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト4、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量4，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量4，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 4, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 4, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 4, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 4, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 4, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 4, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 4, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 4, martillable para materiales.
 187.chesspiece_beefalo_builder
   en: Beefalo Figure
   ko: 비팔로 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 3. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 3, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 3, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト3、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量3，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量3，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 3, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 3, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 3, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 3, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 3, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 3, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
 188.chesspiece_beefalo_sketch
   en: Beefalo Figure Sketch
   ko: 비팔로 조각상 도면
   app: O
   source: Blueprint item. Teaches the recipe for the Beefalo Figure (chesspiece_beefalo_builder). Consumed on use.
+  desc_en: Blueprint that teaches the Beefalo Figure recipe. Consumed on use.
+  desc_ko: 비팔로 조각상 레시피를 가르쳐주는 도면. 사용 시 소모됩니다.
+  desc_ja: ビーファローフィギュアのレシピを教える設計図。使用時に消費。
+  desc_zh_CN: 教授牦牛雕像配方的蓝图。使用后消耗。
+  desc_zh_TW: 教授犛牛雕像配方的藍圖。使用後消耗。
+  desc_fr: Plan qui enseigne la recette de la figurine Beefalo. Consommé à l'utilisation.
+  desc_de: Bauplan, der das Rezept für die Beefalo-Figur lehrt. Wird beim Benutzen verbraucht.
+  desc_it: Progetto che insegna la ricetta della Figura Beefalo. Consumato all'uso.
+  desc_pl: Plan uczący receptury Figurki Bizona. Zużywany przy użyciu.
+  desc_pt_BR: Projeto que ensina a receita da Figura de Beefalo. Consumido ao usar.
+  desc_ru: Чертёж, обучающий рецепту фигуры Бифало. Расходуется при использовании.
+  desc_es: Plano que enseña la receta de la Figura de Beefalo. Se consume al usar.
+  desc_es_MX: Plano que enseña la receta de la Figura de Beefalo. Se consume al usar.
 189.chesspiece_beequeen_builder
   en: Bee Queen Figure
   ko: 여왕벌 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 4. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 4, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 4, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト4、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量4，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量4，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 4, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 4, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 4, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 4, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 4, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 4, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 4, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 4, martillable para materiales.
 190.chesspiece_bishop_builder
   en: Bishop Figure
   ko: 비숍 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Moon event active (animates on full/new moon). Gym weight 3. Hammerable.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Animates on full/new moon. Gym weight 3.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 보름달/새 달에 애니메이션. 체육관 무게 3.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。満月/新月にアニメーション。ジムウェイト3。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。满月/新月时动画。健身重量3。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。滿月/新月時動畫。健身重量3。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. S'anime à la pleine/nouvelle lune. Poids de gym 3.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Animiert bei Voll-/Neumond. Gym-Gewicht 3.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Si anima alla luna piena/nuova. Peso palestra 3.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Animuje się podczas pełni/nowiu. Waga siłowni 3.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Anima durante lua cheia/nova. Peso de academia 3.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Анимируется при полнолунии/новолунии. Вес для тренажёра 3.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Se anima en luna llena/nueva. Peso de gimnasio 3.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Se anima en luna llena/nueva. Peso de gimnasio 3.
 191.chesspiece_butterfly_builder
   en: Moon Moth Figure
   ko: 달 나방 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 3. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 3, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 3, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト3、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量3，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量3，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 3, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 3, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 3, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 3, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 3, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 3, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
 192.chesspiece_butterfly_sketch
   en: Moon Moth Figure Sketch
   ko: 달 나방 조각상 도면
   app: O
   source: Blueprint item. Teaches the recipe for the Moon Moth Figure (chesspiece_butterfly_builder). Consumed on use.
+  desc_en: Blueprint that teaches the Moon Moth Figure recipe. Consumed on use.
+  desc_ko: 달 나방 조각상 레시피를 가르쳐주는 도면. 사용 시 소모됩니다.
+  desc_ja: ムーンモスフィギュアのレシピを教える設計図。使用時に消費。
+  desc_zh_CN: 教授月蛾雕像配方的蓝图。使用后消耗。
+  desc_zh_TW: 教授月蛾雕像配方的藍圖。使用後消耗。
+  desc_fr: Plan qui enseigne la recette de la figurine Papillon de Lune. Consommé à l'utilisation.
+  desc_de: Bauplan, der das Rezept für die Mondmotten-Figur lehrt. Wird beim Benutzen verbraucht.
+  desc_it: Progetto che insegna la ricetta della Figura Falena Lunare. Consumato all'uso.
+  desc_pl: Plan uczący receptury Figurki Ćmy Księżycowej. Zużywany przy użyciu.
+  desc_pt_BR: Projeto que ensina a receita da Figura de Mariposa Lunar. Consumido ao usar.
+  desc_ru: Чертёж, обучающий рецепту фигуры Лунной моли. Расходуется при использовании.
+  desc_es: Plano que enseña la receta de la Figura de Polilla Lunar. Se consume al usar.
+  desc_es_MX: Plano que enseña la receta de la Figura de Polilla Lunar. Se consume al usar.
 193.chesspiece_carrat_builder
   en: Carrat Figure
   ko: 당근이쥐 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 3. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 3, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 3, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト3、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量3，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量3，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 3, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 3, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 3, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 3, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 3, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 3, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
 194.chesspiece_carrat_sketch
   en: Carrat Figure Sketch
   ko: 당근이쥐 조각상 도면
   app: O
   source: Blueprint item. Teaches the recipe for the Carrat Figure (chesspiece_carrat_builder). Consumed on use.
+  desc_en: Blueprint that teaches the Carrat Figure recipe. Consumed on use.
+  desc_ko: 당근이쥐 조각상 레시피를 가르쳐주는 도면. 사용 시 소모됩니다.
+  desc_ja: キャラットフィギュアのレシピを教える設計図。使用時に消費。
+  desc_zh_CN: 教授胡萝卜鼠雕像配方的蓝图。使用后消耗。
+  desc_zh_TW: 教授胡蘿蔔鼠雕像配方的藍圖。使用後消耗。
+  desc_fr: Plan qui enseigne la recette de la figurine Carrat. Consommé à l'utilisation.
+  desc_de: Bauplan, der das Rezept für die Carrat-Figur lehrt. Wird beim Benutzen verbraucht.
+  desc_it: Progetto che insegna la ricetta della Figura Carrat. Consumato all'uso.
+  desc_pl: Plan uczący receptury Figurki Marchwiaka. Zużywany przy użyciu.
+  desc_pt_BR: Projeto que ensina a receita da Figura de Carrat. Consumido ao usar.
+  desc_ru: Чертёж, обучающий рецепту фигуры Каррата. Расходуется при использовании.
+  desc_es: Plano que enseña la receta de la Figura de Carrat. Se consume al usar.
+  desc_es_MX: Plano que enseña la receta de la Figura de Carrat. Se consume al usar.
 195.chesspiece_catcoon_builder
   en: Catcoon Figure
   ko: 캣쿤 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 3. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 3, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 3, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト3、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量3，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量3，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 3, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 3, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 3, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 3, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 3, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 3, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
 196.chesspiece_catcoon_sketch
   en: Catcoon Figure Sketch
   ko: 캣쿤 조각상 도면
   app: O
   source: Blueprint item. Teaches the recipe for the Catcoon Figure (chesspiece_catcoon_builder). Consumed on use.
+  desc_en: Blueprint that teaches the Catcoon Figure recipe. Consumed on use.
+  desc_ko: 캣쿤 조각상 레시피를 가르쳐주는 도면. 사용 시 소모됩니다.
+  desc_ja: キャットクーンフィギュアのレシピを教える設計図。使用時に消費。
+  desc_zh_CN: 教授浣猫雕像配方的蓝图。使用后消耗。
+  desc_zh_TW: 教授浣貓雕像配方的藍圖。使用後消耗。
+  desc_fr: Plan qui enseigne la recette de la figurine Catcoon. Consommé à l'utilisation.
+  desc_de: Bauplan, der das Rezept für die Catcoon-Figur lehrt. Wird beim Benutzen verbraucht.
+  desc_it: Progetto che insegna la ricetta della Figura Catcoon. Consumato all'uso.
+  desc_pl: Plan uczący receptury Figurki Catcoona. Zużywany przy użyciu.
+  desc_pt_BR: Projeto que ensina a receita da Figura de Catcoon. Consumido ao usar.
+  desc_ru: Чертёж, обучающий рецепту фигуры Кэткуна. Расходуется при использовании.
+  desc_es: Plano que enseña la receta de la Figura de Catcoon. Se consume al usar.
+  desc_es_MX: Plano que enseña la receta de la Figura de Catcoon. Se consume al usar.
 197.chesspiece_clayhound_builder
   en: Hound Figure
   ko: 사냥개 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 3. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 3, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 3, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト3、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量3，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量3，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 3, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 3, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 3, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 3, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 3, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 3, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
 198.chesspiece_clayhound_sketch
   en: Hound Figure Sketch
   ko: 사냥개 조각상 도면
   app: O
   source: Blueprint item. Teaches the recipe for the Hound Figure (chesspiece_clayhound_builder). Consumed on use.
+  desc_en: Blueprint that teaches the Hound Figure recipe. Consumed on use.
+  desc_ko: 사냥개 조각상 레시피를 가르쳐주는 도면. 사용 시 소모됩니다.
+  desc_ja: ハウンドフィギュアのレシピを教える設計図。使用時に消費。
+  desc_zh_CN: 教授猎犬雕像配方的蓝图。使用后消耗。
+  desc_zh_TW: 教授獵犬雕像配方的藍圖。使用後消耗。
+  desc_fr: Plan qui enseigne la recette de la figurine Chien de chasse. Consommé à l'utilisation.
+  desc_de: Bauplan, der das Rezept für die Hund-Figur lehrt. Wird beim Benutzen verbraucht.
+  desc_it: Progetto che insegna la ricetta della Figura Segugio. Consumato all'uso.
+  desc_pl: Plan uczący receptury Figurki Ogarów. Zużywany przy użyciu.
+  desc_pt_BR: Projeto que ensina a receita da Figura de Hound. Consumido ao usar.
+  desc_ru: Чертёж, обучающий рецепту фигуры Гончей. Расходуется при использовании.
+  desc_es: Plano que enseña la receta de la Figura de Sabueso. Se consume al usar.
+  desc_es_MX: Plano que enseña la receta de la Figura de Sabueso. Se consume al usar.
 199.chesspiece_claywarg_builder
   en: Varg Figure
   ko: 바르그 조각상
   app: O
   source: Decorative sculpture (builder item). Builds a chesspiece structure in marble/stone/moonglass. Gym weight 3. Hammerable, drops material.
+  desc_en: Decorative sculpture built from marble, stone, or moon glass. Gym weight 3, hammerable for materials.
+  desc_ko: 대리석, 돌, 달유리로 만드는 장식 조각상. 체육관 무게 3, 망치로 부수면 재료를 드롭합니다.
+  desc_ja: 大理石・石・ムーングラスで作る装飾彫刻。ジムウェイト3、ハンマーで素材ドロップ。
+  desc_zh_CN: 用大理石、石头或月亮玻璃建造的装饰雕塑。健身重量3，可锤击获取材料。
+  desc_zh_TW: 用大理石、石頭或月亮玻璃建造的裝飾雕塑。健身重量3，可錘擊獲取材料。
+  desc_fr: Sculpture décorative en marbre, pierre ou verre lunaire. Poids de gym 3, peut être martelée pour récupérer des matériaux.
+  desc_de: Dekorative Skulptur aus Marmor, Stein oder Mondglas. Gym-Gewicht 3, hammerbar für Materialien.
+  desc_it: Scultura decorativa in marmo, pietra o vetro lunare. Peso palestra 3, martellabile per materiali.
+  desc_pl: Dekoracyjna rzeźba z marmuru, kamienia lub szkła księżycowego. Waga siłowni 3, rozbijalna na materiały.
+  desc_pt_BR: Escultura decorativa de mármore, pedra ou vidro lunar. Peso de academia 3, quebrável para materiais.
+  desc_ru: Декоративная скульптура из мрамора, камня или лунного стекла. Вес для тренажёра 3, разрушается молотком для материалов.
+  desc_es: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
+  desc_es_MX: Escultura decorativa de mármol, piedra o vidrio lunar. Peso de gimnasio 3, martillable para materiales.
 200.chesspiece_claywarg_sketch
   en: Clay Varg Figure Sketch
   ko: 점토 바르그 조각상 도면
   app: O
   source: Blueprint item. Teaches the recipe for the Varg Figure (chesspiece_claywarg_builder). Consumed on use.
+  desc_en: Blueprint that teaches the Varg Figure recipe. Consumed on use.
+  desc_ko: 바르그 조각상 레시피를 가르쳐주는 도면. 사용 시 소모됩니다.
+  desc_ja: ヴァーグフィギュアのレシピを教える設計図。使用時に消費。
+  desc_zh_CN: 教授瓦格雕像配方的蓝图。使用后消耗。
+  desc_zh_TW: 教授瓦格雕像配方的藍圖。使用後消耗。
+  desc_fr: Plan qui enseigne la recette de la figurine Varg. Consommé à l'utilisation.
+  desc_de: Bauplan, der das Rezept für die Varg-Figur lehrt. Wird beim Benutzen verbraucht.
+  desc_it: Progetto che insegna la ricetta della Figura Varg. Consumato all'uso.
+  desc_pl: Plan uczący receptury Figurki Varga. Zużywany przy użyciu.
+  desc_pt_BR: Projeto que ensina a receita da Figura de Varg. Consumido ao usar.
+  desc_ru: Чертёж, обучающий рецепту фигуры Варга. Расходуется при использовании.
+  desc_es: Plano que enseña la receta de la Figura de Varg. Se consume al usar.
+  desc_es_MX: Plano que enseña la receta de la Figura de Varg. Se consume al usar.
 201.chesspiece_crabking_builder
   en: Crab King Figure
   ko: 대게왕 조각상
   app: O
   source: Builder item. Spawns a Crab King chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Crab King. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 대게왕의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: カニ王の大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 帝王蟹的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 帝王蟹的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Roi Crabe. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup de marteau.
+  desc_de: Marmorstatue des Krabbenkönigs. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Re Granchio. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo di martello.
+  desc_pl: Marmurowy posąg Króla Krabów. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Rei Caranguejo. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Крабового Короля. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Rey Cangrejo. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Rey Cangrejo. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 202.chesspiece_daywalker_builder
   en: Nightmare Werepig Figure
   ko: 악몽화된 늑대돼지 조각상
   app: O
   source: Builder item. Spawns a Nightmare Werepig chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Nightmare Werepig. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 악몽화된 늑대돼지의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: ナイトメアウェアピッグの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 噩梦猪人的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 噩夢豬人的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Cochon-garou cauchemardesque. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Albtraum-Werschwein. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Maiale Mannaro dell'Incubo. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Koszmarnego Świniołaka. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Porco-lobisomem Pesadelo. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Кошмарного Свинооборотня. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар.
+  desc_es: Estatua de mármol del Hombre Cerdo Pesadilla. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Hombre Cerdo Pesadilla. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 203.chesspiece_daywalker2_builder
   en: Scrappy Werepig Figure
   ko: 고철덩이 늑대돼지 조각상
   app: O
   source: Builder item. Spawns a Scrappy Werepig chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Scrappy Werepig. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 고철덩이 늑대돼지의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: スクラッピーウェアピッグの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 废铁猪人的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 廢鐵豬人的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Cochon-garou bricolo. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Schrottigen Werschwein. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Maiale Mannaro Sgangherato. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Złomowego Świniołaka. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Porco-lobisomem Sucateiro. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Хламового Свинооборотня. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар.
+  desc_es: Estatua de mármol del Hombre Cerdo Chatarrero. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Hombre Cerdo Chatarrero. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 204.chesspiece_deerclops_builder
   en: Deerclops Figure
   ko: 외눈사슴 조각상
   app: O
   source: Builder item. Spawns a Deerclops chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Deerclops. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 외눈사슴의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: ディアクロプスの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 独眼巨鹿的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 獨眼巨鹿的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Deerclops. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup de marteau.
+  desc_de: Marmorstatue des Deerclops. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Deerclops. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo di martello.
+  desc_pl: Marmurowy posąg Jeleniocyklopa. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Deerclops. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Оленециклопа. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Deerclops. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Deerclops. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 205.chesspiece_deerclops_mutated_builder
   en: Crystal Deerclops Figure
   ko: 수정 외눈사슴 조각상
   app: O
   source: Builder item. Spawns a Crystal Deerclops chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Crystal Deerclops. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 수정 외눈사슴의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: クリスタルディアクロプスの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 水晶独眼巨鹿的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 水晶獨眼巨鹿的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Deerclops cristallin. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Kristall-Deerclops. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Deerclops di cristallo. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Kryształowego Jeleniocyklopa. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem.
+  desc_pt_BR: Estátua de mármore do Deerclops de Cristal. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Кристального Оленециклопа. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар.
+  desc_es: Estatua de mármol del Deerclops de Cristal. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Deerclops de Cristal. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 206.chesspiece_dragonfly_builder
   en: Dragonfly Figure
   ko: 용파리 조각상
   app: O
   source: Builder item. Spawns a Dragonfly chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Dragonfly. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 용파리의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: ドラゴンフライの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 龙蝇的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 龍蠅的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre de la Libellule-Dragon. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue der Drachenfliege. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo della Libellula Drago. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Smoczej Muchy. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore da Dragonfly. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Драконьей Мухи. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol de la Dragomosca. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de la Dragomosca. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 207.chesspiece_eyeofterror_builder
   en: Eye Of Terror Figure
   ko: 공포의 눈 조각상
   app: O
   source: Builder item. Spawns an Eye of Terror chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Eye of Terror. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 공포의 눈 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: テラーアイの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 恐怖之眼的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 恐怖之眼的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre de l'Œil de Terreur. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Auge des Schreckens. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo dell'Occhio del Terrore. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Oka Terroru. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Olho do Terror. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Ока Ужаса. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Ojo del Terror. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Ojo del Terror. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 208.chesspiece_formal_builder
   en: Kingly Figure
   ko: 킹 조각상
   app: O
   source: Builder item. Spawns a Kingly chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the King chess piece. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 킹 체스말의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: キングのチェス駒の大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 国王棋子的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 國王棋子的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Statue en marbre de la pièce du Roi. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorstatue der König-Schachfigur. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del pezzo degli scacchi Re. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg figury szachowej Króla. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem.
+  desc_pt_BR: Estátua de mármore da peça de xadrez Rei. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя шахматной фигуры Короля. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар.
+  desc_es: Estatua de mármol de la pieza de ajedrez Rey. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de la pieza de ajedrez Rey. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 209.chesspiece_guardianphase3_builder
   en: Celestial Champion Figure
   ko: 천상의 대변자 조각상
   app: O
   source: Builder item. Spawns a Celestial Champion chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Celestial Champion. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 천상의 대변자 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: セレスティアルチャンピオンの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 天体卫士的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 天體衛士的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Champion Céleste. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Himmlischen Champions. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Campione Celeste. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Niebiańskiego Mistrza. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Campeão Celestial. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Небесного Чемпиона. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Campeón Celestial. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Campeón Celestial. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 210.chesspiece_hornucopia_builder
   en: Carved Hornucopia
   ko: 풍요의 뿔 조각상
   app: O
   source: Builder item. Spawns a Hornucopia chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of a Hornucopia. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 풍요의 뿔 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: ホルヌコピアの大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 丰饶之角的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 豐饒之角的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Statue en marbre de la Corne d'abondance. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorstatue des Füllhorns. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo della Cornucopia. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Rogu Obfitości. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore da Cornucópia. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Рога Изобилия. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol de la Cornucopia. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de la Cornucopia. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 211.chesspiece_kitcoon_builder
   en: Kitcoon Figure
   ko: 킷쿤 조각상
   app: O
   source: Builder item. Spawns a Kitcoon chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of a Kitcoon. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 킷쿤의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: キトクーンの大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 小浣猫的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 小浣貓的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Statue en marbre d'un Kitcoon. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorstatue eines Kitcoons. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo di un Kitcoon. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Kitcoon. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore de um Kitcoon. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Киткуна. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol de un Kitcoon. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de un Kitcoon. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 212.chesspiece_kitcoon_sketch
   en: Kitcoon Figure Sketch
   ko: 킷쿤 조각상 도면
   app: O
   source: Sketch item. Used at Potter's Wheel to craft a Kitcoon chesspiece builder. No special stats.
+  desc_en: Sketch used at the Potter's Wheel to craft a Kitcoon Figure.
+  desc_ko: 도예 물레에서 킷쿤 조각상을 제작하는 데 사용하는 도면.
+  desc_ja: ろくろでキトクーンの彫像を作るためのスケッチ。
+  desc_zh_CN: 在陶轮上制作小浣猫雕像的草图。
+  desc_zh_TW: 在陶輪上製作小浣貓雕像的草圖。
+  desc_fr: Croquis utilisé au tour de potier pour fabriquer une figurine Kitcoon.
+  desc_de: Skizze für die Töpferscheibe zur Herstellung einer Kitcoon-Figur.
+  desc_it: Schizzo usato al tornio del vasaio per creare una statuetta Kitcoon.
+  desc_pl: Szkic używany na kole garncarskim do stworzenia figurki Kitcoon.
+  desc_pt_BR: Esboço usado no torno de oleiro para criar uma Figura de Kitcoon.
+  desc_ru: Эскиз для гончарного круга для создания фигурки Киткуна.
+  desc_es: Boceto para el torno de alfarero para fabricar una figura de Kitcoon.
+  desc_es_MX: Boceto para el torno de alfarero para fabricar una figura de Kitcoon.
 213.chesspiece_klaus_builder
   en: Klaus Figure
   ko: 클라우스 조각상
   app: O
   source: Builder item. Spawns a Klaus chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of Klaus. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 클라우스의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: クラウスの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 克劳斯的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 克勞斯的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre de Klaus. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup de marteau.
+  desc_de: Marmorstatue von Klaus. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo di Klaus. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo di martello.
+  desc_pl: Marmurowy posąg Klausa. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore de Klaus. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Клауса. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol de Klaus. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de Klaus. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 214.chesspiece_knight_builder
   en: Knight Figure
   ko: 나이트 조각상
   app: O
   source: Builder item. Spawns a Knight chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Moon-event piece: animates on full/new moon, can spawn shadow knight if hammered.
+  desc_en: Marble statue of the Knight chess piece. Animates on full/new moon; may spawn a shadow knight if hammered. Gym weight 3.
+  desc_ko: 나이트 체스말의 대리석 조각상. 보름달/초승달에 활성화되며, 망치로 치면 그림자 나이트가 소환될 수 있음. 체육 무게 3.
+  desc_ja: ナイトのチェス駒の大理石像。満月/新月で活性化し、ハンマーで叩くとシャドウナイトが出現する可能性あり。ジム重量3。
+  desc_zh_CN: 骑士棋子的大理石雕像。满月/新月时激活，锤击可能生成暗影骑士。锻炼重量3。
+  desc_zh_TW: 騎士棋子的大理石雕像。滿月/新月時激活，錘擊可能生成暗影騎士。鍛鍊重量3。
+  desc_fr: Statue en marbre du Cavalier. S'anime à la pleine/nouvelle lune ; peut faire apparaître un cavalier de l'ombre si martelé. Poids gym 3.
+  desc_de: Marmorstatue der Springer-Schachfigur. Erwacht bei Voll-/Neumond zum Leben; kann beim Hämmern einen Schattenspringer spawnen. Gym-Gewicht 3.
+  desc_it: Statua in marmo del Cavallo degli scacchi. Si anima alla luna piena/nuova; può generare un cavaliere ombra se colpito. Peso palestra 3.
+  desc_pl: Marmurowy posąg figury szachowej Skoczka. Ożywa podczas pełni/nowiu; może przywołać cienistego skoczka po uderzeniu. Waga ćwiczeń 3.
+  desc_pt_BR: Estátua de mármore da peça Cavalo. Anima-se na lua cheia/nova; pode gerar um cavaleiro sombrio se martelado. Peso gym 3.
+  desc_ru: Мраморная статуя шахматного Коня. Оживает в полно-/новолуние; при разрушении молотом может появиться теневой конь. Вес тренировки 3.
+  desc_es: Estatua de mármol del Caballo de ajedrez. Se anima en luna llena/nueva; puede generar un caballero sombra al martillar. Peso gym 3.
+  desc_es_MX: Estatua de mármol del Caballo de ajedrez. Se anima en luna llena/nueva; puede generar un caballero sombra al martillar. Peso gym 3.
 215.chesspiece_malbatross_builder
   en: Malbatross Figure
   ko: 꽉새치 조각상
   app: O
   source: Builder item. Spawns a Malbatross chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Malbatross. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 꽉새치의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: マルバトロスの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 邪天翁的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 邪天翁的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Malbatross. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Malbatross. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Malbatross. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Malbatross. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Malbatross. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Малбатросса. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Malbatross. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Malbatross. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 216.chesspiece_manrabbit_builder
   en: Bunnyman Figure
   ko: 토끼인간 조각상
   app: O
   source: Builder item. Spawns a Bunnyman chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of a Bunnyman. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 토끼인간의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: バニーマンの大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 兔人的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 兔人的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Statue en marbre d'un Homme-lapin. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorstatue eines Hasenmannes. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo di un Uomo Coniglio. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Króliczego Człowieka. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem.
+  desc_pt_BR: Estátua de mármore de um Bunnyman. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Кроликочеловека. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol de un Hombre Conejo. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de un Hombre Conejo. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 217.chesspiece_manrabbit_sketch
   en: Bunnyman Figure Sketch
   ko: 토끼인간 조각상 도안
   app: O
   source: Sketch item. Used at Potter's Wheel to craft a Bunnyman chesspiece builder. No special stats.
+  desc_en: Sketch used at the Potter's Wheel to craft a Bunnyman Figure.
+  desc_ko: 도예 물레에서 토끼인간 조각상을 제작하는 데 사용하는 도안.
+  desc_ja: ろくろでバニーマンの彫像を作るためのスケッチ。
+  desc_zh_CN: 在陶轮上制作兔人雕像的草图。
+  desc_zh_TW: 在陶輪上製作兔人雕像的草圖。
+  desc_fr: Croquis utilisé au tour de potier pour fabriquer une figurine Homme-lapin.
+  desc_de: Skizze für die Töpferscheibe zur Herstellung einer Hasenmann-Figur.
+  desc_it: Schizzo usato al tornio del vasaio per creare una statuetta Uomo Coniglio.
+  desc_pl: Szkic używany na kole garncarskim do stworzenia figurki Króliczego Człowieka.
+  desc_pt_BR: Esboço usado no torno de oleiro para criar uma Figura de Bunnyman.
+  desc_ru: Эскиз для гончарного круга для создания фигурки Кроликочеловека.
+  desc_es: Boceto para el torno de alfarero para fabricar una figura de Hombre Conejo.
+  desc_es_MX: Boceto para el torno de alfarero para fabricar una figura de Hombre Conejo.
 218.chesspiece_minotaur_builder
   en: Ancient Guardian Figure
   ko: 고대 수호자 조각상
   app: O
   source: Builder item. Spawns an Ancient Guardian chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Ancient Guardian. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 고대 수호자의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: エンシェントガーディアンの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 远古守护者的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 遠古守護者的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Gardien Antique. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Uralten Wächters. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Guardiano Antico. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Starożytnego Strażnika. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem.
+  desc_pt_BR: Estátua de mármore do Guardião Ancestral. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Древнего Стража. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Guardián Ancestral. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Guardián Ancestral. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 219.chesspiece_moon_builder
   en: \
   ko: \
   app: O
   source: Builder item. Spawns a Moon chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Moon. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 달의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: 月の大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 月亮的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 月亮的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre de la Lune. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Mondes. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo della Luna. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Księżyca. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore da Lua. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Луны. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol de la Luna. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de la Luna. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 220.chesspiece_moon_sketch
   en: \
   ko: \
   app: O
   source: Sketch item. Used at Potter's Wheel to craft a Moon chesspiece builder. No special stats.
+  desc_en: Sketch used at the Potter's Wheel to craft a Moon Figure.
+  desc_ko: 도예 물레에서 달 조각상을 제작하는 데 사용하는 도면.
+  desc_ja: ろくろで月の彫像を作るためのスケッチ。
+  desc_zh_CN: 在陶轮上制作月亮雕像的草图。
+  desc_zh_TW: 在陶輪上製作月亮雕像的草圖。
+  desc_fr: Croquis utilisé au tour de potier pour fabriquer une figurine Lune.
+  desc_de: Skizze für die Töpferscheibe zur Herstellung einer Mond-Figur.
+  desc_it: Schizzo usato al tornio del vasaio per creare una statuetta Luna.
+  desc_pl: Szkic używany na kole garncarskim do stworzenia figurki Księżyca.
+  desc_pt_BR: Esboço usado no torno de oleiro para criar uma Figura da Lua.
+  desc_ru: Эскиз для гончарного круга для создания фигурки Луны.
+  desc_es: Boceto para el torno de alfarero para fabricar una figura de la Luna.
+  desc_es_MX: Boceto para el torno de alfarero para fabricar una figura de la Luna.
 221.chesspiece_moosegoose_builder
   en: Moose/Goose Figure
   ko: 큰사슴/거위 조각상
   app: O
   source: Builder item. Spawns a Moose/Goose chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Display name randomly alternates every 5s. Hammerable in 1 hit.
+  desc_en: Marble statue of the Moose/Goose. Heavy item (walk speed ×0.15, gym weight 4). Display name alternates every 5s.
+  desc_ko: 큰사슴/거위의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 표시 이름이 5초마다 바뀜.
+  desc_ja: ムース/グースの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。表示名が5秒ごとに切り替わる。
+  desc_zh_CN: 麋鹿/鹅的大理石雕像。重型物品（移速×0.15，锻炼重量4）。显示名称每5秒交替。
+  desc_zh_TW: 麋鹿/鵝的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。顯示名稱每5秒交替。
+  desc_fr: Statue en marbre de l'Élan/Oie. Objet lourd (vitesse ×0.15, poids gym 4). Le nom affiché alterne toutes les 5s.
+  desc_de: Marmorstatue des Elch/Gans. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). Der Anzeigename wechselt alle 5s.
+  desc_it: Statua in marmo dell'Alce/Oca. Oggetto pesante (velocità ×0.15, peso palestra 4). Il nome visualizzato alterna ogni 5s.
+  desc_pl: Marmurowy posąg Łosia/Gęsi. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Wyświetlana nazwa zmienia się co 5s.
+  desc_pt_BR: Estátua de mármore do Alce/Ganso. Item pesado (velocidade ×0.15, peso gym 4). O nome exibido alterna a cada 5s.
+  desc_ru: Мраморная статуя Лося/Гуся. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Отображаемое имя чередуется каждые 5с.
+  desc_es: Estatua de mármol del Alce/Ganso. Objeto pesado (velocidad ×0.15, peso gym 4). El nombre mostrado alterna cada 5s.
+  desc_es_MX: Estatua de mármol del Alce/Ganso. Objeto pesado (velocidad ×0.15, peso gym 4). El nombre mostrado alterna cada 5s.
 222.chesspiece_muse_builder
   en: Queenly Figure
   ko: 퀸 조각상
   app: O
   source: Builder item. Spawns a Queenly chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Queen chess piece. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 퀸 체스말의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: クイーンのチェス駒の大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 皇后棋子的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 皇后棋子的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Statue en marbre de la pièce Reine. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorstatue der Dame-Schachfigur. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del pezzo degli scacchi Regina. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg figury szachowej Królowej. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem.
+  desc_pt_BR: Estátua de mármore da peça de xadrez Rainha. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя шахматной Королевы. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар.
+  desc_es: Estatua de mármol de la pieza de ajedrez Reina. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de la pieza de ajedrez Reina. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 223.chesspiece_pawn_builder
   en: Pawn Figure
   ko: 폰 조각상
   app: O
   source: Builder item. Spawns a Pawn chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Pawn chess piece. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 폰 체스말의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: ポーンのチェス駒の大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 兵棋子的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 兵棋子的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Statue en marbre de la pièce Pion. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorstatue der Bauer-Schachfigur. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del pezzo degli scacchi Pedone. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg figury szachowej Pionka. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem.
+  desc_pt_BR: Estátua de mármore da peça de xadrez Peão. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя шахматной Пешки. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар.
+  desc_es: Estatua de mármol de la pieza de ajedrez Peón. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de la pieza de ajedrez Peón. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 224.chesspiece_pipe_builder
   en: Bubble Pipe Carving
   ko: 방울 파이프 조각상
   app: O
   source: Builder item. Spawns a Pipe chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble carving of a Bubble Pipe. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 방울 파이프의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: バブルパイプの大理石彫刻。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 泡泡烟斗的大理石雕刻。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 泡泡菸斗的大理石雕刻。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Sculpture en marbre d'une Pipe à bulles. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorskulptur einer Blasenpfeife. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Scultura in marmo di una Pipa a bolle. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowa rzeźba Fajki Bańkowej. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Escultura de mármore de um Cachimbo de Bolhas. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная скульптура Мыльной Трубки. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар.
+  desc_es: Escultura de mármol de una Pipa de Burbujas. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Escultura de mármol de una Pipa de Burbujas. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 225.chesspiece_rook_builder
   en: Rook Figure
   ko: 룩 조각상
   app: O
   source: Builder item. Spawns a Rook chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Moon-event piece: animates on full/new moon, can spawn shadow rook if hammered.
+  desc_en: Marble statue of the Rook chess piece. Animates on full/new moon; may spawn a shadow rook if hammered. Gym weight 3.
+  desc_ko: 룩 체스말의 대리석 조각상. 보름달/초승달에 활성화되며, 망치로 치면 그림자 룩이 소환될 수 있음. 체육 무게 3.
+  desc_ja: ルークのチェス駒の大理石像。満月/新月で活性化し、ハンマーで叩くとシャドウルークが出現する可能性あり。ジム重量3。
+  desc_zh_CN: 城堡棋子的大理石雕像。满月/新月时激活，锤击可能生成暗影城堡。锻炼重量3。
+  desc_zh_TW: 城堡棋子的大理石雕像。滿月/新月時激活，錘擊可能生成暗影城堡。鍛鍊重量3。
+  desc_fr: Statue en marbre de la pièce Tour. S'anime à la pleine/nouvelle lune ; peut faire apparaître une tour de l'ombre si martelé. Poids gym 3.
+  desc_de: Marmorstatue der Turm-Schachfigur. Erwacht bei Voll-/Neumond zum Leben; kann beim Hämmern einen Schattenturm spawnen. Gym-Gewicht 3.
+  desc_it: Statua in marmo del pezzo degli scacchi Torre. Si anima alla luna piena/nuova; può generare una torre ombra se colpito. Peso palestra 3.
+  desc_pl: Marmurowy posąg figury szachowej Wieży. Ożywa podczas pełni/nowiu; może przywołać cienistą wieżę po uderzeniu. Waga ćwiczeń 3.
+  desc_pt_BR: Estátua de mármore da peça Torre. Anima-se na lua cheia/nova; pode gerar uma torre sombria se martelado. Peso gym 3.
+  desc_ru: Мраморная статуя шахматной Ладьи. Оживает в полно-/новолуние; при разрушении молотом может появиться теневая ладья. Вес тренировки 3.
+  desc_es: Estatua de mármol de la pieza Torre. Se anima en luna llena/nueva; puede generar una torre sombra al martillar. Peso gym 3.
+  desc_es_MX: Estatua de mármol de la pieza Torre. Se anima en luna llena/nueva; puede generar una torre sombra al martillar. Peso gym 3.
 226.chesspiece_sharkboi_builder
   en: Frostjaw Figure
   ko: 서리턱상어 조각상
   app: O
   source: Builder item. Spawns a Frostjaw chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Frostjaw. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 서리턱상어의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: フロストジョーの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 霜颚鲨的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 霜顎鯊的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Mâchoire de Givre. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Frostjaws. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Frostjaw. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Mroźnoszczęka. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Frostjaw. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Морозной Челюсти. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Frostjaw. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Frostjaw. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 227.chesspiece_stalker_builder
   en: Ancient Fuelweaver Figure
   ko: 고대의 연료직공 조각상
   app: O
   source: Builder item. Spawns an Ancient Fuelweaver chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Ancient Fuelweaver. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 고대의 연료직공의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: エンシェントフューエルウィーバーの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 远古织影者的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 遠古織影者的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Tisseur de Combustible Antique. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Uralten Brennstoffwebers. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Tessitore di Carburante Antico. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Starożytnego Tkacza Paliw. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Antigo Tecelão de Combustível. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Древнего Ткача Топлива. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Antiguo Tejedor de Combustible. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Antiguo Tejedor de Combustible. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 228.chesspiece_toadstool_builder
   en: Toadstool Figure
   ko: 독꺼비버섯 조각상
   app: O
   source: Builder item. Spawns a Toadstool chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Toadstool. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 독꺼비버섯의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: トードストールの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 毒蛤蟆蘑菇的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 毒蛤蟆蘑菇的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Champignon Crapaud. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Krötentools. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Toadstool. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Ropuchogrzybka. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Toadstool. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Жабогриба. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Toadstool. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Toadstool. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 229.chesspiece_twinsofterror_builder
   en: Twins of Terror Figure
   ko: 공포의 쌍둥이 조각상
   app: O
   source: Builder item. Spawns a Twins of Terror chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Twins of Terror. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 공포의 쌍둥이의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: テラーツインズの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 恐怖双子的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 恐怖雙子的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre des Jumeaux de Terreur. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue der Zwillinge des Schreckens. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo dei Gemelli del Terrore. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Bliźniaków Terroru. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore dos Gêmeos do Terror. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Близнецов Ужаса. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol de los Gemelos del Terror. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de los Gemelos del Terror. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 230.chesspiece_wagboss_lunar_builder
   en: Celestial Scion Figure
   ko: 천상의 귀공자 조각상
   app: O
   source: Builder item. Spawns a Celestial Scion chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Celestial Scion. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 천상의 귀공자의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: セレスティアルサイオンの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 天体后裔的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 天體後裔的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Descendant Céleste. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Himmlischen Sprösslings. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Rampollo Celeste. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Niebiańskiego Potomka. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Descendente Celestial. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Небесного Потомка. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Vástago Celestial. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Vástago Celestial. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 231.chesspiece_wagboss_robot_builder
   en: W.A.R.B.O.T. Figure
   ko: W.A.R.B.O.T. 조각상
   app: O
   source: Builder item. Spawns a W.A.R.B.O.T. chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of W.A.R.B.O.T.. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: W.A.R.B.O.T.의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: W.A.R.B.O.T.の大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: W.A.R.B.O.T.的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: W.A.R.B.O.T.的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre de W.A.R.B.O.T.. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des W.A.R.B.O.T.. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del W.A.R.B.O.T.. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg W.A.R.B.O.T.. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do W.A.R.B.O.T.. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя W.A.R.B.O.T.. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del W.A.R.B.O.T.. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del W.A.R.B.O.T.. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 232.chesspiece_warg_mutated_builder
   en: Possessed Varg Figure
   ko: 귀신들린 바르그 조각상
   app: O
   source: Builder item. Spawns a Possessed Varg chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Possessed Varg. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 귀신들린 바르그의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: ポゼストヴァルグの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 附身瓦格的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 附身瓦格的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Varg Possédé. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Besessenen Varg. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Varg Posseduto. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Opętanego Varga. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Varg Possuído. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Одержимого Варга. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Varg Poseído. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Varg Poseído. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 233.chesspiece_wormboss_builder
   en: Great Depths Worm Figure
   ko: 거대 땅굴벌레 조각상
   app: O
   source: Builder item. Spawns a Great Depths Worm chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of the Great Depths Worm. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
+  desc_ko: 거대 땅굴벌레의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ja: グレートデプスワームの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
+  desc_zh_CN: 深渊巨虫的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
+  desc_zh_TW: 深淵巨蟲的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
+  desc_fr: Statue en marbre du Grand Ver des Profondeurs. Objet lourd (vitesse ×0.15, poids gym 4). Destructible en 1 coup.
+  desc_de: Marmorstatue des Großen Tiefenwurms. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 4). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Grande Verme degli Abissi. Oggetto pesante (velocità ×0.15, peso palestra 4). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Wielkiego Robaka Głębin. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 4). Zniszczalny 1 uderzeniem młotka.
+  desc_pt_BR: Estátua de mármore do Grande Verme das Profundezas. Item pesado (velocidade ×0.15, peso gym 4). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Великого Червя Глубин. Тяжёлый предмет (скорость ×0,15, вес тренировки 4). Разрушается за 1 удар молотом.
+  desc_es: Estatua de mármol del Gran Gusano de las Profundidades. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Gran Gusano de las Profundidades. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 234.chesspiece_yotd_builder
   en: Start Tower Figure
   ko: 출발점 탑 조각상
   app: O
   source: Builder item. Spawns a Start Tower chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of a Start Tower. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 출발점 탑의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: スタートタワーの大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 起始塔的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 起始塔的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Statue en marbre d'une Tour de Départ. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorstatue eines Startturms. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo di una Torre di Partenza. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Wieży Startowej. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem.
+  desc_pt_BR: Estátua de mármore da Torre Inicial. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Стартовой Башни. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар.
+  desc_es: Estatua de mármol de la Torre de Inicio. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de la Torre de Inicio. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 235.chesspiece_yotd_sketch
   en: Start Tower Figure Sketch
   ko: 출발점 탑 조각상 스케치
   app: O
   source: Sketch item. Used at Potter's Wheel to craft a Start Tower chesspiece builder. No special stats.
+  desc_en: Sketch used at the Potter's Wheel to craft a Start Tower Figure.
+  desc_ko: 도예 물레에서 출발점 탑 조각상을 제작하는 데 사용하는 스케치.
+  desc_ja: ろくろでスタートタワーの彫像を作るためのスケッチ。
+  desc_zh_CN: 在陶轮上制作起始塔雕像的草图。
+  desc_zh_TW: 在陶輪上製作起始塔雕像的草圖。
+  desc_fr: Croquis utilisé au tour de potier pour fabriquer une figurine Tour de Départ.
+  desc_de: Skizze für die Töpferscheibe zur Herstellung einer Startturm-Figur.
+  desc_it: Schizzo usato al tornio del vasaio per creare una statuetta Torre di Partenza.
+  desc_pl: Szkic używany na kole garncarskim do stworzenia figurki Wieży Startowej.
+  desc_pt_BR: Esboço usado no torno de oleiro para criar uma Figura da Torre Inicial.
+  desc_ru: Эскиз для гончарного круга для создания фигурки Стартовой Башни.
+  desc_es: Boceto para el torno de alfarero para fabricar una figura de Torre de Inicio.
+  desc_es_MX: Boceto para el torno de alfarero para fabricar una figura de Torre de Inicio.
 236.chesspiece_yoth_builder
   en: Gilded Knight's Figure
   ko: 금박 나이트 조각상
   app: O
   source: Builder item. Spawns a Gilded Knight chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of a Gilded Knight. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 금박 나이트의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: 金箔ナイトの大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 镀金骑士的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 鍍金騎士的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Statue en marbre d'un Cavalier Doré. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorstatue eines Vergoldeten Springers. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo di un Cavaliere Dorato. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Złoconego Skoczka. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem.
+  desc_pt_BR: Estátua de mármore de um Cavaleiro Dourado. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Позолоченного Коня. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар.
+  desc_es: Estatua de mármol de un Caballo Dorado. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol de un Caballo Dorado. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 237.chesspiece_yoth_sketch
   en: Gilded Knight Figure Sketch
   ko: 금박 나이트 조각상 도면
   app: O
   source: Sketch item. Used at Potter's Wheel to craft a Gilded Knight chesspiece builder. No special stats.
+  desc_en: Sketch used at the Potter's Wheel to craft a Gilded Knight Figure.
+  desc_ko: 도예 물레에서 금박 나이트 조각상을 제작하는 데 사용하는 도면.
+  desc_ja: ろくろで金箔ナイトの彫像を作るためのスケッチ。
+  desc_zh_CN: 在陶轮上制作镀金骑士雕像的草图。
+  desc_zh_TW: 在陶輪上製作鍍金騎士雕像的草圖。
+  desc_fr: Croquis utilisé au tour de potier pour fabriquer une figurine Cavalier Doré.
+  desc_de: Skizze für die Töpferscheibe zur Herstellung einer Vergoldeten-Springer-Figur.
+  desc_it: Schizzo usato al tornio del vasaio per creare una statuetta Cavaliere Dorato.
+  desc_pl: Szkic używany na kole garncarskim do stworzenia figurki Złoconego Skoczka.
+  desc_pt_BR: Esboço usado no torno de oleiro para criar uma Figura de Cavaleiro Dourado.
+  desc_ru: Эскиз для гончарного круга для создания фигурки Позолоченного Коня.
+  desc_es: Boceto para el torno de alfarero para fabricar una figura de Caballo Dorado.
+  desc_es_MX: Boceto para el torno de alfarero para fabricar una figura de Caballo Dorado.
 238.chesspiece_yots_builder
   en: Gilded Depths Worm Figure
   ko: 금박 땅굴벌레 조각상
   app: O
   source: Builder item. Spawns a Gilded Depths Worm chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
+  desc_en: Marble statue of a Gilded Depths Worm. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
+  desc_ko: 금박 땅굴벌레의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ja: 金箔デプスワームの大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
+  desc_zh_CN: 镀金深渊虫的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
+  desc_zh_TW: 鍍金深淵蟲的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
+  desc_fr: Statue en marbre d'un Ver des Profondeurs Doré. Objet lourd (vitesse ×0.15, poids gym 3). Destructible en 1 coup.
+  desc_de: Marmorstatue eines Vergoldeten Tiefenwurms. Schwerer Gegenstand (Tempo ×0,15, Gym-Gewicht 3). In 1 Hammerschlag zerstörbar.
+  desc_it: Statua in marmo del Verme degli Abissi Dorato. Oggetto pesante (velocità ×0.15, peso palestra 3). Distruttibile in 1 colpo.
+  desc_pl: Marmurowy posąg Złoconego Robaka Głębin. Ciężki przedmiot (prędkość ×0.15, waga ćwiczeń 3). Zniszczalny 1 uderzeniem.
+  desc_pt_BR: Estátua de mármore do Verme das Profundezas Dourado. Item pesado (velocidade ×0.15, peso gym 3). Destruível em 1 martelada.
+  desc_ru: Мраморная статуя Позолоченного Червя Глубин. Тяжёлый предмет (скорость ×0,15, вес тренировки 3). Разрушается за 1 удар.
+  desc_es: Estatua de mármol del Gusano de Profundidades Dorado. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
+  desc_es_MX: Estatua de mármol del Gusano de Profundidades Dorado. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 239.chesspiece_yots_sketch
   en: Gilded Depths Worm Figure Sketch
   ko: 금박 땅굴벌레 조각상 도면
   app: O
   source: Sketch item. Used at Potter's Wheel to craft a Gilded Depths Worm chesspiece builder. No special stats.
+  desc_en: Sketch used at the Potter's Wheel to craft a Gilded Depths Worm Figure.
+  desc_ko: 도예 물레에서 금박 땅굴벌레 조각상을 제작하는 데 사용하는 도면.
+  desc_ja: ろくろで金箔デプスワームの彫像を作るためのスケッチ。
+  desc_zh_CN: 在陶轮上制作镀金深渊虫雕像的草图。
+  desc_zh_TW: 在陶輪上製作鍍金深淵蟲雕像的草圖。
+  desc_fr: Croquis utilisé au tour de potier pour fabriquer une figurine Ver des Profondeurs Doré.
+  desc_de: Skizze für die Töpferscheibe zur Herstellung einer Vergoldeten-Tiefenwurm-Figur.
+  desc_it: Schizzo usato al tornio del vasaio per creare una statuetta Verme degli Abissi Dorato.
+  desc_pl: Szkic używany na kole garncarskim do stworzenia figurki Złoconego Robaka Głębin.
+  desc_pt_BR: Esboço usado no torno de oleiro para criar uma Figura do Verme Dourado.
+  desc_ru: Эскиз для гончарного круга для создания фигурки Позолоченного Червя Глубин.
+  desc_es: Boceto para el torno de alfarero para fabricar una figura del Gusano Dorado.
+  desc_es_MX: Boceto para el torno de alfarero para fabricar una figura del Gusano Dorado.
 240.chestupgrade_stacksize
   en: Elastispacer
   ko: 공간신축기
   app: O
   source: Chest upgrade item. Trades into a Scaled Chest to enable infinite stack size. Upgrade type CHEST. Consumed on use.
+  desc_en: Chest upgrade that enables infinite stack size in a Scaled Chest. Consumed on use.
+  desc_ko: 비늘 상자에 무한 겹침을 활성화하는 상자 업그레이드. 사용 시 소모됩니다.
+  desc_ja: 鱗の箱に無限スタックを有効にするチェストアップグレード。使用時に消費。
+  desc_zh_CN: 为鳞片箱启用无限堆叠的箱子升级道具。使用后消耗。
+  desc_zh_TW: 為鱗片箱啟用無限堆疊的箱子升級道具。使用後消耗。
+  desc_fr: Amélioration de coffre activant l'empilement infini dans un Coffre Écaillé. Consommé à l'utilisation.
+  desc_de: Truhenupgrade, das unendliche Stapelgröße in einer Schuppentruhe ermöglicht. Wird beim Gebrauch verbraucht.
+  desc_it: Potenziamento cassa che abilita impilamento infinito in una Cassa Squamata. Consumato all'uso.
+  desc_pl: Ulepszenie skrzyni włączające nieskończone piętrzenie w Łuskowej Skrzyni. Zużywane przy użyciu.
+  desc_pt_BR: Melhoria de baú que permite empilhamento infinito no Baú de Escamas. Consumido ao usar.
+  desc_ru: Улучшение сундука, включающее бесконечный размер стопки в Чешуйчатом Сундуке. Расходуется при использовании.
+  desc_es: Mejora de cofre que permite apilamiento infinito en un Cofre Escamado. Se consume al usar.
+  desc_es_MX: Mejora de cofre que permite apilamiento infinito en un Cofre Escamado. Se consume al usar.
 241.chum
   en: Fish Food
   ko: 물고기 밥
   app: O
   source: Throwable bait. Ocean fish detect it within 16 range. Thrown as projectile (speed 15, gravity -35) onto ocean to create chum area. Weapon damage 10 (unarmed). Stackable, equippable, compostable (green).
+  desc_en: Throwable bait that attracts ocean fish within range 16. Deals 10 damage as a weapon. Stackable and compostable.
+  desc_ko: 반경 16 이내의 바다 물고기를 유인하는 투척용 미끼. 무기로 10 피해. 겹침 및 퇴비화 가능.
+  desc_ja: 範囲16以内の海魚を引き寄せる投擲用エサ。武器として10ダメージ。スタック・堆肥化可能。
+  desc_zh_CN: 投掷诱饵，吸引16范围内的海鱼。武器伤害10。可堆叠，可堆肥。
+  desc_zh_TW: 投擲誘餌，吸引16範圍內的海魚。武器傷害10。可堆疊，可堆肥。
+  desc_fr: Appât lançable attirant les poissons de mer dans un rayon de 16. Inflige 10 dégâts comme arme. Empilable et compostable.
+  desc_de: Werfbarer Köder, der Meeresfische im Radius 16 anlockt. 10 Schaden als Waffe. Stapelbar und kompostierbar.
+  desc_it: Esca lanciabile che attira i pesci marini nel raggio di 16. Infligge 10 danni come arma. Impilabile e compostabile.
+  desc_pl: Przynęta do rzucania, przyciąga ryby morskie w zasięgu 16. Zadaje 10 obrażeń jako broń. Piętrzalna i kompostowalna.
+  desc_pt_BR: Isca arremessável que atrai peixes no raio de 16. Causa 10 de dano como arma. Empilhável e compostável.
+  desc_ru: Метательная наживка, привлекающая морскую рыбу в радиусе 16. Наносит 10 урона как оружие. Складывается и компостируется.
+  desc_es: Cebo lanzable que atrae peces en un radio de 16. Inflige 10 de daño como arma. Apilable y compostable.
+  desc_es_MX: Cebo lanzable que atrae peces en un radio de 16. Inflige 10 de daño como arma. Apilable y compostable.
 242.coldfire
   en: Endothermic Fire
   ko: 흡열 모닥불
   app: O
   source: Structure. Endothermic campfire with max fuel 270s, starts at 135s. 4 fuel sections. Rain drain rate 2.5x precipitation. Accepts chemical fuel. Burns to ash when fuel depleted. Storytelling prop.
+  desc_en: Cooling campfire with max fuel 270s. Accepts chemical fuel. Burns to ash when depleted. Rain drains fuel at 2.5× rate.
+  desc_ko: 최대 연료 270초의 냉각 모닥불. 화학 연료 사용 가능. 연료 소진 시 재로 변환. 비에 2.5배 연료 소모.
+  desc_ja: 最大燃料270秒の冷却キャンプファイヤー。化学燃料使用可。燃料切れで灰化。雨で2.5倍消耗。
+  desc_zh_CN: 最大燃料270秒的降温营火。接受化学燃料。燃尽后变灰。雨天燃料消耗速度×2.5。
+  desc_zh_TW: 最大燃料270秒的降溫營火。接受化學燃料。燃盡後變灰。雨天燃料消耗速度×2.5。
+  desc_fr: Feu de camp refroidissant avec un maximum de 270s de combustible. Accepte le combustible chimique. Se consume en cendres. La pluie draine ×2.5.
+  desc_de: Kühlendes Lagerfeuer mit max. 270s Brennstoff. Akzeptiert chemischen Brennstoff. Verbrennt zu Asche. Regen verbraucht ×2,5.
+  desc_it: Fuoco da campo refrigerante con carburante max 270s. Accetta combustibile chimico. Diventa cenere esaurito. Pioggia consuma ×2.5.
+  desc_pl: Chłodzące ognisko z maks. paliwem 270s. Przyjmuje paliwo chemiczne. Zamienia się w popiół. Deszcz zużywa ×2.5.
+  desc_pt_BR: Fogueira refrigerante com combustível máx. de 270s. Aceita combustível químico. Vira cinzas ao acabar. Chuva drena ×2.5.
+  desc_ru: Охлаждающий костёр с запасом топлива 270с. Принимает химическое топливо. Сгорает в пепел. Дождь расходует ×2,5.
+  desc_es: Fogata enfriadora con combustible máx. de 270s. Acepta combustible químico. Se convierte en cenizas. La lluvia drena ×2.5.
+  desc_es_MX: Fogata enfriadora con combustible máx. de 270s. Acepta combustible químico. Se convierte en cenizas. La lluvia drena ×2.5.
 243.coldfirepit
   en: Endothermic Fire Pit
   ko: 흡열 화덕
   app: O
   source: Structure. Permanent endothermic fire pit with max fuel 360s, starts at 180s. 4 fuel sections, 2x fuel bonus. Rain drain rate 2x precipitation. Accepts chemical fuel. Wildfire-protected. Storytelling prop.
+  desc_en: Permanent cooling fire pit with max fuel 360s and 2× fuel bonus. Rain drains at 2× rate. Wildfire-protected.
+  desc_ko: 최대 연료 360초, 연료 보너스 2배의 영구 냉각 화덕. 비에 2배 연료 소모. 들불 방지.
+  desc_ja: 最大燃料360秒、燃料ボーナス2倍の永久冷却ファイヤーピット。雨で2倍消耗。山火事防止。
+  desc_zh_CN: 永久降温火炉，最大燃料360秒，燃料效率×2。雨天消耗×2。防野火。
+  desc_zh_TW: 永久降溫火爐，最大燃料360秒，燃料效率×2。雨天消耗×2。防野火。
+  desc_fr: Foyer refroidissant permanent avec 360s de combustible max et bonus ×2. La pluie draine ×2. Protégé des feux de forêt.
+  desc_de: Permanente Kühlgrube mit max. 360s Brennstoff und ×2-Bonus. Regen verbraucht ×2. Wildfire-geschützt.
+  desc_it: Braciere refrigerante permanente con carburante max 360s e bonus ×2. Pioggia consuma ×2. Protetto da incendi.
+  desc_pl: Stałe chłodzące palenisko z maks. paliwem 360s i bonusem ×2. Deszcz zużywa ×2. Odporne na pożary.
+  desc_pt_BR: Braseiro refrigerante permanente com combustível máx. 360s e bônus ×2. Chuva drena ×2. Protegido contra incêndios.
+  desc_ru: Постоянный охлаждающий очаг с запасом топлива 360с и бонусом ×2. Дождь расходует ×2. Защита от лесных пожаров.
+  desc_es: Fogón enfriador permanente con combustible máx. 360s y bonificación ×2. La lluvia drena ×2. Protegido contra incendios.
+  desc_es_MX: Fogón enfriador permanente con combustible máx. 360s y bonificación ×2. La lluvia drena ×2. Protegido contra incendios.
 244.compass
   en: Compass
   ko: 나침반
   app: O
   source: Hand slot. Fuel lasts 1200s (4 days) while equipped. Reveals map for bearer. Weapon damage 10 (unarmed), each attack drains 30% of max fuel. Destroyed when fuel depleted.
+  desc_en: Hand-slot item that reveals the map. Fuel lasts 1200s (4 days). Each attack drains 30% fuel. Destroyed when depleted.
+  desc_ko: 지도를 공개하는 손 슬롯 아이템. 연료 1200초(4일). 공격마다 연료 30% 소모. 소진 시 파괴.
+  desc_ja: 地図を表示するハンドスロットアイテム。燃料1200秒（4日間）。攻撃ごとに燃料30%消耗。消耗で破壊。
+  desc_zh_CN: 揭示地图的手持物品。燃料持续1200秒（4天）。每次攻击消耗30%燃料。耗尽后损毁。
+  desc_zh_TW: 揭示地圖的手持物品。燃料持續1200秒（4天）。每次攻擊消耗30%燃料。耗盡後損毀。
+  desc_fr: Objet main révélant la carte. Le combustible dure 1200s (4 jours). Chaque attaque draine 30 % du combustible. Détruit quand épuisé.
+  desc_de: Handslot-Gegenstand, der die Karte aufdeckt. Brennstoff hält 1200s (4 Tage). Jeder Angriff verbraucht 30 % Brennstoff. Zerstört bei Erschöpfung.
+  desc_it: Oggetto mano che rivela la mappa. Carburante 1200s (4 giorni). Ogni attacco drena il 30% del carburante. Distrutto se esaurito.
+  desc_pl: Przedmiot ręczny ujawniający mapę. Paliwo starczy na 1200s (4 dni). Każdy atak zużywa 30% paliwa. Zniszczony po wyczerpaniu.
+  desc_pt_BR: Item de mão que revela o mapa. Combustível dura 1200s (4 dias). Cada ataque drena 30% do combustível. Destruído ao esgotar.
+  desc_ru: Предмет для руки, раскрывающий карту. Топливо на 1200с (4 дня). Каждая атака расходует 30% топлива. Разрушается при исчерпании.
+  desc_es: Objeto de mano que revela el mapa. Combustible dura 1200s (4 días). Cada ataque drena el 30 %. Se destruye al agotarse.
+  desc_es_MX: Objeto de mano que revela el mapa. Combustible dura 1200s (4 días). Cada ataque drena el 30 %. Se destruye al agotarse.
 245.compostingbin
   en: Composting Bin
   ko: 퇴비통
   app: O
   source: Structure. Accepts green/brown compostable items. Composting cycle 240-480s (0.8-1.6 days) depending on fill ratio. Turning compost speeds by 0.7x. Produces compost (up to 4 on ground). Burnable.
+  desc_en: Structure that converts green/brown compostable items into compost. Cycle takes 0.8–1.6 days. Turning speeds composting by 0.7×.
+  desc_ko: 녹색/갈색 퇴비 재료를 퇴비로 변환하는 구조물. 주기 0.8~1.6일. 뒤집기로 속도 0.7배 단축.
+  desc_ja: 緑/茶色のコンポスト素材を堆肥に変換する構造物。サイクル0.8〜1.6日。かき混ぜで0.7倍加速。
+  desc_zh_CN: 将绿色/棕色可堆肥物品转化为堆肥的建筑。周期0.8–1.6天。翻动加速0.7倍。
+  desc_zh_TW: 將綠色/棕色可堆肥物品轉化為堆肥的建築。週期0.8–1.6天。翻動加速0.7倍。
+  desc_fr: Structure convertissant les déchets verts/bruns en compost. Cycle de 0.8 à 1.6 jours. Retourner accélère de ×0.7.
+  desc_de: Struktur, die grüne/braune kompostierbare Gegenstände in Kompost umwandelt. Zyklus 0,8–1,6 Tage. Wenden beschleunigt um ×0,7.
+  desc_it: Struttura che converte oggetti compostabili verdi/marroni in compost. Ciclo 0.8–1.6 giorni. Girare accelera di ×0.7.
+  desc_pl: Konstrukcja zamieniająca zielone/brązowe odpady w kompost. Cykl 0.8–1.6 dnia. Przerzucanie przyspiesza o ×0.7.
+  desc_pt_BR: Estrutura que converte itens compostáveis verdes/marrons em composto. Ciclo de 0.8–1.6 dias. Virar acelera em ×0.7.
+  desc_ru: Постройка, превращающая зелёные/коричневые компостируемые предметы в компост. Цикл 0,8–1,6 дня. Перемешивание ускоряет в ×0,7.
+  desc_es: Estructura que convierte residuos verdes/marrones en compost. Ciclo de 0.8–1.6 días. Voltear acelera ×0.7.
+  desc_es_MX: Estructura que convierte residuos verdes/marrones en compost. Ciclo de 0.8–1.6 días. Voltear acelera ×0.7.
 246.compostwrap
   en: Compost Wrap
   ko: 퇴비쌈
   app: O
   source: Fertilizer. Restores 1800s (6 days) of soil fertility, 20 soil cycles, 2 withered cycles. Nutrients {24, 32, 24}. Also fuel (large). Heals Wormwood over time as debuff. Attracts flies when dropped.
+  desc_en: Fertilizer restoring 6 days of soil fertility and 20 soil cycles. Nutrients: 24/32/24. Heals Wormwood over time.
+  desc_ko: 토양 비옥도 6일, 토양 주기 20회를 복원하는 비료. 영양소: 24/32/24. 웜우드를 서서히 치유.
+  desc_ja: 土壌肥沃度6日分と土壌サイクル20回を回復する肥料。栄養素: 24/32/24。ウォームウッドを徐々に回復。
+  desc_zh_CN: 恢复6天土壤肥力和20个土壤周期的肥料。养分：24/32/24。持续治疗虫木。
+  desc_zh_TW: 恢復6天土壤肥力和20個土壤週期的肥料。養分：24/32/24。持續治療蟲木。
+  desc_fr: Engrais restaurant 6 jours de fertilité et 20 cycles de sol. Nutriments : 24/32/24. Soigne Wormwood progressivement.
+  desc_de: Dünger, der 6 Tage Bodenfruchtbarkeit und 20 Bodenzyklen wiederherstellt. Nährstoffe: 24/32/24. Heilt Wormwood über Zeit.
+  desc_it: Fertilizzante che ripristina 6 giorni di fertilità e 20 cicli del suolo. Nutrienti: 24/32/24. Cura Wormwood nel tempo.
+  desc_pl: Nawóz przywracający 6 dni żyzności gleby i 20 cykli. Składniki: 24/32/24. Leczy Wormwooda z czasem.
+  desc_pt_BR: Fertilizante que restaura 6 dias de fertilidade e 20 ciclos de solo. Nutrientes: 24/32/24. Cura Wormwood ao longo do tempo.
+  desc_ru: Удобрение, восстанавливающее 6 дней плодородия и 20 циклов почвы. Питательные вещества: 24/32/24. Лечит Вормвуда со временем.
+  desc_es: Fertilizante que restaura 6 días de fertilidad y 20 ciclos de suelo. Nutrientes: 24/32/24. Cura a Wormwood gradualmente.
+  desc_es_MX: Fertilizante que restaura 6 días de fertilidad y 20 ciclos de suelo. Nutrientes: 24/32/24. Cura a Wormwood gradualmente.
 247.cookbook
   en: Cookbook
   ko: 요리책
   app: O
   source: Readable item. Opens the Cookbook UI popup when read. No combat stats. Fuel value medium. Burnable. Can be stored in book cabinets.
+  desc_en: Readable item that opens the Cookbook UI when used. Can be stored in book cabinets. Burnable.
+  desc_ko: 사용하면 요리책 UI를 여는 읽기 아이템. 책장에 보관 가능. 연소 가능.
+  desc_ja: 使用するとクックブックUIを開く読み物。本棚に収納可能。燃焼可能。
+  desc_zh_CN: 使用后打开食谱界面的可读物品。可存放在书柜中。可燃。
+  desc_zh_TW: 使用後打開食譜介面的可讀物品。可存放在書櫃中。可燃。
+  desc_fr: Objet lisible qui ouvre l'interface du Livre de Cuisine. Stockable en bibliothèque. Inflammable.
+  desc_de: Lesbarer Gegenstand, der die Kochbuch-Oberfläche öffnet. Kann in Bücherschränken gelagert werden. Brennbar.
+  desc_it: Oggetto leggibile che apre l'interfaccia Ricettario. Conservabile negli scaffali per libri. Combustibile.
+  desc_pl: Czytelny przedmiot otwierający interfejs Książki Kucharskiej. Można przechowywać w szafkach na książki. Palny.
+  desc_pt_BR: Item legível que abre a interface do Livro de Receitas. Armazenável em estantes. Inflamável.
+  desc_ru: Читаемый предмет, открывающий интерфейс Кулинарной Книги. Хранится в книжных шкафах. Горючий.
+  desc_es: Objeto legible que abre la interfaz del Libro de Cocina. Se guarda en estanterías. Inflamable.
+  desc_es_MX: Objeto legible que abre la interfaz del Libro de Cocina. Se guarda en estanterías. Inflamable.
 248.cookiecutterhat
   en: Cookie Cutter Cap
   ko: 과자틀소라 모자
   app: O
   source: Hat. Armor: 525 HP (150*5*0.7), 70% absorption. Waterproof 35%. No insulation or dapperness.
+  desc_en: Hat with 525 HP armor at 70% absorption. Waterproof 35%. No insulation or sanity effect.
+  desc_ko: 방어력 525 HP, 흡수율 70%의 모자. 방수 35%. 단열 및 정신력 효과 없음.
+  desc_ja: アーマー525HP・吸収率70%の帽子。防水35%。断熱・正気度効果なし。
+  desc_zh_CN: 525生命护甲、70%吸收的帽子。防水35%。无保温或理智效果。
+  desc_zh_TW: 525生命護甲、70%吸收的帽子。防水35%。無保溫或理智效果。
+  desc_fr: Chapeau avec 525 PV d'armure à 70 % d'absorption. Imperméable 35 %. Aucune isolation ni effet de santé mentale.
+  desc_de: Hut mit 525 LP Rüstung bei 70 % Absorption. 35 % wasserdicht. Keine Isolierung oder Zurechnungsfähigkeitseffekte.
+  desc_it: Cappello con 525 PV di armatura al 70% di assorbimento. Impermeabile 35%. Nessun isolamento o effetto sanità mentale.
+  desc_pl: Kapelusz z 525 PŻ pancerza i 70% absorpcji. Wodoodporność 35%. Brak izolacji i efektów zdrowia psychicznego.
+  desc_pt_BR: Chapéu com 525 HP de armadura a 70% de absorção. Impermeável 35%. Sem isolamento ou efeito de sanidade.
+  desc_ru: Шляпа с бронёй 525 ОЗ и поглощением 70%. Водонепроницаемость 35%. Без изоляции и эффектов рассудка.
+  desc_es: Sombrero con 525 HP de armadura al 70 % de absorción. Impermeable 35 %. Sin aislamiento ni efecto de cordura.
+  desc_es_MX: Sombrero con 525 HP de armadura al 70 % de absorción. Impermeable 35 %. Sin aislamiento ni efecto de cordura.
 249.cookpot
   en: Crock Pot
   ko: 요리솥
   app: O
   source: Structure. Standard Crock Pot — 4-slot cooking station. Cooks recipes from the cookpot recipe list. Shows light while cooking. Burnable. Hammerable in 4 hits.
+  desc_en: Standard 4-slot cooking station. Cooks recipes from the cookpot list. Emits light while cooking. Hammerable in 4 hits.
+  desc_ko: 표준 4칸 조리 시설. 요리솥 레시피 목록에서 요리 가능. 조리 중 빛을 방출. 망치 4회로 파괴.
+  desc_ja: 標準4スロット調理台。クロックポットレシピリストから調理。調理中に発光。ハンマー4回で破壊。
+  desc_zh_CN: 标准4格烹饪台。可烹饪锅食谱。烹饪时发光。4次锤击可破坏。
+  desc_zh_TW: 標準4格烹飪台。可烹飪鍋食譜。烹飪時發光。4次錘擊可破壞。
+  desc_fr: Station de cuisson standard à 4 emplacements. Cuisine les recettes de la marmite. Émet de la lumière en cuisant. Destructible en 4 coups.
+  desc_de: Standard-Kochstation mit 4 Plätzen. Kocht Rezepte aus der Topfliste. Leuchtet beim Kochen. In 4 Hammerschlägen zerstörbar.
+  desc_it: Stazione di cottura standard a 4 slot. Cucina ricette dalla lista pentola. Emette luce durante la cottura. 4 colpi di martello.
+  desc_pl: Standardowa stacja do gotowania z 4 slotami. Gotuje przepisy z listy garnka. Świeci podczas gotowania. Zniszczalne 4 uderzeniami.
+  desc_pt_BR: Estação de cozimento padrão de 4 slots. Cozinha receitas da lista do caldeirão. Emite luz ao cozinhar. Destruível em 4 marteladas.
+  desc_ru: Стандартная кухонная станция на 4 слота. Готовит рецепты из списка котла. Светится при готовке. Разрушается за 4 удара молотом.
+  desc_es: Estación de cocción estándar con 4 ranuras. Cocina recetas de la lista de la olla. Emite luz al cocinar. Destruible en 4 martillazos.
+  desc_es_MX: Estación de cocción estándar con 4 ranuras. Cocina recetas de la lista de la olla. Emite luz al cocinar. Destruible en 4 martillazos.
 250.costume_blacksmith_body
   en: Blacksmith Costume
   ko: 대장장이 의상
   app: X
   type: deconstruct
   source: Body slot costume. Purely cosmetic, no armor or stats. Burnable.
+  desc_en: Purely cosmetic body-slot costume. No armor or stats. Burnable.
+  desc_ko: 순전히 장식용인 몸통 슬롯 의상. 방어력이나 능력치 없음. 연소 가능.
+  desc_ja: 純粋に装飾用のボディスロットコスチューム。アーマーやステータスなし。燃焼可能。
+  desc_zh_CN: 纯装饰性身体槽服装。无护甲或属性。可燃。
+  desc_zh_TW: 純裝飾性身體槽服裝。無護甲或屬性。可燃。
+  desc_fr: Costume purement cosmétique pour le slot corps. Aucune armure ni statistique. Inflammable.
+  desc_de: Rein kosmetisches Körperslot-Kostüm. Keine Rüstung oder Werte. Brennbar.
+  desc_it: Costume puramente estetico per slot corpo. Nessuna armatura o statistiche. Combustibile.
+  desc_pl: Czysto kosmetyczny kostium na slot ciała. Brak pancerza i statystyk. Palny.
+  desc_pt_BR: Fantasia puramente cosmética para slot de corpo. Sem armadura ou atributos. Inflamável.
+  desc_ru: Чисто косметический костюм для слота тела. Без брони и характеристик. Горючий.
+  desc_es: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
+  desc_es_MX: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
 251.costume_doll_body
   en: Doll Costume
   ko: 인형 의상
   app: X
   type: deconstruct
   source: Body slot costume. Purely cosmetic, no armor or stats. Burnable.
+  desc_en: Purely cosmetic body-slot costume. No armor or stats. Burnable.
+  desc_ko: 순전히 장식용인 몸통 슬롯 의상. 방어력이나 능력치 없음. 연소 가능.
+  desc_ja: 純粋に装飾用のボディスロットコスチューム。アーマーやステータスなし。燃焼可能。
+  desc_zh_CN: 纯装饰性身体槽服装。无护甲或属性。可燃。
+  desc_zh_TW: 純裝飾性身體槽服裝。無護甲或屬性。可燃。
+  desc_fr: Costume purement cosmétique pour le slot corps. Aucune armure ni statistique. Inflammable.
+  desc_de: Rein kosmetisches Körperslot-Kostüm. Keine Rüstung oder Werte. Brennbar.
+  desc_it: Costume puramente estetico per slot corpo. Nessuna armatura o statistiche. Combustibile.
+  desc_pl: Czysto kosmetyczny kostium na slot ciała. Brak pancerza i statystyk. Palny.
+  desc_pt_BR: Fantasia puramente cosmética para slot de corpo. Sem armadura ou atributos. Inflamável.
+  desc_ru: Чисто косметический костюм для слота тела. Без брони и характеристик. Горючий.
+  desc_es: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
+  desc_es_MX: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
 252.costume_fool_body
   en: Fool Costume
   ko: 어릿광대 의상
   app: X
   type: deconstruct
   source: Body slot costume. Purely cosmetic, no armor or stats. Burnable.
+  desc_en: Purely cosmetic body-slot costume. No armor or stats. Burnable.
+  desc_ko: 순전히 장식용인 몸통 슬롯 의상. 방어력이나 능력치 없음. 연소 가능.
+  desc_ja: 純粋に装飾用のボディスロットコスチューム。アーマーやステータスなし。燃焼可能。
+  desc_zh_CN: 纯装饰性身体槽服装。无护甲或属性。可燃。
+  desc_zh_TW: 純裝飾性身體槽服裝。無護甲或屬性。可燃。
+  desc_fr: Costume purement cosmétique pour le slot corps. Aucune armure ni statistique. Inflammable.
+  desc_de: Rein kosmetisches Körperslot-Kostüm. Keine Rüstung oder Werte. Brennbar.
+  desc_it: Costume puramente estetico per slot corpo. Nessuna armatura o statistiche. Combustibile.
+  desc_pl: Czysto kosmetyczny kostium na slot ciała. Brak pancerza i statystyk. Palny.
+  desc_pt_BR: Fantasia puramente cosmética para slot de corpo. Sem armadura ou atributos. Inflamável.
+  desc_ru: Чисто косметический костюм для слота тела. Без брони и характеристик. Горючий.
+  desc_es: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
+  desc_es_MX: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
 253.costume_king_body
   en: King Costume
   ko: 왕 의상
   app: X
   type: deconstruct
   source: Body slot costume. Purely cosmetic, no armor or stats. Burnable.
+  desc_en: Purely cosmetic body-slot costume. No armor or stats. Burnable.
+  desc_ko: 순전히 장식용인 몸통 슬롯 의상. 방어력이나 능력치 없음. 연소 가능.
+  desc_ja: 純粋に装飾用のボディスロットコスチューム。アーマーやステータスなし。燃焼可能。
+  desc_zh_CN: 纯装饰性身体槽服装。无护甲或属性。可燃。
+  desc_zh_TW: 純裝飾性身體槽服裝。無護甲或屬性。可燃。
+  desc_fr: Costume purement cosmétique pour le slot corps. Aucune armure ni statistique. Inflammable.
+  desc_de: Rein kosmetisches Körperslot-Kostüm. Keine Rüstung oder Werte. Brennbar.
+  desc_it: Costume puramente estetico per slot corpo. Nessuna armatura o statistiche. Combustibile.
+  desc_pl: Czysto kosmetyczny kostium na slot ciała. Brak pancerza i statystyk. Palny.
+  desc_pt_BR: Fantasia puramente cosmética para slot de corpo. Sem armadura ou atributos. Inflamável.
+  desc_ru: Чисто косметический костюм для слота тела. Без брони и характеристик. Горючий.
+  desc_es: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
+  desc_es_MX: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
 254.costume_mirror_body
   en: Mirror Costume
   ko: 거울 의상
   app: X
   type: deconstruct
   source: Body slot costume. Purely cosmetic, no armor or stats. Burnable.
+  desc_en: Purely cosmetic body-slot costume. No armor or stats. Burnable.
+  desc_ko: 순전히 장식용인 몸통 슬롯 의상. 방어력이나 능력치 없음. 연소 가능.
+  desc_ja: 純粋に装飾用のボディスロットコスチューム。アーマーやステータスなし。燃焼可能。
+  desc_zh_CN: 纯装饰性身体槽服装。无护甲或属性。可燃。
+  desc_zh_TW: 純裝飾性身體槽服裝。無護甲或屬性。可燃。
+  desc_fr: Costume purement cosmétique pour le slot corps. Aucune armure ni statistique. Inflammable.
+  desc_de: Rein kosmetisches Körperslot-Kostüm. Keine Rüstung oder Werte. Brennbar.
+  desc_it: Costume puramente estetico per slot corpo. Nessuna armatura o statistiche. Combustibile.
+  desc_pl: Czysto kosmetyczny kostium na slot ciała. Brak pancerza i statystyk. Palny.
+  desc_pt_BR: Fantasia puramente cosmética para slot de corpo. Sem armadura ou atributos. Inflamável.
+  desc_ru: Чисто косметический костюм для слота тела. Без брони и характеристик. Горючий.
+  desc_es: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
+  desc_es_MX: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
 255.costume_princess_body
   en: Princess Costume
   ko: 공주 의상
   app: X
   type: deconstruct
   source: Body slot costume with armor. Armor: 105 HP (150*1*0.7), 60% absorption. Metal/hard armor tags. Not burnable. Part of YOTH_PRINCESS set bonus (grants "unluckysource" tag when set enabled).
+  desc_en: Body-slot costume with 105 HP armor at 60% absorption. Metal/hard armor. Part of YOTH_PRINCESS set bonus. Not burnable.
+  desc_ko: 방어력 105 HP, 흡수율 60%의 몸통 의상. 금속/경질 방어구. YOTH_PRINCESS 세트 보너스. 연소 불가.
+  desc_ja: アーマー105HP・吸収率60%のボディスロットコスチューム。金属/硬質装甲。YOTH_PRINCESSセットボーナス。燃焼不可。
+  desc_zh_CN: 105生命护甲、60%吸收的身体槽服装。金属/硬质护甲。YOTH_PRINCESS套装加成。不可燃。
+  desc_zh_TW: 105生命護甲、60%吸收的身體槽服裝。金屬/硬質護甲。YOTH_PRINCESS套裝加成。不可燃。
+  desc_fr: Costume corps avec 105 PV d'armure à 60 % d'absorption. Armure métal/dur. Bonus d'ensemble YOTH_PRINCESS. Ininflammable.
+  desc_de: Körperkostüm mit 105 LP Rüstung bei 60 % Absorption. Metall-/Hartrüstung. YOTH_PRINCESS-Set-Bonus. Nicht brennbar.
+  desc_it: Costume corpo con 105 PV armatura al 60% di assorbimento. Armatura metallica/dura. Bonus set YOTH_PRINCESS. Non combustibile.
+  desc_pl: Kostium na ciało z 105 PŻ pancerza i 60% absorpcji. Pancerz metalowy/twardy. Bonus zestawu YOTH_PRINCESS. Niepalny.
+  desc_pt_BR: Fantasia de corpo com 105 HP de armadura a 60% de absorção. Armadura metálica/rígida. Bônus do conjunto YOTH_PRINCESS. Não inflamável.
+  desc_ru: Костюм для тела с бронёй 105 ОЗ и поглощением 60%. Металл/твёрдая броня. Бонус набора YOTH_PRINCESS. Негорючий.
+  desc_es: Disfraz de cuerpo con 105 HP de armadura al 60 % de absorción. Armadura metálica/dura. Bonificación YOTH_PRINCESS. No inflamable.
+  desc_es_MX: Disfraz de cuerpo con 105 HP de armadura al 60 % de absorción. Armadura metálica/dura. Bonificación YOTH_PRINCESS. No inflamable.
 256.costume_queen_body
   en: Queen Costume
   ko: 여왕 의상
   app: X
   type: deconstruct
   source: Body slot costume. Purely cosmetic, no armor or stats. Burnable.
+  desc_en: Purely cosmetic body-slot costume. No armor or stats. Burnable.
+  desc_ko: 순전히 장식용인 몸통 슬롯 의상. 방어력이나 능력치 없음. 연소 가능.
+  desc_ja: 純粋に装飾用のボディスロットコスチューム。アーマーやステータスなし。燃焼可能。
+  desc_zh_CN: 纯装饰性身体槽服装。无护甲或属性。可燃。
+  desc_zh_TW: 純裝飾性身體槽服裝。無護甲或屬性。可燃。
+  desc_fr: Costume purement cosmétique pour le slot corps. Aucune armure ni statistique. Inflammable.
+  desc_de: Rein kosmetisches Körperslot-Kostüm. Keine Rüstung oder Werte. Brennbar.
+  desc_it: Costume puramente estetico per slot corpo. Nessuna armatura o statistiche. Combustibile.
+  desc_pl: Czysto kosmetyczny kostium na slot ciała. Brak pancerza i statystyk. Palny.
+  desc_pt_BR: Fantasia puramente cosmética para slot de corpo. Sem armadura ou atributos. Inflamável.
+  desc_ru: Чисто косметический костюм для слота тела. Без брони и характеристик. Горючий.
+  desc_es: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
+  desc_es_MX: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
 257.costume_tree_body
   en: Tree Costume
   ko: 나무 의상
   app: X
   type: deconstruct
   source: Body slot costume. Purely cosmetic, no armor or stats. Burnable.
+  desc_en: Purely cosmetic body-slot costume. No armor or stats. Burnable.
+  desc_ko: 순전히 장식용인 몸통 슬롯 의상. 방어력이나 능력치 없음. 연소 가능.
+  desc_ja: 純粋に装飾用のボディスロットコスチューム。アーマーやステータスなし。燃焼可能。
+  desc_zh_CN: 纯装饰性身体槽服装。无护甲或属性。可燃。
+  desc_zh_TW: 純裝飾性身體槽服裝。無護甲或屬性。可燃。
+  desc_fr: Costume purement cosmétique pour le slot corps. Aucune armure ni statistique. Inflammable.
+  desc_de: Rein kosmetisches Körperslot-Kostüm. Keine Rüstung oder Werte. Brennbar.
+  desc_it: Costume puramente estetico per slot corpo. Nessuna armatura o statistiche. Combustibile.
+  desc_pl: Czysto kosmetyczny kostium na slot ciała. Brak pancerza i statystyk. Palny.
+  desc_pt_BR: Fantasia puramente cosmética para slot de corpo. Sem armadura ou atributos. Inflamável.
+  desc_ru: Чисто косметический костюм для слота тела. Без брони и характеристик. Горючий.
+  desc_es: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
+  desc_es_MX: Disfraz puramente cosmético para ranura de cuerpo. Sin armadura ni estadísticas. Inflamable.
 258.cotl_tabernacle_level1
   en: Humble Lamb Idol
   ko: 초라한 양 우상
   app: O
   source: Structure. Fire pit (campfire tag, cooker). Max fuel 120s (0.25 day), 1 section, rain rate 2x. Sanity aura +50/day when lit. Upgradable via construction to level 2. Wildfire-protected.
+  desc_en: Fire pit structure with sanity aura +50/day when lit. Max fuel 120s. Upgradable to level 2. Wildfire-protected.
+  desc_ko: 점화 시 정신력 +50/일 오라를 제공하는 화덕 구조물. 최대 연료 120초. 레벨 2로 업그레이드 가능. 들불 방지.
+  desc_ja: 点火時に正気度+50/日のオーラを持つファイヤーピット。最大燃料120秒。レベル2にアップグレード可能。山火事防止。
+  desc_zh_CN: 点燃时提供+50/天理智光环的火炉。最大燃料120秒。可升级至2级。防野火。
+  desc_zh_TW: 點燃時提供+50/天理智光環的火爐。最大燃料120秒。可升級至2級。防野火。
+  desc_fr: Foyer avec aura de santé mentale +50/jour allumé. Combustible max 120s. Améliorable au niveau 2. Anti-feux de forêt.
+  desc_de: Feuerstelle mit Zurechnungsfähigkeits-Aura +50/Tag bei Betrieb. Max. Brennstoff 120s. Auf Stufe 2 aufrüstbar. Wildfire-geschützt.
+  desc_it: Braciere con aura sanità mentale +50/giorno acceso. Carburante max 120s. Potenziabile al livello 2. Protetto da incendi.
+  desc_pl: Palenisko z aurą zdrowia psychicznego +50/dzień gdy zapalone. Maks. paliwo 120s. Ulepszalne do poziomu 2. Odporne na pożary.
+  desc_pt_BR: Fogueira com aura de sanidade +50/dia quando acesa. Combustível máx. 120s. Atualizável para nível 2. Protegida contra incêndios.
+  desc_ru: Очаг с аурой рассудка +50/день при горении. Макс. топливо 120с. Улучшается до уровня 2. Защита от лесных пожаров.
+  desc_es: Fogón con aura de cordura +50/día encendido. Combustible máx. 120s. Mejorable al nivel 2. Protegido contra incendios.
+  desc_es_MX: Fogón con aura de cordura +50/día encendido. Combustible máx. 120s. Mejorable al nivel 2. Protegido contra incendios.
 259.cotl_tabernacle_level2
   en: Improved Lamb Idol
   ko: 개선된 양 우상
   app: X
   type: deconstruct
   source: Structure. Fire pit (campfire tag, cooker). Max fuel 240s (0.5 day), 2 sections, rain rate 2x. Sanity aura +80/day when lit. Upgradable via construction to level 3. Wildfire-protected.
+  desc_en: Fire pit structure with sanity aura +80/day when lit. Max fuel 240s. Upgradable to level 3. Wildfire-protected.
+  desc_ko: 점화 시 정신력 +80/일 오라를 제공하는 화덕 구조물. 최대 연료 240초. 레벨 3으로 업그레이드 가능. 들불 방지.
+  desc_ja: 点火時に正気度+80/日のオーラを持つファイヤーピット。最大燃料240秒。レベル3にアップグレード可能。山火事防止。
+  desc_zh_CN: 点燃时提供+80/天理智光环的火炉。最大燃料240秒。可升级至3级。防野火。
+  desc_zh_TW: 點燃時提供+80/天理智光環的火爐。最大燃料240秒。可升級至3級。防野火。
+  desc_fr: Foyer avec aura de santé mentale +80/jour allumé. Combustible max 240s. Améliorable au niveau 3. Anti-feux de forêt.
+  desc_de: Feuerstelle mit Zurechnungsfähigkeits-Aura +80/Tag bei Betrieb. Max. Brennstoff 240s. Auf Stufe 3 aufrüstbar. Wildfire-geschützt.
+  desc_it: Braciere con aura sanità mentale +80/giorno acceso. Carburante max 240s. Potenziabile al livello 3. Protetto da incendi.
+  desc_pl: Palenisko z aurą zdrowia psychicznego +80/dzień gdy zapalone. Maks. paliwo 240s. Ulepszalne do poziomu 3. Odporne na pożary.
+  desc_pt_BR: Fogueira com aura de sanidade +80/dia quando acesa. Combustível máx. 240s. Atualizável para nível 3. Protegida contra incêndios.
+  desc_ru: Очаг с аурой рассудка +80/день при горении. Макс. топливо 240с. Улучшается до уровня 3. Защита от лесных пожаров.
+  desc_es: Fogón con aura de cordura +80/día encendido. Combustible máx. 240s. Mejorable al nivel 3. Protegido contra incendios.
+  desc_es_MX: Fogón con aura de cordura +80/día encendido. Combustible máx. 240s. Mejorable al nivel 3. Protegido contra incendios.
 260.cotl_tabernacle_level3
   en: Immaculate Lamb Idol
   ko: 완전무결한 양 우상
   app: X
   type: deconstruct
   source: Structure. Fire pit (campfire tag, cooker). Max fuel 480s (1 day), 3 sections, rain rate 2x. Sanity aura +200/day when lit. Drops charcoal when fuel maxed then runs out. Wildfire-protected.
+  desc_en: Fire pit structure with sanity aura +200/day when lit. Max fuel 480s (1 day). Drops charcoal when fuel cycle completes. Wildfire-protected.
+  desc_ko: 점화 시 정신력 +200/일 오라를 제공하는 화덕 구조물. 최대 연료 480초(1일). 연료 주기 완료 시 숯을 드롭. 들불 방지.
+  desc_ja: 点火時に正気度+200/日のオーラを持つファイヤーピット。最大燃料480秒（1日）。燃料サイクル完了時に木炭をドロップ。山火事防止。
+  desc_zh_CN: 点燃时提供+200/天理智光环的火炉。最大燃料480秒（1天）。燃料循环完成时掉落木炭。防野火。
+  desc_zh_TW: 點燃時提供+200/天理智光環的火爐。最大燃料480秒（1天）。燃料循環完成時掉落木炭。防野火。
+  desc_fr: Foyer avec aura de santé mentale +200/jour allumé. Combustible max 480s (1 jour). Produit du charbon en fin de cycle. Anti-feux de forêt.
+  desc_de: Feuerstelle mit Zurechnungsfähigkeits-Aura +200/Tag bei Betrieb. Max. Brennstoff 480s (1 Tag). Lässt Kohle fallen nach Zyklus. Wildfire-geschützt.
+  desc_it: Braciere con aura sanità mentale +200/giorno acceso. Carburante max 480s (1 giorno). Rilascia carbone a fine ciclo. Protetto da incendi.
+  desc_pl: Palenisko z aurą zdrowia psychicznego +200/dzień gdy zapalone. Maks. paliwo 480s (1 dzień). Upuszcza węgiel po cyklu. Odporne na pożary.
+  desc_pt_BR: Fogueira com aura de sanidade +200/dia quando acesa. Combustível máx. 480s (1 dia). Derruba carvão ao completar ciclo. Protegida contra incêndios.
+  desc_ru: Очаг с аурой рассудка +200/день при горении. Макс. топливо 480с (1 день). Роняет уголь после цикла. Защита от лесных пожаров.
+  desc_es: Fogón con aura de cordura +200/día encendido. Combustible máx. 480s (1 día). Suelta carbón al completar ciclo. Protegido contra incendios.
+  desc_es_MX: Fogón con aura de cordura +200/día encendido. Combustible máx. 480s (1 día). Suelta carbón al completar ciclo. Protegido contra incendios.
 261.critter_dragonling_builder
   en: Broodling
   ko: 브루들링
   app: O
   source: Builder item. Spawns a Broodling critter pet at the Rock Den. Critters follow their owner, need periodic feeding (perishable hunger), and have personality traits affecting hunger timing.
+  desc_en: Spawns a Broodling critter pet at the Rock Den. Follows owner and needs periodic feeding.
+  desc_ko: 바위 은신처에서 브루들링 펫을 소환합니다. 주인을 따라다니며 주기적 먹이가 필요.
+  desc_ja: ロックデンでブルードリングのクリッターペットを召喚。オーナーに付き従い、定期的な給餌が必要。
+  desc_zh_CN: 在岩石窝召唤幼龙宠物。跟随主人，需定期喂食。
+  desc_zh_TW: 在岩石窩召喚幼龍寵物。跟隨主人，需定期餵食。
+  desc_fr: Fait apparaître un compagnon Couvée au Repaire de Pierre. Suit son maître et nécessite une alimentation régulière.
+  desc_de: Spawnt ein Brütling-Haustier in der Steinhöhle. Folgt dem Besitzer und braucht regelmäßige Fütterung.
+  desc_it: Evoca un cucciolo Nidiata alla Tana di Pietra. Segue il padrone e richiede alimentazione periodica.
+  desc_pl: Przywołuje pupila Podrzutka w Kamiennym Legowisku. Podąża za właścicielem i wymaga regularnego karmienia.
+  desc_pt_BR: Gera um bichinho Filhote de Dragão na Toca de Pedra. Segue o dono e precisa ser alimentado periodicamente.
+  desc_ru: Призывает питомца Птенчика в Каменном Логове. Следует за хозяином и требует периодического кормления.
+  desc_es: Genera una mascota Cría de Dragón en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
+  desc_es_MX: Genera una mascota Cría de Dragón en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
 262.critter_eyeofterror_builder
   en: Friendly Peeper
   ko: 착한 눈깔이
   app: O
   source: Builder item. Spawns a Friendly Peeper critter pet at the Rock Den. Critters follow their owner, need periodic feeding (perishable hunger), and have personality traits affecting hunger timing.
+  desc_en: Spawns a Friendly Peeper critter pet at the Rock Den. Follows owner and needs periodic feeding.
+  desc_ko: 바위 은신처에서 착한 눈깔이 펫을 소환합니다. 주인을 따라다니며 주기적 먹이가 필요.
+  desc_ja: ロックデンでフレンドリーピーパーのクリッターペットを召喚。オーナーに付き従い、定期的な給餌が必要。
+  desc_zh_CN: 在岩石窝召唤友善窥视者宠物。跟随主人，需定期喂食。
+  desc_zh_TW: 在岩石窩召喚友善窺視者寵物。跟隨主人，需定期餵食。
+  desc_fr: Fait apparaître un compagnon Observateur Amical au Repaire de Pierre. Suit son maître et nécessite une alimentation régulière.
+  desc_de: Spawnt ein Freundlicher Gucker-Haustier in der Steinhöhle. Folgt dem Besitzer und braucht regelmäßige Fütterung.
+  desc_it: Evoca un cucciolo Sbirciatore Amichevole alla Tana di Pietra. Segue il padrone e richiede alimentazione periodica.
+  desc_pl: Przywołuje pupila Przyjaznego Podglądacza w Kamiennym Legowisku. Podąża za właścicielem i wymaga regularnego karmienia.
+  desc_pt_BR: Gera um bichinho Espiãozinho Amigável na Toca de Pedra. Segue o dono e precisa ser alimentado periodicamente.
+  desc_ru: Призывает питомца Дружелюбного Глазика в Каменном Логове. Следует за хозяином и требует периодического кормления.
+  desc_es: Genera una mascota Espía Amigable en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
+  desc_es_MX: Genera una mascota Espía Amigable en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
 263.critter_glomling_builder
   en: Glomglom
   ko: 글롬글롬
   app: O
   source: Builder item. Spawns a Glomglom critter pet at the Rock Den. Critters follow their owner, need periodic feeding (perishable hunger), and have personality traits affecting hunger timing.
+  desc_en: Spawns a Glomglom critter pet at the Rock Den. Follows owner and needs periodic feeding.
+  desc_ko: 바위 은신처에서 글롬글롬 펫을 소환합니다. 주인을 따라다니며 주기적 먹이가 필요.
+  desc_ja: ロックデンでグロムグロムのクリッターペットを召喚。オーナーに付き従い、定期的な給餌が必要。
+  desc_zh_CN: 在岩石窝召唤格罗姆格罗姆宠物。跟随主人，需定期喂食。
+  desc_zh_TW: 在岩石窩召喚格羅姆格羅姆寵物。跟隨主人，需定期餵食。
+  desc_fr: Fait apparaître un compagnon Glomglom au Repaire de Pierre. Suit son maître et nécessite une alimentation régulière.
+  desc_de: Spawnt ein Glomglom-Haustier in der Steinhöhle. Folgt dem Besitzer und braucht regelmäßige Fütterung.
+  desc_it: Evoca un cucciolo Glomglom alla Tana di Pietra. Segue il padrone e richiede alimentazione periodica.
+  desc_pl: Przywołuje pupila Glomgloma w Kamiennym Legowisku. Podąża za właścicielem i wymaga regularnego karmienia.
+  desc_pt_BR: Gera um bichinho Glomglom na Toca de Pedra. Segue o dono e precisa ser alimentado periodicamente.
+  desc_ru: Призывает питомца Гломглома в Каменном Логове. Следует за хозяином и требует периодического кормления.
+  desc_es: Genera una mascota Glomglom en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
+  desc_es_MX: Genera una mascota Glomglom en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
 264.critter_kitten_builder
   en: Kittykit
   ko: 키티킷
   app: O
   source: Builder item. Spawns a Kittykit critter pet at the Rock Den. Critters follow their owner, need periodic feeding (perishable hunger), and have personality traits affecting hunger timing.
+  desc_en: Spawns a Kittykit critter pet at the Rock Den. Follows owner and needs periodic feeding.
+  desc_ko: 바위 은신처에서 키티킷 펫을 소환합니다. 주인을 따라다니며 주기적 먹이가 필요.
+  desc_ja: ロックデンでキティキットのクリッターペットを召喚。オーナーに付き従い、定期的な給餌が必要。
+  desc_zh_CN: 在岩石窝召唤猫猫崽宠物。跟随主人，需定期喂食。
+  desc_zh_TW: 在岩石窩召喚貓貓崽寵物。跟隨主人，需定期餵食。
+  desc_fr: Fait apparaître un compagnon Chatonnet au Repaire de Pierre. Suit son maître et nécessite une alimentation régulière.
+  desc_de: Spawnt ein Kätzchen-Haustier in der Steinhöhle. Folgt dem Besitzer und braucht regelmäßige Fütterung.
+  desc_it: Evoca un cucciolo Gattino alla Tana di Pietra. Segue il padrone e richiede alimentazione periodica.
+  desc_pl: Przywołuje pupila Kociatko w Kamiennym Legowisku. Podąża za właścicielem i wymaga regularnego karmienia.
+  desc_pt_BR: Gera um bichinho Gatinho na Toca de Pedra. Segue o dono e precisa ser alimentado periodicamente.
+  desc_ru: Призывает питомца Котёнка в Каменном Логове. Следует за хозяином и требует периодического кормления.
+  desc_es: Genera una mascota Gatito en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
+  desc_es_MX: Genera una mascota Gatito en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
 265.critter_lamb_builder
   en: Ewelet
   ko: 율렛
   app: O
   source: Builder item. Spawns an Ewelet critter pet at the Rock Den. Critters follow their owner, need periodic feeding (perishable hunger), and have personality traits affecting hunger timing.
+  desc_en: Spawns a Ewelet critter pet at the Rock Den. Follows owner and needs periodic feeding.
+  desc_ko: 바위 은신처에서 율렛 펫을 소환합니다. 주인을 따라다니며 주기적 먹이가 필요.
+  desc_ja: ロックデンでイウレットのクリッターペットを召喚。オーナーに付き従い、定期的な給餌が必要。
+  desc_zh_CN: 在岩石窝召唤小羊羔宠物。跟随主人，需定期喂食。
+  desc_zh_TW: 在岩石窩召喚小羊羔寵物。跟隨主人，需定期餵食。
+  desc_fr: Fait apparaître un compagnon Agnelet au Repaire de Pierre. Suit son maître et nécessite une alimentation régulière.
+  desc_de: Spawnt ein Lämmchen-Haustier in der Steinhöhle. Folgt dem Besitzer und braucht regelmäßige Fütterung.
+  desc_it: Evoca un cucciolo Agnellino alla Tana di Pietra. Segue il padrone e richiede alimentazione periodica.
+  desc_pl: Przywołuje pupila Owieczkę w Kamiennym Legowisku. Podąża za właścicielem i wymaga regularnego karmienia.
+  desc_pt_BR: Gera um bichinho Ovelhinha na Toca de Pedra. Segue o dono e precisa ser alimentado periodicamente.
+  desc_ru: Призывает питомца Овечку в Каменном Логове. Следует за хозяином и требует периодического кормления.
+  desc_es: Genera una mascota Corderito en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
+  desc_es_MX: Genera una mascota Corderito en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
 266.critter_lunarmothling_builder
   en: Mothling
   ko: 모스링
   app: O
   source: Builder item. Spawns a Mothling critter pet at the Rock Den. Critters follow their owner, need periodic feeding (perishable hunger), and have personality traits affecting hunger timing.
+  desc_en: Spawns a Mothling critter pet at the Rock Den. Follows owner and needs periodic feeding.
+  desc_ko: 바위 은신처에서 모스링 펫을 소환합니다. 주인을 따라다니며 주기적 먹이가 필요.
+  desc_ja: ロックデンでモスリングのクリッターペットを召喚。オーナーに付き従い、定期的な給餌が必要。
+  desc_zh_CN: 在岩石窝召唤蛾仔宠物。跟随主人，需定期喂食。
+  desc_zh_TW: 在岩石窩召喚蛾仔寵物。跟隨主人，需定期餵食。
+  desc_fr: Fait apparaître un compagnon Papillonnet au Repaire de Pierre. Suit son maître et nécessite une alimentation régulière.
+  desc_de: Spawnt ein Mottchen-Haustier in der Steinhöhle. Folgt dem Besitzer und braucht regelmäßige Fütterung.
+  desc_it: Evoca un cucciolo Falena alla Tana di Pietra. Segue il padrone e richiede alimentazione periodica.
+  desc_pl: Przywołuje pupila Ćmiaka w Kamiennym Legowisku. Podąża za właścicielem i wymaga regularnego karmienia.
+  desc_pt_BR: Gera um bichinho Maripozinha na Toca de Pedra. Segue o dono e precisa ser alimentado periodicamente.
+  desc_ru: Призывает питомца Мотылька в Каменном Логове. Следует за хозяином и требует периодического кормления.
+  desc_es: Genera una mascota Polillita en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
+  desc_es_MX: Genera una mascota Polillita en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
 267.critter_perdling_builder
   en: Giblet
   ko: 지블렛
   app: O
   source: Builder item. Spawns a Giblet critter pet at the Rock Den. Critters follow their owner, need periodic feeding (perishable hunger), and have personality traits affecting hunger timing.
+  desc_en: Spawns a Giblet critter pet at the Rock Den. Follows owner and needs periodic feeding.
+  desc_ko: 바위 은신처에서 지블렛 펫을 소환합니다. 주인을 따라다니며 주기적 먹이가 필요.
+  desc_ja: ロックデンでジブレットのクリッターペットを召喚。オーナーに付き従い、定期的な給餌が必要。
+  desc_zh_CN: 在岩石窝召唤鸡杂仔宠物。跟随主人，需定期喂食。
+  desc_zh_TW: 在岩石窩召喚雞雜仔寵物。跟隨主人，需定期餵食。
+  desc_fr: Fait apparaître un compagnon Abat au Repaire de Pierre. Suit son maître et nécessite une alimentation régulière.
+  desc_de: Spawnt ein Innereichen-Haustier in der Steinhöhle. Folgt dem Besitzer und braucht regelmäßige Fütterung.
+  desc_it: Evoca un cucciolo Frattaglietta alla Tana di Pietra. Segue il padrone e richiede alimentazione periodica.
+  desc_pl: Przywołuje pupila Podróbka w Kamiennym Legowisku. Podąża za właścicielem i wymaga regularnego karmienia.
+  desc_pt_BR: Gera um bichinho Miudinho na Toca de Pedra. Segue o dono e precisa ser alimentado periodicamente.
+  desc_ru: Призывает питомца Потрошка в Каменном Логове. Следует за хозяином и требует периодического кормления.
+  desc_es: Genera una mascota Menudencia en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
+  desc_es_MX: Genera una mascota Menudencia en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
 268.critter_puppy_builder
   en: Vargling
   ko: 바글링
   app: O
   source: Builder item. Spawns a Vargling critter pet at the Rock Den. Critters follow their owner, need periodic feeding (perishable hunger), and have personality traits affecting hunger timing.
+  desc_en: Spawns a Vargling critter pet at the Rock Den. Follows owner and needs periodic feeding.
+  desc_ko: 바위 은신처에서 바글링 펫을 소환합니다. 주인을 따라다니며 주기적 먹이가 필요.
+  desc_ja: ロックデンでバーグリングのクリッターペットを召喚。オーナーに付き従い、定期的な給餌が必要。
+  desc_zh_CN: 在岩石窝召唤小狼犬宠物。跟随主人，需定期喂食。
+  desc_zh_TW: 在岩石窩召喚小狼犬寵物。跟隨主人，需定期餵食。
+  desc_fr: Fait apparaître un compagnon Vargounet au Repaire de Pierre. Suit son maître et nécessite une alimentation régulière.
+  desc_de: Spawnt ein Vargling-Haustier in der Steinhöhle. Folgt dem Besitzer und braucht regelmäßige Fütterung.
+  desc_it: Evoca un cucciolo Vargling alla Tana di Pietra. Segue il padrone e richiede alimentazione periodica.
+  desc_pl: Przywołuje pupila Varglinga w Kamiennym Legowisku. Podąża za właścicielem i wymaga regularnego karmienia.
+  desc_pt_BR: Gera um bichinho Vargling na Toca de Pedra. Segue o dono e precisa ser alimentado periodicamente.
+  desc_ru: Призывает питомца Варглинга в Каменном Логове. Следует за хозяином и требует периодического кормления.
+  desc_es: Genera una mascota Vargling en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
+  desc_es_MX: Genera una mascota Vargling en la Guarida de Roca. Sigue al dueño y necesita alimentación periódica.
 269.cutstone
   en: Cut Stone
   ko: 석재
   app: O
   source: Refined material. Repairs stone structures for 50 HP. Tradable (rock tribute value 3). Mole bait. Stackable (large). Sinks in water.
+  desc_en: Refined material. Repairs stone structures for 50 HP. Tradable (rock tribute value 3). Mole bait.
+  desc_ko: 정제 재료. 석재 구조물을 50 HP 수리. 거래 가능(바위 공물 가치 3). 두더지 미끼.
+  desc_ja: 精製素材。石造物を50HP修理。取引可能（岩の貢物価値3）。モグラのエサ。
+  desc_zh_CN: 精炼材料。修复石质建筑50生命。可交易（岩石贡品价值3）。鼹鼠诱饵。
+  desc_zh_TW: 精煉材料。修復石質建築50生命。可交易（岩石貢品價值3）。鼴鼠誘餌。
+  desc_fr: Matériau raffiné. Répare les structures en pierre de 50 PV. Échangeable (valeur tribut roche 3). Appât pour taupes.
+  desc_de: Veredeltes Material. Repariert Steinstrukturen um 50 LP. Handelbar (Steinzoll-Wert 3). Maulwurfköder.
+  desc_it: Materiale raffinato. Ripara strutture in pietra per 50 PV. Scambiabile (valore tributo roccia 3). Esca per talpe.
+  desc_pl: Przetworzony materiał. Naprawia kamienne struktury o 50 PŻ. Wymienialny (wartość trybutu skalnego 3). Przynęta na kreta.
+  desc_pt_BR: Material refinado. Repara estruturas de pedra em 50 HP. Negociável (valor tributo rocha 3). Isca para toupeiras.
+  desc_ru: Обработанный материал. Ремонтирует каменные постройки на 50 ОЗ. Обмениваемый (ценность каменной дани 3). Приманка для кротов.
+  desc_es: Material refinado. Repara estructuras de piedra 50 HP. Comerciable (valor tributo roca 3). Cebo para topos.
+  desc_es_MX: Material refinado. Repara estructuras de piedra 50 HP. Comerciable (valor tributo roca 3). Cebo para topos.
 270.cutstone_bunch
   en: Bunch o' Stone
   ko: 석재 묶음
   app: O
   source: Carpentry Station bulk recipe. Costs 15 rocks, produces 5 cut stone. No separate prefab — uses cutstone product with bulk crafting. Requires carpentry station tier 3.
+  desc_en: Bulk recipe: 15 rocks produce 5 cut stone at Carpentry Station tier 3.
+  desc_ko: 대량 레시피: 목공 작업대 3단계에서 바위 15개로 석재 5개 생산.
+  desc_ja: 一括レシピ：大工作業台ティア3で石15個から切り石5個を生産。
+  desc_zh_CN: 批量配方：木工台3级用15石头生产5切石。
+  desc_zh_TW: 批量配方：木工台3級用15石頭生產5切石。
+  desc_fr: Recette en vrac : 15 pierres donnent 5 pierres taillées à l'atelier de menuiserie niv. 3.
+  desc_de: Massenrezept: 15 Steine ergeben 5 Steinblöcke an der Schreinerei Stufe 3.
+  desc_it: Ricetta in blocco: 15 pietre producono 5 pietre tagliate al Banco da Falegname livello 3.
+  desc_pl: Przepis hurtowy: 15 kamieni daje 5 ciosanych kamieni na Stacji Ciesielskiej poziomu 3.
+  desc_pt_BR: Receita em massa: 15 pedras produzem 5 pedras cortadas na Estação de Carpintaria nível 3.
+  desc_ru: Массовый рецепт: 15 камней дают 5 обтёсанных камней на Столярной Станции 3-го уровня.
+  desc_es: Receta a granel: 15 rocas producen 5 piedras talladas en el Taller de Carpintería nivel 3.
+  desc_es_MX: Receta a granel: 15 rocas producen 5 piedras talladas en el Taller de Carpintería nivel 3.
 271.decor_centerpiece
   en: Art?
   ko: 예?술
   app: O
   source: Furniture decor item. Placeable on furniture surfaces (End Table, etc). Floatable (med). Burnable. Purely cosmetic.
+  desc_en: Decorative furniture item. Placeable on furniture surfaces. Purely cosmetic. Burnable.
+  desc_ko: 장식용 가구 아이템. 가구 표면에 배치 가능. 순전히 장식용. 연소 가능.
+  desc_ja: 装飾用家具アイテム。家具の表面に配置可能。純粋に装飾用。燃焼可能。
+  desc_zh_CN: 装饰家具物品。可放置在家具表面。纯装饰。可燃。
+  desc_zh_TW: 裝飾家具物品。可放置在家具表面。純裝飾。可燃。
+  desc_fr: Objet décoratif de mobilier. Plaçable sur les surfaces de meubles. Purement cosmétique. Inflammable.
+  desc_de: Dekorativer Möbelgegenstand. Platzierbar auf Möbeloberflächen. Rein kosmetisch. Brennbar.
+  desc_it: Oggetto decorativo da arredamento. Posizionabile su superfici di mobili. Puramente estetico. Combustibile.
+  desc_pl: Dekoracyjny przedmiot meblowy. Stawiany na powierzchniach mebli. Czysto kosmetyczny. Palny.
+  desc_pt_BR: Item decorativo de mobília. Posicionável em superfícies de móveis. Puramente cosmético. Inflamável.
+  desc_ru: Декоративный предмет мебели. Размещается на поверхностях мебели. Чисто косметический. Горючий.
+  desc_es: Objeto decorativo de mobiliario. Se coloca sobre superficies de muebles. Puramente cosmético. Inflamable.
+  desc_es_MX: Objeto decorativo de mobiliario. Se coloca sobre superficies de muebles. Puramente cosmético. Inflamable.
 272.decor_flowervase
   en: Table Vase
   ko: 탁상용 화병
   app: O
   source: Furniture decor item with vase component. Accepts flowers — fresh flowers emit light (radius 1.5, intensity 0.5) and give sanity on placement. Flowers wilt over time (same wilt time as End Table: 4800s). Burnable.
+  desc_en: Furniture vase that accepts flowers. Fresh flowers emit light (radius 1.5) and grant sanity. Flowers wilt after 4800s (10 days).
+  desc_ko: 꽃을 꽂을 수 있는 가구용 화병. 신선한 꽃은 빛(반경 1.5)을 내고 정신력을 제공. 꽃은 4800초(10일) 후 시듦.
+  desc_ja: 花を挿せる家具用花瓶。新鮮な花は発光（半径1.5）し正気度を付与。花は4800秒（10日）後に枯れる。
+  desc_zh_CN: 可插花的家具花瓶。鲜花发光（半径1.5）并提供理智。花在4800秒（10天）后枯萎。
+  desc_zh_TW: 可插花的家具花瓶。鮮花發光（半徑1.5）並提供理智。花在4800秒（10天）後枯萎。
+  desc_fr: Vase de mobilier acceptant les fleurs. Les fleurs fraîches émettent de la lumière (rayon 1.5) et donnent de la santé mentale. Fanent après 4800s (10 jours).
+  desc_de: Möbelvase, die Blumen aufnimmt. Frische Blumen leuchten (Radius 1,5) und geben Zurechnungsfähigkeit. Welken nach 4800s (10 Tage).
+  desc_it: Vaso da arredamento che accetta fiori. I fiori freschi emettono luce (raggio 1.5) e danno sanità. Appassiscono dopo 4800s (10 giorni).
+  desc_pl: Wazon meblowy na kwiaty. Świeże kwiaty emitują światło (zasięg 1.5) i dają zdrowie psychiczne. Więdną po 4800s (10 dni).
+  desc_pt_BR: Vaso de mobília que aceita flores. Flores frescas emitem luz (raio 1.5) e dão sanidade. Murcham após 4800s (10 dias).
+  desc_ru: Мебельная ваза для цветов. Свежие цветы излучают свет (радиус 1,5) и дают рассудок. Увядают через 4800с (10 дней).
+  desc_es: Jarrón de mobiliario que acepta flores. Las flores frescas emiten luz (radio 1.5) y otorgan cordura. Se marchitan tras 4800s (10 días).
+  desc_es_MX: Jarrón de mobiliario que acepta flores. Las flores frescas emiten luz (radio 1.5) y otorgan cordura. Se marchitan tras 4800s (10 días).
 273.decor_lamp
   en: Table Lamp
   ko: 탁상 램프
   app: O
   source: Furniture decor item. Fueled light source using cave fuel (light bulbs). Fuel capacity 468s. Light radius 2-4 depending on fuel %. Toggleable on/off. Turns off when picked up. Burnable.
+  desc_en: Fueled table light using light bulbs. Fuel capacity 468s. Light radius 2–4 based on fuel level. Toggleable on/off.
+  desc_ko: 전구로 연료를 쓰는 탁상 조명. 연료 용량 468초. 연료량에 따라 빛 반경 2~4. 켜기/끄기 전환 가능.
+  desc_ja: 電球燃料の卓上ライト。燃料容量468秒。燃料レベルに応じて光半径2〜4。オン/オフ切替可能。
+  desc_zh_CN: 使用灯泡作燃料的桌灯。燃料容量468秒。光照半径2–4取决于燃料量。可开关。
+  desc_zh_TW: 使用燈泡作燃料的桌燈。燃料容量468秒。光照半徑2–4取決於燃料量。可開關。
+  desc_fr: Lampe de table alimentée par des ampoules. Capacité 468s. Rayon lumineux 2–4 selon le carburant. Activable/désactivable.
+  desc_de: Tischlampe mit Glühbirnen-Brennstoff. Kapazität 468s. Lichtradius 2–4 je nach Füllstand. Ein-/ausschaltbar.
+  desc_it: Lampada da tavolo alimentata a lampadine. Capacità 468s. Raggio luce 2–4 in base al carburante. Attivabile/disattivabile.
+  desc_pl: Lampa stołowa na żarówki. Pojemność 468s. Promień światła 2–4 zależnie od poziomu paliwa. Włączana/wyłączana.
+  desc_pt_BR: Lâmpada de mesa alimentada por lâmpadas. Capacidade 468s. Raio de luz 2–4 conforme combustível. Ligável/desligável.
+  desc_ru: Настольная лампа на лампочках. Ёмкость 468с. Радиус света 2–4 в зависимости от уровня топлива. Включается/выключается.
+  desc_es: Lámpara de mesa alimentada con bombillas. Capacidad 468s. Radio de luz 2–4 según combustible. Activable/desactivable.
+  desc_es_MX: Lámpara de mesa alimentada con bombillas. Capacidad 468s. Radio de luz 2–4 según combustible. Activable/desactivable.
 274.decor_pictureframe
   en: Empty Frame
   ko: 빈 액자
   app: O
   source: Furniture decor item. Placeable on furniture surfaces. Floatable. Burnable. Purely cosmetic.
+  desc_en: Decorative furniture item. Placeable on furniture surfaces. Purely cosmetic. Burnable.
+  desc_ko: 장식용 가구 아이템. 가구 표면에 배치 가능. 순전히 장식용. 연소 가능.
+  desc_ja: 装飾用家具アイテム。家具の表面に配置可能。純粋に装飾用。燃焼可能。
+  desc_zh_CN: 装饰家具物品。可放置在家具表面。纯装饰。可燃。
+  desc_zh_TW: 裝飾家具物品。可放置在家具表面。純裝飾。可燃。
+  desc_fr: Objet décoratif de mobilier. Plaçable sur les surfaces de meubles. Purement cosmétique. Inflammable.
+  desc_de: Dekorativer Möbelgegenstand. Platzierbar auf Möbeloberflächen. Rein kosmetisch. Brennbar.
+  desc_it: Oggetto decorativo da arredamento. Posizionabile su superfici di mobili. Puramente estetico. Combustibile.
+  desc_pl: Dekoracyjny przedmiot meblowy. Stawiany na powierzchniach mebli. Czysto kosmetyczny. Palny.
+  desc_pt_BR: Item decorativo de mobília. Posicionável em superfícies de móveis. Puramente cosmético. Inflamável.
+  desc_ru: Декоративный предмет мебели. Размещается на поверхностях мебели. Чисто косметический. Горючий.
+  desc_es: Objeto decorativo de mobiliario. Se coloca sobre superficies de muebles. Puramente cosmético. Inflamable.
+  desc_es_MX: Objeto decorativo de mobiliario. Se coloca sobre superficies de muebles. Puramente cosmético. Inflamable.
 275.decor_portraitframe
   en: Pleasant Portrait
   ko: 보기 좋은 초상화
   app: O
   source: Furniture decor item. Placeable on furniture surfaces. Floatable (med). Burnable. Purely cosmetic.
+  desc_en: Decorative furniture item. Placeable on furniture surfaces. Purely cosmetic. Burnable.
+  desc_ko: 장식용 가구 아이템. 가구 표면에 배치 가능. 순전히 장식용. 연소 가능.
+  desc_ja: 装飾用家具アイテム。家具の表面に配置可能。純粋に装飾用。燃焼可能。
+  desc_zh_CN: 装饰家具物品。可放置在家具表面。纯装饰。可燃。
+  desc_zh_TW: 裝飾家具物品。可放置在家具表面。純裝飾。可燃。
+  desc_fr: Objet décoratif de mobilier. Plaçable sur les surfaces de meubles. Purement cosmétique. Inflammable.
+  desc_de: Dekorativer Möbelgegenstand. Platzierbar auf Möbeloberflächen. Rein kosmetisch. Brennbar.
+  desc_it: Oggetto decorativo da arredamento. Posizionabile su superfici di mobili. Puramente estetico. Combustibile.
+  desc_pl: Dekoracyjny przedmiot meblowy. Stawiany na powierzchniach mebli. Czysto kosmetyczny. Palny.
+  desc_pt_BR: Item decorativo de mobília. Posicionável em superfícies de móveis. Puramente cosmético. Inflamável.
+  desc_ru: Декоративный предмет мебели. Размещается на поверхностях мебели. Чисто косметический. Горючий.
+  desc_es: Objeto decorativo de mobiliario. Se coloca sobre superficies de muebles. Puramente cosmético. Inflamable.
+  desc_es_MX: Objeto decorativo de mobiliario. Se coloca sobre superficies de muebles. Puramente cosmético. Inflamable.
 276.deerclopseyeball_sentryward
   en: Ice Crystaleyezer
   ko: 눈꽃결정 생성기
   app: X
   type: deconstruct
   source: Structure. Requires Deerclops Eyeball to activate. Radius 35: overrides temperature to -10 within range, creates ice circle (radius 3.5) that freezes/extinguishes nearby entities. Periodically spawns rock_ice every 3360-5760s (7-12 days), max density 6 within radius 12, min spacing 5. Reveals map when active. Hammerable in 4 hits.
+  desc_en: Structure requiring Deerclops Eyeball. Radius 35: overrides temperature to -10, freezes nearby entities. Spawns rock ice every 7–12 days.
+  desc_ko: 외눈사슴 안구가 필요한 구조물. 반경 35: 온도를 -10으로 변경, 주변 개체 동결. 7~12일마다 얼음 바위 생성.
+  desc_ja: ディアクロプスの眼球が必要な構造物。半径35：温度を-10に上書き、周囲を凍結。7〜12日ごとに岩氷を生成。
+  desc_zh_CN: 需要独眼巨鹿眼球的建筑。半径35：温度覆盖为-10，冻结附近实体。每7–12天生成冰石。
+  desc_zh_TW: 需要獨眼巨鹿眼球的建築。半徑35：溫度覆蓋為-10，凍結附近實體。每7–12天生成冰石。
+  desc_fr: Structure nécessitant un Œil de Deerclops. Rayon 35 : température forcée à -10, gèle les entités proches. Génère de la roche de glace tous les 7–12 jours.
+  desc_de: Struktur, die ein Deerclops-Auge benötigt. Radius 35: setzt Temperatur auf -10, friert Nahes ein. Spawnt Eis-Felsen alle 7–12 Tage.
+  desc_it: Struttura che richiede Occhio di Deerclops. Raggio 35: sovrascrive temperatura a -10, congela entità vicine. Genera roccia di ghiaccio ogni 7–12 giorni.
+  desc_pl: Konstrukcja wymagająca Oka Jeleniocyklopa. Zasięg 35: temperatura -10, zamraża pobliskie obiekty. Tworzy lodową skałę co 7–12 dni.
+  desc_pt_BR: Estrutura que requer Olho de Deerclops. Raio 35: altera temperatura para -10, congela entidades próximas. Gera rocha de gelo a cada 7–12 dias.
+  desc_ru: Постройка, требующая Глаз Оленециклопа. Радиус 35: устанавливает температуру -10, замораживает ближайших существ. Создаёт ледяной камень каждые 7–12 дней.
+  desc_es: Estructura que requiere Ojo de Deerclops. Radio 35: fuerza temperatura a -10, congela entidades cercanas. Genera roca de hielo cada 7–12 días.
+  desc_es_MX: Estructura que requiere Ojo de Deerclops. Radio 35: fuerza temperatura a -10, congela entidades cercanas. Genera roca de hielo cada 7–12 días.
 277.deerclopseyeball_sentryward_kit
   en: Ice Crystaleyezer Kit
   ko: 눈꽃결정 생성기 키트
   app: O
   source: Deployable kit that places an Ice Crystaleyezer structure. Must be placed on land surrounded by land (3.5 radius check). Consumed on deployment.
+  desc_en: Deployable kit that places an Ice Crystaleyezer. Must be placed on land. Consumed on deployment.
+  desc_ko: 눈꽃결정 생성기를 설치하는 배치 키트. 육지에 설치해야 함. 배치 시 소모.
+  desc_ja: アイスクリスタレイザーを設置するデプロイキット。陸上に設置必須。設置時に消費。
+  desc_zh_CN: 部署冰晶装置的套件。必须放置在陆地。部署后消耗。
+  desc_zh_TW: 部署冰晶裝置的套件。必須放置在陸地。部署後消耗。
+  desc_fr: Kit déployable plaçant un Cristalleyzeur de Glace. Doit être placé sur terre. Consommé au déploiement.
+  desc_de: Platzierbares Kit für einen Eis-Kristalleyezer. Muss auf Land platziert werden. Wird beim Aufstellen verbraucht.
+  desc_it: Kit piazzabile che installa un Cristalleyezer di Ghiaccio. Deve essere posto su terra. Consumato al piazzamento.
+  desc_pl: Zestaw do postawienia Lodowego Krystalleyzera. Wymaga umieszczenia na lądzie. Zużywany przy rozstawieniu.
+  desc_pt_BR: Kit implantável que coloca um Cristalleyezer de Gelo. Deve ser colocado em terra. Consumido ao implantar.
+  desc_ru: Набор для установки Ледяного Кристаллейзера. Устанавливается только на суше. Расходуется при размещении.
+  desc_es: Kit desplegable que coloca un Cristalleyezer de Hielo. Debe colocarse en tierra. Se consume al desplegar.
+  desc_es_MX: Kit desplegable que coloca un Cristalleyezer de Hielo. Debe colocarse en tierra. Se consume al desplegar.
 278.deserthat
   en: Desert Goggles
   ko: 사막용 고글
   app: O
   source: Hat. Dapperness +3.3/min (medium). Fuel lasts 4800s (10 days). Waterproof 20%. Summer insulation 120. Provides "goggles" tag (sandstorm protection).
+  desc_en: Hat with sandstorm protection. Dapperness +3.3/min. Fuel lasts 4800s (10 days). Waterproof 20%. Summer insulation 120.
+  desc_ko: 모래폭풍 보호 모자. 멋 +3.3/분. 연료 4800초(10일). 방수 20%. 여름 단열 120.
+  desc_ja: 砂嵐防護の帽子。ダッパーネス+3.3/分。燃料4800秒（10日間）。防水20%。夏断熱120。
+  desc_zh_CN: 防沙尘暴帽子。精神+3.3/分。燃料4800秒（10天）。防水20%。夏季隔热120。
+  desc_zh_TW: 防沙塵暴帽子。精神+3.3/分。燃料4800秒（10天）。防水20%。夏季隔熱120。
+  desc_fr: Chapeau protégeant des tempêtes de sable. Élégance +3.3/min. Combustible 4800s (10 jours). Imperméable 20 %. Isolation été 120.
+  desc_de: Hut mit Sandsturmschutz. Schneidigkeit +3,3/min. Brennstoff 4800s (10 Tage). 20 % wasserdicht. Sommerisolierung 120.
+  desc_it: Cappello con protezione tempesta di sabbia. Eleganza +3.3/min. Carburante 4800s (10 giorni). Impermeabile 20%. Isolamento estivo 120.
+  desc_pl: Kapelusz chroniący przed burzą piaskową. Elegancja +3.3/min. Paliwo 4800s (10 dni). Wodoodporność 20%. Izolacja letnia 120.
+  desc_pt_BR: Chapéu com proteção contra tempestade de areia. Elegância +3.3/min. Combustível 4800s (10 dias). Impermeável 20%. Isolamento de verão 120.
+  desc_ru: Шляпа с защитой от песчаной бури. Щегольство +3,3/мин. Топливо 4800с (10 дней). Водонепроницаемость 20%. Летняя изоляция 120.
+  desc_es: Sombrero con protección contra tormentas de arena. Elegancia +3.3/min. Combustible 4800s (10 días). Impermeable 20 %. Aislamiento verano 120.
+  desc_es_MX: Sombrero con protección contra tormentas de arena. Elegancia +3.3/min. Combustible 4800s (10 días). Impermeable 20 %. Aislamiento verano 120.
 279.dock_kit
   en: Dock Kit
   ko: 부두 키트
   app: O
   source: Deployable item. Places a dock tile (MONKEY_DOCK) on coastal ocean tiles adjacent to permanent land. Stackable (medium). Consumed on placement.
+  desc_en: Places a dock tile on coastal ocean tiles adjacent to land. Stackable. Consumed on placement.
+  desc_ko: 육지에 인접한 해안 타일에 부두 타일을 설치. 겹침 가능. 배치 시 소모.
+  desc_ja: 陸地に隣接する海岸タイルにドックタイルを設置。スタック可能。設置時に消費。
+  desc_zh_CN: 在邻近陆地的沿海海洋瓦片上放置码头瓦片。可堆叠。放置后消耗。
+  desc_zh_TW: 在鄰近陸地的沿海海洋瓦片上放置碼頭瓦片。可堆疊。放置後消耗。
+  desc_fr: Place une tuile de quai sur les tuiles côtières adjacentes à la terre. Empilable. Consommé au placement.
+  desc_de: Platziert eine Anlegestelle auf Küstentiles neben Land. Stapelbar. Wird beim Platzieren verbraucht.
+  desc_it: Posiziona una piastrella molo su piastrelle costiere adiacenti a terra. Impilabile. Consumato al posizionamento.
+  desc_pl: Umieszcza kafelek doku na przybrzeżnych kafelkach oceanu sąsiadujących z lądem. Piętrzalny. Zużywany przy umieszczaniu.
+  desc_pt_BR: Coloca um piso de doca em pisos costeiros adjacentes à terra. Empilhável. Consumido ao posicionar.
+  desc_ru: Размещает плитку причала на прибрежных океанских тайлах рядом с сушей. Складывается. Расходуется при размещении.
+  desc_es: Coloca un azulejo de muelle en azulejos costeros adyacentes a tierra. Apilable. Se consume al colocar.
+  desc_es_MX: Coloca un azulejo de muelle en azulejos costeros adyacentes a tierra. Apilable. Se consume al colocar.
 280.dock_woodposts
   en: Dock Piling
   ko: 부두 말뚝
   app: X
   type: deconstruct
   source: Structure. Decorative wooden post placed on docks. Random visual variant (1-3). Hammerable in 3 hits, drops 1 log.
+  desc_en: Decorative wooden post for docks. Random visual variant. Hammerable in 3 hits, drops 1 log.
+  desc_ko: 부두용 장식 나무 기둥. 랜덤 외형 변형. 망치 3회로 파괴, 통나무 1개 드롭.
+  desc_ja: ドック用装飾木柱。ランダムな外観バリエーション。ハンマー3回で破壊、丸太1本ドロップ。
+  desc_zh_CN: 码头装饰木桩。随机外观变体。3次锤击可破坏，掉落1原木。
+  desc_zh_TW: 碼頭裝飾木樁。隨機外觀變體。3次錘擊可破壞，掉落1原木。
+  desc_fr: Poteau en bois décoratif pour quais. Variante visuelle aléatoire. Destructible en 3 coups, donne 1 bûche.
+  desc_de: Dekorativer Holzpfosten für Anlegestellen. Zufällige Variante. In 3 Schlägen zerstörbar, lässt 1 Holzscheit fallen.
+  desc_it: Palo di legno decorativo per moli. Variante visiva casuale. 3 colpi di martello, rilascia 1 tronco.
+  desc_pl: Dekoracyjny drewniany słup na dok. Losowy wariant wizualny. Zniszczalny 3 uderzeniami, upuszcza 1 kłodę.
+  desc_pt_BR: Poste de madeira decorativo para docas. Variante visual aleatória. Destruível em 3 marteladas, derruba 1 tora.
+  desc_ru: Декоративный деревянный столб для причала. Случайный вариант внешности. Разрушается за 3 удара, роняет 1 бревно.
+  desc_es: Poste de madera decorativo para muelles. Variante visual aleatoria. Destruible en 3 martillazos, suelta 1 tronco.
+  desc_es_MX: Poste de madera decorativo para muelles. Variante visual aleatoria. Destruible en 3 martillazos, suelta 1 tronco.
 281.dock_woodposts_item
   en: Dock Piling
   ko: 부두 말뚝
   app: O
   source: Deployable item. Places a Dock Piling structure. Stackable (medium). Burnable. Consumed on placement.
+  desc_en: Deployable item that places a Dock Piling structure. Stackable. Burnable. Consumed on placement.
+  desc_ko: 부두 말뚝 구조물을 설치하는 배치 아이템. 겹침 가능. 연소 가능. 배치 시 소모.
+  desc_ja: ドック杭の構造物を設置するデプロイアイテム。スタック可能。燃焼可能。設置時に消費。
+  desc_zh_CN: 放置码头桩结构的部署物品。可堆叠。可燃。放置后消耗。
+  desc_zh_TW: 放置碼頭樁結構的部署物品。可堆疊。可燃。放置後消耗。
+  desc_fr: Objet déployable plaçant un Pilier de Quai. Empilable. Inflammable. Consommé au placement.
+  desc_de: Platzierbarer Gegenstand für einen Anlegepfosten. Stapelbar. Brennbar. Wird beim Platzieren verbraucht.
+  desc_it: Oggetto piazzabile che installa un Palo da Molo. Impilabile. Combustibile. Consumato al posizionamento.
+  desc_pl: Przedmiot do postawienia Słupa Dokowego. Piętrzalny. Palny. Zużywany przy umieszczaniu.
+  desc_pt_BR: Item implantável que coloca um Poste de Doca. Empilhável. Inflamável. Consumido ao posicionar.
+  desc_ru: Размещаемый предмет для установки Причальной Сваи. Складывается. Горючий. Расходуется при размещении.
+  desc_es: Objeto desplegable que coloca un Pilar de Muelle. Apilable. Inflamable. Se consume al colocar.
+  desc_es_MX: Objeto desplegable que coloca un Pilar de Muelle. Apilable. Inflamable. Se consume al colocar.
 282.dragonboat_kit
   en: Dragonfly Boat Kit
   ko: 용파리선 키트
   app: O
   source: Deployable boat kit. Places a Dragonfly Boat (Year of the Dragon boat) on ocean. Includes walking plank. Consumed on deployment.
+  desc_en: Deploys a Dragonfly Boat on ocean. Includes walking plank. Consumed on deployment.
+  desc_ko: 바다에 용파리선을 배치. 산책용 널빤지 포함. 배치 시 소모.
+  desc_ja: 海上にドラゴンフライボートを配置。歩行板付き。配置時に消費。
+  desc_zh_CN: 在海上部署龙蝇船。包含跳板。部署后消耗。
+  desc_zh_TW: 在海上部署龍蠅船。包含跳板。部署後消耗。
+  desc_fr: Déploie un Bateau Libellule-Dragon sur l'océan. Inclut une planche d'embarquement. Consommé au déploiement.
+  desc_de: Stellt ein Drachenfliegen-Boot auf dem Ozean auf. Inklusive Laufplanke. Wird beim Aufstellen verbraucht.
+  desc_it: Posiziona una Barca Libellula Drago sull'oceano. Include passerella. Consumato al posizionamento.
+  desc_pl: Rozkłada Łódź Smoczej Muchy na oceanie. Zawiera deskę do chodzenia. Zużywany przy rozstawieniu.
+  desc_pt_BR: Posiciona um Barco Dragonfly no oceano. Inclui prancha de caminhada. Consumido ao implantar.
+  desc_ru: Размещает Лодку Драконьей Мухи на океане. Включает сходни. Расходуется при размещении.
+  desc_es: Despliega un Barco Dragomosca en el océano. Incluye tablón para caminar. Se consume al desplegar.
+  desc_es_MX: Despliega un Barco Dragomosca en el océano. Incluye tablón para caminar. Se consume al desplegar.
 283.dragonboat_pack
   en: Decked-Out Dragonfly Boat Kit
   ko: 치장된 용파리선 키트
   app: O
   source: Deployable boat kit. Places a fully equipped Dragonfly Boat with mast, anchor, oar, steering wheel, and bumper pre-installed. Consumed on deployment.
+  desc_en: Deploys a fully equipped Dragonfly Boat with mast, anchor, oar, steering wheel, and bumper. Consumed on deployment.
+  desc_ko: 돛대, 닻, 노, 방향타, 범퍼가 장착된 완비 용파리선을 배치. 배치 시 소모.
+  desc_ja: マスト、アンカー、オール、舵輪、バンパー付きの完全装備ドラゴンフライボートを配置。配置時に消費。
+  desc_zh_CN: 部署配备桅杆、锚、桨、方向盘和保险杠的全装龙蝇船。部署后消耗。
+  desc_zh_TW: 部署配備桅杆、錨、槳、方向盤和保險桿的全裝龍蠅船。部署後消耗。
+  desc_fr: Déploie un Bateau Libellule-Dragon entièrement équipé avec mât, ancre, rame, gouvernail et pare-chocs. Consommé.
+  desc_de: Stellt ein voll ausgestattetes Drachenfliegen-Boot mit Mast, Anker, Ruder, Steuerrad und Stoßfänger auf. Verbraucht.
+  desc_it: Posiziona una Barca Libellula Drago completa con albero, ancora, remo, timone e paraurti. Consumato.
+  desc_pl: Rozkłada w pełni wyposażoną Łódź Smoczej Muchy z masztem, kotwicą, wiosłem, sterem i zderzakiem. Zużywany.
+  desc_pt_BR: Posiciona um Barco Dragonfly completo com mastro, âncora, remo, leme e para-choque. Consumido.
+  desc_ru: Размещает полностью оснащённую Лодку Драконьей Мухи с мачтой, якорем, веслом, штурвалом и бампером. Расходуется.
+  desc_es: Despliega un Barco Dragomosca completamente equipado con mástil, ancla, remo, timón y parachoques. Se consume.
+  desc_es_MX: Despliega un Barco Dragomosca completamente equipado con mástil, ancla, remo, timón y parachoques. Se consume.
 284.dragonbodyhat
   en: Lucky Beast Body
   ko: 영물의 몸통
   app: O
   source: Hat. Dragon dance costume piece (body). Fuel lasts 480s (1 day), only consumed while dancing. Dancing with all 3 pieces (head+body+tail) nearby gives up to +53.3/min sanity per connected piece.
+  desc_en: Dragon dance body piece. Fuel lasts 480s (1 day), consumed only while dancing. Up to +53.3/min sanity per connected piece.
+  desc_ko: 용 춤 몸통 부분. 연료 480초(1일), 춤출 때만 소모. 연결된 조각당 최대 +53.3/분 정신력.
+  desc_ja: ドラゴンダンスのボディパーツ。燃料480秒（1日）、ダンス中のみ消費。接続パーツごとに最大+53.3/分の正気度。
+  desc_zh_CN: 龙舞身体部件。燃料480秒（1天），仅跳舞时消耗。每个相连部件最高+53.3/分理智。
+  desc_zh_TW: 龍舞身體部件。燃料480秒（1天），僅跳舞時消耗。每個相連部件最高+53.3/分理智。
+  desc_fr: Pièce corps de danse du dragon. Combustible 480s (1 jour), consommé uniquement en dansant. Jusqu'à +53.3/min de santé mentale par pièce connectée.
+  desc_de: Drachentanz-Körperteil. Brennstoff 480s (1 Tag), nur beim Tanzen verbraucht. Bis zu +53,3/min Zurechnungsfähigkeit pro verbundenem Teil.
+  desc_it: Pezzo corpo della danza del drago. Carburante 480s (1 giorno), consumato solo danzando. Fino a +53.3/min sanità per pezzo connesso.
+  desc_pl: Część ciała tańca smoka. Paliwo 480s (1 dzień), zużywane tylko podczas tańca. Do +53.3/min zdrowia psychicznego na połączony element.
+  desc_pt_BR: Peça do corpo da dança do dragão. Combustível 480s (1 dia), consumido apenas dançando. Até +53.3/min de sanidade por peça conectada.
+  desc_ru: Часть тела для танца дракона. Топливо 480с (1 день), расходуется только при танце. До +53,3/мин рассудка за каждую связанную часть.
+  desc_es: Pieza cuerpo de danza del dragón. Combustible 480s (1 día), solo al bailar. Hasta +53.3/min de cordura por pieza conectada.
+  desc_es_MX: Pieza cuerpo de danza del dragón. Combustible 480s (1 día), solo al bailar. Hasta +53.3/min de cordura por pieza conectada.
 285.dragonflychest
   en: Scaled Chest
   ko: 비늘 상자
   app: O
   source: Structure. Fireproof storage chest (9 slots). Hammerable in 2 hits. Can be upgraded with Elastispacer to enable infinite stack size. Cannot burn.
+  desc_en: Fireproof storage chest with 9 slots. Upgradable with Elastispacer for infinite stacking. Hammerable in 2 hits.
+  desc_ko: 9칸 방화 보관 상자. 공간신축기로 무한 겹침 업그레이드 가능. 망치 2회로 파괴.
+  desc_ja: 9スロットの耐火収納箱。エラスティスペーサーで無限スタックにアップグレード可能。ハンマー2回で破壊。
+  desc_zh_CN: 9格防火储存箱。可用弹性扩展器升级为无限堆叠。2次锤击可破坏。
+  desc_zh_TW: 9格防火儲存箱。可用彈性擴展器升級為無限堆疊。2次錘擊可破壞。
+  desc_fr: Coffre ignifuge à 9 emplacements. Améliorable avec l'Élastispaceur pour un empilement infini. Destructible en 2 coups.
+  desc_de: Feuerfeste Truhe mit 9 Plätzen. Mit Elastispacer auf unendliches Stapeln aufrüstbar. In 2 Schlägen zerstörbar.
+  desc_it: Cassa ignifuga a 9 slot. Potenziabile con Elastispacer per impilamento infinito. 2 colpi di martello.
+  desc_pl: Ogniotrwała skrzynia z 9 slotami. Ulepszalna Elastycznym Rozszerzaczem do nieskończonego piętrzenia. Zniszczalna 2 uderzeniami.
+  desc_pt_BR: Baú à prova de fogo com 9 slots. Atualizável com Elastispacer para empilhamento infinito. Destruível em 2 marteladas.
+  desc_ru: Огнеупорный сундук на 9 слотов. Улучшается Эластипространщиком для бесконечного стопкирования. Разрушается за 2 удара.
+  desc_es: Cofre ignífugo con 9 ranuras. Mejorable con Elastispacer para apilamiento infinito. Destruible en 2 martillazos.
+  desc_es_MX: Cofre ignífugo con 9 ranuras. Mejorable con Elastispacer para apilamiento infinito. Destruible en 2 martillazos.
 286.dragonflyfurnace
   en: Scaled Furnace
   ko: 용비늘 화로
   app: O
   source: Structure. Permanent heat source (115 heat), cooker, and incinerator. Always lit with light (radius 1.0). Wildfire-protected. Can incinerate items (except fruitcake and irreplaceable items). 4-slot container. Hammerable in 6 hits.
+  desc_en: Permanent heat source (115 heat), cooker, and incinerator. Always lit. 4-slot container. Wildfire-protected. Hammerable in 6 hits.
+  desc_ko: 영구 열원(열기 115), 조리기 및 소각기. 항상 점등. 4칸 컨테이너. 들불 방지. 망치 6회로 파괴.
+  desc_ja: 永久熱源（熱115）、調理器兼焼却炉。常時点灯。4スロットコンテナ。山火事防止。ハンマー6回で破壊。
+  desc_zh_CN: 永久热源（热量115），烹饪器兼焚烧炉。始终点亮。4格容器。防野火。6次锤击可破坏。
+  desc_zh_TW: 永久熱源（熱量115），烹飪器兼焚燒爐。始終點亮。4格容器。防野火。6次錘擊可破壞。
+  desc_fr: Source de chaleur permanente (115), cuiseur et incinérateur. Toujours allumé. Conteneur 4 emplacements. Anti-feux de forêt. 6 coups de marteau.
+  desc_de: Permanente Hitzequelle (115 Hitze), Kocher und Verbrennungsanlage. Immer leuchtend. 4-Platz-Behälter. Wildfire-geschützt. 6 Hammerschläge.
+  desc_it: Fonte di calore permanente (115), fornello e inceneritore. Sempre acceso. Contenitore 4 slot. Protetto incendi. 6 colpi di martello.
+  desc_pl: Stałe źródło ciepła (115), kuchenka i spalarnia. Zawsze zapalona. Pojemnik 4-slotowy. Odporna na pożary. 6 uderzeń młotka.
+  desc_pt_BR: Fonte de calor permanente (115), cozinhador e incinerador. Sempre aceso. Container de 4 slots. Protegido contra incêndios. 6 marteladas.
+  desc_ru: Постоянный источник тепла (115), плита и инсинератор. Всегда горит. Контейнер на 4 слота. Защита от пожаров. 6 ударов молотом.
+  desc_es: Fuente de calor permanente (115), cocina e incinerador. Siempre encendido. Contenedor de 4 ranuras. Antiincendios. 6 martillazos.
+  desc_es_MX: Fuente de calor permanente (115), cocina e incinerador. Siempre encendido. Contenedor de 4 ranuras. Antiincendios. 6 martillazos.
 287.dragonheadhat
   en: Lucky Beast Head
   ko: 영물의 머리
   app: O
   source: Hat. Dragon dance costume piece (head). Fuel lasts 480s (1 day), only consumed while dancing. Uses unique dance animation. Dancing with all 3 pieces nearby gives up to +53.3/min sanity per connected piece.
+  desc_en: Dragon dance head piece. Fuel lasts 480s (1 day), consumed only while dancing. Up to +53.3/min sanity per connected piece.
+  desc_ko: 용 춤 머리 부분. 연료 480초(1일), 춤출 때만 소모. 연결된 조각당 최대 +53.3/분 정신력.
+  desc_ja: ドラゴンダンスのヘッドパーツ。燃料480秒（1日）、ダンス中のみ消費。接続パーツごとに最大+53.3/分の正気度。
+  desc_zh_CN: 龙舞头部部件。燃料480秒（1天），仅跳舞时消耗。每个相连部件最高+53.3/分理智。
+  desc_zh_TW: 龍舞頭部部件。燃料480秒（1天），僅跳舞時消耗。每個相連部件最高+53.3/分理智。
+  desc_fr: Pièce tête de danse du dragon. Combustible 480s (1 jour), consommé uniquement en dansant. Jusqu'à +53.3/min de santé mentale par pièce connectée.
+  desc_de: Drachentanz-Kopfteil. Brennstoff 480s (1 Tag), nur beim Tanzen verbraucht. Bis zu +53,3/min Zurechnungsfähigkeit pro verbundenem Teil.
+  desc_it: Pezzo testa della danza del drago. Carburante 480s (1 giorno), consumato solo danzando. Fino a +53.3/min sanità per pezzo connesso.
+  desc_pl: Część głowy tańca smoka. Paliwo 480s (1 dzień), zużywane tylko podczas tańca. Do +53.3/min zdrowia psychicznego na połączony element.
+  desc_pt_BR: Peça da cabeça da dança do dragão. Combustível 480s (1 dia), consumido apenas dançando. Até +53.3/min de sanidade por peça conectada.
+  desc_ru: Головная часть для танца дракона. Топливо 480с (1 день), расходуется только при танце. До +53,3/мин рассудка за каждую связанную часть.
+  desc_es: Pieza cabeza de danza del dragón. Combustible 480s (1 día), solo al bailar. Hasta +53.3/min de cordura por pieza conectada.
+  desc_es_MX: Pieza cabeza de danza del dragón. Combustible 480s (1 día), solo al bailar. Hasta +53.3/min de cordura por pieza conectada.
 288.dragontailhat
   en: Lucky Beast Tail
   ko: 영물의 꼬리
   app: O
   source: Hat. Dragon dance costume piece (tail). Fuel lasts 480s (1 day), only consumed while dancing. Dancing with all 3 pieces (head+body+tail) nearby gives up to +53.3/min sanity per connected piece.
+  desc_en: Dragon dance tail piece. Fuel lasts 480s (1 day), consumed only while dancing. Up to +53.3/min sanity per connected piece.
+  desc_ko: 용 춤 꼬리 부분. 연료 480초(1일), 춤출 때만 소모. 연결된 조각당 최대 +53.3/분 정신력.
+  desc_ja: ドラゴンダンスのテールパーツ。燃料480秒（1日）、ダンス中のみ消費。接続パーツごとに最大+53.3/分の正気度。
+  desc_zh_CN: 龙舞尾部部件。燃料480秒（1天），仅跳舞时消耗。每个相连部件最高+53.3/分理智。
+  desc_zh_TW: 龍舞尾部部件。燃料480秒（1天），僅跳舞時消耗。每個相連部件最高+53.3/分理智。
+  desc_fr: Pièce queue de danse du dragon. Combustible 480s (1 jour), consommé uniquement en dansant. Jusqu'à +53.3/min de santé mentale par pièce connectée.
+  desc_de: Drachentanz-Schwanzteil. Brennstoff 480s (1 Tag), nur beim Tanzen verbraucht. Bis zu +53,3/min Zurechnungsfähigkeit pro verbundenem Teil.
+  desc_it: Pezzo coda della danza del drago. Carburante 480s (1 giorno), consumato solo danzando. Fino a +53.3/min sanità per pezzo connesso.
+  desc_pl: Część ogona tańca smoka. Paliwo 480s (1 dzień), zużywane tylko podczas tańca. Do +53.3/min zdrowia psychicznego na połączony element.
+  desc_pt_BR: Peça da cauda da dança do dragão. Combustível 480s (1 dia), consumido apenas dançando. Até +53.3/min de sanidade por peça conectada.
+  desc_ru: Хвостовая часть для танца дракона. Топливо 480с (1 день), расходуется только при танце. До +53,3/мин рассудка за каждую связанную часть.
+  desc_es: Pieza cola de danza del dragón. Combustible 480s (1 día), solo al bailar. Hasta +53.3/min de cordura por pieza conectada.
+  desc_es_MX: Pieza cola de danza del dragón. Combustible 480s (1 día), solo al bailar. Hasta +53.3/min de cordura por pieza conectada.
 289.dreadstonehat
   en: Dreadstone Helm
   ko: 공포석 투구
   app: O
   source: Hat. Armor: 840 HP (150*8*0.7), 90% absorption. Planar defense 5. Shadow damage resist 90%. Shadow level 2. Waterproof 20%. Self-repairs when worn by insane player (rate scales with sanity: lower sanity = faster). Dapperness: drains sanity (medium craziness) while regenerating. Part of DREADSTONE set bonus (1.5x regen rate with matching body armor).
+  desc_en: Helm with 840 HP armor at 90% absorption. Planar defense 5, shadow resist 90%. Self-repairs when insane. DREADSTONE set bonus: 1.5× regen.
+  desc_ko: 방어력 840 HP, 흡수율 90%의 투구. 차원 방어 5, 그림자 저항 90%. 광기 시 자가 수리. DREADSTONE 세트: 재생 1.5배.
+  desc_ja: アーマー840HP・吸収率90%のヘルム。プレーナー防御5、シャドウ耐性90%。狂気時に自己修復。DREADSTONEセット：再生1.5倍。
+  desc_zh_CN: 840生命护甲、90%吸收的头盔。位面防御5，暗影抗性90%。疯狂时自我修复。DREADSTONE套装：再生×1.5。
+  desc_zh_TW: 840生命護甲、90%吸收的頭盔。位面防禦5，暗影抗性90%。瘋狂時自我修復。DREADSTONE套裝：再生×1.5。
+  desc_fr: Casque avec 840 PV d'armure à 90 % d'absorption. Défense planaire 5, résistance ombre 90 %. Auto-réparation en folie. Bonus DREADSTONE : régén. ×1.5.
+  desc_de: Helm mit 840 LP Rüstung bei 90 % Absorption. Planare Verteidigung 5, Schattenwiderstand 90 %. Selbstreparatur bei Wahnsinn. DREADSTONE-Set: ×1,5 Regen.
+  desc_it: Elmo con 840 PV armatura al 90% assorbimento. Difesa planare 5, resist. ombra 90%. Auto-riparazione in follia. Set DREADSTONE: regen. ×1.5.
+  desc_pl: Hełm z 840 PŻ pancerza i 90% absorpcji. Obrona planarna 5, odporność na cień 90%. Samonaprawa w szaleństwie. Zestaw DREADSTONE: regen. ×1.5.
+  desc_pt_BR: Elmo com 840 HP de armadura a 90% de absorção. Defesa planar 5, resistência sombria 90%. Auto-reparo quando insano. Conjunto DREADSTONE: regen. ×1.5.
+  desc_ru: Шлем с бронёй 840 ОЗ и поглощением 90%. Планарная защита 5, сопротивление тени 90%. Самовосстановление при безумии. Набор DREADSTONE: ×1,5 регенерация.
+  desc_es: Yelmo con 840 HP de armadura al 90 % de absorción. Defensa planar 5, resist. sombra 90 %. Auto-reparación en locura. Conjunto DREADSTONE: regen. ×1.5.
+  desc_es_MX: Yelmo con 840 HP de armadura al 90 % de absorción. Defensa planar 5, resist. sombra 90 %. Auto-reparación en locura. Conjunto DREADSTONE: regen. ×1.5.
 290.dumbbell
   en: Dumbbell
   ko: 아령
   app: O
   source: Wolfgang-exclusive weapon/exercise tool. Damage 17 (34*0.5). Consumption 0.8 per lift, 1.6 per attack, 8 per throw. Efficiency: med/med/low. Throwable when mighty (AoE radius 2, speed 15). Finite uses.
+  desc_en: Wolfgang-exclusive. 17 damage. Med/med/low efficiency. Throwable when mighty (AoE radius 2).
+  desc_ko: 볼프강 전용. 피해 17. 중/중/저 효율. 강인 상태에서 투척 가능(범위 피해 반경 2).
+  desc_ja: ウォルフガング専用。ダメージ17。中/中/低効率。マイティ時に投擲可能（範囲半径2）。
+  desc_zh_CN: 沃尔夫冈专属。伤害17。中/中/低效率。强壮时可投掷（范围半径2）。
+  desc_zh_TW: 沃爾夫岡專屬。傷害17。中/中/低效率。強壯時可投擲（範圍半徑2）。
+  desc_fr: Exclusif à Wolfgang. 17 dégâts. Efficacité moy./moy./basse. Lançable en puissant (rayon AoE 2).
+  desc_de: Wolfgang-exklusiv. 17 Schaden. Mittlere/mittlere/niedrige Effizienz. Werfbar wenn mächtig (AoE-Radius 2).
+  desc_it: Esclusivo di Wolfgang. 17 danni. Efficienza med/med/bassa. Lanciabile da potente (raggio AoE 2).
+  desc_pl: Wyłącznie dla Wolfganga. 17 obrażeń. Średnia/średnia/niska wydajność. Rzucalny gdy potężny (promień AoE 2).
+  desc_pt_BR: Exclusivo de Wolfgang. 17 de dano. Eficiência méd/méd/baixa. Arremessável quando poderoso (raio AoE 2).
+  desc_ru: Эксклюзив Вольфганга. Урон 17. Средняя/средняя/низкая эффективность. Метательный в состоянии мощи (радиус AoE 2).
+  desc_es: Exclusivo de Wolfgang. 17 de daño. Eficiencia med/med/baja. Lanzable cuando fuerte (radio AoE 2).
+  desc_es_MX: Exclusivo de Wolfgang. 17 de daño. Eficiencia med/med/baja. Lanzable cuando fuerte (radio AoE 2).
 291.dumbbell_bluegem
   en: Icebell
   ko: 빙령
   app: O
   source: Wolfgang-exclusive weapon/exercise tool. Damage 42.5 (34*1.25). Consumption 0.3 per lift, 0.6 per attack, 3 per throw. Efficiency: high/high/high. Ice attack: adds 2 coldness on thrown hit. Throwable when mighty.
+  desc_en: Wolfgang-exclusive. 42.5 damage, high efficiency. Adds 2 coldness on thrown hit. Throwable when mighty.
+  desc_ko: 볼프강 전용. 피해 42.5, 고효율. 투척 적중 시 냉기 2 추가. 강인 상태에서 투척 가능.
+  desc_ja: ウォルフガング専用。ダメージ42.5、高効率。投擲命中時に冷気2追加。マイティ時に投擲可能。
+  desc_zh_CN: 沃尔夫冈专属。伤害42.5，高效率。投掷命中时附加2点寒冷。强壮时可投掷。
+  desc_zh_TW: 沃爾夫岡專屬。傷害42.5，高效率。投擲命中時附加2點寒冷。強壯時可投擲。
+  desc_fr: Exclusif à Wolfgang. 42.5 dégâts, haute efficacité. Ajoute 2 de froid au lancer. Lançable en puissant.
+  desc_de: Wolfgang-exklusiv. 42,5 Schaden, hohe Effizienz. Fügt 2 Kälte bei Trefferwurf hinzu. Werfbar wenn mächtig.
+  desc_it: Esclusivo di Wolfgang. 42.5 danni, alta efficienza. Aggiunge 2 freddo al lancio. Lanciabile da potente.
+  desc_pl: Wyłącznie dla Wolfganga. 42.5 obrażeń, wysoka wydajność. Dodaje 2 chłodu przy trafieniu rzutem. Rzucalny gdy potężny.
+  desc_pt_BR: Exclusivo de Wolfgang. 42.5 de dano, alta eficiência. Adiciona 2 de frio ao arremesso. Arremessável quando poderoso.
+  desc_ru: Эксклюзив Вольфганга. Урон 42,5, высокая эффективность. Добавляет 2 холода при попадании. Метательный в состоянии мощи.
+  desc_es: Exclusivo de Wolfgang. 42.5 de daño, alta eficiencia. Añade 2 de frío al impacto. Lanzable cuando fuerte.
+  desc_es_MX: Exclusivo de Wolfgang. 42.5 de daño, alta eficiencia. Añade 2 de frío al impacto. Lanzable cuando fuerte.
 292.dumbbell_gem
   en: Gembell
   ko: 옥령
   app: O
   source: Wolfgang-exclusive weapon/exercise tool. Damage 42.5 (34*1.25). Consumption 0.2 per lift, 0.4 per attack, 2 per throw. Efficiency: high/high/high. Throwable when mighty (AoE radius 2). Finite uses.
+  desc_en: Wolfgang-exclusive. 42.5 damage, highest efficiency (0.2/lift). Throwable when mighty (AoE radius 2).
+  desc_ko: 볼프강 전용. 피해 42.5, 최고 효율(들기 0.2). 강인 상태에서 투척 가능(범위 반경 2).
+  desc_ja: ウォルフガング専用。ダメージ42.5、最高効率（リフト0.2）。マイティ時に投擲可能（範囲半径2）。
+  desc_zh_CN: 沃尔夫冈专属。伤害42.5，最高效率（举重0.2）。强壮时可投掷（范围半径2）。
+  desc_zh_TW: 沃爾夫岡專屬。傷害42.5，最高效率（舉重0.2）。強壯時可投擲（範圍半徑2）。
+  desc_fr: Exclusif à Wolfgang. 42.5 dégâts, efficacité maximale (0.2/levée). Lançable en puissant (rayon AoE 2).
+  desc_de: Wolfgang-exklusiv. 42,5 Schaden, höchste Effizienz (0,2/Hub). Werfbar wenn mächtig (AoE-Radius 2).
+  desc_it: Esclusivo di Wolfgang. 42.5 danni, massima efficienza (0.2/sollevamento). Lanciabile da potente (raggio AoE 2).
+  desc_pl: Wyłącznie dla Wolfganga. 42.5 obrażeń, najwyższa wydajność (0.2/podniesienie). Rzucalny gdy potężny (promień AoE 2).
+  desc_pt_BR: Exclusivo de Wolfgang. 42.5 de dano, maior eficiência (0.2/levantamento). Arremessável quando poderoso (raio AoE 2).
+  desc_ru: Эксклюзив Вольфганга. Урон 42,5, наивысшая эффективность (0,2/подъём). Метательный в состоянии мощи (радиус AoE 2).
+  desc_es: Exclusivo de Wolfgang. 42.5 de daño, máxima eficiencia (0.2/levantamiento). Lanzable cuando fuerte (radio AoE 2).
+  desc_es_MX: Exclusivo de Wolfgang. 42.5 de daño, máxima eficiencia (0.2/levantamiento). Lanzable cuando fuerte (radio AoE 2).
 293.dumbbell_golden
   en: Golden Dumbbell
   ko: 황금 아령
   app: O
   source: Wolfgang-exclusive weapon/exercise tool. Damage 27.2 (34*0.8). Consumption 0.5 per lift, 1 per attack, 5 per throw. Efficiency: high/med/low. Throwable when mighty (AoE radius 2). Finite uses.
+  desc_en: Wolfgang-exclusive. 27.2 damage. High/med/low efficiency. Throwable when mighty (AoE radius 2).
+  desc_ko: 볼프강 전용. 피해 27.2. 고/중/저 효율. 강인 상태에서 투척 가능(범위 반경 2).
+  desc_ja: ウォルフガング専用。ダメージ27.2。高/中/低効率。マイティ時に投擲可能（範囲半径2）。
+  desc_zh_CN: 沃尔夫冈专属。伤害27.2。高/中/低效率。强壮时可投掷（范围半径2）。
+  desc_zh_TW: 沃爾夫岡專屬。傷害27.2。高/中/低效率。強壯時可投擲（範圍半徑2）。
+  desc_fr: Exclusif à Wolfgang. 27.2 dégâts. Efficacité haute/moy./basse. Lançable en puissant (rayon AoE 2).
+  desc_de: Wolfgang-exklusiv. 27,2 Schaden. Hohe/mittlere/niedrige Effizienz. Werfbar wenn mächtig (AoE-Radius 2).
+  desc_it: Esclusivo di Wolfgang. 27.2 danni. Efficienza alta/med/bassa. Lanciabile da potente (raggio AoE 2).
+  desc_pl: Wyłącznie dla Wolfganga. 27.2 obrażeń. Wysoka/średnia/niska wydajność. Rzucalny gdy potężny (promień AoE 2).
+  desc_pt_BR: Exclusivo de Wolfgang. 27.2 de dano. Eficiência alta/méd/baixa. Arremessável quando poderoso (raio AoE 2).
+  desc_ru: Эксклюзив Вольфганга. Урон 27,2. Высокая/средняя/низкая эффективность. Метательный в состоянии мощи (радиус AoE 2).
+  desc_es: Exclusivo de Wolfgang. 27.2 de daño. Eficiencia alta/med/baja. Lanzable cuando fuerte (radio AoE 2).
+  desc_es_MX: Exclusivo de Wolfgang. 27.2 de daño. Eficiencia alta/med/baja. Lanzable cuando fuerte (radio AoE 2).
 294.dumbbell_heat
   en: Thermbell
   ko: 보온아령
   app: O
   source: Wolfgang-exclusive weapon/exercise tool. Damage 17 (34*0.5). 150 max uses. Consumption 0.8 per lift. Efficiency: med/med/low. Functions as thermal stone — absorbs/emits heat across 5 temperature ranges, carried heat multiplier 2.1x. Loses 1/8 durability per temperature range transition.
+  desc_en: Wolfgang-exclusive. 17 damage, 150 uses. Functions as thermal stone with 2.1× heat multiplier. Loses 1/8 durability per temperature shift.
+  desc_ko: 볼프강 전용. 피해 17, 150회 사용. 열 배율 2.1배의 보온석 기능. 온도 변화마다 내구도 1/8 감소.
+  desc_ja: ウォルフガング専用。ダメージ17、150回使用。熱倍率2.1倍のサーマルストーン機能。温度変化ごとに耐久1/8減少。
+  desc_zh_CN: 沃尔夫冈专属。伤害17，150次使用。具有2.1倍热量倍率的暖石功能。每次温度变化消耗1/8耐久。
+  desc_zh_TW: 沃爾夫岡專屬。傷害17，150次使用。具有2.1倍熱量倍率的暖石功能。每次溫度變化消耗1/8耐久。
+  desc_fr: Exclusif à Wolfgang. 17 dégâts, 150 utilisations. Fonctionne comme pierre thermale (×2.1). Perd 1/8 durabilité par changement de temp.
+  desc_de: Wolfgang-exklusiv. 17 Schaden, 150 Nutzungen. Funktioniert als Thermalstein (×2,1 Hitze). Verliert 1/8 Haltbarkeit pro Temperaturwechsel.
+  desc_it: Esclusivo di Wolfgang. 17 danni, 150 usi. Funziona come pietra termica (×2.1). Perde 1/8 durabilità per cambio temperatura.
+  desc_pl: Wyłącznie dla Wolfganga. 17 obrażeń, 150 użyć. Działa jak kamień termiczny (×2.1). Traci 1/8 wytrzymałości na zmianę temperatury.
+  desc_pt_BR: Exclusivo de Wolfgang. 17 de dano, 150 usos. Funciona como pedra térmica (×2.1). Perde 1/8 durabilidade por mudança de temperatura.
+  desc_ru: Эксклюзив Вольфганга. Урон 17, 150 использований. Работает как термальный камень (×2,1). Теряет 1/8 прочности за смену температуры.
+  desc_es: Exclusivo de Wolfgang. 17 de daño, 150 usos. Funciona como piedra térmica (×2.1). Pierde 1/8 durabilidad por cambio de temperatura.
+  desc_es_MX: Exclusivo de Wolfgang. 17 de daño, 150 usos. Funciona como piedra térmica (×2.1). Pierde 1/8 durabilidad por cambio de temperatura.
 295.dumbbell_marble
   en: Marbell
   ko: 대리령
   app: O
   source: Wolfgang-exclusive weapon/exercise tool. Damage 34 (34*1). Consumption 0.3 per lift, 0.6 per attack, 3 per throw. Efficiency: high/high/med. Walk speed 0.9x while equipped. Throwable when mighty. Finite uses.
+  desc_en: Wolfgang-exclusive. 34 damage, high efficiency. Walk speed ×0.9 while equipped. Throwable when mighty.
+  desc_ko: 볼프강 전용. 피해 34, 고효율. 장비 시 이동 속도 ×0.9. 강인 상태에서 투척 가능.
+  desc_ja: ウォルフガング専用。ダメージ34、高効率。装備中の移動速度×0.9。マイティ時に投擲可能。
+  desc_zh_CN: 沃尔夫冈专属。伤害34，高效率。装备时移速×0.9。强壮时可投掷。
+  desc_zh_TW: 沃爾夫岡專屬。傷害34，高效率。裝備時移速×0.9。強壯時可投擲。
+  desc_fr: Exclusif à Wolfgang. 34 dégâts, haute efficacité. Vitesse ×0.9 équipé. Lançable en puissant.
+  desc_de: Wolfgang-exklusiv. 34 Schaden, hohe Effizienz. Geschwindigkeit ×0,9 wenn ausgerüstet. Werfbar wenn mächtig.
+  desc_it: Esclusivo di Wolfgang. 34 danni, alta efficienza. Velocità ×0.9 equipaggiato. Lanciabile da potente.
+  desc_pl: Wyłącznie dla Wolfganga. 34 obrażeń, wysoka wydajność. Prędkość ×0.9 z wyposażeniem. Rzucalny gdy potężny.
+  desc_pt_BR: Exclusivo de Wolfgang. 34 de dano, alta eficiência. Velocidade ×0.9 equipado. Arremessável quando poderoso.
+  desc_ru: Эксклюзив Вольфганга. Урон 34, высокая эффективность. Скорость ×0,9 при экипировке. Метательный в состоянии мощи.
+  desc_es: Exclusivo de Wolfgang. 34 de daño, alta eficiencia. Velocidad ×0.9 equipado. Lanzable cuando fuerte.
+  desc_es_MX: Exclusivo de Wolfgang. 34 de daño, alta eficiencia. Velocidad ×0.9 equipado. Lanzable cuando fuerte.
 296.dumbbell_redgem
   en: Firebell
   ko: 화령
   app: O
   source: Wolfgang-exclusive weapon/exercise tool. Damage 42.5 (34*1.25). Consumption 0.3 per lift, 0.6 per attack, 3 per throw. Efficiency: high/high/high. Fire attack: spawns 3 hound fires on thrown hit. Throwable when mighty.
+  desc_en: Wolfgang-exclusive. 42.5 damage, high efficiency. Spawns 3 hound fires on thrown hit. Throwable when mighty.
+  desc_ko: 볼프강 전용. 피해 42.5, 고효율. 투척 적중 시 사냥개 불꽃 3개 생성. 강인 상태에서 투척 가능.
+  desc_ja: ウォルフガング専用。ダメージ42.5、高効率。投擲命中時にハウンドファイア3つ生成。マイティ時に投擲可能。
+  desc_zh_CN: 沃尔夫冈专属。伤害42.5，高效率。投掷命中时生成3个猎犬火焰。强壮时可投掷。
+  desc_zh_TW: 沃爾夫岡專屬。傷害42.5，高效率。投擲命中時生成3個獵犬火焰。強壯時可投擲。
+  desc_fr: Exclusif à Wolfgang. 42.5 dégâts, haute efficacité. Crée 3 feux de chien au lancer. Lançable en puissant.
+  desc_de: Wolfgang-exklusiv. 42,5 Schaden, hohe Effizienz. Erzeugt 3 Hundefeuer bei Trefferwurf. Werfbar wenn mächtig.
+  desc_it: Esclusivo di Wolfgang. 42.5 danni, alta efficienza. Genera 3 fuochi cane al lancio. Lanciabile da potente.
+  desc_pl: Wyłącznie dla Wolfganga. 42.5 obrażeń, wysoka wydajność. Tworzy 3 ognie ogarów przy trafieniu. Rzucalny gdy potężny.
+  desc_pt_BR: Exclusivo de Wolfgang. 42.5 de dano, alta eficiência. Gera 3 fogos de cão ao arremesso. Arremessável quando poderoso.
+  desc_ru: Эксклюзив Вольфганга. Урон 42,5, высокая эффективность. Создаёт 3 огня гончих при попадании. Метательный в состоянии мощи.
+  desc_es: Exclusivo de Wolfgang. 42.5 de daño, alta eficiencia. Genera 3 fuegos de sabueso al impacto. Lanzable cuando fuerte.
+  desc_es_MX: Exclusivo de Wolfgang. 42.5 de daño, alta eficiencia. Genera 3 fuegos de sabueso al impacto. Lanzable cuando fuerte.
 297.earmuffshat
   en: Rabbit Earmuffs
   ko: 토끼 귀마개
   app: O
   source: Hat (open top). Winter insulation 60 (small). Fuel lasts 2400s (5 days). Destroyed when depleted. No waterproofing or armor.
+  desc_en: Hat with winter insulation 60. Fuel lasts 2400s (5 days). Destroyed when depleted. No waterproofing or armor.
+  desc_ko: 겨울 단열 60의 모자. 연료 2400초(5일). 소진 시 파괴. 방수 및 방어력 없음.
+  desc_ja: 冬断熱60の帽子。燃料2400秒（5日間）。消耗で破壊。防水・アーマーなし。
+  desc_zh_CN: 冬季隔热60的帽子。燃料2400秒（5天）。耗尽后损毁。无防水或护甲。
+  desc_zh_TW: 冬季隔熱60的帽子。燃料2400秒（5天）。耗盡後損毀。無防水或護甲。
+  desc_fr: Chapeau avec isolation hivernale 60. Combustible 2400s (5 jours). Détruit quand épuisé. Aucune imperméabilité ni armure.
+  desc_de: Hut mit Winterisolierung 60. Brennstoff 2400s (5 Tage). Zerstört bei Erschöpfung. Keine Wasserdichtigkeit oder Rüstung.
+  desc_it: Cappello con isolamento invernale 60. Carburante 2400s (5 giorni). Distrutto se esaurito. Nessuna impermeabilità o armatura.
+  desc_pl: Kapelusz z izolacją zimową 60. Paliwo 2400s (5 dni). Zniszczony po wyczerpaniu. Brak wodoodporności i pancerza.
+  desc_pt_BR: Chapéu com isolamento de inverno 60. Combustível 2400s (5 dias). Destruído ao esgotar. Sem impermeabilidade ou armadura.
+  desc_ru: Шляпа с зимней изоляцией 60. Топливо 2400с (5 дней). Разрушается при исчерпании. Без водонепроницаемости и брони.
+  desc_es: Sombrero con aislamiento invernal 60. Combustible 2400s (5 días). Se destruye al agotarse. Sin impermeabilidad ni armadura.
+  desc_es_MX: Sombrero con aislamiento invernal 60. Combustible 2400s (5 días). Se destruye al agotarse. Sin impermeabilidad ni armadura.
 298.elixir_container
   en: Picnic Casket
   ko: 소풍용 관짝
   app: O
   source: Portable container (3x3 grid). Wendy-exclusive (restricted to "elixircontaineruser" tag). Opens on ground only (drops on open). Burnable. Can be carried in inventory.
+  desc_en: Wendy-exclusive portable container (3×3 grid). Opens on ground only. Burnable. Carriable in inventory.
+  desc_ko: 웬디 전용 휴대용 컨테이너(3×3 칸). 바닥에서만 열림. 연소 가능. 인벤토리에 휴대 가능.
+  desc_ja: ウェンディ専用ポータブルコンテナ（3×3グリッド）。地面でのみ開閉。燃焼可能。インベントリに携帯可能。
+  desc_zh_CN: 温蒂专属便携容器（3×3格）。仅在地面打开。可燃。可携带。
+  desc_zh_TW: 溫蒂專屬便攜容器（3×3格）。僅在地面打開。可燃。可攜帶。
+  desc_fr: Conteneur portable exclusif à Wendy (grille 3×3). S'ouvre au sol uniquement. Inflammable. Transportable dans l'inventaire.
+  desc_de: Wendy-exklusiver tragbarer Behälter (3×3 Raster). Öffnet nur auf dem Boden. Brennbar. Im Inventar tragbar.
+  desc_it: Contenitore portatile esclusivo di Wendy (griglia 3×3). Si apre solo a terra. Combustibile. Trasportabile nell'inventario.
+  desc_pl: Przenośny pojemnik wyłącznie dla Wendy (siatka 3×3). Otwiera się tylko na ziemi. Palny. Noszony w ekwipunku.
+  desc_pt_BR: Container portátil exclusivo de Wendy (grade 3×3). Abre apenas no chão. Inflamável. Transportável no inventário.
+  desc_ru: Переносной контейнер только для Венди (сетка 3×3). Открывается только на земле. Горючий. Переносится в инвентаре.
+  desc_es: Contenedor portátil exclusivo de Wendy (cuadrícula 3×3). Se abre solo en el suelo. Inflamable. Transportable en inventario.
+  desc_es_MX: Contenedor portátil exclusivo de Wendy (cuadrícula 3×3). Se abre solo en el suelo. Inflamable. Transportable en inventario.
 299.endtable
   en: End Table
   ko: 작은 탁자
   app: O
   source: Structure. Accepts flowers via vase component — fresh flowers emit light (radius 1.5, intensity 0.5) and give sanity boost on placement. Flowers wilt after 4800s (10 days). Hammerable in 4 hits. Burnable.
+  desc_en: Structure with vase for flowers. Fresh flowers emit light (radius 1.5) and grant sanity. Flowers wilt after 4800s (10 days). Hammerable in 4 hits.
+  desc_ko: 꽃꽂이용 화병이 있는 구조물. 신선한 꽃은 빛(반경 1.5)과 정신력을 제공. 꽃은 4800초(10일) 후 시듦. 망치 4회로 파괴.
+  desc_ja: 花瓶付き構造物。新鮮な花は発光（半径1.5）し正気度を付与。花は4800秒（10日）後に枯れる。ハンマー4回で破壊。
+  desc_zh_CN: 带花瓶的建筑。鲜花发光（半径1.5）并提供理智。花在4800秒（10天）后枯萎。4次锤击可破坏。
+  desc_zh_TW: 帶花瓶的建築。鮮花發光（半徑1.5）並提供理智。花在4800秒（10天）後枯萎。4次錘擊可破壞。
+  desc_fr: Structure avec vase pour fleurs. Les fleurs fraîches émettent de la lumière (rayon 1.5) et donnent de la santé mentale. Fanent après 4800s (10 jours). 4 coups.
+  desc_de: Struktur mit Blumenvase. Frische Blumen leuchten (Radius 1,5) und geben Zurechnungsfähigkeit. Welken nach 4800s (10 Tage). 4 Hammerschläge.
+  desc_it: Struttura con vaso per fiori. I fiori freschi emettono luce (raggio 1.5) e danno sanità. Appassiscono dopo 4800s (10 giorni). 4 colpi.
+  desc_pl: Konstrukcja z wazonem na kwiaty. Świeże kwiaty emitują światło (zasięg 1.5) i dają zdrowie psychiczne. Więdną po 4800s (10 dni). 4 uderzenia.
+  desc_pt_BR: Estrutura com vaso para flores. Flores frescas emitem luz (raio 1.5) e dão sanidade. Murcham após 4800s (10 dias). 4 marteladas.
+  desc_ru: Постройка с вазой для цветов. Свежие цветы излучают свет (радиус 1,5) и дают рассудок. Увядают через 4800с (10 дней). 4 удара молотом.
+  desc_es: Estructura con jarrón para flores. Las flores frescas emiten luz (radio 1.5) y otorgan cordura. Se marchitan tras 4800s (10 días). 4 martillazos.
+  desc_es_MX: Estructura con jarrón para flores. Las flores frescas emiten luz (radio 1.5) y otorgan cordura. Se marchitan tras 4800s (10 días). 4 martillazos.
 300.eyebrellahat
   en: Eyebrella
   ko: 눈우산
   app: O
   source: Hat (open top, umbrella). 100% waterproof. Summer insulation 240 (large). Lightning-proof (insulated). Fuel lasts 4320s (9 days). Destroyed when depleted. Enlarges player shadow to 2.2x1.4 while worn.
+  desc_en: Hat with 100% waterproof, summer insulation 240, lightning-proof. Fuel lasts 4320s (9 days). Destroyed when depleted.
+  desc_ko: 방수 100%, 여름 단열 240, 번개 방지 모자. 연료 4320초(9일). 소진 시 파괴.
+  desc_ja: 防水100%、夏断熱240、雷防護の帽子。燃料4320秒（9日間）。消耗で破壊。
+  desc_zh_CN: 100%防水、夏季隔热240、防雷帽子。燃料4320秒（9天）。耗尽后损毁。
+  desc_zh_TW: 100%防水、夏季隔熱240、防雷帽子。燃料4320秒（9天）。耗盡後損毀。
+  desc_fr: Chapeau 100 % imperméable, isolation été 240, anti-foudre. Combustible 4320s (9 jours). Détruit quand épuisé.
+  desc_de: Hut mit 100 % Wasserdichtigkeit, Sommerisolierung 240, blitzsicher. Brennstoff 4320s (9 Tage). Zerstört bei Erschöpfung.
+  desc_it: Cappello impermeabile al 100%, isolamento estivo 240, anti-fulmine. Carburante 4320s (9 giorni). Distrutto se esaurito.
+  desc_pl: Kapelusz 100% wodoodporny, izolacja letnia 240, odporny na pioruny. Paliwo 4320s (9 dni). Zniszczony po wyczerpaniu.
+  desc_pt_BR: Chapéu 100% impermeável, isolamento de verão 240, à prova de raios. Combustível 4320s (9 dias). Destruído ao esgotar.
+  desc_ru: Шляпа с 100% водонепроницаемостью, летней изоляцией 240, молниезащитой. Топливо 4320с (9 дней). Разрушается при исчерпании.
+  desc_es: Sombrero 100 % impermeable, aislamiento verano 240, anti-rayos. Combustible 4320s (9 días). Se destruye al agotarse.
+  desc_es_MX: Sombrero 100 % impermeable, aislamiento verano 240, anti-rayos. Combustible 4320s (9 días). Se destruye al agotarse.
 301.eyemaskhat
   en: Eye Mask
   ko: 눈알 가면
   app: X
   type: deconstruct
   source: Hat. Armor 315hp (150*3*0.7) at 80% absorption. Waterproof 20%.
+  desc_en: Hat with 315 HP armor at 80% absorption. Waterproof 20%.
+  desc_ko: 315 HP 방어력, 80% 흡수의 모자. 방수 20%.
+  desc_ja: 315HPの防具（80%吸収）の帽子。防水20%。
+  desc_zh_CN: 帽子，315 HP护甲，80%吸收。防水20%。
+  desc_zh_TW: 帽子，315 HP護甲，80%吸收。防水20%。
+  desc_fr: Chapeau avec 315 PV d'armure à 80 % d'absorption. Imperméable 20 %.
+  desc_de: Hut mit 315 TP Rüstung bei 80 % Absorption. Wasserdicht 20 %.
+  desc_it: Cappello con 315 PV di armatura all'80% di assorbimento. Impermeabile 20%.
+  desc_pl: Kapelusz z 315 PZ pancerza przy 80% absorpcji. Wodoodporność 20%.
+  desc_pt_BR: Chapéu com 315 PV de armadura a 80% de absorção. Impermeável 20%.
+  desc_ru: Шляпа с 315 ед. брони при 80% поглощении. Водонепроницаемость 20%.
+  desc_es: Sombrero con 315 PV de armadura al 80 % de absorción. Impermeable 20 %.
+  desc_es_MX: Sombrero con 315 PV de armadura al 80 % de absorción. Impermeable 20 %.
 302.eyeturret
   en: Houndius Shootius
   ko: 하운디우스 슈티우스
   app: X
   type: deconstruct
   source: Placed turret structure. 1000hp, 12hp/s regen, 65 damage, range 15, attacks every 3s. Fires eye_charge projectile. Sanity aura -0.1/s. Shares targets with other eyeturrets within range 15. Drops thulecite loot on death.
+  desc_en: Turret structure with 1000 HP, 12 HP/s regen. Fires 65 damage projectiles every 3s at range 15. Sanity aura -0.1/s.
+  desc_ko: 1000 HP, 12 HP/s 재생의 터렛 구조물. 사거리 15에서 3초마다 65 피해 투사체 발사. 정신력 오라 -0.1/s.
+  desc_ja: 1000HP、12HP/s再生のタレット構造物。射程15から3秒ごとに65ダメージの弾を発射。正気度オーラ-0.1/s。
+  desc_zh_CN: 炮塔结构，1000 HP，12 HP/s再生。射程15内每3秒发射65伤害投射物。理智光环-0.1/s。
+  desc_zh_TW: 砲塔結構，1000 HP，12 HP/s再生。射程15內每3秒發射65傷害投射物。理智光環-0.1/s。
+  desc_fr: Tourelle avec 1000 PV, régénération 12 PV/s. Tire des projectiles de 65 dégâts toutes les 3s à portée 15. Aura de santé mentale -0,1/s.
+  desc_de: Turmstruktur mit 1000 TP, 12 TP/s Regeneration. Feuert 65 Schaden alle 3s auf Reichweite 15. Verstandsaura -0,1/s.
+  desc_it: Torretta con 1000 PV, 12 PV/s rigenerazione. Spara proiettili da 65 danni ogni 3s a raggio 15. Aura sanità -0,1/s.
+  desc_pl: Wieżyczka z 1000 PZ, 12 PZ/s regeneracji. Strzela pociskami o 65 obrażeniach co 3s na zasięg 15. Aura poczytalności -0,1/s.
+  desc_pt_BR: Torreta com 1000 PV, 12 PV/s de regeneração. Dispara projéteis de 65 de dano a cada 3s no alcance 15. Aura de sanidade -0,1/s.
+  desc_ru: Турель с 1000 ед. здоровья, 12 ед./с регенерации. Стреляет снарядами по 65 урона каждые 3с на дальность 15. Аура рассудка -0,1/с.
+  desc_es: Torreta con 1000 PV, 12 PV/s de regeneración. Dispara proyectiles de 65 de daño cada 3s a alcance 15. Aura de cordura -0,1/s.
+  desc_es_MX: Torreta con 1000 PV, 12 PV/s de regeneración. Dispara proyectiles de 65 de daño cada 3s a alcance 15. Aura de cordura -0,1/s.
 303.eyeturret_item
   en: Houndius Shootius
   ko: 하운디우스 슈티우스
   app: O
   source: Deployable kit that places an Eye Turret. When placed: 1000hp, 12hp/s regen, 65 damage, range 15, attack period 3s, sanity aura -0.1/s.
+  desc_en: Deployable kit that places an Eye Turret. When placed: 1000 HP, 12 HP/s regen, 65 damage, range 15, attack period 3s, sanity aura -0.1/s.
+  desc_ko: 눈알 터렛을 설치하는 배치 키트. 설치 시: 1000 HP, 12 HP/s 재생, 65 피해, 사거리 15, 공격 주기 3초, 정신력 오라 -0.1/s.
+  desc_ja: アイタレットを設置するキット。設置時：1000HP、12HP/s再生、65ダメージ、射程15、攻撃間隔3秒、正気度オーラ-0.1/s。
+  desc_zh_CN: 部署眼球炮塔的套件。放置后：1000 HP，12 HP/s再生，65伤害，射程15，攻击间隔3秒，理智光环-0.1/s。
+  desc_zh_TW: 部署眼球砲塔的套件。放置後：1000 HP，12 HP/s再生，65傷害，射程15，攻擊間隔3秒，理智光環-0.1/s。
+  desc_fr: Kit déployable pour placer une Tourelle Oculaire. Placée : 1000 PV, 12 PV/s régén., 65 dégâts, portée 15, attaque toutes les 3s, aura -0,1/s.
+  desc_de: Platzierbares Kit für einen Augenturm. Platziert: 1000 TP, 12 TP/s Regen., 65 Schaden, Reichweite 15, Angriff alle 3s, Aura -0,1/s.
+  desc_it: Kit per posizionare una Torretta Oculare. Posizionata: 1000 PV, 12 PV/s rigeneraz., 65 danni, raggio 15, attacco ogni 3s, aura -0,1/s.
+  desc_pl: Zestaw do postawienia Wieżyczki Oka. Postawiona: 1000 PZ, 12 PZ/s regen., 65 obrażeń, zasięg 15, atak co 3s, aura -0,1/s.
+  desc_pt_BR: Kit para posicionar uma Torreta Ocular. Posicionada: 1000 PV, 12 PV/s regen., 65 de dano, alcance 15, ataque a cada 3s, aura -0,1/s.
+  desc_ru: Набор для установки Глазной Турели. Установленная: 1000 ед., 12 ед./с реген., 65 урона, дальность 15, атака каждые 3с, аура -0,1/с.
+  desc_es: Kit para colocar una Torreta Ocular. Colocada: 1000 PV, 12 PV/s regen., 65 de daño, alcance 15, ataque cada 3s, aura -0,1/s.
+  desc_es_MX: Kit para colocar una Torreta Ocular. Colocada: 1000 PV, 12 PV/s regen., 65 de daño, alcance 15, ataque cada 3s, aura -0,1/s.
 304.farm_hoe
   en: Garden Hoe
   ko: 괭이
   app: O
   source: Tool + weapon. 25 uses for tilling soil (1 per till). Damage 17 (34*0.5).
+  desc_en: Tool and weapon with 25 uses. 17 damage. Tills soil (1 use per till).
+  desc_ko: 25회 사용 도구 겸 무기. 17 피해. 토양 경작 (1회 행동당 1회 소모).
+  desc_ja: 25回使用の道具兼武器。17ダメージ。土壌を耕す（1耕作につき1消費）。
+  desc_zh_CN: 工具兼武器，25次使用。17伤害。耕地（每次耕作消耗1次）。
+  desc_zh_TW: 工具兼武器，25次使用。17傷害。耕地（每次耕作消耗1次）。
+  desc_fr: Outil et arme avec 25 utilisations. 17 dégâts. Laboure le sol (1 utilisation par labour).
+  desc_de: Werkzeug und Waffe mit 25 Nutzungen. 17 Schaden. Pflügt Boden (1 Nutzung pro Pflügen).
+  desc_it: Strumento e arma con 25 usi. 17 danni. Dissoda il terreno (1 uso per dissodamento).
+  desc_pl: Narzędzie i broń z 25 użyciami. 17 obrażeń. Orze glebę (1 użycie na oranie).
+  desc_pt_BR: Ferramenta e arma com 25 usos. 17 de dano. Lavra o solo (1 uso por lavra).
+  desc_ru: Инструмент и оружие на 25 использований. 17 урона. Вспахивает почву (1 использование за вспашку).
+  desc_es: Herramienta y arma con 25 usos. 17 de daño. Ara el suelo (1 uso por arado).
+  desc_es_MX: Herramienta y arma con 25 usos. 17 de daño. Ara el suelo (1 uso por arado).
 305.farm_plow_item
   en: Garden Digamajig
   ko: 텃밭 쟁기계
   app: O
   source: Deployable kit. 4 uses. Deploys a structure that drills for 15s (seg_time*0.5) to convert a ground tile into farming soil. Spawns 2-4 soil debris.
+  desc_en: Deployable kit with 4 uses. Drills for 15s to convert a ground tile into farming soil. Spawns 2-4 soil debris.
+  desc_ko: 4회 사용 설치 키트. 15초간 시추하여 땅 타일을 농업용 토양으로 변환. 토양 잔해 2-4개 생성.
+  desc_ja: 4回使用の設置キット。15秒間掘削して地面タイルを農地に変換。土壌の破片を2-4個生成。
+  desc_zh_CN: 可部署套件，4次使用。钻探15秒将地面转换为农田。生成2-4个土壤碎片。
+  desc_zh_TW: 可部署套件，4次使用。鑽探15秒將地面轉換為農田。生成2-4個土壤碎片。
+  desc_fr: Kit déployable avec 4 utilisations. Fore pendant 15s pour convertir une tuile en sol cultivable. Génère 2-4 débris de terre.
+  desc_de: Platzierbares Kit mit 4 Nutzungen. Bohrt 15s um eine Bodenkachel in Ackerland umzuwandeln. Erzeugt 2-4 Erdtrümmer.
+  desc_it: Kit piazzabile con 4 usi. Trapana per 15s per convertire un riquadro in terreno agricolo. Genera 2-4 detriti di terra.
+  desc_pl: Zestaw z 4 użyciami. Wierci przez 15s, zamieniając kafelek gruntu na ziemię uprawną. Tworzy 2-4 odpady glebowe.
+  desc_pt_BR: Kit implantável com 4 usos. Perfura por 15s para converter um ladrilho em solo agrícola. Gera 2-4 detritos de solo.
+  desc_ru: Набор на 4 использования. Бурит 15с для превращения участка в пашню. Создаёт 2-4 фрагмента почвы.
+  desc_es: Kit desplegable con 4 usos. Perfora durante 15s para convertir un suelo en tierra de cultivo. Genera 2-4 restos de tierra.
+  desc_es_MX: Kit desplegable con 4 usos. Perfora durante 15s para convertir un suelo en tierra de cultivo. Genera 2-4 restos de tierra.
 306.fast_farmplot
   en: Improved Farm
   ko: 개선된 농장
   app: X
   type: deconstruct
   source: Legacy prefab from Don't Starve single-player. No prefab file exists in DST — replaced by the farm plot system.
+  desc_en: Legacy prefab from Don't Starve single-player. Not available in DST — replaced by the farm plot system.
+  desc_ko: Don't Starve 싱글 플레이어의 레거시 프리팹. DST에서 사용 불가 — 텃밭 시스템으로 대체됨.
+  desc_ja: Don't Starveシングルプレイヤーのレガシープレハブ。DSTでは使用不可 — 農場システムに置き換え。
+  desc_zh_CN: Don't Starve单人版遗留预制件。DST中不可用 - 已被农场系统取代。
+  desc_zh_TW: Don't Starve單人版遺留預製件。DST中不可用 - 已被農場系統取代。
+  desc_fr: Préfab hérité de Don't Starve solo. Non disponible dans DST — remplacé par le système de parcelle agricole.
+  desc_de: Legacy-Prefab aus Don't Starve Einzelspieler. In DST nicht verfügbar — ersetzt durch das Ackersystem.
+  desc_it: Prefab legacy da Don't Starve giocatore singolo. Non disponibile in DST — sostituito dal sistema agricolo.
+  desc_pl: Starszy prefab z Don't Starve dla jednego gracza. Niedostępny w DST — zastąpiony systemem upraw.
+  desc_pt_BR: Prefab legado do Don't Starve single-player. Não disponível no DST — substituído pelo sistema de fazenda.
+  desc_ru: Устаревший префаб из одиночного Don't Starve. Недоступен в DST — заменён системой грядок.
+  desc_es: Prefab heredado de Don't Starve para un jugador. No disponible en DST — reemplazado por el sistema de parcelas.
+  desc_es_MX: Prefab heredado de Don't Starve para un jugador. No disponible en DST — reemplazado por el sistema de parcelas.
 307.featherfan
   en: Luxury Fan
   ko: 화려한 부채
   app: O
   source: Fan tool. 15 uses. Extinguishes fires/smoldering and cools players by up to -50 degrees (minimum 2.5) in a radius of 7.
+  desc_en: Fan tool with 15 uses. Extinguishes fires/smoldering and cools players by up to -50 degrees in radius 7.
+  desc_ko: 15회 사용 부채 도구. 반경 7 내 화재/연기 소화 및 최대 -50도 냉각 효과.
+  desc_ja: 15回使用のファン道具。半径7内の火災/くすぶりを消火し、最大-50度の冷却効果。
+  desc_zh_CN: 扇子工具，15次使用。在半径7内灭火/闷烧并冷却玩家最多-50度。
+  desc_zh_TW: 扇子工具，15次使用。在半徑7內滅火/悶燒並冷卻玩家最多-50度。
+  desc_fr: Éventail avec 15 utilisations. Éteint les feux/combustions et refroidit de -50 degrés max dans un rayon de 7.
+  desc_de: Fächerwerkzeug mit 15 Nutzungen. Löscht Feuer/Schwelen und kühlt Spieler um bis zu -50 Grad im Radius 7.
+  desc_it: Ventaglio con 15 usi. Estingue incendi/fumo e raffredda di -50 gradi max nel raggio 7.
+  desc_pl: Wachlarz z 15 użyciami. Gasi pożary/tlenie i chłodzi o -50 stopni maks. w promieniu 7.
+  desc_pt_BR: Leque com 15 usos. Extingue incêndios/brasas e resfria até -50 graus no raio 7.
+  desc_ru: Веер на 15 использований. Тушит огонь/тление и охлаждает до -50 градусов в радиусе 7.
+  desc_es: Abanico con 15 usos. Extingue fuegos/rescoldos y enfría hasta -50 grados en radio 7.
+  desc_es_MX: Abanico con 15 usos. Extingue fuegos/rescoldos y enfría hasta -50 grados en radio 7.
 308.featherhat
   en: Feather Hat
   ko: 깃털 모자
   app: O
   source: Hat. Fueled 3840s (480*8). Dapperness +16/day (DAPPERNESS_SMALL). Increases bird spawn rate (+3 max delta, -3 to -5 delay delta).
+  desc_en: Hat fueled for 3840s (8 days). Dapperness +16/day. Increases bird spawn rate.
+  desc_ko: 3840초(8일) 연료 모자. 멋짐 +16/일. 새 생성률 증가.
+  desc_ja: 3840秒（8日）燃料の帽子。おしゃれ度+16/日。鳥のスポーン率を増加。
+  desc_zh_CN: 帽子，燃料3840秒（8天）。优雅度+16/天。增加鸟类生成率。
+  desc_zh_TW: 帽子，燃料3840秒（8天）。優雅度+16/天。增加鳥類生成率。
+  desc_fr: Chapeau alimenté 3840s (8 jours). Élégance +16/jour. Augmente le taux d'apparition d'oiseaux.
+  desc_de: Hut mit 3840s (8 Tage) Brennstoff. Schneidigkeit +16/Tag. Erhöht Vogelspawnrate.
+  desc_it: Cappello alimentato 3840s (8 giorni). Eleganza +16/giorno. Aumenta il tasso di spawn uccelli.
+  desc_pl: Kapelusz z paliwem na 3840s (8 dni). Elegancja +16/dzień. Zwiększa częstość pojawiania się ptaków.
+  desc_pt_BR: Chapéu com combustível para 3840s (8 dias). Elegância +16/dia. Aumenta a taxa de surgimento de pássaros.
+  desc_ru: Шляпа с топливом на 3840с (8 дней). Щёгольство +16/день. Увеличивает частоту появления птиц.
+  desc_es: Sombrero con combustible para 3840s (8 días). Elegancia +16/día. Aumenta la tasa de aparición de aves.
+  desc_es_MX: Sombrero con combustible para 3840s (8 días). Elegancia +16/día. Aumenta la tasa de aparición de aves.
 309.featherpencil
   en: Feather Pencil
   ko: 깃펜
   app: O
   source: Drawing tool. Stackable (max 20). Consumes 1 from stack per drawing. Also usable as small fuel and snowman decoration.
+  desc_en: Stackable drawing tool (max 20). Consumes 1 per drawing. Also usable as fuel and snowman decoration.
+  desc_ko: 최대 20개 중첩 그리기 도구. 그림 1개당 1개 소모. 연료 및 눈사람 장식으로도 사용 가능.
+  desc_ja: スタック可能な描画道具（最大20）。描画1回につき1消費。燃料や雪だるま装飾にも使用可能。
+  desc_zh_CN: 可堆叠绘画工具（最多20）。每次绘画消耗1个。也可用作燃料和雪人装饰。
+  desc_zh_TW: 可堆疊繪畫工具（最多20）。每次繪畫消耗1個。也可用作燃料和雪人裝飾。
+  desc_fr: Outil de dessin empilable (max 20). 1 consommé par dessin. Utilisable comme combustible et décoration de bonhomme de neige.
+  desc_de: Stapelbares Zeichenwerkzeug (max 20). 1 pro Zeichnung verbraucht. Auch als Brennstoff und Schneemanndekoration nutzbar.
+  desc_it: Strumento da disegno impilabile (max 20). 1 consumato per disegno. Utilizzabile anche come combustibile e decorazione pupazzo.
+  desc_pl: Stosowalny przyrząd rysunkowy (maks. 20). 1 zużyty na rysunek. Używalny jako paliwo i ozdoba bałwana.
+  desc_pt_BR: Ferramenta de desenho empilhável (máx. 20). 1 consumido por desenho. Também serve como combustível e decoração de boneco de neve.
+  desc_ru: Стакаемый инструмент для рисования (макс. 20). 1 расходуется на рисунок. Также используется как топливо и украшение снеговика.
+  desc_es: Herramienta de dibujo apilable (máx. 20). 1 consumido por dibujo. También sirve como combustible y decoración de muñeco de nieve.
+  desc_es_MX: Herramienta de dibujo apilable (máx. 20). 1 consumido por dibujo. También sirve como combustible y decoración de muñeco de nieve.
 310.fence_electric_item
   en: T.I.N.G.L.E. Node
   ko: 신.경.통. 노드
   app: O
   source: Deployable kit that places an electric fence node. When placed, connects with other nodes to create an electric field. Shocks non-electric-immune attackers. Drops wagpunk_bits and moonglass when hammered.
+  desc_en: Deployable electric fence node. Connects with other nodes to create an electric field that shocks non-immune attackers.
+  desc_ko: 전기 울타리 노드 설치 키트. 다른 노드와 연결하여 비면역 공격자에게 감전을 주는 전기장 생성.
+  desc_ja: 設置式電気フェンスノード。他のノードと接続して非免疫の攻撃者を感電させる電界を形成。
+  desc_zh_CN: 可部署电围栏节点。与其他节点连接形成电场，电击非免疫攻击者。
+  desc_zh_TW: 可部署電圍欄節點。與其他節點連接形成電場，電擊非免疫攻擊者。
+  desc_fr: Nœud de clôture électrique déployable. Se connecte aux autres nœuds pour créer un champ électrique qui choque les attaquants non immunisés.
+  desc_de: Platzierbarer Elektrozaunknoten. Verbindet sich mit anderen Knoten zu einem Elektrofeld, das nicht-immune Angreifer schockt.
+  desc_it: Nodo di recinzione elettrica piazzabile. Si collega ad altri nodi creando un campo elettrico che stordisce gli attaccanti non immuni.
+  desc_pl: Rozkładany węzeł ogrodzenia elektrycznego. Łączy się z innymi węzłami tworząc pole elektryczne porażające nieodpornych napastników.
+  desc_pt_BR: Nó de cerca elétrica implantável. Conecta-se a outros nós criando um campo elétrico que choca atacantes não imunes.
+  desc_ru: Устанавливаемый узел электрической ограды. Соединяется с другими узлами, создавая электрическое поле, бьющее неиммунных атакующих.
+  desc_es: Nodo de cerca eléctrica desplegable. Se conecta con otros nodos creando un campo eléctrico que electrocuta a atacantes no inmunes.
+  desc_es_MX: Nodo de cerca eléctrica desplegable. Se conecta con otros nodos creando un campo eléctrico que electrocuta a atacantes no inmunes.
 311.fence_gate_item
   en: Wood Gate
   ko: 나무 대문
   app: O
   source: Deployable wall segment. Places a Wood Gate that can be opened/closed by players. Acts as a pathfinding wall when closed.
+  desc_en: Deployable wall segment that places a Wood Gate. Can be opened/closed by players. Blocks pathfinding when closed.
+  desc_ko: 나무 대문을 설치하는 벽 부품. 플레이어가 열고 닫을 수 있음. 닫히면 경로 탐색 차단.
+  desc_ja: 木製ゲートを設置する壁セグメント。プレイヤーが開閉可能。閉じると経路探索をブロック。
+  desc_zh_CN: 部署木门的墙段。玩家可开关。关闭时阻挡寻路。
+  desc_zh_TW: 部署木門的牆段。玩家可開關。關閉時阻擋尋路。
+  desc_fr: Segment de mur déployable qui place un Portail en Bois. Ouvrable/fermable par les joueurs. Bloque le pathfinding fermé.
+  desc_de: Platzierbares Wandsegment für ein Holztor. Von Spielern öffnen-/schließbar. Blockiert Wegfindung wenn geschlossen.
+  desc_it: Segmento di muro che posiziona un Cancello di Legno. Apribile/chiudibile dai giocatori. Blocca il pathfinding da chiuso.
+  desc_pl: Segment ściany stawiający Drewnianą Bramę. Otwierana/zamykana przez graczy. Blokuje pathfinding po zamknięciu.
+  desc_pt_BR: Segmento de parede que coloca um Portão de Madeira. Pode ser aberto/fechado por jogadores. Bloqueia rotas quando fechado.
+  desc_ru: Устанавливаемый сегмент стены с деревянными воротами. Открываются/закрываются игроками. В закрытом виде блокируют поиск пути.
+  desc_es: Segmento de muro que coloca un Portón de Madera. Se abre/cierra por jugadores. Bloquea rutas cuando está cerrado.
+  desc_es_MX: Segmento de muro que coloca un Portón de Madera. Se abre/cierra por jugadores. Bloquea rutas cuando está cerrado.
 312.fence_item
   en: Wood Fence
   ko: 나무 울타리
   app: O
   source: Deployable wall segment. Places a Wood Fence that blocks movement and acts as a pathfinding wall. Can be rotated with a Fencing Sword.
+  desc_en: Deployable wall segment that places a Wood Fence. Blocks movement and pathfinding. Rotatable with Fencing Sword.
+  desc_ko: 나무 울타리를 설치하는 벽 부품. 이동 및 경로 탐색 차단. 울타리칼로 회전 가능.
+  desc_ja: 木製フェンスを設置する壁セグメント。移動と経路探索をブロック。フェンシングソードで回転可能。
+  desc_zh_CN: 部署木栅栏的墙段。阻挡移动和寻路。可用栅栏剑旋转。
+  desc_zh_TW: 部署木柵欄的牆段。阻擋移動和尋路。可用柵欄劍旋轉。
+  desc_fr: Segment de mur déployable pour une Clôture en Bois. Bloque le mouvement et le pathfinding. Orientable avec l'Épée de Clôture.
+  desc_de: Platzierbares Wandsegment für einen Holzzaun. Blockiert Bewegung und Wegfindung. Mit Zaunklinge drehbar.
+  desc_it: Segmento di muro che posiziona una Staccionata. Blocca movimento e pathfinding. Ruotabile con la Spada da Recinzione.
+  desc_pl: Segment ściany stawiający Drewniany Płot. Blokuje ruch i pathfinding. Obracalny Mieczem Ogrodzeniowym.
+  desc_pt_BR: Segmento de parede que coloca uma Cerca de Madeira. Bloqueia movimento e rotas. Rotacionável com Espada de Cerca.
+  desc_ru: Устанавливаемый сегмент стены с деревянным забором. Блокирует движение и поиск пути. Вращается мечом для забора.
+  desc_es: Segmento de muro que coloca una Valla de Madera. Bloquea movimiento y rutas. Rotable con Espada de Cerca.
+  desc_es_MX: Segmento de muro que coloca una Valla de Madera. Bloquea movimiento y rutas. Rotable con Espada de Cerca.
 313.fence_rotator
   en: Fencing Sword
   ko: 울타리칼
   app: O
   source: Tool + weapon. 200 uses. Damage 34 (wilson_attack). Rotates fences on use (1 use per rotation). Tags: sharp, pointy, jab.
+  desc_en: Tool and weapon with 200 uses. 34 damage. Rotates fences (1 use per rotation). Sharp and pointy.
+  desc_ko: 200회 사용 도구 겸 무기. 34 피해. 울타리 회전 (1회 행동당 1회 소모). 날카로움.
+  desc_ja: 200回使用の道具兼武器。34ダメージ。フェンスを回転（1回転につき1消費）。鋭い。
+  desc_zh_CN: 工具兼武器，200次使用。34伤害。旋转栅栏（每次旋转消耗1次）。锋利。
+  desc_zh_TW: 工具兼武器，200次使用。34傷害。旋轉柵欄（每次旋轉消耗1次）。鋒利。
+  desc_fr: Outil et arme avec 200 utilisations. 34 dégâts. Fait pivoter les clôtures (1 utilisation par rotation). Tranchant.
+  desc_de: Werkzeug und Waffe mit 200 Nutzungen. 34 Schaden. Dreht Zäune (1 Nutzung pro Drehung). Scharf.
+  desc_it: Strumento e arma con 200 usi. 34 danni. Ruota le staccionate (1 uso per rotazione). Tagliente.
+  desc_pl: Narzędzie i broń z 200 użyciami. 34 obrażeń. Obraca płoty (1 użycie na obrót). Ostry.
+  desc_pt_BR: Ferramenta e arma com 200 usos. 34 de dano. Gira cercas (1 uso por rotação). Afiado.
+  desc_ru: Инструмент и оружие на 200 использований. 34 урона. Вращает заборы (1 использование за поворот). Острый.
+  desc_es: Herramienta y arma con 200 usos. 34 de daño. Rota vallas (1 uso por rotación). Afilado.
+  desc_es_MX: Herramienta y arma con 200 usos. 34 de daño. Rota vallas (1 uso por rotación). Afilado.
 314.fertilizer
   en: Bucket-o-poop
   ko: 거름통
   app: O
   source: Fertilizer. 10 uses. Nutrients {0, 0, 16} (formula only). Fertilize value = 1 day_time (300s). Soil cycles 10, withered cycles 1. Also functions as a fire smotherer.
+  desc_en: Fertilizer with 10 uses. Nutrients {0, 0, 16}. Adds 1 day of fertilization. Also functions as a fire smotherer.
+  desc_ko: 10회 사용 비료. 영양소 {0, 0, 16}. 1일 분량의 비료 효과. 소화 기능도 겸함.
+  desc_ja: 10回使用の肥料。栄養素{0, 0, 16}。1日分の施肥効果。消火機能も兼ねる。
+  desc_zh_CN: 肥料，10次使用。营养素{0, 0, 16}。增加1天肥力。同时可灭火。
+  desc_zh_TW: 肥料，10次使用。營養素{0, 0, 16}。增加1天肥力。同時可滅火。
+  desc_fr: Engrais avec 10 utilisations. Nutriments {0, 0, 16}. Ajoute 1 jour de fertilisation. Sert aussi d'extincteur.
+  desc_de: Dünger mit 10 Nutzungen. Nährstoffe {0, 0, 16}. Fügt 1 Tag Düngung hinzu. Funktioniert auch als Feuerlöscher.
+  desc_it: Fertilizzante con 10 usi. Nutrienti {0, 0, 16}. Aggiunge 1 giorno di fertilizzazione. Funziona anche come estintore.
+  desc_pl: Nawóz z 10 użyciami. Składniki {0, 0, 16}. Dodaje 1 dzień nawożenia. Służy też do gaszenia ognia.
+  desc_pt_BR: Fertilizante com 10 usos. Nutrientes {0, 0, 16}. Adiciona 1 dia de fertilização. Também funciona como abafador de fogo.
+  desc_ru: Удобрение на 10 использований. Питательные вещества {0, 0, 16}. Добавляет 1 день удобрения. Также тушит огонь.
+  desc_es: Fertilizante con 10 usos. Nutrientes {0, 0, 16}. Añade 1 día de fertilización. También funciona como extintor.
+  desc_es_MX: Fertilizante con 10 usos. Nutrientes {0, 0, 16}. Añade 1 día de fertilización. También funciona como extintor.
 315.firecrackers
   en: Red Firecrackers
   ko: 빨간 폭죽
   app: O
   source: Stackable (max 40). When ignited, startles creatures in range 10. Number of pops scales with sqrt(stack_size+3). Explosive tag.
+  desc_en: Stackable explosive (max 40). Startles creatures in range 10 when ignited. Pop count scales with stack size.
+  desc_ko: 최대 40개 중첩 폭발물. 점화 시 반경 10 내 생물 놀라게 함. 폭발 횟수는 스택 크기에 비례.
+  desc_ja: スタック可能な爆発物（最大40）。点火時に半径10内の生物を驚かす。破裂回数はスタックサイズに比例。
+  desc_zh_CN: 可堆叠爆炸物（最多40）。点燃时惊吓半径10内的生物。爆裂次数与堆叠数量成比例。
+  desc_zh_TW: 可堆疊爆炸物（最多40）。點燃時驚嚇半徑10內的生物。爆裂次數與堆疊數量成比例。
+  desc_fr: Explosif empilable (max 40). Effraye les créatures dans un rayon de 10 à l'allumage. Nombre de pétards proportionnel à la pile.
+  desc_de: Stapelbarer Sprengstoff (max 40). Erschreckt Kreaturen im Radius 10 beim Anzünden. Knallzahl skaliert mit Stapelgröße.
+  desc_it: Esplosivo impilabile (max 40). Spaventa le creature nel raggio 10 all'accensione. Scoppi proporzionali alla pila.
+  desc_pl: Stosowalny materiał wybuchowy (maks. 40). Przy zapaleniu straszy stwory w promieniu 10. Liczba trzasków zależy od stosu.
+  desc_pt_BR: Explosivo empilhável (máx. 40). Assusta criaturas no raio 10 ao acender. Estouros proporcionais ao tamanho da pilha.
+  desc_ru: Стакаемая взрывчатка (макс. 40). Пугает существ в радиусе 10 при поджигании. Количество хлопков зависит от размера стопки.
+  desc_es: Explosivo apilable (máx. 40). Asusta criaturas en radio 10 al encender. Estallidos proporcionales al tamaño de la pila.
+  desc_es_MX: Explosivo apilable (máx. 40). Asusta criaturas en radio 10 al encender. Estallidos proporcionales al tamaño de la pila.
 316.firepit
   en: Fire Pit
   ko: 화덕
   app: O
   source: Structure. Max fuel 360s ((60+120)*2), starts with 180s fuel, bonus mult 2x. 4 fuel sections. Rain increases burn rate by 2x precipitation. Has cooker component. Wildfire protected. Produces charcoal when fuel reaches max then burns out.
+  desc_en: Structure with max 360s fuel, 2x bonus multiplier. 4 fuel sections. Has cooker component. Rain doubles burn rate. Wildfire-protected.
+  desc_ko: 최대 360초 연료, 2배 보너스 구조물. 4단계 연료. 조리 기능 포함. 비가 오면 연소 속도 2배. 산불 보호.
+  desc_ja: 最大360秒燃料、2倍ボーナスの構造物。4段階燃料。調理機能あり。雨で燃焼率2倍。山火事保護。
+  desc_zh_CN: 结构，最大燃料360秒，2倍奖励。4个燃料段。有烹饪组件。下雨时燃烧速度翻倍。防野火。
+  desc_zh_TW: 結構，最大燃料360秒，2倍獎勵。4個燃料段。有烹飪組件。下雨時燃燒速度翻倍。防野火。
+  desc_fr: Structure avec 360s de combustible max, multiplicateur 2x. 4 sections. Cuisson intégrée. La pluie double la consommation. Protégé des feux sauvages.
+  desc_de: Struktur mit max. 360s Brennstoff, 2x Bonus. 4 Brennstoffstufen. Kochfunktion. Regen verdoppelt Brennrate. Wildfire-geschützt.
+  desc_it: Struttura con 360s di combustibile max, moltiplicatore 2x. 4 sezioni. Cottura integrata. Pioggia raddoppia il consumo. Protetta dagli incendi.
+  desc_pl: Struktura z maks. 360s paliwa, 2x bonus. 4 sekcje paliwa. Funkcja gotowania. Deszcz podwaja spalanie. Ochrona przed pożarami.
+  desc_pt_BR: Estrutura com 360s de combustível máx., multiplicador 2x. 4 seções. Componente de cozimento. Chuva dobra a taxa. Protegida contra incêndios.
+  desc_ru: Структура с макс. топливом 360с, бонус 2x. 4 секции топлива. Компонент готовки. Дождь удваивает скорость горения. Защита от пожаров.
+  desc_es: Estructura con 360s de combustible máx., multiplicador 2x. 4 secciones. Cocción integrada. Lluvia duplica la tasa. Protección contra incendios.
+  desc_es_MX: Estructura con 360s de combustible máx., multiplicador 2x. 4 secciones. Cocción integrada. Lluvia duplica la tasa. Protección contra incendios.
 317.firestaff
   en: Fire Staff
   ko: 불꽃 지팡이
   app: O
   source: Ranged magic weapon. 20 uses. Sets targets on fire from range. Uses Lava Arena fireball projectile system.
+  desc_en: Ranged magic weapon with 20 uses. Sets targets on fire from a distance.
+  desc_ko: 20회 사용 원거리 마법 무기. 원거리에서 대상에 불을 붙임.
+  desc_ja: 20回使用の遠距離魔法武器。遠距離からターゲットに着火。
+  desc_zh_CN: 远程魔法武器，20次使用。远距离点燃目标。
+  desc_zh_TW: 遠程魔法武器，20次使用。遠距離點燃目標。
+  desc_fr: Arme magique à distance avec 20 utilisations. Enflamme les cibles à distance.
+  desc_de: Magische Fernkampfwaffe mit 20 Nutzungen. Setzt Ziele aus der Ferne in Brand.
+  desc_it: Arma magica a distanza con 20 usi. Incendia i bersagli a distanza.
+  desc_pl: Magiczna broń dystansowa z 20 użyciami. Podpala cele z odległości.
+  desc_pt_BR: Arma mágica de longo alcance com 20 usos. Incendeia alvos à distância.
+  desc_ru: Дальнобойное магическое оружие на 20 использований. Поджигает цели на расстоянии.
+  desc_es: Arma mágica a distancia con 20 usos. Prende fuego a objetivos a distancia.
+  desc_es_MX: Arma mágica a distancia con 20 usos. Prende fuego a objetivos a distancia.
 318.firesuppressor
   en: Ice Flingomatic
   ko: 얼음 분사기
   app: O
   source: Structure. Max fuel 2400s (480*5), 10 fuel sections, bonus mult 5x. Auto-detects and extinguishes fires within range 15. Launches snowball projectiles. Reduces target temperature by 5, adds 60s wither protection, adds 2 coldness. Has emergency mode for nearby burnt structures.
+  desc_en: Structure with max 2400s fuel, 5x bonus. Auto-detects and extinguishes fires within range 15. Reduces target temp by 5, adds 60s wither protection.
+  desc_ko: 최대 2400초 연료, 5배 보너스 구조물. 범위 15 내 화재 자동 감지 및 소화. 대상 온도 -5, 60초 시들음 보호.
+  desc_ja: 最大2400秒燃料、5倍ボーナスの構造物。射程15内の火災を自動検知・消火。対象温度-5、60秒の枯れ防止。
+  desc_zh_CN: 结构，最大燃料2400秒，5倍奖励。自动检测并扑灭范围15内的火灾。降低目标温度5度，增加60秒枯萎保护。
+  desc_zh_TW: 結構，最大燃料2400秒，5倍獎勵。自動檢測並撲滅範圍15內的火災。降低目標溫度5度，增加60秒枯萎保護。
+  desc_fr: Structure avec 2400s de combustible max, bonus 5x. Détecte et éteint automatiquement les feux dans un rayon de 15. Réduit la temp. de 5, 60s de protection flétrissement.
+  desc_de: Struktur mit max. 2400s Brennstoff, 5x Bonus. Erkennt und löscht Feuer automatisch im Radius 15. Senkt Temp. um 5, 60s Welkschutz.
+  desc_it: Struttura con 2400s di combustibile max, bonus 5x. Rileva e spegne automaticamente gli incendi nel raggio 15. Riduce temp. di 5, 60s protezione appassimento.
+  desc_pl: Struktura z maks. 2400s paliwa, 5x bonus. Automatycznie wykrywa i gasi pożary w zasięgu 15. Obniża temp. o 5, 60s ochrony przed więdnięciem.
+  desc_pt_BR: Estrutura com 2400s de combustível máx., bônus 5x. Detecta e extingue incêndios automaticamente no raio 15. Reduz temp. em 5, 60s de proteção contra murcha.
+  desc_ru: Структура с макс. топливом 2400с, бонус 5x. Автоматически обнаруживает и тушит пожары в радиусе 15. Снижает температуру на 5, 60с защиты от увядания.
+  desc_es: Estructura con 2400s de combustible máx., bonus 5x. Detecta y extingue fuegos automáticamente en radio 15. Reduce temp. en 5, 60s protección marchitez.
+  desc_es_MX: Estructura con 2400s de combustible máx., bonus 5x. Detecta y extingue fuegos automáticamente en radio 15. Reduce temp. en 5, 60s protección marchitez.
 319.fish_box
   en: Tin Fishin' Bin
   ko: 낚시용 통조림
   app: O
   source: Structure. Container for fish. Perish rate multiplier -1/3 (fish spoil at 1/3 normal speed, lasting 3x longer). When hammered, releases up to 5 live ocean fish back into the world and creates a boat leak.
+  desc_en: Fish storage structure. Perish rate x1/3 (fish last 3x longer). Releases up to 5 live fish when hammered.
+  desc_ko: 물고기 저장 구조물. 부패 속도 1/3 (물고기 수명 3배). 해체 시 최대 5마리 살아있는 물고기 방출.
+  desc_ja: 魚の保管構造物。腐敗速度1/3（魚の持ちが3倍）。ハンマーで解体時に最大5匹の生きた魚を放出。
+  desc_zh_CN: 鱼类储存结构。腐烂速度x1/3（鱼保鲜3倍）。敲碎时释放最多5条活鱼。
+  desc_zh_TW: 魚類儲存結構。腐爛速度x1/3（魚保鮮3倍）。敲碎時釋放最多5條活魚。
+  desc_fr: Structure de stockage de poissons. Vitesse de péremption x1/3 (poissons durent 3x plus). Libère jusqu'à 5 poissons vivants au martelage.
+  desc_de: Fischspeicher. Verderbrate x1/3 (Fische halten 3x länger). Gibt beim Hämmern bis zu 5 lebende Fische frei.
+  desc_it: Struttura di stoccaggio pesci. Tasso deperimento x1/3 (pesci durano 3x). Rilascia fino a 5 pesci vivi quando martellata.
+  desc_pl: Struktura do przechowywania ryb. Prędkość psucia x1/3 (ryby trwają 3x dłużej). Przy burzeniu wypuszcza do 5 żywych ryb.
+  desc_pt_BR: Estrutura de armazenamento de peixes. Taxa de perecimento x1/3 (peixes duram 3x mais). Libera até 5 peixes vivos ao martelar.
+  desc_ru: Хранилище для рыбы. Скорость порчи x1/3 (рыба хранится в 3 раза дольше). При разрушении выпускает до 5 живых рыб.
+  desc_es: Estructura de almacenamiento de peces. Tasa de descomposición x1/3 (peces duran 3x más). Libera hasta 5 peces vivos al martillar.
+  desc_es_MX: Estructura de almacenamiento de peces. Tasa de descomposición x1/3 (peces duran 3x más). Libera hasta 5 peces vivos al martillar.
 320.fishingnet
   en: Fishing Net
   ko: 어망
   app: X
   source: Equippable tool. 22 uses. Consumes 1 use per CAST_NET action. Used for catching ocean fish by throwing.
+  desc_en: Equippable fishing net with 22 uses. Consumes 1 use per cast. Used for catching ocean fish by throwing.
+  desc_ko: 22회 사용 장착형 어망. 투망당 1회 소모. 던져서 바다 물고기를 잡는 데 사용.
+  desc_ja: 22回使用の装備可能な漁網。投網1回につき1消費。投げて海の魚を捕獲。
+  desc_zh_CN: 可装备渔网，22次使用。每次撒网消耗1次。通过投掷捕捉海洋鱼类。
+  desc_zh_TW: 可裝備漁網，22次使用。每次撒網消耗1次。通過投擲捕捉海洋魚類。
+  desc_fr: Filet de pêche équipable avec 22 utilisations. 1 utilisation par lancer. Pour attraper les poissons en lançant.
+  desc_de: Ausrüstbares Fischernetz mit 22 Nutzungen. 1 Nutzung pro Wurf. Zum Fangen von Meeresfischen durch Werfen.
+  desc_it: Rete da pesca equipaggiabile con 22 usi. 1 uso per lancio. Per catturare pesci oceanici lanciandola.
+  desc_pl: Zakładalna sieć rybacka z 22 użyciami. 1 użycie na rzut. Do łapania ryb morskich przez rzucanie.
+  desc_pt_BR: Rede de pesca equipável com 22 usos. 1 uso por arremesso. Para capturar peixes oceânicos por arremesso.
+  desc_ru: Экипируемая рыболовная сеть на 22 использования. 1 использование за заброс. Ловит океанскую рыбу забросом.
+  desc_es: Red de pesca equipable con 22 usos. 1 uso por lanzamiento. Para atrapar peces oceánicos lanzándola.
+  desc_es_MX: Red de pesca equipable con 22 usos. 1 uso por lanzamiento. Para atrapar peces oceánicos lanzándola.
 321.fishingrod
   en: Freshwater Fishing Rod
   ko: 연못 낚싯대
   app: O
   source: Fishing tool + weapon. 9 uses. Damage 4.25 (34*0.125), attack wear 4 per hit. Wait time 4-40s, strain time 0-5s. Used for pond fishing.
+  desc_en: Fishing tool and weapon with 9 uses. 4.25 damage. Wait time 4-40s. Used for pond fishing.
+  desc_ko: 9회 사용 낚시 도구 겸 무기. 4.25 피해. 대기 시간 4-40초. 연못 낚시용.
+  desc_ja: 9回使用の釣り道具兼武器。4.25ダメージ。待ち時間4-40秒。池釣り用。
+  desc_zh_CN: 钓鱼工具兼武器，9次使用。4.25伤害。等待时间4-40秒。用于池塘钓鱼。
+  desc_zh_TW: 釣魚工具兼武器，9次使用。4.25傷害。等待時間4-40秒。用於池塘釣魚。
+  desc_fr: Outil de pêche et arme avec 9 utilisations. 4,25 dégâts. Attente 4-40s. Pour la pêche en étang.
+  desc_de: Angelwerkzeug und Waffe mit 9 Nutzungen. 4,25 Schaden. Wartezeit 4-40s. Für Teichfischerei.
+  desc_it: Strumento da pesca e arma con 9 usi. 4,25 danni. Attesa 4-40s. Per la pesca in stagno.
+  desc_pl: Narzędzie rybackie i broń z 9 użyciami. 4,25 obrażeń. Czas oczekiwania 4-40s. Do łowienia w stawach.
+  desc_pt_BR: Ferramenta de pesca e arma com 9 usos. 4,25 de dano. Espera 4-40s. Para pesca em lagoas.
+  desc_ru: Удочка и оружие на 9 использований. 4,25 урона. Время ожидания 4-40с. Для рыбалки в прудах.
+  desc_es: Herramienta de pesca y arma con 9 usos. 4,25 de daño. Espera 4-40s. Para pesca en estanques.
+  desc_es_MX: Herramienta de pesca y arma con 9 usos. 4,25 de daño. Espera 4-40s. Para pesca en estanques.
 322.floatinglantern
   en: Sky Lantern
   ko: 풍등
   app: O
   source: Fueled item. Duration 960s (480*2), magic fuel type. Floats into the sky through 4 height levels {12, 9, 6, 2}. Rain drains 1.5x faster, lunar hail 35x faster. Follows wind direction. Shows on global map while airborne.
+  desc_en: Fueled item lasting 960s (2 days). Floats through 4 height levels. Rain drains 1.5x faster, lunar hail 35x faster. Follows wind. Visible on map.
+  desc_ko: 960초(2일) 지속 연료 아이템. 4단계 높이로 부상. 비 시 1.5배, 달빛 우박 시 35배 빨리 소모. 바람 방향 따름. 지도에 표시.
+  desc_ja: 960秒（2日）持続の燃料アイテム。4段階の高さで浮遊。雨で1.5倍、月の雹で35倍速く消耗。風に従う。マップに表示。
+  desc_zh_CN: 燃料物品，持续960秒（2天）。经4个高度级别浮空。雨天消耗1.5倍，月冰雹35倍。随风飘移。地图上可见。
+  desc_zh_TW: 燃料物品，持續960秒（2天）。經4個高度級別浮空。雨天消耗1.5倍，月冰雹35倍。隨風飄移。地圖上可見。
+  desc_fr: Objet alimenté 960s (2 jours). Flotte à 4 niveaux de hauteur. Pluie 1,5x, grêle lunaire 35x plus rapide. Suit le vent. Visible sur la carte.
+  desc_de: Brennstoffgegenstand, 960s (2 Tage). Schwebt durch 4 Höhenstufen. Regen 1,5x, Mondhagel 35x schneller. Folgt Wind. Auf der Karte sichtbar.
+  desc_it: Oggetto alimentato 960s (2 giorni). Fluttua su 4 livelli. Pioggia 1,5x, grandine lunare 35x più veloce. Segue il vento. Visibile sulla mappa.
+  desc_pl: Zasilany przedmiot na 960s (2 dni). Unosi się na 4 poziomach. Deszcz 1,5x, księżycowy grad 35x szybciej. Podąża za wiatrem. Widoczny na mapie.
+  desc_pt_BR: Item com combustível para 960s (2 dias). Flutua em 4 níveis. Chuva 1,5x, granizo lunar 35x mais rápido. Segue o vento. Visível no mapa.
+  desc_ru: Топливный предмет на 960с (2 дня). Парит на 4 уровнях высоты. Дождь 1,5x, лунный град 35x быстрее. Следует за ветром. Виден на карте.
+  desc_es: Objeto con combustible para 960s (2 días). Flota en 4 niveles. Lluvia 1,5x, granizo lunar 35x más rápido. Sigue el viento. Visible en el mapa.
+  desc_es_MX: Objeto con combustible para 960s (2 días). Flota en 4 niveles. Lluvia 1,5x, granizo lunar 35x más rápido. Sigue el viento. Visible en el mapa.
 323.flotationcushion
   en: Personal Floater
   ko: 개인용 부양장치
   app: O
   source: Equippable (via playerfloater component). Allows player to float on water. No durability. Cat toy tag.
+  desc_en: Equippable via floater component. Allows the player to float on water. No durability limit.
+  desc_ko: 부양 컴포넌트로 장착. 플레이어가 물 위에 떠다닐 수 있음. 내구도 무제한.
+  desc_ja: フローターコンポーネントで装備。プレイヤーが水上を浮遊可能。耐久度無制限。
+  desc_zh_CN: 通过浮力组件装备。允许玩家在水面漂浮。无耐久限制。
+  desc_zh_TW: 通過浮力組件裝備。允許玩家在水面漂浮。無耐久限制。
+  desc_fr: Équipable via le composant flotteur. Permet au joueur de flotter sur l'eau. Pas de limite de durabilité.
+  desc_de: Ausrüstbar über Schwimmerkomponente. Ermöglicht dem Spieler auf Wasser zu schwimmen. Keine Haltbarkeitsbegrenzung.
+  desc_it: Equipaggiabile tramite componente galleggiante. Permette al giocatore di galleggiare sull'acqua. Nessun limite di durabilità.
+  desc_pl: Zakładany przez komponent pływakowy. Pozwala graczowi unosić się na wodzie. Bez limitu trwałości.
+  desc_pt_BR: Equipável via componente flutuador. Permite ao jogador flutuar na água. Sem limite de durabilidade.
+  desc_ru: Экипируется через компонент поплавка. Позволяет игроку плавать на воде. Без ограничения прочности.
+  desc_es: Equipable vía componente flotador. Permite al jugador flotar en el agua. Sin límite de durabilidad.
+  desc_es_MX: Equipable vía componente flotador. Permite al jugador flotar en el agua. Sin límite de durabilidad.
 324.flowerhat
   en: Garland
   ko: 화관
   app: O
   source: Hat. Perishes in 2880s (6 days). Dapperness +10.7/day (DAPPERNESS_TINY). Open top hat. Compostable.
+  desc_en: Hat that perishes in 2880s (6 days). Dapperness +10.7/day. Open top hat. Compostable.
+  desc_ko: 2880초(6일) 후 부패하는 모자. 멋짐 +10.7/일. 오픈탑 모자. 퇴비화 가능.
+  desc_ja: 2880秒（6日）で腐敗する帽子。おしゃれ度+10.7/日。オープントップ帽子。堆肥可能。
+  desc_zh_CN: 帽子，2880秒（6天）后腐烂。优雅度+10.7/天。开顶帽。可堆肥。
+  desc_zh_TW: 帽子，2880秒（6天）後腐爛。優雅度+10.7/天。開頂帽。可堆肥。
+  desc_fr: Chapeau qui périt en 2880s (6 jours). Élégance +10,7/jour. Chapeau ouvert. Compostable.
+  desc_de: Hut, verdirbt in 2880s (6 Tage). Schneidigkeit +10,7/Tag. Offener Hut. Kompostierbar.
+  desc_it: Cappello che deperisce in 2880s (6 giorni). Eleganza +10,7/giorno. Cappello aperto. Compostabile.
+  desc_pl: Kapelusz psujący się w 2880s (6 dni). Elegancja +10,7/dzień. Otwarty kapelusz. Kompostowalny.
+  desc_pt_BR: Chapéu que perece em 2880s (6 dias). Elegância +10,7/dia. Chapéu aberto. Compostável.
+  desc_ru: Шляпа, портится за 2880с (6 дней). Щёгольство +10,7/день. Открытая шляпа. Компостируемая.
+  desc_es: Sombrero que perece en 2880s (6 días). Elegancia +10,7/día. Sombrero abierto. Compostable.
+  desc_es_MX: Sombrero que perece en 2880s (6 días). Elegancia +10,7/día. Sombrero abierto. Compostable.
 325.footballhat
   en: Football Helmet
   ko: 풋볼 헬멧
   app: O
   source: Hat. Armor 315hp (150*3*0.7) at 80% absorption. Waterproof 20%.
+  desc_en: Hat with 315 HP armor at 80% absorption. Waterproof 20%.
+  desc_ko: 315 HP 방어력, 80% 흡수의 모자. 방수 20%.
+  desc_ja: 315HPの防具（80%吸収）の帽子。防水20%。
+  desc_zh_CN: 帽子，315 HP护甲，80%吸收。防水20%。
+  desc_zh_TW: 帽子，315 HP護甲，80%吸收。防水20%。
+  desc_fr: Chapeau avec 315 PV d'armure à 80 % d'absorption. Imperméable 20 %.
+  desc_de: Hut mit 315 TP Rüstung bei 80 % Absorption. Wasserdicht 20 %.
+  desc_it: Cappello con 315 PV di armatura all'80% di assorbimento. Impermeabile 20%.
+  desc_pl: Kapelusz z 315 PZ pancerza przy 80% absorpcji. Wodoodporność 20%.
+  desc_pt_BR: Chapéu com 315 PV de armadura a 80% de absorção. Impermeável 20%.
+  desc_ru: Шляпа с 315 ед. брони при 80% поглощении. Водонепроницаемость 20%.
+  desc_es: Sombrero con 315 PV de armadura al 80 % de absorción. Impermeable 20 %.
+  desc_es_MX: Sombrero con 315 PV de armadura al 80 % de absorción. Impermeable 20 %.
 326.gelblob_storage
   en: Icker Preserve
   ko: 질뻑이 보존기
   app: X
   type: deconstruct
   source: Placed structure. Holds one food item stack. Stored food stops perishing. Accepts all standard food types (generic, meat, veggie, seeds, berry, raw, goodies, monster). Hammerable (4 hits).
+  desc_en: Storage structure for one food stack. Stored food stops perishing. Accepts all standard food types. Hammerable (4 hits).
+  desc_ko: 음식 스택 1개 보관 구조물. 보관된 음식은 부패 정지. 모든 표준 음식 유형 수용. 해체 가능 (4회 타격).
+  desc_ja: 食品スタック1つの保管構造物。保管された食品は腐敗停止。全標準食品タイプ対応。ハンマー可（4打）。
+  desc_zh_CN: 单格食物储存结构。存放的食物停止腐烂。接受所有标准食物类型。可敲碎（4次）。
+  desc_zh_TW: 單格食物儲存結構。存放的食物停止腐爛。接受所有標準食物類型。可敲碎（4次）。
+  desc_fr: Structure de stockage pour une pile de nourriture. La nourriture stockée ne périt plus. Accepte tous les types standards. Martelable (4 coups).
+  desc_de: Speicherstruktur für einen Lebensmittelstapel. Gelagertes Essen verdirbt nicht. Akzeptiert alle Standardtypen. Hämmerbar (4 Schläge).
+  desc_it: Struttura di stoccaggio per una pila di cibo. Il cibo conservato non deperisce. Accetta tutti i tipi standard. Martellabile (4 colpi).
+  desc_pl: Struktura przechowująca jeden stos jedzenia. Przechowywane jedzenie nie psuje się. Akceptuje wszystkie standardowe typy. Burzalna (4 uderzenia).
+  desc_pt_BR: Estrutura de armazenamento para uma pilha de comida. Comida armazenada para de perecer. Aceita todos os tipos padrão. Martelável (4 golpes).
+  desc_ru: Хранилище для одного стопки еды. Хранимая еда перестаёт портиться. Принимает все стандартные типы. Разрушается молотком (4 удара).
+  desc_es: Estructura de almacenamiento para una pila de comida. La comida almacenada deja de descomponerse. Acepta todos los tipos estándar. Demolible (4 golpes).
+  desc_es_MX: Estructura de almacenamiento para una pila de comida. La comida almacenada deja de descomponerse. Acepta todos los tipos estándar. Demolible (4 golpes).
 327.gelblob_storage_kit
   en: Icker Preserve Kit
   ko: 질뻑이 보존기 키트
   app: O
   source: Deployable kit that places an Icker Preserve structure. Recycling returns messagebottleempty from gelblob_bottle ingredient.
+  desc_en: Deployable kit that places an Icker Preserve food storage structure. Stored food stops perishing.
+  desc_ko: 질뻑이 보존기 음식 저장 구조물을 설치하는 배치 키트. 보관된 음식은 부패 정지.
+  desc_ja: イッカープリザーブ食品保管構造物を設置するキット。保管された食品は腐敗停止。
+  desc_zh_CN: 部署黏液保存器食物储存结构的套件。存放的食物停止腐烂。
+  desc_zh_TW: 部署黏液保存器食物儲存結構的套件。存放的食物停止腐爛。
+  desc_fr: Kit déployable qui place une structure Icker Preserve. La nourriture stockée ne périt plus.
+  desc_de: Platzierbares Kit für eine Icker-Konserve-Struktur. Gelagertes Essen verdirbt nicht.
+  desc_it: Kit piazzabile per una struttura Icker Preserve. Il cibo conservato non deperisce.
+  desc_pl: Zestaw do postawienia struktury Icker Preserve. Przechowywane jedzenie nie psuje się.
+  desc_pt_BR: Kit para posicionar uma estrutura Icker Preserve. Comida armazenada para de perecer.
+  desc_ru: Набор для установки хранилища Icker Preserve. Хранимая еда перестаёт портиться.
+  desc_es: Kit desplegable que coloca una estructura Icker Preserve. La comida almacenada deja de descomponerse.
+  desc_es_MX: Kit desplegable que coloca una estructura Icker Preserve. La comida almacenada deja de descomponerse.
 328.gestalt_cage
   en: Phasmo-Encapsulator
   ko: 심령체 포획기
   app: O
   source: Weapon + gestalt capture tool. Damage 17 (34*0.5). Captures gestalts into filled cages (levels 1-3). Filled cages can be deployed at placement indicators (radius 2) to create wagdrone robots after Wagstaff boss is defeated.
+  desc_en: Weapon and gestalt capture tool. 17 damage. Captures gestalts into cages (levels 1-3). Filled cages deploy wagdrone robots after Wagstaff boss.
+  desc_ko: 무기 겸 게슈탈트 포획 도구. 17 피해. 게슈탈트를 케이지에 포획 (레벨 1-3). 채워진 케이지는 왝스태프 보스 후 왝드론 로봇 배치.
+  desc_ja: 武器兼ゲシュタルト捕獲ツール。17ダメージ。ゲシュタルトをケージに捕獲（レベル1-3）。満杯ケージはワグスタッフボス後にワグドローンを配置。
+  desc_zh_CN: 武器兼意志体捕获工具。17伤害。将意志体捕获到笼子中（1-3级）。满笼子在瓦格斯塔夫Boss后部署无人机。
+  desc_zh_TW: 武器兼意志體捕獲工具。17傷害。將意志體捕獲到籠子中（1-3級）。滿籠子在瓦格斯塔夫Boss後部署無人機。
+  desc_fr: Arme et outil de capture de gestalts. 17 dégâts. Capture les gestalts en cages (niveaux 1-3). Les cages pleines déploient des wagdrones après le boss Wagstaff.
+  desc_de: Waffe und Gestalt-Fangwerkzeug. 17 Schaden. Fängt Gestalten in Käfige (Stufen 1-3). Volle Käfige setzen Wagdrohnen nach dem Wagstaff-Boss ein.
+  desc_it: Arma e strumento di cattura gestalt. 17 danni. Cattura gestalt in gabbie (livelli 1-3). Gabbie piene dispiegano wagdroni dopo il boss Wagstaff.
+  desc_pl: Broń i narzędzie do łapania gestaltów. 17 obrażeń. Łapie gestalty do klatek (poziomy 1-3). Pełne klatki rozmieszczają wagdrony po bossie Wagstaff.
+  desc_pt_BR: Arma e ferramenta de captura de gestalts. 17 de dano. Captura gestalts em gaiolas (níveis 1-3). Gaiolas cheias implantam wagdrones após o boss Wagstaff.
+  desc_ru: Оружие и инструмент захвата гештальтов. 17 урона. Захватывает гештальтов в клетки (уровни 1-3). Заполненные клетки создают вагдронов после босса Вагстаффа.
+  desc_es: Arma y herramienta de captura de gestalts. 17 de daño. Captura gestalts en jaulas (niveles 1-3). Jaulas llenas despliegan wagdrones tras el jefe Wagstaff.
+  desc_es_MX: Arma y herramienta de captura de gestalts. 17 de daño. Captura gestalts en jaulas (niveles 1-3). Jaulas llenas despliegan wagdrones tras el jefe Wagstaff.
 329.ghostflowerhat
   en: Wraith's Wreath
   ko: 망령 화관
   app: O
   source: Hat. Perishes in 4800s (10 days). Dapperness +26.7/day (DAPPERNESS_MED). Grants ghost_ally tag to wearer (enables Abigail elixir use on player). Has rechargeable shield component. Open top hat. Compostable.
+  desc_en: Hat perishing in 4800s (10 days). Dapperness +26.7/day. Grants ghost_ally tag for Abigail elixir use. Rechargeable shield. Compostable.
+  desc_ko: 4800초(10일) 후 부패하는 모자. 멋짐 +26.7/일. 아비게일 영약 사용을 위한 유령 아군 태그 부여. 충전식 방패. 퇴비화 가능.
+  desc_ja: 4800秒（10日）で腐敗する帽子。おしゃれ度+26.7/日。アビゲイルのエリクサー使用のためのゴーストアライタグ付与。充電式シールド。堆肥可能。
+  desc_zh_CN: 帽子，4800秒（10天）后腐烂。优雅度+26.7/天。赋予幽灵盟友标签以使用阿比盖尔药剂。可充能护盾。可堆肥。
+  desc_zh_TW: 帽子，4800秒（10天）後腐爛。優雅度+26.7/天。賦予幽靈盟友標籤以使用阿比蓋爾藥劑。可充能護盾。可堆肥。
+  desc_fr: Chapeau périssant en 4800s (10 jours). Élégance +26,7/jour. Accorde le tag allié fantôme pour l'élixir d'Abigail. Bouclier rechargeable. Compostable.
+  desc_de: Hut, verdirbt in 4800s (10 Tage). Schneidigkeit +26,7/Tag. Gewährt Geisterverbündeten-Tag für Abigails Elixiere. Aufladbarer Schild. Kompostierbar.
+  desc_it: Cappello che deperisce in 4800s (10 giorni). Eleganza +26,7/giorno. Concede tag alleato fantasma per elisir di Abigail. Scudo ricaricabile. Compostabile.
+  desc_pl: Kapelusz psujący się w 4800s (10 dni). Elegancja +26,7/dzień. Nadaje tag sojusznika-ducha do eliksirów Abigail. Ładowalna tarcza. Kompostowalny.
+  desc_pt_BR: Chapéu que perece em 4800s (10 dias). Elegância +26,7/dia. Concede tag aliado fantasma para uso de elixir de Abigail. Escudo recarregável. Compostável.
+  desc_ru: Шляпа, портится за 4800с (10 дней). Щёгольство +26,7/день. Даёт тег союзника-призрака для эликсиров Абигейл. Перезаряжаемый щит. Компостируемая.
+  desc_es: Sombrero que perece en 4800s (10 días). Elegancia +26,7/día. Otorga tag aliado fantasma para elixir de Abigail. Escudo recargable. Compostable.
+  desc_es_MX: Sombrero que perece en 4800s (10 días). Elegancia +26,7/día. Otorga tag aliado fantasma para elixir de Abigail. Escudo recargable. Compostable.
 330.ghostlyelixir_attack
   en: Nightshade Nostrum
   ko: 독말풀 보약
   app: O
   source: Wendy elixir for Abigail. Increases Abigail's damage for 480s (1 full day). Applied via ghostly elixir system.
+  desc_en: Wendy elixir for Abigail. Increases Abigail's damage for 480s (1 day).
+  desc_ko: 웬디의 아비게일용 영약. 480초(1일) 동안 아비게일의 공격력 증가.
+  desc_ja: ウェンディのアビゲイル用エリクサー。480秒（1日）間アビゲイルのダメージを増加。
+  desc_zh_CN: 温蒂的阿比盖尔药剂。增加阿比盖尔的伤害480秒（1天）。
+  desc_zh_TW: 溫蒂的阿比蓋爾藥劑。增加阿比蓋爾的傷害480秒（1天）。
+  desc_fr: Élixir de Wendy pour Abigail. Augmente les dégâts d'Abigail pendant 480s (1 jour).
+  desc_de: Wendys Elixier für Abigail. Erhöht Abigails Schaden für 480s (1 Tag).
+  desc_it: Elisir di Wendy per Abigail. Aumenta i danni di Abigail per 480s (1 giorno).
+  desc_pl: Eliksir Wendy dla Abigail. Zwiększa obrażenia Abigail na 480s (1 dzień).
+  desc_pt_BR: Elixir de Wendy para Abigail. Aumenta o dano de Abigail por 480s (1 dia).
+  desc_ru: Эликсир Венди для Абигейл. Увеличивает урон Абигейл на 480с (1 день).
+  desc_es: Elixir de Wendy para Abigail. Aumenta el daño de Abigail durante 480s (1 día).
+  desc_es_MX: Elixir de Wendy para Abigail. Aumenta el daño de Abigail durante 480s (1 día).
 331.ghostlyelixir_fastregen
   en: Spectral Cure-All
   ko: 영혼의 만병통치약
   app: O
   source: Wendy elixir for Abigail. Heals 20hp/s for 30s (seg_time), totaling 600hp. Fast burst healing.
+  desc_en: Wendy elixir for Abigail. Heals 20 HP/s for 30s, totaling 600 HP. Fast burst healing.
+  desc_ko: 웬디의 아비게일용 영약. 30초간 초당 20 HP 회복, 총 600 HP. 빠른 폭발 치유.
+  desc_ja: ウェンディのアビゲイル用エリクサー。30秒間20HP/sの回復、合計600HP。高速バースト回復。
+  desc_zh_CN: 温蒂的阿比盖尔药剂。30秒内每秒恢复20 HP，共600 HP。快速爆发治疗。
+  desc_zh_TW: 溫蒂的阿比蓋爾藥劑。30秒內每秒恢復20 HP，共600 HP。快速爆發治療。
+  desc_fr: Élixir de Wendy pour Abigail. Soigne 20 PV/s pendant 30s, total 600 PV. Soin éclair.
+  desc_de: Wendys Elixier für Abigail. Heilt 20 TP/s für 30s, insgesamt 600 TP. Schnelle Stoßheilung.
+  desc_it: Elisir di Wendy per Abigail. Cura 20 PV/s per 30s, totale 600 PV. Cura rapida esplosiva.
+  desc_pl: Eliksir Wendy dla Abigail. Leczy 20 PZ/s przez 30s, łącznie 600 PZ. Szybkie leczenie wybuchowe.
+  desc_pt_BR: Elixir de Wendy para Abigail. Cura 20 PV/s por 30s, total 600 PV. Cura rápida explosiva.
+  desc_ru: Эликсир Венди для Абигейл. Лечит 20 ед./с в течение 30с, всего 600 ед. Быстрое залповое исцеление.
+  desc_es: Elixir de Wendy para Abigail. Cura 20 PV/s durante 30s, total 600 PV. Curación rápida explosiva.
+  desc_es_MX: Elixir de Wendy para Abigail. Cura 20 PV/s durante 30s, total 600 PV. Curación rápida explosiva.
 332.ghostlyelixir_lunar
   en: Luminous Wrath
   ko: 광명의 분노
   app: O
   source: Wendy elixir for Abigail. Lunar-aligned combat elixir. Applied via ghostly elixir system with duration based on elixir type.
+  desc_en: Wendy elixir for Abigail. Lunar-aligned combat elixir applied via ghostly elixir system.
+  desc_ko: 웬디의 아비게일용 영약. 유령 영약 시스템으로 적용되는 달 정렬 전투 영약.
+  desc_ja: ウェンディのアビゲイル用エリクサー。ゴーストリーエリクサーシステムで適用される月属性戦闘エリクサー。
+  desc_zh_CN: 温蒂的阿比盖尔药剂。通过灵魂药剂系统施加的月亮属性战斗药剂。
+  desc_zh_TW: 溫蒂的阿比蓋爾藥劑。通過靈魂藥劑系統施加的月亮屬性戰鬥藥劑。
+  desc_fr: Élixir de Wendy pour Abigail. Élixir de combat lunaire appliqué via le système d'élixir fantôme.
+  desc_de: Wendys Elixier für Abigail. Mondaligniertes Kampfelixier über das Geisterelixiersystem.
+  desc_it: Elisir di Wendy per Abigail. Elisir di combattimento lunare applicato tramite il sistema elisir spettrale.
+  desc_pl: Eliksir Wendy dla Abigail. Eliksir bojowy księżycowy stosowany przez system eliksirów duchów.
+  desc_pt_BR: Elixir de Wendy para Abigail. Elixir de combate lunar aplicado via sistema de elixir fantasma.
+  desc_ru: Эликсир Венди для Абигейл. Лунный боевой эликсир, применяемый через систему призрачных эликсиров.
+  desc_es: Elixir de Wendy para Abigail. Elixir de combate lunar aplicado vía sistema de elixir fantasmal.
+  desc_es_MX: Elixir de Wendy para Abigail. Elixir de combate lunar aplicado vía sistema de elixir fantasmal.
 333.ghostlyelixir_retaliation
   en: Distilled Vengeance
   ko: 복수의 증류물
   app: O
   source: Wendy elixir for Abigail. Deals 20 retaliatory damage to nearby enemies (range 5) when the wearer of Wraith's Wreath is attacked. Lasts 480s (1 full day).
+  desc_en: Wendy elixir for Abigail. Deals 20 retaliatory damage to nearby enemies (range 5) when wearer of Wraith's Wreath is attacked. Lasts 480s (1 day).
+  desc_ko: 웬디의 아비게일용 영약. 망령 화관 착용자가 공격받으면 근처 적(반경 5)에게 20 보복 피해. 480초(1일) 지속.
+  desc_ja: ウェンディのアビゲイル用エリクサー。レイスリース装着者が攻撃されると近くの敵（範囲5）に20の報復ダメージ。480秒（1日）持続。
+  desc_zh_CN: 温蒂的阿比盖尔药剂。亡灵花环佩戴者被攻击时对附近敌人（范围5）造成20反击伤害。持续480秒（1天）。
+  desc_zh_TW: 溫蒂的阿比蓋爾藥劑。亡靈花環佩戴者被攻擊時對附近敵人（範圍5）造成20反擊傷害。持續480秒（1天）。
+  desc_fr: Élixir de Wendy pour Abigail. Inflige 20 dégâts de représailles aux ennemis proches (rayon 5) quand le porteur de la Couronne du Spectre est attaqué. Dure 480s (1 jour).
+  desc_de: Wendys Elixier für Abigail. 20 Vergeltungsschaden an nahen Feinden (Radius 5) wenn Geisterkranz-Träger angegriffen wird. Hält 480s (1 Tag).
+  desc_it: Elisir di Wendy per Abigail. Infligge 20 danni di rappresaglia ai nemici vicini (raggio 5) quando chi indossa la Corona dello Spettro viene attaccato. Dura 480s (1 giorno).
+  desc_pl: Eliksir Wendy dla Abigail. Zadaje 20 obrażeń odwetowych pobliskim wrogom (zasięg 5) gdy noszący Wieniec Upiora zostanie zaatakowany. Trwa 480s (1 dzień).
+  desc_pt_BR: Elixir de Wendy para Abigail. Causa 20 de dano retaliatório a inimigos próximos (raio 5) quando o portador da Coroa Espectral é atacado. Dura 480s (1 dia).
+  desc_ru: Эликсир Венди для Абигейл. Наносит 20 ответного урона ближайшим врагам (радиус 5) при атаке на носителя Венка Призрака. Длится 480с (1 день).
+  desc_es: Elixir de Wendy para Abigail. Inflige 20 de daño de represalia a enemigos cercanos (radio 5) al atacar al portador de la Corona del Espectro. Dura 480s (1 día).
+  desc_es_MX: Elixir de Wendy para Abigail. Inflige 20 de daño de represalia a enemigos cercanos (radio 5) al atacar al portador de la Corona del Espectro. Dura 480s (1 día).
 334.ghostlyelixir_revive
   en: Ghastly Experience
   ko: 영적 체험
   app: O
   source: Wendy elixir for Abigail. Duration 2s. Used for ghost revival — very short-duration emergency effect.
+  desc_en: Wendy elixir for Abigail. 2s duration. Used for ghost revival — emergency short-duration effect.
+  desc_ko: 웬디의 아비게일용 영약. 2초 지속. 유령 부활용 — 긴급 단시간 효과.
+  desc_ja: ウェンディのアビゲイル用エリクサー。2秒間持続。ゴースト復活用 — 緊急短時間効果。
+  desc_zh_CN: 温蒂的阿比盖尔药剂。持续2秒。用于幽灵复活 — 紧急短时效果。
+  desc_zh_TW: 溫蒂的阿比蓋爾藥劑。持續2秒。用於幽靈復活 — 緊急短時效果。
+  desc_fr: Élixir de Wendy pour Abigail. Durée 2s. Résurrection de fantôme — effet d'urgence de courte durée.
+  desc_de: Wendys Elixier für Abigail. 2s Dauer. Zur Geisterwiederbelebung — kurzfristiger Notfalleffekt.
+  desc_it: Elisir di Wendy per Abigail. Durata 2s. Per la resurrezione fantasma — effetto emergenza breve.
+  desc_pl: Eliksir Wendy dla Abigail. Czas trwania 2s. Do wskrzeszenia ducha — krótkotrwały efekt awaryjny.
+  desc_pt_BR: Elixir de Wendy para Abigail. Duração 2s. Para reviver fantasma — efeito de emergência curto.
+  desc_ru: Эликсир Венди для Абигейл. Длительность 2с. Для воскрешения призрака — экстренный краткосрочный эффект.
+  desc_es: Elixir de Wendy para Abigail. Duración 2s. Para revivir fantasma — efecto de emergencia breve.
+  desc_es_MX: Elixir de Wendy para Abigail. Duración 2s. Para revivir fantasma — efecto de emergencia breve.
 335.ghostlyelixir_shadow
   en: Cursed Vexation
   ko: 저주의 원념
   app: O
   source: Wendy elixir for Abigail. Shadow-aligned combat elixir. Applied via ghostly elixir system with duration based on elixir type.
+  desc_en: Wendy elixir for Abigail. Shadow-aligned combat elixir applied via ghostly elixir system.
+  desc_ko: 웬디의 아비게일용 영약. 유령 영약 시스템으로 적용되는 그림자 정렬 전투 영약.
+  desc_ja: ウェンディのアビゲイル用エリクサー。ゴーストリーエリクサーシステムで適用されるシャドウ属性戦闘エリクサー。
+  desc_zh_CN: 温蒂的阿比盖尔药剂。通过灵魂药剂系统施加的暗影属性战斗药剂。
+  desc_zh_TW: 溫蒂的阿比蓋爾藥劑。通過靈魂藥劑系統施加的暗影屬性戰鬥藥劑。
+  desc_fr: Élixir de Wendy pour Abigail. Élixir de combat d'ombre appliqué via le système d'élixir fantôme.
+  desc_de: Wendys Elixier für Abigail. Schattenausgerichtetes Kampfelixier über das Geisterelixiersystem.
+  desc_it: Elisir di Wendy per Abigail. Elisir di combattimento d'ombra applicato tramite il sistema elisir spettrale.
+  desc_pl: Eliksir Wendy dla Abigail. Eliksir bojowy cienia stosowany przez system eliksirów duchów.
+  desc_pt_BR: Elixir de Wendy para Abigail. Elixir de combate sombrio aplicado via sistema de elixir fantasma.
+  desc_ru: Эликсир Венди для Абигейл. Теневой боевой эликсир, применяемый через систему призрачных эликсиров.
+  desc_es: Elixir de Wendy para Abigail. Elixir de combate de sombra aplicado vía sistema de elixir fantasmal.
+  desc_es_MX: Elixir de Wendy para Abigail. Elixir de combate de sombra aplicado vía sistema de elixir fantasmal.
 336.ghostlyelixir_shield
   en: Unyielding Draught
   ko: 불굴의 물약
   app: O
   source: Wendy elixir for Abigail. Grants a damage-absorbing shield for 480s (1 full day). When worn with Wraith's Wreath, shield absorbs incoming hits with a rechargeable cooldown.
+  desc_en: Wendy elixir for Abigail. Grants damage-absorbing shield for 480s (1 day). Rechargeable cooldown with Wraith's Wreath.
+  desc_ko: 웬디의 아비게일용 영약. 480초(1일) 동안 피해 흡수 방패 부여. 망령 화관과 함께 충전식 쿨다운.
+  desc_ja: ウェンディのアビゲイル用エリクサー。480秒（1日）間ダメージ吸収シールド付与。レイスリースで充電式クールダウン。
+  desc_zh_CN: 温蒂的阿比盖尔药剂。赋予480秒（1天）的伤害吸收护盾。亡灵花环可充能冷却。
+  desc_zh_TW: 溫蒂的阿比蓋爾藥劑。賦予480秒（1天）的傷害吸收護盾。亡靈花環可充能冷卻。
+  desc_fr: Élixir de Wendy pour Abigail. Accorde un bouclier absorbant les dégâts pendant 480s (1 jour). Cooldown rechargeable avec la Couronne du Spectre.
+  desc_de: Wendys Elixier für Abigail. Gewährt schadensabsorbierenden Schild für 480s (1 Tag). Aufladbare Abklingzeit mit Geisterkranz.
+  desc_it: Elisir di Wendy per Abigail. Concede scudo assorbi-danni per 480s (1 giorno). Cooldown ricaricabile con la Corona dello Spettro.
+  desc_pl: Eliksir Wendy dla Abigail. Nadaje tarczę pochłaniającą obrażenia na 480s (1 dzień). Ładowalny cooldown z Wieńcem Upiora.
+  desc_pt_BR: Elixir de Wendy para Abigail. Concede escudo absorvente por 480s (1 dia). Cooldown recarregável com Coroa Espectral.
+  desc_ru: Эликсир Венди для Абигейл. Даёт поглощающий урон щит на 480с (1 день). Перезаряжаемый кулдаун с Венком Призрака.
+  desc_es: Elixir de Wendy para Abigail. Otorga escudo que absorbe daño durante 480s (1 día). Cooldown recargable con la Corona del Espectro.
+  desc_es_MX: Elixir de Wendy para Abigail. Otorga escudo que absorbe daño durante 480s (1 día). Cooldown recargable con la Corona del Espectro.
 337.ghostlyelixir_slowregen
   en: Revenant Restorative
   ko: 망령의 강장제
   app: O
   source: Wendy elixir for Abigail. Heals 2hp/s for 480s (1 full day), totaling 960hp. Slow sustained healing. Sisturn blossom bonus halves tick rate.
+  desc_en: Wendy elixir for Abigail. Heals 2 HP/s for 480s (1 day), totaling 960 HP. Slow sustained healing. Sisturn bonus halves tick rate.
+  desc_ko: 웬디의 아비게일용 영약. 480초(1일) 동안 초당 2 HP 회복, 총 960 HP. 느린 지속 치유. 시스턴 보너스로 틱 속도 절반.
+  desc_ja: ウェンディのアビゲイル用エリクサー。480秒（1日）間2HP/s回復、合計960HP。緩やかな持続回復。シスターンボーナスでティック半減。
+  desc_zh_CN: 温蒂的阿比盖尔药剂。480秒（1天）内每秒恢复2 HP，共960 HP。缓慢持续治疗。灵壇加成减半间隔。
+  desc_zh_TW: 溫蒂的阿比蓋爾藥劑。480秒（1天）內每秒恢復2 HP，共960 HP。緩慢持續治療。靈壇加成減半間隔。
+  desc_fr: Élixir de Wendy pour Abigail. Soigne 2 PV/s pendant 480s (1 jour), total 960 PV. Soin lent prolongé. Bonus Sisturne réduit l'intervalle de moitié.
+  desc_de: Wendys Elixier für Abigail. Heilt 2 TP/s für 480s (1 Tag), insgesamt 960 TP. Langsame Dauerheilung. Sisturne-Bonus halbiert Tickrate.
+  desc_it: Elisir di Wendy per Abigail. Cura 2 PV/s per 480s (1 giorno), totale 960 PV. Cura lenta prolungata. Bonus Sisturno dimezza l'intervallo.
+  desc_pl: Eliksir Wendy dla Abigail. Leczy 2 PZ/s przez 480s (1 dzień), łącznie 960 PZ. Powolne ciągłe leczenie. Bonus Sisturnu połowi interwał.
+  desc_pt_BR: Elixir de Wendy para Abigail. Cura 2 PV/s por 480s (1 dia), total 960 PV. Cura lenta sustentada. Bônus do Sisturno reduz intervalo pela metade.
+  desc_ru: Эликсир Венди для Абигейл. Лечит 2 ед./с в течение 480с (1 день), всего 960 ед. Медленное длительное исцеление. Бонус Систёрна вдвое уменьшает интервал.
+  desc_es: Elixir de Wendy para Abigail. Cura 2 PV/s durante 480s (1 día), total 960 PV. Curación lenta sostenida. Bonus Sisturno reduce intervalo a la mitad.
+  desc_es_MX: Elixir de Wendy para Abigail. Cura 2 PV/s durante 480s (1 día), total 960 PV. Curación lenta sostenida. Bonus Sisturno reduce intervalo a la mitad.
 338.ghostlyelixir_speed
   en: Vigor Mortis
   ko: 사자의 활력
   app: O
   source: Wendy elixir for Abigail. 1.75x movement speed for 480s (1 full day). Player ghost duration variant lasts only 3s.
+  desc_en: Wendy elixir for Abigail. 1.75x movement speed for 480s (1 day). Player ghost variant lasts only 3s.
+  desc_ko: 웬디의 아비게일용 영약. 480초(1일) 동안 이동 속도 1.75배. 플레이어 유령 변형은 3초만 지속.
+  desc_ja: ウェンディのアビゲイル用エリクサー。480秒（1日）間移動速度1.75倍。プレイヤーゴーストバリアントは3秒のみ。
+  desc_zh_CN: 温蒂的阿比盖尔药剂。480秒（1天）内移动速度1.75倍。玩家幽灵变体仅持续3秒。
+  desc_zh_TW: 溫蒂的阿比蓋爾藥劑。480秒（1天）內移動速度1.75倍。玩家幽靈變體僅持續3秒。
+  desc_fr: Élixir de Wendy pour Abigail. Vitesse x1,75 pendant 480s (1 jour). La variante fantôme joueur dure seulement 3s.
+  desc_de: Wendys Elixier für Abigail. 1,75x Bewegungsgeschwindigkeit für 480s (1 Tag). Spielergeist-Variante hält nur 3s.
+  desc_it: Elisir di Wendy per Abigail. Velocità x1,75 per 480s (1 giorno). Variante fantasma giocatore dura solo 3s.
+  desc_pl: Eliksir Wendy dla Abigail. 1,75x prędkości ruchu na 480s (1 dzień). Wariant ducha gracza trwa tylko 3s.
+  desc_pt_BR: Elixir de Wendy para Abigail. Velocidade x1,75 por 480s (1 dia). Variante fantasma do jogador dura apenas 3s.
+  desc_ru: Эликсир Венди для Абигейл. Скорость движения x1,75 на 480с (1 день). Вариант призрака игрока длится только 3с.
+  desc_es: Elixir de Wendy para Abigail. Velocidad x1,75 durante 480s (1 día). Variante fantasma del jugador dura solo 3s.
+  desc_es_MX: Elixir de Wendy para Abigail. Velocidad x1,75 durante 480s (1 día). Variante fantasma del jugador dura solo 3s.
 339.giftwrap
   en: Gift Wrap
   ko: 선물 포장지
   app: O
   source: Wrapping item. Used to wrap any inventory item into a gift bundle via the bundling system. No special stats — purely cosmetic wrapping functionality.
+  desc_en: Wrapping item. Wraps any inventory item into a gift bundle. Purely cosmetic wrapping functionality.
+  desc_ko: 포장 아이템. 인벤토리 아이템을 선물 묶음으로 포장. 순수 장식용 포장 기능.
+  desc_ja: ラッピングアイテム。インベントリアイテムをギフトバンドルに包装。純粋な装飾ラッピング機能。
+  desc_zh_CN: 包装物品。将任意库存物品包装成礼物包裹。纯装饰性包装功能。
+  desc_zh_TW: 包裝物品。將任意庫存物品包裝成禮物包裹。純裝飾性包裝功能。
+  desc_fr: Objet d'emballage. Emballe n'importe quel objet en paquet cadeau. Fonctionnalité purement cosmétique.
+  desc_de: Verpackungsgegenstand. Verpackt beliebige Inventargegenstände als Geschenkpaket. Rein kosmetische Funktion.
+  desc_it: Oggetto per confezionamento. Avvolge qualsiasi oggetto in un pacco regalo. Funzionalità puramente estetica.
+  desc_pl: Przedmiot do pakowania. Pakuje dowolny przedmiot w paczkę prezentową. Czysto kosmetyczna funkcja.
+  desc_pt_BR: Item de embrulho. Embrulha qualquer item do inventário em pacote de presente. Funcionalidade puramente cosmética.
+  desc_ru: Упаковочный предмет. Оборачивает любой предмет инвентаря в подарочную упаковку. Чисто декоративная функция.
+  desc_es: Objeto de envoltura. Envuelve cualquier objeto del inventario en un paquete de regalo. Funcionalidad puramente cosmética.
+  desc_es_MX: Objeto de envoltura. Envuelve cualquier objeto del inventario en un paquete de regalo. Funcionalidad puramente cosmética.
 340.glasscutter
   en: Glass Cutter
   ko: 유리 절단기
   app: O
   source: Weapon. 75 uses. Damage 68 (34*2). Bonus +25% damage vs shadow creatures (damagetypebonus "shadowsubmissive"). Only 0.5x durability wear when hitting shadow targets.
+  desc_en: Weapon with 75 uses. 68 damage (34x2). +25% bonus vs shadow creatures with 0.5x durability wear on shadow targets.
+  desc_ko: 75회 사용 무기. 68 피해 (34x2). 그림자 생물에 +25% 보너스, 그림자 대상 시 내구도 소모 0.5배.
+  desc_ja: 75回使用の武器。68ダメージ（34x2）。シャドウクリーチャーに+25%ボーナス、シャドウ対象に0.5x耐久消耗。
+  desc_zh_CN: 武器，75次使用。68伤害（34x2）。对暗影生物+25%伤害加成，攻击暗影目标时耐久消耗0.5倍。
+  desc_zh_TW: 武器，75次使用。68傷害（34x2）。對暗影生物+25%傷害加成，攻擊暗影目標時耐久消耗0.5倍。
+  desc_fr: Arme avec 75 utilisations. 68 dégâts (34x2). +25 % bonus contre créatures d'ombre, usure 0,5x sur cibles d'ombre.
+  desc_de: Waffe mit 75 Nutzungen. 68 Schaden (34x2). +25 % Bonus gegen Schattenwesen, 0,5x Abnutzung bei Schattenzielen.
+  desc_it: Arma con 75 usi. 68 danni (34x2). +25% bonus vs creature d'ombra, usura 0,5x su bersagli d'ombra.
+  desc_pl: Broń z 75 użyciami. 68 obrażeń (34x2). +25% bonus vs stwory cienia, 0,5x zużycie na celach cieniowych.
+  desc_pt_BR: Arma com 75 usos. 68 de dano (34x2). +25% bônus contra criaturas sombrias, desgaste 0,5x em alvos sombrios.
+  desc_ru: Оружие на 75 использований. 68 урона (34x2). +25% бонус против теневых существ, износ 0,5x по теневым целям.
+  desc_es: Arma con 75 usos. 68 de daño (34x2). +25% bonus vs criaturas de sombra, desgaste 0,5x en objetivos de sombra.
+  desc_es_MX: Arma con 75 usos. 68 de daño (34x2). +25% bonus vs criaturas de sombra, desgaste 0,5x en objetivos de sombra.
 341.goggleshat
   en: Fashion Goggles
   ko: 패션 고글
   app: O
   source: Hat. Fueled 4800s (480*10). Dapperness +26.7/day (DAPPERNESS_MED). Shows farm plot nutrient levels when worn. Open top hat.
+  desc_en: Hat fueled for 4800s (10 days). Dapperness +26.7/day. Shows farm plot nutrient levels when worn. Open top hat.
+  desc_ko: 4800초(10일) 연료 모자. 멋짐 +26.7/일. 착용 시 텃밭 영양소 수치 표시. 오픈탑 모자.
+  desc_ja: 4800秒（10日）燃料の帽子。おしゃれ度+26.7/日。装着時に農場の栄養素レベルを表示。オープントップ帽子。
+  desc_zh_CN: 帽子，燃料4800秒（10天）。优雅度+26.7/天。佩戴时显示农田营养水平。开顶帽。
+  desc_zh_TW: 帽子，燃料4800秒（10天）。優雅度+26.7/天。佩戴時顯示農田營養水平。開頂帽。
+  desc_fr: Chapeau alimenté 4800s (10 jours). Élégance +26,7/jour. Affiche les niveaux de nutriments des parcelles. Chapeau ouvert.
+  desc_de: Hut mit 4800s (10 Tage) Brennstoff. Schneidigkeit +26,7/Tag. Zeigt Ackernährstoffwerte beim Tragen. Offener Hut.
+  desc_it: Cappello alimentato 4800s (10 giorni). Eleganza +26,7/giorno. Mostra i livelli nutritivi delle parcelle. Cappello aperto.
+  desc_pl: Kapelusz z paliwem na 4800s (10 dni). Elegancja +26,7/dzień. Pokazuje poziomy składników działek. Otwarty kapelusz.
+  desc_pt_BR: Chapéu com combustível para 4800s (10 dias). Elegância +26,7/dia. Mostra níveis de nutrientes das parcelas. Chapéu aberto.
+  desc_ru: Шляпа с топливом на 4800с (10 дней). Щёгольство +26,7/день. Показывает уровни питательных веществ грядок. Открытая шляпа.
+  desc_es: Sombrero con combustible para 4800s (10 días). Elegancia +26,7/día. Muestra niveles de nutrientes de parcelas. Sombrero abierto.
+  desc_es_MX: Sombrero con combustible para 4800s (10 días). Elegancia +26,7/día. Muestra niveles de nutrientes de parcelas. Sombrero abierto.
 342.golden_farm_hoe
   en: Splendid Garden Hoe
   ko: 인상적인 괭이
   app: O
   source: Tool + weapon. Same as Garden Hoe but with 4x durability (golden tool factor). Tilling consumes 1/4 use. Attack wear also 1/4.
+  desc_en: Golden garden hoe with 4x durability (100 effective uses). Same as Garden Hoe but lasts 4 times longer.
+  desc_ko: 4배 내구도의 금 괭이 (100 유효 사용). 괭이와 동일하지만 4배 오래 지속.
+  desc_ja: 4倍耐久度のゴールデン鍬（100有効使用回数）。ガーデンホーと同じだが4倍長持ち。
+  desc_zh_CN: 金锄头，4倍耐久（100次有效使用）。与普通锄头相同但持续4倍。
+  desc_zh_TW: 金鋤頭，4倍耐久（100次有效使用）。與普通鋤頭相同但持續4倍。
+  desc_fr: Houe dorée avec 4x durabilité (100 utilisations effectives). Comme la Houe de Jardin mais dure 4 fois plus.
+  desc_de: Goldene Gartenhacke mit 4x Haltbarkeit (100 effektive Nutzungen). Wie Gartenhacke aber 4x länger haltbar.
+  desc_it: Zappa d'oro con 4x durabilità (100 usi effettivi). Come la Zappa da Giardino ma dura 4 volte.
+  desc_pl: Złota motyka z 4x trwałością (100 efektywnych użyć). Jak Motyka Ogrodowa ale trwa 4x dłużej.
+  desc_pt_BR: Enxada dourada com 4x durabilidade (100 usos efetivos). Igual à Enxada mas dura 4 vezes mais.
+  desc_ru: Золотая садовая мотыга с 4x прочностью (100 эффективных использований). Как обычная мотыга, но служит в 4 раза дольше.
+  desc_es: Azada dorada con 4x durabilidad (100 usos efectivos). Igual que la Azada pero dura 4 veces más.
+  desc_es_MX: Azada dorada con 4x durabilidad (100 usos efectivos). Igual que la Azada pero dura 4 veces más.
 343.goldenaxe
   en: Luxury Axe
   ko: 고급스런 도끼
   app: O
   source: Golden tool. Same as regular axe but with 4x durability from GOLDENTOOLFACTOR.
+  desc_en: Golden axe with 4x durability. Same as regular axe but lasts 4 times longer.
+  desc_ko: 4배 내구도의 금 도끼. 일반 도끼와 동일하지만 4배 오래 지속.
+  desc_ja: 4倍耐久度のゴールデン斧。通常の斧と同じだが4倍長持ち。
+  desc_zh_CN: 金斧头，4倍耐久。与普通斧头相同但持续4倍。
+  desc_zh_TW: 金斧頭，4倍耐久。與普通斧頭相同但持續4倍。
+  desc_fr: Hache dorée avec 4x durabilité. Comme la hache normale mais dure 4 fois plus.
+  desc_de: Goldene Axt mit 4x Haltbarkeit. Wie normale Axt aber 4x länger haltbar.
+  desc_it: Ascia d'oro con 4x durabilità. Come l'ascia normale ma dura 4 volte.
+  desc_pl: Złoty topór z 4x trwałością. Jak zwykły topór ale trwa 4x dłużej.
+  desc_pt_BR: Machado dourado com 4x durabilidade. Igual ao machado normal mas dura 4 vezes mais.
+  desc_ru: Золотой топор с 4x прочностью. Как обычный топор, но служит в 4 раза дольше.
+  desc_es: Hacha dorada con 4x durabilidad. Igual que el hacha normal pero dura 4 veces más.
+  desc_es_MX: Hacha dorada con 4x durabilidad. Igual que el hacha normal pero dura 4 veces más.
 344.goldenpickaxe
   en: Opulent Pickaxe
   ko: 부유한 곡괭이
   app: O
   source: Golden tool. Same as regular pickaxe but with 4x durability from GOLDENTOOLFACTOR.
+  desc_en: Golden pickaxe with 4x durability. Same as regular pickaxe but lasts 4 times longer.
+  desc_ko: 4배 내구도의 금 곡괭이. 일반 곡괭이와 동일하지만 4배 오래 지속.
+  desc_ja: 4倍耐久度のゴールデンピッケル。通常のピッケルと同じだが4倍長持ち。
+  desc_zh_CN: 金镐，4倍耐久。与普通镐相同但持续4倍。
+  desc_zh_TW: 金鎬，4倍耐久。與普通鎬相同但持續4倍。
+  desc_fr: Pioche dorée avec 4x durabilité. Comme la pioche normale mais dure 4 fois plus.
+  desc_de: Goldene Spitzhacke mit 4x Haltbarkeit. Wie normale Spitzhacke aber 4x länger haltbar.
+  desc_it: Piccone d'oro con 4x durabilità. Come il piccone normale ma dura 4 volte.
+  desc_pl: Złoty kilof z 4x trwałością. Jak zwykły kilof ale trwa 4x dłużej.
+  desc_pt_BR: Picareta dourada com 4x durabilidade. Igual à picareta normal mas dura 4 vezes mais.
+  desc_ru: Золотая кирка с 4x прочностью. Как обычная кирка, но служит в 4 раза дольше.
+  desc_es: Pico dorado con 4x durabilidad. Igual que el pico normal pero dura 4 veces más.
+  desc_es_MX: Pico dorado con 4x durabilidad. Igual que el pico normal pero dura 4 veces más.
 345.goldenpitchfork
   en: Snazzy Pitchfork
   ko: 세련된 쇠스랑
   app: O
   source: Golden tool. Same as regular pitchfork but with 4x durability from GOLDENTOOLFACTOR.
+  desc_en: Golden pitchfork with 4x durability. Same as regular pitchfork but lasts 4 times longer.
+  desc_ko: 4배 내구도의 금 쇠스랑. 일반 쇠스랑과 동일하지만 4배 오래 지속.
+  desc_ja: 4倍耐久度のゴールデンピッチフォーク。通常のピッチフォークと同じだが4倍長持ち。
+  desc_zh_CN: 金草叉，4倍耐久。与普通草叉相同但持续4倍。
+  desc_zh_TW: 金草叉，4倍耐久。與普通草叉相同但持續4倍。
+  desc_fr: Fourche dorée avec 4x durabilité. Comme la fourche normale mais dure 4 fois plus.
+  desc_de: Goldene Heugabel mit 4x Haltbarkeit. Wie normale Heugabel aber 4x länger haltbar.
+  desc_it: Forcone d'oro con 4x durabilità. Come il forcone normale ma dura 4 volte.
+  desc_pl: Złote widły z 4x trwałością. Jak zwykłe widły ale trwają 4x dłużej.
+  desc_pt_BR: Forcado dourado com 4x durabilidade. Igual ao forcado normal mas dura 4 vezes mais.
+  desc_ru: Золотые вилы с 4x прочностью. Как обычные вилы, но служат в 4 раза дольше.
+  desc_es: Horca dorada con 4x durabilidad. Igual que la horca normal pero dura 4 veces más.
+  desc_es_MX: Horca dorada con 4x durabilidad. Igual que la horca normal pero dura 4 veces más.
 346.goldenshovel
   en: Regal Shovel
   ko: 제왕의 삽
   app: O
   source: Golden tool. Same as regular shovel but with 4x durability from GOLDENTOOLFACTOR.
+  desc_en: Golden shovel with 4x durability. Same as regular shovel but lasts 4 times longer.
+  desc_ko: 4배 내구도의 금 삽. 일반 삽과 동일하지만 4배 오래 지속.
+  desc_ja: 4倍耐久度のゴールデンシャベル。通常のシャベルと同じだが4倍長持ち。
+  desc_zh_CN: 金铲子，4倍耐久。与普通铲子相同但持续4倍。
+  desc_zh_TW: 金鏟子，4倍耐久。與普通鏟子相同但持續4倍。
+  desc_fr: Pelle dorée avec 4x durabilité. Comme la pelle normale mais dure 4 fois plus.
+  desc_de: Goldene Schaufel mit 4x Haltbarkeit. Wie normale Schaufel aber 4x länger haltbar.
+  desc_it: Pala d'oro con 4x durabilità. Come la pala normale ma dura 4 volte.
+  desc_pl: Złota łopata z 4x trwałością. Jak zwykła łopata ale trwa 4x dłużej.
+  desc_pt_BR: Pá dourada com 4x durabilidade. Igual à pá normal mas dura 4 vezes mais.
+  desc_ru: Золотая лопата с 4x прочностью. Как обычная лопата, но служит в 4 раза дольше.
+  desc_es: Pala dorada con 4x durabilidad. Igual que la pala normal pero dura 4 veces más.
+  desc_es_MX: Pala dorada con 4x durabilidad. Igual que la pala normal pero dura 4 veces más.
 347.grass_umbrella
   en: Pretty Parasol
   ko: 예쁜 양산
   app: O
   source: Equippable umbrella. Perishes in 960s (2 days). Provides rain/sun protection. Listed as summer cooling item.
+  desc_en: Equippable umbrella that perishes in 960s (2 days). Provides rain and sun protection. Summer cooling item.
+  desc_ko: 960초(2일) 후 부패하는 장착형 양산. 비와 햇빛 보호. 여름 냉각 아이템.
+  desc_ja: 960秒（2日）で腐敗する装備可能な傘。雨と日差しを防護。夏の冷却アイテム。
+  desc_zh_CN: 可装备阳伞，960秒（2天）后腐烂。提供雨和阳光保护。夏季降温物品。
+  desc_zh_TW: 可裝備陽傘，960秒（2天）後腐爛。提供雨和陽光保護。夏季降溫物品。
+  desc_fr: Parasol équipable qui périt en 960s (2 jours). Protection pluie et soleil. Objet rafraîchissant d'été.
+  desc_de: Ausrüstbarer Sonnenschirm, verdirbt in 960s (2 Tage). Regen- und Sonnenschutz. Sommerkühlgegenstand.
+  desc_it: Parasole equipaggiabile che deperisce in 960s (2 giorni). Protezione pioggia e sole. Oggetto rinfrescante estivo.
+  desc_pl: Zakładalna parasolka psująca się w 960s (2 dni). Ochrona przed deszczem i słońcem. Letni przedmiot chłodzący.
+  desc_pt_BR: Guarda-sol equipável que perece em 960s (2 dias). Proteção contra chuva e sol. Item refrescante de verão.
+  desc_ru: Экипируемый зонтик, портится за 960с (2 дня). Защита от дождя и солнца. Летний охлаждающий предмет.
+  desc_es: Sombrilla equipable que perece en 960s (2 días). Protección contra lluvia y sol. Objeto refrescante de verano.
+  desc_es_MX: Sombrilla equipable que perece en 960s (2 días). Protección contra lluvia y sol. Objeto refrescante de verano.
 348.gravestone
   en: Headstone
   ko: 묘비
   app: X
   type: deconstruct
   source: Structure. 5% daily ghost spawn chance. Can be dug up. Wendy skill: decoratable with 3 petals, decorated state lasts 2880s (6 days), spawns up to 3 evil flowers and up to 4 ghosts. Has random epitaph. Can drop cooking recipe cards (10%) and scrapbook pages (10%).
+  desc_en: Structure with 5% daily ghost spawn chance. Diggable. Wendy skill: decoratable with petals, spawns evil flowers and ghosts. Drops recipe cards (10%) and scrapbook pages (10%).
+  desc_ko: 5% 일일 유령 생성 확률 구조물. 파기 가능. 웬디 스킬: 꽃잎으로 장식 가능, 악마 꽃과 유령 생성. 레시피 카드 (10%) 및 스크랩북 페이지 (10%) 드롭.
+  desc_ja: 毎日5%の確率でゴーストがスポーンする構造物。掘り起こし可能。ウェンディスキル：花びらで装飾可、邪悪な花とゴーストをスポーン。レシピカード(10%)とスクラップブックページ(10%)ドロップ。
+  desc_zh_CN: 每日5%幽灵生成概率的结构。可挖掘。温蒂技能：可用花瓣装饰，生成邪恶花朵和幽灵。掉落食谱卡(10%)和剪贴簿页(10%)。
+  desc_zh_TW: 每日5%幽靈生成概率的結構。可挖掘。溫蒂技能：可用花瓣裝飾，生成邪惡花朵和幽靈。掉落食譜卡(10%)和剪貼簿頁(10%)。
+  desc_fr: Structure avec 5 % de chance quotidienne de fantôme. Déterrable. Compétence Wendy : décorable avec des pétales, génère fleurs maléfiques et fantômes. Cartes recettes (10 %) et pages album (10 %).
+  desc_de: Struktur mit 5 % täglicher Geisterspawnchance. Ausgrabbar. Wendy-Fähigkeit: mit Blüten dekorierbar, spawnt böse Blumen und Geister. Rezeptkarten (10 %) und Sammelbuchseiten (10 %).
+  desc_it: Struttura con 5% di probabilità giornaliera di spawn fantasma. Scavabile. Abilità Wendy: decorabile con petali, genera fiori malvagi e fantasmi. Carte ricetta (10%) e pagine album (10%).
+  desc_pl: Struktura z 5% dzienną szansą na ducha. Można wykopać. Umiejętność Wendy: dekorowalna płatkami, tworzy złe kwiaty i duchy. Karty przepisów (10%) i strony albumu (10%).
+  desc_pt_BR: Estrutura com 5% de chance diária de fantasma. Escavável. Habilidade Wendy: decorável com pétalas, gera flores malignas e fantasmas. Cartas de receita (10%) e páginas de álbum (10%).
+  desc_ru: Структура с 5% ежедневным шансом появления призрака. Можно выкопать. Навык Венди: украшается лепестками, создаёт злые цветы и призраков. Карты рецептов (10%) и страницы альбома (10%).
+  desc_es: Estructura con 5% de probabilidad diaria de fantasma. Excavable. Habilidad Wendy: decorable con pétalos, genera flores malvadas y fantasmas. Cartas de receta (10%) y páginas de álbum (10%).
+  desc_es_MX: Estructura con 5% de probabilidad diaria de fantasma. Excavable. Habilidad Wendy: decorable con pétalos, genera flores malvadas y fantasmas. Cartas de receta (10%) y páginas de álbum (10%).
 349.graveurn
   en: Spirit Vessel
   ko: 영혼 그릇
   app: O
   source: Grave digger tool. Used to pick up gravestones (stores the gravestone save data). When filled, becomes deployable to re-place the stored gravestone at a new location. Returns petals when digging decorated graves.
+  desc_en: Grave digger tool. Picks up gravestones for relocation. When filled, becomes deployable to re-place the stored gravestone.
+  desc_ko: 묘지 파기 도구. 묘비를 들어 이동. 채워지면 저장된 묘비를 재배치하는 설치 가능 아이템.
+  desc_ja: 墓掘り道具。墓石を拾い上げて移動。満杯時、保存された墓石を再配置する設置可能アイテムに。
+  desc_zh_CN: 掘墓工具。拾取墓碑进行搬迁。装满后可部署重新放置储存的墓碑。
+  desc_zh_TW: 掘墓工具。拾取墓碑進行搬遷。裝滿後可部署重新放置儲存的墓碑。
+  desc_fr: Outil de fossoyeur. Ramasse les pierres tombales pour les relocaliser. Une fois rempli, devient déployable pour replacer la tombe.
+  desc_de: Totengräberwerkzeug. Hebt Grabsteine zur Umsiedlung auf. Wenn gefüllt, platzierbar zum Neusetzen des Grabsteins.
+  desc_it: Strumento da becchino. Raccoglie lapidi per la ricollocazione. Quando pieno, diventa piazzabile per riposizionare la lapide.
+  desc_pl: Narzędzie grabarza. Podnosi nagrobki do przeniesienia. Po napełnieniu można go rozstawić, by postawić nagrobek w nowym miejscu.
+  desc_pt_BR: Ferramenta de coveiro. Pega lápides para realocação. Quando cheio, torna-se implantável para recolocar a lápide armazenada.
+  desc_ru: Инструмент могильщика. Поднимает надгробия для переноса. Заполненный становится устанавливаемым для размещения надгробия в новом месте.
+  desc_es: Herramienta de sepulturero. Recoge lápidas para reubicarlas. Cuando está lleno, se vuelve desplegable para recolocar la lápida almacenada.
+  desc_es_MX: Herramienta de sepulturero. Recoge lápidas para reubicarlas. Cuando está lleno, se vuelve desplegable para recolocar la lápida almacenada.
 350.green_mushroomhat
   en: Green Funcap
   ko: 녹색 버섯갓
   app: O
   source: Hat. Perishes in 2880s (6 days). Spawns small spores periodically (every 60s). Summer insulation 60 (INSULATION_SMALL). Waterproof 20%. Compostable.
+  desc_en: Hat perishing in 2880s (6 days). Spawns small spores every 60s. Summer insulation 60. Waterproof 20%. Compostable.
+  desc_ko: 2880초(6일) 후 부패하는 모자. 60초마다 작은 포자 생성. 여름 단열 60. 방수 20%. 퇴비화 가능.
+  desc_ja: 2880秒（6日）で腐敗する帽子。60秒ごとに小胞子を生成。夏の断熱60。防水20%。堆肥可能。
+  desc_zh_CN: 帽子，2880秒（6天）后腐烂。每60秒生成小孢子。夏季隔热60。防水20%。可堆肥。
+  desc_zh_TW: 帽子，2880秒（6天）後腐爛。每60秒生成小孢子。夏季隔熱60。防水20%。可堆肥。
+  desc_fr: Chapeau périssant en 2880s (6 jours). Génère des spores toutes les 60s. Isolation estivale 60. Imperméable 20 %. Compostable.
+  desc_de: Hut, verdirbt in 2880s (6 Tage). Spawnt kleine Sporen alle 60s. Sommerisolierung 60. Wasserdicht 20 %. Kompostierbar.
+  desc_it: Cappello che deperisce in 2880s (6 giorni). Genera piccole spore ogni 60s. Isolamento estivo 60. Impermeabile 20%. Compostabile.
+  desc_pl: Kapelusz psujący się w 2880s (6 dni). Co 60s tworzy małe zarodniki. Izolacja letnia 60. Wodoodporność 20%. Kompostowalny.
+  desc_pt_BR: Chapéu que perece em 2880s (6 dias). Gera pequenos esporos a cada 60s. Isolamento de verão 60. Impermeável 20%. Compostável.
+  desc_ru: Шляпа, портится за 2880с (6 дней). Создаёт малые споры каждые 60с. Летняя изоляция 60. Водонепроницаемость 20%. Компостируемая.
+  desc_es: Sombrero que perece en 2880s (6 días). Genera esporas cada 60s. Aislamiento veraniego 60. Impermeable 20%. Compostable.
+  desc_es_MX: Sombrero que perece en 2880s (6 días). Genera esporas cada 60s. Aislamiento veraniego 60. Impermeable 20%. Compostable.
 351.greenamulet
   en: Construction Amulet
   ko: 건설의 부적
   app: O
   source: Body slot amulet. 5 uses. Reduces crafting ingredient cost by 50%.
+  desc_en: Body slot amulet with 5 uses. Reduces crafting ingredient cost by 50%.
+  desc_ko: 5회 사용 몸통 슬롯 부적. 제작 재료 비용 50% 감소.
+  desc_ja: 5回使用のボディスロットアミュレット。クラフト材料コストを50%削減。
+  desc_zh_CN: 身体槽护符，5次使用。减少50%制作材料消耗。
+  desc_zh_TW: 身體槽護符，5次使用。減少50%製作材料消耗。
+  desc_fr: Amulette corporelle avec 5 utilisations. Réduit le coût des ingrédients d'artisanat de 50 %.
+  desc_de: Körperamulett mit 5 Nutzungen. Reduziert Herstellungszutatenkosten um 50 %.
+  desc_it: Amuleto da corpo con 5 usi. Riduce il costo degli ingredienti di crafting del 50%.
+  desc_pl: Amulet na ciało z 5 użyciami. Zmniejsza koszt składników wytwarzania o 50%.
+  desc_pt_BR: Amuleto corporal com 5 usos. Reduz o custo de ingredientes de fabricação em 50%.
+  desc_ru: Амулет на тело с 5 использованиями. Снижает стоимость ингредиентов крафта на 50%.
+  desc_es: Amuleto corporal con 5 usos. Reduce el coste de ingredientes de fabricación en un 50%.
+  desc_es_MX: Amuleto corporal con 5 usos. Reduce el coste de ingredientes de fabricación en un 50%.
 352.greenmooneye
   en: Green Moonlens
   ko: 초록 달수정
   app: X
   type: deconstruct
   source: Component item used in celestial crafting. No standalone prefab file — part of the moon altar/celestial champion system.
+  desc_en: Component item used in celestial crafting. Part of the moon altar/celestial champion system.
+  desc_ko: 천상 제작에 사용되는 재료 아이템. 달 제단/천상 챔피언 시스템의 일부.
+  desc_ja: 天界クラフトに使用されるコンポーネント。月の祭壇/天界チャンピオンシステムの一部。
+  desc_zh_CN: 天体制作用组件物品。月亮祭坛/天体冠军系统的一部分。
+  desc_zh_TW: 天體製作用組件物品。月亮祭壇/天體冠軍系統的一部分。
+  desc_fr: Composant utilisé dans l'artisanat céleste. Partie du système autel lunaire/champion céleste.
+  desc_de: Komponentengegenstand für himmlisches Handwerk. Teil des Mondaltars/Himmelschampion-Systems.
+  desc_it: Componente per il crafting celeste. Parte del sistema altare lunare/campione celeste.
+  desc_pl: Komponent do niebiańskiego rzemiosła. Część systemu ołtarza księżycowego/niebiańskiego mistrza.
+  desc_pt_BR: Item componente usado na fabricação celestial. Parte do sistema altar lunar/campeão celestial.
+  desc_ru: Компонент для небесного крафта. Часть системы лунного алтаря/небесного чемпиона.
+  desc_es: Componente para fabricación celestial. Parte del sistema altar lunar/campeón celestial.
+  desc_es_MX: Componente para fabricación celestial. Parte del sistema altar lunar/campeón celestial.
 353.greenstaff
   en: Deconstruction Staff
   ko: 해체의 지팡이
   app: O
   source: Magic staff. 5 uses. Deconstructs crafted structures/items back into their recipe ingredients.
+  desc_en: Magic staff with 5 uses. Deconstructs crafted structures/items back into their recipe ingredients.
+  desc_ko: 5회 사용 마법 지팡이. 제작된 구조물/아이템을 레시피 재료로 되돌림.
+  desc_ja: 5回使用の魔法の杖。クラフトされた構造物/アイテムをレシピ材料に分解。
+  desc_zh_CN: 魔法杖，5次使用。将制作的建筑/物品分解回配方材料。
+  desc_zh_TW: 魔法杖，5次使用。將製作的建築/物品分解回配方材料。
+  desc_fr: Bâton magique avec 5 utilisations. Déconstruit les structures/objets en leurs ingrédients de recette.
+  desc_de: Magischer Stab mit 5 Nutzungen. Zerlegt hergestellte Strukturen/Gegenstände in ihre Rezeptzutaten.
+  desc_it: Bastone magico con 5 usi. Decostruisce strutture/oggetti nei loro ingredienti originali.
+  desc_pl: Magiczna laska z 5 użyciami. Rozkłada wytworzone struktury/przedmioty na składniki przepisu.
+  desc_pt_BR: Cajado mágico com 5 usos. Desconstrói estruturas/itens fabricados de volta aos ingredientes da receita.
+  desc_ru: Магический посох на 5 использований. Разбирает построенные структуры/предметы обратно на ингредиенты рецепта.
+  desc_es: Bastón mágico con 5 usos. Deconstruye estructuras/objetos fabricados en sus ingredientes de receta.
+  desc_es_MX: Bastón mágico con 5 usos. Deconstruye estructuras/objetos fabricados en sus ingredientes de receta.
 354.gunpowder
   en: Gunpowder
   ko: 화약
   app: O
   source: Explosive. Stackable (max 40). 200 damage in radius 3 when ignited (3-6s fuse). Mole bait. Slingshot ammo: 59.5 damage (34*1.75), dust variant has 2x damage multiplier in AoE radius 3.
+  desc_en: Stackable explosive (max 40). 200 damage in radius 3 (3-6s fuse). Slingshot ammo: 59.5 damage, dust variant 2x AoE in radius 3.
+  desc_ko: 최대 40개 중첩 폭발물. 반경 3에서 200 피해 (3-6초 도화선). 새총 탄약: 59.5 피해, 먼지 변형 반경 3에서 2배 AoE.
+  desc_ja: スタック可能な爆発物（最大40）。半径3で200ダメージ（3-6秒導火線）。パチンコ弾：59.5ダメージ、ダスト変種は半径3で2倍AoE。
+  desc_zh_CN: 可堆叠爆炸物（最多40）。半径3内200伤害（3-6秒引线）。弹弓弹药：59.5伤害，粉尘变体半径3内2倍AoE。
+  desc_zh_TW: 可堆疊爆炸物（最多40）。半徑3內200傷害（3-6秒引線）。彈弓彈藥：59.5傷害，粉塵變體半徑3內2倍AoE。
+  desc_fr: Explosif empilable (max 40). 200 dégâts rayon 3 (mèche 3-6s). Munition fronde : 59,5 dégâts, variante poussière 2x AoE rayon 3.
+  desc_de: Stapelbarer Sprengstoff (max 40). 200 Schaden im Radius 3 (3-6s Zündschnur). Schleuderammo: 59,5 Schaden, Staubvariante 2x AoE Radius 3.
+  desc_it: Esplosivo impilabile (max 40). 200 danni nel raggio 3 (miccia 3-6s). Munizione fionda: 59,5 danni, variante polvere 2x AoE raggio 3.
+  desc_pl: Stosowalny materiał wybuchowy (maks. 40). 200 obrażeń w promieniu 3 (lont 3-6s). Amunicja procy: 59,5 obrażeń, wariant pyłowy 2x AoE promień 3.
+  desc_pt_BR: Explosivo empilhável (máx. 40). 200 de dano no raio 3 (pavio 3-6s). Munição de estilingue: 59,5 de dano, variante pó 2x AoE raio 3.
+  desc_ru: Стакаемая взрывчатка (макс. 40). 200 урона в радиусе 3 (фитиль 3-6с). Снаряд для рогатки: 59,5 урона, пылевой вариант 2x AoE радиус 3.
+  desc_es: Explosivo apilable (máx. 40). 200 de daño en radio 3 (mecha 3-6s). Munición honda: 59,5 de daño, variante polvo 2x AoE radio 3.
+  desc_es_MX: Explosivo apilable (máx. 40). 200 de daño en radio 3 (mecha 3-6s). Munición honda: 59,5 de daño, variante polvo 2x AoE radio 3.
 355.halloween_experiment_bravery
   en: Phobic Experiment
   ko: 공포증 실험
   app: O
   source: Mad Science Lab recipe. Produces 3-5 small or 1-3 large bravery potions (halloweenpotion_bravery_small/large) with weighted random counts.
+  desc_en: Mad Science Lab recipe. Produces 3-5 small or 1-3 large bravery potions with weighted random counts.
+  desc_ko: 미친 과학 연구소 레시피. 가중 랜덤으로 소형 3-5개 또는 대형 1-3개 용기 포션 생성.
+  desc_ja: マッドサイエンスラボレシピ。重み付きランダムで小型3-5個または大型1-3個の勇気ポーションを生成。
+  desc_zh_CN: 疯狂科学实验室配方。按加权随机生成3-5个小型或1-3个大型勇气药水。
+  desc_zh_TW: 瘋狂科學實驗室配方。按加權隨機生成3-5個小型或1-3個大型勇氣藥水。
+  desc_fr: Recette du Labo de Science Folle. Produit 3-5 petites ou 1-3 grandes potions de bravoure avec comptage aléatoire pondéré.
+  desc_de: Verrücktes-Wissenschaftslabor-Rezept. Erzeugt 3-5 kleine oder 1-3 große Mutränke mit gewichteter Zufallsanzahl.
+  desc_it: Ricetta del Laboratorio di Scienza Pazza. Produce 3-5 piccole o 1-3 grandi pozioni di coraggio con conteggio casuale ponderato.
+  desc_pl: Przepis Szalonego Laboratorium. Produkuje 3-5 małych lub 1-3 dużych mikstur odwagi z wagą losową.
+  desc_pt_BR: Receita do Laboratório Louco. Produz 3-5 pequenas ou 1-3 grandes poções de bravura com contagem aleatória ponderada.
+  desc_ru: Рецепт Безумной Лаборатории. Производит 3-5 малых или 1-3 больших зелий храбрости со взвешенным случайным количеством.
+  desc_es: Receta del Laboratorio Loco. Produce 3-5 pociones pequeñas o 1-3 grandes de valentía con conteo aleatorio ponderado.
+  desc_es_MX: Receta del Laboratorio Loco. Produce 3-5 pociones pequeñas o 1-3 grandes de valentía con conteo aleatorio ponderado.
 356.halloween_experiment_health
   en: Sanguine Experiment
   ko: 핏빛 실험
   app: O
   source: Mad Science Lab recipe. Produces 3-5 small or 1-3 large health potions (halloweenpotion_health_small/large) with weighted random counts.
+  desc_en: Mad Science Lab recipe. Produces 3-5 small or 1-3 large health potions with weighted random counts.
+  desc_ko: 미친 과학 연구소 레시피. 가중 랜덤으로 소형 3-5개 또는 대형 1-3개 체력 포션 생성.
+  desc_ja: マッドサイエンスラボレシピ。重み付きランダムで小型3-5個または大型1-3個の体力ポーションを生成。
+  desc_zh_CN: 疯狂科学实验室配方。按加权随机生成3-5个小型或1-3个大型生命药水。
+  desc_zh_TW: 瘋狂科學實驗室配方。按加權隨機生成3-5個小型或1-3個大型生命藥水。
+  desc_fr: Recette du Labo de Science Folle. Produit 3-5 petites ou 1-3 grandes potions de santé avec comptage aléatoire pondéré.
+  desc_de: Verrücktes-Wissenschaftslabor-Rezept. Erzeugt 3-5 kleine oder 1-3 große Heiltränke mit gewichteter Zufallsanzahl.
+  desc_it: Ricetta del Laboratorio di Scienza Pazza. Produce 3-5 piccole o 1-3 grandi pozioni di salute con conteggio casuale ponderato.
+  desc_pl: Przepis Szalonego Laboratorium. Produkuje 3-5 małych lub 1-3 dużych mikstur zdrowia z wagą losową.
+  desc_pt_BR: Receita do Laboratório Louco. Produz 3-5 pequenas ou 1-3 grandes poções de saúde com contagem aleatória ponderada.
+  desc_ru: Рецепт Безумной Лаборатории. Производит 3-5 малых или 1-3 больших зелий здоровья со взвешенным случайным количеством.
+  desc_es: Receta del Laboratorio Loco. Produce 3-5 pociones pequeñas o 1-3 grandes de salud con conteo aleatorio ponderado.
+  desc_es_MX: Receta del Laboratorio Loco. Produce 3-5 pociones pequeñas o 1-3 grandes de salud con conteo aleatorio ponderado.
 357.halloween_experiment_moon
   en: Lunar Experiment
   ko: 달빛 실험
   app: O
   source: Mad Science Lab recipe. Produces 1 moon potion (halloweenpotion_moon).
+  desc_en: Mad Science Lab recipe. Produces 1 moon potion.
+  desc_ko: 미친 과학 연구소 레시피. 달 포션 1개 생성.
+  desc_ja: マッドサイエンスラボレシピ。ムーンポーション1個を生成。
+  desc_zh_CN: 疯狂科学实验室配方。生成1个月亮药水。
+  desc_zh_TW: 瘋狂科學實驗室配方。生成1個月亮藥水。
+  desc_fr: Recette du Labo de Science Folle. Produit 1 potion de lune.
+  desc_de: Verrücktes-Wissenschaftslabor-Rezept. Erzeugt 1 Mondtrank.
+  desc_it: Ricetta del Laboratorio di Scienza Pazza. Produce 1 pozione lunare.
+  desc_pl: Przepis Szalonego Laboratorium. Produkuje 1 miksturę księżycową.
+  desc_pt_BR: Receita do Laboratório Louco. Produz 1 poção lunar.
+  desc_ru: Рецепт Безумной Лаборатории. Производит 1 лунное зелье.
+  desc_es: Receta del Laboratorio Loco. Produce 1 poción lunar.
+  desc_es_MX: Receta del Laboratorio Loco. Produce 1 poción lunar.
 358.halloween_experiment_root
   en: Arboretum Experiment
   ko: 수목학 실험
   app: O
   source: Mad Science Lab recipe. Produces 1 living tree root (livingtree_root).
+  desc_en: Mad Science Lab recipe. Produces 1 living tree root.
+  desc_ko: 미친 과학 연구소 레시피. 살아있는 나무 뿌리 1개 생성.
+  desc_ja: マッドサイエンスラボレシピ。生きた木の根1個を生成。
+  desc_zh_CN: 疯狂科学实验室配方。生成1个活树根。
+  desc_zh_TW: 瘋狂科學實驗室配方。生成1個活樹根。
+  desc_fr: Recette du Labo de Science Folle. Produit 1 racine d'arbre vivant.
+  desc_de: Verrücktes-Wissenschaftslabor-Rezept. Erzeugt 1 lebende Baumwurzel.
+  desc_it: Ricetta del Laboratorio di Scienza Pazza. Produce 1 radice di albero vivente.
+  desc_pl: Przepis Szalonego Laboratorium. Produkuje 1 korzeń żywego drzewa.
+  desc_pt_BR: Receita do Laboratório Louco. Produz 1 raiz de árvore viva.
+  desc_ru: Рецепт Безумной Лаборатории. Производит 1 корень живого дерева.
+  desc_es: Receta del Laboratorio Loco. Produce 1 raíz de árbol viviente.
+  desc_es_MX: Receta del Laboratorio Loco. Produce 1 raíz de árbol viviente.
 359.halloween_experiment_sanity
   en: Psychosis Experiment
   ko: 향정신성 실험
   app: O
   source: Mad Science Lab recipe. Produces 3-5 small or 1-3 large sanity potions (halloweenpotion_sanity_small/large) with weighted random counts.
+  desc_en: Mad Science Lab recipe. Produces 3-5 small or 1-3 large sanity potions with weighted random counts.
+  desc_ko: 미친 과학 연구소 레시피. 가중 랜덤으로 소형 3-5개 또는 대형 1-3개 정신력 포션 생성.
+  desc_ja: マッドサイエンスラボレシピ。重み付きランダムで小型3-5個または大型1-3個の正気度ポーションを生成。
+  desc_zh_CN: 疯狂科学实验室配方。按加权随机生成3-5个小型或1-3个大型理智药水。
+  desc_zh_TW: 瘋狂科學實驗室配方。按加權隨機生成3-5個小型或1-3個大型理智藥水。
+  desc_fr: Recette du Labo de Science Folle. Produit 3-5 petites ou 1-3 grandes potions de santé mentale avec comptage aléatoire pondéré.
+  desc_de: Verrücktes-Wissenschaftslabor-Rezept. Erzeugt 3-5 kleine oder 1-3 große Geisttränke mit gewichteter Zufallsanzahl.
+  desc_it: Ricetta del Laboratorio di Scienza Pazza. Produce 3-5 piccole o 1-3 grandi pozioni di sanità con conteggio casuale ponderato.
+  desc_pl: Przepis Szalonego Laboratorium. Produkuje 3-5 małych lub 1-3 dużych mikstur poczytalności z wagą losową.
+  desc_pt_BR: Receita do Laboratório Louco. Produz 3-5 pequenas ou 1-3 grandes poções de sanidade com contagem aleatória ponderada.
+  desc_ru: Рецепт Безумной Лаборатории. Производит 3-5 малых или 1-3 больших зелий рассудка со взвешенным случайным количеством.
+  desc_es: Receta del Laboratorio Loco. Produce 3-5 pociones pequeñas o 1-3 grandes de cordura con conteo aleatorio ponderado.
+  desc_es_MX: Receta del Laboratorio Loco. Produce 3-5 pociones pequeñas o 1-3 grandes de cordura con conteo aleatorio ponderado.
 360.halloween_experiment_volatile
   en: Sulfuric Experiment
   ko: 유황 실험
   app: O
   source: Mad Science Lab recipe. Produces embers or sparks potions (halloweenpotion_embers/sparks), one type randomly selected.
+  desc_en: Mad Science Lab recipe. Produces embers or sparks potions (one type randomly selected).
+  desc_ko: 미친 과학 연구소 레시피. 불씨 또는 불꽃 포션 생성 (한 종류 랜덤 선택).
+  desc_ja: マッドサイエンスラボレシピ。残り火または火花ポーションを生成（1種類をランダム選択）。
+  desc_zh_CN: 疯狂科学实验室配方。生成余烬或火花药水（随机选择一种）。
+  desc_zh_TW: 瘋狂科學實驗室配方。生成餘燼或火花藥水（隨機選擇一種）。
+  desc_fr: Recette du Labo de Science Folle. Produit des potions de braises ou d'étincelles (un type sélectionné aléatoirement).
+  desc_de: Verrücktes-Wissenschaftslabor-Rezept. Erzeugt Glut- oder Funkentränke (ein Typ zufällig ausgewählt).
+  desc_it: Ricetta del Laboratorio di Scienza Pazza. Produce pozioni di braci o scintille (un tipo selezionato casualmente).
+  desc_pl: Przepis Szalonego Laboratorium. Produkuje mikstury żarów lub iskier (jeden typ losowo wybrany).
+  desc_pt_BR: Receita do Laboratório Louco. Produz poções de brasas ou faíscas (um tipo selecionado aleatoriamente).
+  desc_ru: Рецепт Безумной Лаборатории. Производит зелья углей или искр (один тип выбирается случайно).
+  desc_es: Receta del Laboratorio Loco. Produce pociones de ascuas o chispas (un tipo seleccionado aleatoriamente).
+  desc_es_MX: Receta del Laboratorio Loco. Produce pociones de ascuas o chispas (un tipo seleccionado aleatoriamente).
 361.hambat
   en: Ham Bat
   ko: 햄 몽둥이
@@ -3212,6 +6592,19 @@
   ko: 다시마 베개
   app: O
   source: Hand slot pillow weapon. 0 damage (prop weapon for pillow fighting minigame). Hit range 2.5. Applies knockback in bunnyman pillow fight minigame. Burnable.
+  desc_en: Kelp-stuffed pillow fight prop weapon. 0 damage, range 2.5. Applies knockback in bunnyman pillow fight minigame. Burnable.
+  desc_ko: 다시마 충전 베개 싸움 소품 무기. 0 피해, 사거리 2.5. 토끼인간 베개 싸움 미니게임에서 넉백 적용. 연소 가능.
+  desc_ja: 昆布詰め枕投げ用小道具武器。0ダメージ、射程2.5。バニーマン枕投げミニゲームでノックバック適用。可燃。
+  desc_zh_CN: 海带填充枕头大战道具武器。0伤害，范围2.5。在兔人枕头大战小游戏中施加击退。可燃。
+  desc_zh_TW: 海帶填充枕頭大戰道具武器。0傷害，範圍2.5。在兔人枕頭大戰小遊戲中施加擊退。可燃。
+  desc_fr: Coussin de varech pour bataille d'oreillers. 0 dégât, portée 2,5. Recul dans le mini-jeu. Inflammable.
+  desc_de: Seetang-Kissen für Kissenschlacht. 0 Schaden, Reichweite 2,5. Knockback im Minispiel. Brennbar.
+  desc_it: Cuscino di alghe per battaglia di cuscini. 0 danni, raggio 2,5. Knockback nel minigioco. Infiammabile.
+  desc_pl: Poduszka z wodorostów do bitwy na poduszki. 0 obrażeń, zasięg 2,5. Odrzut w minigrze. Palna.
+  desc_pt_BR: Travesseiro de alga para guerra de travesseiros. 0 de dano, alcance 2,5. Recuo no minijogo. Inflamável.
+  desc_ru: Подушка из водорослей для битвы подушками. 0 урона, дальность 2,5. Отбрасывание в мини-игре. Горючий.
+  desc_es: Almohada de algas para pelea de almohadas. 0 de daño, alcance 2,5. Retroceso en el minijuego. Inflamable.
+  desc_es_MX: Almohada de algas para pelea de almohadas. 0 de daño, alcance 2,5. Retroceso en el minijuego. Inflamable.
 365.handpillow_petals
   desc_en: Kelp-stuffed pillow fight prop weapon. 0 damage, range 2.5. Applies knockback in bunnyman pillow fight minigame. Burnable.
   desc_ko: 다시마 충전 베개 싸움 소품 무기. 0 피해, 사거리 2.5. 토끼인간 베개 싸움 미니게임에서 넉백 적용. 연소 가능.
@@ -3284,6 +6677,19 @@
   ko: 고약
   app: O
   source: Healing item. Stackable (max 40). Heals 20hp (HEALING_MED) on use. Single use consumable.
+  desc_en: Stackable healing item (max 40). Heals 20 HP on use. Single use consumable.
+  desc_ko: 최대 40개 중첩 회복 아이템. 사용 시 20 HP 회복. 일회용.
+  desc_ja: スタック可能な回復アイテム（最大40）。使用時に20HP回復。使い捨て。
+  desc_zh_CN: 可堆叠治疗物品（最多40）。使用时恢复20 HP。一次性消耗品。
+  desc_zh_TW: 可堆疊治療物品（最多40）。使用時恢復20 HP。一次性消耗品。
+  desc_fr: Objet de soin empilable (max 40). Soigne 20 PV à l'utilisation. Consommable à usage unique.
+  desc_de: Stapelbarer Heilgegenstand (max 40). Heilt 20 TP bei Nutzung. Einmalverbrauch.
+  desc_it: Oggetto curativo impilabile (max 40). Cura 20 PV all'uso. Consumabile monouso.
+  desc_pl: Stosowalny przedmiot leczniczy (maks. 40). Leczy 20 PZ przy użyciu. Jednorazowy.
+  desc_pt_BR: Item de cura empilhável (máx. 40). Cura 20 PV ao usar. Consumível de uso único.
+  desc_ru: Стакаемый исцеляющий предмет (макс. 40). Исцеляет 20 ед. здоровья. Одноразовый.
+  desc_es: Objeto curativo apilable (máx. 40). Cura 20 PV al usar. Consumible de un solo uso.
+  desc_es_MX: Objeto curativo apilable (máx. 40). Cura 20 PV al usar. Consumible de un solo uso.
 369.healingsalve_acid
   desc_en: Stackable healing item (max 40). Heals 20 HP on use. Single use consumable.
   desc_ko: 최대 40개 중첩 회복 아이템. 사용 시 20 HP 회복. 일회용.
@@ -3879,377 +7285,1287 @@
   ko: 조개 껍질 바닥 청사진
   app: O
   source: Recipe-only blueprint purchased from Hermit Crab shop for 3 message bottles; produces turf_shellbeach_blueprint item on craft.
+  desc_en: Blueprint from Hermit Crab shop. Costs 3 message bottles. Unlocks Shell Turf crafting recipe.
+  desc_ko: 은둔게 상점 청사진. 메시지 병 3개 필요. 조개 껍질 바닥 제작 레시피 해금.
+  desc_ja: ヤドカリショップの設計図。メッセージボトル3個で購入。シェルターフのレシピを解放。
+  desc_zh_CN: 隐士蟹商店蓝图。需3个漂流瓶。解锁贝壳草皮制作配方。
+  desc_zh_TW: 隱士蟹商店藍圖。需3個漂流瓶。解鎖貝殼草皮製作配方。
+  desc_fr: Plan du magasin du Crabe Ermite. Coûte 3 bouteilles. Débloque la recette du gazon coquillage.
+  desc_de: Bauplan aus dem Einsiedlerkrebs-Laden. Kostet 3 Flaschenpost. Schaltet Muschel-Rasen-Rezept frei.
+  desc_it: Progetto dal negozio del Granchio Eremita. Costa 3 bottiglie. Sblocca la ricetta del manto conchiglia.
+  desc_pl: Plan ze sklepu Kraba Pustelnika. Kosztuje 3 butelki. Odblokowuje przepis na murawy z muszli.
+  desc_pt_BR: Planta da loja do Caranguejo Eremita. Custa 3 garrafas. Desbloqueia receita de piso de concha.
+  desc_ru: Чертёж из магазина Краба-отшельника. Стоит 3 бутылки. Открывает рецепт ракушечного покрытия.
+  desc_es: Plano de la tienda del Cangrejo Ermitaño. Cuesta 3 botellas. Desbloquea la receta del suelo de conchas.
+  desc_es_MX: Plano de la tienda del Cangrejo Ermitaño. Cuesta 3 botellas. Desbloquea la receta del suelo de conchas.
 402.hermitshop_winch_blueprint
   en: Pinchin' Winch Blueprint
   ko: 집게 도르래 청사진
   app: O
   source: Recipe-only blueprint purchased from Hermit Crab shop for 1 message bottle; produces winch_blueprint item on craft.
+  desc_en: Blueprint from Hermit Crab shop. Costs 1 message bottle. Unlocks Pinchin' Winch crafting recipe.
+  desc_ko: 은둔게 상점 청사진. 메시지 병 1개 필요. 집게 도르래 제작 레시피 해금.
+  desc_ja: ヤドカリショップの設計図。メッセージボトル1個で購入。ウインチのレシピを解放。
+  desc_zh_CN: 隐士蟹商店蓝图。需1个漂流瓶。解锁夹钳绞盘制作配方。
+  desc_zh_TW: 隱士蟹商店藍圖。需1個漂流瓶。解鎖夾鉗絞盤製作配方。
+  desc_fr: Plan du magasin du Crabe Ermite. Coûte 1 bouteille. Débloque la recette du treuil à pinces.
+  desc_de: Bauplan aus dem Einsiedlerkrebs-Laden. Kostet 1 Flaschenpost. Schaltet Zwick-Winde-Rezept frei.
+  desc_it: Progetto dal negozio del Granchio Eremita. Costa 1 bottiglia. Sblocca la ricetta del verricello a pinze.
+  desc_pl: Plan ze sklepu Kraba Pustelnika. Kosztuje 1 butelkę. Odblokowuje przepis na kleszczowy kołowrót.
+  desc_pt_BR: Planta da loja do Caranguejo Eremita. Custa 1 garrafa. Desbloqueia receita do Guincho Pinça.
+  desc_ru: Чертёж из магазина Краба-отшельника. Стоит 1 бутылку. Открывает рецепт клешневой лебёдки.
+  desc_es: Plano de la tienda del Cangrejo Ermitaño. Cuesta 1 botella. Desbloquea la receta del cabrestante pinza.
+  desc_es_MX: Plano de la tienda del Cangrejo Ermitaño. Cuesta 1 botella. Desbloquea la receta del cabrestante pinza.
 403.hermitshop_winter_ornament_boss_hermithouse
   en: Sentimental Adornment
   ko: 감성적인 장식품
   app: O
   source: Hermit House winter ornament learned from Hermit Crab crafting station at max friendship. Cosmetic holiday decoration, no combat stats.
+  desc_en: Cosmetic winter ornament (Hermit House). Learned at max Hermit Crab friendship. Decoration only, no stats.
+  desc_ko: 장식용 겨울 장식품(은둔게 집). 은둔게 우호도 최대 시 해금. 장식 전용, 능력치 없음.
+  desc_ja: 装飾用冬のオーナメント（ヤドカリの家）。ヤドカリ友好度最大で解放。装飾のみ、ステータスなし。
+  desc_zh_CN: 装饰性冬季饰品（隐士屋）。隐士蟹友好度最大时解锁。仅装饰，无属性。
+  desc_zh_TW: 裝飾性冬季飾品（隱士屋）。隱士蟹友好度最大時解鎖。僅裝飾，無屬性。
+  desc_fr: Ornement hivernal cosmétique (maison d'ermite). Débloqué au max d'amitié. Décoration uniquement.
+  desc_de: Kosmetischer Winterschmuck (Einsiedlerhaus). Bei max. Freundschaft freigeschaltet. Nur Dekoration.
+  desc_it: Ornamento invernale cosmetico (Casa Eremita). Sbloccato con amicizia massima. Solo decorazione.
+  desc_pl: Ozdobny zimowy ornament (Dom Pustelnika). Odblokowany przy max. przyjaźni. Tylko dekoracja.
+  desc_pt_BR: Ornamento de inverno cosmético (Casa do Eremita). Desbloqueado com amizade máxima. Apenas decoração.
+  desc_ru: Декоративное зимнее украшение (Дом отшельника). Открывается при макс. дружбе. Только декорация.
+  desc_es: Ornamento invernal cosmético (Casa del Ermitaño). Desbloqueado con amistad máxima. Solo decoración.
+  desc_es_MX: Ornamento invernal cosmético (Casa del Ermitaño). Desbloqueado con amistad máxima. Solo decoración.
 404.hermitshop_winter_ornament_boss_pearl
   en: Sentimental Adornment
   ko: 감성적인 장식품
   app: O
   source: Pearl winter ornament learned from Hermit Crab crafting station at max friendship. Cosmetic holiday decoration, no combat stats.
+  desc_en: Cosmetic winter ornament (Pearl). Learned at max Hermit Crab friendship. Decoration only, no stats.
+  desc_ko: 장식용 겨울 장식품(진주). 은둔게 우호도 최대 시 해금. 장식 전용, 능력치 없음.
+  desc_ja: 装飾用冬のオーナメント（パール）。ヤドカリ友好度最大で解放。装飾のみ、ステータスなし。
+  desc_zh_CN: 装饰性冬季饰品（珍珠）。隐士蟹友好度最大时解锁。仅装饰，无属性。
+  desc_zh_TW: 裝飾性冬季飾品（珍珠）。隱士蟹友好度最大時解鎖。僅裝飾，無屬性。
+  desc_fr: Ornement hivernal cosmétique (Perle). Débloqué au max d'amitié. Décoration uniquement.
+  desc_de: Kosmetischer Winterschmuck (Pearl). Bei max. Freundschaft freigeschaltet. Nur Dekoration.
+  desc_it: Ornamento invernale cosmetico (Pearl). Sbloccato con amicizia massima. Solo decorazione.
+  desc_pl: Ozdobny zimowy ornament (Perła). Odblokowany przy max. przyjaźni. Tylko dekoracja.
+  desc_pt_BR: Ornamento de inverno cosmético (Pérola). Desbloqueado com amizade máxima. Apenas decoração.
+  desc_ru: Декоративное зимнее украшение (Жемчужина). Открывается при макс. дружбе. Только декорация.
+  desc_es: Ornamento invernal cosmético (Perla). Desbloqueado con amistad máxima. Solo decoración.
+  desc_es_MX: Ornamento invernal cosmético (Perla). Desbloqueado con amistad máxima. Solo decoración.
 405.hivehat
   en: Bee Queen Crown
   ko: 여왕벌 왕관
   app: X
   type: deconstruct
   source: Hat with armor. 945 durability (150*9*0.7), 70% damage absorption, 50% sanity aura absorption. Bee Queen drop.
+  desc_en: Armor hat. 945 durability, 70% damage absorption, 50% sanity aura absorption. Bee Queen drop.
+  desc_ko: 방어구 모자. 내구도 945, 피해 흡수 70%, 정신 오라 흡수 50%. 여왕벌 전리품.
+  desc_ja: 防具帽子。耐久945、ダメージ吸収70%、正気オーラ吸収50%。ビークイーンのドロップ。
+  desc_zh_CN: 护甲帽子。耐久945，伤害吸收70%，理智光环吸收50%。蜂后掉落。
+  desc_zh_TW: 護甲帽子。耐久945，傷害吸收70%，理智光環吸收50%。蜂后掉落。
+  desc_fr: Chapeau armure. 945 durabilité, 70% absorption dégâts, 50% absorption aura de santé mentale. Butin de la Reine Abeille.
+  desc_de: Rüstungshut. 945 Haltbarkeit, 70% Schadensabsorption, 50% Verstandsaura-Absorption. Bienenkönigin-Beute.
+  desc_it: Cappello armatura. 945 durabilità, 70% assorbimento danni, 50% assorbimento aura sanità. Bottino Ape Regina.
+  desc_pl: Kapelusz pancerny. 945 wytrzymałości, 70% absorpcji obrażeń, 50% absorpcji aury poczytalności. Łup z Królowej Pszczół.
+  desc_pt_BR: Chapéu armadura. 945 durabilidade, 70% absorção de dano, 50% absorção de aura de sanidade. Drop da Abelha Rainha.
+  desc_ru: Шлем-броня. 945 прочности, 70% поглощения урона, 50% поглощения ауры рассудка. Добыча с Пчелиной Королевы.
+  desc_es: Sombrero armadura. 945 durabilidad, 70% absorción de daño, 50% absorción de aura de cordura. Botín de Abeja Reina.
+  desc_es_MX: Sombrero armadura. 945 durabilidad, 70% absorción de daño, 50% absorción de aura de cordura. Botín de Abeja Reina.
 406.homesign
   en: Sign
   ko: 표지판
   app: O
   source: Placed writable structure. Can be written on with custom text. Hammerable (4 hits), burnable. No special stats.
+  desc_en: Writable placed structure. Displays custom text. Hammerable (4 hits), burnable. No special stats.
+  desc_ko: 글을 쓸 수 있는 설치 구조물. 맞춤 문구 표시. 망치 4회로 파괴, 불에 탐. 특수 능력치 없음.
+  desc_ja: 書き込み可能な設置構造物。カスタムテキストを表示。ハンマー4回、可燃。特殊ステータスなし。
+  desc_zh_CN: 可书写的放置结构。显示自定义文字。锤击4次可拆，可燃。无特殊属性。
+  desc_zh_TW: 可書寫的放置結構。顯示自訂文字。錘擊4次可拆，可燃。無特殊屬性。
+  desc_fr: Structure inscriptible posée. Affiche un texte personnalisé. Destructible (4 coups), inflammable. Aucun effet spécial.
+  desc_de: Beschreibbare platzierte Struktur. Zeigt benutzerdefinierten Text. Zerhämmerbar (4 Schläge), brennbar. Keine Spezialwerte.
+  desc_it: Struttura posizionabile scrivibile. Mostra testo personalizzato. Distruttibile (4 colpi), infiammabile. Nessun effetto speciale.
+  desc_pl: Zapisywalna postawiona struktura. Wyświetla własny tekst. Rozbijalna (4 uderzenia), palna. Brak specjalnych statystyk.
+  desc_pt_BR: Estrutura colocável com escrita. Exibe texto personalizado. Quebrável (4 golpes), inflamável. Sem atributos especiais.
+  desc_ru: Устанавливаемая табличка с текстом. Показывает пользовательский текст. Разбивается (4 удара), горючая. Без особых характеристик.
+  desc_es: Estructura colocable con escritura. Muestra texto personalizado. Destruible (4 golpes), inflamable. Sin efectos especiales.
+  desc_es_MX: Estructura colocable con escritura. Muestra texto personalizado. Destruible (4 golpes), inflamable. Sin efectos especiales.
 407.houndstooth_blowpipe
   en: Howlitzer
   ko: 견사포
   app: O
   source: Ranged weapon. Melee 10 damage (unarmed); loads houndstooth ammo for projectile: 34 damage + 34 planar, 1.1x vs shadow-aligned, speed 25, range 12-16. Has 1 ammo container slot.
+  desc_en: Ranged weapon. Houndstooth ammo: 34 damage + 34 planar, 1.1x vs shadow. Range 12-16, speed 25. 1 ammo slot.
+  desc_ko: 원거리 무기. 사냥개 이빨 탄환: 34 피해 + 34 차원, 그림자 1.1배. 사거리 12-16, 속도 25. 탄약 슬롯 1개.
+  desc_ja: 遠距離武器。ハウンドの歯弾薬：34ダメージ+34プレーナー、影×1.1。射程12-16、速度25。弾薬スロット1。
+  desc_zh_CN: 远程武器。猎犬牙弹药：34伤害+34位面，对暗影×1.1。射程12-16，速度25。1个弹药槽。
+  desc_zh_TW: 遠程武器。獵犬牙彈藥：34傷害+34位面，對暗影×1.1。射程12-16，速度25。1個彈藥槽。
+  desc_fr: Arme à distance. Munition dent de chien : 34 dégâts + 34 planaire, ×1,1 vs ombre. Portée 12-16, vitesse 25. 1 emplacement.
+  desc_de: Fernkampfwaffe. Hundezahn-Munition: 34 Schaden + 34 planar, ×1,1 vs Schatten. Reichweite 12-16, Geschw. 25. 1 Munitionsslot.
+  desc_it: Arma a distanza. Munizione dente di segugio: 34 danni + 34 planare, ×1,1 vs ombra. Gittata 12-16, velocità 25. 1 slot munizioni.
+  desc_pl: Broń dystansowa. Amunicja z kła ogarów: 34 obrażeń + 34 planarnych, ×1,1 vs cień. Zasięg 12-16, prędkość 25. 1 slot amunicji.
+  desc_pt_BR: Arma de longo alcance. Munição dente de cão: 34 dano + 34 planar, ×1,1 vs sombra. Alcance 12-16, velocidade 25. 1 slot de munição.
+  desc_ru: Дальнобойное оружие. Боеприпас из зуба гончей: 34 урона + 34 планарных, ×1,1 по теням. Дальность 12-16, скорость 25. 1 слот боеприпасов.
+  desc_es: Arma a distancia. Munición diente de sabueso: 34 daño + 34 planar, ×1,1 vs sombra. Alcance 12-16, velocidad 25. 1 ranura de munición.
+  desc_es_MX: Arma a distancia. Munición diente de sabueso: 34 daño + 34 planar, ×1,1 vs sombra. Alcance 12-16, velocidad 25. 1 ranura de munición.
 408.houndwhistle
   en: Lucky Whistle
   ko: 행운의 호루라기
   app: O
   source: Instrument. 10 uses, range 25. Recruits hounds/wargs as followers for 40s, max 5 hound followers. Does not work on lunar hounds.
+  desc_en: Instrument. 10 uses, range 25. Recruits hounds/wargs as followers for 40s (max 5). No effect on lunar hounds.
+  desc_ko: 악기. 10회 사용, 범위 25. 사냥개/와그를 40초간 추종자로 모집(최대 5). 달 사냥개에게 무효.
+  desc_ja: 楽器。10回使用、範囲25。ハウンド/ワーグを40秒間従者にする（最大5）。ルナハウンドには無効。
+  desc_zh_CN: 乐器。10次使用，范围25。招募猎犬/座狼为随从40秒（最多5只）。对月亮猎犬无效。
+  desc_zh_TW: 樂器。10次使用，範圍25。招募獵犬/座狼為隨從40秒（最多5隻）。對月亮獵犬無效。
+  desc_fr: Instrument. 10 utilisations, portée 25. Recrute chiens/wargs comme suiveurs 40s (max 5). Sans effet sur les chiens lunaires.
+  desc_de: Instrument. 10 Nutzungen, Reichweite 25. Rekrutiert Hunde/Wargs als Gefolgsleute für 40s (max 5). Keine Wirkung auf Mondhunde.
+  desc_it: Strumento. 10 usi, raggio 25. Recluta segugi/warg come seguaci per 40s (max 5). Nessun effetto su segugi lunari.
+  desc_pl: Instrument. 10 użyć, zasięg 25. Rekrutuje ogary/wargi jako towarzyszy na 40s (maks. 5). Nie działa na księżycowe ogary.
+  desc_pt_BR: Instrumento. 10 usos, alcance 25. Recruta cães/wargs como seguidores por 40s (máx. 5). Sem efeito em cães lunares.
+  desc_ru: Инструмент. 10 использований, дальность 25. Вербует гончих/варгов в последователей на 40с (макс. 5). Не действует на лунных гончих.
+  desc_es: Instrumento. 10 usos, alcance 25. Recluta sabuesos/wargs como seguidores por 40s (máx. 5). Sin efecto en sabuesos lunares.
+  desc_es_MX: Instrumento. 10 usos, alcance 25. Recluta sabuesos/wargs como seguidores por 40s (máx. 5). Sin efecto en sabuesos lunares.
 409.icebox
   en: Ice Box
   ko: 냉장고
   app: O
   source: Placed structure with fridge tag (slows food spoilage). 9-slot container. Hammerable (2 hits).
+  desc_en: Placed structure. Slows food spoilage (fridge). 9 storage slots. Hammerable (2 hits).
+  desc_ko: 설치 구조물. 음식 부패를 늦춤(냉장). 저장 슬롯 9개. 망치 2회로 파괴.
+  desc_ja: 設置構造物。食料の腐敗を遅延（冷蔵）。収納スロット9。ハンマー2回で破壊。
+  desc_zh_CN: 放置结构。减缓食物腐烂（冰箱）。9个存储槽。锤击2次可拆。
+  desc_zh_TW: 放置結構。減緩食物腐爛（冰箱）。9個存儲槽。錘擊2次可拆。
+  desc_fr: Structure posée. Ralentit la décomposition (frigo). 9 emplacements. Destructible (2 coups).
+  desc_de: Platzierte Struktur. Verlangsamt Verderb (Kühlschrank). 9 Lagerplätze. Zerhämmerbar (2 Schläge).
+  desc_it: Struttura posizionata. Rallenta il deperimento (frigo). 9 slot. Distruttibile (2 colpi).
+  desc_pl: Postawiona struktura. Spowalnia psucie się jedzenia (lodówka). 9 slotów. Rozbijalna (2 uderzenia).
+  desc_pt_BR: Estrutura colocada. Retarda decomposição (geladeira). 9 slots. Quebrável (2 golpes).
+  desc_ru: Устанавливаемая структура. Замедляет порчу пищи (холодильник). 9 слотов хранения. Разбивается (2 удара).
+  desc_es: Estructura colocada. Ralentiza la descomposición (nevera). 9 ranuras. Destruible (2 golpes).
+  desc_es_MX: Estructura colocada. Ralentiza la descomposición (nevera). 9 ranuras. Destruible (2 golpes).
 410.icehat
   en: Ice Cube
   ko: 얼음 모자
   app: O
   source: Hat. Perishes in 4 days (1920s). Equipped cooling -40. Walk speed 0.9x multiplier.
+  desc_en: Hat. Perishes in 4 days. Cooling -40 when equipped. Walk speed reduced to 0.9x.
+  desc_ko: 모자. 4일 후 부패. 착용 시 냉각 -40. 이동 속도 0.9배로 감소.
+  desc_ja: 帽子。4日で腐敗。装着時冷却-40。移動速度0.9倍に低下。
+  desc_zh_CN: 帽子。4天后腐烂。装备时冷却-40。移动速度降至0.9倍。
+  desc_zh_TW: 帽子。4天後腐爛。裝備時冷卻-40。移動速度降至0.9倍。
+  desc_fr: Chapeau. Périt en 4 jours. Refroidissement -40 équipé. Vitesse réduite à ×0,9.
+  desc_de: Hut. Verdirbt in 4 Tagen. Kühlung -40 bei Ausrüstung. Gehgeschwindigkeit ×0,9.
+  desc_it: Cappello. Deperisce in 4 giorni. Raffreddamento -40 equipaggiato. Velocità ridotta a ×0,9.
+  desc_pl: Kapelusz. Psuje się w 4 dni. Chłodzenie -40 po założeniu. Prędkość chodzenia ×0,9.
+  desc_pt_BR: Chapéu. Perece em 4 dias. Resfriamento -40 equipado. Velocidade reduzida para ×0,9.
+  desc_ru: Шляпа. Портится за 4 дня. Охлаждение -40 при ношении. Скорость ходьбы ×0,9.
+  desc_es: Sombrero. Caduca en 4 días. Enfriamiento -40 equipado. Velocidad reducida a ×0,9.
+  desc_es_MX: Sombrero. Caduca en 4 días. Enfriamiento -40 equipado. Velocidad reducida a ×0,9.
 411.icepack
   en: Insulated Pack
   ko: 보온 배낭
   app: O
   source: Body-slot backpack with fridge tag (slows food spoilage) but no cooling ("nocool" tag). 8-slot container. Cannot go inside other containers.
+  desc_en: Body-slot backpack with fridge effect (slows spoilage). 8 slots. No cooling effect. Cannot be placed in other containers.
+  desc_ko: 몸통 슬롯 배낭. 냉장 효과(부패 지연). 8슬롯. 냉각 효과 없음. 다른 컨테이너에 넣기 불가.
+  desc_ja: 体スロットバックパック。冷蔵効果（腐敗遅延）。8スロット。冷却効果なし。他の容器に入れられない。
+  desc_zh_CN: 身体槽背包。冰箱效果（减缓腐烂）。8槽。无冷却效果。不能放入其他容器。
+  desc_zh_TW: 身體槽背包。冰箱效果（減緩腐爛）。8槽。無冷卻效果。不能放入其他容器。
+  desc_fr: Sac à dos (emplacement corps) avec effet frigo (ralentit la décomposition). 8 emplacements. Pas de refroidissement. Ne rentre pas dans d'autres conteneurs.
+  desc_de: Körperslot-Rucksack mit Kühleffekt (verlangsamt Verderb). 8 Plätze. Keine Kühlung. Passt nicht in andere Behälter.
+  desc_it: Zaino slot corpo con effetto frigo (rallenta deperimento). 8 slot. Nessun raffreddamento. Non entra in altri contenitori.
+  desc_pl: Plecak na slot ciała z efektem lodówki (spowalnia psucie). 8 slotów. Brak chłodzenia. Nie mieści się w innych pojemnikach.
+  desc_pt_BR: Mochila slot corpo com efeito geladeira (retarda decomposição). 8 slots. Sem resfriamento. Não cabe em outros recipientes.
+  desc_ru: Рюкзак в слот тела с эффектом холодильника (замедляет порчу). 8 слотов. Без охлаждения. Не помещается в другие контейнеры.
+  desc_es: Mochila de cuerpo con efecto nevera (ralentiza descomposición). 8 ranuras. Sin enfriamiento. No cabe en otros contenedores.
+  desc_es_MX: Mochila de cuerpo con efecto nevera (ralentiza descomposición). 8 ranuras. Sin enfriamiento. No cabe en otros contenedores.
 412.icestaff
   en: Ice Staff
   ko: 얼음 지팡이
   app: O
   source: Staff weapon. 20 uses. Freezes targets on hit.
+  desc_en: Staff weapon. 20 uses. Freezes targets on hit.
+  desc_ko: 지팡이 무기. 20회 사용. 적중 시 대상을 얼림.
+  desc_ja: スタッフ武器。20回使用。命中時に対象を凍結。
+  desc_zh_CN: 法杖武器。20次使用。命中时冻结目标。
+  desc_zh_TW: 法杖武器。20次使用。命中時凍結目標。
+  desc_fr: Arme bâton. 20 utilisations. Gèle les cibles à l'impact.
+  desc_de: Stabwaffe. 20 Nutzungen. Friert Ziele bei Treffer ein.
+  desc_it: Arma bastone. 20 usi. Congela i bersagli al colpo.
+  desc_pl: Broń laskowa. 20 użyć. Zamraża cele przy trafieniu.
+  desc_pt_BR: Arma cajado. 20 usos. Congela alvos ao acertar.
+  desc_ru: Посох-оружие. 20 использований. Замораживает цели при попадании.
+  desc_es: Arma bastón. 20 usos. Congela objetivos al impactar.
+  desc_es_MX: Arma bastón. 20 usos. Congela objetivos al impactar.
 413.inspectacleshat
   en: Inspectacles
   ko: 조사돋보기
   app: O
   source: Hat. Emits radio signal pulses every 5s to detect nearby objects. Cooldown 240s (0.5 day). 25% chance to upgrade scrapbook entries on inspect.
+  desc_en: Hat. Detects nearby objects via pulses every 5s. 240s cooldown. 25% chance to upgrade scrapbook entries on inspect.
+  desc_ko: 모자. 5초마다 펄스로 근처 물체 탐지. 쿨다운 240초. 조사 시 스크랩북 항목 업그레이드 확률 25%.
+  desc_ja: 帽子。5秒ごとのパルスで近くのオブジェクトを検出。クールダウン240秒。調査時スクラップブック25%アップグレード。
+  desc_zh_CN: 帽子。每5秒脉冲探测附近物体。冷却240秒。检查时25%概率升级剪贴簿条目。
+  desc_zh_TW: 帽子。每5秒脈衝探測附近物體。冷卻240秒。檢查時25%機率升級剪貼簿條目。
+  desc_fr: Chapeau. Détecte les objets proches par impulsions toutes les 5s. Recharge 240s. 25% de chance d'améliorer les entrées du carnet.
+  desc_de: Hut. Erkennt nahe Objekte per Puls alle 5s. Abklingzeit 240s. 25% Chance Sammelalbum-Einträge beim Untersuchen aufzuwerten.
+  desc_it: Cappello. Rileva oggetti vicini tramite impulsi ogni 5s. Ricarica 240s. 25% probabilità di migliorare voci dell'album.
+  desc_pl: Kapelusz. Wykrywa pobliskie obiekty pulsami co 5s. Czas odnowy 240s. 25% szansy na ulepszenie wpisów w albumie.
+  desc_pt_BR: Chapéu. Detecta objetos próximos por pulsos a cada 5s. Recarga 240s. 25% de chance de melhorar entradas do álbum.
+  desc_ru: Шляпа. Обнаруживает объекты импульсами каждые 5с. Перезарядка 240с. 25% шанс улучшить записи альбома при осмотре.
+  desc_es: Sombrero. Detecta objetos cercanos con pulsos cada 5s. Enfriamiento 240s. 25% probabilidad de mejorar entradas del álbum.
+  desc_es_MX: Sombrero. Detecta objetos cercanos con pulsos cada 5s. Enfriamiento 240s. 25% probabilidad de mejorar entradas del álbum.
 414.ipecacsyrup
   en: Syrup of Ipecaca
   ko: 토근 시럽
   app: O
   source: Edible (veggie). -20 health, +9.375 hunger. On eaten: triggers poop debuff — 15 poops over time (every 3s), 5 damage per tick. Stackable.
+  desc_en: Edible veggie. -20 health, +9.375 hunger. Triggers poop debuff: 15 poops every 3s, 5 damage per tick. Stackable.
+  desc_ko: 식용 채소. 체력 -20, 허기 +9.375. 배변 디버프 발동: 3초마다 15회 배변, 틱당 5 피해. 중첩 가능.
+  desc_ja: 食用野菜。体力-20、空腹+9.375。排泄デバフ発動：3秒ごとに15回、ティックあたり5ダメージ。スタック可。
+  desc_zh_CN: 可食蔬菜。-20生命，+9.375饥饿。触发排泄减益：每3秒排泄15次，每次5伤害。可堆叠。
+  desc_zh_TW: 可食蔬菜。-20生命，+9.375飢餓。觸發排泄減益：每3秒排泄15次，每次5傷害。可堆疊。
+  desc_fr: Comestible végétal. -20 santé, +9,375 faim. Déclenche un malus : 15 défécations toutes les 3s, 5 dégâts par tick. Empilable.
+  desc_de: Essbares Gemüse. -20 Gesundheit, +9,375 Hunger. Löst Stuhl-Debuff aus: 15 Stuhlgänge alle 3s, 5 Schaden pro Tick. Stapelbar.
+  desc_it: Vegetale commestibile. -20 salute, +9,375 fame. Attiva debuff: 15 scariche ogni 3s, 5 danni per tick. Impilabile.
+  desc_pl: Jadalny warzywo. -20 zdrowia, +9,375 głodu. Wyzwala debuff: 15 wypróżnień co 3s, 5 obrażeń na tick. Stosowalny.
+  desc_pt_BR: Vegetal comestível. -20 vida, +9,375 fome. Ativa debuff: 15 evacuações a cada 3s, 5 dano por tick. Empilhável.
+  desc_ru: Съедобный овощ. -20 здоровья, +9,375 голода. Запускает дебафф: 15 опорожнений каждые 3с, 5 урона за тик. Складывается.
+  desc_es: Vegetal comestible. -20 salud, +9,375 hambre. Activa debuff: 15 deposiciones cada 3s, 5 daño por tick. Apilable.
+  desc_es_MX: Vegetal comestible. -20 salud, +9,375 hambre. Activa debuff: 15 deposiciones cada 3s, 5 daño por tick. Apilable.
 415.kelphat
   en: Seawreath
   ko: 바닷말 관
   app: O
   source: Hat. Dapperness -0.67/min (flipped positive for merms). Perishes in 6 days (2880s). Open-top style. Compostable (green).
+  desc_en: Hat. Dapperness -0.67/min (positive for merms). Perishes in 6 days. Compostable (green).
+  desc_ko: 모자. 멋쟁이 -0.67/분(머인에겐 양수). 6일 후 부패. 퇴비 가능(초록).
+  desc_ja: 帽子。おしゃれ-0.67/分（マームにはプラス）。6日で腐敗。堆肥化可能（緑）。
+  desc_zh_CN: 帽子。优雅度-0.67/分（对鱼人为正值）。6天后腐烂。可堆肥（绿色）。
+  desc_zh_TW: 帽子。優雅度-0.67/分（對魚人為正值）。6天後腐爛。可堆肥（綠色）。
+  desc_fr: Chapeau. Élégance -0,67/min (positive pour Merms). Périt en 6 jours. Compostable (vert).
+  desc_de: Hut. Eleganz -0,67/min (positiv für Merms). Verdirbt in 6 Tagen. Kompostierbar (grün).
+  desc_it: Cappello. Eleganza -0,67/min (positiva per Merm). Deperisce in 6 giorni. Compostabile (verde).
+  desc_pl: Kapelusz. Elegancja -0,67/min (pozytywna dla mermów). Psuje się w 6 dni. Kompostowalny (zielony).
+  desc_pt_BR: Chapéu. Elegância -0,67/min (positiva para merms). Perece em 6 dias. Compostável (verde).
+  desc_ru: Шляпа. Элегантность -0,67/мин (положительная для мермов). Портится за 6 дней. Компостируется (зелёная).
+  desc_es: Sombrero. Elegancia -0,67/min (positiva para merms). Caduca en 6 días. Compostable (verde).
+  desc_es_MX: Sombrero. Elegancia -0,67/min (positiva para merms). Caduca en 6 días. Compostable (verde).
 416.kitcoon_nametag
   en: Kit Collar
   ko: 고양이 목줄
   app: O
   source: Targeted-use item for naming kitcoons. Opens a writable UI (max 20 chars, 8 distance). Has random name option. Consumed after naming.
+  desc_en: Naming item for kitcoons. Opens writable UI (max 20 chars). Random name option. Consumed on use.
+  desc_ko: 킷쿤 이름 짓기 아이템. 쓰기 UI 열기(최대 20자). 랜덤 이름 옵션. 사용 시 소모.
+  desc_ja: キットクーン命名アイテム。書き込みUI（最大20文字）。ランダム名オプション。使用時消費。
+  desc_zh_CN: 猫崽命名物品。打开书写界面（最多20字符）。随机名字选项。使用后消耗。
+  desc_zh_TW: 貓崽命名物品。打開書寫介面（最多20字元）。隨機名字選項。使用後消耗。
+  desc_fr: Objet de nomination pour kitcoons. Ouvre une interface (max 20 car.). Option nom aléatoire. Consommé à l'utilisation.
+  desc_de: Benennungsgegenstand für Kitcoons. Schreib-UI (max 20 Zeichen). Zufallsname-Option. Verbraucht bei Nutzung.
+  desc_it: Oggetto per nominare kitcoon. Apre UI di scrittura (max 20 caratteri). Nome casuale opzionale. Consumato all'uso.
+  desc_pl: Przedmiot do nazywania kitcoonów. Otwiera UI (maks. 20 znaków). Opcja losowej nazwy. Zużywany przy użyciu.
+  desc_pt_BR: Item de nomeação para kitcoons. Abre UI de escrita (máx. 20 caracteres). Opção de nome aleatório. Consumido ao usar.
+  desc_ru: Предмет для именования китикунов. Открывает интерфейс записи (макс. 20 символов). Случайное имя. Расходуется при использовании.
+  desc_es: Objeto para nombrar kitcoons. Abre interfaz de escritura (máx. 20 caracteres). Opción de nombre aleatorio. Se consume al usar.
+  desc_es_MX: Objeto para nombrar kitcoons. Abre interfaz de escritura (máx. 20 caracteres). Opción de nombre aleatorio. Se consume al usar.
 417.kitcoondecor1
   en: Gobbler Wobbler
   ko: 오뚝이 칠면조
   app: X
   type: deconstruct
   source: Placed cat toy structure. Airborne toy tag. 3 play animations. Kitcoons interact with it. Hammerable (4 hits), burnable.
+  desc_en: Cat toy structure. 3 play animations. Kitcoons interact with it. Hammerable (4 hits), burnable.
+  desc_ko: 고양이 장난감 구조물. 3가지 놀이 애니메이션. 킷쿤이 상호작용. 망치 4회로 파괴, 불에 탐.
+  desc_ja: 猫おもちゃ構造物。3種の遊びアニメーション。キットクーンが相互作用。ハンマー4回、可燃。
+  desc_zh_CN: 猫玩具结构。3种玩耍动画。猫崽会互动。锤击4次可拆，可燃。
+  desc_zh_TW: 貓玩具結構。3種玩耍動畫。貓崽會互動。錘擊4次可拆，可燃。
+  desc_fr: Structure jouet pour chat. 3 animations de jeu. Les kitcoons interagissent. Destructible (4 coups), inflammable.
+  desc_de: Katzenspielzeug-Struktur. 3 Spielanimationen. Kitcoons interagieren. Zerhämmerbar (4 Schläge), brennbar.
+  desc_it: Struttura giocattolo gatto. 3 animazioni di gioco. I kitcoon interagiscono. Distruttibile (4 colpi), infiammabile.
+  desc_pl: Struktura zabawka dla kota. 3 animacje zabawy. Kitcoony wchodzą w interakcję. Rozbijalna (4 uderzenia), palna.
+  desc_pt_BR: Estrutura brinquedo de gato. 3 animações de brincadeira. Kitcoons interagem. Quebrável (4 golpes), inflamável.
+  desc_ru: Игрушка для котят. 3 анимации игры. Китикуны взаимодействуют. Разбивается (4 удара), горючая.
+  desc_es: Estructura juguete de gato. 3 animaciones de juego. Los kitcoons interactúan. Destruible (4 golpes), inflamable.
+  desc_es_MX: Estructura juguete de gato. 3 animaciones de juego. Los kitcoons interactúan. Destruible (4 golpes), inflamable.
 418.kitcoondecor1_kit
   en: Gobbler Wobbler Kit
   ko: 오뚝이 칠면조 키트
   app: O
   source: Deployable kit that places a Gobbler Wobbler (kitcoondecor1) structure. Small fuel value (15s). Consumed on placement.
+  desc_en: Deployable kit for Gobbler Wobbler. Small fuel (15s). Consumed on placement.
+  desc_ko: 오뚝이 칠면조 설치 키트. 소형 연료(15초). 설치 시 소모.
+  desc_ja: ゴブラーウォブラー設置キット。小型燃料（15秒）。設置時消費。
+  desc_zh_CN: 火鸡不倒翁部署套件。小型燃料（15秒）。放置后消耗。
+  desc_zh_TW: 火雞不倒翁部署套件。小型燃料（15秒）。放置後消耗。
+  desc_fr: Kit déployable Gobbler Wobbler. Petit carburant (15s). Consommé au placement.
+  desc_de: Platzierbares Kit für Gobbler Wobbler. Kleiner Brennwert (15s). Verbraucht beim Platzieren.
+  desc_it: Kit piazzabile Gobbler Wobbler. Carburante piccolo (15s). Consumato al posizionamento.
+  desc_pl: Zestaw Gobbler Wobbler. Małe paliwo (15s). Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit implantável Gobbler Wobbler. Combustível pequeno (15s). Consumido ao posicionar.
+  desc_ru: Набор для установки Gobbler Wobbler. Малое топливо (15с). Расходуется при размещении.
+  desc_es: Kit desplegable Gobbler Wobbler. Combustible pequeño (15s). Se consume al colocar.
+  desc_es_MX: Kit desplegable Gobbler Wobbler. Combustible pequeño (15s). Se consume al colocar.
 419.kitcoondecor2
   en: Kit Teaser
   ko: 고양이 낚싯대
   app: X
   type: deconstruct
   source: Placed cat toy structure. Airborne toy tag. 2 play animations. Kitcoons interact with it. Hammerable (4 hits), burnable.
+  desc_en: Cat toy structure. 2 play animations. Kitcoons interact with it. Hammerable (4 hits), burnable.
+  desc_ko: 고양이 장난감 구조물. 2가지 놀이 애니메이션. 킷쿤이 상호작용. 망치 4회로 파괴, 불에 탐.
+  desc_ja: 猫おもちゃ構造物。2種の遊びアニメーション。キットクーンが相互作用。ハンマー4回、可燃。
+  desc_zh_CN: 猫玩具结构。2种玩耍动画。猫崽会互动。锤击4次可拆，可燃。
+  desc_zh_TW: 貓玩具結構。2種玩耍動畫。貓崽會互動。錘擊4次可拆，可燃。
+  desc_fr: Structure jouet pour chat. 2 animations de jeu. Les kitcoons interagissent. Destructible (4 coups), inflammable.
+  desc_de: Katzenspielzeug-Struktur. 2 Spielanimationen. Kitcoons interagieren. Zerhämmerbar (4 Schläge), brennbar.
+  desc_it: Struttura giocattolo gatto. 2 animazioni di gioco. I kitcoon interagiscono. Distruttibile (4 colpi), infiammabile.
+  desc_pl: Struktura zabawka dla kota. 2 animacje zabawy. Kitcoony wchodzą w interakcję. Rozbijalna (4 uderzenia), palna.
+  desc_pt_BR: Estrutura brinquedo de gato. 2 animações de brincadeira. Kitcoons interagem. Quebrável (4 golpes), inflamável.
+  desc_ru: Игрушка для котят. 2 анимации игры. Китикуны взаимодействуют. Разбивается (4 удара), горючая.
+  desc_es: Estructura juguete de gato. 2 animaciones de juego. Los kitcoons interactúan. Destruible (4 golpes), inflamable.
+  desc_es_MX: Estructura juguete de gato. 2 animaciones de juego. Los kitcoons interactúan. Destruible (4 golpes), inflamable.
 420.kitcoondecor2_kit
   en: Kit Teaser Kit
   ko: 고양이 낚싯대 키트
   app: O
   source: Deployable kit that places a Kit Teaser (kitcoondecor2) structure. Small fuel value (15s). Consumed on placement.
+  desc_en: Deployable kit for Kit Teaser. Small fuel (15s). Consumed on placement.
+  desc_ko: 고양이 낚싯대 설치 키트. 소형 연료(15초). 설치 시 소모.
+  desc_ja: キットティーザー設置キット。小型燃料（15秒）。設置時消費。
+  desc_zh_CN: 逗猫棒部署套件。小型燃料（15秒）。放置后消耗。
+  desc_zh_TW: 逗貓棒部署套件。小型燃料（15秒）。放置後消耗。
+  desc_fr: Kit déployable Kit Teaser. Petit carburant (15s). Consommé au placement.
+  desc_de: Platzierbares Kit für Kit Teaser. Kleiner Brennwert (15s). Verbraucht beim Platzieren.
+  desc_it: Kit piazzabile Kit Teaser. Carburante piccolo (15s). Consumato al posizionamento.
+  desc_pl: Zestaw Kit Teaser. Małe paliwo (15s). Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit implantável Kit Teaser. Combustível pequeno (15s). Consumido ao posicionar.
+  desc_ru: Набор для установки Kit Teaser. Малое топливо (15с). Расходуется при размещении.
+  desc_es: Kit desplegable Kit Teaser. Combustible pequeño (15s). Se consume al colocar.
+  desc_es_MX: Kit desplegable Kit Teaser. Combustible pequeño (15s). Se consume al colocar.
 421.kitcoonden
   en: Kitcoon Nursery
   ko: 킷쿤 보육원
   app: X
   type: deconstruct
   source: Placed structure. Houses kitcoons and runs hide-and-seek minigame. Min 3 kitcoons to play, hiding radius max 30, min distance 25, 60s time limit. Gives rewards on completion.
+  desc_en: Kitcoon housing and hide-and-seek minigame structure. Min 3 kitcoons, 60s time limit, radius 30. Gives rewards on completion.
+  desc_ko: 킷쿤 수용 및 숨바꼭질 미니게임 구조물. 최소 킷쿤 3마리, 제한 시간 60초, 반경 30. 완료 시 보상 지급.
+  desc_ja: キットクーン収容＆かくれんぼミニゲーム構造物。最低3匹、制限時間60秒、半径30。完了で報酬。
+  desc_zh_CN: 猫崽住所及捉迷藏小游戏结构。最少3只猫崽，60秒限时，半径30。完成后给予奖励。
+  desc_zh_TW: 貓崽住所及捉迷藏小遊戲結構。最少3隻貓崽，60秒限時，半徑30。完成後給予獎勵。
+  desc_fr: Structure d'hébergement et mini-jeu cache-cache pour kitcoons. Min 3 kitcoons, 60s, rayon 30. Récompenses à la fin.
+  desc_de: Kitcoon-Heim und Versteckspiel-Minispiel. Min 3 Kitcoons, 60s Zeitlimit, Radius 30. Belohnungen bei Abschluss.
+  desc_it: Struttura alloggio e minigioco nascondino per kitcoon. Min 3 kitcoon, 60s, raggio 30. Ricompense al completamento.
+  desc_pl: Schronienie kitcoonów i minigra w chowanego. Min 3 kitcoony, 60s limit, promień 30. Nagrody po ukończeniu.
+  desc_pt_BR: Estrutura de moradia e minijogo de esconde-esconde para kitcoons. Mín. 3, 60s, raio 30. Recompensas ao completar.
+  desc_ru: Жилище китикунов и мини-игра в прятки. Мин. 3 китикуна, 60с лимит, радиус 30. Награды при завершении.
+  desc_es: Estructura vivienda y minijuego de escondite para kitcoons. Mín. 3, 60s, radio 30. Recompensas al completar.
+  desc_es_MX: Estructura vivienda y minijuego de escondite para kitcoons. Mín. 3, 60s, radio 30. Recompensas al completar.
 422.kitcoonden_kit
   en: Kitcoon Nursery Kit
   ko: 킷쿤 보육원 키트
   app: O
   source: Deployable kit that places a Kitcoon Nursery (kitcoonden) structure. Small fuel value (15s). Consumed on placement.
+  desc_en: Deployable kit for Kitcoon Nursery. Small fuel (15s). Consumed on placement.
+  desc_ko: 킷쿤 보육원 설치 키트. 소형 연료(15초). 설치 시 소모.
+  desc_ja: キットクーンナーサリー設置キット。小型燃料（15秒）。設置時消費。
+  desc_zh_CN: 猫崽托儿所部署套件。小型燃料（15秒）。放置后消耗。
+  desc_zh_TW: 貓崽托兒所部署套件。小型燃料（15秒）。放置後消耗。
+  desc_fr: Kit déployable Crèche Kitcoon. Petit carburant (15s). Consommé au placement.
+  desc_de: Platzierbares Kit für Kitcoon-Kindergarten. Kleiner Brennwert (15s). Verbraucht beim Platzieren.
+  desc_it: Kit piazzabile Asilo Kitcoon. Carburante piccolo (15s). Consumato al posizionamento.
+  desc_pl: Zestaw Żłobek Kitcoonów. Małe paliwo (15s). Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit implantável Creche Kitcoon. Combustível pequeno (15s). Consumido ao posicionar.
+  desc_ru: Набор для установки Яслей китикунов. Малое топливо (15с). Расходуется при размещении.
+  desc_es: Kit desplegable Guardería Kitcoon. Combustible pequeño (15s). Se consume al colocar.
+  desc_es_MX: Kit desplegable Guardería Kitcoon. Combustible pequeño (15s). Se consume al colocar.
 423.lantern
   en: Lantern
   ko: 랜턴
   app: O
   source: Portable fuel-based light source. Fuel time 468s ((60+120)*2.6). Refuelable. Provides handheld light when equipped or placed on ground.
+  desc_en: Portable light source. Fuel 468s, refuelable. Provides light when held or placed on ground.
+  desc_ko: 휴대용 광원. 연료 468초, 보충 가능. 들거나 바닥에 놓으면 빛 제공.
+  desc_ja: 携帯型光源。燃料468秒、補充可能。手持ちまたは地面配置で発光。
+  desc_zh_CN: 便携光源。燃料468秒，可补充。手持或放置地面时提供照明。
+  desc_zh_TW: 便攜光源。燃料468秒，可補充。手持或放置地面時提供照明。
+  desc_fr: Source lumineuse portable. Carburant 468s, rechargeable. Éclaire tenu en main ou posé au sol.
+  desc_de: Tragbare Lichtquelle. Brennstoff 468s, nachfüllbar. Leuchtet in der Hand oder am Boden.
+  desc_it: Fonte luminosa portatile. Carburante 468s, ricaricabile. Illumina in mano o a terra.
+  desc_pl: Przenośne źródło światła. Paliwo 468s, uzupełnialne. Świeci w ręce lub na ziemi.
+  desc_pt_BR: Fonte de luz portátil. Combustível 468s, recarregável. Ilumina na mão ou no chão.
+  desc_ru: Переносной источник света. Топливо 468с, пополняемое. Светит в руке или на земле.
+  desc_es: Fuente de luz portátil. Combustible 468s, recargable. Ilumina en mano o en el suelo.
+  desc_es_MX: Fuente de luz portátil. Combustible 468s, recargable. Ilumina en mano o en el suelo.
 424.leif_idol
   en: Treeguard Idol
   ko: 트리가드 우상
   app: O
   source: Fuel item (large, 180s). When burned or used as fuel, transforms up to 2 nearby trees into Treeguards within radius 10 and wakes sleeping Leifs. Stackable.
+  desc_en: Fuel item (180s). When burned, transforms up to 2 nearby trees into Treeguards (radius 10) and wakes sleeping Leifs. Stackable.
+  desc_ko: 연료 아이템(180초). 연소 시 근처 나무 최대 2그루를 트리가드로 변환(반경 10)하고 잠든 레이프를 깨움. 중첩 가능.
+  desc_ja: 燃料アイテム（180秒）。燃焼時、近くの木を最大2本トリーガードに変化（半径10）し眠るリーフを起こす。スタック可。
+  desc_zh_CN: 燃料物品（180秒）。燃烧时将附近最多2棵树变为树精守卫（半径10）并唤醒沉睡的树精。可堆叠。
+  desc_zh_TW: 燃料物品（180秒）。燃燒時將附近最多2棵樹變為樹精守衛（半徑10）並喚醒沉睡的樹精。可堆疊。
+  desc_fr: Combustible (180s). Transforme jusqu'à 2 arbres en Gardes-Arbres (rayon 10) et réveille les Leifs endormis. Empilable.
+  desc_de: Brennstoff (180s). Verwandelt beim Verbrennen bis zu 2 Bäume in Baumwächter (Radius 10) und weckt schlafende Leifs. Stapelbar.
+  desc_it: Carburante (180s). Bruciato, trasforma fino a 2 alberi in Guardia-albero (raggio 10) e sveglia i Leif. Impilabile.
+  desc_pl: Paliwo (180s). Spalony zamienia do 2 drzew w Strażników Drzew (promień 10) i budzi śpiące Leify. Stosowalny.
+  desc_pt_BR: Combustível (180s). Ao queimar, transforma até 2 árvores em Guardiões (raio 10) e desperta Leifs. Empilhável.
+  desc_ru: Топливо (180с). При сжигании превращает до 2 деревьев в Стражей деревьев (радиус 10) и будит спящих Лейфов. Складывается.
+  desc_es: Combustible (180s). Al quemar, transforma hasta 2 árboles en Guardianes (radio 10) y despierta Leifs dormidos. Apilable.
+  desc_es_MX: Combustible (180s). Al quemar, transforma hasta 2 árboles en Guardianes (radio 10) y despierta Leifs dormidos. Apilable.
 425.lifeinjector
   en: Booster Shot
   ko: 예방주사
   app: O
   source: Max health increaser (maxhealer component). Permanently increases player max health. Stackable (small stack).
+  desc_en: Permanently increases player max health. Stackable (small stack).
+  desc_ko: 플레이어 최대 체력을 영구적으로 증가. 중첩 가능(소형 스택).
+  desc_ja: プレイヤーの最大体力を永久に増加。スタック可能（小スタック）。
+  desc_zh_CN: 永久增加玩家最大生命值。可堆叠（小堆叠）。
+  desc_zh_TW: 永久增加玩家最大生命值。可堆疊（小堆疊）。
+  desc_fr: Augmente définitivement la santé max du joueur. Empilable (petit tas).
+  desc_de: Erhöht dauerhaft die max. Gesundheit. Stapelbar (kleiner Stapel).
+  desc_it: Aumenta permanentemente la salute max del giocatore. Impilabile (piccola pila).
+  desc_pl: Trwale zwiększa maks. zdrowie gracza. Stosowalny (mały stos).
+  desc_pt_BR: Aumenta permanentemente a vida máxima do jogador. Empilhável (pilha pequena).
+  desc_ru: Навсегда увеличивает макс. здоровье игрока. Складывается (малая стопка).
+  desc_es: Aumenta permanentemente la salud máxima del jugador. Apilable (pila pequeña).
+  desc_es_MX: Aumenta permanentemente la salud máxima del jugador. Apilable (pila pequeña).
 426.lighter
   en: Willow's Lighter
   ko: 윌로우의 라이터
   app: O
   source: Willow-exclusive hand slot weapon/light/cooker. 17 damage (34*0.5), 50% chance to ignite target on attack. Fuel 600s (1.25 days), drains faster in rain (+1x rain rate). Can cook food (damages non-expert chefs 5hp). Wildfire-protected. Skill tree adds fire absorption channeling and light radius upgrades.
+  desc_en: Willow-exclusive weapon/light/cooker. 17 damage, 50% ignite chance. Fuel 600s. Can cook food. Skill tree upgrades available.
+  desc_ko: 윌로우 전용 무기/광원/조리기. 17 피해, 50% 발화 확률. 연료 600초. 음식 조리 가능. 스킬트리 업그레이드 가능.
+  desc_ja: ウィロー専用武器/光源/調理器。17ダメージ、50%着火。燃料600秒。食料調理可。スキルツリーアップグレード対応。
+  desc_zh_CN: 薇洛专属武器/光源/烹饪器。17伤害，50%点燃概率。燃料600秒。可烹饪食物。技能树升级可用。
+  desc_zh_TW: 薇洛專屬武器/光源/烹飪器。17傷害，50%點燃機率。燃料600秒。可烹飪食物。技能樹升級可用。
+  desc_fr: Arme/lumière/cuiseur exclusive à Willow. 17 dégâts, 50% chance d'enflammer. Carburant 600s. Peut cuire. Améliorations via arbre de compétences.
+  desc_de: Willow-exklusive Waffe/Licht/Kocher. 17 Schaden, 50% Entzündungschance. Brennstoff 600s. Kann kochen. Skilltree-Upgrades verfügbar.
+  desc_it: Arma/luce/fornello esclusivo Willow. 17 danni, 50% probabilità incendio. Carburante 600s. Può cucinare. Upgrade albero abilità.
+  desc_pl: Wyłącznie dla Willow: broń/światło/kuchenka. 17 obrażeń, 50% szansy na podpalenie. Paliwo 600s. Może gotować. Ulepszenia drzewka umiejętności.
+  desc_pt_BR: Arma/luz/fogão exclusiva da Willow. 17 dano, 50% chance de incendiar. Combustível 600s. Pode cozinhar. Upgrades da árvore de habilidades.
+  desc_ru: Оружие/свет/плитка только для Уиллоу. 17 урона, 50% шанс поджога. Топливо 600с. Может готовить. Улучшения через древо навыков.
+  desc_es: Arma/luz/cocina exclusiva de Willow. 17 daño, 50% probabilidad de incendiar. Combustible 600s. Puede cocinar. Mejoras del árbol de habilidades.
+  desc_es_MX: Arma/luz/cocina exclusiva de Willow. 17 daño, 50% probabilidad de incendiar. Combustible 600s. Puede cocinar. Mejoras del árbol de habilidades.
 427.lightning_rod
   en: Lightning Rod
   ko: 피뢰침
   app: O
   source: Placed structure that attracts lightning strikes, preventing fires. No special tuning values — purely positional lightning attractor.
+  desc_en: Placed structure. Attracts lightning strikes to prevent fires. No special stats.
+  desc_ko: 설치 구조물. 번개를 끌어당겨 화재 방지. 특수 능력치 없음.
+  desc_ja: 設置構造物。落雷を引き寄せて火災を防止。特殊ステータスなし。
+  desc_zh_CN: 放置结构。吸引雷击以防止火灾。无特殊属性。
+  desc_zh_TW: 放置結構。吸引雷擊以防止火災。無特殊屬性。
+  desc_fr: Structure posée. Attire la foudre pour prévenir les incendies. Aucune stat spéciale.
+  desc_de: Platzierte Struktur. Zieht Blitze an, um Brände zu verhindern. Keine Spezialwerte.
+  desc_it: Struttura posizionata. Attira i fulmini per prevenire incendi. Nessuna statistica speciale.
+  desc_pl: Postawiona struktura. Przyciąga pioruny zapobiegając pożarom. Brak specjalnych statystyk.
+  desc_pt_BR: Estrutura colocada. Atrai raios para prevenir incêndios. Sem atributos especiais.
+  desc_ru: Устанавливаемая структура. Притягивает молнии для предотвращения пожаров. Без особых характеристик.
+  desc_es: Estructura colocada. Atrae rayos para prevenir incendios. Sin estadísticas especiales.
+  desc_es_MX: Estructura colocada. Atrae rayos para prevenir incendios. Sin estadísticas especiales.
 428.livinglog
   en: Living Log
   ko: 생목
   app: O
   source: Crafting material. Fuel value 45s (med). Wood food type (for Bearger etc.). Repair material (wood), repair value 37.5 HP. Screams when burned or used as fuel.
+  desc_en: Crafting material. Med fuel (45s). Wood repair: 37.5 HP. Screams when burned. Wood food type for Bearger.
+  desc_ko: 제작 재료. 중간 연료(45초). 나무 수리: 37.5 HP. 연소 시 비명. 곰형에게 나무 식량 타입.
+  desc_ja: 制作素材。中燃料（45秒）。木材修理：37.5 HP。燃やすと叫ぶ。ベアジャーの木材食料タイプ。
+  desc_zh_CN: 制作材料。中等燃料（45秒）。木材修复：37.5 HP。燃烧时会尖叫。熊獾的木材食物类型。
+  desc_zh_TW: 製作材料。中等燃料（45秒）。木材修復：37.5 HP。燃燒時會尖叫。熊獾的木材食物類型。
+  desc_fr: Matériau de fabrication. Carburant moyen (45s). Réparation bois : 37,5 PV. Crie quand brûlé. Nourriture bois pour Bearger.
+  desc_de: Handwerksmaterial. Mittlerer Brennstoff (45s). Holzreparatur: 37,5 HP. Schreit beim Verbrennen. Holznahrung für Bärger.
+  desc_it: Materiale di fabbricazione. Carburante medio (45s). Riparazione legno: 37,5 HP. Urla se bruciato. Cibo legno per Bearger.
+  desc_pl: Materiał rzemieślniczy. Średnie paliwo (45s). Naprawa drewnem: 37,5 HP. Krzyczy po spaleniu. Drewniany pokarm dla Bearger.
+  desc_pt_BR: Material de crafting. Combustível médio (45s). Reparo madeira: 37,5 HP. Grita ao queimar. Tipo alimento madeira para Bearger.
+  desc_ru: Материал для крафта. Среднее топливо (45с). Ремонт деревом: 37,5 HP. Кричит при сжигании. Древесная еда для Медведя.
+  desc_es: Material de fabricación. Combustible medio (45s). Reparación madera: 37,5 HP. Grita al quemar. Alimento madera para Bearger.
+  desc_es_MX: Material de fabricación. Combustible medio (45s). Reparación madera: 37,5 HP. Grita al quemar. Alimento madera para Bearger.
 429.lunar_forge
   en: Brightsmithy
   ko: 대황간
   app: X
   type: deconstruct
   source: Placed prototyper structure for Brightshade (lunar forge) tier recipes. Proximity-activated crafting station. Hammerable (4 hits).
+  desc_en: Prototyper for Brightshade tier recipes. Proximity-activated crafting station. Hammerable (4 hits).
+  desc_ko: 빛말풀 등급 레시피 프로토타이퍼. 근접 활성화 제작 스테이션. 망치 4회로 파괴.
+  desc_ja: ブライトシェイドティアレシピのプロトタイパー。近接起動クラフトステーション。ハンマー4回。
+  desc_zh_CN: 光影级配方的原型器。靠近激活的制作站。锤击4次可拆。
+  desc_zh_TW: 光影級配方的原型器。靠近激活的製作站。錘擊4次可拆。
+  desc_fr: Prototypeur pour recettes Brightshade. Station d'artisanat à proximité. Destructible (4 coups).
+  desc_de: Prototyper für Brightshade-Rezepte. Näherungsaktivierte Werkbank. Zerhämmerbar (4 Schläge).
+  desc_it: Prototipatore per ricette Brightshade. Stazione attivata per prossimità. Distruttibile (4 colpi).
+  desc_pl: Prototyper dla przepisów Brightshade. Stacja rzemieślnicza na zbliżenie. Rozbijalna (4 uderzenia).
+  desc_pt_BR: Prototipador para receitas Brightshade. Estação de crafting por proximidade. Quebrável (4 golpes).
+  desc_ru: Прототипер для рецептов Светотени. Станция крафта при приближении. Разбивается (4 удара).
+  desc_es: Prototipador para recetas Brightshade. Estación de fabricación por proximidad. Destruible (4 golpes).
+  desc_es_MX: Prototipador para recetas Brightshade. Estación de fabricación por proximidad. Destruible (4 golpes).
 430.lunar_forge_kit
   en: Brightsmithy Kit
   ko: 대황간 키트
   app: O
   source: Deployable kit that places a Brightsmithy (lunar_forge) prototyper structure. Consumed on placement.
+  desc_en: Deployable kit for Brightsmithy prototyper. Consumed on placement.
+  desc_ko: 대황간 프로토타이퍼 설치 키트. 설치 시 소모.
+  desc_ja: ブライトスミシー設置キット。設置時消費。
+  desc_zh_CN: 光明铁匠铺原型器部署套件。放置后消耗。
+  desc_zh_TW: 光明鐵匠鋪原型器部署套件。放置後消耗。
+  desc_fr: Kit déployable pour le prototypeur Brightsmithy. Consommé au placement.
+  desc_de: Platzierbares Kit für Brightsmithy-Prototyper. Verbraucht beim Platzieren.
+  desc_it: Kit piazzabile per prototipatore Brightsmithy. Consumato al posizionamento.
+  desc_pl: Zestaw prototypera Brightsmithy. Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit implantável do prototipador Brightsmithy. Consumido ao posicionar.
+  desc_ru: Набор для установки прототипера Светокузни. Расходуется при размещении.
+  desc_es: Kit desplegable del prototipador Brightsmithy. Se consume al colocar.
+  desc_es_MX: Kit desplegable del prototipador Brightsmithy. Se consume al colocar.
 431.lunarplant_kit
   en: Brightshade Repair Kit
   ko: 빛말풀 수리 도구
   app: O
   source: Repair kit for Brightshade (lunarplant) forge-repairable equipment. Stackable (large stack). Consumed on use.
+  desc_en: Repair kit for Brightshade forge-repairable gear. Stackable (large). Consumed on use.
+  desc_ko: 빛말풀 단조 수리 장비용 수리 키트. 중첩 가능(대형). 사용 시 소모.
+  desc_ja: ブライトシェイド鍛冶修理装備用修理キット。スタック可（大）。使用時消費。
+  desc_zh_CN: 光影锻造可修复装备的修理套件。可大量堆叠。使用后消耗。
+  desc_zh_TW: 光影鍛造可修復裝備的修理套件。可大量堆疊。使用後消耗。
+  desc_fr: Kit de réparation pour équipement Brightshade. Empilable (grand). Consommé à l'utilisation.
+  desc_de: Reparaturset für Brightshade-Schmiedeausrüstung. Stapelbar (groß). Verbraucht bei Nutzung.
+  desc_it: Kit riparazione per equipaggiamento forgiato Brightshade. Impilabile (grande). Consumato all'uso.
+  desc_pl: Zestaw naprawczy sprzętu Brightshade. Stosowalny (duży stos). Zużywany przy użyciu.
+  desc_pt_BR: Kit de reparo para equipamentos Brightshade. Empilhável (grande). Consumido ao usar.
+  desc_ru: Набор для ремонта снаряжения Светотени. Складывается (большая стопка). Расходуется при использовании.
+  desc_es: Kit de reparación para equipo Brightshade forjado. Apilable (grande). Se consume al usar.
+  desc_es_MX: Kit de reparación para equipo Brightshade forjado. Apilable (grande). Se consume al usar.
 432.lunarplanthat
   en: Brightshade Helm
   ko: 빛말풀 투구
   app: O
   source: Hat with armor. 830 durability (150*6*0.7+200), 80% absorption, 10 planar defense, 90% lunar damage resist. Provides light (grue immunity). Brightshade set bonus: extra lunar resist (total ~86.6%). Forge-repairable with lunarplant_kit.
+  desc_en: Armor hat. 830 durability, 80% absorption, 10 planar defense, 90% lunar resist. Provides light. Set bonus: ~86.6% total lunar resist. Forge-repairable.
+  desc_ko: 방어구 모자. 내구도 830, 흡수 80%, 차원 방어 10, 달 저항 90%. 광원 제공. 세트 보너스: 총 ~86.6% 달 저항. 단조 수리 가능.
+  desc_ja: 防具帽子。耐久830、吸収80%、プレーナー防御10、月耐性90%。発光。セットボーナス：合計約86.6%月耐性。鍛冶修理可。
+  desc_zh_CN: 护甲帽子。耐久830，吸收80%，位面防御10，月亮抗性90%。提供光照。套装加成：总计约86.6%月亮抗性。可锻造修复。
+  desc_zh_TW: 護甲帽子。耐久830，吸收80%，位面防禦10，月亮抗性90%。提供光照。套裝加成：總計約86.6%月亮抗性。可鍛造修復。
+  desc_fr: Chapeau armure. 830 durabilité, 80% absorption, 10 défense planaire, 90% résistance lunaire. Éclaire. Bonus set : ~86,6% résist. lunaire. Réparable à la forge.
+  desc_de: Rüstungshut. 830 Haltbarkeit, 80% Absorption, 10 planare Verteidigung, 90% Mondresistenz. Gibt Licht. Set-Bonus: ~86,6% Mondresistenz. Schmiedreparabel.
+  desc_it: Cappello armatura. 830 durabilità, 80% assorbimento, 10 difesa planare, 90% resistenza lunare. Illumina. Bonus set: ~86,6% resist. lunare. Riparabile in fucina.
+  desc_pl: Kapelusz pancerny. 830 wytrzymałości, 80% absorpcji, 10 obrony planarnej, 90% odporności księżycowej. Świeci. Bonus zestawu: ~86,6% odporności. Naprawialny w kuźni.
+  desc_pt_BR: Chapéu armadura. 830 durabilidade, 80% absorção, 10 defesa planar, 90% resistência lunar. Ilumina. Bônus set: ~86,6% resist. lunar. Reparável na forja.
+  desc_ru: Шлем-броня. 830 прочности, 80% поглощения, 10 планарной защиты, 90% лунной сопротивляемости. Светит. Бонус сета: ~86,6% лунной защиты. Ремонт в кузне.
+  desc_es: Sombrero armadura. 830 durabilidad, 80% absorción, 10 defensa planar, 90% resist. lunar. Ilumina. Bonus set: ~86,6% resist. lunar. Reparable en forja.
+  desc_es_MX: Sombrero armadura. 830 durabilidad, 80% absorción, 10 defensa planar, 90% resist. lunar. Ilumina. Bonus set: ~86,6% resist. lunar. Reparable en forja.
 433.madscience_lab
   en: Mad Scientist Lab
   ko: 미치광이 과학 실험실
   app: O
   source: Halloween event crafting station. Processes experiment ingredients into potions (bravery/health/sanity small/large, embers, sparks, moon potion, living tree root) with weighted random outcomes. 3-stage cooking animation.
+  desc_en: Halloween event crafting station. Processes ingredients into random potions. 3-stage cooking animation. Weighted random outcomes.
+  desc_ko: 할로윈 이벤트 제작 스테이션. 재료를 랜덤 물약으로 가공. 3단계 조리 애니메이션. 가중치 기반 랜덤 결과.
+  desc_ja: ハロウィンイベントクラフトステーション。素材をランダムポーションに加工。3段階調理アニメーション。重み付きランダム結果。
+  desc_zh_CN: 万圣节活动制作站。将材料加工为随机药水。3阶段烹饪动画。加权随机结果。
+  desc_zh_TW: 萬聖節活動製作站。將材料加工為隨機藥水。3階段烹飪動畫。加權隨機結果。
+  desc_fr: Station de fabrication Halloween. Transforme les ingrédients en potions aléatoires. Animation 3 étapes. Résultats pondérés.
+  desc_de: Halloween-Event-Werkbank. Verarbeitet Zutaten zu zufälligen Tränken. 3-Stufen-Animation. Gewichtete Zufallsergebnisse.
+  desc_it: Stazione evento Halloween. Trasforma ingredienti in pozioni casuali. Animazione a 3 fasi. Risultati casuali ponderati.
+  desc_pl: Stacja rzemieślnicza Halloween. Przetwarza składniki w losowe mikstury. 3-etapowa animacja. Ważone losowe wyniki.
+  desc_pt_BR: Estação de crafting de Halloween. Processa ingredientes em poções aleatórias. Animação de 3 fases. Resultados aleatórios ponderados.
+  desc_ru: Станция крафта Хэллоуина. Перерабатывает ингредиенты в случайные зелья. 3-этапная анимация варки. Взвешенный рандом.
+  desc_es: Estación de fabricación de Halloween. Procesa ingredientes en pociones aleatorias. Animación de 3 fases. Resultados aleatorios ponderados.
+  desc_es_MX: Estación de fabricación de Halloween. Procesa ingredientes en pociones aleatorias. Animación de 3 fases. Resultados aleatorios ponderados.
 434.magician_chest
   en: Magician's Chest
   ko: 마술 상자
   app: O
   source: Placed structure linked to the shared shadow pocket dimension container. All Magician's Chests access the same inventory. Hammerable (2 hits), burnable.
+  desc_en: Structure linked to shared shadow pocket dimension. All Magician's Chests share one inventory. Hammerable (2 hits), burnable.
+  desc_ko: 공유 그림자 차원 컨테이너에 연결된 구조물. 모든 마술 상자가 동일 인벤토리 공유. 망치 2회로 파괴, 불에 탐.
+  desc_ja: 共有シャドウポケット次元に接続された構造物。全マジシャンチェストが同一インベントリを共有。ハンマー2回、可燃。
+  desc_zh_CN: 连接共享暗影口袋维度的结构。所有魔术箱共享同一库存。锤击2次可拆，可燃。
+  desc_zh_TW: 連接共享暗影口袋維度的結構。所有魔術箱共享同一庫存。錘擊2次可拆，可燃。
+  desc_fr: Structure liée à la dimension de poche partagée. Tous les Coffres partagent le même inventaire. Destructible (2 coups), inflammable.
+  desc_de: Struktur verbunden mit geteilter Schattendimension. Alle Truhen teilen ein Inventar. Zerhämmerbar (2 Schläge), brennbar.
+  desc_it: Struttura collegata alla dimensione tascabile condivisa. Tutti i bauli condividono lo stesso inventario. Distruttibile (2 colpi), infiammabile.
+  desc_pl: Struktura połączona z wspólnym wymiarem cienia. Wszystkie skrzynie dzielą ekwipunek. Rozbijalna (2 uderzenia), palna.
+  desc_pt_BR: Estrutura ligada à dimensão bolso sombria compartilhada. Todos os baús compartilham o mesmo inventário. Quebrável (2 golpes), inflamável.
+  desc_ru: Строение, связанное с общим теневым измерением. Все сундуки Мага делят один инвентарь. Разбивается (2 удара), горючее.
+  desc_es: Estructura vinculada a la dimensión de bolsillo compartida. Todos los cofres comparten inventario. Destruible (2 golpes), inflamable.
+  desc_es_MX: Estructura vinculada a la dimensión de bolsillo compartida. Todos los cofres comparten inventario. Destruible (2 golpes), inflamable.
 435.malbatross_feathered_weave
   en: Feathery Canvas
   ko: 깃털 캔버스 천
   app: O
   source: Crafting material from Malbatross. Stackable (med stack). Small fuel value (15s). Floats on water (does not sink). Burnable.
+  desc_en: Crafting material from Malbatross. Stackable (med). Small fuel (15s). Floats on water. Burnable.
+  desc_ko: 말바트로스 드랍 제작 재료. 중첩 가능(중형). 소형 연료(15초). 물에 떠다님. 불에 탐.
+  desc_ja: マルバトロスからの制作素材。スタック可（中）。小型燃料（15秒）。水に浮く。可燃。
+  desc_zh_CN: 来自海鸥鲸的制作材料。可堆叠（中等）。小型燃料（15秒）。漂浮在水上。可燃。
+  desc_zh_TW: 來自海鷗鯨的製作材料。可堆疊（中等）。小型燃料（15秒）。漂浮在水上。可燃。
+  desc_fr: Matériau de fabrication du Malbatros. Empilable (moyen). Petit carburant (15s). Flotte. Inflammable.
+  desc_de: Handwerksmaterial vom Malbatross. Stapelbar (mittel). Kleiner Brennwert (15s). Schwimmt. Brennbar.
+  desc_it: Materiale dal Malbatross. Impilabile (medio). Carburante piccolo (15s). Galleggia. Infiammabile.
+  desc_pl: Materiał z Malbatross. Stosowalny (średni stos). Małe paliwo (15s). Pływa. Palny.
+  desc_pt_BR: Material do Malbatross. Empilhável (médio). Combustível pequeno (15s). Flutua. Inflamável.
+  desc_ru: Материал от Мальбатросса. Складывается (средняя стопка). Малое топливо (15с). Плавает. Горючий.
+  desc_es: Material del Malbatross. Apilable (medio). Combustible pequeño (15s). Flota. Inflamable.
+  desc_es_MX: Material del Malbatross. Apilable (medio). Combustible pequeño (15s). Flota. Inflamable.
 436.mapscroll
   en: Map Scroll
   ko: 지도
   app: O
   source: Records the crafter's explored map on creation. Can be taught to another player to share map data. Shows author name and day. Erasable. Small fuel (15s), burnable.
+  desc_en: Records explored map on creation. Shareable with other players. Shows author and day. Erasable. Small fuel (15s).
+  desc_ko: 제작 시 탐색된 지도 기록. 다른 플레이어와 공유 가능. 작성자 및 날짜 표시. 지울 수 있음. 소형 연료(15초).
+  desc_ja: 作成時に探索済みマップを記録。他プレイヤーと共有可能。著者と日数を表示。消去可。小型燃料（15秒）。
+  desc_zh_CN: 制作时记录已探索地图。可与其他玩家共享。显示作者和天数。可擦除。小型燃料（15秒）。
+  desc_zh_TW: 製作時記錄已探索地圖。可與其他玩家共享。顯示作者和天數。可擦除。小型燃料（15秒）。
+  desc_fr: Enregistre la carte explorée à la création. Partageable. Affiche l'auteur et le jour. Effaçable. Petit carburant (15s).
+  desc_de: Zeichnet erkundete Karte bei Erstellung auf. Teilbar. Zeigt Autor und Tag. Löschbar. Kleiner Brennwert (15s).
+  desc_it: Registra la mappa esplorata alla creazione. Condivisibile. Mostra autore e giorno. Cancellabile. Carburante piccolo (15s).
+  desc_pl: Zapisuje odkrytą mapę przy tworzeniu. Udostępnialny. Pokazuje autora i dzień. Kasowalny. Małe paliwo (15s).
+  desc_pt_BR: Registra mapa explorado na criação. Compartilhável. Mostra autor e dia. Apagável. Combustível pequeno (15s).
+  desc_ru: Записывает исследованную карту при создании. Можно передать другому игроку. Показывает автора и день. Стираемый. Малое топливо (15с).
+  desc_es: Registra el mapa explorado al crear. Compartible. Muestra autor y día. Borrable. Combustible pequeño (15s).
+  desc_es_MX: Registra el mapa explorado al crear. Compartible. Muestra autor y día. Borrable. Combustible pequeño (15s).
 437.marblebean
   en: Marble Bean
   ko: 대리석 씨앗
   app: O
   source: Plantable seed that grows into a marble shrub. Cat toy, mole bait, tree seed tags. Sinks in water. Stackable (small). 75% drop chance from medium shrubs, 50% from tall.
+  desc_en: Plantable seed. Grows into marble shrub. Cat toy, mole bait. Stackable (small). 75% drop from medium / 50% from tall shrubs.
+  desc_ko: 심을 수 있는 씨앗. 대리석 덤불로 성장. 고양이 장난감, 두더지 미끼. 중첩 가능(소형). 중간 덤불 75% / 키큰 덤불 50% 드랍.
+  desc_ja: 植栽可能な種。大理石の低木に成長。猫おもちゃ、モグラ餌。スタック可（小）。中低木75%/高低木50%ドロップ。
+  desc_zh_CN: 可种植种子。长成大理石灌木。猫玩具、鼹鼠诱饵。可堆叠（小）。中灌木75%/高灌木50%掉落。
+  desc_zh_TW: 可種植種子。長成大理石灌木。貓玩具、鼴鼠誘餌。可堆疊（小）。中灌木75%/高灌木50%掉落。
+  desc_fr: Graine plantable. Pousse en arbuste de marbre. Jouet chat, appât taupe. Empilable (petit). 75% drop moyen / 50% grand arbuste.
+  desc_de: Pflanzbare Samen. Wächst zu Marmorbusch. Katzenspielzeug, Maulwurfköder. Stapelbar (klein). 75% Drop von mittleren / 50% von hohen Büschen.
+  desc_it: Seme piantabile. Cresce in arbusto di marmo. Giocattolo gatto, esca talpa. Impilabile (piccolo). 75% drop medio / 50% alto arbusto.
+  desc_pl: Sadzalne nasiono. Rośnie w marmurowy krzew. Zabawka kota, przynęta kreta. Stosowalny (mały). 75% z średnich / 50% z wysokich krzewów.
+  desc_pt_BR: Semente plantável. Cresce em arbusto de mármore. Brinquedo de gato, isca de toupeira. Empilhável (pequeno). 75% drop médio / 50% alto.
+  desc_ru: Семя для посадки. Вырастает в мраморный куст. Игрушка для кошки, приманка крота. Складывается (малая). 75% дроп со средних / 50% с высоких кустов.
+  desc_es: Semilla plantable. Crece en arbusto de mármol. Juguete gato, cebo topo. Apilable (pequeño). 75% drop medio / 50% alto arbusto.
+  desc_es_MX: Semilla plantable. Crece en arbusto de mármol. Juguete gato, cebo topo. Apilable (pequeño). 75% drop medio / 50% alto arbusto.
 438.mask_blacksmithhat
   en: Blacksmith Mask
   ko: 대장장이 가면
   app: X
   type: deconstruct
   source: Cosmetic costume hat. Small fuel value (15s), burnable. No armor or special effects.
+  desc_en: Cosmetic costume hat. Small fuel (15s), burnable. No armor or special effects.
+  desc_ko: 장식용 의상 모자. 소형 연료(15초), 불에 탐. 방어구 및 특수 효과 없음.
+  desc_ja: 装飾用コスチューム帽子。小型燃料（15秒）、可燃。防具・特殊効果なし。
+  desc_zh_CN: 装饰性服装帽子。小型燃料（15秒），可燃。无护甲或特殊效果。
+  desc_zh_TW: 裝飾性服裝帽子。小型燃料（15秒），可燃。無護甲或特殊效果。
+  desc_fr: Chapeau costume cosmétique. Petit carburant (15s), inflammable. Aucune armure ni effet spécial.
+  desc_de: Kosmetischer Kostümhut. Kleiner Brennwert (15s), brennbar. Keine Rüstung oder Spezialeffekte.
+  desc_it: Cappello costume cosmetico. Carburante piccolo (15s), infiammabile. Nessuna armatura o effetto speciale.
+  desc_pl: Ozdobny kapelusz kostiumowy. Małe paliwo (15s), palny. Brak pancerza i efektów specjalnych.
+  desc_pt_BR: Chapéu cosmético de fantasia. Combustível pequeno (15s), inflamável. Sem armadura ou efeitos especiais.
+  desc_ru: Декоративная шляпа костюма. Малое топливо (15с), горючая. Без брони и спецэффектов.
+  desc_es: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
+  desc_es_MX: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
 439.mask_dollbrokenhat
   en: Cracked Doll Mask
   ko: 금 간 인형 가면
   app: X
   type: deconstruct
   source: Cosmetic costume hat. Small fuel value (15s), burnable. No armor or special effects.
+  desc_en: Cosmetic costume hat. Small fuel (15s), burnable. No armor or special effects.
+  desc_ko: 장식용 의상 모자. 소형 연료(15초), 불에 탐. 방어구 및 특수 효과 없음.
+  desc_ja: 装飾用コスチューム帽子。小型燃料（15秒）、可燃。防具・特殊効果なし。
+  desc_zh_CN: 装饰性服装帽子。小型燃料（15秒），可燃。无护甲或特殊效果。
+  desc_zh_TW: 裝飾性服裝帽子。小型燃料（15秒），可燃。無護甲或特殊效果。
+  desc_fr: Chapeau costume cosmétique. Petit carburant (15s), inflammable. Aucune armure ni effet spécial.
+  desc_de: Kosmetischer Kostümhut. Kleiner Brennwert (15s), brennbar. Keine Rüstung oder Spezialeffekte.
+  desc_it: Cappello costume cosmetico. Carburante piccolo (15s), infiammabile. Nessuna armatura o effetto speciale.
+  desc_pl: Ozdobny kapelusz kostiumowy. Małe paliwo (15s), palny. Brak pancerza i efektów specjalnych.
+  desc_pt_BR: Chapéu cosmético de fantasia. Combustível pequeno (15s), inflamável. Sem armadura ou efeitos especiais.
+  desc_ru: Декоративная шляпа костюма. Малое топливо (15с), горючая. Без брони и спецэффектов.
+  desc_es: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
+  desc_es_MX: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
 440.mask_dollhat
   en: Doll Mask
   ko: 인형 가면
   app: X
   type: deconstruct
   source: Cosmetic costume hat. Small fuel value (15s), burnable. No armor or special effects.
+  desc_en: Cosmetic costume hat. Small fuel (15s), burnable. No armor or special effects.
+  desc_ko: 장식용 의상 모자. 소형 연료(15초), 불에 탐. 방어구 및 특수 효과 없음.
+  desc_ja: 装飾用コスチューム帽子。小型燃料（15秒）、可燃。防具・特殊効果なし。
+  desc_zh_CN: 装饰性服装帽子。小型燃料（15秒），可燃。无护甲或特殊效果。
+  desc_zh_TW: 裝飾性服裝帽子。小型燃料（15秒），可燃。無護甲或特殊效果。
+  desc_fr: Chapeau costume cosmétique. Petit carburant (15s), inflammable. Aucune armure ni effet spécial.
+  desc_de: Kosmetischer Kostümhut. Kleiner Brennwert (15s), brennbar. Keine Rüstung oder Spezialeffekte.
+  desc_it: Cappello costume cosmetico. Carburante piccolo (15s), infiammabile. Nessuna armatura o effetto speciale.
+  desc_pl: Ozdobny kapelusz kostiumowy. Małe paliwo (15s), palny. Brak pancerza i efektów specjalnych.
+  desc_pt_BR: Chapéu cosmético de fantasia. Combustível pequeno (15s), inflamável. Sem armadura ou efeitos especiais.
+  desc_ru: Декоративная шляпа костюма. Малое топливо (15с), горючая. Без брони и спецэффектов.
+  desc_es: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
+  desc_es_MX: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
 441.mask_dollrepairedhat
   en: Shattered Doll Mask
   ko: 부서진 인형 가면
   app: X
   type: deconstruct
   source: Cosmetic costume hat. Small fuel value (15s), burnable. No armor or special effects.
+  desc_en: Cosmetic costume hat. Small fuel (15s), burnable. No armor or special effects.
+  desc_ko: 장식용 의상 모자. 소형 연료(15초), 불에 탐. 방어구 및 특수 효과 없음.
+  desc_ja: 装飾用コスチューム帽子。小型燃料（15秒）、可燃。防具・特殊効果なし。
+  desc_zh_CN: 装饰性服装帽子。小型燃料（15秒），可燃。无护甲或特殊效果。
+  desc_zh_TW: 裝飾性服裝帽子。小型燃料（15秒），可燃。無護甲或特殊效果。
+  desc_fr: Chapeau costume cosmétique. Petit carburant (15s), inflammable. Aucune armure ni effet spécial.
+  desc_de: Kosmetischer Kostümhut. Kleiner Brennwert (15s), brennbar. Keine Rüstung oder Spezialeffekte.
+  desc_it: Cappello costume cosmetico. Carburante piccolo (15s), infiammabile. Nessuna armatura o effetto speciale.
+  desc_pl: Ozdobny kapelusz kostiumowy. Małe paliwo (15s), palny. Brak pancerza i efektów specjalnych.
+  desc_pt_BR: Chapéu cosmético de fantasia. Combustível pequeno (15s), inflamável. Sem armadura ou efeitos especiais.
+  desc_ru: Декоративная шляпа костюма. Малое топливо (15с), горючая. Без брони и спецэффектов.
+  desc_es: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
+  desc_es_MX: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
 442.mask_foolhat
   en: Fool Mask
   ko: 어릿광대 가면
   app: X
   type: deconstruct
   source: Cosmetic costume hat. Small fuel value (15s), burnable. No armor or special effects.
+  desc_en: Cosmetic costume hat. Small fuel (15s), burnable. No armor or special effects.
+  desc_ko: 장식용 의상 모자. 소형 연료(15초), 불에 탐. 방어구 및 특수 효과 없음.
+  desc_ja: 装飾用コスチューム帽子。小型燃料（15秒）、可燃。防具・特殊効果なし。
+  desc_zh_CN: 装饰性服装帽子。小型燃料（15秒），可燃。无护甲或特殊效果。
+  desc_zh_TW: 裝飾性服裝帽子。小型燃料（15秒），可燃。無護甲或特殊效果。
+  desc_fr: Chapeau costume cosmétique. Petit carburant (15s), inflammable. Aucune armure ni effet spécial.
+  desc_de: Kosmetischer Kostümhut. Kleiner Brennwert (15s), brennbar. Keine Rüstung oder Spezialeffekte.
+  desc_it: Cappello costume cosmetico. Carburante piccolo (15s), infiammabile. Nessuna armatura o effetto speciale.
+  desc_pl: Ozdobny kapelusz kostiumowy. Małe paliwo (15s), palny. Brak pancerza i efektów specjalnych.
+  desc_pt_BR: Chapéu cosmético de fantasia. Combustível pequeno (15s), inflamável. Sem armadura ou efeitos especiais.
+  desc_ru: Декоративная шляпа костюма. Малое топливо (15с), горючая. Без брони и спецэффектов.
+  desc_es: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
+  desc_es_MX: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
 443.mask_halfwithat
   en: Halfwit's Masque
   ko: 우자의 가면
   app: X
   type: deconstruct
   source: Ancient-tier costume mask. Grants "ancient_reader" tag (allows reading ancient tablets). Not burnable. No armor.
+  desc_en: Ancient-tier costume mask. Grants ancient_reader tag (read ancient tablets). Not burnable. No armor.
+  desc_ko: 고대 등급 의상 가면. ancient_reader 태그 부여(고대 석판 읽기). 불에 타지 않음. 방어구 없음.
+  desc_ja: 古代ティアコスチュームマスク。ancient_readerタグ付与（古代の石板を読む）。不燃。防具なし。
+  desc_zh_CN: 远古级服装面具。授予ancient_reader标签（可阅读远古石板）。不可燃。无护甲。
+  desc_zh_TW: 遠古級服裝面具。授予ancient_reader標籤（可閱讀遠古石板）。不可燃。無護甲。
+  desc_fr: Masque costume ancien. Confère le tag ancient_reader (lire les tablettes). Ininflammable. Pas d'armure.
+  desc_de: Antike Kostümmaske. Verleiht ancient_reader-Tag (antike Tafeln lesen). Nicht brennbar. Keine Rüstung.
+  desc_it: Maschera costume antico. Conferisce tag ancient_reader (leggere tavolette). Non infiammabile. Nessuna armatura.
+  desc_pl: Starożytna maska kostiumowa. Nadaje tag ancient_reader (czytanie tablic). Niepalna. Brak pancerza.
+  desc_pt_BR: Máscara fantasia antiga. Concede tag ancient_reader (ler tábuas antigas). Não inflamável. Sem armadura.
+  desc_ru: Маска костюма древнего уровня. Даёт тег ancient_reader (чтение табличек). Не горит. Без брони.
+  desc_es: Máscara de disfraz antiguo. Otorga tag ancient_reader (leer tablillas). No inflamable. Sin armadura.
+  desc_es_MX: Máscara de disfraz antiguo. Otorga tag ancient_reader (leer tablillas). No inflamable. Sin armadura.
 444.mask_kinghat
   en: King Mask
   ko: 왕 가면
   app: X
   type: deconstruct
   source: Cosmetic costume hat. Small fuel value (15s), burnable. No armor or special effects.
+  desc_en: Cosmetic costume hat. Small fuel (15s), burnable. No armor or special effects.
+  desc_ko: 장식용 의상 모자. 소형 연료(15초), 불에 탐. 방어구 및 특수 효과 없음.
+  desc_ja: 装飾用コスチューム帽子。小型燃料（15秒）、可燃。防具・特殊効果なし。
+  desc_zh_CN: 装饰性服装帽子。小型燃料（15秒），可燃。无护甲或特殊效果。
+  desc_zh_TW: 裝飾性服裝帽子。小型燃料（15秒），可燃。無護甲或特殊效果。
+  desc_fr: Chapeau costume cosmétique. Petit carburant (15s), inflammable. Aucune armure ni effet spécial.
+  desc_de: Kosmetischer Kostümhut. Kleiner Brennwert (15s), brennbar. Keine Rüstung oder Spezialeffekte.
+  desc_it: Cappello costume cosmetico. Carburante piccolo (15s), infiammabile. Nessuna armatura o effetto speciale.
+  desc_pl: Ozdobny kapelusz kostiumowy. Małe paliwo (15s), palny. Brak pancerza i efektów specjalnych.
+  desc_pt_BR: Chapéu cosmético de fantasia. Combustível pequeno (15s), inflamável. Sem armadura ou efeitos especiais.
+  desc_ru: Декоративная шляпа костюма. Малое топливо (15с), горючая. Без брони и спецэффектов.
+  desc_es: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
+  desc_es_MX: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
 445.mask_mirrorhat
   en: Mirror Mask
   ko: 거울 가면
   app: X
   type: deconstruct
   source: Cosmetic costume hat. Small fuel value (15s), burnable. No armor or special effects.
+  desc_en: Cosmetic costume hat. Small fuel (15s), burnable. No armor or special effects.
+  desc_ko: 장식용 의상 모자. 소형 연료(15초), 불에 탐. 방어구 및 특수 효과 없음.
+  desc_ja: 装飾用コスチューム帽子。小型燃料（15秒）、可燃。防具・特殊効果なし。
+  desc_zh_CN: 装饰性服装帽子。小型燃料（15秒），可燃。无护甲或特殊效果。
+  desc_zh_TW: 裝飾性服裝帽子。小型燃料（15秒），可燃。無護甲或特殊效果。
+  desc_fr: Chapeau costume cosmétique. Petit carburant (15s), inflammable. Aucune armure ni effet spécial.
+  desc_de: Kosmetischer Kostümhut. Kleiner Brennwert (15s), brennbar. Keine Rüstung oder Spezialeffekte.
+  desc_it: Cappello costume cosmetico. Carburante piccolo (15s), infiammabile. Nessuna armatura o effetto speciale.
+  desc_pl: Ozdobny kapelusz kostiumowy. Małe paliwo (15s), palny. Brak pancerza i efektów specjalnych.
+  desc_pt_BR: Chapéu cosmético de fantasia. Combustível pequeno (15s), inflamável. Sem armadura ou efeitos especiais.
+  desc_ru: Декоративная шляпа костюма. Малое топливо (15с), горючая. Без брони и спецэффектов.
+  desc_es: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
+  desc_es_MX: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
 446.mask_princesshat
   en: Princess Mask
   ko: 공주 가면
   app: X
   type: deconstruct
   source: Costume hat with armor. 105 durability (150*1*0.7), 60% absorption, 20% waterproof. Spawns knight pets (Year of the Horse). Metal/hard armor tags. Not burnable.
+  desc_en: Costume hat with armor. 105 durability, 60% absorption, 20% waterproof. Spawns knight pets. Metal armor. Not burnable.
+  desc_ko: 방어구 의상 모자. 내구도 105, 흡수 60%, 방수 20%. 기사 펫 소환. 금속 방어구. 불에 타지 않음.
+  desc_ja: 防具付きコスチューム帽子。耐久105、吸収60%、防水20%。ナイトペット召喚。金属防具。不燃。
+  desc_zh_CN: 带护甲的服装帽子。耐久105，吸收60%，防水20%。召唤骑士宠物。金属护甲。不可燃。
+  desc_zh_TW: 帶護甲的服裝帽子。耐久105，吸收60%，防水20%。召喚騎士寵物。金屬護甲。不可燃。
+  desc_fr: Chapeau costume avec armure. 105 durabilité, 60% absorption, 20% imperméable. Invoque des chevaliers. Armure métal. Ininflammable.
+  desc_de: Kostümhut mit Rüstung. 105 Haltbarkeit, 60% Absorption, 20% wasserdicht. Beschwört Ritter-Haustiere. Metallrüstung. Nicht brennbar.
+  desc_it: Cappello costume con armatura. 105 durabilità, 60% assorbimento, 20% impermeabile. Evoca cavalieri. Armatura metallo. Non infiammabile.
+  desc_pl: Kapelusz kostiumowy z pancerzem. 105 wytrzymałości, 60% absorpcji, 20% wodoodporności. Przyzywa rycerze. Metalowy. Niepalny.
+  desc_pt_BR: Chapéu fantasia com armadura. 105 durabilidade, 60% absorção, 20% impermeável. Invoca cavaleiros. Armadura metal. Não inflamável.
+  desc_ru: Шляпа костюма с бронёй. 105 прочности, 60% поглощения, 20% водонепроницаемость. Призывает рыцарей. Металл. Не горит.
+  desc_es: Sombrero disfraz con armadura. 105 durabilidad, 60% absorción, 20% impermeable. Invoca caballeros. Armadura metal. No inflamable.
+  desc_es_MX: Sombrero disfraz con armadura. 105 durabilidad, 60% absorción, 20% impermeable. Invoca caballeros. Armadura metal. No inflamable.
 447.mask_queenhat
   en: Queen Mask
   ko: 여왕 가면
   app: X
   type: deconstruct
   source: Cosmetic costume hat. Small fuel value (15s), burnable. No armor or special effects.
+  desc_en: Cosmetic costume hat. Small fuel (15s), burnable. No armor or special effects.
+  desc_ko: 장식용 의상 모자. 소형 연료(15초), 불에 탐. 방어구 및 특수 효과 없음.
+  desc_ja: 装飾用コスチューム帽子。小型燃料（15秒）、可燃。防具・特殊効果なし。
+  desc_zh_CN: 装饰性服装帽子。小型燃料（15秒），可燃。无护甲或特殊效果。
+  desc_zh_TW: 裝飾性服裝帽子。小型燃料（15秒），可燃。無護甲或特殊效果。
+  desc_fr: Chapeau costume cosmétique. Petit carburant (15s), inflammable. Aucune armure ni effet spécial.
+  desc_de: Kosmetischer Kostümhut. Kleiner Brennwert (15s), brennbar. Keine Rüstung oder Spezialeffekte.
+  desc_it: Cappello costume cosmetico. Carburante piccolo (15s), infiammabile. Nessuna armatura o effetto speciale.
+  desc_pl: Ozdobny kapelusz kostiumowy. Małe paliwo (15s), palny. Brak pancerza i efektów specjalnych.
+  desc_pt_BR: Chapéu cosmético de fantasia. Combustível pequeno (15s), inflamável. Sem armadura ou efeitos especiais.
+  desc_ru: Декоративная шляпа костюма. Малое топливо (15с), горючая. Без брони и спецэффектов.
+  desc_es: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
+  desc_es_MX: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
 448.mask_sagehat
   en: Sage's Masque
   ko: 현자의 가면
   app: X
   type: deconstruct
   source: Ancient-tier costume mask. Grants "ancient_reader" tag (allows reading ancient tablets). Not burnable. No armor.
+  desc_en: Ancient-tier costume mask. Grants ancient_reader tag (read ancient tablets). Not burnable. No armor.
+  desc_ko: 고대 등급 의상 가면. ancient_reader 태그 부여(고대 석판 읽기). 불에 타지 않음. 방어구 없음.
+  desc_ja: 古代ティアコスチュームマスク。ancient_readerタグ付与（古代の石板を読む）。不燃。防具なし。
+  desc_zh_CN: 远古级服装面具。授予ancient_reader标签（可阅读远古石板）。不可燃。无护甲。
+  desc_zh_TW: 遠古級服裝面具。授予ancient_reader標籤（可閱讀遠古石板）。不可燃。無護甲。
+  desc_fr: Masque costume ancien. Confère le tag ancient_reader (lire les tablettes). Ininflammable. Pas d'armure.
+  desc_de: Antike Kostümmaske. Verleiht ancient_reader-Tag (antike Tafeln lesen). Nicht brennbar. Keine Rüstung.
+  desc_it: Maschera costume antico. Conferisce tag ancient_reader (leggere tavolette). Non infiammabile. Nessuna armatura.
+  desc_pl: Starożytna maska kostiumowa. Nadaje tag ancient_reader (czytanie tablic). Niepalna. Brak pancerza.
+  desc_pt_BR: Máscara fantasia antiga. Concede tag ancient_reader (ler tábuas antigas). Não inflamável. Sem armadura.
+  desc_ru: Маска костюма древнего уровня. Даёт тег ancient_reader (чтение табличек). Не горит. Без брони.
+  desc_es: Máscara de disfraz antiguo. Otorga tag ancient_reader (leer tablillas). No inflamable. Sin armadura.
+  desc_es_MX: Máscara de disfraz antiguo. Otorga tag ancient_reader (leer tablillas). No inflamable. Sin armadura.
 449.mask_toadyhat
   en: Toady's Masque
   ko: 아첨꾼의 가면
   app: X
   type: deconstruct
   source: Ancient-tier costume mask. Grants "ancient_reader" tag (allows reading ancient tablets). Not burnable. No armor.
+  desc_en: Ancient-tier costume mask. Grants ancient_reader tag (read ancient tablets). Not burnable. No armor.
+  desc_ko: 고대 등급 의상 가면. ancient_reader 태그 부여(고대 석판 읽기). 불에 타지 않음. 방어구 없음.
+  desc_ja: 古代ティアコスチュームマスク。ancient_readerタグ付与（古代の石板を読む）。不燃。防具なし。
+  desc_zh_CN: 远古级服装面具。授予ancient_reader标签（可阅读远古石板）。不可燃。无护甲。
+  desc_zh_TW: 遠古級服裝面具。授予ancient_reader標籤（可閱讀遠古石板）。不可燃。無護甲。
+  desc_fr: Masque costume ancien. Confère le tag ancient_reader (lire les tablettes). Ininflammable. Pas d'armure.
+  desc_de: Antike Kostümmaske. Verleiht ancient_reader-Tag (antike Tafeln lesen). Nicht brennbar. Keine Rüstung.
+  desc_it: Maschera costume antico. Conferisce tag ancient_reader (leggere tavolette). Non infiammabile. Nessuna armatura.
+  desc_pl: Starożytna maska kostiumowa. Nadaje tag ancient_reader (czytanie tablic). Niepalna. Brak pancerza.
+  desc_pt_BR: Máscara fantasia antiga. Concede tag ancient_reader (ler tábuas antigas). Não inflamável. Sem armadura.
+  desc_ru: Маска костюма древнего уровня. Даёт тег ancient_reader (чтение табличек). Не горит. Без брони.
+  desc_es: Máscara de disfraz antiguo. Otorga tag ancient_reader (leer tablillas). No inflamable. Sin armadura.
+  desc_es_MX: Máscara de disfraz antiguo. Otorga tag ancient_reader (leer tablillas). No inflamable. Sin armadura.
 450.mask_treehat
   en: Tree Mask
   ko: 나무 가면
   app: X
   type: deconstruct
   source: Cosmetic costume hat. Small fuel value (15s), burnable. No armor or special effects.
+  desc_en: Cosmetic costume hat. Small fuel (15s), burnable. No armor or special effects.
+  desc_ko: 장식용 의상 모자. 소형 연료(15초), 불에 탐. 방어구 및 특수 효과 없음.
+  desc_ja: 装飾用コスチューム帽子。小型燃料（15秒）、可燃。防具・特殊効果なし。
+  desc_zh_CN: 装饰性服装帽子。小型燃料（15秒），可燃。无护甲或特殊效果。
+  desc_zh_TW: 裝飾性服裝帽子。小型燃料（15秒），可燃。無護甲或特殊效果。
+  desc_fr: Chapeau costume cosmétique. Petit carburant (15s), inflammable. Aucune armure ni effet spécial.
+  desc_de: Kosmetischer Kostümhut. Kleiner Brennwert (15s), brennbar. Keine Rüstung oder Spezialeffekte.
+  desc_it: Cappello costume cosmetico. Carburante piccolo (15s), infiammabile. Nessuna armatura o effetto speciale.
+  desc_pl: Ozdobny kapelusz kostiumowy. Małe paliwo (15s), palny. Brak pancerza i efektów specjalnych.
+  desc_pt_BR: Chapéu cosmético de fantasia. Combustível pequeno (15s), inflamável. Sem armadura ou efeitos especiais.
+  desc_ru: Декоративная шляпа костюма. Малое топливо (15с), горючая. Без брони и спецэффектов.
+  desc_es: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
+  desc_es_MX: Sombrero cosmético de disfraz. Combustible pequeño (15s), inflamable. Sin armadura ni efectos especiales.
 451.mast
   en: Mast
   ko: 돛대
   app: X
   type: deconstruct
   source: Placed boat structure (basic sail). Max velocity 2.5, sail force 0.6, rudder turn drag 0.23. Supports lamp upgrade (fuel 360s) and lightning rod upgrade. Hammerable.
+  desc_en: Basic boat sail. Max velocity 2.5, sail force 0.6. Supports lamp and lightning rod upgrades. Hammerable.
+  desc_ko: 기본 보트 돛. 최대 속도 2.5, 돛 힘 0.6. 조명 및 피뢰침 업그레이드 지원. 망치로 파괴 가능.
+  desc_ja: 基本ボート帆。最大速度2.5、帆力0.6。ランプ・避雷針アップグレード対応。ハンマー可。
+  desc_zh_CN: 基础船帆。最大速度2.5，帆力0.6。支持灯和避雷针升级。可锤击。
+  desc_zh_TW: 基礎船帆。最大速度2.5，帆力0.6。支持燈和避雷針升級。可錘擊。
+  desc_fr: Voile de bateau basique. Vitesse max 2,5, force voile 0,6. Compatible lampe et paratonnerre. Destructible.
+  desc_de: Einfaches Bootsegel. Max. Geschwindigkeit 2,5, Segelkraft 0,6. Lampen- und Blitzableiter-Upgrade möglich. Zerhämmerbar.
+  desc_it: Vela base della barca. Velocità max 2,5, forza vela 0,6. Supporta upgrade lampada e parafulmine. Distruttibile.
+  desc_pl: Podstawowy żagiel łodzi. Maks. prędkość 2,5, siła żagla 0,6. Obsługuje ulepszenia lampy i piorunochronu. Rozbijalny.
+  desc_pt_BR: Vela básica do barco. Velocidade máx. 2,5, força da vela 0,6. Suporta upgrade de lampião e para-raios. Quebrável.
+  desc_ru: Базовый парус лодки. Макс. скорость 2,5, сила паруса 0,6. Поддерживает улучшения лампы и громоотвода. Разбивается.
+  desc_es: Vela básica de barco. Velocidad máx. 2,5, fuerza vela 0,6. Compatible con farol y pararrayos. Destruible.
+  desc_es_MX: Vela básica de barco. Velocidad máx. 2,5, fuerza vela 0,6. Compatible con farol y pararrayos. Destruible.
 452.mast_broken
   en: Broken Mast
   ko: 부러진 돛대
   app: X
   type: deconstruct
   source: Damaged mast structure that appears when a mast is destroyed by storm/combat. Cannot be used as a sail. Hammerable for salvage.
+  desc_en: Damaged mast from storm/combat destruction. Cannot function as a sail. Hammerable for salvage.
+  desc_ko: 폭풍/전투로 파괴된 돛대. 돛으로 기능하지 않음. 망치로 해체하여 회수 가능.
+  desc_ja: 嵐/戦闘で破壊されたマスト。帆として機能しない。ハンマーで回収可能。
+  desc_zh_CN: 风暴/战斗中被摧毁的桅杆。无法用作帆。可锤击回收。
+  desc_zh_TW: 風暴/戰鬥中被摧毀的桅杆。無法用作帆。可錘擊回收。
+  desc_fr: Mât endommagé par tempête/combat. Ne fonctionne plus comme voile. Récupérable au marteau.
+  desc_de: Beschädigter Mast durch Sturm/Kampf. Funktioniert nicht als Segel. Zum Bergen zerhämmerbar.
+  desc_it: Albero danneggiato da tempesta/combattimento. Non funziona come vela. Recuperabile col martello.
+  desc_pl: Uszkodzony maszt po burzy/walce. Nie działa jako żagiel. Rozbijalny w celu odzysku.
+  desc_pt_BR: Mastro danificado por tempestade/combate. Não funciona como vela. Quebrável para recuperação.
+  desc_ru: Повреждённая мачта после шторма/боя. Не работает как парус. Разбивается для утилизации.
+  desc_es: Mástil dañado por tormenta/combate. No funciona como vela. Destruible para recuperación.
+  desc_es_MX: Mástil dañado por tormenta/combate. No funciona como vela. Destruible para recuperación.
 453.mast_item
   en: Mast Kit
   ko: 돛대 키트
   app: O
   source: Deployable kit that places a basic Mast structure on a boat. Consumed on placement.
+  desc_en: Deployable kit for basic Mast. Places on boat. Consumed on placement.
+  desc_ko: 기본 돛대 설치 키트. 보트에 설치. 설치 시 소모.
+  desc_ja: 基本マスト設置キット。ボートに配置。設置時消費。
+  desc_zh_CN: 基础桅杆部署套件。放置在船上。放置后消耗。
+  desc_zh_TW: 基礎桅杆部署套件。放置在船上。放置後消耗。
+  desc_fr: Kit déployable pour Mât basique. Placé sur le bateau. Consommé au placement.
+  desc_de: Platzierbares Kit für einfachen Mast. Auf Boot platziert. Verbraucht beim Platzieren.
+  desc_it: Kit piazzabile per Albero base. Posizionato sulla barca. Consumato al posizionamento.
+  desc_pl: Zestaw podstawowego masztu. Stawiany na łodzi. Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit implantável de Mastro básico. Colocado no barco. Consumido ao posicionar.
+  desc_ru: Набор для установки базовой мачты на лодку. Расходуется при размещении.
+  desc_es: Kit desplegable para Mástil básico. Se coloca en el barco. Se consume al colocar.
+  desc_es_MX: Kit desplegable para Mástil básico. Se coloca en el barco. Se consume al colocar.
 454.mast_malbatross
   en: Winged Sail
   ko: 날개 달린 돛
   app: X
   type: deconstruct
   source: Placed boat structure (Malbatross sail). Max velocity 4, sail force 1.3, rudder turn drag 0.23. Superior to basic mast. Supports lamp/lightning rod upgrades.
+  desc_en: Superior boat sail (Malbatross). Max velocity 4, sail force 1.3. Supports lamp and lightning rod upgrades.
+  desc_ko: 상급 보트 돛(말바트로스). 최대 속도 4, 돛 힘 1.3. 조명 및 피뢰침 업그레이드 지원.
+  desc_ja: 上位ボート帆（マルバトロス）。最大速度4、帆力1.3。ランプ・避雷針アップグレード対応。
+  desc_zh_CN: 高级船帆（海鸥鲸）。最大速度4，帆力1.3。支持灯和避雷针升级。
+  desc_zh_TW: 高級船帆（海鷗鯨）。最大速度4，帆力1.3。支持燈和避雷針升級。
+  desc_fr: Voile supérieure (Malbatros). Vitesse max 4, force voile 1,3. Compatible lampe et paratonnerre.
+  desc_de: Überlegenes Segel (Malbatross). Max. Geschwindigkeit 4, Segelkraft 1,3. Lampen-/Blitzableiter-Upgrade möglich.
+  desc_it: Vela superiore (Malbatross). Velocità max 4, forza vela 1,3. Supporta upgrade lampada e parafulmine.
+  desc_pl: Wyższy żagiel (Malbatross). Maks. prędkość 4, siła żagla 1,3. Obsługuje ulepszenia lampy i piorunochronu.
+  desc_pt_BR: Vela superior (Malbatross). Velocidade máx. 4, força da vela 1,3. Suporta upgrade de lampião e para-raios.
+  desc_ru: Улучшенный парус (Мальбатросс). Макс. скорость 4, сила паруса 1,3. Поддерживает улучшения лампы и громоотвода.
+  desc_es: Vela superior (Malbatross). Velocidad máx. 4, fuerza vela 1,3. Compatible con farol y pararrayos.
+  desc_es_MX: Vela superior (Malbatross). Velocidad máx. 4, fuerza vela 1,3. Compatible con farol y pararrayos.
 455.mast_malbatross_item
   en: Winged Sail Kit
   ko: 날개 달린 돛 키트
   app: O
   source: Deployable kit that places a Winged Sail (mast_malbatross) structure on a boat. Consumed on placement.
+  desc_en: Deployable kit for Winged Sail. Places on boat. Consumed on placement.
+  desc_ko: 날개 달린 돛 설치 키트. 보트에 설치. 설치 시 소모.
+  desc_ja: ウイングドセイル設置キット。ボートに配置。設置時消費。
+  desc_zh_CN: 翼帆部署套件。放置在船上。放置后消耗。
+  desc_zh_TW: 翼帆部署套件。放置在船上。放置後消耗。
+  desc_fr: Kit déployable pour Voile Ailée. Placé sur le bateau. Consommé au placement.
+  desc_de: Platzierbares Kit für Flügelsegel. Auf Boot platziert. Verbraucht beim Platzieren.
+  desc_it: Kit piazzabile per Vela Alata. Posizionato sulla barca. Consumato al posizionamento.
+  desc_pl: Zestaw Skrzydlatego Żagla. Stawiany na łodzi. Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit implantável da Vela Alada. Colocado no barco. Consumido ao posicionar.
+  desc_ru: Набор для установки Крылатого паруса на лодку. Расходуется при размещении.
+  desc_es: Kit desplegable para Vela Alada. Se coloca en el barco. Se consume al colocar.
+  desc_es_MX: Kit desplegable para Vela Alada. Se coloca en el barco. Se consume al colocar.
 456.mast_yotd_item
   en: Dragonfly Wing Mast Kit
   ko: 용파리 날개돛 키트
   app: O
   source: Deployable kit that places a Year of the Dragonfly themed mast structure on a boat. Consumed on placement.
+  desc_en: Deployable Dragonfly-themed mast kit. Places on boat. Consumed on placement.
+  desc_ko: 용파리 테마 돛대 설치 키트. 보트에 설치. 설치 시 소모.
+  desc_ja: ドラゴンフライテーマのマスト設置キット。ボートに配置。設置時消費。
+  desc_zh_CN: 龙蝇主题桅杆部署套件。放置在船上。放置后消耗。
+  desc_zh_TW: 龍蠅主題桅杆部署套件。放置在船上。放置後消耗。
+  desc_fr: Kit mât thème Libellule. Placé sur le bateau. Consommé au placement.
+  desc_de: Drachenfliegen-Thema-Mast-Kit. Auf Boot platziert. Verbraucht beim Platzieren.
+  desc_it: Kit albero tema Libellula. Posizionato sulla barca. Consumato al posizionamento.
+  desc_pl: Zestaw masztu w temacie Smoczej Muchy. Na łodzi. Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit de mastro tema Libelula. Colocado no barco. Consumido ao posicionar.
+  desc_ru: Набор мачты в стиле Стрекозы. Устанавливается на лодку. Расходуется при размещении.
+  desc_es: Kit de mástil tema Libélula. Se coloca en el barco. Se consume al colocar.
+  desc_es_MX: Kit de mástil tema Libélula. Se coloca en el barco. Se consume al colocar.
 457.mastupgrade_lamp
   en: Deck Illuminator
   ko: 갑판 조명
   app: X
   type: deconstruct
   source: Mast upgrade (placed form). Provides light on the mast. Fuel-based, 360s fuel ((60+120)*2). Refuelable. Light radius 2-5 based on fuel level.
+  desc_en: Mast lamp upgrade (placed). Fuel 360s, refuelable. Light radius 2-5 based on fuel level.
+  desc_ko: 돛대 조명 업그레이드(설치형). 연료 360초, 보충 가능. 연료량에 따라 광원 반경 2-5.
+  desc_ja: マストランプアップグレード（設置形）。燃料360秒、補充可能。燃料量に応じて光半径2-5。
+  desc_zh_CN: 桅杆灯升级（放置形态）。燃料360秒，可补充。光照半径2-5取决于燃料量。
+  desc_zh_TW: 桅杆燈升級（放置形態）。燃料360秒，可補充。光照半徑2-5取決於燃料量。
+  desc_fr: Lampe de mât (forme posée). Carburant 360s, rechargeable. Rayon lumineux 2-5 selon le carburant.
+  desc_de: Mastlampen-Upgrade (platziert). Brennstoff 360s, nachfüllbar. Lichtradius 2-5 je nach Füllstand.
+  desc_it: Upgrade lampada albero (posizionato). Carburante 360s, ricaricabile. Raggio luce 2-5 in base al carburante.
+  desc_pl: Ulepszenie lampy masztu (postawiona). Paliwo 360s, uzupełnialne. Promień światła 2-5 wg paliwa.
+  desc_pt_BR: Upgrade lampião do mastro (colocado). Combustível 360s, recarregável. Raio de luz 2-5 conforme combustível.
+  desc_ru: Улучшение-лампа мачты (установленная). Топливо 360с, пополняемое. Радиус света 2-5 от уровня топлива.
+  desc_es: Lámpara de mástil (colocada). Combustible 360s, recargable. Radio de luz 2-5 según combustible.
+  desc_es_MX: Lámpara de mástil (colocada). Combustible 360s, recargable. Radio de luz 2-5 según combustible.
 458.mastupgrade_lamp_item
   en: Deck Illuminator
   ko: 갑판 조명
   app: O
   source: Deployable upgrade item that attaches a lamp to a mast, providing refuelable light (360s fuel). Consumed on placement.
+  desc_en: Deployable lamp upgrade for masts. 360s fuel, refuelable. Consumed on placement.
+  desc_ko: 돛대용 조명 업그레이드 아이템. 연료 360초, 보충 가능. 설치 시 소모.
+  desc_ja: マスト用ランプアップグレードアイテム。燃料360秒、補充可能。設置時消費。
+  desc_zh_CN: 桅杆灯升级部署物品。燃料360秒，可补充。放置后消耗。
+  desc_zh_TW: 桅杆燈升級部署物品。燃料360秒，可補充。放置後消耗。
+  desc_fr: Objet lampe pour mât. Carburant 360s, rechargeable. Consommé au placement.
+  desc_de: Platzierbares Lampen-Upgrade für Masten. 360s Brennstoff, nachfüllbar. Verbraucht beim Platzieren.
+  desc_it: Upgrade lampada per albero. Carburante 360s, ricaricabile. Consumato al posizionamento.
+  desc_pl: Ulepszenie lampy na maszt. Paliwo 360s, uzupełnialne. Zużywane przy umieszczaniu.
+  desc_pt_BR: Upgrade de lampião para mastro. Combustível 360s, recarregável. Consumido ao posicionar.
+  desc_ru: Устанавливаемый апгрейд-лампа для мачты. Топливо 360с, пополняемое. Расходуется при размещении.
+  desc_es: Mejora de lámpara para mástil. Combustible 360s, recargable. Se consume al colocar.
+  desc_es_MX: Mejora de lámpara para mástil. Combustible 360s, recargable. Se consume al colocar.
 459.mastupgrade_lamp_item_yotd
   en: Dragonfly Light Kit
   ko: 용파리등 키트
   app: O
   source: Year of the Dragonfly themed lamp upgrade for masts. Functions same as Deck Illuminator (360s fuel). Consumed on placement.
+  desc_en: Dragonfly-themed lamp upgrade for masts. Same as Deck Illuminator (360s fuel). Consumed on placement.
+  desc_ko: 용파리 테마 돛대 조명 업그레이드. 갑판 조명과 동일(연료 360초). 설치 시 소모.
+  desc_ja: ドラゴンフライテーマのマストランプアップグレード。デッキイルミネーターと同機能（燃料360秒）。設置時消費。
+  desc_zh_CN: 龙蝇主题桅杆灯升级。功能同甲板照明器（燃料360秒）。放置后消耗。
+  desc_zh_TW: 龍蠅主題桅杆燈升級。功能同甲板照明器（燃料360秒）。放置後消耗。
+  desc_fr: Lampe de mât thème Libellule. Identique au Deck Illuminator (360s). Consommé au placement.
+  desc_de: Drachenfliegen-Mastlampe. Gleich wie Deck Illuminator (360s). Verbraucht beim Platzieren.
+  desc_it: Lampada albero tema Libellula. Come Deck Illuminator (360s). Consumata al posizionamento.
+  desc_pl: Lampa masztu w temacie Smoczej Muchy. Jak Deck Illuminator (360s). Zużywana przy umieszczaniu.
+  desc_pt_BR: Lampião tema Libelula para mastro. Igual ao Deck Illuminator (360s). Consumido ao posicionar.
+  desc_ru: Лампа мачты в стиле Стрекозы. Как Палубный фонарь (360с). Расходуется при размещении.
+  desc_es: Lámpara de mástil tema Libélula. Igual que Deck Illuminator (360s). Se consume al colocar.
+  desc_es_MX: Lámpara de mástil tema Libélula. Igual que Deck Illuminator (360s). Se consume al colocar.
 460.mastupgrade_lamp_yotd
   en: Dragonfly Light
   ko: 용파리등
   app: X
   type: deconstruct
   source: Year of the Dragonfly themed placed mast lamp upgrade. Same functionality as mastupgrade_lamp — provides refuelable light (360s fuel) on mast.
+  desc_en: Dragonfly-themed mast lamp (placed). Same as Deck Illuminator: refuelable light, 360s fuel.
+  desc_ko: 용파리 테마 돛대 조명(설치형). 갑판 조명과 동일: 보충 가능 광원, 연료 360초.
+  desc_ja: ドラゴンフライテーマのマストランプ（設置形）。デッキイルミネーターと同機能：補充可能光源、燃料360秒。
+  desc_zh_CN: 龙蝇主题桅杆灯（放置形态）。同甲板照明器：可补充光源，燃料360秒。
+  desc_zh_TW: 龍蠅主題桅杆燈（放置形態）。同甲板照明器：可補充光源，燃料360秒。
+  desc_fr: Lampe de mât Libellule (posée). Identique au Deck Illuminator : lumière rechargeable, 360s.
+  desc_de: Drachenfliegen-Mastlampe (platziert). Wie Deck Illuminator: nachfüllbares Licht, 360s.
+  desc_it: Lampada albero Libellula (posizionata). Come Deck Illuminator: luce ricaricabile, 360s.
+  desc_pl: Lampa masztu Smocza Mucha (postawiona). Jak Deck Illuminator: uzupełniane światło, 360s.
+  desc_pt_BR: Lampião mastro Libelula (colocado). Igual Deck Illuminator: luz recarregável, 360s.
+  desc_ru: Лампа мачты Стрекозы (установленная). Как Палубный фонарь: пополняемый свет, 360с.
+  desc_es: Lámpara mástil Libélula (colocada). Igual que Deck Illuminator: luz recargable, 360s.
+  desc_es_MX: Lámpara mástil Libélula (colocada). Igual que Deck Illuminator: luz recargable, 360s.
 461.mastupgrade_lightningrod
   en: Lightning Conductor
   ko: 번개 전도체
   app: X
   type: deconstruct
   source: Mast upgrade (placed form). Attracts lightning to the mast instead of the boat, preventing fire damage to boat structures.
+  desc_en: Mast lightning rod upgrade (placed). Attracts lightning to mast, preventing fire damage to boat.
+  desc_ko: 돛대 피뢰침 업그레이드(설치형). 번개를 돛대로 유도하여 보트 화재 방지.
+  desc_ja: マスト避雷針アップグレード（設置形）。落雷をマストに引き寄せ、ボートの火災を防止。
+  desc_zh_CN: 桅杆避雷针升级（放置形态）。将雷电引向桅杆，防止船只火灾。
+  desc_zh_TW: 桅杆避雷針升級（放置形態）。將雷電引向桅杆，防止船隻火災。
+  desc_fr: Paratonnerre de mât (posé). Attire la foudre sur le mât, protège le bateau du feu.
+  desc_de: Mast-Blitzableiter (platziert). Zieht Blitz zum Mast, verhindert Brandschaden am Boot.
+  desc_it: Parafulmine albero (posizionato). Attira fulmini sull'albero, previene danni da fuoco alla barca.
+  desc_pl: Piorunochron masztu (postawiony). Przyciąga pioruny do masztu, zapobiega pożarom łodzi.
+  desc_pt_BR: Para-raios do mastro (colocado). Atrai raios para o mastro, prevenindo incêndio no barco.
+  desc_ru: Громоотвод мачты (установленный). Притягивает молнию к мачте, предотвращая пожар на лодке.
+  desc_es: Pararrayos de mástil (colocado). Atrae rayos al mástil, previniendo incendios en el barco.
+  desc_es_MX: Pararrayos de mástil (colocado). Atrae rayos al mástil, previniendo incendios en el barco.
 462.mastupgrade_lightningrod_item
   en: Lightning Conductor
   ko: 번개 전도체
   app: O
   source: Deployable upgrade item that attaches a lightning rod to a mast, protecting the boat from lightning strikes. Consumed on placement.
+  desc_en: Deployable lightning rod upgrade for masts. Protects boat from lightning. Consumed on placement.
+  desc_ko: 돛대용 피뢰침 업그레이드 아이템. 보트를 번개로부터 보호. 설치 시 소모.
+  desc_ja: マスト用避雷針アップグレードアイテム。ボートを落雷から保護。設置時消費。
+  desc_zh_CN: 桅杆避雷针升级部署物品。保护船只免受雷击。放置后消耗。
+  desc_zh_TW: 桅杆避雷針升級部署物品。保護船隻免受雷擊。放置後消耗。
+  desc_fr: Objet paratonnerre pour mât. Protège le bateau de la foudre. Consommé au placement.
+  desc_de: Platzierbares Blitzableiter-Upgrade für Masten. Schützt Boot vor Blitz. Verbraucht beim Platzieren.
+  desc_it: Upgrade parafulmine per albero. Protegge la barca dai fulmini. Consumato al posizionamento.
+  desc_pl: Ulepszenie piorunochronu na maszt. Chroni łódź przed piorunami. Zużywane przy umieszczaniu.
+  desc_pt_BR: Upgrade de para-raios para mastro. Protege o barco de raios. Consumido ao posicionar.
+  desc_ru: Устанавливаемый апгрейд-громоотвод для мачты. Защищает лодку от молний. Расходуется при размещении.
+  desc_es: Mejora de pararrayos para mástil. Protege el barco de rayos. Se consume al colocar.
+  desc_es_MX: Mejora de pararrayos para mástil. Protege el barco de rayos. Se consume al colocar.
 463.meatrack
   en: Drying Rack
   ko: 건조대
   app: O
   source: Placed structure for drying meat into jerky. Standard size (1 meat slot). No special tuning — uses base drying time mechanics.
+  desc_en: Structure for drying meat into jerky. 1 meat slot. Standard drying time mechanics.
+  desc_ko: 고기를 육포로 건조하는 구조물. 고기 슬롯 1개. 기본 건조 시간 적용.
+  desc_ja: 肉をジャーキーに乾燥させる構造物。肉スロット1。標準乾燥時間。
+  desc_zh_CN: 将肉干燥成肉干的结构。1个肉槽。标准干燥时间机制。
+  desc_zh_TW: 將肉乾燥成肉乾的結構。1個肉槽。標準乾燥時間機制。
+  desc_fr: Structure pour sécher la viande. 1 emplacement viande. Temps de séchage standard.
+  desc_de: Struktur zum Trocknen von Fleisch zu Dörrfleisch. 1 Fleischplatz. Standard-Trocknungszeit.
+  desc_it: Struttura per essiccare carne in jerky. 1 slot carne. Tempo di essiccazione standard.
+  desc_pl: Struktura do suszenia mięsa na suszoną wołowinę. 1 slot mięsa. Standardowy czas suszenia.
+  desc_pt_BR: Estrutura para secar carne em charque. 1 slot de carne. Tempo de secagem padrão.
+  desc_ru: Строение для сушки мяса в вяленое. 1 слот для мяса. Стандартное время сушки.
+  desc_es: Estructura para secar carne en cecina. 1 ranura de carne. Tiempo de secado estándar.
+  desc_es_MX: Estructura para secar carne en cecina. 1 ranura de carne. Tiempo de secado estándar.
 464.meatrack_hermit_multi
   en: Large Drying Rack
   ko: 대형 건조대
   app: O
   source: Hermit Crab variant drying rack with multiple meat slots. Functions like standard meatrack but holds more items simultaneously.
+  desc_en: Large drying rack from Hermit Crab. Multiple meat slots. Functions like standard rack but holds more.
+  desc_ko: 은둔게 변형 대형 건조대. 다수 고기 슬롯. 표준 건조대와 동일하나 더 많이 수용.
+  desc_ja: ヤドカリ版の大型干し台。複数の肉スロット。標準版と同じだが多く収容。
+  desc_zh_CN: 隐士蟹变体大型晾肉架。多个肉槽。功能同标准架但容量更多。
+  desc_zh_TW: 隱士蟹變體大型晾肉架。多個肉槽。功能同標準架但容量更多。
+  desc_fr: Grand séchoir du Crabe Ermite. Plusieurs emplacements. Fonctionne comme le standard mais en plus grand.
+  desc_de: Großer Trockenständer vom Einsiedlerkrebs. Mehrere Plätze. Wie Standard, aber größer.
+  desc_it: Grande essiccatoio del Granchio Eremita. Più slot carne. Come standard ma più capiente.
+  desc_pl: Duży suszak od Kraba Pustelnika. Wiele slotów mięsa. Jak standardowy, ale większy.
+  desc_pt_BR: Secador grande do Caranguejo Eremita. Múltiplos slots. Funciona como o padrão mas comporta mais.
+  desc_ru: Большая сушилка от Краба-отшельника. Несколько слотов для мяса. Как стандартная, но вместительнее.
+  desc_es: Secadero grande del Cangrejo Ermitaño. Múltiples ranuras. Funciona como el estándar pero con más capacidad.
+  desc_es_MX: Secadero grande del Cangrejo Ermitaño. Múltiples ranuras. Funciona como el estándar pero con más capacidad.
 465.megaflare
   en: Hostile Flare
   ko: 도발 조명탄
   app: O
   source: Ignitable thrown flare. Detonates on ignite, attracting hostile creatures: 60% Deerclops spawn chance, 60% pirate raid chance, 60% Walrus investigation chance, lures mutated buzzards for 480s (1 day). Visible on minimap with offshoot radius 30.
+  desc_en: Hostile thrown flare. 60% Deerclops/pirate/Walrus spawn chance. Lures buzzards for 480s. Visible on minimap (radius 30).
+  desc_ko: 적대적 투척 조명탄. 디어클롭스/해적/해코지 스폰 확률 60%. 독수리 480초 유인. 미니맵에 표시(반경 30).
+  desc_ja: 敵対的投擲フレア。ディアクロプス/海賊/セイウチ出現率60%。ハゲタカ480秒誘引。ミニマップ表示（半径30）。
+  desc_zh_CN: 敌对投掷信号弹。独眼巨鹿/海盗/海象出现概率60%。引诱秃鹫480秒。小地图可见（半径30）。
+  desc_zh_TW: 敵對投擲信號彈。獨眼巨鹿/海盜/海象出現機率60%。引誘禿鷲480秒。小地圖可見（半徑30）。
+  desc_fr: Fusée hostile lancée. 60% chance Deerclops/pirates/Morse. Attire les busards 480s. Visible sur minicarte (rayon 30).
+  desc_de: Feindliche Leuchtrakete. 60% Deerclops-/Piraten-/Walross-Chance. Lockt Bussarde 480s. Auf Minikarte sichtbar (Radius 30).
+  desc_it: Razzo ostile lanciato. 60% probabilità Deerclops/pirati/Tricheco. Attira avvoltoi per 480s. Visibile su minimappa (raggio 30).
+  desc_pl: Wroga raca. 60% szansy Deerclops/piraci/Mors. Wabi sępy na 480s. Widoczna na minimapie (promień 30).
+  desc_pt_BR: Sinalizador hostil. 60% chance Deerclops/piratas/Morsa. Atrai abutres por 480s. Visível no minimapa (raio 30).
+  desc_ru: Враждебная ракета. 60% шанс Диклопса/пиратов/Моржа. Приманивает стервятников на 480с. Видна на миникарте (радиус 30).
+  desc_es: Bengala hostil. 60% probabilidad Deerclops/piratas/Morsa. Atrae buitres 480s. Visible en minimapa (radio 30).
+  desc_es_MX: Bengala hostil. 60% probabilidad Deerclops/piratas/Morsa. Atrae buitres 480s. Visible en minimapa (radio 30).
 466.merm_armory
   en: Armermry
   ko: 무기곩
   app: O
   source: Wurt-exclusive structure that equips nearby merms with armor (mermarmorhat). Contains 2 supply slots. Merm NPCs auto-collect equipment from it.
+  desc_en: Wurt-exclusive structure. Equips nearby merms with armor. 2 supply slots. Merms auto-collect.
+  desc_ko: 워트 전용 구조물. 근처 머인에게 방어구 장착. 보급 슬롯 2개. 머인 자동 수거.
+  desc_ja: ワート専用構造物。近くのマームに防具を装備。供給スロット2。マーム自動回収。
+  desc_zh_CN: 沃特专属结构。为附近鱼人装备护甲。2个补给槽。鱼人自动领取。
+  desc_zh_TW: 沃特專屬結構。為附近魚人裝備護甲。2個補給槽。魚人自動領取。
+  desc_fr: Structure exclusive à Wurt. Équipe les Merms en armure. 2 emplacements. Collecte automatique.
+  desc_de: Wurt-exklusive Struktur. Rüstet nahe Merms mit Rüstung aus. 2 Plätze. Automatische Abholung.
+  desc_it: Struttura esclusiva Wurt. Equipaggia Merm vicini con armatura. 2 slot. Raccolta automatica.
+  desc_pl: Struktura wyłącznie dla Wurt. Wyposaża pobliskie mermy w pancerz. 2 sloty. Automatyczny odbiór.
+  desc_pt_BR: Estrutura exclusiva da Wurt. Equipa merms próximos com armadura. 2 slots. Coleta automática.
+  desc_ru: Строение только для Вурт. Снаряжает ближайших мермов бронёй. 2 слота снабжения. Автосбор.
+  desc_es: Estructura exclusiva de Wurt. Equipa merms cercanos con armadura. 2 ranuras. Recogida automática.
+  desc_es_MX: Estructura exclusiva de Wurt. Equipa merms cercanos con armadura. 2 ranuras. Recogida automática.
 467.merm_armory_upgraded
   en: Superior Armermry
   ko: 상급 무기곩
   app: O
   source: Upgraded Wurt-exclusive structure that equips nearby merms with superior armor (mermarmorupgradedhat). Contains 2 supply slots. Requires Merm King for upgrade.
+  desc_en: Upgraded Wurt-exclusive armory. Equips merms with superior armor. 2 supply slots. Requires Merm King.
+  desc_ko: 업그레이드된 워트 전용 무기곩. 머인에게 상급 방어구 장착. 보급 슬롯 2개. 머인 왕 필요.
+  desc_ja: アップグレードされたワート専用武器庫。マームに上位防具を装備。供給スロット2。マームキング必要。
+  desc_zh_CN: 升级版沃特专属军械库。为鱼人装备高级护甲。2个补给槽。需要鱼人王。
+  desc_zh_TW: 升級版沃特專屬軍械庫。為魚人裝備高級護甲。2個補給槽。需要魚人王。
+  desc_fr: Armurerie améliorée exclusive à Wurt. Équipe avec armure supérieure. 2 emplacements. Requiert le Roi Merm.
+  desc_de: Verbesserte Wurt-Rüstkammer. Rüstet Merms mit besserer Rüstung aus. 2 Plätze. Erfordert Merm-König.
+  desc_it: Armeria migliorata esclusiva Wurt. Equipaggia con armatura superiore. 2 slot. Richiede Re Merm.
+  desc_pl: Ulepszona zbrojownia wyłącznie dla Wurt. Wyposaża w lepszy pancerz. 2 sloty. Wymaga Króla Mermów.
+  desc_pt_BR: Arsenal melhorado exclusivo da Wurt. Equipa com armadura superior. 2 slots. Requer Rei Merm.
+  desc_ru: Улучшенная оружейная только для Вурт. Снаряжает мермов лучшей бронёй. 2 слота. Требуется Король мермов.
+  desc_es: Armería mejorada exclusiva de Wurt. Equipa con armadura superior. 2 ranuras. Requiere Rey Merm.
+  desc_es_MX: Armería mejorada exclusiva de Wurt. Equipa con armadura superior. 2 ranuras. Requiere Rey Merm.
 468.merm_tool
   en: Shoddy Tool
   ko: 조잡한 도구
   app: X
   type: deconstruct
   source: Merm-restricted multi-tool. 50 uses, 17 damage (34*0.5), 0.25x work efficiency. Consumption: chop 1, mine 3, dig 3, till 1. Can chop/mine/dig/till.
+  desc_en: Merm-only multi-tool. 50 uses, 17 damage, 0.25x efficiency. Chop/mine/dig/till capable.
+  desc_ko: 머인 전용 다용도 도구. 50회 사용, 17 피해, 효율 0.25배. 벌목/채굴/삽질/경작 가능.
+  desc_ja: マーム専用マルチツール。50回使用、17ダメージ、効率0.25倍。伐採/採掘/掘削/耕作可能。
+  desc_zh_CN: 鱼人专用多功能工具。50次使用，17伤害，效率0.25倍。可砍伐/采矿/挖掘/耕作。
+  desc_zh_TW: 魚人專用多功能工具。50次使用，17傷害，效率0.25倍。可砍伐/採礦/挖掘/耕作。
+  desc_fr: Multi-outil Merm uniquement. 50 utilisations, 17 dégâts, efficacité ×0,25. Coupe/mine/creuse/laboure.
+  desc_de: Merm-exklusives Multitool. 50 Nutzungen, 17 Schaden, 0,25× Effizienz. Hacken/Abbauen/Graben/Pflügen.
+  desc_it: Multiutensile solo Merm. 50 usi, 17 danni, efficienza ×0,25. Taglia/scava/zappa/ara.
+  desc_pl: Wielofunkcyjne narzędzie mermów. 50 użyć, 17 obrażeń, efektywność ×0,25. Rąbie/kopie/wykopuje/orze.
+  desc_pt_BR: Multi-ferramenta só para merms. 50 usos, 17 dano, eficiência ×0,25. Corta/minera/cava/lavra.
+  desc_ru: Мультитул только для мермов. 50 использований, 17 урона, эффективность ×0,25. Рубка/добыча/копка/вспашка.
+  desc_es: Multiherramienta solo merms. 50 usos, 17 daño, eficiencia ×0,25. Tala/mina/excava/labra.
+  desc_es_MX: Multiherramienta solo merms. 50 usos, 17 daño, eficiencia ×0,25. Tala/mina/excava/labra.
 469.merm_tool_upgraded
   en: Slightly Less Shoddy Tool
   ko: 덜 조잡한 도구
   app: X
   type: deconstruct
   source: Merm-restricted upgraded multi-tool. 100 uses, 17 damage (34*0.5), 0.5x work efficiency. Consumption: chop 1, mine 3, dig 3, till 1. Double durability and efficiency vs merm_tool.
+  desc_en: Upgraded merm-only multi-tool. 100 uses, 17 damage, 0.5x efficiency. Double durability vs basic version.
+  desc_ko: 업그레이드된 머인 전용 다용도 도구. 100회 사용, 17 피해, 효율 0.5배. 기본 버전 대비 내구도 2배.
+  desc_ja: アップグレードされたマーム専用マルチツール。100回使用、17ダメージ、効率0.5倍。基本版の2倍耐久。
+  desc_zh_CN: 升级版鱼人专用多功能工具。100次使用，17伤害，效率0.5倍。耐久为基础版两倍。
+  desc_zh_TW: 升級版魚人專用多功能工具。100次使用，17傷害，效率0.5倍。耐久為基礎版兩倍。
+  desc_fr: Multi-outil Merm amélioré. 100 utilisations, 17 dégâts, efficacité ×0,5. Double durabilité vs version de base.
+  desc_de: Verbessertes Merm-Multitool. 100 Nutzungen, 17 Schaden, 0,5× Effizienz. Doppelte Haltbarkeit vs Basisversion.
+  desc_it: Multiutensile Merm migliorato. 100 usi, 17 danni, efficienza ×0,5. Doppia durabilità vs base.
+  desc_pl: Ulepszone narzędzie mermów. 100 użyć, 17 obrażeń, efektywność ×0,5. Podwójna wytrzymałość vs podstawowe.
+  desc_pt_BR: Multi-ferramenta merm melhorada. 100 usos, 17 dano, eficiência ×0,5. Dobro de durabilidade vs básica.
+  desc_ru: Улучшенный мультитул мермов. 100 использований, 17 урона, эффективность ×0,5. Двойная прочность по сравнению с базовым.
+  desc_es: Multiherramienta merm mejorada. 100 usos, 17 daño, eficiencia ×0,5. Doble durabilidad vs básica.
+  desc_es_MX: Multiherramienta merm mejorada. 100 usos, 17 daño, eficiencia ×0,5. Doble durabilidad vs básica.
 470.merm_toolshed
   en: Shoddy Tool Shed
   ko: 조잡한 도구함
   app: O
   source: Wurt-exclusive structure that equips nearby merms with Shoddy Tools (merm_tool). Contains 2 supply slots. Merm NPCs auto-collect tools from it.
+  desc_en: Wurt-exclusive tool shed. Equips nearby merms with Shoddy Tools. 2 supply slots. Merms auto-collect.
+  desc_ko: 워트 전용 도구함. 근처 머인에게 조잡한 도구 장착. 보급 슬롯 2개. 머인 자동 수거.
+  desc_ja: ワート専用工具小屋。近くのマームにお粗末な工具を装備。供給スロット2。マーム自動回収。
+  desc_zh_CN: 沃特专属工具棚。为附近鱼人装备简陋工具。2个补给槽。鱼人自动领取。
+  desc_zh_TW: 沃特專屬工具棚。為附近魚人裝備簡陋工具。2個補給槽。魚人自動領取。
+  desc_fr: Remise à outils exclusive à Wurt. Équipe les Merms en outils. 2 emplacements. Collecte automatique.
+  desc_de: Wurt-exklusiver Werkzeugschuppen. Rüstet nahe Merms mit Werkzeugen aus. 2 Plätze. Automatische Abholung.
+  desc_it: Capanno attrezzi esclusivo Wurt. Equipaggia Merm vicini con attrezzi. 2 slot. Raccolta automatica.
+  desc_pl: Szopek narzędziowy wyłącznie dla Wurt. Wyposaża pobliskie mermy w narzędzia. 2 sloty. Automatyczny odbiór.
+  desc_pt_BR: Galpão exclusivo da Wurt. Equipa merms próximos com ferramentas. 2 slots. Coleta automática.
+  desc_ru: Сарай только для Вурт. Снаряжает ближайших мермов инструментами. 2 слота снабжения. Автосбор.
+  desc_es: Cobertizo exclusivo de Wurt. Equipa merms cercanos con herramientas. 2 ranuras. Recogida automática.
+  desc_es_MX: Cobertizo exclusivo de Wurt. Equipa merms cercanos con herramientas. 2 ranuras. Recogida automática.
 471.merm_toolshed_upgraded
   en: Slightly Less Shoddy Tool Shed
   ko: 덜 조잡한 도구함
@@ -4800,265 +9116,941 @@
   ko: 버섯 재배기
   app: O
   source: Structure. Accepts mushrooms or spores to grow; max 4 mushrooms from mushrooms, 6 from spores. Full grow time 1800s (3.75 days). 4 harvests before needing livinglog repair. 50% chance to release a spore at max level. Stops growing when snow-covered.
+  desc_en: Grows up to 4 mushrooms (6 from spores) over 3.75 days. Needs living log repair every 4 harvests. 50% spore release at max growth.
+  desc_ko: 3.75일에 걸쳐 버섯 최대 4개(포자는 6개)를 재배합니다. 4회 수확마다 살아있는 통나무 수리 필요. 최대 성장 시 50% 확률로 포자 방출.
+  desc_ja: 3.75日かけてキノコを最大4個（胞子なら6個）栽培。4回収穫ごとにリビングログ修理が必要。最大成長時50%で胞子放出。
+  desc_zh_CN: 用3.75天种植最多4个蘑菇（孢子可种6个）。每4次收获需活木修复。最大生长时50%释放孢子。
+  desc_zh_TW: 用3.75天種植最多4個蘑菇（孢子可種6個）。每4次收穫需活木修復。最大生長時50%釋放孢子。
+  desc_fr: Cultive jusqu'à 4 champignons (6 avec spores) en 3,75 jours. Réparation au bois vivant tous les 4 récoltes. 50 % de libération de spore au max.
+  desc_de: Züchtet bis zu 4 Pilze (6 aus Sporen) in 3,75 Tagen. Alle 4 Ernten Reparatur mit lebendem Holz nötig. 50 % Sporenfreisetzung bei max. Wachstum.
+  desc_it: Coltiva fino a 4 funghi (6 con spore) in 3,75 giorni. Riparazione con legno vivente ogni 4 raccolti. 50% rilascio spore a crescita massima.
+  desc_pl: Uprawia do 4 grzybów (6 z zarodników) w 3,75 dnia. Co 4 zbiory wymaga naprawy żywym drewnem. 50% szans na zarodnik przy maks. wzroście.
+  desc_pt_BR: Cultiva até 4 cogumelos (6 com esporos) em 3,75 dias. Reparo com madeira viva a cada 4 colheitas. 50% de chance de liberar esporo no máximo.
+  desc_ru: Выращивает до 4 грибов (6 из спор) за 3,75 дня. Каждые 4 урожая — ремонт живым деревом. При макс. росте 50% шанс выпустить спору.
+  desc_es: Cultiva hasta 4 setas (6 con esporas) en 3,75 días. Reparación con madera viva cada 4 cosechas. 50 % de liberación de espora al máximo.
+  desc_es_MX: Cultiva hasta 4 hongos (6 con esporas) en 3.75 días. Reparación con madera viva cada 4 cosechas. 50 % de liberación de espora al máximo.
 502.mushroom_light
   en: Mushlight
   ko: 버섯등
   app: O
   source: Light structure. 1-4 battery slots (spores/light items). Light radius scales 2.5–5.5 based on slot count. White light only (no color tinting). Preserves contents at 0.25x perish rate; 0x if a fulllighter is inserted. Hammerable (3 hits).
+  desc_en: Light structure with 1–4 battery slots. Light radius scales from 2.5 to 5.5. Preserves contents at 0.25x spoilage rate.
+  desc_ko: 1~4개 배터리 슬롯의 조명 구조물. 빛 반경 2.5~5.5. 내용물 부패 속도 0.25배로 보존.
+  desc_ja: 1〜4個のバッテリースロットを持つ照明。光の半径2.5〜5.5。内容物の腐敗速度0.25倍。
+  desc_zh_CN: 拥有1-4个电池槽的照明结构。光照半径2.5-5.5。内容物腐烂速度降至0.25倍。
+  desc_zh_TW: 擁有1-4個電池槽的照明結構。光照半徑2.5-5.5。內容物腐爛速度降至0.25倍。
+  desc_fr: Structure lumineuse avec 1 à 4 emplacements. Rayon lumineux de 2,5 à 5,5. Conserve le contenu à 0,25x de péremption.
+  desc_de: Lichtstruktur mit 1–4 Batterieplätzen. Lichtradius 2,5 bis 5,5. Bewahrt Inhalte bei 0,25-facher Verderbrate.
+  desc_it: Struttura luminosa con 1–4 slot batteria. Raggio luce da 2,5 a 5,5. Conserva il contenuto a 0,25x di deperimento.
+  desc_pl: Struktura oświetleniowa z 1–4 slotami. Promień światła 2,5–5,5. Przechowuje zawartość przy 0,25x psucia.
+  desc_pt_BR: Estrutura de luz com 1–4 slots de bateria. Raio de luz de 2,5 a 5,5. Preserva conteúdo a 0,25x de deterioração.
+  desc_ru: Световая структура с 1–4 слотами. Радиус света 2,5–5,5. Сохраняет содержимое при 0,25x скорости порчи.
+  desc_es: Estructura de luz con 1–4 ranuras. Radio de luz de 2,5 a 5,5. Conserva el contenido a 0,25x de deterioro.
+  desc_es_MX: Estructura de luz con 1–4 ranuras. Radio de luz de 2.5 a 5.5. Conserva el contenido a 0.25x de deterioro.
 503.mushroom_light2
   en: Glowcap
   ko: 발광갓
   app: O
   source: Light structure. Same as Mushlight but supports color tinting — red/green/blue spores shift light and tint color. 1-4 battery slots, radius 2.5–5.5. Preserves contents at 0.25x perish rate; 0x with fulllighter. Hammerable (3 hits).
+  desc_en: Colored light structure like Mushlight but tints light based on spore color (red/green/blue). 1–4 battery slots, radius 2.5–5.5.
+  desc_ko: 버섯등과 유사하나 포자 색상(빨강/초록/파랑)에 따라 빛이 변하는 조명. 1~4 배터리 슬롯, 반경 2.5~5.5.
+  desc_ja: マッシュライトに似ているが胞子の色（赤/緑/青）で光が変化する照明。1〜4スロット、半径2.5〜5.5。
+  desc_zh_CN: 类似蘑菇灯但根据孢子颜色（红/绿/蓝）改变光色的照明。1-4电池槽，半径2.5-5.5。
+  desc_zh_TW: 類似蘑菇燈但根據孢子顏色（紅/綠/藍）改變光色的照明。1-4電池槽，半徑2.5-5.5。
+  desc_fr: Lumière colorée comme le Mushlight mais teintée selon la couleur du spore. 1–4 emplacements, rayon 2,5–5,5.
+  desc_de: Farbige Lichtstruktur wie Mushlight, aber mit Farbton je nach Sporenfarbe. 1–4 Plätze, Radius 2,5–5,5.
+  desc_it: Luce colorata come il Mushlight ma con tinta basata sul colore della spora. 1–4 slot, raggio 2,5–5,5.
+  desc_pl: Kolorowe oświetlenie jak Mushlight, ale barwi światło kolorem zarodnika. 1–4 sloty, promień 2,5–5,5.
+  desc_pt_BR: Luz colorida como o Mushlight, mas colore pela cor do esporo. 1–4 slots, raio 2,5–5,5.
+  desc_ru: Цветная световая структура как Mushlight, но окрашивает свет по цвету споры. 1–4 слота, радиус 2,5–5,5.
+  desc_es: Luz coloreada como el Mushlight pero teñida según la espora. 1–4 ranuras, radio 2,5–5,5.
+  desc_es_MX: Luz coloreada como el Mushlight pero teñida según la espora. 1–4 ranuras, radio 2.5–5.5.
 504.mutator_dropper
   en: Dangler Switcherdoodle
   ko: 대롱이 변신과자
   app: O
   source: Spider mutator. Edible: -3 health, 12.5 hunger, -10 sanity (meat + monster). Feeds to a spider to mutate it into spider_dropper. Fuel value 30s (small). Webber-exclusive.
+  desc_en: Webber-exclusive spider mutator. Feed to a spider to transform it into a Dangler spider. Edible but harmful (-3 health, -10 sanity).
+  desc_ko: 웨버 전용 거미 변이체. 거미에게 먹이면 대롱이 거미로 변이. 먹을 수 있지만 해롭습니다(-3 체력, -10 정신력).
+  desc_ja: ウェバー専用蜘蛛変異アイテム。蜘蛛に与えるとダングラー蜘蛛に変異。食用可だが有害（-3体力、-10正気度）。
+  desc_zh_CN: 韦伯专属蜘蛛变异物。喂给蜘蛛变为悬挂蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_zh_TW: 韋伯專屬蜘蛛變異物。餵給蜘蛛變為懸掛蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_fr: Mutateur exclusif à Webber. Nourrir une araignée pour la transformer en Dangler. Comestible mais nocif (-3 santé, -10 santé mentale).
+  desc_de: Webber-exklusiver Spinnenmutator. Verwandelt eine Spinne in eine Dangler-Spinne. Essbar aber schädlich (-3 Gesundheit, -10 Verstand).
+  desc_it: Mutatore esclusivo di Webber. Trasforma un ragno in un ragno Dangler. Commestibile ma dannoso (-3 salute, -10 sanità).
+  desc_pl: Mutator wyłączny dla Webbera. Zmienia pająka w pająka Dangler. Jadalny, ale szkodliwy (-3 zdrowie, -10 poczytalność).
+  desc_pt_BR: Mutador exclusivo do Webber. Transforma uma aranha em aranha Dangler. Comestível mas nocivo (-3 vida, -10 sanidade).
+  desc_ru: Мутатор пауков (только Веббер). Превращает паука в паука-Dangler. Съедобно, но вредно (-3 здоровье, -10 рассудок).
+  desc_es: Mutador exclusivo de Webber. Transforma una araña en araña Dangler. Comestible pero dañino (-3 salud, -10 cordura).
+  desc_es_MX: Mutador exclusivo de Webber. Transforma una araña en araña Dangler. Comestible pero dañino (-3 salud, -10 cordura).
 505.mutator_healer
   en: Nurse Switcherdoodle
   ko: 간호사 변신과자
   app: O
   source: Spider mutator. Edible: -3 health, 12.5 hunger, -10 sanity (meat + monster). Feeds to a spider to mutate it into spider_healer. Fuel value 30s (small). Webber-exclusive.
+  desc_en: Webber-exclusive spider mutator. Feed to a spider to transform it into a Nurse spider. Edible but harmful (-3 health, -10 sanity).
+  desc_ko: 웨버 전용 거미 변이체. 거미에게 먹이면 간호사 거미로 변이. 먹을 수 있지만 해롭습니다(-3 체력, -10 정신력).
+  desc_ja: ウェバー専用蜘蛛変異アイテム。蜘蛛に与えるとナース蜘蛛に変異。食用可だが有害（-3体力、-10正気度）。
+  desc_zh_CN: 韦伯专属蜘蛛变异物。喂给蜘蛛变为护士蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_zh_TW: 韋伯專屬蜘蛛變異物。餵給蜘蛛變為護士蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_fr: Mutateur exclusif à Webber. Nourrir une araignée pour la transformer en infirmière. Comestible mais nocif (-3 santé, -10 santé mentale).
+  desc_de: Webber-exklusiver Spinnenmutator. Verwandelt eine Spinne in eine Krankenschwester-Spinne. Essbar aber schädlich (-3 Gesundheit, -10 Verstand).
+  desc_it: Mutatore esclusivo di Webber. Trasforma un ragno in un ragno infermiere. Commestibile ma dannoso (-3 salute, -10 sanità).
+  desc_pl: Mutator wyłączny dla Webbera. Zmienia pająka w pająka pielęgniarza. Jadalny, ale szkodliwy (-3 zdrowie, -10 poczytalność).
+  desc_pt_BR: Mutador exclusivo do Webber. Transforma uma aranha em aranha enfermeira. Comestível mas nocivo (-3 vida, -10 sanidade).
+  desc_ru: Мутатор пауков (только Веббер). Превращает паука в паука-медсестру. Съедобно, но вредно (-3 здоровье, -10 рассудок).
+  desc_es: Mutador exclusivo de Webber. Transforma una araña en araña enfermera. Comestible pero dañino (-3 salud, -10 cordura).
+  desc_es_MX: Mutador exclusivo de Webber. Transforma una araña en araña enfermera. Comestible pero dañino (-3 salud, -10 cordura).
 506.mutator_hider
   en: Cave Switcherdoodle
   ko: 동구리 변신과자
   app: O
   source: Spider mutator. Edible: -3 health, 12.5 hunger, -10 sanity (meat + monster). Feeds to a spider to mutate it into spider_hider. Fuel value 30s (small). Webber-exclusive.
+  desc_en: Webber-exclusive spider mutator. Feed to a spider to transform it into a Cave spider. Edible but harmful (-3 health, -10 sanity).
+  desc_ko: 웨버 전용 거미 변이체. 거미에게 먹이면 동굴 거미로 변이. 먹을 수 있지만 해롭습니다(-3 체력, -10 정신력).
+  desc_ja: ウェバー専用蜘蛛変異アイテム。蜘蛛に与えると洞窟蜘蛛に変異。食用可だが有害（-3体力、-10正気度）。
+  desc_zh_CN: 韦伯专属蜘蛛变异物。喂给蜘蛛变为洞穴蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_zh_TW: 韋伯專屬蜘蛛變異物。餵給蜘蛛變為洞穴蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_fr: Mutateur exclusif à Webber. Nourrir une araignée pour la transformer en araignée des cavernes. Comestible mais nocif (-3 santé, -10 santé mentale).
+  desc_de: Webber-exklusiver Spinnenmutator. Verwandelt eine Spinne in eine Höhlenspinne. Essbar aber schädlich (-3 Gesundheit, -10 Verstand).
+  desc_it: Mutatore esclusivo di Webber. Trasforma un ragno in un ragno delle caverne. Commestibile ma dannoso (-3 salute, -10 sanità).
+  desc_pl: Mutator wyłączny dla Webbera. Zmienia pająka w pająka jaskiniowego. Jadalny, ale szkodliwy (-3 zdrowie, -10 poczytalność).
+  desc_pt_BR: Mutador exclusivo do Webber. Transforma uma aranha em aranha das cavernas. Comestível mas nocivo (-3 vida, -10 sanidade).
+  desc_ru: Мутатор пауков (только Веббер). Превращает паука в пещерного паука. Съедобно, но вредно (-3 здоровье, -10 рассудок).
+  desc_es: Mutador exclusivo de Webber. Transforma una araña en araña de cueva. Comestible pero dañino (-3 salud, -10 cordura).
+  desc_es_MX: Mutador exclusivo de Webber. Transforma una araña en araña de cueva. Comestible pero dañino (-3 salud, -10 cordura).
 507.mutator_moon
   en: Shatter Switcherdoodle
   ko: 산산이 변신과자
   app: O
   source: Spider mutator. Edible: -3 health, 12.5 hunger, -10 sanity (meat + monster). Feeds to a spider to mutate it into spider_moon. Fuel value 30s (small). Webber-exclusive.
+  desc_en: Webber-exclusive spider mutator. Feed to a spider to transform it into a Shatter spider (lunar). Edible but harmful (-3 health, -10 sanity).
+  desc_ko: 웨버 전용 거미 변이체. 거미에게 먹이면 산산이 거미(달)로 변이. 먹을 수 있지만 해롭습니다(-3 체력, -10 정신력).
+  desc_ja: ウェバー専用蜘蛛変異アイテム。蜘蛛に与えるとシャッター蜘蛛（月）に変異。食用可だが有害（-3体力、-10正気度）。
+  desc_zh_CN: 韦伯专属蜘蛛变异物。喂给蜘蛛变为碎裂蜘蛛（月亮）。可食用但有害（-3生命、-10理智）。
+  desc_zh_TW: 韋伯專屬蜘蛛變異物。餵給蜘蛛變為碎裂蜘蛛（月亮）。可食用但有害（-3生命、-10理智）。
+  desc_fr: Mutateur exclusif à Webber. Nourrir une araignée pour la transformer en araignée Shatter (lunaire). Comestible mais nocif (-3 santé, -10 santé mentale).
+  desc_de: Webber-exklusiver Spinnenmutator. Verwandelt eine Spinne in eine Shatter-Spinne (lunar). Essbar aber schädlich (-3 Gesundheit, -10 Verstand).
+  desc_it: Mutatore esclusivo di Webber. Trasforma un ragno in un ragno Shatter (lunare). Commestibile ma dannoso (-3 salute, -10 sanità).
+  desc_pl: Mutator wyłączny dla Webbera. Zmienia pająka w pająka Shatter (księżycowego). Jadalny, ale szkodliwy (-3 zdrowie, -10 poczytalność).
+  desc_pt_BR: Mutador exclusivo do Webber. Transforma uma aranha em aranha Shatter (lunar). Comestível mas nocivo (-3 vida, -10 sanidade).
+  desc_ru: Мутатор пауков (только Веббер). Превращает паука в лунного паука Shatter. Съедобно, но вредно (-3 здоровье, -10 рассудок).
+  desc_es: Mutador exclusivo de Webber. Transforma una araña en araña Shatter (lunar). Comestible pero dañino (-3 salud, -10 cordura).
+  desc_es_MX: Mutador exclusivo de Webber. Transforma una araña en araña Shatter (lunar). Comestible pero dañino (-3 salud, -10 cordura).
 508.mutator_spitter
   en: Spitter Switcherdoodle
   ko: 퉤퉤 변신과자
   app: O
   source: Spider mutator. Edible: -3 health, 12.5 hunger, -10 sanity (meat + monster). Feeds to a spider to mutate it into spider_spitter. Fuel value 30s (small). Webber-exclusive.
+  desc_en: Webber-exclusive spider mutator. Feed to a spider to transform it into a Spitter spider. Edible but harmful (-3 health, -10 sanity).
+  desc_ko: 웨버 전용 거미 변이체. 거미에게 먹이면 퉤퉤 거미로 변이. 먹을 수 있지만 해롭습니다(-3 체력, -10 정신력).
+  desc_ja: ウェバー専用蜘蛛変異アイテム。蜘蛛に与えるとスピッター蜘蛛に変異。食用可だが有害（-3体力、-10正気度）。
+  desc_zh_CN: 韦伯专属蜘蛛变异物。喂给蜘蛛变为喷吐蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_zh_TW: 韋伯專屬蜘蛛變異物。餵給蜘蛛變為噴吐蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_fr: Mutateur exclusif à Webber. Nourrir une araignée pour la transformer en araignée cracheuse. Comestible mais nocif (-3 santé, -10 santé mentale).
+  desc_de: Webber-exklusiver Spinnenmutator. Verwandelt eine Spinne in eine Spucker-Spinne. Essbar aber schädlich (-3 Gesundheit, -10 Verstand).
+  desc_it: Mutatore esclusivo di Webber. Trasforma un ragno in un ragno sputatore. Commestibile ma dannoso (-3 salute, -10 sanità).
+  desc_pl: Mutator wyłączny dla Webbera. Zmienia pająka w pająka plującego. Jadalny, ale szkodliwy (-3 zdrowie, -10 poczytalność).
+  desc_pt_BR: Mutador exclusivo do Webber. Transforma uma aranha em aranha cuspadeira. Comestível mas nocivo (-3 vida, -10 sanidade).
+  desc_ru: Мутатор пауков (только Веббер). Превращает паука в паука-плевателя. Съедобно, но вредно (-3 здоровье, -10 рассудок).
+  desc_es: Mutador exclusivo de Webber. Transforma una araña en araña escupidora. Comestible pero dañino (-3 salud, -10 cordura).
+  desc_es_MX: Mutador exclusivo de Webber. Transforma una araña en araña escupidora. Comestible pero dañino (-3 salud, -10 cordura).
 509.mutator_warrior
   en: Warrior Switcherdoodle
   ko: 병정이 변신과자
   app: O
   source: Spider mutator. Edible: -3 health, 12.5 hunger, -10 sanity (meat + monster). Feeds to a spider to mutate it into spider_warrior. Fuel value 30s (small). Webber-exclusive.
+  desc_en: Webber-exclusive spider mutator. Feed to a spider to transform it into a Warrior spider. Edible but harmful (-3 health, -10 sanity).
+  desc_ko: 웨버 전용 거미 변이체. 거미에게 먹이면 병정 거미로 변이. 먹을 수 있지만 해롭습니다(-3 체력, -10 정신력).
+  desc_ja: ウェバー専用蜘蛛変異アイテム。蜘蛛に与えるとウォリアー蜘蛛に変異。食用可だが有害（-3体力、-10正気度）。
+  desc_zh_CN: 韦伯专属蜘蛛变异物。喂给蜘蛛变为战士蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_zh_TW: 韋伯專屬蜘蛛變異物。餵給蜘蛛變為戰士蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_fr: Mutateur exclusif à Webber. Nourrir une araignée pour la transformer en araignée guerrière. Comestible mais nocif (-3 santé, -10 santé mentale).
+  desc_de: Webber-exklusiver Spinnenmutator. Verwandelt eine Spinne in eine Krieger-Spinne. Essbar aber schädlich (-3 Gesundheit, -10 Verstand).
+  desc_it: Mutatore esclusivo di Webber. Trasforma un ragno in un ragno guerriero. Commestibile ma dannoso (-3 salute, -10 sanità).
+  desc_pl: Mutator wyłączny dla Webbera. Zmienia pająka w pająka wojownika. Jadalny, ale szkodliwy (-3 zdrowie, -10 poczytalność).
+  desc_pt_BR: Mutador exclusivo do Webber. Transforma uma aranha em aranha guerreira. Comestível mas nocivo (-3 vida, -10 sanidade).
+  desc_ru: Мутатор пауков (только Веббер). Превращает паука в паука-воина. Съедобно, но вредно (-3 здоровье, -10 рассудок).
+  desc_es: Mutador exclusivo de Webber. Transforma una araña en araña guerrera. Comestible pero dañino (-3 salud, -10 cordura).
+  desc_es_MX: Mutador exclusivo de Webber. Transforma una araña en araña guerrera. Comestible pero dañino (-3 salud, -10 cordura).
 510.mutator_water
   en: Strider Switcherdoodle
   ko: 씽씽이 변신과자
   app: O
   source: Spider mutator. Edible: -3 health, 12.5 hunger, -10 sanity (meat + monster). Feeds to a spider to mutate it into spider_water. Fuel value 30s (small). Webber-exclusive.
+  desc_en: Webber-exclusive spider mutator. Feed to a spider to transform it into a Water strider spider. Edible but harmful (-3 health, -10 sanity).
+  desc_ko: 웨버 전용 거미 변이체. 거미에게 먹이면 씽씽이 거미로 변이. 먹을 수 있지만 해롭습니다(-3 체력, -10 정신력).
+  desc_ja: ウェバー専用蜘蛛変異アイテム。蜘蛛に与えると水上蜘蛛に変異。食用可だが有害（-3体力、-10正気度）。
+  desc_zh_CN: 韦伯专属蜘蛛变异物。喂给蜘蛛变为水上蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_zh_TW: 韋伯專屬蜘蛛變異物。餵給蜘蛛變為水上蜘蛛。可食用但有害（-3生命、-10理智）。
+  desc_fr: Mutateur exclusif à Webber. Nourrir une araignée pour la transformer en araignée aquatique. Comestible mais nocif (-3 santé, -10 santé mentale).
+  desc_de: Webber-exklusiver Spinnenmutator. Verwandelt eine Spinne in eine Wasserläufer-Spinne. Essbar aber schädlich (-3 Gesundheit, -10 Verstand).
+  desc_it: Mutatore esclusivo di Webber. Trasforma un ragno in un ragno d'acqua. Commestibile ma dannoso (-3 salute, -10 sanità).
+  desc_pl: Mutator wyłączny dla Webbera. Zmienia pająka w pająka wodnego. Jadalny, ale szkodliwy (-3 zdrowie, -10 poczytalność).
+  desc_pt_BR: Mutador exclusivo do Webber. Transforma uma aranha em aranha aquática. Comestível mas nocivo (-3 vida, -10 sanidade).
+  desc_ru: Мутатор пауков (только Веббер). Превращает паука в водного паука. Съедобно, но вредно (-3 здоровье, -10 рассудок).
+  desc_es: Mutador exclusivo de Webber. Transforma una araña en araña acuática. Comestible pero dañino (-3 salud, -10 cordura).
+  desc_es_MX: Mutador exclusivo de Webber. Transforma una araña en araña acuática. Comestible pero dañino (-3 salud, -10 cordura).
 511.nightcaphat
   en: Nightcap
   ko: 수면 모자
   app: O
   source: Hat. Tagged "good_sleep_aid" — improves sleep quality. No armor, no waterproofing, no special stats. Purely a sleep aid headwear.
+  desc_en: Sleep aid hat that improves sleep quality. No armor or waterproofing. Purely functional as a sleep enhancer.
+  desc_ko: 수면 품질을 향상시키는 모자. 방어력이나 방수 없음. 수면 보조 전용.
+  desc_ja: 睡眠の質を向上させる帽子。防御力や防水性なし。睡眠補助専用。
+  desc_zh_CN: 提升睡眠质量的帽子。无防御或防水。纯粹的睡眠辅助装备。
+  desc_zh_TW: 提升睡眠品質的帽子。無防禦或防水。純粹的睡眠輔助裝備。
+  desc_fr: Chapeau améliorant la qualité du sommeil. Aucune armure ni imperméabilité. Purement fonctionnel.
+  desc_de: Schlafhilfe-Hut, der die Schlafqualität verbessert. Keine Rüstung oder Wasserfestigkeit.
+  desc_it: Cappello che migliora la qualità del sonno. Nessuna armatura o impermeabilità. Solo aiuto al sonno.
+  desc_pl: Kapelusz poprawiający jakość snu. Brak pancerza i wodoodporności. Czysto funkcjonalny.
+  desc_pt_BR: Chapéu que melhora a qualidade do sono. Sem armadura ou impermeabilidade. Auxiliar de sono.
+  desc_ru: Шляпа для улучшения качества сна. Без брони и водонепроницаемости. Только для сна.
+  desc_es: Sombrero que mejora la calidad del sueño. Sin armadura ni impermeabilidad. Solo ayuda para dormir.
+  desc_es_MX: Sombrero que mejora la calidad del sueño. Sin armadura ni impermeabilidad. Solo ayuda para dormir.
 512.nightlight
   en: Night Light
   ko: 어둠의 등불
   app: O
   source: Structure. Nightmare fuel-type fire pit. Max fuel 540s ((60+120)*3), starts at 0 fuel. Accepts nightmare fuel. Wildfire-protected. Provides light when fueled.
+  desc_en: Nightmare fuel-powered fire pit with max fuel capacity of 540s. Accepts nightmare fuel. Provides light when fueled.
+  desc_ko: 악몽 연료로 작동하는 화덕. 최대 연료 540초. 악몽 연료 사용. 연료가 있으면 빛 제공.
+  desc_ja: ナイトメア燃料で動く火炉。最大燃料540秒。燃料があれば光を提供。
+  desc_zh_CN: 噩梦燃料驱动的火炉。最大燃料540秒。有燃料时提供光源。
+  desc_zh_TW: 噩夢燃料驅動的火爐。最大燃料540秒。有燃料時提供光源。
+  desc_fr: Foyer alimenté au combustible de cauchemar. Capacité max 540s. Fournit de la lumière.
+  desc_de: Albtraumbrennstoff-Feuerstelle. Max. Brennstoff 540s. Liefert Licht wenn befeuert.
+  desc_it: Focolare a combustibile da incubo. Capacità max 540s. Fornisce luce quando alimentato.
+  desc_pl: Palenisko na paliwo koszmarne. Maks. paliwo 540s. Daje światło gdy zasilone.
+  desc_pt_BR: Fogueira movida a combustível de pesadelo. Capacidade máx. 540s. Fornece luz quando abastecida.
+  desc_ru: Костёр на кошмарном топливе. Макс. запас 540с. Даёт свет при наличии топлива.
+  desc_es: Hoguera con combustible de pesadilla. Capacidad máx. 540s. Proporciona luz al estar alimentada.
+  desc_es_MX: Hoguera con combustible de pesadilla. Capacidad máx. 540s. Proporciona luz al estar alimentada.
 513.nightmare_timepiece
   en: Thulecite Medallion
   ko: 툴레사이트 메달
   app: O
   source: Inventory item. Displays current nightmare cycle phase (calm/warn/wild/dawn) and progress within wild phase (waxing/steady/waning). Changes appearance per phase. Adds "nightmaretracker" tag to holder. No combat stats.
+  desc_en: Displays the current nightmare cycle phase (calm/warn/wild/dawn) and progress. No combat stats.
+  desc_ko: 현재 악몽 주기 단계(평온/경고/광란/여명)와 진행도를 표시. 전투 능력치 없음.
+  desc_ja: ナイトメアサイクルのフェーズ（静穏/警告/狂乱/黎明）と進行度を表示。戦闘ステータスなし。
+  desc_zh_CN: 显示当前噩梦循环阶段（平静/警告/狂暴/黎明）及进度。无战斗属性。
+  desc_zh_TW: 顯示當前噩夢循環階段（平靜/警告/狂暴/黎明）及進度。無戰鬥屬性。
+  desc_fr: Affiche la phase du cycle cauchemar (calme/alerte/sauvage/aube) et la progression. Pas de stats de combat.
+  desc_de: Zeigt die Albtraumzyklusphase (ruhig/warnen/wild/dämmerung) und Fortschritt an. Keine Kampfwerte.
+  desc_it: Mostra la fase del ciclo da incubo (calma/allarme/furia/alba) e il progresso. Nessuna statistica di combattimento.
+  desc_pl: Wyświetla fazę cyklu koszmarów (spokój/ostrzeżenie/szaleństwo/świt) i postęp. Brak statystyk bojowych.
+  desc_pt_BR: Exibe a fase do ciclo de pesadelo (calma/alerta/selvagem/aurora) e o progresso. Sem atributos de combate.
+  desc_ru: Показывает фазу кошмарного цикла (покой/предупреждение/буйство/рассвет) и прогресс. Без боевых характеристик.
+  desc_es: Muestra la fase del ciclo de pesadilla (calma/alerta/salvaje/alba) y el progreso. Sin estadísticas de combate.
+  desc_es_MX: Muestra la fase del ciclo de pesadilla (calma/alerta/salvaje/alba) y el progreso. Sin estadísticas de combate.
 514.nightmarefuel
   en: Nightmare Fuel
   ko: 악몽 연료
   app: O
   source: Material. Nightmare-type fuel worth 180s (large fuel). Repairs nightmare items for 50 finite uses. Waterproofer at 0% effectiveness. Maxwell starts with 6. Stackable (small item stack).
+  desc_en: Crafting material and large fuel source (180s). Repairs nightmare items for 50 uses. Maxwell starts with 6.
+  desc_ko: 제작 재료이자 대형 연료(180초). 악몽 아이템을 50회 수리. 맥스웰 초기 6개 보유.
+  desc_ja: 素材かつ大型燃料（180秒）。ナイトメアアイテムを50回修理。マクスウェル初期所持6個。
+  desc_zh_CN: 制作材料兼大型燃料（180秒）。修复噩梦物品50次耐久。麦斯威尔初始携带6个。
+  desc_zh_TW: 製作材料兼大型燃料（180秒）。修復噩夢物品50次耐久。乃斯威爾初始攜帶6個。
+  desc_fr: Matériau et carburant (180s). Répare les objets cauchemar pour 50 utilisations. Maxwell commence avec 6.
+  desc_de: Handwerksmaterial und Brennstoff (180s). Repariert Albtraumgegenstände für 50 Nutzungen. Maxwell startet mit 6.
+  desc_it: Materiale e carburante (180s). Ripara oggetti da incubo per 50 usi. Maxwell inizia con 6.
+  desc_pl: Materiał i duże paliwo (180s). Naprawia koszmarne przedmioty o 50 użyć. Maxwell zaczyna z 6.
+  desc_pt_BR: Material de crafting e combustível grande (180s). Repara itens de pesadelo em 50 usos. Maxwell começa com 6.
+  desc_ru: Материал и крупное топливо (180с). Ремонтирует кошмарные предметы на 50 зарядов. Максвелл начинает с 6.
+  desc_es: Material y combustible grande (180s). Repara objetos de pesadilla en 50 usos. Maxwell comienza con 6.
+  desc_es_MX: Material y combustible grande (180s). Repara objetos de pesadilla en 50 usos. Maxwell comienza con 6.
 515.nightstick
   en: Morning Star
   ko: 모닝 스타
   app: O
   source: Weapon. 28.9 electric damage (34*0.85, x1.5 vs wet targets). Fuel-based durability: 360s (60*6). Emits light when equipped. Moon spark chargeable (25% per spark). Wildfire-protected. Removed when fuel depleted.
+  desc_en: Electric weapon dealing 28.9 damage (x1.5 vs wet targets). Fuel-based durability 360s. Emits light. Rechargeable with moon sparks.
+  desc_ko: 28.9 전기 피해(젖은 대상 x1.5)의 무기. 연료 기반 내구도 360초. 빛 발산. 달 불꽃으로 충전 가능.
+  desc_ja: 28.9の電気ダメージ（濡れた対象x1.5）。燃料耐久360秒。発光。ムーンスパークで充電可能。
+  desc_zh_CN: 造成28.9电击伤害（对潮湿目标x1.5）。燃料耐久360秒。发光。可用月亮火花充能。
+  desc_zh_TW: 造成28.9電擊傷害（對潮濕目標x1.5）。燃料耐久360秒。發光。可用月亮火花充能。
+  desc_fr: Arme électrique de 28,9 dégâts (x1,5 vs mouillés). Durabilité 360s. Émet de la lumière. Rechargeable.
+  desc_de: Elektrowaffe mit 28,9 Schaden (x1,5 gegen nasse Ziele). Brennstoff 360s. Leuchtet. Aufladbar mit Mondfunken.
+  desc_it: Arma elettrica da 28,9 danni (x1,5 vs bagnati). Durabilità 360s. Emette luce. Ricaricabile con scintille lunari.
+  desc_pl: Broń elektryczna 28,9 obrażeń (x1,5 vs mokrych). Wytrzymałość paliwowa 360s. Emituje światło. Ładowana iskrami księżycowymi.
+  desc_pt_BR: Arma elétrica com 28,9 de dano (x1,5 vs molhados). Durabilidade 360s. Emite luz. Recarregável com faíscas lunares.
+  desc_ru: Электрическое оружие с 28,9 урона (x1,5 по мокрым). Топливная прочность 360с. Излучает свет. Заряжается лунными искрами.
+  desc_es: Arma eléctrica con 28,9 de daño (x1,5 vs mojados). Durabilidad 360s. Emite luz. Recargable con chispas lunares.
+  desc_es_MX: Arma eléctrica con 28.9 de daño (x1.5 vs mojados). Durabilidad 360s. Emite luz. Recargable con chispas lunares.
 516.nightsword
   en: Dark Sword
   ko: 어둠의 검
   app: O
   source: Weapon. 68 damage (34*2). 100 uses. Shadow level 2. Dapperness -100/300 per sec (-33.3/min, drains full sanity in 3 min). Shadow item. Magic dapperness (affected by sanity modifiers).
+  desc_en: High-damage weapon dealing 68 damage. 100 uses. Shadow level 2. Drains sanity at -33.3/min.
+  desc_ko: 68 피해의 고공격력 무기. 100회 사용. 그림자 레벨 2. 정신력 분당 -33.3 감소.
+  desc_ja: 68ダメージの高火力武器。100回使用。シャドウレベル2。正気度-33.3/分。
+  desc_zh_CN: 造成68伤害的高攻武器。100次使用。暗影等级2。理智每分钟-33.3。
+  desc_zh_TW: 造成68傷害的高攻武器。100次使用。暗影等級2。理智每分鐘-33.3。
+  desc_fr: Arme puissante de 68 dégâts. 100 utilisations. Niveau d'ombre 2. Draine -33,3/min de santé mentale.
+  desc_de: Starke Waffe mit 68 Schaden. 100 Nutzungen. Schattenstufe 2. Entzieht -33,3/min Verstand.
+  desc_it: Arma potente da 68 danni. 100 usi. Livello ombra 2. Drena -33,3/min di sanità.
+  desc_pl: Potężna broń 68 obrażeń. 100 użyć. Poziom cienia 2. Drenuje poczytalność -33,3/min.
+  desc_pt_BR: Arma poderosa com 68 de dano. 100 usos. Nível sombrio 2. Drena -33,3/min de sanidade.
+  desc_ru: Мощное оружие с 68 урона. 100 зарядов. Уровень тени 2. Расход рассудка -33,3/мин.
+  desc_es: Arma poderosa con 68 de daño. 100 usos. Nivel de sombra 2. Drena -33,3/min de cordura.
+  desc_es_MX: Arma poderosa con 68 de daño. 100 usos. Nivel de sombra 2. Drena -33.3/min de cordura.
 517.nutrientsgoggleshat
   en: Premier Gardeneer Hat
   ko: 고급 원예사의 모자
   app: O
   source: Hat. Perish time 4800s (10 days). Shadow level 1. Shows soil nutrient levels for farm plants (upgraded version of Gardeneer Hat).
+  desc_en: Upgraded farming hat revealing soil nutrient levels. Lasts 10 days. Shadow level 1.
+  desc_ko: 토양 영양분 수치를 표시하는 상위 농업 모자. 10일 지속. 그림자 레벨 1.
+  desc_ja: 土壌栄養素を表示する上位農業帽子。10日間持続。シャドウレベル1。
+  desc_zh_CN: 显示土壤养分水平的高级农业帽。持续10天。暗影等级1。
+  desc_zh_TW: 顯示土壤養分水平的高級農業帽。持續10天。暗影等級1。
+  desc_fr: Chapeau de jardinage amélioré révélant les nutriments du sol. Dure 10 jours. Niveau d'ombre 1.
+  desc_de: Verbesserter Gartenhut, zeigt Bodennährstoffe. Hält 10 Tage. Schattenstufe 1.
+  desc_it: Cappello da giardinaggio migliorato che rivela i nutrienti. Dura 10 giorni. Livello ombra 1.
+  desc_pl: Ulepszony kapelusz ogrodniczy pokazujący składniki gleby. Trwa 10 dni. Poziom cienia 1.
+  desc_pt_BR: Chapéu de jardinagem aprimorado que revela nutrientes do solo. Dura 10 dias. Nível sombrio 1.
+  desc_ru: Улучшенная шляпа фермера, показывающая питательные вещества почвы. 10 дней. Уровень тени 1.
+  desc_es: Sombrero de jardinería mejorado que revela nutrientes del suelo. Dura 10 días. Nivel de sombra 1.
+  desc_es_MX: Sombrero de jardinería mejorado que revela nutrientes del suelo. Dura 10 días. Nivel de sombra 1.
 518.oar
   en: Oar
   ko: 노
   app: O
   source: Boat oar. 17 damage (34*0.5). 500 uses. Row force 0.3, max velocity 2. Attack wear 25 uses. Row fail wear 25. Edible as wood. Medium fuel value.
+  desc_en: Basic boat oar. 17 damage. 500 uses. Row force 0.3, max velocity 2. Also usable as weapon and fuel.
+  desc_ko: 기본 보트 노. 17 피해. 500회 사용. 노젓기 힘 0.3, 최대 속도 2. 무기 및 연료로도 사용 가능.
+  desc_ja: 基本のボートオール。17ダメージ。500回使用。漕ぎ力0.3、最大速度2。武器・燃料としても使用可。
+  desc_zh_CN: 基础船桨。17伤害。500次使用。划力0.3，最大速度2。可用作武器和燃料。
+  desc_zh_TW: 基礎船槳。17傷害。500次使用。划力0.3，最大速度2。可用作武器和燃料。
+  desc_fr: Rame basique. 17 dégâts. 500 utilisations. Force 0,3, vitesse max 2. Utilisable comme arme et combustible.
+  desc_de: Einfaches Ruder. 17 Schaden. 500 Nutzungen. Ruderkraft 0,3, max. Geschwindigkeit 2. Auch Waffe und Brennstoff.
+  desc_it: Remo base. 17 danni. 500 usi. Forza 0,3, velocità max 2. Anche arma e combustibile.
+  desc_pl: Podstawowe wiosło. 17 obrażeń. 500 użyć. Siła 0,3, maks. prędkość 2. Także broń i paliwo.
+  desc_pt_BR: Remo básico. 17 de dano. 500 usos. Força 0,3, velocidade máx. 2. Também arma e combustível.
+  desc_ru: Базовое весло. 17 урона. 500 зарядов. Сила гребли 0,3, макс. скорость 2. Также оружие и топливо.
+  desc_es: Remo básico. 17 de daño. 500 usos. Fuerza 0,3, velocidad máx. 2. También arma y combustible.
+  desc_es_MX: Remo básico. 17 de daño. 500 usos. Fuerza 0.3, velocidad máx. 2. También arma y combustible.
 519.oar_driftwood
   en: Driftwood Oar
   ko: 유목 노
   app: O
   source: Boat oar. 17 damage (34*0.5). 400 uses. Row force 0.5, max velocity 3.5. Attack wear 25 uses. Row fail wear 25. Waterproofer 0%. Edible as wood. Medium fuel.
+  desc_en: Improved oar with row force 0.5 and max velocity 3.5. 17 damage. 400 uses.
+  desc_ko: 노젓기 힘 0.5, 최대 속도 3.5의 개량 노. 17 피해. 400회 사용.
+  desc_ja: 漕ぎ力0.5、最大速度3.5の改良オール。17ダメージ。400回使用。
+  desc_zh_CN: 划力0.5、最大速度3.5的改良船桨。17伤害。400次使用。
+  desc_zh_TW: 划力0.5、最大速度3.5的改良船槳。17傷害。400次使用。
+  desc_fr: Rame améliorée : force 0,5, vitesse max 3,5. 17 dégâts. 400 utilisations.
+  desc_de: Verbessertes Ruder: Kraft 0,5, max. Geschwindigkeit 3,5. 17 Schaden. 400 Nutzungen.
+  desc_it: Remo migliorato: forza 0,5, velocità max 3,5. 17 danni. 400 usi.
+  desc_pl: Ulepszone wiosło: siła 0,5, maks. prędkość 3,5. 17 obrażeń. 400 użyć.
+  desc_pt_BR: Remo aprimorado: força 0,5, velocidade máx. 3,5. 17 de dano. 400 usos.
+  desc_ru: Улучшенное весло: сила 0,5, макс. скорость 3,5. 17 урона. 400 зарядов.
+  desc_es: Remo mejorado: fuerza 0,5, velocidad máx. 3,5. 17 de daño. 400 usos.
+  desc_es_MX: Remo mejorado: fuerza 0.5, velocidad máx. 3.5. 17 de daño. 400 usos.
 520.oar_monkey
   en: Battle Paddle
   ko: 전투 노
   app: X
   type: deconstruct
   source: Boat oar. 51 damage (34*1.5). 500 uses. Row force 0.6, max velocity 3. Attack wear 5 uses (low — good for combat). Row fail wear 25. Edible as wood. Medium fuel.
+  desc_en: Combat oar dealing 51 damage with low attack wear (5 per hit). Row force 0.6, max velocity 3. 500 uses.
+  desc_ko: 낮은 공격 마모(타당 5)로 51 피해를 주는 전투 노. 노젓기 힘 0.6, 최대 속도 3. 500회 사용.
+  desc_ja: 低い攻撃消耗（1打5）で51ダメージの戦闘用オール。漕ぎ力0.6、最大速度3。500回使用。
+  desc_zh_CN: 战斗用船桨，51伤害，低攻击磨损（每击5耐久）。划力0.6，最大速度3。500次使用。
+  desc_zh_TW: 戰鬥用船槳，51傷害，低攻擊磨損（每擊5耐久）。划力0.6，最大速度3。500次使用。
+  desc_fr: Rame de combat : 51 dégâts, faible usure (5/coup). Force 0,6, vitesse max 3. 500 utilisations.
+  desc_de: Kampfruder: 51 Schaden, niedriger Verschleiß (5/Treffer). Kraft 0,6, max. Geschwindigkeit 3. 500 Nutzungen.
+  desc_it: Remo da combattimento: 51 danni, bassa usura (5/colpo). Forza 0,6, velocità max 3. 500 usi.
+  desc_pl: Wiosło bojowe: 51 obrażeń, niskie zużycie (5/cios). Siła 0,6, maks. prędkość 3. 500 użyć.
+  desc_pt_BR: Remo de combate: 51 de dano, baixo desgaste (5/golpe). Força 0,6, velocidade máx. 3. 500 usos.
+  desc_ru: Боевое весло: 51 урон, низкий износ (5/удар). Сила 0,6, макс. скорость 3. 500 зарядов.
+  desc_es: Remo de combate: 51 de daño, bajo desgaste (5/golpe). Fuerza 0,6, velocidad máx. 3. 500 usos.
+  desc_es_MX: Remo de combate: 51 de daño, bajo desgaste (5/golpe). Fuerza 0.6, velocidad máx. 3. 500 usos.
 521.ocean_trawler
   en: Ocean Trawler
   ko: 바다 어망
   app: X
   type: deconstruct
   source: Boat structure. Container for catching ocean fish. When lowered, fish perish rate 0.1x. Fish spawn modifier 2x. Physics radius 2.2. Hammerable (3 hits). Burns and cooks fish inside on ignite. Built from ocean_trawler_kit.
+  desc_en: Boat fishing structure. Catches ocean fish at 0.1x spoilage rate with 2x fish spawn modifier. Burns and cooks fish on ignite.
+  desc_ko: 바다 낚시 구조물. 0.1배 부패 속도로 어류 보관, 2배 물고기 생성 보너스. 점화 시 내부 생선 조리.
+  desc_ja: ボート漁獲構造物。0.1倍の腐敗速度で魚保管、2倍の魚スポーン修正。着火時に中の魚が焼ける。
+  desc_zh_CN: 船用捕鱼结构。0.1倍腐烂速度存储鱼类，2倍刷新率。着火时鱼被烤熟。
+  desc_zh_TW: 船用捕魚結構。0.1倍腐爛速度存儲魚類，2倍刷新率。著火時魚被烤熟。
+  desc_fr: Structure de pêche : 0,1x péremption, spawn x2. Cuit les poissons en cas d'incendie.
+  desc_de: Fischfangstruktur: 0,1x Verderb, 2x Fisch-Spawn. Kocht Fische bei Entzündung.
+  desc_it: Struttura da pesca: 0,1x deperimento, spawn x2. Cuoce i pesci se incendiata.
+  desc_pl: Struktura rybacka: 0,1x psucia, 2x spawn. Podpalenie gotuje ryby.
+  desc_pt_BR: Estrutura de pesca: 0,1x deterioração, spawn x2. Incêndio cozinha os peixes.
+  desc_ru: Рыболовная структура: 0,1x порча, бонус спавна x2. При возгорании готовит рыбу.
+  desc_es: Estructura de pesca: 0,1x deterioro, aparición x2. El fuego cocina los peces.
+  desc_es_MX: Estructura de pesca: 0.1x deterioro, aparición x2. El fuego cocina los peces.
 522.ocean_trawler_kit
   en: Ocean Trawler Kit
   ko: 바다 어망 키트
   app: O
   source: Deployable kit that places an Ocean Trawler on water. Fuel value 180s (large fuel). Water-deploy only, medium spacing.
+  desc_en: Deployable kit that places an Ocean Trawler on water. Also usable as large fuel (180s).
+  desc_ko: 수면에 바다 어망을 설치하는 키트. 대형 연료(180초)로도 사용 가능.
+  desc_ja: 水面にオーシャントロウラーを設置するキット。大型燃料（180秒）としても使用可。
+  desc_zh_CN: 在水面放置拖网的套件。也可用作大型燃料（180秒）。
+  desc_zh_TW: 在水面放置拖網的套件。也可用作大型燃料（180秒）。
+  desc_fr: Kit déployable plaçant un chalut sur l'eau. Aussi carburant (180s).
+  desc_de: Kit für einen Schleppnetzfischer auf Wasser. Auch Brennstoff (180s).
+  desc_it: Kit che posiziona un Trawler sull'acqua. Anche combustibile (180s).
+  desc_pl: Zestaw do postawienia sieci na wodzie. Także paliwo (180s).
+  desc_pt_BR: Kit que coloca um Trawler na água. Também combustível grande (180s).
+  desc_ru: Набор для размещения трала на воде. Также крупное топливо (180с).
+  desc_es: Kit que coloca un arrastrero en el agua. También combustible grande (180s).
+  desc_es_MX: Kit que coloca un arrastrero en el agua. También combustible grande (180s).
 523.oceanfishingbobber_ball
   en: Wooden Ball Bobber
   ko: 목제 구형 찌
   app: O
   source: Ocean fishing tackle (bobber). Attaches to Sea Fishing Rod bobber slot. Modifies casting distance and stamina drain via BOBBER_BALL casting data. Stackable (small item stack). Cat toy.
+  desc_en: Fishing bobber for Sea Fishing Rod. Ball type that modifies casting distance and stamina drain. Stackable.
+  desc_ko: 바다 낚싯대용 찌. 구형 타입으로 캐스팅 거리와 체력 소모를 변경. 중첩 가능.
+  desc_ja: 海釣り竿用ボバー。球型でキャスト距離とスタミナ消費を変更。スタック可能。
+  desc_zh_CN: 海钓竿用浮标。球型，调整投掷距离和体力消耗。可堆叠。
+  desc_zh_TW: 海釣竿用浮標。球型，調整投擲距離和體力消耗。可堆疊。
+  desc_fr: Flotteur pour canne à pêche. Type balle, modifie la distance et l'endurance. Empilable.
+  desc_de: Schwimmer für Meeresangel. Kugeltyp, ändert Wurfweite und Ausdauer. Stapelbar.
+  desc_it: Galleggiante per canna da pesca. Tipo palla, modifica distanza e stamina. Impilabile.
+  desc_pl: Spławik do wędki morskiej. Typ kulowy, modyfikuje zasięg i wytrzymałość. Stackowalny.
+  desc_pt_BR: Boia para vara de pesca marítima. Tipo bola, modifica distância e stamina. Empilhável.
+  desc_ru: Поплавок для морской удочки. Шаровой тип, изменяет дальность заброса и выносливость. Стакается.
+  desc_es: Flotador para caña de pescar. Tipo bola, modifica distancia y resistencia. Apilable.
+  desc_es_MX: Flotador para caña de pescar. Tipo bola, modifica distancia y resistencia. Apilable.
 524.oceanfishingbobber_canary
   en: Saffron Quill Float
   ko: 노란 깃털 찌
   app: O
   source: Ocean fishing tackle (bobber). Quill float type — lighter splash. Modifies casting via BOBBER_CANARY data. Stackable (small item stack). Cat toy.
+  desc_en: Quill float bobber for Sea Fishing Rod. Lighter splash on cast. Stackable.
+  desc_ko: 바다 낚싯대용 깃털 찌. 캐스팅 시 가벼운 착수. 중첩 가능.
+  desc_ja: 海釣り竿用クイルフロート。キャスト時の着水が軽い。スタック可能。
+  desc_zh_CN: 海钓竿用羽毛浮标。投掷时水花较轻。可堆叠。
+  desc_zh_TW: 海釣竿用羽毛浮標。投擲時水花較輕。可堆疊。
+  desc_fr: Flotteur à plume pour canne à pêche. Éclaboussure légère. Empilable.
+  desc_de: Federschwimmer für Meeresangel. Leichtes Aufspritzen. Stapelbar.
+  desc_it: Galleggiante a piuma per canna da pesca. Schizzo leggero. Impilabile.
+  desc_pl: Spławik z piórka do wędki morskiej. Lekki plusk. Stackowalny.
+  desc_pt_BR: Boia de pena para vara de pesca. Respingo leve. Empilhável.
+  desc_ru: Перьевой поплавок для морской удочки. Лёгкий всплеск при забросе. Стакается.
+  desc_es: Flotador de pluma para caña de pescar. Salpicadura ligera. Apilable.
+  desc_es_MX: Flotador de pluma para caña de pescar. Salpicadura ligera. Apilable.
 525.oceanfishingbobber_crow
   en: Jet Quill Float
   ko: 검은 깃털 찌
   app: O
   source: Ocean fishing tackle (bobber). Quill float type — lighter splash. Modifies casting via BOBBER_CROW data. Stackable (small item stack). Cat toy.
+  desc_en: Quill float bobber for Sea Fishing Rod. Lighter splash on cast. Stackable.
+  desc_ko: 바다 낚싯대용 깃털 찌. 캐스팅 시 가벼운 착수. 중첩 가능.
+  desc_ja: 海釣り竿用クイルフロート。キャスト時の着水が軽い。スタック可能。
+  desc_zh_CN: 海钓竿用羽毛浮标。投掷时水花较轻。可堆叠。
+  desc_zh_TW: 海釣竿用羽毛浮標。投擲時水花較輕。可堆疊。
+  desc_fr: Flotteur à plume pour canne à pêche. Éclaboussure légère. Empilable.
+  desc_de: Federschwimmer für Meeresangel. Leichtes Aufspritzen. Stapelbar.
+  desc_it: Galleggiante a piuma per canna da pesca. Schizzo leggero. Impilabile.
+  desc_pl: Spławik z piórka do wędki morskiej. Lekki plusk. Stackowalny.
+  desc_pt_BR: Boia de pena para vara de pesca. Respingo leve. Empilhável.
+  desc_ru: Перьевой поплавок для морской удочки. Лёгкий всплеск при забросе. Стакается.
+  desc_es: Flotador de pluma para caña de pescar. Salpicadura ligera. Apilable.
+  desc_es_MX: Flotador de pluma para caña de pescar. Salpicadura ligera. Apilable.
 526.oceanfishingbobber_goose
   en: Down Quill Float
   ko: 솜깃 찌
   app: O
   source: Ocean fishing tackle (bobber). Quill float type — small splash. Modifies casting via BOBBER_GOOSE data. Stackable (small item stack). Cat toy.
+  desc_en: Quill float bobber for Sea Fishing Rod. Small splash on cast. Stackable.
+  desc_ko: 바다 낚싯대용 깃털 찌. 캐스팅 시 작은 착수. 중첩 가능.
+  desc_ja: 海釣り竿用クイルフロート。キャスト時の着水が小さい。スタック可能。
+  desc_zh_CN: 海钓竿用羽毛浮标。投掷时水花小。可堆叠。
+  desc_zh_TW: 海釣竿用羽毛浮標。投擲時水花小。可堆疊。
+  desc_fr: Flotteur à plume pour canne à pêche. Petite éclaboussure. Empilable.
+  desc_de: Federschwimmer für Meeresangel. Kleines Aufspritzen. Stapelbar.
+  desc_it: Galleggiante a piuma per canna da pesca. Schizzo piccolo. Impilabile.
+  desc_pl: Spławik z piórka do wędki morskiej. Mały plusk. Stackowalny.
+  desc_pt_BR: Boia de pena para vara de pesca. Respingo pequeno. Empilhável.
+  desc_ru: Перьевой поплавок для морской удочки. Малый всплеск при забросе. Стакается.
+  desc_es: Flotador de pluma para caña de pescar. Salpicadura pequeña. Apilable.
+  desc_es_MX: Flotador de pluma para caña de pescar. Salpicadura pequeña. Apilable.
 527.oceanfishingbobber_malbatross
   en: Malbatross Quill Float
   ko: 꽉새치 깃털 찌
   app: O
   source: Ocean fishing tackle (bobber). Quill float type — small splash. Modifies casting via BOBBER_MALBATROSS data. Stackable (small item stack). Cat toy.
+  desc_en: Premium quill float bobber from Malbatross feather. Small splash on cast. Stackable.
+  desc_ko: 꽉새치 깃털로 만든 고급 깃털 찌. 캐스팅 시 작은 착수. 중첩 가능.
+  desc_ja: マルバトロスの羽から作られた高級クイルフロート。着水が小さい。スタック可能。
+  desc_zh_CN: 用大信天翁羽毛制作的高级浮标。投掷时水花小。可堆叠。
+  desc_zh_TW: 用大信天翁羽毛製作的高級浮標。投擲時水花小。可堆疊。
+  desc_fr: Flotteur premium en plume de Malbatross. Petite éclaboussure. Empilable.
+  desc_de: Premium-Federschwimmer aus Malbatross-Feder. Kleines Aufspritzen. Stapelbar.
+  desc_it: Galleggiante premium di piuma di Malbatross. Schizzo piccolo. Impilabile.
+  desc_pl: Spławik premium z pióra Malbatross. Mały plusk. Stackowalny.
+  desc_pt_BR: Boia premium de pena de Malbatross. Respingo pequeno. Empilhável.
+  desc_ru: Премиум-поплавок из пера Мальбатросса. Малый всплеск. Стакается.
+  desc_es: Flotador premium de pluma de Malbatross. Salpicadura pequeña. Apilable.
+  desc_es_MX: Flotador premium de pluma de Malbatross. Salpicadura pequeña. Apilable.
 528.oceanfishingbobber_oval
   en: Hardened Slip Bobber
   ko: 단단한 유선형 찌
   app: O
   source: Ocean fishing tackle (bobber). Slip bobber type — medium splash. Modifies casting via BOBBER_OVAL data. Stackable (small item stack). Cat toy.
+  desc_en: Slip bobber for Sea Fishing Rod. Medium splash on cast. Stackable.
+  desc_ko: 바다 낚싯대용 유선형 찌. 캐스팅 시 중간 착수. 중첩 가능.
+  desc_ja: 海釣り竿用スリップボバー。キャスト時の着水が中程度。スタック可能。
+  desc_zh_CN: 海钓竿用滑动浮标。投掷时水花中等。可堆叠。
+  desc_zh_TW: 海釣竿用滑動浮標。投擲時水花中等。可堆疊。
+  desc_fr: Flotteur coulissant pour canne à pêche. Éclaboussure moyenne. Empilable.
+  desc_de: Gleitschwimmer für Meeresangel. Mittleres Aufspritzen. Stapelbar.
+  desc_it: Galleggiante scorrevole per canna da pesca. Schizzo medio. Impilabile.
+  desc_pl: Spławik przesuwany do wędki morskiej. Średni plusk. Stackowalny.
+  desc_pt_BR: Boia deslizante para vara de pesca. Respingo médio. Empilhável.
+  desc_ru: Скользящий поплавок для морской удочки. Средний всплеск. Стакается.
+  desc_es: Flotador deslizante para caña de pescar. Salpicadura media. Apilable.
+  desc_es_MX: Flotador deslizante para caña de pescar. Salpicadura media. Apilable.
 529.oceanfishingbobber_robin
   en: Crimson Quill Float
   ko: 붉은 깃털 찌
   app: O
   source: Ocean fishing tackle (bobber). Quill float type — lighter splash. Modifies casting via BOBBER_ROBIN data. Stackable (small item stack). Cat toy.
+  desc_en: Quill float bobber for Sea Fishing Rod. Lighter splash on cast. Stackable.
+  desc_ko: 바다 낚싯대용 깃털 찌. 캐스팅 시 가벼운 착수. 중첩 가능.
+  desc_ja: 海釣り竿用クイルフロート。キャスト時の着水が軽い。スタック可能。
+  desc_zh_CN: 海钓竿用羽毛浮标。投掷时水花较轻。可堆叠。
+  desc_zh_TW: 海釣竿用羽毛浮標。投擲時水花較輕。可堆疊。
+  desc_fr: Flotteur à plume pour canne à pêche. Éclaboussure légère. Empilable.
+  desc_de: Federschwimmer für Meeresangel. Leichtes Aufspritzen. Stapelbar.
+  desc_it: Galleggiante a piuma per canna da pesca. Schizzo leggero. Impilabile.
+  desc_pl: Spławik z piórka do wędki morskiej. Lekki plusk. Stackowalny.
+  desc_pt_BR: Boia de pena para vara de pesca. Respingo leve. Empilhável.
+  desc_ru: Перьевой поплавок для морской удочки. Лёгкий всплеск. Стакается.
+  desc_es: Flotador de pluma para caña de pescar. Salpicadura ligera. Apilable.
+  desc_es_MX: Flotador de pluma para caña de pescar. Salpicadura ligera. Apilable.
 530.oceanfishingbobber_robin_winter
   en: Azure Quill Float
   ko: 푸른 깃털 찌
   app: O
   source: Ocean fishing tackle (bobber). Quill float type — lighter splash. Modifies casting via BOBBER_ROBIN_WINTER data. Stackable (small item stack). Cat toy.
+  desc_en: Quill float bobber for Sea Fishing Rod. Lighter splash on cast. Stackable.
+  desc_ko: 바다 낚싯대용 깃털 찌. 캐스팅 시 가벼운 착수. 중첩 가능.
+  desc_ja: 海釣り竿用クイルフロート。キャスト時の着水が軽い。スタック可能。
+  desc_zh_CN: 海钓竿用羽毛浮标。投掷时水花较轻。可堆叠。
+  desc_zh_TW: 海釣竿用羽毛浮標。投擲時水花較輕。可堆疊。
+  desc_fr: Flotteur à plume pour canne à pêche. Éclaboussure légère. Empilable.
+  desc_de: Federschwimmer für Meeresangel. Leichtes Aufspritzen. Stapelbar.
+  desc_it: Galleggiante a piuma per canna da pesca. Schizzo leggero. Impilabile.
+  desc_pl: Spławik z piórka do wędki morskiej. Lekki plusk. Stackowalny.
+  desc_pt_BR: Boia de pena para vara de pesca. Respingo leve. Empilhável.
+  desc_ru: Перьевой поплавок для морской удочки. Лёгкий всплеск. Стакается.
+  desc_es: Flotador de pluma para caña de pescar. Salpicadura ligera. Apilable.
+  desc_es_MX: Flotador de pluma para caña de pescar. Salpicadura ligera. Apilable.
 531.oceanfishinglure_hermit_drowsy
   en: Stupefying Lure
   ko: 바보의 루어
   app: O
   source: Ocean fishing tackle (lure). Special hermit lure — SPECIAL_DROWSY lure data. Stackable (small item stack). Hermit Island reward.
+  desc_en: Special hermit lure for Sea Fishing Rod. Drowsy effect on hooked fish. Hermit Island reward. Stackable.
+  desc_ko: 바다 낚싯대용 은둔자 특수 루어. 물린 물고기에 졸음 효과. 은둔자 섬 보상. 중첩 가능.
+  desc_ja: 海釣り竿用隠者特殊ルアー。掛かった魚に眠気効果。隠者の島報酬。スタック可能。
+  desc_zh_CN: 海钓竿用隐士特殊鱼饵。对上钩鱼有催眠效果。隐士岛奖励。可堆叠。
+  desc_zh_TW: 海釣竿用隱士特殊魚餌。對上鉤魚有催眠效果。隱士島獎勵。可堆疊。
+  desc_fr: Leurre spécial d'ermite. Effet somnolence sur les poissons. Récompense de l'île Ermite. Empilable.
+  desc_de: Spezieller Einsiedlerköder. Schläfrigkeit bei gefangenen Fischen. Einsiedlerinsel-Belohnung. Stapelbar.
+  desc_it: Esca speciale dell'eremita. Effetto sonnolenza sui pesci. Ricompensa Isola dell'Eremita. Impilabile.
+  desc_pl: Specjalna przynęta pustelnika. Efekt senności na ryby. Nagroda z Wyspy Pustelnika. Stackowalny.
+  desc_pt_BR: Isca especial da ermitã. Efeito sonolência nos peixes. Recompensa da Ilha da Ermitã. Empilhável.
+  desc_ru: Особая приманка отшельницы. Эффект сонливости на рыбу. Награда Острова Отшельницы. Стакается.
+  desc_es: Señuelo especial de ermitaña. Efecto somnolencia en peces. Recompensa de Isla Ermitaña. Apilable.
+  desc_es_MX: Señuelo especial de ermitaña. Efecto somnolencia en peces. Recompensa de Isla Ermitaña. Apilable.
 532.oceanfishinglure_hermit_heavy
   en: Heavy Weighted Lure
   ko: 묵직한 루어
   app: O
   source: Ocean fishing tackle (lure). Special hermit lure — SPECIAL_HEAVY lure data. Bonus charm for heavy fish (weight >= heavy threshold). Stackable (small item stack). Hermit Island reward.
+  desc_en: Special hermit lure for Sea Fishing Rod. Bonus attraction for heavy fish. Hermit Island reward. Stackable.
+  desc_ko: 바다 낚싯대용 은둔자 특수 루어. 무거운 물고기에 추가 매력. 은둔자 섬 보상. 중첩 가능.
+  desc_ja: 海釣り竿用隠者特殊ルアー。重い魚への追加誘引。隠者の島報酬。スタック可能。
+  desc_zh_CN: 海钓竿用隐士特殊鱼饵。对重型鱼有额外吸引力。隐士岛奖励。可堆叠。
+  desc_zh_TW: 海釣竿用隱士特殊魚餌。對重型魚有額外吸引力。隱士島獎勵。可堆疊。
+  desc_fr: Leurre spécial d'ermite. Bonus d'attraction pour poissons lourds. Récompense Île Ermite. Empilable.
+  desc_de: Spezieller Einsiedlerköder. Bonus für schwere Fische. Einsiedlerinsel-Belohnung. Stapelbar.
+  desc_it: Esca speciale dell'eremita. Bonus attrazione per pesci pesanti. Ricompensa Isola dell'Eremita. Impilabile.
+  desc_pl: Specjalna przynęta pustelnika. Bonus do ciężkich ryb. Nagroda z Wyspy Pustelnika. Stackowalny.
+  desc_pt_BR: Isca especial da ermitã. Bônus para peixes pesados. Recompensa da Ilha da Ermitã. Empilhável.
+  desc_ru: Особая приманка отшельницы. Бонус на тяжёлую рыбу. Награда Острова Отшельницы. Стакается.
+  desc_es: Señuelo especial de ermitaña. Bonus para peces pesados. Recompensa de Isla Ermitaña. Apilable.
+  desc_es_MX: Señuelo especial de ermitaña. Bonus para peces pesados. Recompensa de Isla Ermitaña. Apilable.
 533.oceanfishinglure_hermit_rain
   en: Rainy Day Lure
   ko: 우천의 루어
   app: O
   source: Ocean fishing tackle (lure). Special hermit lure — SPECIAL_RAIN lure data. Effective during rain. Stackable (small item stack). Hermit Island reward.
+  desc_en: Special hermit lure for Sea Fishing Rod. More effective during rain. Hermit Island reward. Stackable.
+  desc_ko: 바다 낚싯대용 은둔자 특수 루어. 비 올 때 효과 증가. 은둔자 섬 보상. 중첩 가능.
+  desc_ja: 海釣り竿用隠者特殊ルアー。雨天時に効果増加。隠者の島報酬。スタック可能。
+  desc_zh_CN: 海钓竿用隐士特殊鱼饵。下雨时更有效。隐士岛奖励。可堆叠。
+  desc_zh_TW: 海釣竿用隱士特殊魚餌。下雨時更有效。隱士島獎勵。可堆疊。
+  desc_fr: Leurre spécial d'ermite. Plus efficace sous la pluie. Récompense Île Ermite. Empilable.
+  desc_de: Spezieller Einsiedlerköder. Effektiver bei Regen. Einsiedlerinsel-Belohnung. Stapelbar.
+  desc_it: Esca speciale dell'eremita. Più efficace sotto la pioggia. Ricompensa Isola dell'Eremita. Impilabile.
+  desc_pl: Specjalna przynęta pustelnika. Skuteczniejsza w deszczu. Nagroda z Wyspy Pustelnika. Stackowalny.
+  desc_pt_BR: Isca especial da ermitã. Mais eficaz na chuva. Recompensa da Ilha da Ermitã. Empilhável.
+  desc_ru: Особая приманка отшельницы. Эффективнее в дождь. Награда Острова Отшельницы. Стакается.
+  desc_es: Señuelo especial de ermitaña. Más eficaz bajo lluvia. Recompensa de Isla Ermitaña. Apilable.
+  desc_es_MX: Señuelo especial de ermitaña. Más eficaz bajo lluvia. Recompensa de Isla Ermitaña. Apilable.
 534.oceanfishinglure_hermit_snow
   en: Snow Day Lure
   ko: 강설의 루어
   app: O
   source: Ocean fishing tackle (lure). Special hermit lure — SPECIAL_SNOW lure data. Effective during snow. Stackable (small item stack). Hermit Island reward.
+  desc_en: Special hermit lure for Sea Fishing Rod. More effective during snow. Hermit Island reward. Stackable.
+  desc_ko: 바다 낚싯대용 은둔자 특수 루어. 눈 올 때 효과 증가. 은둔자 섬 보상. 중첩 가능.
+  desc_ja: 海釣り竿用隠者特殊ルアー。降雪時に効果増加。隠者の島報酬。スタック可能。
+  desc_zh_CN: 海钓竿用隐士特殊鱼饵。下雪时更有效。隐士岛奖励。可堆叠。
+  desc_zh_TW: 海釣竿用隱士特殊魚餌。下雪時更有效。隱士島獎勵。可堆疊。
+  desc_fr: Leurre spécial d'ermite. Plus efficace sous la neige. Récompense Île Ermite. Empilable.
+  desc_de: Spezieller Einsiedlerköder. Effektiver bei Schnee. Einsiedlerinsel-Belohnung. Stapelbar.
+  desc_it: Esca speciale dell'eremita. Più efficace sotto la neve. Ricompensa Isola dell'Eremita. Impilabile.
+  desc_pl: Specjalna przynęta pustelnika. Skuteczniejsza w śniegu. Nagroda z Wyspy Pustelnika. Stackowalny.
+  desc_pt_BR: Isca especial da ermitã. Mais eficaz na neve. Recompensa da Ilha da Ermitã. Empilhável.
+  desc_ru: Особая приманка отшельницы. Эффективнее в снег. Награда Острова Отшельницы. Стакается.
+  desc_es: Señuelo especial de ermitaña. Más eficaz bajo nieve. Recompensa de Isla Ermitaña. Apilable.
+  desc_es_MX: Señuelo especial de ermitaña. Más eficaz bajo nieve. Recompensa de Isla Ermitaña. Apilable.
 535.oceanfishinglure_spinner_blue
   en: Nightflyer Spinnerbait
   ko: 밤바다 스피너베이트
   app: O
   source: Ocean fishing tackle (lure). Spinnerbait type — SPINNERBAIT_NIGHT lure data. Best at night. Stackable (small item stack).
+  desc_en: Spinnerbait lure for Sea Fishing Rod. Most effective at night. Stackable.
+  desc_ko: 바다 낚싯대용 스피너베이트 루어. 밤에 가장 효과적. 중첩 가능.
+  desc_ja: 海釣り竿用スピナーベイト。夜間に最も効果的。スタック可能。
+  desc_zh_CN: 海钓竿用旋转亮片鱼饵。夜间最有效。可堆叠。
+  desc_zh_TW: 海釣竿用旋轉亮片魚餌。夜間最有效。可堆疊。
+  desc_fr: Spinnerbait pour canne à pêche. Plus efficace la nuit. Empilable.
+  desc_de: Spinnerbait für Meeresangel. Am effektivsten bei Nacht. Stapelbar.
+  desc_it: Spinnerbait per canna da pesca. Più efficace di notte. Impilabile.
+  desc_pl: Spinnerbait do wędki morskiej. Najskuteczniejszy w nocy. Stackowalny.
+  desc_pt_BR: Spinnerbait para vara de pesca. Mais eficaz à noite. Empilhável.
+  desc_ru: Спиннербейт для морской удочки. Наиболее эффективен ночью. Стакается.
+  desc_es: Spinnerbait para caña de pescar. Más eficaz de noche. Apilable.
+  desc_es_MX: Spinnerbait para caña de pescar. Más eficaz de noche. Apilable.
 536.oceanfishinglure_spinner_green
   en: Dusky Spinnerbait
   ko: 어스름한 스피너베이트
   app: O
   source: Ocean fishing tackle (lure). Spinnerbait type — SPINNERBAIT_DUSK lure data. Best at dusk. Stackable (small item stack).
+  desc_en: Spinnerbait lure for Sea Fishing Rod. Most effective at dusk. Stackable.
+  desc_ko: 바다 낚싯대용 스피너베이트 루어. 황혼에 가장 효과적. 중첩 가능.
+  desc_ja: 海釣り竿用スピナーベイト。夕暮れ時に最も効果的。スタック可能。
+  desc_zh_CN: 海钓竿用旋转亮片鱼饵。黄昏最有效。可堆叠。
+  desc_zh_TW: 海釣竿用旋轉亮片魚餌。黃昏最有效。可堆疊。
+  desc_fr: Spinnerbait pour canne à pêche. Plus efficace au crépuscule. Empilable.
+  desc_de: Spinnerbait für Meeresangel. Am effektivsten in der Dämmerung. Stapelbar.
+  desc_it: Spinnerbait per canna da pesca. Più efficace al crepuscolo. Impilabile.
+  desc_pl: Spinnerbait do wędki morskiej. Najskuteczniejszy o zmierzchu. Stackowalny.
+  desc_pt_BR: Spinnerbait para vara de pesca. Mais eficaz ao entardecer. Empilhável.
+  desc_ru: Спиннербейт для морской удочки. Наиболее эффективен в сумерки. Стакается.
+  desc_es: Spinnerbait para caña de pescar. Más eficaz al anochecer. Apilable.
+  desc_es_MX: Spinnerbait para caña de pescar. Más eficaz al anochecer. Apilable.
 537.oceanfishinglure_spinner_red
   en: Sunrise Spinnerbait
   ko: 아침햇살 스피너베이트
   app: O
   source: Ocean fishing tackle (lure). Spinnerbait type — SPINNERBAIT_DAY lure data. Best during day. Stackable (small item stack).
+  desc_en: Spinnerbait lure for Sea Fishing Rod. Most effective during daytime. Stackable.
+  desc_ko: 바다 낚싯대용 스피너베이트 루어. 낮에 가장 효과적. 중첩 가능.
+  desc_ja: 海釣り竿用スピナーベイト。日中に最も効果的。スタック可能。
+  desc_zh_CN: 海钓竿用旋转亮片鱼饵。白天最有效。可堆叠。
+  desc_zh_TW: 海釣竿用旋轉亮片魚餌。白天最有效。可堆疊。
+  desc_fr: Spinnerbait pour canne à pêche. Plus efficace le jour. Empilable.
+  desc_de: Spinnerbait für Meeresangel. Am effektivsten bei Tag. Stapelbar.
+  desc_it: Spinnerbait per canna da pesca. Più efficace di giorno. Impilabile.
+  desc_pl: Spinnerbait do wędki morskiej. Najskuteczniejszy w dzień. Stackowalny.
+  desc_pt_BR: Spinnerbait para vara de pesca. Mais eficaz durante o dia. Empilhável.
+  desc_ru: Спиннербейт для морской удочки. Наиболее эффективен днём. Стакается.
+  desc_es: Spinnerbait para caña de pescar. Más eficaz de día. Apilable.
+  desc_es_MX: Spinnerbait para caña de pescar. Más eficaz de día. Apilable.
 538.oceanfishinglure_spoon_blue
   en: Nightflyer Spoon
   ko: 밤바다 스푼 루어
   app: O
   source: Ocean fishing tackle (lure). Spoon type — SPOON_NIGHT lure data. Best at night. Stackable (small item stack).
+  desc_en: Spoon lure for Sea Fishing Rod. Most effective at night. Stackable.
+  desc_ko: 바다 낚싯대용 스푼 루어. 밤에 가장 효과적. 중첩 가능.
+  desc_ja: 海釣り竿用スプーンルアー。夜間に最も効果的。スタック可能。
+  desc_zh_CN: 海钓竿用匙型鱼饵。夜间最有效。可堆叠。
+  desc_zh_TW: 海釣竿用匙型魚餌。夜間最有效。可堆疊。
+  desc_fr: Leurre cuillère pour canne à pêche. Plus efficace la nuit. Empilable.
+  desc_de: Löffelköder für Meeresangel. Am effektivsten bei Nacht. Stapelbar.
+  desc_it: Cucchiaino per canna da pesca. Più efficace di notte. Impilabile.
+  desc_pl: Łyżka do wędki morskiej. Najskuteczniejsza w nocy. Stackowalny.
+  desc_pt_BR: Colher para vara de pesca. Mais eficaz à noite. Empilhável.
+  desc_ru: Блесна для морской удочки. Наиболее эффективна ночью. Стакается.
+  desc_es: Cucharilla para caña de pescar. Más eficaz de noche. Apilable.
+  desc_es_MX: Cucharilla para caña de pescar. Más eficaz de noche. Apilable.
 539.oceanfishinglure_spoon_green
   en: Dusky Spoon
   ko: 어스름한 스푼 루어
   app: O
   source: Ocean fishing tackle (lure). Spoon type — SPOON_DUSK lure data. Best at dusk. Stackable (small item stack).
+  desc_en: Spoon lure for Sea Fishing Rod. Most effective at dusk. Stackable.
+  desc_ko: 바다 낚싯대용 스푼 루어. 황혼에 가장 효과적. 중첩 가능.
+  desc_ja: 海釣り竿用スプーンルアー。夕暮れ時に最も効果的。スタック可能。
+  desc_zh_CN: 海钓竿用匙型鱼饵。黄昏最有效。可堆叠。
+  desc_zh_TW: 海釣竿用匙型魚餌。黃昏最有效。可堆疊。
+  desc_fr: Leurre cuillère pour canne à pêche. Plus efficace au crépuscule. Empilable.
+  desc_de: Löffelköder für Meeresangel. Am effektivsten in der Dämmerung. Stapelbar.
+  desc_it: Cucchiaino per canna da pesca. Più efficace al crepuscolo. Impilabile.
+  desc_pl: Łyżka do wędki morskiej. Najskuteczniejsza o zmierzchu. Stackowalny.
+  desc_pt_BR: Colher para vara de pesca. Mais eficaz ao entardecer. Empilhável.
+  desc_ru: Блесна для морской удочки. Наиболее эффективна в сумерки. Стакается.
+  desc_es: Cucharilla para caña de pescar. Más eficaz al anochecer. Apilable.
+  desc_es_MX: Cucharilla para caña de pescar. Más eficaz al anochecer. Apilable.
 540.oceanfishinglure_spoon_red
   en: Sunrise Spoon
   ko: 아침햇살 스푼 루어
   app: O
   source: Ocean fishing tackle (lure). Spoon type — SPOON_DAY lure data. Best during day. Stackable (small item stack).
+  desc_en: Spoon lure for Sea Fishing Rod. Most effective during daytime. Stackable.
+  desc_ko: 바다 낚싯대용 스푼 루어. 낮에 가장 효과적. 중첩 가능.
+  desc_ja: 海釣り竿用スプーンルアー。日中に最も効果的。スタック可能。
+  desc_zh_CN: 海钓竿用匙型鱼饵。白天最有效。可堆叠。
+  desc_zh_TW: 海釣竿用匙型魚餌。白天最有效。可堆疊。
+  desc_fr: Leurre cuillère pour canne à pêche. Plus efficace le jour. Empilable.
+  desc_de: Löffelköder für Meeresangel. Am effektivsten bei Tag. Stapelbar.
+  desc_it: Cucchiaino per canna da pesca. Più efficace di giorno. Impilabile.
+  desc_pl: Łyżka do wędki morskiej. Najskuteczniejsza w dzień. Stackowalny.
+  desc_pt_BR: Colher para vara de pesca. Mais eficaz durante o dia. Empilhável.
+  desc_ru: Блесна для морской удочки. Наиболее эффективна днём. Стакается.
+  desc_es: Cucharilla para caña de pescar. Más eficaz de día. Apilable.
+  desc_es_MX: Cucharilla para caña de pescar. Más eficaz de día. Apilable.
 541.oceanfishingrod
   en: Sea Fishing Rod
   ko: 바다 낚싯대
   app: O
   source: Tool + weapon. 4.25 damage (34*0.125), attack wear 4. 2-slot container (bobber + lure). Casts with reticule targeting ocean tiles. Tackle lost on line break. Wets tackle when hooked in ocean.
+  desc_en: Sea fishing rod with 2 tackle slots (bobber + lure). 4.25 damage. Casts into ocean. Tackle lost on line break.
+  desc_ko: 2개 태클 슬롯(찌 + 루어)의 바다 낚싯대. 4.25 피해. 바다에 캐스팅. 줄 끊어지면 태클 소실.
+  desc_ja: 2つのタックルスロット（ボバー＋ルアー）の海釣り竿。4.25ダメージ。海に投入。ラインブレイクでタックル消失。
+  desc_zh_CN: 带2个钓具槽（浮标+鱼饵）的海钓竿。4.25伤害。投入海中。断线时钓具丢失。
+  desc_zh_TW: 帶2個釣具槽（浮標+魚餌）的海釣竿。4.25傷害。投入海中。斷線時釣具丟失。
+  desc_fr: Canne à pêche avec 2 emplacements (flotteur + leurre). 4,25 dégâts. Lance en mer. Matériel perdu si la ligne casse.
+  desc_de: Meeresangel mit 2 Zubehörplätzen (Schwimmer + Köder). 4,25 Schaden. Wurf ins Meer. Zubehör bei Schnurbruch verloren.
+  desc_it: Canna da pesca con 2 slot (galleggiante + esca). 4,25 danni. Lancia in mare. Attrezzatura persa se la lenza si spezza.
+  desc_pl: Wędka morska z 2 slotami (spławik + przynęta). 4,25 obrażeń. Rzut w morze. Sprzęt tracony przy zerwaniu żyłki.
+  desc_pt_BR: Vara de pesca com 2 slots (boia + isca). 4,25 de dano. Lança no mar. Equipamento perdido se a linha quebrar.
+  desc_ru: Морская удочка с 2 слотами (поплавок + приманка). 4,25 урона. Заброс в океан. Снасти теряются при обрыве лески.
+  desc_es: Caña de pescar con 2 ranuras (flotador + señuelo). 4,25 de daño. Lanza al mar. Equipo perdido si se rompe la línea.
+  desc_es_MX: Caña de pescar con 2 ranuras (flotador + señuelo). 4.25 de daño. Lanza al mar. Equipo perdido si se rompe la línea.
 542.offering_pot
   en: Communal Kelp Dish
   ko: 공용 다시마 그릇
   app: O
   source: Wurt structure. Kelp container (6 slots). Range 7 for merm house/watchtower deploy helper. Activatable by merm_builder to gather merms — merms eat kelp and follow caller. Hammerable (4 hits).
+  desc_en: Wurt structure with 6-slot kelp container. Gathers merms to eat kelp and follow. Range 7 for merm building placement.
+  desc_ko: 6슬롯 다시마 용기를 가진 워트 구조물. 머름들이 다시마를 먹고 따르도록 모음. 머름 건물 배치 범위 7.
+  desc_ja: 6スロットのケルプ容器を持つワート構造物。マームを集めてケルプを食べさせ、追従させる。マーム建築配置範囲7。
+  desc_zh_CN: 沃特结构，6格海带容器。召集鱼人吃海带并跟随。鱼人建筑放置范围7。
+  desc_zh_TW: 沃特結構，6格海帶容器。召集魚人吃海帶並跟隨。魚人建築放置範圍7。
+  desc_fr: Structure de Wurt avec conteneur à algues (6 emplacements). Rassemble les merms pour manger et suivre. Portée 7.
+  desc_de: Wurt-Struktur mit 6-Slot-Seetang-Behälter. Versammelt Merms zum Essen und Folgen. Reichweite 7.
+  desc_it: Struttura di Wurt con contenitore alghe (6 slot). Raduna i merm per mangiare alghe e seguire. Raggio 7.
+  desc_pl: Struktura Wurt z pojemnikiem na wodorosty (6 slotów). Zbiera mermy do jedzenia i podążania. Zasięg 7.
+  desc_pt_BR: Estrutura da Wurt com contêiner de algas (6 slots). Reúne merms para comer e seguir. Alcance 7.
+  desc_ru: Структура Вурт с контейнером для водорослей (6 слотов). Собирает мермов есть водоросли и следовать. Радиус 7.
+  desc_es: Estructura de Wurt con contenedor de algas (6 ranuras). Reúne merms para comer y seguir. Alcance 7.
+  desc_es_MX: Estructura de Wurt con contenedor de algas (6 ranuras). Reúne merms para comer y seguir. Alcance 7.
 543.offering_pot_upgraded
   en: Superior Communal Kelp Dish
   ko: 상급 공용 다시마 그릇
   app: O
   source: Wurt structure. Upgraded version of Communal Kelp Dish — larger physics (0.7 radius). Same kelp container and merm gathering mechanics. Range 7 for deploy helper. Hammerable (4 hits).
+  desc_en: Upgraded Wurt kelp dish with larger physics radius. Same 6-slot kelp container and merm gathering mechanics.
+  desc_ko: 물리 반경이 더 큰 상위 워트 다시마 그릇. 동일한 6슬롯 다시마 용기와 머름 소집 기능.
+  desc_ja: より大きな物理半径を持つ上位ワートケルプ皿。同じ6スロットケルプ容器とマーム集合機能。
+  desc_zh_CN: 物理半径更大的升级版沃特海带碗。相同6格海带容器和鱼人召集功能。
+  desc_zh_TW: 物理半徑更大的升級版沃特海帶碗。相同6格海帶容器和魚人召集功能。
+  desc_fr: Plat de varech amélioré de Wurt. Même conteneur 6 emplacements et mécaniques de rassemblement.
+  desc_de: Verbessertes Wurt-Seetanggericht. Gleicher 6-Slot-Behälter und Merm-Sammlungsmechanik.
+  desc_it: Piatto di alghe migliorato di Wurt. Stesso contenitore 6 slot e meccaniche di raccolta merm.
+  desc_pl: Ulepszone danie z wodorostów Wurt. Ten sam pojemnik 6-slotowy i mechanika zbierania mermów.
+  desc_pt_BR: Prato de algas aprimorado da Wurt. Mesmo contêiner de 6 slots e mecânicas de reunião de merms.
+  desc_ru: Улучшенное блюдо Вурт с большим физическим радиусом. Тот же контейнер на 6 слотов и механика сбора мермов.
+  desc_es: Plato de algas mejorado de Wurt. Mismo contenedor de 6 ranuras y mecánicas de reunión.
+  desc_es_MX: Plato de algas mejorado de Wurt. Mismo contenedor de 6 ranuras y mecánicas de reunión.
 544.onemanband
   en: One-man Band
   ko: 원 맨 밴드
   app: O
   source: Body slot. Fuel 180s (6*30). Range 12 — recruits nearby pigs/merms as followers (max 10), tends farm plants. Shadow level 1. Sanity drain: -DAPPERNESS_SMALL base, plus -SANITYAURA_SMALL per follower (excluding pets). Sinks in water.
+  desc_en: Body slot instrument that recruits nearby pigs/merms as followers (max 10) within range 12. Fuel 180s. Shadow level 1. Drains sanity per follower.
+  desc_ko: 반경 12 내 돼지/머름을 추종자로 모집(최대 10)하는 몸통 슬롯 악기. 연료 180초. 그림자 레벨 1. 추종자당 정신력 감소.
+  desc_ja: 範囲12内の豚/マームを最大10体フォロワーにするボディスロット楽器。燃料180秒。シャドウレベル1。フォロワーごとに正気度低下。
+  desc_zh_CN: 在范围12内招募猪/鱼人为追随者（最多10个）的身体槽乐器。燃料180秒。暗影等级1。每个追随者消耗理智。
+  desc_zh_TW: 在範圍12內招募豬/魚人為追隨者（最多10個）的身體槽樂器。燃料180秒。暗影等級1。每個追隨者消耗理智。
+  desc_fr: Instrument (corps) recrutant cochons/merms (max 10) dans un rayon de 12. Carburant 180s. Niveau d'ombre 1. Draine la santé mentale par suiveur.
+  desc_de: Körperslot-Instrument, das Schweine/Merms (max 10) in Reichweite 12 rekrutiert. Brennstoff 180s. Schattenstufe 1. Verstandsverlust pro Gefolgsmann.
+  desc_it: Strumento (corpo) che recluta maiali/merm (max 10) nel raggio di 12. Carburante 180s. Livello ombra 1. Drena sanità per seguace.
+  desc_pl: Instrument (ciało) rekrutujący świnie/mermy (maks. 10) w zasięgu 12. Paliwo 180s. Poziom cienia 1. Drenuje poczytalność za podążającego.
+  desc_pt_BR: Instrumento (corpo) que recruta porcos/merms (máx. 10) no raio 12. Combustível 180s. Nível sombrio 1. Drena sanidade por seguidor.
+  desc_ru: Инструмент (тело), вербующий свиней/мермов (макс. 10) в радиусе 12. Топливо 180с. Уровень тени 1. Расход рассудка за последователя.
+  desc_es: Instrumento (cuerpo) que recluta cerdos/merms (máx. 10) en radio 12. Combustible 180s. Nivel de sombra 1. Drena cordura por seguidor.
+  desc_es_MX: Instrumento (cuerpo) que recluta cerdos/merms (máx. 10) en radio 12. Combustible 180s. Nivel de sombra 1. Drena cordura por seguidor.
 545.opalstaff
   en: Moon Caller's Staff
   ko: 달부름 지팡이
   app: X
   type: deconstruct
   source: Staff. 50 uses. Summons a Dwarf Star that lasts 960s (2 days) — provides light and warmth.
+  desc_en: Staff with 50 uses. Summons a Dwarf Star lasting 960s (2 days) that provides light and warmth.
+  desc_ko: 50회 사용 가능한 지팡이. 960초(2일) 지속되는 난쟁이별을 소환하여 빛과 온기 제공.
+  desc_ja: 50回使用の杖。960秒（2日間）持続するドワーフスターを召喚し、光と暖かさを提供。
+  desc_zh_CN: 50次使用的法杖。召唤持续960秒（2天）的矮星，提供光和温暖。
+  desc_zh_TW: 50次使用的法杖。召喚持續960秒（2天）的矮星，提供光和溫暖。
+  desc_fr: Bâton à 50 utilisations. Invoque une Étoile Naine (960s / 2 jours) fournissant lumière et chaleur.
+  desc_de: Stab mit 50 Nutzungen. Beschwört einen Zwergstern (960s / 2 Tage) für Licht und Wärme.
+  desc_it: Bastone con 50 usi. Evoca una Stella Nana (960s / 2 giorni) che fornisce luce e calore.
+  desc_pl: Laska z 50 użyciami. Przywołuje Gwiazdę Karłowatą (960s / 2 dni) dającą światło i ciepło.
+  desc_pt_BR: Cajado com 50 usos. Invoca uma Estrela Anã (960s / 2 dias) que fornece luz e calor.
+  desc_ru: Посох на 50 зарядов. Призывает Карликовую Звезду (960с / 2 дня), дающую свет и тепло.
+  desc_es: Bastón con 50 usos. Invoca una Estrella Enana (960s / 2 días) que proporciona luz y calor.
+  desc_es_MX: Bastón con 50 usos. Invoca una Estrella Enana (960s / 2 días) que proporciona luz y calor.
 546.orangeamulet
   en: The Lazy Forager
   ko: 게으른 약탈자
   app: O
   source: Body slot amulet. 225 uses. Auto-picks up nearby items within range 4. Internal cooldown 0.33s between pickups.
+  desc_en: Body slot amulet that auto-picks up nearby items within range 4. 225 uses. Cooldown 0.33s between pickups.
+  desc_ko: 반경 4 내 아이템을 자동 줍는 몸통 부적. 225회 사용. 줍기 간격 0.33초.
+  desc_ja: 範囲4以内のアイテムを自動拾得するボディスロットアミュレット。225回使用。拾得間隔0.33秒。
+  desc_zh_CN: 自动拾取范围4内物品的身体护符。225次使用。拾取间隔0.33秒。
+  desc_zh_TW: 自動拾取範圍4內物品的身體護符。225次使用。拾取間隔0.33秒。
+  desc_fr: Amulette auto-ramassant les objets dans un rayon de 4. 225 utilisations. Intervalle 0,33s.
+  desc_de: Amulett zum automatischen Aufsammeln von Gegenständen in Reichweite 4. 225 Nutzungen. Intervall 0,33s.
+  desc_it: Amuleto che raccoglie automaticamente oggetti nel raggio di 4. 225 usi. Intervallo 0,33s.
+  desc_pl: Amulet automatycznie zbierający przedmioty w zasięgu 4. 225 użyć. Odstęp 0,33s.
+  desc_pt_BR: Amuleto que coleta automaticamente itens no raio 4. 225 usos. Intervalo 0,33s.
+  desc_ru: Амулет, автоматически подбирающий предметы в радиусе 4. 225 зарядов. Интервал 0,33с.
+  desc_es: Amuleto que recoge automáticamente objetos en radio 4. 225 usos. Intervalo 0,33s.
+  desc_es_MX: Amuleto que recoge automáticamente objetos en radio 4. 225 usos. Intervalo 0.33s.
 547.orangemooneye
   en: Orange Moonlens
   ko: 주황 달수정
   app: X
   type: deconstruct
   source: Tradable item. Shows on global map when dropped (minimap icon with fog-of-war override). Bloom visual effect. No combat or equipment stats. Sparkles periodically.
+  desc_en: Tradable item visible on the global map when dropped. Decorative moonlens with bloom effect. No combat stats.
+  desc_ko: 떨어뜨리면 전체 지도에 표시되는 교환 아이템. 블룸 효과가 있는 장식용 달수정. 전투 능력치 없음.
+  desc_ja: ドロップ時にグローバルマップに表示される交易品。ブルーム効果のある装飾用ムーンレンズ。戦闘ステータスなし。
+  desc_zh_CN: 丢弃时在全局地图上可见的交易品。带光晕效果的装饰性月透镜。无战斗属性。
+  desc_zh_TW: 丟棄時在全域地圖上可見的交易品。帶光暈效果的裝飾性月透鏡。無戰鬥屬性。
+  desc_fr: Objet échangeable visible sur la carte quand posé. Lentille lunaire décorative. Pas de stats de combat.
+  desc_de: Handelbares Objekt, auf der Karte sichtbar wenn abgelegt. Dekorative Mondlinse. Keine Kampfwerte.
+  desc_it: Oggetto scambiabile visibile sulla mappa se posato. Lente lunare decorativa. Nessuna statistica di combattimento.
+  desc_pl: Przedmiot handlowy widoczny na mapie po upuszczeniu. Dekoracyjna soczewka księżycowa. Brak statystyk bojowych.
+  desc_pt_BR: Item negociável visível no mapa quando largado. Lente lunar decorativa. Sem atributos de combate.
+  desc_ru: Торговый предмет, видимый на карте при сбросе. Декоративная лунная линза. Без боевых характеристик.
+  desc_es: Objeto comerciable visible en el mapa al soltarlo. Lente lunar decorativa. Sin estadísticas de combate.
+  desc_es_MX: Objeto comerciable visible en el mapa al soltarlo. Lente lunar decorativa. Sin estadísticas de combate.
 548.orangestaff
   en: The Lazy Explorer
   ko: 게으른 탐험가
   app: O
   source: Staff. 20 uses. Teleports user a short distance (blink). Orange Gem staff.
+  desc_en: Staff with 20 uses. Teleports the user a short distance (blink). Orange Gem staff.
+  desc_ko: 20회 사용 가능한 지팡이. 사용자를 짧은 거리로 순간이동(블링크). 주황 보석 지팡이.
+  desc_ja: 20回使用の杖。短距離テレポート（ブリンク）。オレンジジェム杖。
+  desc_zh_CN: 20次使用的法杖。短距离瞬移（闪现）。橙宝石法杖。
+  desc_zh_TW: 20次使用的法杖。短距離瞬移（閃現）。橙寶石法杖。
+  desc_fr: Bâton à 20 utilisations. Téléporte sur une courte distance (clignotement). Bâton à gemme orange.
+  desc_de: Stab mit 20 Nutzungen. Teleportiert den Benutzer eine kurze Distanz (Blink). Orangener Edelsteinstab.
+  desc_it: Bastone con 20 usi. Teletrasporta a breve distanza (blink). Bastone con gemma arancione.
+  desc_pl: Laska z 20 użyciami. Teleportuje na krótki dystans (blink). Laska z pomarańczowym klejnotem.
+  desc_pt_BR: Cajado com 20 usos. Teletransporta uma curta distância (blink). Cajado de gema laranja.
+  desc_ru: Посох на 20 зарядов. Телепортирует на короткое расстояние (блинк). Посох оранжевого камня.
+  desc_es: Bastón con 20 usos. Teletransporta una distancia corta (parpadeo). Bastón de gema naranja.
+  desc_es_MX: Bastón con 20 usos. Teletransporta una distancia corta (parpadeo). Bastón de gema naranja.
 549.panflute
   en: Pan Flute
   ko: 팬플룻
   app: O
   source: Instrument. 10 uses. Puts all creatures in range 15 to sleep for 20s. Tends nearby farm plants. Wortox skill tree: can apply forget debuff, summon 6 souls, and get inspired (cooldown ~480s). Does not affect the player using it.
+  desc_en: Instrument with 10 uses. Puts all creatures within range 15 to sleep for 20s. Also tends farm plants.
+  desc_ko: 10회 사용 악기. 반경 15 내 모든 생물을 20초간 재움. 농작물 관리에도 사용 가능.
+  desc_ja: 10回使用の楽器。範囲15内の全クリーチャーを20秒間眠らせる。農作物の手入れにも使用可。
+  desc_zh_CN: 10次使用的乐器。将范围15内所有生物催眠20秒。也可照料农作物。
+  desc_zh_TW: 10次使用的樂器。將範圍15內所有生物催眠20秒。也可照料農作物。
+  desc_fr: Instrument à 10 utilisations. Endort toutes les créatures (rayon 15) pendant 20s. Entretient les plantes.
+  desc_de: Instrument mit 10 Nutzungen. Schläfert alle Kreaturen (Radius 15) für 20s ein. Pflegt Pflanzen.
+  desc_it: Strumento con 10 usi. Addormenta tutte le creature (raggio 15) per 20s. Cura le piante.
+  desc_pl: Instrument z 10 użyciami. Usypia stworzenia (zasięg 15) na 20s. Pielęgnuje rośliny.
+  desc_pt_BR: Instrumento com 10 usos. Adormece todas as criaturas (raio 15) por 20s. Cuida das plantas.
+  desc_ru: Инструмент на 10 зарядов. Усыпляет всех существ (радиус 15) на 20с. Ухаживает за растениями.
+  desc_es: Instrumento con 10 usos. Duerme a todas las criaturas (radio 15) por 20s. Cuida las plantas.
+  desc_es_MX: Instrumento con 10 usos. Duerme a todas las criaturas (radio 15) por 20s. Cuida las plantas.
 550.papyrus
   en: Papyrus
   ko: 파피루스
   app: O
   source: Crafting material. Small fuel value (7.5s). Cat toy. Tradable. Wickerbottom starts with 2. Stackable (small item stack). Burnable, propagates fire. Also tagged as bookcabinet_item.
+  desc_en: Crafting material. Small fuel value (7.5s). Tradable and stackable. Wickerbottom starts with 2.
+  desc_ko: 제작 재료. 소형 연료(7.5초). 교환 및 중첩 가능. 위커바텀 초기 2개 보유.
+  desc_ja: 素材。小型燃料（7.5秒）。交易可能でスタック可能。ウィッカーボトム初期所持2個。
+  desc_zh_CN: 制作材料。小型燃料（7.5秒）。可交易可堆叠。薇克巴顿初始携带2个。
+  desc_zh_TW: 製作材料。小型燃料（7.5秒）。可交易可堆疊。薇克巴頓初始攜帶2個。
+  desc_fr: Matériau d'artisanat. Petit combustible (7,5s). Échangeable et empilable. Wickerbottom commence avec 2.
+  desc_de: Handwerksmaterial. Kleiner Brennstoff (7,5s). Handelbar und stapelbar. Wickerbottom startet mit 2.
+  desc_it: Materiale da crafting. Piccolo combustibile (7,5s). Scambiabile e impilabile. Wickerbottom inizia con 2.
+  desc_pl: Materiał do wytwarzania. Małe paliwo (7,5s). Handlowalny i stackowalny. Wickerbottom zaczyna z 2.
+  desc_pt_BR: Material de crafting. Combustível pequeno (7,5s). Negociável e empilhável. Wickerbottom começa com 2.
+  desc_ru: Материал. Малое топливо (7,5с). Обменивается и стакается. Викерботтом начинает с 2.
+  desc_es: Material de fabricación. Combustible pequeño (7,5s). Comerciable y apilable. Wickerbottom comienza con 2.
+  desc_es_MX: Material de fabricación. Combustible pequeño (7.5s). Comerciable y apilable. Wickerbottom comienza con 2.
 551.perdfan
   en: Lucky Fan
   ko: 행운의 부채
   app: O
   source: Tool. 9 uses (tornado attack costs 2 charges). Creates a tornado lasting 2s. Used for extinguishing fires and pushing entities.
+  desc_en: Tool with 9 uses. Creates a tornado lasting 2s for extinguishing fires and pushing entities. Tornado costs 2 charges.
+  desc_ko: 9회 사용 도구. 2초간 토네이도를 생성하여 불을 끄고 개체를 밀침. 토네이도 사용 시 2회분 소모.
+  desc_ja: 9回使用のツール。2秒間竜巻を発生させ、消火やエンティティ押し出し。竜巻は2チャージ消費。
+  desc_zh_CN: 9次使用的工具。生成持续2秒的龙卷风，灭火并推开实体。龙卷风消耗2次耐久。
+  desc_zh_TW: 9次使用的工具。生成持續2秒的龍捲風，滅火並推開實體。龍捲風消耗2次耐久。
+  desc_fr: Outil à 9 utilisations. Crée une tornade de 2s pour éteindre les feux et repousser. Coût : 2 charges.
+  desc_de: Werkzeug mit 9 Nutzungen. Erzeugt einen 2s-Tornado zum Löschen und Wegstoßen. Kosten: 2 Ladungen.
+  desc_it: Strumento con 9 usi. Crea un tornado di 2s per estinguere incendi e spingere entità. Costa 2 cariche.
+  desc_pl: Narzędzie z 9 użyciami. Tworzy tornado (2s) do gaszenia i odpychania. Tornado kosztuje 2 ładunki.
+  desc_pt_BR: Ferramenta com 9 usos. Cria um tornado de 2s para apagar incêndios e empurrar entidades. Custa 2 cargas.
+  desc_ru: Инструмент на 9 зарядов. Создаёт торнадо (2с) для тушения и отталкивания. Стоимость торнадо: 2 заряда.
+  desc_es: Herramienta con 9 usos. Crea un tornado de 2s para extinguir fuegos y empujar entidades. Cuesta 2 cargas.
+  desc_es_MX: Herramienta con 9 usos. Crea un tornado de 2s para extinguir fuegos y empujar entidades. Cuesta 2 cargas.
 552.perdshrine
   en: Gobbler Shrine
   ko: 칠면조 사당
   app: O
   source: Structure/prototyper. Requires a dug berry bush offering to activate. Accepts dug_berrybush, dug_berrybush2, or dug_berrybush_juicy. Once activated, unlocks PERDSHRINE tech tree recipes. Spawns a Perd from nearby berry bushes during day (YotG event). Hammerable (4 hits).
+  desc_en: Structure/prototyper. Requires a dug berry bush offering to activate. Unlocks PERDSHRINE tech tree recipes.
+  desc_ko: 구조물/프로토타이퍼. 파낸 베리 덤불 공물로 활성화. PERDSHRINE 기술 트리 레시피 해금.
+  desc_ja: 構造物/プロトタイパー。掘り出したベリーブッシュの供物で起動。PERDSHRINE技術ツリーレシピを解放。
+  desc_zh_CN: 结构/原型制造台。需要挖出的浆果丛祭品激活。解锁火鸡神龛科技树配方。
+  desc_zh_TW: 結構/原型製造台。需要挖出的漿果叢祭品啟動。解鎖火雞神龕科技樹配方。
+  desc_fr: Structure/prototypeur. Nécessite un buisson à baies déterré pour s'activer. Débloque les recettes PERDSHRINE.
+  desc_de: Struktur/Prototyper. Benötigt einen ausgegrabenen Beerenbusch als Opfergabe. Schaltet PERDSHRINE-Rezepte frei.
+  desc_it: Struttura/prototipatore. Richiede un cespuglio di bacche scavato per attivarsi. Sblocca ricette PERDSHRINE.
+  desc_pl: Struktura/prototyper. Wymaga ofiary z wykopanego krzaka jagód. Odblokowuje receptury PERDSHRINE.
+  desc_pt_BR: Estrutura/prototipador. Requer um arbusto de frutas cavado como oferenda. Desbloqueia receitas PERDSHRINE.
+  desc_ru: Структура/прототипер. Требует выкопанный ягодный куст как подношение. Открывает рецепты PERDSHRINE.
+  desc_es: Estructura/prototipador. Requiere un arbusto de bayas desenterrado como ofrenda. Desbloquea recetas PERDSHRINE.
+  desc_es_MX: Estructura/prototipador. Requiere un arbusto de bayas desenterrado como ofrenda. Desbloquea recetas PERDSHRINE.
 553.phonograph
   en: Gramophone
   ko: 축음기
@@ -5067,6 +10059,19 @@
     tuning.lua:
     PHONOGRAPH_PLAY_TIME = 64,
     PHONOGRAPH_TEND_RANGE = 8,
+  desc_en: Music-playing structure. Plays music for 64s per use. Tends nearby farm plants within range 8.
+  desc_ko: 음악 재생 구조물. 사용당 64초간 음악 재생. 반경 8 내 농작물 관리.
+  desc_ja: 音楽を再生する構造物。1回の使用で64秒間再生。範囲8以内の農作物を手入れ。
+  desc_zh_CN: 播放音乐的结构。每次使用播放64秒。照料范围8内的农作物。
+  desc_zh_TW: 播放音樂的結構。每次使用播放64秒。照料範圍8內的農作物。
+  desc_fr: Structure musicale. Joue pendant 64s. Entretient les plantes dans un rayon de 8.
+  desc_de: Musikstruktur. Spielt 64s pro Nutzung. Pflegt Pflanzen im Radius 8.
+  desc_it: Struttura musicale. Suona per 64s. Cura le piante nel raggio di 8.
+  desc_pl: Struktura muzyczna. Gra przez 64s. Pielęgnuje rośliny w zasięgu 8.
+  desc_pt_BR: Estrutura musical. Toca por 64s. Cuida das plantas no raio 8.
+  desc_ru: Музыкальная структура. Играет 64с за использование. Ухаживает за растениями в радиусе 8.
+  desc_es: Estructura musical. Reproduce durante 64s. Cuida las plantas en radio 8.
+  desc_es_MX: Estructura musical. Reproduce durante 64s. Cuida las plantas en radio 8.
 554.pickaxe
   en: Pickaxe
   ko: 곡괭이
@@ -5085,6 +10090,19 @@
     pickaxe.lua:
     weapon:SetDamage(TUNING.PICK_DAMAGE)
     finiteuses:SetMaxUses(TUNING.PICKAXE_USES)
+  desc_en: Basic mining tool. 33 uses. Standard pickaxe damage. One of the default pinned recipes.
+  desc_ko: 기본 채굴 도구. 33회 사용. 표준 곡괭이 피해. 기본 고정 레시피 중 하나.
+  desc_ja: 基本の採掘ツール。33回使用。標準ピッケルダメージ。デフォルト固定レシピの1つ。
+  desc_zh_CN: 基础采矿工具。33次使用。标准镐伤害。默认固定配方之一。
+  desc_zh_TW: 基礎採礦工具。33次使用。標準鎬傷害。預設固定配方之一。
+  desc_fr: Outil minier de base. 33 utilisations. Dégâts de pioche standard. Recette épinglée par défaut.
+  desc_de: Grundlegendes Bergbauwerkzeug. 33 Nutzungen. Standard-Spitzhackenschaden. Standard-angepinntes Rezept.
+  desc_it: Strumento minerario base. 33 usi. Danno da piccone standard. Ricetta fissata di default.
+  desc_pl: Podstawowe narzędzie górnicze. 33 użycia. Standardowe obrażenia kilofa. Domyślnie przypięta receptura.
+  desc_pt_BR: Ferramenta de mineração básica. 33 usos. Dano de picareta padrão. Receita fixada padrão.
+  desc_ru: Базовый инструмент для добычи. 33 заряда. Стандартный урон кирки. Один из закреплённых рецептов.
+  desc_es: Herramienta minera básica. 33 usos. Daño de pico estándar. Receta fijada por defecto.
+  desc_es_MX: Herramienta minera básica. 33 usos. Daño de pico estándar. Receta fijada por defecto.
 555.pickaxe_lunarplant
   en: Brightshade Smasher
   ko: 빛말풀 부수개
@@ -5100,6 +10118,19 @@
     finiteuses:SetMaxUses(TUNING.PICKAXE_LUNARPLANT_USES)
     planardamage:SetBaseDamage(TUNING.PICKAXE_LUNARPLANT_PLANAR_DAMAGE)
     damagetypebonus:AddBonus("shadow_aligned", inst)
+  desc_en: Lunar pickaxe with 600 uses and 4/3 mining efficiency. Deals 32.5 damage + 10 planar damage. Bonus vs shadow-aligned.
+  desc_ko: 600회 사용, 4/3 채굴 효율의 달 곡괭이. 32.5 피해 + 10 차원 피해. 그림자 정렬 대상 추가 피해.
+  desc_ja: 600回使用、4/3採掘効率の月のピッケル。32.5ダメージ＋10プレーナーダメージ。シャドウ属性に追加ダメージ。
+  desc_zh_CN: 600次使用、4/3采矿效率的月亮镐。32.5伤害+10位面伤害。对暗影属性额外伤害。
+  desc_zh_TW: 600次使用、4/3採礦效率的月亮鎬。32.5傷害+10位面傷害。對暗影屬性額外傷害。
+  desc_fr: Pioche lunaire : 600 utilisations, efficacité 4/3. 32,5 dégâts + 10 planaires. Bonus vs alignés ombre.
+  desc_de: Mond-Spitzhacke: 600 Nutzungen, 4/3 Effizienz. 32,5 Schaden + 10 planar. Bonus gegen Schattenausgerichtete.
+  desc_it: Piccone lunare: 600 usi, efficienza 4/3. 32,5 danni + 10 planari. Bonus vs allineati all'ombra.
+  desc_pl: Księżycowy kilof: 600 użyć, wydajność 4/3. 32,5 obrażeń + 10 planarnych. Bonus vs cieniste.
+  desc_pt_BR: Picareta lunar: 600 usos, eficiência 4/3. 32,5 de dano + 10 planar. Bônus vs alinhados à sombra.
+  desc_ru: Лунная кирка: 600 зарядов, эффективность 4/3. 32,5 урона + 10 планарного. Бонус против теневых.
+  desc_es: Pico lunar: 600 usos, eficiencia 4/3. 32,5 de daño + 10 planar. Bonus vs alineados con sombra.
+  desc_es_MX: Pico lunar: 600 usos, eficiencia 4/3. 32.5 de daño + 10 planar. Bonus vs alineados con sombra.
 556.piggyback
   en: Piggyback
   ko: 돼지등가방
@@ -5111,12 +10142,38 @@
     equippable.walkspeedmult = TUNING.PIGGYBACK_SPEED_MULT
     waterproofer:SetEffectiveness(0)
     container:WidgetSetup("piggyback")
+  desc_en: Large backpack with extra slots. Reduces walk speed to 90%. No waterproofing.
+  desc_ko: 추가 슬롯의 대형 배낭. 이동 속도 90%로 감소. 방수 없음.
+  desc_ja: 追加スロットの大型バックパック。移動速度90%に低下。防水なし。
+  desc_zh_CN: 拥有额外格子的大型背包。移动速度降至90%。无防水。
+  desc_zh_TW: 擁有額外格子的大型背包。移動速度降至90%。無防水。
+  desc_fr: Grand sac à dos avec emplacements supplémentaires. Réduit la vitesse à 90 %. Pas d'imperméabilité.
+  desc_de: Großer Rucksack mit Extraplätzen. Reduziert Laufgeschwindigkeit auf 90 %. Nicht wasserfest.
+  desc_it: Grande zaino con slot extra. Riduce la velocità al 90%. Nessuna impermeabilità.
+  desc_pl: Duży plecak z dodatkowymi slotami. Zmniejsza prędkość do 90%. Brak wodoodporności.
+  desc_pt_BR: Mochila grande com slots extras. Reduz a velocidade para 90%. Sem impermeabilidade.
+  desc_ru: Большой рюкзак с дополнительными слотами. Снижает скорость до 90%. Без водонепроницаемости.
+  desc_es: Mochila grande con ranuras extra. Reduce la velocidad al 90 %. Sin impermeabilidad.
+  desc_es_MX: Mochila grande con ranuras extra. Reduce la velocidad al 90 %. Sin impermeabilidad.
 557.pighead
   en: Pig Head
   ko: 돼지 머리
   app: X
   type: deconstruct
   source: Decorative structure (stickheads.lua). Placed on a stake with flies. Awakens on full moon (drops nightmarefuel). Hammerable, burnable.
+  desc_en: Decorative stake structure. Awakens on full moon and drops nightmare fuel. Hammerable and burnable.
+  desc_ko: 장식용 말뚝 구조물. 보름달에 활성화되어 악몽 연료를 드롭. 망치질 및 불 가능.
+  desc_ja: 装飾用の杭構造物。満月に覚醒してナイトメア燃料をドロップ。ハンマー・可燃。
+  desc_zh_CN: 装饰性桩结构。满月时苏醒并掉落噩梦燃料。可锤可烧。
+  desc_zh_TW: 裝飾性樁結構。滿月時甦醒並掉落噩夢燃料。可錘可燒。
+  desc_fr: Structure décorative sur pieu. S'éveille à la pleine lune et lâche du combustible cauchemar. Martelable et inflammable.
+  desc_de: Dekorative Pfahlstruktur. Erwacht bei Vollmond und lässt Albtraumbrennstoff fallen. Hammerbar und brennbar.
+  desc_it: Struttura decorativa su palo. Si risveglia con la luna piena e rilascia combustibile da incubo. Martellabile e infiammabile.
+  desc_pl: Dekoracyjna struktura na palu. Budzi się w pełnię i upuszcza paliwo koszmarne. Rozbijalna i palna.
+  desc_pt_BR: Estrutura decorativa em estaca. Desperta na lua cheia e solta combustível de pesadelo. Quebrável e inflamável.
+  desc_ru: Декоративная структура на колу. Пробуждается в полнолуние и роняет кошмарное топливо. Разрушается молотом, горит.
+  desc_es: Estructura decorativa en estaca. Se despierta en luna llena y suelta combustible de pesadilla. Martillable e inflamable.
+  desc_es_MX: Estructura decorativa en estaca. Se despierta en luna llena y suelta combustible de pesadilla. Martillable e inflamable.
 558.pighouse
   en: Pig House
   ko: 돼지집
@@ -5125,6 +10182,19 @@
     tuning.lua:
     PIGHOUSE_SPAWN_TIME = total_day_time * 4,
     PIGHOUSE_ENABLED = true,
+  desc_en: Structure that spawns a Pig. Pig respawns every 4 days. Pig exits during day and returns at night.
+  desc_ko: 돼지를 생성하는 구조물. 돼지는 4일마다 리스폰. 낮에 나가고 밤에 돌아옴.
+  desc_ja: ブタをスポーンさせる構造物。ブタは4日ごとにリスポーン。昼に外出し夜に帰還。
+  desc_zh_CN: 生成猪的结构。猪每4天重生。白天外出，夜晚回来。
+  desc_zh_TW: 生成豬的結構。豬每4天重生。白天外出，夜晚回來。
+  desc_fr: Structure faisant apparaître un cochon. Réapparition tous les 4 jours. Sort le jour, rentre la nuit.
+  desc_de: Struktur, die ein Schwein spawnt. Respawn alle 4 Tage. Tagsüber draußen, nachts drinnen.
+  desc_it: Struttura che genera un maiale. Respawn ogni 4 giorni. Esce di giorno, torna di notte.
+  desc_pl: Struktura spawnująca świnię. Respawn co 4 dni. Wychodzi za dnia, wraca w nocy.
+  desc_pt_BR: Estrutura que gera um porco. Reaparece a cada 4 dias. Sai de dia e volta à noite.
+  desc_ru: Структура, порождающая свинью. Респавн каждые 4 дня. Выходит днём, возвращается ночью.
+  desc_es: Estructura que genera un cerdo. Reaparece cada 4 días. Sale de día y vuelve de noche.
+  desc_es_MX: Estructura que genera un cerdo. Reaparece cada 4 días. Sale de día y vuelve de noche.
 559.pigshrine
   en: Pig Shrine
   ko: 돼지 사당
@@ -5132,11 +10202,37 @@
   source:
     tuning.lua:
     PIGSHRINE = TechTree.Create({
+  desc_en: Structure/prototyper for Pig Shrine tech tree. Unlocks pig-themed crafting recipes.
+  desc_ko: 돼지 사당 기술 트리의 구조물/프로토타이퍼. 돼지 테마 제작 레시피 해금.
+  desc_ja: ブタの神殿技術ツリーの構造物/プロトタイパー。ブタテーマのレシピを解放。
+  desc_zh_CN: 猪神龛科技树的结构/原型制造台。解锁猪主题制作配方。
+  desc_zh_TW: 豬神龕科技樹的結構/原型製造台。解鎖豬主題製作配方。
+  desc_fr: Structure/prototypeur de l'arbre technologique du Sanctuaire Cochon. Débloque des recettes à thème cochon.
+  desc_de: Struktur/Prototyper für den Schweineschrein-Technologiebaum. Schaltet Schweine-Rezepte frei.
+  desc_it: Struttura/prototipatore dell'albero tecnologico del Santuario Maiale. Sblocca ricette a tema maiale.
+  desc_pl: Struktura/prototyper drzewa tech Świątyni Świni. Odblokowuje receptury o tematyce świńskiej.
+  desc_pt_BR: Estrutura/prototipador da árvore tecnológica do Santuário Porco. Desbloqueia receitas temáticas.
+  desc_ru: Структура/прототипер для древа технологий Свиного Святилища. Открывает свиные рецепты.
+  desc_es: Estructura/prototipador del árbol tecnológico del Santuario Cerdo. Desbloquea recetas temáticas.
+  desc_es_MX: Estructura/prototipador del árbol tecnológico del Santuario Cerdo. Desbloquea recetas temáticas.
 560.pirate_flag_pole
   en: Moon Quay Pirate Banner
   ko: 월숭이 해적단 깃발
   app: O
   source: Decorative structure (pirate_flag_pole.lua). Hammerable (3 hits), burnable. Has randomized flag variants. No gameplay stats.
+  desc_en: Decorative banner structure with randomized flag variants. No gameplay stats. Hammerable and burnable.
+  desc_ko: 무작위 깃발 변형이 있는 장식용 깃발 구조물. 게임플레이 효과 없음. 망치질 및 불 가능.
+  desc_ja: ランダムな旗バリエーションの装飾構造物。ゲームプレイ効果なし。ハンマー・可燃。
+  desc_zh_CN: 带随机旗帜变体的装饰结构。无游戏属性。可锤可烧。
+  desc_zh_TW: 帶隨機旗幟變體的裝飾結構。無遊戲屬性。可錘可燒。
+  desc_fr: Bannière décorative avec variantes aléatoires. Pas de stats de jeu. Martelable et inflammable.
+  desc_de: Dekoratives Banner mit zufälligen Varianten. Keine Spielwerte. Hammerbar und brennbar.
+  desc_it: Stendardo decorativo con varianti casuali. Nessuna statistica di gioco. Martellabile e infiammabile.
+  desc_pl: Dekoracyjny sztandar z losowymi wariantami. Brak statystyk gry. Rozbijalny i palny.
+  desc_pt_BR: Estandarte decorativo com variantes aleatórias. Sem atributos de jogo. Quebrável e inflamável.
+  desc_ru: Декоративное знамя со случайными вариантами. Без игровых характеристик. Разрушается, горит.
+  desc_es: Estandarte decorativo con variantes aleatorias. Sin estadísticas de juego. Martillable e inflamable.
+  desc_es_MX: Estandarte decorativo con variantes aleatorias. Sin estadísticas de juego. Martillable e inflamable.
 561.pitchfork
   en: Pitchfork
   ko: 쇠스랑
@@ -5148,11 +10244,37 @@
     pitchfork.lua:
     weapon:SetDamage(TUNING.PITCHFORK_DAMAGE)
     finiteuses:SetMaxUses(TUNING.PITCHFORK_USES)
+  desc_en: Terrain tool with 25 uses. 17 damage (0.5x). Used for digging up and placing turf tiles.
+  desc_ko: 25회 사용 지형 도구. 17 피해(0.5배). 잔디 타일을 파내고 놓는 데 사용.
+  desc_ja: 25回使用の地形ツール。17ダメージ（0.5倍）。芝生タイルの掘り出しと配置に使用。
+  desc_zh_CN: 25次使用的地形工具。17伤害（0.5倍）。用于挖掘和放置地皮。
+  desc_zh_TW: 25次使用的地形工具。17傷害（0.5倍）。用於挖掘和放置地皮。
+  desc_fr: Outil de terrain à 25 utilisations. 17 dégâts (0,5x). Sert à creuser et poser du gazon.
+  desc_de: Geländewerkzeug mit 25 Nutzungen. 17 Schaden (0,5x). Zum Ausgraben und Platzieren von Rasen.
+  desc_it: Strumento terreno con 25 usi. 17 danni (0,5x). Per scavare e posizionare zolle.
+  desc_pl: Narzędzie terenu z 25 użyciami. 17 obrażeń (0,5x). Do kopania i kładzenia darni.
+  desc_pt_BR: Ferramenta de terreno com 25 usos. 17 de dano (0,5x). Para cavar e colocar gramado.
+  desc_ru: Инструмент для местности на 25 зарядов. 17 урона (0,5x). Для выкапывания и укладки дёрна.
+  desc_es: Herramienta de terreno con 25 usos. 17 de daño (0,5x). Para excavar y colocar césped.
+  desc_es_MX: Herramienta de terreno con 25 usos. 17 de daño (0.5x). Para excavar y colocar césped.
 562.plantregistryhat
   en: Gardeneer Hat
   ko: 원예사의 모자
   app: O
   source: Head equipment (hats.lua). Grants "plantinspector" tag to examine plants. Opens Plant Registry UI on use. Summer insulation (INSULATION_SMALL). No durability.
+  desc_en: Farming hat granting plant inspector tag to examine plants. Opens Plant Registry UI. Summer insulation. No durability.
+  desc_ko: 식물 조사 태그를 부여하는 농업 모자. 식물 도감 UI 열기. 여름 단열. 내구도 무제한.
+  desc_ja: 植物調査タグを付与する農業帽子。植物図鑑UIを開く。夏の断熱。耐久無制限。
+  desc_zh_CN: 赋予植物检查标签的农业帽。打开植物图鉴UI。夏季隔热。无耐久限制。
+  desc_zh_TW: 賦予植物檢查標籤的農業帽。打開植物圖鑑UI。夏季隔熱。無耐久限制。
+  desc_fr: Chapeau de jardinage permettant d'examiner les plantes. Ouvre le Registre des Plantes. Isolation estivale. Durabilité illimitée.
+  desc_de: Gartenhut zum Untersuchen von Pflanzen. Öffnet Pflanzenregister-UI. Sommerisolierung. Unbegrenzte Haltbarkeit.
+  desc_it: Cappello che permette di esaminare le piante. Apre il Registro Piante. Isolamento estivo. Durabilità illimitata.
+  desc_pl: Kapelusz ogrodniczy do badania roślin. Otwiera Rejestr Roślin. Izolacja letnia. Nieograniczona wytrzymałość.
+  desc_pt_BR: Chapéu que permite examinar plantas. Abre o Registro de Plantas. Isolamento de verão. Durabilidade ilimitada.
+  desc_ru: Шляпа фермера для осмотра растений. Открывает Реестр Растений. Летняя изоляция. Без ограничения прочности.
+  desc_es: Sombrero para examinar plantas. Abre el Registro de Plantas. Aislamiento de verano. Durabilidad ilimitada.
+  desc_es_MX: Sombrero para examinar plantas. Abre el Registro de Plantas. Aislamiento de verano. Durabilidad ilimitada.
 563.pocket_scale
   en: Pocket Scale
   ko: 휴대용 저울
@@ -5160,11 +10282,37 @@
   source:
     pocket_scale.lua:
     finiteuses:SetMaxUses(TUNING.POCKETSCALE_USES)
+  desc_en: Tool for weighing caught ocean fish. Limited uses. Records fish weight for the fishing log.
+  desc_ko: 잡은 바다 물고기의 무게를 재는 도구. 제한된 사용 횟수. 낚시 기록에 무게 등록.
+  desc_ja: 釣った海魚の重さを量るツール。使用回数制限あり。釣りログに重さを記録。
+  desc_zh_CN: 用于称量捕获海鱼的工具。有限次使用。将鱼的重量记录到钓鱼日志。
+  desc_zh_TW: 用於稱量捕獲海魚的工具。有限次使用。將魚的重量記錄到釣魚日誌。
+  desc_fr: Outil pour peser les poissons pêchés. Utilisations limitées. Enregistre le poids dans le journal.
+  desc_de: Werkzeug zum Wiegen gefangener Fische. Begrenzte Nutzungen. Speichert Gewicht im Fischbuch.
+  desc_it: Strumento per pesare i pesci pescati. Usi limitati. Registra il peso nel diario di pesca.
+  desc_pl: Narzędzie do ważenia złowionych ryb. Ograniczone użycia. Zapisuje wagę w dzienniku połowów.
+  desc_pt_BR: Ferramenta para pesar peixes pescados. Usos limitados. Registra o peso no diário de pesca.
+  desc_ru: Инструмент для взвешивания пойманной рыбы. Ограниченное число зарядов. Записывает вес в журнал рыбалки.
+  desc_es: Herramienta para pesar peces. Usos limitados. Registra el peso en el diario de pesca.
+  desc_es_MX: Herramienta para pesar peces. Usos limitados. Registra el peso en el diario de pesca.
 564.pocketwatch_dismantler
   en: Clockmaker's Tools
   ko: 시계공의 도구
   app: O
   source: Inventory tool (pocketwatch_dismantler.lua). Used to dismantle pocket watches via pocketwatch_dismantler component. Burnable, no durability.
+  desc_en: Wanda tool for dismantling pocket watches. No durability limit. Burnable.
+  desc_ko: 완다 전용 시계 분해 도구. 내구도 제한 없음. 연소 가능.
+  desc_ja: ワンダ専用の懐中時計分解ツール。耐久無制限。可燃。
+  desc_zh_CN: 旺达专用怀表拆卸工具。无耐久限制。可燃。
+  desc_zh_TW: 旺達專用懷錶拆卸工具。無耐久限制。可燃。
+  desc_fr: Outil de Wanda pour démonter les montres. Pas de limite de durabilité. Inflammable.
+  desc_de: Wanda-Werkzeug zum Zerlegen von Taschenuhren. Keine Haltbarkeitsbegrenzung. Brennbar.
+  desc_it: Strumento di Wanda per smontare orologi. Nessun limite di durabilità. Infiammabile.
+  desc_pl: Narzędzie Wandy do demontażu zegarków. Bez limitu wytrzymałości. Palny.
+  desc_pt_BR: Ferramenta da Wanda para desmontar relógios. Sem limite de durabilidade. Inflamável.
+  desc_ru: Инструмент Ванды для разборки карманных часов. Без ограничения прочности. Горит.
+  desc_es: Herramienta de Wanda para desmontar relojes. Sin límite de durabilidad. Inflamable.
+  desc_es_MX: Herramienta de Wanda para desmontar relojes. Sin límite de durabilidad. Inflamable.
 565.pocketwatch_heal
   en: Ageless Watch
   ko: 불로의 시계
@@ -5176,702 +10324,2470 @@
     POCKETWATCH_HEAL_HEALING = 20, -- health pre-oldager modifier
     pocketwatch.lua:
     rechargeable (cooldown)
+  desc_en: Wanda pocket watch that heals 20 HP. Cooldown of 2 minutes (4 segments). Wanda starts with one.
+  desc_ko: 20 HP를 회복하는 완다 회중시계. 쿨다운 2분(4세그먼트). 완다 초기 보유.
+  desc_ja: 20HPを回復するワンダの懐中時計。クールダウン2分（4セグメント）。ワンダ初期所持。
+  desc_zh_CN: 恢复20HP的旺达怀表。冷却2分钟（4段）。旺达初始携带。
+  desc_zh_TW: 恢復20HP的旺達懷錶。冷卻2分鐘（4段）。旺達初始攜帶。
+  desc_fr: Montre de Wanda soignant 20 PV. Recharge en 2 minutes (4 segments). Wanda commence avec.
+  desc_de: Wandas Taschenuhr, die 20 HP heilt. Abklingzeit 2 Minuten (4 Segmente). Wanda startet damit.
+  desc_it: Orologio di Wanda che cura 20 HP. Ricarica in 2 minuti (4 segmenti). Wanda inizia con uno.
+  desc_pl: Zegarek Wandy leczący 20 HP. Odnowienie 2 min (4 segmenty). Wanda zaczyna z jednym.
+  desc_pt_BR: Relógio da Wanda que cura 20 HP. Recarga em 2 minutos (4 segmentos). Wanda começa com um.
+  desc_ru: Часы Ванды, исцеляющие 20 HP. Перезарядка 2 мин (4 сегмента). Ванда начинает с одними.
+  desc_es: Reloj de Wanda que cura 20 HP. Recarga en 2 minutos (4 segmentos). Wanda comienza con uno.
+  desc_es_MX: Reloj de Wanda que cura 20 HP. Recarga en 2 minutos (4 segmentos). Wanda comienza con uno.
 566.pocketwatch_parts
   en: Time Pieces
   ko: 시계 부품
   app: O
   source: Wanda crafting material. Mole bait and cat toy. Ticking sound when on ground. Stackable (medium item stack). Wanda starts with 3.
+  desc_en: Wanda crafting material. Used as mole bait and cat toy. Stackable. Wanda starts with 3.
+  desc_ko: 완다 제작 재료. 두더지 미끼와 고양이 장난감으로 사용. 중첩 가능. 완다 초기 3개 보유.
+  desc_ja: ワンダの素材。モグラの餌と猫のおもちゃとして使用。スタック可能。ワンダ初期所持3個。
+  desc_zh_CN: 旺达制作材料。可用作鼹鼠诱饵和猫玩具。可堆叠。旺达初始携带3个。
+  desc_zh_TW: 旺達製作材料。可用作鼴鼠誘餌和貓玩具。可堆疊。旺達初始攜帶3個。
+  desc_fr: Matériau de Wanda. Appât à taupe et jouet pour chat. Empilable. Wanda commence avec 3.
+  desc_de: Wanda-Material. Maulwurfköder und Katzenspielzeug. Stapelbar. Wanda startet mit 3.
+  desc_it: Materiale di Wanda. Esca per talpe e giocattolo per gatti. Impilabile. Wanda inizia con 3.
+  desc_pl: Materiał Wandy. Przynęta na kreta i zabawka dla kota. Stackowalny. Wanda zaczyna z 3.
+  desc_pt_BR: Material da Wanda. Isca de toupeira e brinquedo de gato. Empilhável. Wanda começa com 3.
+  desc_ru: Материал Ванды. Приманка для крота и игрушка для кота. Стакается. Ванда начинает с 3.
+  desc_es: Material de Wanda. Cebo para topos y juguete para gatos. Apilable. Wanda comienza con 3.
+  desc_es_MX: Material de Wanda. Cebo para topos y juguete para gatos. Apilable. Wanda comienza con 3.
 567.pocketwatch_portal
   en: Rift Watch
   ko: 균열의 시계
   app: O
   source: Wanda pocket watch. Upgraded from Backtrek Watch + purple gem. Opens a two-way portal to marked position (cross-shard). Portal lasts 10s. Reverts to pocketwatch_recall after use with 480s (1 day) cooldown. Sanity cost for non-Wanda users.
+  desc_en: Upgraded Wanda watch. Opens a two-way portal to marked position (cross-shard). Portal lasts 10s. Reverts to Backtrek Watch after use. Cooldown 1 day.
+  desc_ko: 상위 완다 시계. 표시한 위치로 양방향 포탈 개방(교차 샤드). 포탈 10초 지속. 사용 후 회귀의 시계로 복귀. 쿨다운 1일.
+  desc_ja: 上位ワンダ時計。マーク位置への双方向ポータルを開く（クロスシャード）。ポータル10秒。使用後バックトレック時計に戻る。CT1日。
+  desc_zh_CN: 升级版旺达怀表。向标记位置开启双向传送门（跨分片）。传送门持续10秒。使用后恢复为回溯表。冷却1天。
+  desc_zh_TW: 升級版旺達懷錶。向標記位置開啟雙向傳送門（跨分片）。傳送門持續10秒。使用後恢復為回溯錶。冷卻1天。
+  desc_fr: Montre améliorée de Wanda. Ouvre un portail bidirectionnel vers la position marquée (cross-shard). Durée 10s. Revient en Backtrek. Recharge 1 jour.
+  desc_de: Aufgewertete Wanda-Uhr. Öffnet ein Zweiwege-Portal zur markierten Position (Cross-Shard). 10s Dauer. Wird danach zur Backtrek-Uhr. CD 1 Tag.
+  desc_it: Orologio Wanda migliorato. Apre un portale bidirezionale alla posizione segnata (cross-shard). Dura 10s. Torna a Backtrek. Ricarica 1 giorno.
+  desc_pl: Ulepszony zegarek Wandy. Otwiera dwukierunkowy portal do zaznaczonego miejsca (cross-shard). Trwa 10s. Powraca do Backtrek. Odnowienie 1 dzień.
+  desc_pt_BR: Relógio aprimorado da Wanda. Abre portal bidirecional para posição marcada (cross-shard). Dura 10s. Reverte para Backtrek. Recarga 1 dia.
+  desc_ru: Улучшенные часы Ванды. Открывают двусторонний портал к отмеченной позиции (кросс-шард). Длится 10с. Возвращаются к Backtrek. КД 1 день.
+  desc_es: Reloj mejorado de Wanda. Abre portal bidireccional a la posición marcada (cross-shard). Dura 10s. Vuelve a Backtrek. Recarga 1 día.
+  desc_es_MX: Reloj mejorado de Wanda. Abre portal bidireccional a la posición marcada (cross-shard). Dura 10s. Vuelve a Backtrek. Recarga 1 día.
 568.pocketwatch_recall
   en: Backtrek Watch
   ko: 회귀의 시계
   app: O
   source: Wanda pocket watch. First cast marks current position; second cast teleports back to marked position. Cooldown 480s (1 day). Cross-shard capable. Can be upgraded to Rift Watch with a purple gem. Accepts gem socket trade.
+  desc_en: Wanda watch. First cast marks position; second cast teleports back. Cooldown 1 day. Cross-shard capable. Upgradable to Rift Watch.
+  desc_ko: 완다 시계. 첫 사용 시 위치 표시, 두 번째 사용 시 순간이동. 쿨다운 1일. 교차 샤드 지원. 균열의 시계로 업그레이드 가능.
+  desc_ja: ワンダ時計。初回で位置マーク、2回目でテレポート。CT1日。クロスシャード可。リフトウォッチにアップグレード可。
+  desc_zh_CN: 旺达怀表。首次使用标记位置，再次使用传送回去。冷却1天。跨分片。可升级为裂隙表。
+  desc_zh_TW: 旺達懷錶。首次使用標記位置，再次使用傳送回去。冷卻1天。跨分片。可升級為裂隙錶。
+  desc_fr: Montre de Wanda. Premier lancer : marque la position. Second : téléporte. Recharge 1 jour. Cross-shard. Améliorable en Rift Watch.
+  desc_de: Wanda-Uhr. Erster Wurf markiert Position, zweiter teleportiert zurück. CD 1 Tag. Cross-Shard. Aufrüstbar zur Rift Watch.
+  desc_it: Orologio Wanda. Primo uso: segna posizione. Secondo: teletrasporta. Ricarica 1 giorno. Cross-shard. Migliorabile a Rift Watch.
+  desc_pl: Zegarek Wandy. Pierwsze użycie zaznacza pozycję, drugie teleportuje. Odnowienie 1 dzień. Cross-shard. Ulepszalny do Rift Watch.
+  desc_pt_BR: Relógio da Wanda. Primeiro uso marca posição; segundo teletransporta. Recarga 1 dia. Cross-shard. Melhorável para Rift Watch.
+  desc_ru: Часы Ванды. Первое использование отмечает позицию, второе телепортирует. КД 1 день. Кросс-шард. Улучшаются до Rift Watch.
+  desc_es: Reloj de Wanda. Primer uso marca posición; segundo teletransporta. Recarga 1 día. Cross-shard. Mejorable a Rift Watch.
+  desc_es_MX: Reloj de Wanda. Primer uso marca posición; segundo teletransporta. Recarga 1 día. Cross-shard. Mejorable a Rift Watch.
 569.pocketwatch_revive
   en: Second Chance Watch
   ko: 회생의 시계
   app: O
   source: Wanda pocket watch. Targets player ghosts to resurrect them. Cooldown 240s (0.5 days). Works cross-shard (gives reviver item for migration). If haunted by Wanda ghost, self-destructs after reviving (paradox). Can be cast while mounted.
+  desc_en: Wanda watch that resurrects player ghosts. Cooldown 0.5 days. Works cross-shard. Self-destructs if haunted by Wanda ghost.
+  desc_ko: 플레이어 유령을 부활시키는 완다 시계. 쿨다운 0.5일. 교차 샤드 지원. 완다 유령이 빙의하면 자폭.
+  desc_ja: プレイヤーゴーストを復活させるワンダ時計。CT0.5日。クロスシャード可。ワンダゴーストが憑依すると自壊。
+  desc_zh_CN: 复活玩家幽灵的旺达怀表。冷却0.5天。跨分片。旺达幽灵附身时自毁。
+  desc_zh_TW: 復活玩家幽靈的旺達懷錶。冷卻0.5天。跨分片。旺達幽靈附身時自毀。
+  desc_fr: Montre de Wanda ressuscitant les fantômes. Recharge 0,5 jour. Cross-shard. S'autodétruit si hantée par le fantôme de Wanda.
+  desc_de: Wanda-Uhr, die Spielergeister wiederbelebt. CD 0,5 Tage. Cross-Shard. Selbstzerstörung bei Wanda-Geist-Spuk.
+  desc_it: Orologio Wanda che resuscita fantasmi. Ricarica 0,5 giorni. Cross-shard. Si autodistrugge se infestato dal fantasma di Wanda.
+  desc_pl: Zegarek Wandy wskrzeszający duchy graczy. Odnowienie 0,5 dnia. Cross-shard. Samozniszczenie przy nawiedzeniu przez ducha Wandy.
+  desc_pt_BR: Relógio da Wanda que ressuscita fantasmas. Recarga 0,5 dia. Cross-shard. Autodestrói-se se assombrado pelo fantasma da Wanda.
+  desc_ru: Часы Ванды, воскрешающие призраков игроков. КД 0,5 дня. Кросс-шард. Самоуничтожаются при вселении призрака Ванды.
+  desc_es: Reloj de Wanda que resucita fantasmas. Recarga 0,5 días. Cross-shard. Se autodestruye si el fantasma de Wanda lo embruja.
+  desc_es_MX: Reloj de Wanda que resucita fantasmas. Recarga 0.5 días. Cross-shard. Se autodestruye si el fantasma de Wanda lo embruja.
 570.pocketwatch_warp
   en: Backstep Watch
   ko: 역행의 시계
   app: O
   source: Wanda pocket watch. Teleports user back to their previous position (positional warp history). Cooldown 2s. Shows warp marker to owner. Blocked in no-teleport zones. Can be cast while mounted.
+  desc_en: Wanda watch that teleports back to previous position. Cooldown 2s. Shows warp marker to owner. Usable while mounted.
+  desc_ko: 이전 위치로 순간이동하는 완다 시계. 쿨다운 2초. 소유자에게 워프 마커 표시. 탑승 중 사용 가능.
+  desc_ja: 前の位置にテレポートするワンダ時計。CT2秒。ワープマーカーをオーナーに表示。騎乗中使用可。
+  desc_zh_CN: 传送回上一位置的旺达怀表。冷却2秒。向持有者显示传送标记。骑乘中可用。
+  desc_zh_TW: 傳送回上一位置的旺達懷錶。冷卻2秒。向持有者顯示傳送標記。騎乘中可用。
+  desc_fr: Montre de Wanda téléportant à la position précédente. Recharge 2s. Marqueur visible par le propriétaire. Utilisable monté.
+  desc_de: Wanda-Uhr, die zur vorherigen Position teleportiert. CD 2s. Zeigt Warp-Markierung. Im Reiten nutzbar.
+  desc_it: Orologio Wanda che teletrasporta alla posizione precedente. Ricarica 2s. Marcatore visibile al proprietario. Usabile in sella.
+  desc_pl: Zegarek Wandy teleportujący do poprzedniej pozycji. Odnowienie 2s. Znacznik widoczny dla właściciela. Używalny na wierzchowcu.
+  desc_pt_BR: Relógio da Wanda que teletransporta à posição anterior. Recarga 2s. Marcador visível ao dono. Usável montado.
+  desc_ru: Часы Ванды, телепортирующие на предыдущую позицию. КД 2с. Маркер виден владельцу. Можно использовать верхом.
+  desc_es: Reloj de Wanda que teletransporta a la posición anterior. Recarga 2s. Marcador visible para el dueño. Usable montado.
+  desc_es_MX: Reloj de Wanda que teletransporta a la posición anterior. Recarga 2s. Marcador visible para el dueño. Usable montado.
 571.pocketwatch_weapon
   en: Alarming Clock
   ko: 타종 시계
   app: O
   source: Wanda weapon. 81.6 damage (34*2.4) when fueled, 27.2 (34*0.8) when depleted. Whip range 2. Nightmare fuel 720s (4*180). Each attack costs 7.5s fuel. Shadow item when fueled. Wanda-exclusive (restrictedtag: pocketwatchcaster).
+  desc_en: Wanda weapon dealing 81.6 damage when fueled (27.2 depleted). Whip range 2. Nightmare fuel 720s. Shadow item. Wanda-exclusive.
+  desc_ko: 연료 충전 시 81.6 피해(소진 시 27.2). 채찍 범위 2. 악몽 연료 720초. 그림자 아이템. 완다 전용.
+  desc_ja: 燃料時81.6ダメージ（枯渇時27.2）のワンダ武器。ウィップ範囲2。ナイトメア燃料720秒。シャドウアイテム。ワンダ専用。
+  desc_zh_CN: 旺达武器，有燃料时81.6伤害（耗尽时27.2）。鞭打范围2。噩梦燃料720秒。暗影物品。旺达专属。
+  desc_zh_TW: 旺達武器，有燃料時81.6傷害（耗盡時27.2）。鞭打範圍2。噩夢燃料720秒。暗影物品。旺達專屬。
+  desc_fr: Arme de Wanda : 81,6 dégâts (alimentée) / 27,2 (vide). Portée fouet 2. Carburant cauchemar 720s. Objet d'ombre. Exclusif à Wanda.
+  desc_de: Wanda-Waffe: 81,6 Schaden (befeuert) / 27,2 (leer). Peitschenreichweite 2. Albtraumbrennstoff 720s. Schattengegenstand. Wanda-exklusiv.
+  desc_it: Arma di Wanda: 81,6 danni (alimentata) / 27,2 (vuota). Raggio frusta 2. Combustibile incubo 720s. Oggetto ombra. Esclusiva di Wanda.
+  desc_pl: Broń Wandy: 81,6 obrażeń (z paliwem) / 27,2 (bez). Zasięg bicza 2. Paliwo koszmarne 720s. Przedmiot cienia. Wyłączna dla Wandy.
+  desc_pt_BR: Arma da Wanda: 81,6 de dano (com combustível) / 27,2 (vazia). Alcance chicote 2. Combustível pesadelo 720s. Item sombrio. Exclusiva da Wanda.
+  desc_ru: Оружие Ванды: 81,6 урона (с топливом) / 27,2 (без). Дальность хлыста 2. Кошмарное топливо 720с. Теневой предмет. Только для Ванды.
+  desc_es: Arma de Wanda: 81,6 de daño (con combustible) / 27,2 (vacía). Alcance látigo 2. Combustible pesadilla 720s. Objeto de sombra. Exclusiva de Wanda.
+  desc_es_MX: Arma de Wanda: 81.6 de daño (con combustible) / 27.2 (vacía). Alcance látigo 2. Combustible pesadilla 720s. Objeto de sombra. Exclusiva de Wanda.
 572.polly_rogershat
   en: Polly Roger's Hat
   ko: 폴리 로저의 모자
   app: O
   source: Hat. Fuel-based 2880s (6 days). Spawns a Polly Rogers companion bird (respawn 480s). 35% waterproof (WATERPROOFNESS_SMALLMED). Companion persists through shard migration.
+  desc_en: Hat lasting 6 days. Spawns a Polly Rogers companion bird (respawns in 480s). 35% waterproof. Companion persists through shard migration.
+  desc_ko: 6일 지속 모자. 폴리 로저 동반 새 소환(480초 후 리스폰). 35% 방수. 동반자는 샤드 이동 시에도 유지.
+  desc_ja: 6日間持続する帽子。ポリー・ロジャーのコンパニオン鳥を召喚（480秒でリスポーン）。防水35%。コンパニオンはシャード移動後も維持。
+  desc_zh_CN: 持续6天的帽子。召唤波利·罗杰伙伴鸟（480秒后重生）。35%防水。伙伴在跨分片时保留。
+  desc_zh_TW: 持續6天的帽子。召喚波利·羅傑夥伴鳥（480秒後重生）。35%防水。夥伴在跨分片時保留。
+  desc_fr: Chapeau de 6 jours. Invoque un oiseau compagnon Polly Rogers (réapparition 480s). 35 % imperméable. Compagnon persistant entre shards.
+  desc_de: Hut für 6 Tage. Beschwört Polly-Rogers-Begleitvogel (Respawn 480s). 35 % wasserfest. Begleiter bleibt bei Shard-Migration.
+  desc_it: Cappello da 6 giorni. Evoca un uccello compagno Polly Rogers (respawn 480s). 35% impermeabile. Compagno persiste tra shard.
+  desc_pl: Kapelusz na 6 dni. Przywołuje ptaka towarzysza Polly Rogers (respawn 480s). 35% wodoodporny. Towarzysz przetrwa migrację shardów.
+  desc_pt_BR: Chapéu de 6 dias. Invoca pássaro companheiro Polly Rogers (reaparece em 480s). 35% à prova d'água. Companheiro persiste entre shards.
+  desc_ru: Шляпа на 6 дней. Призывает птицу-компаньона Polly Rogers (респавн 480с). 35% водонепроницаемость. Компаньон сохраняется при переходе шардов.
+  desc_es: Sombrero de 6 días. Invoca un pájaro compañero Polly Rogers (reaparece en 480s). 35 % impermeable. Compañero persiste entre shards.
+  desc_es_MX: Sombrero de 6 días. Invoca un pájaro compañero Polly Rogers (reaparece en 480s). 35 % impermeable. Compañero persiste entre shards.
 573.portableblender
   en: Portable Grinding Mill
   ko: 휴대용 제분기
   app: X
   type: deconstruct
   source: Warly structure (placed form). Prototyper for FOODPROCESSING tech tree (restricted to professionalchef tag). Dismantles back to portableblender_item. Hammerable (2 hits). Burnable.
+  desc_en: Warly placed structure. Prototyper for FOODPROCESSING tech tree (professionalchef only). Dismantles back to portable item.
+  desc_ko: 월리 설치 구조물. FOODPROCESSING 기술 트리 프로토타이퍼(전문 요리사 전용). 휴대용 아이템으로 분해 가능.
+  desc_ja: ワーリーの設置構造物。FOODPROCESSING技術ツリーのプロトタイパー（professionalchef専用）。携帯アイテムに分解可能。
+  desc_zh_CN: 沃利放置结构。食品加工科技树原型台（仅限专业厨师）。可拆为便携物品。
+  desc_zh_TW: 沃利放置結構。食品加工科技樹原型台（僅限專業廚師）。可拆為便攜物品。
+  desc_fr: Structure posée de Warly. Prototypeur FOODPROCESSING (chef professionnel uniquement). Se démonte en objet portable.
+  desc_de: Warlys platzierte Struktur. Prototyper für FOODPROCESSING (nur professionalchef). Wird zum tragbaren Gegenstand abgebaut.
+  desc_it: Struttura di Warly. Prototipatore FOODPROCESSING (solo chef professionista). Si smonta in oggetto portatile.
+  desc_pl: Struktura Warly'ego. Prototyper FOODPROCESSING (tylko professional chef). Rozmontowywalna do przenośnego przedmiotu.
+  desc_pt_BR: Estrutura do Warly. Prototipador FOODPROCESSING (apenas chef profissional). Desmonta em item portátil.
+  desc_ru: Установленная структура Варли. Прототипер FOODPROCESSING (только professionalchef). Разбирается в портативный предмет.
+  desc_es: Estructura de Warly. Prototipador FOODPROCESSING (solo chef profesional). Se desmonta en objeto portátil.
+  desc_es_MX: Estructura de Warly. Prototipador FOODPROCESSING (solo chef profesional). Se desmonta en objeto portátil.
 574.portableblender_item
   en: Portable Grinding Mill
   ko: 휴대용 제분기
   app: O
   source: Warly deployable item. Places a Portable Grinding Mill structure. Restricted to masterchef tag for deployment. Burnable.
+  desc_en: Warly deployable item that places a Portable Grinding Mill structure. Restricted to masterchef tag.
+  desc_ko: 휴대용 제분기 구조물을 설치하는 월리 배치 아이템. masterchef 태그 전용.
+  desc_ja: 携帯型グラインドミル構造物を設置するワーリーのデプロイアイテム。masterchefタグ限定。
+  desc_zh_CN: 放置便携研磨机结构的沃利部署物品。仅限大厨标签。
+  desc_zh_TW: 放置便攜研磨機結構的沃利部署物品。僅限大廚標籤。
+  desc_fr: Objet déployable de Warly plaçant un Moulin Portable. Restreint au tag masterchef.
+  desc_de: Warlys platzierbarer Gegenstand für eine tragbare Mühle. Nur für masterchef-Tag.
+  desc_it: Oggetto di Warly che piazza un Mulino Portatile. Limitato al tag masterchef.
+  desc_pl: Przedmiot Warly'ego stawiający Przenośny Młynek. Ograniczony do tagu masterchef.
+  desc_pt_BR: Item do Warly que coloca um Moinho Portátil. Restrito à tag masterchef.
+  desc_ru: Предмет Варли, устанавливающий Портативную Мельницу. Только для тега masterchef.
+  desc_es: Objeto de Warly que coloca un Molino Portátil. Restringido a la etiqueta masterchef.
+  desc_es_MX: Objeto de Warly que coloca un Molino Portátil. Restringido a la etiqueta masterchef.
 575.portablecookpot
   en: Portable Crock Pot
   ko: 휴대용 요리솥
   app: X
   type: deconstruct
   source: Warly structure (placed form). Crock pot with 0.8x cook time multiplier (20% faster). 4-slot container. Warly starts with 1. Dismantles to portablecookpot_item. Hammerable (2 hits). Burnable.
+  desc_en: Warly placed crock pot with 20% faster cook time (0.8x multiplier). 4-slot container. Dismantles to portable item.
+  desc_ko: 20% 빠른 조리 시간(0.8배)의 월리 설치 요리솥. 4슬롯 용기. 휴대용 아이템으로 분해 가능.
+  desc_ja: 調理時間20%短縮（0.8倍）のワーリー設置クロックポット。4スロット。携帯アイテムに分解可能。
+  desc_zh_CN: 沃利放置的烹饪锅，烹饪速度快20%（0.8倍）。4格容器。可拆为便携物品。
+  desc_zh_TW: 沃利放置的烹飪鍋，烹飪速度快20%（0.8倍）。4格容器。可拆為便攜物品。
+  desc_fr: Marmite de Warly avec cuisson 20 % plus rapide (x0,8). 4 emplacements. Se démonte en objet portable.
+  desc_de: Warlys Kochtopf mit 20 % schnellerer Kochzeit (0,8x). 4 Plätze. Wird zum tragbaren Gegenstand.
+  desc_it: Pentola di Warly con cottura 20% più rapida (0,8x). 4 slot. Si smonta in oggetto portatile.
+  desc_pl: Garnek Warly'ego z 20% szybszym gotowaniem (0,8x). 4 sloty. Rozmontowywalna.
+  desc_pt_BR: Panela do Warly com cozimento 20% mais rápido (0,8x). 4 slots. Desmonta em item portátil.
+  desc_ru: Кастрюля Варли с 20% ускорением готовки (0,8x). 4 слота. Разбирается в портативный предмет.
+  desc_es: Olla de Warly con cocción 20 % más rápida (0,8x). 4 ranuras. Se desmonta en objeto portátil.
+  desc_es_MX: Olla de Warly con cocción 20 % más rápida (0.8x). 4 ranuras. Se desmonta en objeto portátil.
 576.portablecookpot_item
   en: Portable Crock Pot
   ko: 휴대용 요리솥
   app: O
   source: Warly deployable item. Places a Portable Crock Pot structure. Restricted to masterchef tag. Warly starts with 1 (plus potatoes and garlic). Burnable.
+  desc_en: Warly deployable item that places a Portable Crock Pot. Restricted to masterchef tag. Warly starts with 1.
+  desc_ko: 휴대용 요리솥을 설치하는 월리 배치 아이템. masterchef 태그 전용. 월리 초기 1개 보유.
+  desc_ja: 携帯型クロックポットを設置するワーリーのデプロイアイテム。masterchefタグ限定。ワーリー初期所持1個。
+  desc_zh_CN: 放置便携烹饪锅的沃利部署物品。仅限大厨标签。沃利初始携带1个。
+  desc_zh_TW: 放置便攜烹飪鍋的沃利部署物品。僅限大廚標籤。沃利初始攜帶1個。
+  desc_fr: Objet déployable de Warly plaçant une Marmite Portable. Restreint au tag masterchef. Warly commence avec 1.
+  desc_de: Warlys platzierbarer Gegenstand für einen tragbaren Kochtopf. Nur masterchef. Warly startet mit 1.
+  desc_it: Oggetto di Warly che piazza una Pentola Portatile. Limitato a masterchef. Warly inizia con 1.
+  desc_pl: Przedmiot Warly'ego stawiający Przenośny Garnek. Ograniczony do masterchef. Warly zaczyna z 1.
+  desc_pt_BR: Item do Warly que coloca uma Panela Portátil. Restrito a masterchef. Warly começa com 1.
+  desc_ru: Предмет Варли для установки Портативной Кастрюли. Только masterchef. Варли начинает с 1.
+  desc_es: Objeto de Warly que coloca una Olla Portátil. Restringido a masterchef. Warly comienza con 1.
+  desc_es_MX: Objeto de Warly que coloca una Olla Portátil. Restringido a masterchef. Warly comienza con 1.
 577.portablefirepit
   en: Portable Fire Pit
   ko: 휴대용 화로
   app: X
   type: deconstruct
   source: Walter structure (placed form). 3-section fueled fire pit. Max fuel (60+120)*1.5=270s. Wildfire-protected. Cooker + storytelling prop. Fuel bonus mult 2x. Rain increases fuel consumption (2x rate). Dismantles to portablefirepit_item preserving fuel.
+  desc_en: Walter placed fire pit. Max fuel 270s. 2x fuel bonus. Rain doubles fuel consumption. Doubles as cooker and storytelling prop.
+  desc_ko: 월터 설치 화로. 최대 연료 270초. 연료 보너스 2배. 비 시 연료 소모 2배. 조리 및 이야기 소품 겸용.
+  desc_ja: ウォルター設置の焚き火。最大燃料270秒。燃料ボーナス2倍。雨で消費2倍。調理とストーリーテリング兼用。
+  desc_zh_CN: 沃尔特放置火坑。最大燃料270秒。2倍燃料加成。雨天消耗翻倍。兼做炊具和讲故事道具。
+  desc_zh_TW: 沃爾特放置火坑。最大燃料270秒。2倍燃料加成。雨天消耗翻倍。兼做炊具和講故事道具。
+  desc_fr: Foyer de Walter. Carburant max 270s. Bonus x2. Pluie double la consommation. Sert de cuisinière et prop de narration.
+  desc_de: Walters Feuerstelle. Max. Brennstoff 270s. 2x Bonus. Regen verdoppelt Verbrauch. Auch Kocher und Erzählrequisit.
+  desc_it: Focolare di Walter. Carburante max 270s. Bonus x2. Pioggia raddoppia il consumo. Anche fornello e prop per storie.
+  desc_pl: Palenisko Waltera. Maks. paliwo 270s. Bonus 2x. Deszcz podwaja zużycie. Służy jako kuchenka i rekwizyt do opowieści.
+  desc_pt_BR: Fogueira do Walter. Combustível máx. 270s. Bônus 2x. Chuva dobra o consumo. Também serve como fogão e prop de histórias.
+  desc_ru: Костёр Вальтера. Макс. топливо 270с. Бонус 2x. Дождь удваивает расход. Также плита и реквизит для историй.
+  desc_es: Hoguera de Walter. Combustible máx. 270s. Bonus x2. Lluvia duplica consumo. También cocina y prop de historias.
+  desc_es_MX: Hoguera de Walter. Combustible máx. 270s. Bonus x2. Lluvia duplica consumo. También cocina y prop de historias.
 578.portablefirepit_item
   en: Portable Campfire
   ko: 휴대용 모닥불
   app: O
   source: Walter deployable item. Places a Portable Fire Pit. Restricted to portable_campfire_user. Starts with 1/3 fuel. Preserves fuel percent through deploy/dismantle cycle.
+  desc_en: Walter deployable item that places a Portable Fire Pit. Starts with 1/3 fuel. Preserves fuel through deploy/dismantle cycle.
+  desc_ko: 휴대용 화로를 설치하는 월터 배치 아이템. 1/3 연료 상태로 시작. 설치/분해 시 연료 보존.
+  desc_ja: 携帯型ファイヤーピットを設置するウォルターのデプロイアイテム。1/3燃料で開始。設置/解体で燃料保存。
+  desc_zh_CN: 放置便携火坑的沃尔特部署物品。初始1/3燃料。部署/拆除时保留燃料。
+  desc_zh_TW: 放置便攜火坑的沃爾特部署物品。初始1/3燃料。部署/拆除時保留燃料。
+  desc_fr: Objet déployable de Walter plaçant un Foyer Portable. Démarre à 1/3 de carburant. Conserve le carburant entre cycles.
+  desc_de: Walters platzierbarer Gegenstand für tragbare Feuerstelle. Startet mit 1/3 Brennstoff. Brennstoff bleibt beim Aufbau/Abbau erhalten.
+  desc_it: Oggetto di Walter che piazza un Focolare Portatile. Inizia con 1/3 carburante. Preserva il carburante tra cicli.
+  desc_pl: Przedmiot Waltera stawiający Przenośne Palenisko. Startuje z 1/3 paliwa. Zachowuje paliwo między cyklami.
+  desc_pt_BR: Item do Walter que coloca uma Fogueira Portátil. Começa com 1/3 de combustível. Preserva combustível entre ciclos.
+  desc_ru: Предмет Вальтера для установки Портативного Костра. Начинает с 1/3 топлива. Сохраняет топливо при сборке/разборке.
+  desc_es: Objeto de Walter que coloca una Hoguera Portátil. Empieza con 1/3 de combustible. Conserva combustible entre ciclos.
+  desc_es_MX: Objeto de Walter que coloca una Hoguera Portátil. Empieza con 1/3 de combustible. Conserva combustible entre ciclos.
 579.portablespicer
   en: Portable Seasoning Station
   ko: 휴대용 양념기
   app: X
   type: deconstruct
   source: Warly structure (placed form). Seasoning station with 2-slot container. Keeps food spoilage level. Dismantles to portablespicer_item. Hammerable (2 hits). Burnable.
+  desc_en: Warly placed seasoning station with 2-slot container. Keeps food spoilage level when seasoning. Dismantles to portable item.
+  desc_ko: 2슬롯 용기를 가진 월리 설치 양념기. 양념 시 음식 부패 수준 유지. 휴대용 아이템으로 분해 가능.
+  desc_ja: 2スロットのワーリー設置調味料ステーション。調味時に食品の腐敗レベルを維持。携帯アイテムに分解可能。
+  desc_zh_CN: 沃利放置的调味台，2格容器。调味时保持食物腐烂程度。可拆为便携物品。
+  desc_zh_TW: 沃利放置的調味台，2格容器。調味時保持食物腐爛程度。可拆為便攜物品。
+  desc_fr: Station d'assaisonnement de Warly (2 emplacements). Conserve le niveau de péremption. Se démonte en objet portable.
+  desc_de: Warlys Gewürzstation (2 Plätze). Behält Verderbgrad bei. Wird zum tragbaren Gegenstand.
+  desc_it: Stazione condimento di Warly (2 slot). Mantiene il livello di deperimento. Si smonta in oggetto portatile.
+  desc_pl: Stacja przypraw Warly'ego (2 sloty). Zachowuje poziom psucia. Rozmontowywalna.
+  desc_pt_BR: Estação de temperos do Warly (2 slots). Mantém nível de deterioração. Desmonta em item portátil.
+  desc_ru: Станция приправ Варли (2 слота). Сохраняет уровень порчи еды. Разбирается в портативный предмет.
+  desc_es: Estación de condimentos de Warly (2 ranuras). Mantiene nivel de deterioro. Se desmonta en objeto portátil.
+  desc_es_MX: Estación de condimentos de Warly (2 ranuras). Mantiene nivel de deterioro. Se desmonta en objeto portátil.
 580.portablespicer_item
   en: Portable Seasoning Station
   ko: 휴대용 양념기
   app: O
   source: Warly deployable item. Places a Portable Seasoning Station structure. Restricted to masterchef tag. Burnable.
+  desc_en: Warly deployable item that places a Portable Seasoning Station. Restricted to masterchef tag.
+  desc_ko: 휴대용 양념기를 설치하는 월리 배치 아이템. masterchef 태그 전용.
+  desc_ja: 携帯型調味料ステーションを設置するワーリーのデプロイアイテム。masterchefタグ限定。
+  desc_zh_CN: 放置便携调味台的沃利部署物品。仅限大厨标签。
+  desc_zh_TW: 放置便攜調味台的沃利部署物品。僅限大廚標籤。
+  desc_fr: Objet déployable de Warly plaçant une Station de Condiments. Restreint au tag masterchef.
+  desc_de: Warlys platzierbarer Gegenstand für tragbare Gewürzstation. Nur masterchef.
+  desc_it: Oggetto di Warly che piazza una Stazione Condimento Portatile. Limitato a masterchef.
+  desc_pl: Przedmiot Warly'ego stawiający Przenośną Stację Przypraw. Ograniczony do masterchef.
+  desc_pt_BR: Item do Warly que coloca uma Estação de Temperos Portátil. Restrito a masterchef.
+  desc_ru: Предмет Варли для установки Портативной Станции Приправ. Только masterchef.
+  desc_es: Objeto de Warly que coloca una Estación de Condimentos Portátil. Restringido a masterchef.
+  desc_es_MX: Objeto de Warly que coloca una Estación de Condimentos Portátil. Restringido a masterchef.
 581.portabletent_item
   en: Tent Roll
   ko: 접이식 텐트
   app: O
   source: Walter deployable item. 10 uses. Deploys into a sleeping tent — heals 2x normal rate, dries, warms toward tent target temp. Hunger drains during sleep. Preserves uses between deploy/dismantle. Burnable.
+  desc_en: Walter deployable tent with 10 uses. Heals at 2x rate, dries and warms during sleep. Preserves uses between deploy/dismantle.
+  desc_ko: 10회 사용의 월터 배치 텐트. 수면 중 2배 회복, 건조 및 보온. 설치/분해 시 사용 횟수 보존.
+  desc_ja: 10回使用のウォルターデプロイテント。睡眠中2倍回復、乾燥・保温。設置/解体で使用回数保存。
+  desc_zh_CN: 沃尔特部署帐篷，10次使用。睡眠中2倍恢复，干燥并保暖。部署/拆除间保留使用次数。
+  desc_zh_TW: 沃爾特部署帳篷，10次使用。睡眠中2倍恢復，乾燥並保暖。部署/拆除間保留使用次數。
+  desc_fr: Tente déployable de Walter (10 utilisations). Soin x2, sèche et réchauffe. Conserve les utilisations entre cycles.
+  desc_de: Walters Zelt (10 Nutzungen). Heilt 2x, trocknet und wärmt. Erhält Nutzungen beim Auf-/Abbau.
+  desc_it: Tenda di Walter (10 usi). Cura x2, asciuga e scalda. Preserva gli usi tra i cicli.
+  desc_pl: Namiot Waltera (10 użyć). Leczy 2x, suszy i ogrzewa. Zachowuje użycia między cyklami.
+  desc_pt_BR: Barraca do Walter (10 usos). Cura 2x, seca e aquece. Preserva usos entre ciclos.
+  desc_ru: Палатка Вальтера (10 зарядов). Лечит 2x, сушит и греет. Сохраняет заряды при сборке/разборке.
+  desc_es: Tienda de Walter (10 usos). Cura x2, seca y calienta. Conserva usos entre ciclos.
+  desc_es_MX: Tienda de Walter (10 usos). Cura x2, seca y calienta. Conserva usos entre ciclos.
 582.potatosack
   en: Potato Sack
   ko: 감자포대
   app: X
   type: deconstruct
   source: Heavy item. Body slot. Walk speed 0.15x (very slow). Cannot go in containers. Sinks in water. Gym weight 1 (for Wolfgang). Hammerable (2 hits).
+  desc_en: Heavy body slot item. Reduces walk speed to 15%. Cannot be stored in containers. Gym weight 1 for Wolfgang training.
+  desc_ko: 무거운 몸통 슬롯 아이템. 이동 속도 15%로 감소. 용기에 보관 불가. 볼프강 훈련용 체중 1.
+  desc_ja: 重いボディスロットアイテム。移動速度15%に低下。コンテナ保管不可。ウルフガングジム重量1。
+  desc_zh_CN: 沉重的身体槽物品。移动速度降至15%。无法存入容器。沃尔夫冈训练重量1。
+  desc_zh_TW: 沉重的身體槽物品。移動速度降至15%。無法存入容器。沃爾夫岡訓練重量1。
+  desc_fr: Objet lourd (corps). Vitesse réduite à 15 %. Non stockable. Poids gym 1 pour Wolfgang.
+  desc_de: Schwerer Körperslot-Gegenstand. Geschwindigkeit auf 15 % reduziert. Nicht lagerbar. Gym-Gewicht 1 für Wolfgang.
+  desc_it: Oggetto corpo pesante. Velocità ridotta al 15%. Non conservabile. Peso palestra 1 per Wolfgang.
+  desc_pl: Ciężki przedmiot na ciało. Prędkość 15%. Nie mieści się w pojemnikach. Waga gym 1 dla Wolfganga.
+  desc_pt_BR: Item pesado de corpo. Velocidade reduzida a 15%. Não cabe em contêineres. Peso gym 1 para Wolfgang.
+  desc_ru: Тяжёлый предмет для тела. Скорость 15%. Не хранится в контейнерах. Вес для тренировки Вольфганга 1.
+  desc_es: Objeto pesado de cuerpo. Velocidad reducida al 15 %. No almacenable. Peso gym 1 para Wolfgang.
+  desc_es_MX: Objeto pesado de cuerpo. Velocidad reducida al 15 %. No almacenable. Peso gym 1 para Wolfgang.
 583.pottedfern
   en: Potted Fern
   ko: 양치식물 화분
   app: O
   source: Decorative structure. Random fern appearance (1-10 variants). Cave dweller tagged. Hammerable (1 hit). Burnable.
+  desc_en: Decorative structure with random fern appearance (1-10 variants). Cave dweller tagged. Hammerable and burnable.
+  desc_ko: 무작위 양치식물 외형(1~10 변형)의 장식 구조물. 동굴 거주 태그. 망치질 및 불 가능.
+  desc_ja: ランダムなシダの外見（1〜10バリエーション）の装飾構造物。洞窟住人タグ。ハンマー・可燃。
+  desc_zh_CN: 随机蕨类外观（1-10种变体）的装饰结构。洞穴居民标签。可锤可烧。
+  desc_zh_TW: 隨機蕨類外觀（1-10種變體）的裝飾結構。洞穴居民標籤。可錘可燒。
+  desc_fr: Structure décorative avec fougère aléatoire (1-10 variantes). Habitant des cavernes. Martelable et inflammable.
+  desc_de: Dekorative Struktur mit zufälligem Farn (1-10 Varianten). Höhlenbewohner. Hammerbar und brennbar.
+  desc_it: Struttura decorativa con felce casuale (1-10 varianti). Abitante delle grotte. Martellabile e infiammabile.
+  desc_pl: Dekoracyjna struktura z losową paprocią (1-10 wariantów). Mieszkaniec jaskini. Rozbijalna i palna.
+  desc_pt_BR: Estrutura decorativa com samambaia aleatória (1-10 variantes). Habitante de caverna. Quebrável e inflamável.
+  desc_ru: Декоративная структура со случайным папоротником (1-10 вариантов). Пещерный обитатель. Разрушается, горит.
+  desc_es: Estructura decorativa con helecho aleatorio (1-10 variantes). Habitante de cueva. Martillable e inflamable.
+  desc_es_MX: Estructura decorativa con helecho aleatorio (1-10 variantes). Habitante de cueva. Martillable e inflamable.
 584.premiumwateringcan
   en: Empty Waterfowl Can
   ko: 빈 물부리개
   app: O
   source: Tool. 160 uses. Holds 25 units of water. Upgraded watering can for farm plants.
+  desc_en: Upgraded watering can. 160 uses. Holds 25 units of water for watering farm plants.
+  desc_ko: 상위 물뿌리개. 160회 사용. 농작물에 물주기 위한 25단위 물 보관.
+  desc_ja: 上位じょうろ。160回使用。農作物用の水25ユニット保持。
+  desc_zh_CN: 升级浇水壶。160次使用。储存25单位水用于浇灌农作物。
+  desc_zh_TW: 升級澆水壺。160次使用。儲存25單位水用於澆灌農作物。
+  desc_fr: Arrosoir amélioré. 160 utilisations. Contient 25 unités d'eau pour arroser.
+  desc_de: Verbesserte Gießkanne. 160 Nutzungen. Fasst 25 Einheiten Wasser für Bewässerung.
+  desc_it: Annaffiatoio migliorato. 160 usi. Contiene 25 unità di acqua per irrigazione.
+  desc_pl: Ulepszona konewka. 160 użyć. Mieści 25 jednostek wody do podlewania.
+  desc_pt_BR: Regador aprimorado. 160 usos. Armazena 25 unidades de água para irrigação.
+  desc_ru: Улучшенная лейка. 160 зарядов. Вмещает 25 единиц воды для полива.
+  desc_es: Regadera mejorada. 160 usos. Almacena 25 unidades de agua para riego.
+  desc_es_MX: Regadera mejorada. 160 usos. Almacena 25 unidades de agua para riego.
 585.pumpkin_lantern
   en: Pumpkin Lantern
   ko: 호박 랜턴
   app: O
   source: Light source. Emits light at night (radius 1.5, intensity 0.8) with flicker effect. Perishable (medium or super-slow during Hallowed Nights). Releases fireflies on death. 1 HP — dies from any damage.
+  desc_en: Light source emitting light at night (radius 1.5). Perishable. Releases fireflies when destroyed. 1 HP — dies from any damage.
+  desc_ko: 야간 발광 광원(반경 1.5). 부패 가능. 파괴 시 반딧불이 방출. 1 HP — 어떤 피해로도 파괴.
+  desc_ja: 夜間に発光する光源（半径1.5）。腐敗する。破壊時にホタルを放出。HP1 — 任意のダメージで破壊。
+  desc_zh_CN: 夜间发光的光源（半径1.5）。会腐烂。破坏时释放萤火虫。1HP——任何伤害即毁。
+  desc_zh_TW: 夜間發光的光源（半徑1.5）。會腐爛。破壞時釋放螢火蟲。1HP——任何傷害即毀。
+  desc_fr: Source de lumière nocturne (rayon 1,5). Périssable. Libère des lucioles à la destruction. 1 PV.
+  desc_de: Nachtlichtquelle (Radius 1,5). Verderblich. Setzt Glühwürmchen bei Zerstörung frei. 1 HP.
+  desc_it: Fonte di luce notturna (raggio 1,5). Deperibile. Rilascia lucciole alla distruzione. 1 HP.
+  desc_pl: Źródło światła nocą (promień 1,5). Psujące się. Uwalnia świetliki przy zniszczeniu. 1 HP.
+  desc_pt_BR: Fonte de luz noturna (raio 1,5). Perecível. Libera vagalumes ao ser destruído. 1 HP.
+  desc_ru: Ночной источник света (радиус 1,5). Портится. При разрушении выпускает светлячков. 1 HP.
+  desc_es: Fuente de luz nocturna (radio 1,5). Perecedero. Libera luciérnagas al destruirse. 1 HP.
+  desc_es_MX: Fuente de luz nocturna (radio 1.5). Perecedero. Libera luciérnagas al destruirse. 1 HP.
 586.pumpkincarver
   en: Pumpkin Carver
   ko: 호박 조각대
   app: X
   type: deconstruct
   source: Halloween event item. Tool for carving pumpkins. 15% chance from Pig King trades, 15% from gravestones during event. Max 15 cuts. Multiple carver variants exist. Burnable.
+  desc_en: Halloween event pumpkin carving tool. Max 15 cuts. Obtainable from Pig King trades and gravestones during event.
+  desc_ko: 할로윈 이벤트 호박 조각 도구. 최대 15번 조각. 이벤트 중 돼지왕 교환 및 묘비에서 획득 가능.
+  desc_ja: ハロウィンイベントのカボチャ彫刻ツール。最大15カット。イベント中にブタ王交易や墓石から入手可能。
+  desc_zh_CN: 万圣节活动南瓜雕刻工具。最多15刀。活动期间可从猪王交易和墓碑获得。
+  desc_zh_TW: 萬聖節活動南瓜雕刻工具。最多15刀。活動期間可從豬王交易和墓碑獲得。
+  desc_fr: Outil de sculpture de citrouille (événement Halloween). Max 15 coupes. Obtenu via le Roi Cochon et les tombes.
+  desc_de: Halloween-Kürbisschnitzwerkzeug. Max 15 Schnitte. Vom Schweinekönig und Grabsteinen erhältlich.
+  desc_it: Strumento per intaglio zucca (evento Halloween). Max 15 tagli. Ottenibile dal Re Maiale e tombe.
+  desc_pl: Narzędzie do rzeźbienia dyni (event Halloween). Maks. 15 cięć. Z handlu z Królem Świń i nagrobków.
+  desc_pt_BR: Ferramenta de esculpir abóbora (evento Halloween). Máx. 15 cortes. Obtido do Rei Porco e lápides.
+  desc_ru: Инструмент для вырезания тыквы (Хэллоуин). Макс. 15 разрезов. Добывается у Свиного Короля и с надгробий.
+  desc_es: Herramienta para tallar calabazas (evento Halloween). Máx. 15 cortes. Del Rey Cerdo y lápidas.
+  desc_es_MX: Herramienta para tallar calabazas (evento Halloween). Máx. 15 cortes. Del Rey Cerdo y lápidas.
 587.pumpkinhat
   en: Faceless Pumpkin
   ko: 얼굴 없는 호박
   app: O
   source: Hat. Decorative pumpkin headwear. No armor, no waterproofing, no special stats.
+  desc_en: Decorative pumpkin hat. No armor, waterproofing, or special stats.
+  desc_ko: 장식용 호박 모자. 방어, 방수 및 특수 효과 없음.
+  desc_ja: 装飾用カボチャ帽子。防御、防水、特殊効果なし。
+  desc_zh_CN: 装饰性南瓜帽。无防御、防水或特殊效果。
+  desc_zh_TW: 裝飾性南瓜帽。無防禦、防水或特殊效果。
+  desc_fr: Chapeau décoratif en citrouille. Pas d'armure, d'imperméabilité ni de stats spéciales.
+  desc_de: Dekorativer Kürbishut. Keine Rüstung, Wasserfestigkeit oder besonderen Werte.
+  desc_it: Cappello decorativo di zucca. Nessuna armatura, impermeabilità o statistiche speciali.
+  desc_pl: Dekoracyjny kapelusz z dyni. Brak pancerza, wodoodporności i specjalnych statystyk.
+  desc_pt_BR: Chapéu decorativo de abóbora. Sem armadura, impermeabilidade ou atributos especiais.
+  desc_ru: Декоративная тыквенная шляпа. Без брони, водонепроницаемости и особых характеристик.
+  desc_es: Sombrero decorativo de calabaza. Sin armadura, impermeabilidad ni estadísticas especiales.
+  desc_es_MX: Sombrero decorativo de calabaza. Sin armadura, impermeabilidad ni estadísticas especiales.
 588.punchingbag
   en: Punching Bag
   ko: 동네북씨
   app: O
   source: Structure. Training dummy that displays damage numbers (up to 9999). 10009 HP with min 1 HP, regens fully in ~0.1s. Accepts head/body armor to equip. Hammerable (6 hits). Burnable.
+  desc_en: Training dummy displaying damage numbers (up to 9999). 10009 HP with fast regen. Accepts armor equipment. Hammerable and burnable.
+  desc_ko: 피해 수치(최대 9999)를 표시하는 훈련 인형. 10009 HP, 빠른 회복. 방어구 장착 가능. 망치질 및 불 가능.
+  desc_ja: ダメージ数値（最大9999）を表示するトレーニングダミー。10009HP、高速回復。防具装備可。ハンマー・可燃。
+  desc_zh_CN: 显示伤害数字（最大9999）的训练假人。10009HP，快速恢复。可装备护甲。可锤可烧。
+  desc_zh_TW: 顯示傷害數字（最大9999）的訓練假人。10009HP，快速恢復。可裝備護甲。可錘可燒。
+  desc_fr: Mannequin d'entraînement affichant les dégâts (max 9999). 10009 PV, régénération rapide. Accepte l'armure. Martelable et inflammable.
+  desc_de: Trainingsattrappe mit Schadensanzeige (max 9999). 10009 HP, schnelle Regeneration. Akzeptiert Rüstung. Hammerbar und brennbar.
+  desc_it: Manichino da allenamento che mostra i danni (max 9999). 10009 HP, rigenerazione rapida. Accetta armatura. Martellabile e infiammabile.
+  desc_pl: Manekin treningowy wyświetlający obrażenia (maks. 9999). 10009 HP, szybka regeneracja. Przyjmuje pancerz. Rozbijalny i palny.
+  desc_pt_BR: Boneco de treino que exibe dano (máx. 9999). 10009 HP, regeneração rápida. Aceita armadura. Quebrável e inflamável.
+  desc_ru: Тренировочный манекен с отображением урона (макс. 9999). 10009 HP, быстрая регенерация. Принимает броню. Разрушается, горит.
+  desc_es: Maniquí de entrenamiento que muestra daño (máx. 9999). 10009 HP, regeneración rápida. Acepta armadura. Martillable e inflamable.
+  desc_es_MX: Maniquí de entrenamiento que muestra daño (máx. 9999). 10009 HP, regeneración rápida. Acepta armadura. Martillable e inflamable.
 589.punchingbag_lunar
   en: Bright Boxer
   ko: 달빛 동네북씨
   app: O
   source: Structure. Lunar-aligned punching bag variant. Same damage display mechanics (9999 max, fast regen). Has planar entity for lunar damage testing. Hammerable (6 hits).
+  desc_en: Lunar-aligned punching bag for testing lunar/planar damage. Displays damage up to 9999 with fast regen.
+  desc_ko: 달/차원 피해 테스트용 달 정렬 동네북씨. 최대 9999 피해 표시, 빠른 회복.
+  desc_ja: 月/プレーナーダメージテスト用の月属性パンチングバッグ。最大9999ダメージ表示、高速回復。
+  desc_zh_CN: 用于测试月亮/位面伤害的月亮属性沙袋。显示最大9999伤害，快速恢复。
+  desc_zh_TW: 用於測試月亮/位面傷害的月亮屬性沙袋。顯示最大9999傷害，快速恢復。
+  desc_fr: Sac de frappe lunaire pour tester les dégâts planaires. Affiche jusqu'à 9999, régénération rapide.
+  desc_de: Mond-Boxsack zum Testen von planarem Schaden. Zeigt bis zu 9999 an, schnelle Regeneration.
+  desc_it: Sacco lunare per testare danni planari. Mostra fino a 9999, rigenerazione rapida.
+  desc_pl: Księżycowy worek treningowy do testowania obrażeń planarnych. Wyświetla do 9999, szybka regeneracja.
+  desc_pt_BR: Saco lunar para testar dano planar. Exibe até 9999, regeneração rápida.
+  desc_ru: Лунный мешок для тестирования планарного урона. Показывает до 9999, быстрая регенерация.
+  desc_es: Saco lunar para probar daño planar. Muestra hasta 9999, regeneración rápida.
+  desc_es_MX: Saco lunar para probar daño planar. Muestra hasta 9999, regeneración rápida.
 590.punchingbag_shadow
   en: Shadow Boxer
   ko: 그림자 동네북씨
   app: O
   source: Structure. Shadow-aligned punching bag variant. Same damage display mechanics (9999 max, fast regen). Has planar entity for shadow damage testing. Hammerable (6 hits).
+  desc_en: Shadow-aligned punching bag for testing shadow/planar damage. Displays damage up to 9999 with fast regen.
+  desc_ko: 그림자/차원 피해 테스트용 그림자 정렬 동네북씨. 최대 9999 피해 표시, 빠른 회복.
+  desc_ja: シャドウ/プレーナーダメージテスト用のシャドウ属性パンチングバッグ。最大9999ダメージ表示、高速回復。
+  desc_zh_CN: 用于测试暗影/位面伤害的暗影属性沙袋。显示最大9999伤害，快速恢复。
+  desc_zh_TW: 用於測試暗影/位面傷害的暗影屬性沙袋。顯示最大9999傷害，快速恢復。
+  desc_fr: Sac de frappe d'ombre pour tester les dégâts d'ombre. Affiche jusqu'à 9999, régénération rapide.
+  desc_de: Schatten-Boxsack zum Testen von Schattenschaden. Zeigt bis zu 9999 an, schnelle Regeneration.
+  desc_it: Sacco d'ombra per testare danni d'ombra. Mostra fino a 9999, rigenerazione rapida.
+  desc_pl: Cienisty worek treningowy do testowania obrażeń cienia. Wyświetla do 9999, szybka regeneracja.
+  desc_pt_BR: Saco sombrio para testar dano sombrio. Exibe até 9999, regeneração rápida.
+  desc_ru: Теневой мешок для тестирования теневого урона. Показывает до 9999, быстрая регенерация.
+  desc_es: Saco de sombra para probar daño de sombra. Muestra hasta 9999, regeneración rápida.
+  desc_es_MX: Saco de sombra para probar daño de sombra. Muestra hasta 9999, regeneración rápida.
 591.purpleamulet
   en: Nightmare Amulet
   ko: 악몽의 부적
   app: O
   source: Body slot amulet. Fuel 192s (480*0.4). Forces insanity while worn — rapidly drains sanity to trigger nightmare creatures.
+  desc_en: Body slot amulet. Fuel 192s. Forces insanity while worn — rapidly drains sanity to trigger nightmare creatures.
+  desc_ko: 몸통 부적. 연료 192초. 착용 시 강제 광기 — 정신력을 빠르게 소모하여 악몽 생물 유발.
+  desc_ja: ボディスロットアミュレット。燃料192秒。装着中に狂気を強制 — 正気度を急速消耗しナイトメアクリーチャーを誘発。
+  desc_zh_CN: 身体护符。燃料192秒。穿戴时强制疯狂——快速消耗理智以触发噩梦生物。
+  desc_zh_TW: 身體護符。燃料192秒。穿戴時強制瘋狂——快速消耗理智以觸發噩夢生物。
+  desc_fr: Amulette (corps). Carburant 192s. Force la folie — draine rapidement la santé mentale pour déclencher des cauchemars.
+  desc_de: Amulett (Körper). Brennstoff 192s. Erzwingt Wahnsinn — entzieht schnell Verstand für Albtraumkreaturen.
+  desc_it: Amuleto (corpo). Carburante 192s. Forza la follia — drena rapidamente la sanità per evocare creature da incubo.
+  desc_pl: Amulet (ciało). Paliwo 192s. Wymusza obłęd — szybko drenuje poczytalność, wywołując koszmarne stworzenia.
+  desc_pt_BR: Amuleto (corpo). Combustível 192s. Força insanidade — drena sanidade rapidamente para invocar criaturas de pesadelo.
+  desc_ru: Амулет (тело). Топливо 192с. Принуждает безумие — быстро расходует рассудок для вызова кошмарных существ.
+  desc_es: Amuleto (cuerpo). Combustible 192s. Fuerza locura — drena cordura rápidamente para invocar criaturas de pesadilla.
+  desc_es_MX: Amuleto (cuerpo). Combustible 192s. Fuerza locura — drena cordura rápidamente para invocar criaturas de pesadilla.
 592.purplegem
   en: Purple Gem
   ko: 보라 보석
   app: O
   source: Crafting material. Used in various magic recipes (Nightmare Amulet, Shadow Manipulator, Rift Watch upgrade). No special prefab mechanics — basic gem inventory item.
+  desc_en: Crafting material used in magic recipes (Nightmare Amulet, Shadow Manipulator, Rift Watch upgrade). Basic gem item.
+  desc_ko: 마법 레시피(악몽의 부적, 그림자 조작기, 균열의 시계 업그레이드)에 사용되는 제작 재료. 기본 보석 아이템.
+  desc_ja: 魔法レシピ（ナイトメアアミュレット、シャドウマニピュレーター、リフトウォッチ強化）用素材。基本ジェムアイテム。
+  desc_zh_CN: 用于魔法配方（噩梦护符、暗影操控器、裂隙表升级）的制作材料。基础宝石物品。
+  desc_zh_TW: 用於魔法配方（噩夢護符、暗影操控器、裂隙錶升級）的製作材料。基礎寶石物品。
+  desc_fr: Matériau pour recettes magiques (Amulette Cauchemar, Manipulateur d'Ombre, amélioration Rift Watch). Gemme basique.
+  desc_de: Material für magische Rezepte (Albtraumamulett, Schattenmanipulator, Rift-Watch-Upgrade). Einfacher Edelstein.
+  desc_it: Materiale per ricette magiche (Amuleto Incubo, Manipolatore d'Ombra, upgrade Rift Watch). Gemma base.
+  desc_pl: Materiał do magicznych receptur (Amulet Koszmarów, Manipulator Cieni, ulepszenie Rift Watch). Podstawowy klejnot.
+  desc_pt_BR: Material para receitas mágicas (Amuleto Pesadelo, Manipulador Sombrio, melhoria Rift Watch). Gema básica.
+  desc_ru: Материал для магических рецептов (Амулет Кошмаров, Теневой Манипулятор, улучшение Rift Watch). Базовый камень.
+  desc_es: Material para recetas mágicas (Amuleto Pesadilla, Manipulador de Sombras, mejora Rift Watch). Gema básica.
+  desc_es_MX: Material para recetas mágicas (Amuleto Pesadilla, Manipulador de Sombras, mejora Rift Watch). Gema básica.
 593.purplemooneye
   en: Purple Moonlens
   ko: 보라 달수정
   app: X
   type: deconstruct
   source: Tradable item. Shows on global map when dropped (minimap icon with fog-of-war override). Bloom visual effect. Sparkles periodically. No combat or equipment stats.
+  desc_en: Tradable item visible on the global map when dropped. Decorative moonlens with bloom effect. No combat stats.
+  desc_ko: 떨어뜨리면 전체 지도에 표시되는 교환 아이템. 블룸 효과의 장식용 달수정. 전투 능력치 없음.
+  desc_ja: ドロップ時にグローバルマップに表示される交易品。ブルーム効果の装飾用ムーンレンズ。戦闘ステータスなし。
+  desc_zh_CN: 丢弃时在全局地图上可见的交易品。带光晕效果的装饰性月透镜。无战斗属性。
+  desc_zh_TW: 丟棄時在全域地圖上可見的交易品。帶光暈效果的裝飾性月透鏡。無戰鬥屬性。
+  desc_fr: Objet échangeable visible sur la carte quand posé. Lentille lunaire décorative. Pas de stats de combat.
+  desc_de: Handelbares Objekt, auf der Karte sichtbar wenn abgelegt. Dekorative Mondlinse. Keine Kampfwerte.
+  desc_it: Oggetto scambiabile visibile sulla mappa se posato. Lente lunare decorativa. Nessuna statistica di combattimento.
+  desc_pl: Przedmiot handlowy widoczny na mapie po upuszczeniu. Dekoracyjna soczewka księżycowa. Brak statystyk bojowych.
+  desc_pt_BR: Item negociável visível no mapa quando largado. Lente lunar decorativa. Sem atributos de combate.
+  desc_ru: Торговый предмет, видимый на карте при сбросе. Декоративная лунная линза. Без боевых характеристик.
+  desc_es: Objeto comerciable visible en el mapa al soltarlo. Lente lunar decorativa. Sin estadísticas de combate.
+  desc_es_MX: Objeto comerciable visible en el mapa al soltarlo. Lente lunar decorativa. Sin estadísticas de combate.
 594.rabbithat
   en: Warren Wreath
   ko: 토끼장관
   app: X
   type: deconstruct
   source: Hat. Rabbit King shop item. Standard hat mechanics — no special stats found in dedicated prefab. Decorative headwear.
+  desc_en: Decorative hat from the Rabbit King shop. Standard hat with no special stats.
+  desc_ko: 토끼왕 상점의 장식 모자. 특수 효과 없는 기본 모자.
+  desc_ja: ラビットキングショップの装飾帽子。特殊効果のない標準帽子。
+  desc_zh_CN: 兔王商店的装饰帽。无特殊属性的标准帽子。
+  desc_zh_TW: 兔王商店的裝飾帽。無特殊屬性的標準帽子。
+  desc_fr: Chapeau décoratif de la boutique du Roi Lapin. Chapeau standard sans stats spéciales.
+  desc_de: Dekorativer Hut aus dem Kaninchenkönig-Laden. Standard-Hut ohne besondere Werte.
+  desc_it: Cappello decorativo dal negozio del Re Coniglio. Cappello standard senza statistiche speciali.
+  desc_pl: Dekoracyjny kapelusz ze sklepu Króla Królików. Standardowy kapelusz bez specjalnych statystyk.
+  desc_pt_BR: Chapéu decorativo da loja do Rei Coelho. Chapéu padrão sem atributos especiais.
+  desc_ru: Декоративная шляпа из магазина Кроличьего Короля. Стандартная шляпа без особых характеристик.
+  desc_es: Sombrero decorativo de la tienda del Rey Conejo. Sombrero estándar sin estadísticas especiales.
+  desc_es_MX: Sombrero decorativo de la tienda del Rey Conejo. Sombrero estándar sin estadísticas especiales.
 595.rabbithouse
   en: Rabbit Hutch
   ko: 토끼집
   app: O
   source: Structure. Spawns a bunnyman. Respawn time 480s (1 day). Bunnyman exits when cave day stops, returns during cave day. Cave dweller. Hammerable (4 hits).
+  desc_en: Structure spawning a Bunnyman. Respawn every 1 day. Bunnyman active during cave day, returns during cave night. Cave dweller.
+  desc_ko: 버니맨을 생성하는 구조물. 1일마다 리스폰. 동굴 낮에 활동, 동굴 밤에 복귀. 동굴 거주.
+  desc_ja: バニーマンをスポーンする構造物。1日ごとにリスポーン。洞窟の昼に活動、洞窟の夜に帰還。洞窟住人。
+  desc_zh_CN: 生成兔人的结构。每天重生。洞穴白天活动，洞穴夜晚回来。洞穴居民。
+  desc_zh_TW: 生成兔人的結構。每天重生。洞穴白天活動，洞穴夜晚回來。洞穴居民。
+  desc_fr: Structure faisant apparaître un Bunnyman. Réapparition chaque jour. Actif le jour en caverne.
+  desc_de: Struktur, die einen Bunnyman spawnt. Respawn täglich. Aktiv bei Höhlentag.
+  desc_it: Struttura che genera un Bunnyman. Respawn ogni giorno. Attivo durante il giorno in grotta.
+  desc_pl: Struktura spawnująca Bunnymana. Respawn co 1 dzień. Aktywny w dzień jaskiniowy.
+  desc_pt_BR: Estrutura que gera um Bunnyman. Reaparece a cada dia. Ativo durante o dia de caverna.
+  desc_ru: Структура, порождающая Баннимена. Респавн каждый день. Активен в пещерный день.
+  desc_es: Estructura que genera un Bunnyman. Reaparece cada día. Activo durante el día de cueva.
+  desc_es_MX: Estructura que genera un Bunnyman. Reaparece cada día. Activo durante el día de cueva.
 596.rabbitkinghorn
   en: Burrowing Horn
   ko: 토끼 굴피리
   app: X
   type: deconstruct
   source: Instrument. 3 uses. Range 12. Summons a rabbitkinghorn_chest (treasure) on valid ground. Also tends nearby farm plants. Fails if used over ocean/void (no use consumed).
+  desc_en: Instrument with 3 uses. Summons a treasure chest within range 12. Tends nearby farm plants. Fails over ocean/void.
+  desc_ko: 3회 사용 악기. 반경 12 내 보물 상자 소환. 근처 농작물 관리. 바다/공허 위에서는 실패.
+  desc_ja: 3回使用の楽器。範囲12以内に宝箱を召喚。近くの農作物を手入れ。海/虚空では失敗。
+  desc_zh_CN: 3次使用的乐器。在范围12内召唤宝箱。照料农作物。在海洋/虚空上失败。
+  desc_zh_TW: 3次使用的樂器。在範圍12內召喚寶箱。照料農作物。在海洋/虛空上失敗。
+  desc_fr: Instrument à 3 utilisations. Invoque un coffre au trésor (rayon 12). Entretient les plantes. Échoue sur l'océan.
+  desc_de: Instrument mit 3 Nutzungen. Beschwört eine Schatztruhe (Radius 12). Pflegt Pflanzen. Scheitert auf dem Ozean.
+  desc_it: Strumento con 3 usi. Evoca un forziere (raggio 12). Cura le piante. Fallisce sull'oceano.
+  desc_pl: Instrument z 3 użyciami. Przywołuje skrzynię ze skarbem (zasięg 12). Pielęgnuje rośliny. Nie działa nad oceanem.
+  desc_pt_BR: Instrumento com 3 usos. Invoca baú do tesouro (raio 12). Cuida das plantas. Falha sobre oceano.
+  desc_ru: Инструмент на 3 заряда. Призывает сундук с сокровищами (радиус 12). Ухаживает за растениями. Не работает над океаном.
+  desc_es: Instrumento con 3 usos. Invoca cofre del tesoro (radio 12). Cuida las plantas. Falla sobre el océano.
+  desc_es_MX: Instrumento con 3 usos. Invoca cofre del tesoro (radio 12). Cuida las plantas. Falla sobre el océano.
 597.rabbitkingshop_armor_carrotlure
   en: Coat of Carrots
   ko: 당근 휘장
   app: O
   source: Rabbit King shop purchase item (armor). No dedicated prefab file — purchased from Rabbit King shop (RABBITKINGSHOP tech tree level 2).
+  desc_en: Armor purchased from the Rabbit King shop (tech level 2). Carrot-themed coat.
+  desc_ko: 토끼왕 상점에서 구매하는 방어구(기술 레벨 2). 당근 테마 코트.
+  desc_ja: ラビットキングショップで購入する防具（テクレベル2）。ニンジンテーマのコート。
+  desc_zh_CN: 从兔王商店购买的护甲（科技等级2）。胡萝卜主题外套。
+  desc_zh_TW: 從兔王商店購買的護甲（科技等級2）。胡蘿蔔主題外套。
+  desc_fr: Armure achetée à la boutique du Roi Lapin (niveau tech 2). Manteau à thème carotte.
+  desc_de: Rüstung aus dem Kaninchenkönig-Laden (Technologie-Stufe 2). Karottenmantel.
+  desc_it: Armatura dal negozio del Re Coniglio (livello tech 2). Cappotto a tema carota.
+  desc_pl: Pancerz ze sklepu Króla Królików (poziom tech 2). Płaszcz o tematyce marchwi.
+  desc_pt_BR: Armadura da loja do Rei Coelho (nível tech 2). Casaco temático de cenoura.
+  desc_ru: Броня из магазина Кроличьего Короля (уровень 2). Пальто с морковной тематикой.
+  desc_es: Armadura de la tienda del Rey Conejo (nivel tech 2). Abrigo temático de zanahoria.
+  desc_es_MX: Armadura de la tienda del Rey Conejo (nivel tech 2). Abrigo temático de zanahoria.
 598.rabbitkingshop_hat_rabbit
   en: Hat Rabbit
   ko: 토끼 모자
   app: O
   source: Rabbit King shop purchase item (hat). No dedicated prefab file — purchased from Rabbit King shop (RABBITKINGSHOP tech tree level 2).
+  desc_en: Hat purchased from the Rabbit King shop (tech level 2). Rabbit-themed headwear.
+  desc_ko: 토끼왕 상점에서 구매하는 모자(기술 레벨 2). 토끼 테마 머리장식.
+  desc_ja: ラビットキングショップで購入する帽子（テクレベル2）。ウサギテーマの帽子。
+  desc_zh_CN: 从兔王商店购买的帽子（科技等级2）。兔子主题头饰。
+  desc_zh_TW: 從兔王商店購買的帽子（科技等級2）。兔子主題頭飾。
+  desc_fr: Chapeau acheté à la boutique du Roi Lapin (niveau tech 2). Coiffe à thème lapin.
+  desc_de: Hut aus dem Kaninchenkönig-Laden (Technologie-Stufe 2). Kaninchenhut.
+  desc_it: Cappello dal negozio del Re Coniglio (livello tech 2). Cappello a tema coniglio.
+  desc_pl: Kapelusz ze sklepu Króla Królików (poziom tech 2). Kapelusz o tematyce króliczej.
+  desc_pt_BR: Chapéu da loja do Rei Coelho (nível tech 2). Chapéu temático de coelho.
+  desc_ru: Шляпа из магазина Кроличьего Короля (уровень 2). Кроличья тематика.
+  desc_es: Sombrero de la tienda del Rey Conejo (nivel tech 2). Sombrero temático de conejo.
+  desc_es_MX: Sombrero de la tienda del Rey Conejo (nivel tech 2). Sombrero temático de conejo.
 599.rabbitkingshop_rabbitkinghorn
   en: Burrowing Horn
   ko: 토끼 굴피리
   app: O
   source: Rabbit King shop purchase item (Burrowing Horn recipe). No dedicated prefab file — purchased from Rabbit King shop (RABBITKINGSHOP tech tree level 2).
+  desc_en: Burrowing Horn recipe purchased from the Rabbit King shop (tech level 2).
+  desc_ko: 토끼왕 상점에서 구매하는 토끼 굴피리 레시피(기술 레벨 2).
+  desc_ja: ラビットキングショップで購入するBurrowing Hornレシピ（テクレベル2）。
+  desc_zh_CN: 从兔王商店购买的挖掘号角配方（科技等级2）。
+  desc_zh_TW: 從兔王商店購買的挖掘號角配方（科技等級2）。
+  desc_fr: Recette de Corne Fouisseuse achetée à la boutique du Roi Lapin (niveau tech 2).
+  desc_de: Burrowing-Horn-Rezept aus dem Kaninchenkönig-Laden (Technologie-Stufe 2).
+  desc_it: Ricetta Corno Scavatore dal negozio del Re Coniglio (livello tech 2).
+  desc_pl: Receptura Rogu Kopacza ze sklepu Króla Królików (poziom tech 2).
+  desc_pt_BR: Receita de Corneta Escavadora da loja do Rei Coelho (nível tech 2).
+  desc_ru: Рецепт Рога Копателя из магазина Кроличьего Короля (уровень 2).
+  desc_es: Receta de Cuerno Excavador de la tienda del Rey Conejo (nivel tech 2).
+  desc_es_MX: Receta de Cuerno Excavador de la tienda del Rey Conejo (nivel tech 2).
 600.rabbitkingspear
   en: Rabbit King Cudgel
   ko: 토끼왕의 곤봉
   app: X
   type: deconstruct
   source: Weapon. 51 base damage (34*1.5), 1.4x vs bunnymen (71.4). 125 uses. Shadow level 2. Dapperness -100/600 per sec (-10/min). -5 sanity on hitting bunnymen. Shadow item. Scares manrabbits (tagged manrabbitscarer).
+  desc_en: Weapon dealing 51 base damage (1.4x vs bunnymen = 71.4). 125 uses. Shadow level 2. Drains sanity at -10/min. -5 sanity on hitting bunnymen.
+  desc_ko: 51 기본 피해(버니맨에게 1.4배 = 71.4)의 무기. 125회 사용. 그림자 레벨 2. 정신력 분당 -10. 버니맨 공격 시 정신력 -5.
+  desc_ja: 51基本ダメージ（バニーマンにx1.4=71.4）の武器。125回使用。シャドウレベル2。正気度-10/分。バニーマン攻撃時-5正気度。
+  desc_zh_CN: 51基础伤害（对兔人1.4倍=71.4）的武器。125次使用。暗影等级2。理智每分钟-10。击中兔人时-5理智。
+  desc_zh_TW: 51基礎傷害（對兔人1.4倍=71.4）的武器。125次使用。暗影等級2。理智每分鐘-10。擊中兔人時-5理智。
+  desc_fr: Arme de 51 dégâts (x1,4 vs bunnymen = 71,4). 125 utilisations. Niveau d'ombre 2. Draine -10/min. -5 santé mentale en frappant un bunnyman.
+  desc_de: Waffe mit 51 Schaden (x1,4 vs Bunnymen = 71,4). 125 Nutzungen. Schattenstufe 2. Entzieht -10/min. -5 Verstand bei Bunnyman-Treffern.
+  desc_it: Arma da 51 danni (x1,4 vs bunnymen = 71,4). 125 usi. Livello ombra 2. Drena -10/min. -5 sanità colpendo bunnymen.
+  desc_pl: Broń 51 obrażeń (x1,4 vs bunnymen = 71,4). 125 użyć. Poziom cienia 2. Drenuje -10/min. -5 poczytalności za trafienie bunnymana.
+  desc_pt_BR: Arma com 51 de dano (x1,4 vs bunnymen = 71,4). 125 usos. Nível sombrio 2. Drena -10/min. -5 sanidade ao atingir bunnymen.
+  desc_ru: Оружие с 51 урона (x1,4 vs баннименов = 71,4). 125 зарядов. Уровень тени 2. Расход рассудка -10/мин. -5 при ударе по баннимену.
+  desc_es: Arma con 51 de daño (x1,4 vs bunnymen = 71,4). 125 usos. Nivel de sombra 2. Drena -10/min. -5 cordura al golpear bunnymen.
+  desc_es_MX: Arma con 51 de daño (x1.4 vs bunnymen = 71.4). 125 usos. Nivel de sombra 2. Drena -10/min. -5 cordura al golpear bunnymen.
 601.raincoat
   en: Rain Coat
   ko: 우비
   app: O
   source: Body slot. 4800s (10 day) durability, 100% waterproof, lightning-immune (insulated), winter insulation 60 (INSULATION_SMALL). Consumed on depletion.
+  desc_en: Body armor with 100% waterproofing and lightning immunity. Lasts 10 days with minor winter insulation (60).
+  desc_ko: 100% 방수 및 번개 면역 효과를 가진 몸통 장비. 10일간 지속되며 약간의 겨울 단열(60)을 제공합니다.
+  desc_ja: 100%防水・雷無効のボディ装備。10日間持続し、冬の断熱性能60を付与します。
+  desc_zh_CN: 身体装备，100%防水且免疫雷击。持续10天，提供少量冬季隔热（60）。
+  desc_zh_TW: 身體裝備，100%防水且免疫雷擊。持續10天，提供少量冬季隔熱（60）。
+  desc_fr: Armure corporelle 100 % imperméable et immunisée contre la foudre. Dure 10 jours avec une isolation hivernale mineure (60).
+  desc_de: Körperrüstung mit 100 % Wasserdichtigkeit und Blitzimmunität. Hält 10 Tage mit geringer Winterisolierung (60).
+  desc_it: Equipaggiamento corporeo impermeabile al 100% e immune ai fulmini. Dura 10 giorni con lieve isolamento invernale (60).
+  desc_pl: Zbroja na ciało ze 100% wodoodpornością i odpornością na pioruny. Wytrzymuje 10 dni z niewielką izolacją zimową (60).
+  desc_pt_BR: Armadura corporal 100% impermeável e imune a raios. Dura 10 dias com leve isolamento de inverno (60).
+  desc_ru: Нательная броня со 100% водонепроницаемостью и иммунитетом к молниям. Держится 10 дней с небольшой зимней изоляцией (60).
+  desc_es: Armadura corporal 100 % impermeable e inmune a rayos. Dura 10 días con aislamiento invernal menor (60).
+  desc_es_MX: Armadura corporal 100 % impermeable e inmune a rayos. Dura 10 días con aislamiento invernal menor (60).
 602.rainhat
   en: Rain Hat
   ko: 방수모
   app: O
   source: Hat. 4800s (10 day) durability, 70% waterproof (WATERPROOFNESS_LARGE), lightning-immune (insulated). Consumed on depletion.
+  desc_en: Hat with 70% waterproofing and lightning immunity. Lasts 10 days.
+  desc_ko: 70% 방수 및 번개 면역 효과를 가진 모자. 10일간 지속됩니다.
+  desc_ja: 70%防水・雷無効の帽子。10日間持続します。
+  desc_zh_CN: 帽子，70%防水且免疫雷击。持续10天。
+  desc_zh_TW: 帽子，70%防水且免疫雷擊。持續10天。
+  desc_fr: Chapeau offrant 70 % d'imperméabilité et une immunité à la foudre. Dure 10 jours.
+  desc_de: Hut mit 70 % Wasserdichtigkeit und Blitzimmunität. Hält 10 Tage.
+  desc_it: Cappello con 70% di impermeabilità e immunità ai fulmini. Dura 10 giorni.
+  desc_pl: Kapelusz z 70% wodoodpornością i odpornością na pioruny. Wytrzymuje 10 dni.
+  desc_pt_BR: Chapéu com 70% de impermeabilidade e imunidade a raios. Dura 10 dias.
+  desc_ru: Шляпа с 70% водонепроницаемостью и иммунитетом к молниям. Держится 10 дней.
+  desc_es: Sombrero con 70 % de impermeabilidad e inmunidad a rayos. Dura 10 días.
+  desc_es_MX: Sombrero con 70 % de impermeabilidad e inmunidad a rayos. Dura 10 días.
 603.rainometer
   en: Rainometer
   ko: 기상 예측기
   app: O
   source: Placed structure. Displays current precipitation intensity via an animated meter. Hammerable (4 hits). Burnable. No gameplay stats beyond visual weather info.
+  desc_en: Placed structure that displays the current precipitation level with an animated meter. Purely informational.
+  desc_ko: 애니메이션 계기판으로 현재 강수량을 표시하는 설치 구조물. 순수 정보 제공용입니다.
+  desc_ja: アニメーション付きメーターで現在の降水量を表示する設置構造物。情報表示専用です。
+  desc_zh_CN: 放置型结构，通过动画仪表显示当前降水量。纯信息用途。
+  desc_zh_TW: 放置型結構，透過動畫儀表顯示當前降水量。純資訊用途。
+  desc_fr: Structure placée qui affiche le niveau de précipitation actuel via un compteur animé. Purement informatif.
+  desc_de: Platzierte Struktur, die den aktuellen Niederschlag mit einem animierten Messgerät anzeigt. Rein informativ.
+  desc_it: Struttura piazzabile che mostra il livello di precipitazione attuale con un indicatore animato. Puramente informativa.
+  desc_pl: Postawiona konstrukcja wyświetlająca aktualny poziom opadów na animowanym mierniku. Wyłącznie informacyjna.
+  desc_pt_BR: Estrutura que exibe o nível atual de precipitação com um medidor animado. Puramente informativa.
+  desc_ru: Размещаемая структура, отображающая текущий уровень осадков на анимированном индикаторе. Только информационная.
+  desc_es: Estructura que muestra el nivel de precipitación actual con un medidor animado. Puramente informativa.
+  desc_es_MX: Estructura que muestra el nivel de precipitación actual con un medidor animado. Puramente informativa.
 604.razor
   en: Razor
   ko: 면도날
   app: O
   source: Tool for shaving beefalo (wool) and Wilson's beard. Infinite durability (no finiteuses). No combat stats. Has shaver component.
+  desc_en: Tool for shaving beefalo wool and Wilson's beard. Has infinite durability.
+  desc_ko: 비팔로의 털과 윌슨의 수염을 깎는 도구. 내구도가 무한합니다.
+  desc_ja: ビーファローの毛やウィルソンのヒゲを剃るツール。耐久力は無限です。
+  desc_zh_CN: 用于剃牛毛和威尔逊胡须的工具。耐久度无限。
+  desc_zh_TW: 用於剃牛毛和威爾遜鬍鬚的工具。耐久度無限。
+  desc_fr: Outil pour raser la laine de beefalo et la barbe de Wilson. Durabilité infinie.
+  desc_de: Werkzeug zum Rasieren von Beefalo-Wolle und Wilsons Bart. Unendliche Haltbarkeit.
+  desc_it: Strumento per tosare la lana di beefalo e la barba di Wilson. Durabilità infinita.
+  desc_pl: Narzędzie do golenia wełny bizona i brody Wilsona. Nieskończona wytrzymałość.
+  desc_pt_BR: Ferramenta para tosquiar lã de beefalo e a barba de Wilson. Durabilidade infinita.
+  desc_ru: Инструмент для стрижки шерсти бифало и бороды Уилсона. Бесконечная прочность.
+  desc_es: Herramienta para afeitar lana de beefalo y la barba de Wilson. Durabilidad infinita.
+  desc_es_MX: Herramienta para afeitar lana de beefalo y la barba de Wilson. Durabilidad infinita.
 605.record
   en: Record
   ko: 레코드
   app: O
   source: Inventory item used with a Phonograph. Tagged "phonograph_record". Plays a specific song when inserted. Multiple record variants exist (default, balatro). No combat or survival stats.
+  desc_en: Inventory item that plays a song when inserted into a Phonograph. Multiple variants available.
+  desc_ko: 축음기에 넣으면 노래를 재생하는 인벤토리 아이템. 여러 종류가 있습니다.
+  desc_ja: 蓄音機に入れると曲を再生するアイテム。複数のバリエーションがあります。
+  desc_zh_CN: 放入留声机后播放音乐的物品。有多种变体。
+  desc_zh_TW: 放入留聲機後播放音樂的物品。有多種變體。
+  desc_fr: Objet qui joue une chanson lorsqu'il est inséré dans un phonographe. Plusieurs variantes disponibles.
+  desc_de: Gegenstand, der ein Lied abspielt, wenn er in einen Phonographen eingelegt wird. Mehrere Varianten verfügbar.
+  desc_it: Oggetto che riproduce una canzone quando inserito in un grammofono. Disponibile in diverse varianti.
+  desc_pl: Przedmiot odtwarzający piosenkę po włożeniu do fonografu. Dostępne różne warianty.
+  desc_pt_BR: Item que toca uma música quando inserido em um fonógrafo. Várias variantes disponíveis.
+  desc_ru: Предмет, воспроизводящий музыку при установке в фонограф. Доступно несколько вариантов.
+  desc_es: Objeto que reproduce una canción al insertarlo en un fonógrafo. Disponible en varias variantes.
+  desc_es_MX: Objeto que reproduce una canción al insertarlo en un fonógrafo. Disponible en varias variantes.
 606.red_mushroomhat
   en: Red Funcap
   ko: 빨간 버섯갓
   app: O
   source: Hat. Perishes in 6 days (PERISH_FAST). Spawns medium spores every 60s (seg_time*2). Summer insulation 60 (INSULATION_SMALL), 20% waterproof. Slows hunger rate to 75%. Compostable (green).
+  desc_en: Hat that slows hunger rate to 75% and provides summer insulation (60). Spawns spores every 60s. Perishes in 6 days.
+  desc_ko: 허기 소모를 75%로 줄이고 여름 단열(60)을 제공하는 모자. 60초마다 포자를 생성합니다. 6일 후 부패합니다.
+  desc_ja: 空腹速度を75%に減らし、夏の断熱性能60を付与する帽子。60秒ごとに胞子を生成。6日で腐敗します。
+  desc_zh_CN: 将饥饿速率降至75%并提供夏季隔热（60）的帽子。每60秒生成孢子。6天后腐烂。
+  desc_zh_TW: 將飢餓速率降至75%並提供夏季隔熱（60）的帽子。每60秒生成孢子。6天後腐爛。
+  desc_fr: Chapeau qui réduit la faim à 75 % et offre une isolation estivale (60). Génère des spores toutes les 60s. Périt en 6 jours.
+  desc_de: Hut, der die Hungerrate auf 75 % senkt und Sommerisolierung (60) bietet. Erzeugt alle 60s Sporen. Verdirbt nach 6 Tagen.
+  desc_it: Cappello che riduce la fame al 75% e offre isolamento estivo (60). Genera spore ogni 60s. Deperisce in 6 giorni.
+  desc_pl: Kapelusz zmniejszający głód do 75% i zapewniający izolację letnią (60). Co 60s generuje zarodniki. Psuje się po 6 dniach.
+  desc_pt_BR: Chapéu que reduz a fome para 75% e fornece isolamento de verão (60). Gera esporos a cada 60s. Perece em 6 dias.
+  desc_ru: Шляпа, снижающая скорость голода до 75% и дающая летнюю изоляцию (60). Генерирует споры каждые 60с. Портится за 6 дней.
+  desc_es: Sombrero que reduce el hambre al 75 % y ofrece aislamiento estival (60). Genera esporas cada 60s. Caduca en 6 días.
+  desc_es_MX: Sombrero que reduce el hambre al 75 % y ofrece aislamiento estival (60). Genera esporas cada 60s. Caduca en 6 días.
 607.redlantern
   en: Red Lantern
   ko: 붉은 등불
   app: O
   source: Hand-held light source. 5760s (12 day) fuel duration. Light radius ~1.2, red-tinted. Rain drains fuel 25% faster per precipitation rate. Always lit when dropped on ground. Can be used as fuel (SMALL_FUEL value). Burnable.
+  desc_en: Hand-held red-tinted light source lasting 12 days. Rain drains fuel 25% faster. Stays lit when placed on the ground.
+  desc_ko: 12일간 지속되는 붉은 빛의 휴대용 조명. 비가 오면 연료가 25% 빠르게 소모됩니다. 바닥에 놓아도 꺼지지 않습니다.
+  desc_ja: 12日間持続する赤い光の手持ちライト。雨で燃料消費が25%増加。地面に置いても点灯し続けます。
+  desc_zh_CN: 红色手持光源，持续12天。雨天燃料消耗加快25%。放在地上时保持点亮。
+  desc_zh_TW: 紅色手持光源，持續12天。雨天燃料消耗加快25%。放在地上時保持點亮。
+  desc_fr: Source de lumière rouge portative durant 12 jours. La pluie draine le carburant 25 % plus vite. Reste allumée au sol.
+  desc_de: Tragbare rote Lichtquelle mit 12 Tagen Brenndauer. Regen verbraucht Brennstoff 25 % schneller. Bleibt am Boden leuchtend.
+  desc_it: Fonte di luce rossa portatile della durata di 12 giorni. La pioggia consuma il combustibile il 25% più velocemente. Resta accesa a terra.
+  desc_pl: Przenośne czerwone źródło światła na 12 dni. Deszcz zużywa paliwo 25% szybciej. Świeci po postawieniu na ziemi.
+  desc_pt_BR: Fonte de luz vermelha portátil que dura 12 dias. Chuva consome combustível 25% mais rápido. Permanece acesa no chão.
+  desc_ru: Переносной красный фонарь на 12 дней. Дождь расходует топливо на 25% быстрее. Остаётся зажжённым на земле.
+  desc_es: Fuente de luz roja portátil que dura 12 días. La lluvia consume combustible un 25 % más rápido. Permanece encendida en el suelo.
+  desc_es_MX: Fuente de luz roja portátil que dura 12 días. La lluvia consume combustible un 25 % más rápido. Permanece encendida en el suelo.
 608.redmooneye
   en: Red Moonlens
   ko: 붉은 달수정
   app: X
   type: deconstruct
   source: Inventory item placed into a Moon Rock Crater. No stats of its own — functions as a crafting/decoration component for celestial structures.
+  desc_en: Component item placed into a Moon Rock Crater. Used for celestial structures; no stats of its own.
+  desc_ko: 달 바위 분화구에 넣는 부품 아이템. 천상 구조물에 사용되며 자체 능력치는 없습니다.
+  desc_ja: ムーンロッククレーターに設置するコンポーネント。天体構造物に使用され、固有のステータスはありません。
+  desc_zh_CN: 放入月石陨坑的组件物品。用于天体结构，本身无属性。
+  desc_zh_TW: 放入月石隕坑的組件物品。用於天體結構，本身無屬性。
+  desc_fr: Composant placé dans un cratère de roche lunaire. Utilisé pour les structures célestes ; aucun effet propre.
+  desc_de: Komponente, die in einen Mondsteinkrater eingesetzt wird. Für Himmelsstrukturen verwendet; keine eigenen Werte.
+  desc_it: Componente inserito in un Cratere di Roccia Lunare. Usato per strutture celesti; nessuna statistica propria.
+  desc_pl: Komponent umieszczany w Kraterze Księżycowej Skały. Używany do budowli niebieskich; brak własnych statystyk.
+  desc_pt_BR: Componente colocado em uma Cratera de Rocha Lunar. Usado para estruturas celestiais; sem atributos próprios.
+  desc_ru: Компонент, размещаемый в Кратере лунного камня. Используется для небесных структур; не имеет собственных характеристик.
+  desc_es: Componente que se coloca en un Cráter de Roca Lunar. Usado para estructuras celestiales; sin estadísticas propias.
+  desc_es_MX: Componente que se coloca en un Cráter de Roca Lunar. Usado para estructuras celestiales; sin estadísticas propias.
 609.refined_dust
   en: Collected Dust
   ko: 먼지 덩어리
   app: O
   source: Stackable material. Edible (ELEMENTAL food type, 1 hunger). Tradable (rocktribute value 1). Usable as bait. Sinks in water.
+  desc_en: Stackable crafting material. Edible for 1 hunger. Tradable as rock tribute and usable as bait.
+  desc_ko: 쌓을 수 있는 제작 재료. 먹으면 허기 1을 채웁니다. 바위 공물로 교환하거나 미끼로 사용할 수 있습니다.
+  desc_ja: スタック可能なクラフト素材。食べると空腹1回復。岩の貢物として交換可能で、エサとしても使えます。
+  desc_zh_CN: 可堆叠的制作材料。食用可恢复1饥饿。可作为岩石贡品交易或用作诱饵。
+  desc_zh_TW: 可堆疊的製作材料。食用可恢復1飢餓。可作為岩石貢品交易或用作誘餌。
+  desc_fr: Matériau empilable. Comestible pour 1 faim. Échangeable comme tribut de roche et utilisable comme appât.
+  desc_de: Stapelbares Material. Essbar für 1 Hunger. Als Felstribut handelbar und als Köder verwendbar.
+  desc_it: Materiale impilabile. Commestibile per 1 fame. Scambiabile come tributo di roccia e utilizzabile come esca.
+  desc_pl: Materiał do stackowania. Jadalny — 1 głodu. Wymienialny jako danina skalna i używalny jako przynęta.
+  desc_pt_BR: Material empilhável. Comestível para 1 de fome. Trocável como tributo de rocha e utilizável como isca.
+  desc_ru: Складываемый материал. Съедобен на 1 голод. Годится как каменная дань или наживка.
+  desc_es: Material apilable. Comestible por 1 de hambre. Intercambiable como tributo de roca y usable como cebo.
+  desc_es_MX: Material apilable. Comestible por 1 de hambre. Intercambiable como tributo de roca y usable como cebo.
 610.reflectivevest
   en: Summer Frest
   ko: 여름 조끼
   app: O
   source: Body slot. 3840s (8 day) durability. Dapperness +3.3/min (DAPPERNESS_SMALL). Summer insulation 120 (INSULATION_MED). 20% waterproof. Consumed on depletion.
+  desc_en: Body armor lasting 8 days with +3.3/min sanity, medium summer insulation (120), and 20% waterproofing.
+  desc_ko: 8일간 지속되며 정신력 +3.3/분, 중간 여름 단열(120), 20% 방수를 제공하는 몸통 장비.
+  desc_ja: 8日間持続し、正気度+3.3/分、中程度の夏の断熱（120）、20%防水のボディ装備。
+  desc_zh_CN: 身体装备，持续8天，理智+3.3/分钟，中等夏季隔热（120），20%防水。
+  desc_zh_TW: 身體裝備，持續8天，理智+3.3/分鐘，中等夏季隔熱（120），20%防水。
+  desc_fr: Armure corporelle de 8 jours offrant +3,3 santé mentale/min, isolation estivale moyenne (120) et 20 % d'imperméabilité.
+  desc_de: Körperrüstung für 8 Tage mit +3,3 Verstand/min, mittlerer Sommerisolierung (120) und 20 % Wasserdichtigkeit.
+  desc_it: Equipaggiamento corporeo di 8 giorni con sanità mentale +3.3/min, isolamento estivo medio (120) e 20% impermeabilità.
+  desc_pl: Zbroja na ciało na 8 dni z +3,3 poczytalności/min, średnią izolacją letnią (120) i 20% wodoodpornością.
+  desc_pt_BR: Armadura corporal de 8 dias com +3.3 sanidade/min, isolamento médio de verão (120) e 20% de impermeabilidade.
+  desc_ru: Нательная броня на 8 дней с +3,3 рассудка/мин, средней летней изоляцией (120) и 20% водонепроницаемостью.
+  desc_es: Armadura corporal de 8 días con +3,3 cordura/min, aislamiento estival medio (120) y 20 % de impermeabilidad.
+  desc_es_MX: Armadura corporal de 8 días con +3,3 cordura/min, aislamiento estival medio (120) y 20 % de impermeabilidad.
 611.researchlab
   en: Science Machine
   ko: 과학 기계
   app: O
   source: Placed crafting station (prototyper). Unlocks tier-1 Science recipes when nearby. Hammerable. Burnable. One of the default pinned recipes for new players.
+  desc_en: Crafting station that unlocks tier-1 Science recipes when nearby. Essential early-game structure.
+  desc_ko: 근처에 있을 때 1단계 과학 레시피를 해금하는 제작 스테이션. 초반 필수 구조물입니다.
+  desc_ja: 近くにいるとティア1の科学レシピを解放するクラフトステーション。序盤の必須構造物です。
+  desc_zh_CN: 靠近时解锁一级科学配方的制作站。游戏前期必备结构。
+  desc_zh_TW: 靠近時解鎖一級科學配方的製作站。遊戲前期必備結構。
+  desc_fr: Station de fabrication qui débloque les recettes de Science niveau 1 à proximité. Structure essentielle en début de partie.
+  desc_de: Herstellungsstation, die Wissenschaftsrezepte der Stufe 1 in der Nähe freischaltet. Wesentliche Frühspielstruktur.
+  desc_it: Stazione di fabbricazione che sblocca le ricette di Scienza livello 1 nelle vicinanze. Struttura essenziale a inizio partita.
+  desc_pl: Stacja rzemieślnicza odblokowująca przepisy Nauki poziomu 1 w pobliżu. Niezbędna konstrukcja na początku gry.
+  desc_pt_BR: Estação de fabricação que desbloqueia receitas de Ciência nível 1 quando próxima. Estrutura essencial no início do jogo.
+  desc_ru: Станция крафта, открывающая рецепты Науки 1-го уровня вблизи. Необходимая постройка на раннем этапе.
+  desc_es: Estación de fabricación que desbloquea recetas de Ciencia nivel 1 al estar cerca. Estructura esencial al inicio.
+  desc_es_MX: Estación de fabricación que desbloquea recetas de Ciencia nivel 1 al estar cerca. Estructura esencial al inicio.
 612.researchlab2
   en: Alchemy Engine
   ko: 연금술 엔진
   app: O
   source: Placed crafting station (prototyper). Unlocks tier-2 Science recipes when nearby. Hammerable. Burnable.
+  desc_en: Advanced crafting station that unlocks tier-2 Science recipes when nearby.
+  desc_ko: 근처에 있을 때 2단계 과학 레시피를 해금하는 고급 제작 스테이션.
+  desc_ja: 近くにいるとティア2の科学レシピを解放する上位クラフトステーション。
+  desc_zh_CN: 靠近时解锁二级科学配方的高级制作站。
+  desc_zh_TW: 靠近時解鎖二級科學配方的高級製作站。
+  desc_fr: Station avancée qui débloque les recettes de Science niveau 2 à proximité.
+  desc_de: Fortgeschrittene Herstellungsstation, die Wissenschaftsrezepte der Stufe 2 in der Nähe freischaltet.
+  desc_it: Stazione avanzata che sblocca le ricette di Scienza livello 2 nelle vicinanze.
+  desc_pl: Zaawansowana stacja rzemieślnicza odblokowująca przepisy Nauki poziomu 2 w pobliżu.
+  desc_pt_BR: Estação avançada que desbloqueia receitas de Ciência nível 2 quando próxima.
+  desc_ru: Продвинутая станция крафта, открывающая рецепты Науки 2-го уровня вблизи.
+  desc_es: Estación avanzada que desbloquea recetas de Ciencia nivel 2 al estar cerca.
+  desc_es_MX: Estación avanzada que desbloquea recetas de Ciencia nivel 2 al estar cerca.
 613.researchlab3
   en: Shadow Manipulator
   ko: 그림자 조작기
   app: O
   source: Placed crafting station (prototyper). Unlocks tier-1 Magic recipes when nearby. Hammerable.
+  desc_en: Crafting station that unlocks tier-1 Magic recipes when nearby. Shadow-aligned prototyper.
+  desc_ko: 근처에 있을 때 1단계 마법 레시피를 해금하는 제작 스테이션. 그림자 계열 프로토타이퍼입니다.
+  desc_ja: 近くにいるとティア1の魔法レシピを解放するクラフトステーション。シャドウ系プロトタイパーです。
+  desc_zh_CN: 靠近时解锁一级魔法配方的制作站。暗影系原型机。
+  desc_zh_TW: 靠近時解鎖一級魔法配方的製作站。暗影系原型機。
+  desc_fr: Station de fabrication qui débloque les recettes de Magie niveau 1 à proximité. Prototypeur aligné ombre.
+  desc_de: Herstellungsstation, die Magierezepte der Stufe 1 in der Nähe freischaltet. Schattenausgerichteter Prototyper.
+  desc_it: Stazione di fabbricazione che sblocca le ricette di Magia livello 1 nelle vicinanze. Prototipatore allineato all'ombra.
+  desc_pl: Stacja rzemieślnicza odblokowująca przepisy Magii poziomu 1 w pobliżu. Prototyper cieni.
+  desc_pt_BR: Estação de fabricação que desbloqueia receitas de Magia nível 1 quando próxima. Prototipador sombrio.
+  desc_ru: Станция крафта, открывающая рецепты Магии 1-го уровня вблизи. Теневой прототипер.
+  desc_es: Estación de fabricación que desbloquea recetas de Magia nivel 1 al estar cerca. Prototipador de sombra.
+  desc_es_MX: Estación de fabricación que desbloquea recetas de Magia nivel 1 al estar cerca. Prototipador de sombra.
 614.researchlab4
   en: Prestihatitator
   ko: 요술 모자 장치
   app: O
   source: Placed crafting station (prototyper). Unlocks tier-2 Magic recipes when nearby. Hammerable.
+  desc_en: Crafting station that unlocks tier-2 Magic recipes when nearby. Advanced magic prototyper.
+  desc_ko: 근처에 있을 때 2단계 마법 레시피를 해금하는 제작 스테이션. 고급 마법 프로토타이퍼입니다.
+  desc_ja: 近くにいるとティア2の魔法レシピを解放するクラフトステーション。上級魔法プロトタイパーです。
+  desc_zh_CN: 靠近时解锁二级魔法配方的制作站。高级魔法原型机。
+  desc_zh_TW: 靠近時解鎖二級魔法配方的製作站。高級魔法原型機。
+  desc_fr: Station de fabrication qui débloque les recettes de Magie niveau 2 à proximité. Prototypeur magique avancé.
+  desc_de: Herstellungsstation, die Magierezepte der Stufe 2 in der Nähe freischaltet. Fortgeschrittener Magie-Prototyper.
+  desc_it: Stazione che sblocca le ricette di Magia livello 2 nelle vicinanze. Prototipatore magico avanzato.
+  desc_pl: Stacja rzemieślnicza odblokowująca przepisy Magii poziomu 2 w pobliżu. Zaawansowany prototyper magii.
+  desc_pt_BR: Estação que desbloqueia receitas de Magia nível 2 quando próxima. Prototipador mágico avançado.
+  desc_ru: Станция крафта, открывающая рецепты Магии 2-го уровня вблизи. Продвинутый магический прототипер.
+  desc_es: Estación que desbloquea recetas de Magia nivel 2 al estar cerca. Prototipador mágico avanzado.
+  desc_es_MX: Estación que desbloquea recetas de Magia nivel 2 al estar cerca. Prototipador mágico avanzado.
 615.reskin_tool
   en: Clean Sweeper
   ko: 청소 빗자루
   app: O
   source: Hand slot. Spell-caster tool that cycles through owned skins on targeted structures/items. Very quick cast, can target from inventory. No durability limit. Burnable (fuel value MED_FUEL).
+  desc_en: Hand-slot tool that cycles through owned skins on structures and items. Infinite durability, instant cast.
+  desc_ko: 구조물과 아이템의 소유 스킨을 순환시키는 손 슬롯 도구. 내구도 무한, 즉시 시전합니다.
+  desc_ja: 構造物やアイテムの所持スキンを切り替えるハンドスロットツール。耐久無限、即時発動。
+  desc_zh_CN: 手持工具，可循环切换结构和物品的已有皮肤。耐久无限，即时施放。
+  desc_zh_TW: 手持工具，可循環切換結構和物品的已有皮膚。耐久無限，即時施放。
+  desc_fr: Outil en main qui fait défiler les skins possédés sur les structures et objets. Durabilité infinie, lancement instantané.
+  desc_de: Handwerkzeug, das durch eigene Skins auf Strukturen und Gegenständen wechselt. Unendliche Haltbarkeit, sofortiger Einsatz.
+  desc_it: Strumento nella mano che cicla tra le skin possedute su strutture e oggetti. Durabilità infinita, lancio istantaneo.
+  desc_pl: Narzędzie ręczne przełączające posiadane skiny na konstrukcjach i przedmiotach. Nieskończona wytrzymałość, natychmiastowe użycie.
+  desc_pt_BR: Ferramenta de mão que alterna entre skins próprias em estruturas e itens. Durabilidade infinita, uso instantâneo.
+  desc_ru: Инструмент, переключающий скины на постройках и предметах. Бесконечная прочность, мгновенное применение.
+  desc_es: Herramienta de mano que alterna las skins propias en estructuras y objetos. Durabilidad infinita, uso instantáneo.
+  desc_es_MX: Herramienta de mano que alterna las skins propias en estructuras y objetos. Durabilidad infinita, uso instantáneo.
 616.resurrectionstatue
   en: Meat Effigy
   ko: 고기 우상
   app: O
   source: Placed structure. Attuneable resurrector — costs 40 max health to attune. Resurrects the attuned player on death (single use, removed after resurrection). Hammerable (4 hits). Burnable.
+  desc_en: Placed resurrection structure. Costs 40 max health to attune. Resurrects the attuned player once on death, then is destroyed.
+  desc_ko: 설치형 부활 구조물. 조율 시 최대 체력 40을 소모합니다. 사망 시 조율된 플레이어를 1회 부활시킨 뒤 파괴됩니다.
+  desc_ja: 設置型復活構造物。同調に最大HP40を消費。死亡時に同調したプレイヤーを1回復活させ、その後破壊されます。
+  desc_zh_CN: 放置型复活结构。调谐需消耗40最大生命值。死亡时复活调谐玩家一次后销毁。
+  desc_zh_TW: 放置型復活結構。調諧需消耗40最大生命值。死亡時復活調諧玩家一次後銷毀。
+  desc_fr: Structure de résurrection. Coûte 40 PV max pour l'harmoniser. Ressuscite le joueur harmonisé une fois à la mort, puis est détruite.
+  desc_de: Platzierte Auferstehungsstruktur. Kostet 40 max. Gesundheit zum Einstimmen. Belebt den eingestimmten Spieler einmal wieder und wird dann zerstört.
+  desc_it: Struttura di resurrezione piazzabile. Costa 40 HP max per sintonizzarsi. Resuscita il giocatore sintonizzato una volta alla morte, poi viene distrutta.
+  desc_pl: Postawiona konstrukcja wskrzeszenia. Kosztuje 40 maks. HP do nastrojenia. Wskrzesza nastrojonego gracza raz po śmierci, po czym zostaje zniszczona.
+  desc_pt_BR: Estrutura de ressurreição. Custa 40 de vida máxima para sintonizar. Ressuscita o jogador sintonizado uma vez e é destruída.
+  desc_ru: Устанавливаемая структура воскрешения. Настройка стоит 40 макс. здоровья. Воскрешает настроенного игрока один раз, затем разрушается.
+  desc_es: Estructura de resurrección. Cuesta 40 de salud máxima para sintonizar. Resucita al jugador sintonizado una vez al morir y luego se destruye.
+  desc_es_MX: Estructura de resurrección. Cuesta 40 de salud máxima para sintonizar. Resucita al jugador sintonizado una vez al morir y luego se destruye.
 617.reviver
   en: Telltale Heart
   ko: 고자질쟁이 심장
   app: O
   source: Inventory item used to revive ghost players. Sinks in water. No durability or combat stats — consumed on use. Animates with a beating heart effect when on the ground.
+  desc_en: Consumable item used to revive ghost players. Single use, no combat stats.
+  desc_ko: 유령 상태의 플레이어를 부활시키는 소모 아이템. 1회 사용, 전투 능력치 없음.
+  desc_ja: ゴーストプレイヤーを復活させる消耗品。1回使用、戦闘ステータスなし。
+  desc_zh_CN: 用于复活幽灵玩家的消耗品。单次使用，无战斗属性。
+  desc_zh_TW: 用於復活幽靈玩家的消耗品。單次使用，無戰鬥屬性。
+  desc_fr: Objet consommable pour ranimer les joueurs fantômes. Usage unique, aucune stat de combat.
+  desc_de: Verbrauchsgegenstand zur Wiederbelebung von Geisterspielern. Einmaliger Gebrauch, keine Kampfwerte.
+  desc_it: Consumabile per rianimare i giocatori fantasma. Uso singolo, nessuna statistica di combattimento.
+  desc_pl: Przedmiot jednorazowy do wskrzeszania duchów graczy. Brak statystyk bojowych.
+  desc_pt_BR: Consumível para reviver jogadores fantasmas. Uso único, sem atributos de combate.
+  desc_ru: Расходуемый предмет для воскрешения игроков-призраков. Одноразовый, без боевых характеристик.
+  desc_es: Consumible para revivir jugadores fantasma. Un solo uso, sin estadísticas de combate.
+  desc_es_MX: Consumible para revivir jugadores fantasma. Un solo uso, sin estadísticas de combate.
 618.rope
   en: Rope
   ko: 밧줄
   app: O
   source: Crafting material. Stackable. Tagged "cattoy" (attracts catcoons). Burnable (LARGE_BURNTIME). Fuel value MED_FUEL. Tradable. No combat or equippable stats.
+  desc_en: Stackable crafting material used in many recipes. Attracts catcoons and can be used as fuel.
+  desc_ko: 다양한 레시피에 사용되는 쌓기 가능한 제작 재료. 고양이쿤을 유인하며 연료로도 사용 가능합니다.
+  desc_ja: 多くのレシピで使われるスタック可能なクラフト素材。キャットクーンを引き寄せ、燃料としても使えます。
+  desc_zh_CN: 可堆叠的制作材料，用于多种配方。吸引猫浣熊，也可用作燃料。
+  desc_zh_TW: 可堆疊的製作材料，用於多種配方。吸引貓浣熊，也可用作燃料。
+  desc_fr: Matériau empilable utilisé dans de nombreuses recettes. Attire les chatons et peut servir de combustible.
+  desc_de: Stapelbares Handwerksmaterial für viele Rezepte. Lockt Katzenwächter an und kann als Brennstoff verwendet werden.
+  desc_it: Materiale impilabile usato in molte ricette. Attira i gattonidi e può essere usato come combustibile.
+  desc_pl: Materiał do wielu przepisów. Przyciąga kociaki i może być używany jako paliwo.
+  desc_pt_BR: Material empilhável usado em muitas receitas. Atrai gatunhos e pode ser usado como combustível.
+  desc_ru: Складываемый крафтовый материал для множества рецептов. Привлекает котокунов и может служить топливом.
+  desc_es: Material apilable usado en muchas recetas. Atrae gatunos y puede usarse como combustible.
+  desc_es_MX: Material apilable usado en muchas recetas. Atrae gatunos y puede usarse como combustible.
 619.rope_bridge_kit
   en: Spelunker's Bridge Kit
   ko: 동굴 탐험용 다리 키트
   app: O
   source: Deployable kit. Places rope bridge segments across gaps (max 6 tiles per construction). Stackable. Multiple kits consumed per placement based on gap length. Bridge has 200 HP, takes 50 earthquake damage, breaks in 3s during quakes.
+  desc_en: Deployable kit that builds rope bridges across gaps (max 6 tiles). Bridge has 200 HP and is vulnerable to earthquakes.
+  desc_ko: 틈을 가로지르는 밧줄 다리를 건설하는 배치 키트(최대 6타일). 다리 HP 200이며 지진에 취약합니다.
+  desc_ja: 隙間に橋を架けるキット（最大6タイル）。橋のHPは200で、地震に弱いです。
+  desc_zh_CN: 跨越缺口搭建绳桥的部署套件（最多6格）。桥有200 HP，易受地震破坏。
+  desc_zh_TW: 跨越缺口搭建繩橋的部署套件（最多6格）。橋有200 HP，易受地震破壞。
+  desc_fr: Kit déployable construisant des ponts de corde (max 6 tuiles). Le pont a 200 PV et est vulnérable aux tremblements de terre.
+  desc_de: Platzierbares Kit zum Bau von Seilbrücken über Lücken (max. 6 Felder). Brücke hat 200 TP und ist anfällig für Erdbeben.
+  desc_it: Kit piazzabile che costruisce ponti di corda (max 6 caselle). Il ponte ha 200 HP ed è vulnerabile ai terremoti.
+  desc_pl: Zestaw do budowy mostów linowych nad przepaściami (maks. 6 kratek). Most ma 200 HP i jest podatny na trzęsienia ziemi.
+  desc_pt_BR: Kit implantável que constrói pontes de corda sobre vãos (máx. 6 blocos). A ponte tem 200 HP e é vulnerável a terremotos.
+  desc_ru: Набор для строительства верёвочных мостов через пропасти (макс. 6 плиток). Мост имеет 200 ХП и уязвим к землетрясениям.
+  desc_es: Kit desplegable que construye puentes de cuerda (máx. 6 casillas). El puente tiene 200 PV y es vulnerable a terremotos.
+  desc_es_MX: Kit desplegable que construye puentes de cuerda (máx. 6 casillas). El puente tiene 200 PV y es vulnerable a terremotos.
 620.roseglasseshat
   en: Rose-Colored Glasses
   ko: 장밋빛 안경
   app: O
   source: Hat. Winona-exclusive (restrictedtag "handyperson"). Dapperness +2.2/min (DAPPERNESS_TINY). Has close-inspector component for examining nearby objects. Skill tree upgrades: 5% or 25% chance to upgrade inspected items, 240s (0.5 day) cooldown.
+  desc_en: Winona-exclusive hat with +2.2/min sanity. Inspects nearby objects with a 5-25% chance to upgrade them (240s cooldown).
+  desc_ko: 위노나 전용 모자로 정신력 +2.2/분. 주변 물체를 조사하여 5~25% 확률로 업그레이드합니다(쿨다운 240초).
+  desc_ja: ウィノナ専用帽子。正気度+2.2/分。近くの物を調べて5〜25%の確率でアップグレード（クールダウン240秒）。
+  desc_zh_CN: 薇诺娜专属帽子，理智+2.2/分钟。检查附近物品有5-25%几率升级（冷却240秒）。
+  desc_zh_TW: 薇諾娜專屬帽子，理智+2.2/分鐘。檢查附近物品有5-25%機率升級（冷卻240秒）。
+  desc_fr: Chapeau exclusif à Winona avec +2,2 santé mentale/min. Inspecte les objets proches avec 5-25 % de chance de les améliorer (recharge 240s).
+  desc_de: Winona-exklusiver Hut mit +2,2 Verstand/min. Untersucht nahe Objekte mit 5-25 % Aufwertungschance (Abklingzeit 240s).
+  desc_it: Cappello esclusivo di Winona con +2.2 sanità/min. Ispeziona oggetti vicini con 5-25% di possibilità di migliorarli (ricarica 240s).
+  desc_pl: Kapelusz wyłączny dla Winony z +2,2 poczytalności/min. Bada pobliskie obiekty z 5-25% szansą na ulepszenie (odnowienie 240s).
+  desc_pt_BR: Chapéu exclusivo de Winona com +2.2 sanidade/min. Inspeciona objetos próximos com 5-25% de chance de melhorá-los (recarga 240s).
+  desc_ru: Шляпа Виноны с +2,2 рассудка/мин. Осматривает предметы с шансом 5-25% улучшить их (перезарядка 240с).
+  desc_es: Sombrero exclusivo de Winona con +2,2 cordura/min. Inspecciona objetos cercanos con 5-25 % de probabilidad de mejorarlos (recarga 240s).
+  desc_es_MX: Sombrero exclusivo de Winona con +2,2 cordura/min. Inspecciona objetos cercanos con 5-25 % de probabilidad de mejorarlos (recarga 240s).
 621.ruins_bat
   en: Thulecite Club
   ko: 툴레사이트 몽둥이
   app: O
   source: Weapon. 59.5 damage (34*1.75), 200 uses, +10% walk speed. Shadow level 2. 20% chance on hit to spawn a Shadow Tentacle near the target.
+  desc_en: Weapon dealing 59.5 damage with 200 uses. Grants +10% speed and 20% chance to spawn a Shadow Tentacle on hit. Shadow level 2.
+  desc_ko: 59.5 피해, 200회 사용 가능한 무기. 이동 속도 +10%이며 공격 시 20% 확률로 그림자 촉수를 소환합니다. 그림자 레벨 2.
+  desc_ja: 59.5ダメージ、200回使用の武器。移動速度+10%、攻撃時20%でシャドウテンタクルを召喚。シャドウレベル2。
+  desc_zh_CN: 武器，59.5伤害，200次使用。移速+10%，攻击时20%几率召唤暗影触手。暗影等级2。
+  desc_zh_TW: 武器，59.5傷害，200次使用。移速+10%，攻擊時20%機率召喚暗影觸手。暗影等級2。
+  desc_fr: Arme infligeant 59,5 dégâts, 200 utilisations. +10 % de vitesse et 20 % de chance d'invoquer un tentacule d'ombre. Niveau d'ombre 2.
+  desc_de: Waffe mit 59,5 Schaden und 200 Ladungen. +10 % Geschwindigkeit und 20 % Chance, einen Schattententakel zu beschwören. Schattenstufe 2.
+  desc_it: Arma da 59.5 danni con 200 usi. +10% velocità e 20% di possibilità di evocare un Tentacolo d'Ombra. Livello ombra 2.
+  desc_pl: Broń zadająca 59,5 obrażeń, 200 użyć. +10% prędkości i 20% szansy na przywołanie Cienistej Macki. Poziom cienia 2.
+  desc_pt_BR: Arma com 59.5 de dano e 200 usos. +10% de velocidade e 20% de chance de invocar um Tentáculo Sombrio. Nível sombrio 2.
+  desc_ru: Оружие с уроном 59,5 и 200 зарядами. +10% скорости и 20% шанс вызвать Теневое щупальце. Уровень тени 2.
+  desc_es: Arma con 59,5 de daño y 200 usos. +10 % de velocidad y 20 % de probabilidad de invocar un Tentáculo de Sombra. Nivel de sombra 2.
+  desc_es_MX: Arma con 59,5 de daño y 200 usos. +10 % de velocidad y 20 % de probabilidad de invocar un Tentáculo de Sombra. Nivel de sombra 2.
 622.ruinshat
   en: Thulecite Crown
   ko: 툴레사이트 왕관
   app: O
   source: Hat + armor. 840 HP (150*8*0.7), 90% absorption. Shadow level 2. 33% proc chance on hit to activate a forcefield for 4s (full absorption), 5s cooldown. Drains 5% of blocked damage as sanity.
+  desc_en: Hat-armor with 840 HP and 90% absorption. 33% chance on hit to activate a 4s forcefield (full absorption, 5s cooldown). Shadow level 2.
+  desc_ko: 840 HP, 90% 흡수의 모자 갑옷. 피격 시 33% 확률로 4초 방어막 발동(완전 흡수, 쿨다운 5초). 그림자 레벨 2.
+  desc_ja: 840 HP・90%吸収のヘルメット型防具。被弾時33%で4秒間フォースフィールド発動（完全吸収、CT5秒）。シャドウレベル2。
+  desc_zh_CN: 头盔护甲，840 HP，90%吸收。受击时33%几率激活4秒力场（完全吸收，冷却5秒）。暗影等级2。
+  desc_zh_TW: 頭盔護甲，840 HP，90%吸收。受擊時33%機率啟動4秒力場（完全吸收，冷卻5秒）。暗影等級2。
+  desc_fr: Casque-armure avec 840 PV et 90 % d'absorption. 33 % de chance d'activer un champ de force de 4s (absorption totale, recharge 5s). Niveau d'ombre 2.
+  desc_de: Helm-Rüstung mit 840 TP und 90 % Absorption. 33 % Chance auf 4s Kraftfeld (volle Absorption, 5s Abklingzeit). Schattenstufe 2.
+  desc_it: Elmo-corazza con 840 HP e 90% assorbimento. 33% di possibilità di attivare un campo di forza di 4s (assorbimento totale, ricarica 5s). Livello ombra 2.
+  desc_pl: Hełm-zbroja z 840 HP i 90% absorpcji. 33% szansy na 4s pole siłowe (pełna absorpcja, odnowienie 5s). Poziom cienia 2.
+  desc_pt_BR: Elmo-armadura com 840 HP e 90% de absorção. 33% de chance de ativar campo de força de 4s (absorção total, recarga 5s). Nível sombrio 2.
+  desc_ru: Шлем-броня с 840 ХП и 90% поглощением. 33% шанс активировать силовое поле на 4с (полное поглощение, перезарядка 5с). Уровень тени 2.
+  desc_es: Casco-armadura con 840 PV y 90 % de absorción. 33 % de probabilidad de activar un campo de fuerza de 4s (absorción total, recarga 5s). Nivel de sombra 2.
+  desc_es_MX: Casco-armadura con 840 PV y 90 % de absorción. 33 % de probabilidad de activar un campo de fuerza de 4s (absorción total, recarga 5s). Nivel de sombra 2.
 623.ruinsrelic_bowl
   en: Replica Relic Bowl
   ko: 모조 유물 그릇
   app: O
   source: Furniture decor item. Can be placed on tables via furnituredecor component. Hammerable (1 hit). No stats — purely decorative.
+  desc_en: Decorative furniture item placed on tables. Purely cosmetic with no gameplay stats.
+  desc_ko: 탁자 위에 올려놓는 장식 가구. 순수 장식용으로 게임 능력치가 없습니다.
+  desc_ja: テーブルに置く装飾家具。純粋に装飾用で、ゲームステータスはありません。
+  desc_zh_CN: 放在桌上的装饰家具。纯装饰用途，无游戏属性。
+  desc_zh_TW: 放在桌上的裝飾家具。純裝飾用途，無遊戲屬性。
+  desc_fr: Objet décoratif placé sur les tables. Purement esthétique, sans statistiques de jeu.
+  desc_de: Dekoratives Möbelstück für Tische. Rein kosmetisch, ohne Spielwerte.
+  desc_it: Oggetto decorativo da tavolo. Puramente estetico, senza statistiche di gioco.
+  desc_pl: Dekoracyjny mebel na stół. Wyłącznie ozdobny, bez statystyk gry.
+  desc_pt_BR: Item decorativo de mesa. Puramente cosmético, sem atributos de jogo.
+  desc_ru: Декоративная мебель для столов. Чисто косметическая, без игровых характеристик.
+  desc_es: Objeto decorativo para mesas. Puramente estético, sin estadísticas de juego.
+  desc_es_MX: Objeto decorativo para mesas. Puramente estético, sin estadísticas de juego.
 624.ruinsrelic_chair
   en: Replica Relic Chair
   ko: 모조 유물 의자
   app: O
   source: Placed structure. Sittable (tagged "limited_chair", "uncomfortable_chair"). Can attract Shadelings in ruins. Hammerable (1 hit). Triggers "CHEVO_makechair" event on build.
+  desc_en: Sittable ruins chair that can attract Shadelings. Tagged as uncomfortable.
+  desc_ko: 앉을 수 있는 유적 의자로 셰이들링을 유인할 수 있습니다. 불편한 의자로 분류됩니다.
+  desc_ja: 座れる遺跡の椅子で、シェードリングを引き寄せます。「不快な椅子」として分類されます。
+  desc_zh_CN: 可坐的遗迹椅子，能吸引暗影小鬼。标记为不舒适。
+  desc_zh_TW: 可坐的遺跡椅子，能吸引暗影小鬼。標記為不舒適。
+  desc_fr: Chaise de ruines où l'on peut s'asseoir, attirant les Shadelings. Classée inconfortable.
+  desc_de: Sitzbare Ruinenstuhl, der Schattenwesen anlocken kann. Als unbequem markiert.
+  desc_it: Sedia delle rovine su cui sedersi, può attrarre Shadelings. Classificata come scomoda.
+  desc_pl: Krzesło z ruin, na którym można usiąść i które przyciąga Cieniste. Oznaczone jako niewygodne.
+  desc_pt_BR: Cadeira de ruínas onde se pode sentar e que atrai Shadelings. Classificada como desconfortável.
+  desc_ru: Стул из руин, на котором можно сидеть и привлекать Тенёнышей. Помечен как неудобный.
+  desc_es: Silla de ruinas donde sentarse que atrae Shadelings. Clasificada como incómoda.
+  desc_es_MX: Silla de ruinas donde sentarse que atrae Shadelings. Clasificada como incómoda.
 625.ruinsrelic_chipbowl
   en: Replica Relic Dish
   ko: 모조 유물 사발
   app: O
   source: Furniture decor item. Can be placed on tables via furnituredecor component. Hammerable (1 hit). No stats — purely decorative.
+  desc_en: Decorative dish placed on tables. Purely cosmetic with no gameplay stats.
+  desc_ko: 탁자 위에 올려놓는 장식 사발. 순수 장식용으로 게임 능력치가 없습니다.
+  desc_ja: テーブルに置く装飾用の皿。純粋に装飾用で、ゲームステータスはありません。
+  desc_zh_CN: 放在桌上的装饰碟子。纯装饰用途，无游戏属性。
+  desc_zh_TW: 放在桌上的裝飾碟子。純裝飾用途，無遊戲屬性。
+  desc_fr: Plat décoratif placé sur les tables. Purement esthétique, sans statistiques de jeu.
+  desc_de: Dekorative Schale für Tische. Rein kosmetisch, ohne Spielwerte.
+  desc_it: Piatto decorativo da tavolo. Puramente estetico, senza statistiche di gioco.
+  desc_pl: Dekoracyjna miska na stół. Wyłącznie ozdobna, bez statystyk gry.
+  desc_pt_BR: Tigela decorativa de mesa. Puramente cosmética, sem atributos de jogo.
+  desc_ru: Декоративная миска для столов. Чисто косметическая, без игровых характеристик.
+  desc_es: Plato decorativo para mesas. Puramente estético, sin estadísticas de juego.
+  desc_es_MX: Plato decorativo para mesas. Puramente estético, sin estadísticas de juego.
 626.ruinsrelic_plate
   en: Replica Relic Plate
   ko: 모조 유물 접시
   app: O
   source: Furniture decor item. Can be placed on tables via furnituredecor component. Hammerable (1 hit). No stats — purely decorative.
+  desc_en: Decorative plate placed on tables. Purely cosmetic with no gameplay stats.
+  desc_ko: 탁자 위에 올려놓는 장식 접시. 순수 장식용으로 게임 능력치가 없습니다.
+  desc_ja: テーブルに置く装飾用の皿。純粋に装飾用で、ゲームステータスはありません。
+  desc_zh_CN: 放在桌上的装饰盘子。纯装饰用途，无游戏属性。
+  desc_zh_TW: 放在桌上的裝飾盤子。純裝飾用途，無遊戲屬性。
+  desc_fr: Assiette décorative placée sur les tables. Purement esthétique, sans statistiques de jeu.
+  desc_de: Dekorativer Teller für Tische. Rein kosmetisch, ohne Spielwerte.
+  desc_it: Piatto decorativo da tavolo. Puramente estetico, senza statistiche di gioco.
+  desc_pl: Dekoracyjny talerz na stół. Wyłącznie ozdobny, bez statystyk gry.
+  desc_pt_BR: Prato decorativo de mesa. Puramente cosmético, sem atributos de jogo.
+  desc_ru: Декоративная тарелка для столов. Чисто косметическая, без игровых характеристик.
+  desc_es: Plato decorativo para mesas. Puramente estético, sin estadísticas de juego.
+  desc_es_MX: Plato decorativo para mesas. Puramente estético, sin estadísticas de juego.
 627.ruinsrelic_table
   en: Replica Relic Table
   ko: 모조 유물 탁자
   app: O
   source: Placed structure. Obstacle physics (radius 0.5). Hammerable (1 hit). Can hold furniture decor items. No gameplay stats — decorative structure.
+  desc_en: Decorative table structure that can hold furniture decor items. No gameplay stats.
+  desc_ko: 가구 장식 아이템을 올려놓을 수 있는 장식용 탁자 구조물. 게임 능력치 없음.
+  desc_ja: 家具デコレーションを置ける装飾用テーブル構造物。ゲームステータスなし。
+  desc_zh_CN: 可放置家具装饰品的装饰桌子结构。无游戏属性。
+  desc_zh_TW: 可放置家具裝飾品的裝飾桌子結構。無遊戲屬性。
+  desc_fr: Table décorative pouvant accueillir des objets de décoration. Aucune statistique de jeu.
+  desc_de: Dekorativer Tisch, der Möbeldekor aufnehmen kann. Keine Spielwerte.
+  desc_it: Tavolo decorativo che può contenere oggetti decorativi. Nessuna statistica di gioco.
+  desc_pl: Dekoracyjny stół mogący pomieścić ozdoby meblowe. Brak statystyk gry.
+  desc_pt_BR: Mesa decorativa que pode conter itens decorativos. Sem atributos de jogo.
+  desc_ru: Декоративный стол для размещения мебельных украшений. Без игровых характеристик.
+  desc_es: Mesa decorativa que puede contener objetos de decoración. Sin estadísticas de juego.
+  desc_es_MX: Mesa decorativa que puede contener objetos de decoración. Sin estadísticas de juego.
 628.ruinsrelic_vase
   en: Replica Relic Vase
   ko: 모조 유물 꽃병
   app: O
   source: Furniture decor item (animated). Can be placed on tables via furnituredecor component. Hammerable (1 hit). No stats — purely decorative.
+  desc_en: Animated decorative vase placed on tables. Purely cosmetic with no gameplay stats.
+  desc_ko: 탁자 위에 올려놓는 애니메이션 장식 꽃병. 순수 장식용으로 게임 능력치가 없습니다.
+  desc_ja: テーブルに置くアニメーション付きの装飾花瓶。純粋に装飾用で、ゲームステータスはありません。
+  desc_zh_CN: 放在桌上的动画装饰花瓶。纯装饰用途，无游戏属性。
+  desc_zh_TW: 放在桌上的動畫裝飾花瓶。純裝飾用途，無遊戲屬性。
+  desc_fr: Vase décoratif animé placé sur les tables. Purement esthétique, sans statistiques de jeu.
+  desc_de: Animierte dekorative Vase für Tische. Rein kosmetisch, ohne Spielwerte.
+  desc_it: Vaso decorativo animato da tavolo. Puramente estetico, senza statistiche di gioco.
+  desc_pl: Animowany dekoracyjny wazon na stół. Wyłącznie ozdobny, bez statystyk gry.
+  desc_pt_BR: Vaso decorativo animado de mesa. Puramente cosmético, sem atributos de jogo.
+  desc_ru: Анимированная декоративная ваза для столов. Чисто косметическая, без игровых характеристик.
+  desc_es: Jarrón decorativo animado para mesas. Puramente estético, sin estadísticas de juego.
+  desc_es_MX: Jarrón decorativo animado para mesas. Puramente estético, sin estadísticas de juego.
 629.saddle_basic
   en: Saddle
   ko: 안장
   app: O
   source: Beefalo saddle. 5 uses, +40% speed (1.4x), +0 bonus damage. Discarded on dismount (costs 1 use). Destroyed when uses depleted.
+  desc_en: Basic beefalo saddle with +40% speed. 5 uses; each dismount costs 1 use.
+  desc_ko: 기본 비팔로 안장으로 이동 속도 +40%. 5회 사용 가능하며 하차할 때마다 1회 소모합니다.
+  desc_ja: ビーファロー用の基本サドル。速度+40%。5回使用可能で、下馬ごとに1回消費。
+  desc_zh_CN: 基础牛鞍，速度+40%。5次使用，每次下马消耗1次。
+  desc_zh_TW: 基礎牛鞍，速度+40%。5次使用，每次下馬消耗1次。
+  desc_fr: Selle de beefalo basique avec +40 % de vitesse. 5 utilisations ; chaque descente coûte 1 utilisation.
+  desc_de: Einfacher Beefalo-Sattel mit +40 % Geschwindigkeit. 5 Ladungen; jedes Absteigen kostet 1 Ladung.
+  desc_it: Sella base per beefalo con +40% di velocità. 5 usi; ogni smontata costa 1 uso.
+  desc_pl: Podstawowe siodło bizona z +40% prędkości. 5 użyć; każde zsiadanie kosztuje 1 użycie.
+  desc_pt_BR: Sela básica de beefalo com +40% de velocidade. 5 usos; cada desmonte custa 1 uso.
+  desc_ru: Базовое седло для бифало с +40% скорости. 5 зарядов; каждый спешивание стоит 1 заряд.
+  desc_es: Silla de beefalo básica con +40 % de velocidad. 5 usos; cada desmonte cuesta 1 uso.
+  desc_es_MX: Silla de beefalo básica con +40 % de velocidad. 5 usos; cada desmonte cuesta 1 uso.
 630.saddle_race
   en: Glossamer Saddle
   ko: 아리따운 안장
   app: O
   source: Beefalo saddle. 8 uses, +55% speed (1.55x), +0 bonus damage. Highest speed saddle. Destroyed when uses depleted.
+  desc_en: Fastest beefalo saddle with +55% speed. 8 uses, no bonus damage.
+  desc_ko: 이동 속도 +55%의 가장 빠른 비팔로 안장. 8회 사용 가능하며 추가 피해 없음.
+  desc_ja: 速度+55%の最速ビーファローサドル。8回使用可能、ボーナスダメージなし。
+  desc_zh_CN: 速度最快的牛鞍，速度+55%。8次使用，无额外伤害。
+  desc_zh_TW: 速度最快的牛鞍，速度+55%。8次使用，無額外傷害。
+  desc_fr: Selle de beefalo la plus rapide avec +55 % de vitesse. 8 utilisations, aucun bonus de dégâts.
+  desc_de: Schnellster Beefalo-Sattel mit +55 % Geschwindigkeit. 8 Ladungen, kein Schadensbonus.
+  desc_it: Sella più veloce per beefalo con +55% di velocità. 8 usi, nessun bonus ai danni.
+  desc_pl: Najszybsze siodło bizona z +55% prędkości. 8 użyć, brak dodatkowych obrażeń.
+  desc_pt_BR: Sela de beefalo mais rápida com +55% de velocidade. 8 usos, sem dano bônus.
+  desc_ru: Самое быстрое седло для бифало с +55% скорости. 8 зарядов, без бонуса к урону.
+  desc_es: Silla de beefalo más rápida con +55 % de velocidad. 8 usos, sin daño extra.
+  desc_es_MX: Silla de beefalo más rápida con +55 % de velocidad. 8 usos, sin daño extra.
 631.saddle_shadow
   en: Nightmare Saddle
   ko: 악몽의 안장
   app: O
   source: Beefalo saddle. 12 uses, +45% speed (1.45x), +0 bonus damage, 60% absorption. 18 planar damage, 15 planar defense, +10% vs lunar, 90% shadow resist. Forge-repairable with voidcloth. Leaves shadow footprints.
+  desc_en: Shadow beefalo saddle with +45% speed, 60% absorption, 18 planar damage, and 15 planar defense. 12 uses, 90% shadow resist.
+  desc_ko: 이동 속도 +45%, 60% 흡수, 차원 피해 18, 차원 방어 15의 그림자 비팔로 안장. 12회 사용, 90% 그림자 저항.
+  desc_ja: 速度+45%、60%吸収、プレーナーダメージ18、プレーナー防御15のシャドウサドル。12回使用、90%シャドウ耐性。
+  desc_zh_CN: 暗影牛鞍，速度+45%，60%吸收，18位面伤害，15位面防御。12次使用，90%暗影抗性。
+  desc_zh_TW: 暗影牛鞍，速度+45%，60%吸收，18位面傷害，15位面防禦。12次使用，90%暗影抗性。
+  desc_fr: Selle d'ombre avec +45 % vitesse, 60 % absorption, 18 dégâts planaires et 15 défense planaire. 12 utilisations, 90 % résistance ombre.
+  desc_de: Schatten-Sattel mit +45 % Geschwindigkeit, 60 % Absorption, 18 Planarschaden und 15 Planarverteidigung. 12 Ladungen, 90 % Schattenwiderstand.
+  desc_it: Sella ombra con +45% velocità, 60% assorbimento, 18 danni planari e 15 difesa planare. 12 usi, 90% resistenza ombra.
+  desc_pl: Siodło cienia z +45% prędkości, 60% absorpcji, 18 obrażeń planarnych i 15 obrony planarnej. 12 użyć, 90% odporności na cień.
+  desc_pt_BR: Sela sombria com +45% velocidade, 60% absorção, 18 dano planar e 15 defesa planar. 12 usos, 90% resistência a sombra.
+  desc_ru: Теневое седло с +45% скорости, 60% поглощением, 18 планарного урона и 15 планарной защиты. 12 зарядов, 90% теневого сопротивления.
+  desc_es: Silla de sombra con +45 % velocidad, 60 % absorción, 18 daño planar y 15 defensa planar. 12 usos, 90 % resistencia a sombra.
+  desc_es_MX: Silla de sombra con +45 % velocidad, 60 % absorción, 18 daño planar y 15 defensa planar. 12 usos, 90 % resistencia a sombra.
 632.saddle_war
   en: War Saddle
   ko: 전투 안장
   app: O
   source: Beefalo saddle. 8 uses, +25% speed (1.25x), +16 bonus damage. Tagged "combatmount". Destroyed when uses depleted.
+  desc_en: Combat beefalo saddle with +25% speed and +16 bonus damage. 8 uses.
+  desc_ko: 이동 속도 +25%, 추가 피해 +16의 전투용 비팔로 안장. 8회 사용 가능.
+  desc_ja: 速度+25%、ボーナスダメージ+16の戦闘用ビーファローサドル。8回使用可能。
+  desc_zh_CN: 战斗牛鞍，速度+25%，额外伤害+16。8次使用。
+  desc_zh_TW: 戰鬥牛鞍，速度+25%，額外傷害+16。8次使用。
+  desc_fr: Selle de combat avec +25 % vitesse et +16 bonus de dégâts. 8 utilisations.
+  desc_de: Kampfsattel mit +25 % Geschwindigkeit und +16 Schadensbonus. 8 Ladungen.
+  desc_it: Sella da combattimento con +25% velocità e +16 danni bonus. 8 usi.
+  desc_pl: Siodło bojowe z +25% prędkości i +16 dodatkowych obrażeń. 8 użyć.
+  desc_pt_BR: Sela de combate com +25% de velocidade e +16 de dano bônus. 8 usos.
+  desc_ru: Боевое седло с +25% скорости и +16 бонусного урона. 8 зарядов.
+  desc_es: Silla de combate con +25 % velocidad y +16 daño extra. 8 usos.
+  desc_es_MX: Silla de combate con +25 % velocidad y +16 daño extra. 8 usos.
 633.saddle_wathgrithr
   en: Battle Saddle
   ko: 전사의 안장
   app: O
   source: Beefalo saddle. 6 uses, +30% speed (1.3x), +5 bonus damage, 40% absorption. Tagged "combatmount". Destroyed when uses depleted.
+  desc_en: Combat beefalo saddle with +30% speed, +5 bonus damage, and 40% absorption. 6 uses.
+  desc_ko: 이동 속도 +30%, 추가 피해 +5, 40% 흡수의 전투용 비팔로 안장. 6회 사용 가능.
+  desc_ja: 速度+30%、ボーナスダメージ+5、40%吸収の戦闘用ビーファローサドル。6回使用可能。
+  desc_zh_CN: 战斗牛鞍，速度+30%，额外伤害+5，40%吸收。6次使用。
+  desc_zh_TW: 戰鬥牛鞍，速度+30%，額外傷害+5，40%吸收。6次使用。
+  desc_fr: Selle de combat avec +30 % vitesse, +5 bonus de dégâts et 40 % absorption. 6 utilisations.
+  desc_de: Kampfsattel mit +30 % Geschwindigkeit, +5 Schadensbonus und 40 % Absorption. 6 Ladungen.
+  desc_it: Sella da combattimento con +30% velocità, +5 danni bonus e 40% assorbimento. 6 usi.
+  desc_pl: Siodło bojowe z +30% prędkości, +5 dodatkowych obrażeń i 40% absorpcji. 6 użyć.
+  desc_pt_BR: Sela de combate com +30% velocidade, +5 dano bônus e 40% absorção. 6 usos.
+  desc_ru: Боевое седло с +30% скорости, +5 бонусного урона и 40% поглощением. 6 зарядов.
+  desc_es: Silla de combate con +30 % velocidad, +5 daño extra y 40 % absorción. 6 usos.
+  desc_es_MX: Silla de combate con +30 % velocidad, +5 daño extra y 40 % absorción. 6 usos.
 634.saddlehorn
   en: Saddlehorn
   ko: 안장뿔
   app: O
   source: Tool + weapon. 17 damage (34*0.5), 10 uses. Removes saddles from beefalo (1 use per unsaddle). Attacking costs 3 uses per hit. Consumed on depletion.
+  desc_en: Tool that removes saddles from beefalo (1 use each). Also a weapon dealing 17 damage. 10 uses total.
+  desc_ko: 비팔로에서 안장을 제거하는 도구(1회/사용). 무기로도 사용 가능하며 17 피해. 총 10회 사용.
+  desc_ja: ビーファローからサドルを外すツール（1回/使用）。武器としても使え17ダメージ。全10回使用可能。
+  desc_zh_CN: 从牛身上移除鞍的工具（每次消耗1次）。也可作武器造成17伤害。共10次使用。
+  desc_zh_TW: 從牛身上移除鞍的工具（每次消耗1次）。也可作武器造成17傷害。共10次使用。
+  desc_fr: Outil retirant les selles de beefalo (1 utilisation chaque). Aussi une arme infligeant 17 dégâts. 10 utilisations au total.
+  desc_de: Werkzeug zum Entfernen von Sätteln von Beefalos (1 Ladung pro Absattlung). Auch Waffe mit 17 Schaden. 10 Ladungen insgesamt.
+  desc_it: Strumento che rimuove le selle dai beefalo (1 uso ciascuna). Anche arma da 17 danni. 10 usi totali.
+  desc_pl: Narzędzie zdejmujące siodła z bizonów (1 użycie na raz). Także broń zadająca 17 obrażeń. Łącznie 10 użyć.
+  desc_pt_BR: Ferramenta que remove selas de beefalos (1 uso cada). Também é uma arma com 17 de dano. 10 usos no total.
+  desc_ru: Инструмент для снятия сёдел с бифало (1 заряд за раз). Также оружие с 17 урона. Всего 10 зарядов.
+  desc_es: Herramienta que quita sillas de beefalo (1 uso cada una). También arma con 17 de daño. 10 usos en total.
+  desc_es_MX: Herramienta que quita sillas de beefalo (1 uso cada una). También arma con 17 de daño. 10 usos en total.
 635.saltbox
   en: Salt Box
   ko: 소금 항아리
   app: O
   source: Placed container structure. 3x3 container slots. Preserves food at 25% spoilage rate (4x slower). Hammerable (2 hits).
+  desc_en: 9-slot food container that preserves food at 25% spoilage rate (4x slower than normal).
+  desc_ko: 9칸 식품 보관함으로 부패 속도를 25%(일반 대비 4배 느림)로 줄여줍니다.
+  desc_ja: 9スロットの食品コンテナ。腐敗速度を25%（通常の4倍遅い）に抑えます。
+  desc_zh_CN: 9格食物容器，将腐烂速度降至25%（比正常慢4倍）。
+  desc_zh_TW: 9格食物容器，將腐爛速度降至25%（比正常慢4倍）。
+  desc_fr: Conteneur alimentaire de 9 emplacements préservant la nourriture à 25 % de pourriture (4x plus lent).
+  desc_de: 9-Slot-Lebensmittelbehälter, der Essen bei 25 % Verrottung konserviert (4x langsamer).
+  desc_it: Contenitore alimentare da 9 slot che preserva il cibo al 25% di deterioramento (4 volte più lento).
+  desc_pl: 9-slotowy pojemnik na jedzenie zachowujący żywność przy 25% prędkości psucia (4x wolniej).
+  desc_pt_BR: Contêiner de 9 slots que preserva alimentos a 25% da taxa de deterioração (4x mais lento).
+  desc_ru: Контейнер на 9 слотов, сохраняющий еду при 25% скорости порчи (в 4 раза медленнее).
+  desc_es: Contenedor de 9 ranuras que conserva la comida al 25 % de deterioro (4 veces más lento).
+  desc_es_MX: Contenedor de 9 ranuras que conserva la comida al 25 % de deterioro (4 veces más lento).
 636.saltlick
   en: Salt Lick
   ko: 소금 덩어리
   app: O
   source: Placed structure. 240 max licks (~15 days with beefalo). Attracts domesticable animals within range 20: beefalo use 2 licks/visit, koalefants 4, lightning goats 1, deer 1, grass gators 4. Lick interval 60s (480/8). Burnable.
+  desc_en: Placed structure that attracts domesticable animals within range 20. Has 240 licks (~15 days with beefalo). Different animals consume 1-4 licks per visit.
+  desc_ko: 범위 20 내 가축화 가능한 동물을 유인하는 설치 구조물. 240회 핥기(비팔로 기준 약 15일). 동물에 따라 방문당 1~4회 소모.
+  desc_ja: 範囲20内の家畜化可能な動物を引き寄せる設置構造物。240回使用可能（ビーファローで約15日）。動物ごとに1〜4回消費。
+  desc_zh_CN: 吸引范围20内可驯化动物的放置结构。240次舔食（牛约15天）。不同动物每次消耗1-4次。
+  desc_zh_TW: 吸引範圍20內可馴化動物的放置結構。240次舔食（牛約15天）。不同動物每次消耗1-4次。
+  desc_fr: Structure attirant les animaux domesticables dans un rayon de 20. 240 léchages (~15 jours avec beefalo). Les animaux consomment 1 à 4 léchages par visite.
+  desc_de: Platzierte Struktur, die domestizierbare Tiere im Umkreis von 20 anlockt. 240 Schlecke (~15 Tage mit Beefalos). Tiere verbrauchen 1-4 Schlecke pro Besuch.
+  desc_it: Struttura che attira animali addomesticabili nel raggio di 20. 240 leccate (~15 giorni con beefalo). Gli animali consumano 1-4 leccate a visita.
+  desc_pl: Konstrukcja przyciągająca oswajalne zwierzęta w zasięgu 20. 240 liźnięć (~15 dni z bizonami). Zwierzęta zużywają 1-4 liźnięć na wizytę.
+  desc_pt_BR: Estrutura que atrai animais domesticáveis no raio de 20. 240 lambidas (~15 dias com beefalos). Animais consomem 1-4 lambidas por visita.
+  desc_ru: Структура, привлекающая приручаемых животных в радиусе 20. 240 лизаний (~15 дней с бифало). Животные расходуют 1-4 за визит.
+  desc_es: Estructura que atrae animales domesticables en radio 20. 240 lamidos (~15 días con beefalo). Los animales consumen 1-4 lamidos por visita.
+  desc_es_MX: Estructura que atrae animales domesticables en radio 20. 240 lamidos (~15 días con beefalo). Los animales consumen 1-4 lamidos por visita.
 637.saltlick_improved
   en: Gourmet Salt Lick
   ko: 진미 소금 덩어리
   app: O
   source: Placed structure. 480 max licks (~30 days with beefalo). Same animal attraction as regular salt lick. Repairable with salt. Not burnable.
+  desc_en: Upgraded salt lick with 480 licks (~30 days with beefalo). Repairable with salt. Not burnable.
+  desc_ko: 480회 핥기(비팔로 기준 약 30일)의 업그레이드된 소금 덩어리. 소금으로 수리 가능. 불에 타지 않음.
+  desc_ja: 480回使用可能（ビーファローで約30日）のアップグレード版ソルトリック。塩で修理可能。燃えません。
+  desc_zh_CN: 升级版盐块，480次舔食（牛约30天）。可用盐修复。不可燃烧。
+  desc_zh_TW: 升級版鹽塊，480次舔食（牛約30天）。可用鹽修復。不可燃燒。
+  desc_fr: Pierre à sel améliorée avec 480 léchages (~30 jours avec beefalo). Réparable avec du sel. Non inflammable.
+  desc_de: Verbesserter Salzleckstein mit 480 Schlecken (~30 Tage mit Beefalos). Mit Salz reparierbar. Nicht brennbar.
+  desc_it: Lecca-sale migliorato con 480 leccate (~30 giorni con beefalo). Riparabile con sale. Non infiammabile.
+  desc_pl: Ulepszony lizawiec z 480 liźnięciami (~30 dni z bizonami). Naprawialny solą. Niepalny.
+  desc_pt_BR: Sal mineral melhorado com 480 lambidas (~30 dias com beefalos). Reparável com sal. Não inflamável.
+  desc_ru: Улучшенная солонка с 480 лизаниями (~30 дней с бифало). Починяется солью. Несгораема.
+  desc_es: Lamedero mejorado con 480 lamidos (~30 días con beefalo). Reparable con sal. No inflamable.
+  desc_es_MX: Lamedero mejorado con 480 lamidos (~30 días con beefalo). Reparable con sal. No inflamable.
 638.scarecrow
   en: Friendly Scarecrow
   ko: 친근한 허수아비
   app: O
   source: Placed structure. Scares birds away from nearby crops (tagged "scarecrow"). Supports wardrobe skin application — can be dressed with player skins. Hammerable (6 hits). Burnable. Randomized face on each world wake.
+  desc_en: Placed structure that scares birds away from nearby crops. Can be dressed with player skins for decoration.
+  desc_ko: 주변 작물에서 새를 쫓아내는 설치 구조물. 플레이어 스킨으로 장식할 수 있습니다.
+  desc_ja: 周辺の作物から鳥を追い払う設置構造物。プレイヤースキンで着飾ることができます。
+  desc_zh_CN: 驱赶附近庄稼旁鸟类的放置结构。可用玩家皮肤装扮装饰。
+  desc_zh_TW: 驅趕附近莊稼旁鳥類的放置結構。可用玩家皮膚裝扮裝飾。
+  desc_fr: Structure qui effraie les oiseaux loin des cultures proches. Peut être habillée avec des skins de joueur.
+  desc_de: Platzierte Struktur, die Vögel von Feldern fernhält. Kann mit Spieler-Skins dekoriert werden.
+  desc_it: Struttura che spaventa gli uccelli dalle colture vicine. Può essere vestita con skin dei giocatori.
+  desc_pl: Konstrukcja odstraszająca ptaki od pobliskich upraw. Można ją ubrać w skiny graczy.
+  desc_pt_BR: Estrutura que espanta pássaros das plantações próximas. Pode ser vestida com skins de jogadores.
+  desc_ru: Структура, отпугивающая птиц от ближайших посевов. Можно одевать в скины игроков.
+  desc_es: Estructura que espanta pájaros de los cultivos cercanos. Se puede vestir con skins de jugadores.
+  desc_es_MX: Estructura que espanta pájaros de los cultivos cercanos. Se puede vestir con skins de jugadores.
 639.scrap_monoclehat
   en: Horizon Expandinator
   ko: 지평확장기
   app: X
   type: deconstruct
   source: Hat. 5760s (12 day) durability. Grants +20 extra camera view distance. Dapperness varies by phase: +3.3/min (day), 0 (dusk), -2.2/min (night). Not sewable. Consumed on depletion.
+  desc_en: Hat granting +20 camera view distance for 12 days. Sanity varies by time of day: +3.3/min (day), 0 (dusk), -2.2/min (night).
+  desc_ko: 12일간 카메라 시야 거리 +20을 부여하는 모자. 시간대별 정신력: 낮 +3.3/분, 해질녘 0, 밤 -2.2/분.
+  desc_ja: 12日間カメラ視野距離+20を付与する帽子。正気度は時間帯で変化：昼+3.3/分、夕暮れ0、夜-2.2/分。
+  desc_zh_CN: 帽子，持续12天，增加+20视野距离。理智随时段变化：白天+3.3/分钟，黄昏0，夜晚-2.2/分钟。
+  desc_zh_TW: 帽子，持續12天，增加+20視野距離。理智隨時段變化：白天+3.3/分鐘，黃昏0，夜晚-2.2/分鐘。
+  desc_fr: Chapeau offrant +20 de distance de vue pendant 12 jours. Santé mentale variable : +3,3/min (jour), 0 (crépuscule), -2,2/min (nuit).
+  desc_de: Hut mit +20 Sichtweite für 12 Tage. Verstand variiert: +3,3/min (Tag), 0 (Dämmerung), -2,2/min (Nacht).
+  desc_it: Cappello con +20 distanza visiva per 12 giorni. Sanità variabile: +3.3/min (giorno), 0 (crepuscolo), -2.2/min (notte).
+  desc_pl: Kapelusz z +20 zasięgu widzenia na 12 dni. Poczytalność zmienna: +3,3/min (dzień), 0 (zmierzch), -2,2/min (noc).
+  desc_pt_BR: Chapéu com +20 de distância de visão por 12 dias. Sanidade variável: +3.3/min (dia), 0 (crepúsculo), -2.2/min (noite).
+  desc_ru: Шляпа с +20 дальности обзора на 12 дней. Рассудок меняется: +3,3/мин (день), 0 (сумерки), -2,2/мин (ночь).
+  desc_es: Sombrero con +20 distancia de visión durante 12 días. Cordura variable: +3,3/min (día), 0 (atardecer), -2,2/min (noche).
+  desc_es_MX: Sombrero con +20 distancia de visión durante 12 días. Cordura variable: +3,3/min (día), 0 (atardecer), -2,2/min (noche).
 640.scraphat
   en: Scrappy Chapauldron
   ko: 고철 견갑모
   app: X
   type: deconstruct
   source: Hat + armor. 262.5 HP (150*2.5*0.7), 85% absorption. 20% waterproof. Tagged "junk".
+  desc_en: Hat-armor with 262.5 HP, 85% absorption, and 20% waterproofing. Low durability but decent protection.
+  desc_ko: 262.5 HP, 85% 흡수, 20% 방수의 모자 갑옷. 내구도는 낮지만 방어력은 적당합니다.
+  desc_ja: 262.5 HP・85%吸収・20%防水のヘルメット型防具。耐久力は低いが防御は十分。
+  desc_zh_CN: 头盔护甲，262.5 HP，85%吸收，20%防水。耐久较低但防护尚可。
+  desc_zh_TW: 頭盔護甲，262.5 HP，85%吸收，20%防水。耐久較低但防護尚可。
+  desc_fr: Casque-armure avec 262,5 PV, 85 % absorption et 20 % imperméabilité. Faible durabilité mais bonne protection.
+  desc_de: Helm-Rüstung mit 262,5 TP, 85 % Absorption und 20 % Wasserdichtigkeit. Geringe Haltbarkeit, aber guter Schutz.
+  desc_it: Elmo-corazza con 262.5 HP, 85% assorbimento e 20% impermeabilità. Bassa durabilità ma buona protezione.
+  desc_pl: Hełm-zbroja z 262,5 HP, 85% absorpcji i 20% wodoodpornością. Niska wytrzymałość, ale przyzwoita ochrona.
+  desc_pt_BR: Elmo-armadura com 262.5 HP, 85% absorção e 20% impermeabilidade. Baixa durabilidade mas boa proteção.
+  desc_ru: Шлем-броня с 262,5 ХП, 85% поглощением и 20% водонепроницаемостью. Низкая прочность, но приличная защита.
+  desc_es: Casco-armadura con 262,5 PV, 85 % absorción y 20 % impermeabilidad. Baja durabilidad pero buena protección.
+  desc_es_MX: Casco-armadura con 262,5 PV, 85 % absorción y 20 % impermeabilidad. Baja durabilidad pero buena protección.
 641.sculptingtable
   en: Potter's Wheel
   ko: 도예가의 돌림판
   app: O
   source: Placed crafting station (prototyper). Unlocks Sculpting tech tree recipes. Used to sculpt marble statues. Hammerable.
+  desc_en: Crafting station that unlocks Sculpting recipes. Used to create marble statues.
+  desc_ko: 조각 레시피를 해금하는 제작 스테이션. 대리석 조각상을 만드는 데 사용합니다.
+  desc_ja: 彫刻レシピを解放するクラフトステーション。大理石の彫像を制作するのに使います。
+  desc_zh_CN: 解锁雕塑配方的制作站。用于制作大理石雕像。
+  desc_zh_TW: 解鎖雕塑配方的製作站。用於製作大理石雕像。
+  desc_fr: Station de fabrication qui débloque les recettes de Sculpture. Sert à créer des statues en marbre.
+  desc_de: Herstellungsstation, die Skulptur-Rezepte freischaltet. Dient zur Herstellung von Marmorstatuen.
+  desc_it: Stazione che sblocca le ricette di Scultura. Usata per creare statue di marmo.
+  desc_pl: Stacja rzemieślnicza odblokowująca przepisy Rzeźbiarstwa. Używana do tworzenia marmurowych posągów.
+  desc_pt_BR: Estação que desbloqueia receitas de Escultura. Usada para criar estátuas de mármore.
+  desc_ru: Станция крафта, открывающая рецепты Скульптуры. Используется для создания мраморных статуй.
+  desc_es: Estación que desbloquea recetas de Escultura. Usada para crear estatuas de mármol.
+  desc_es_MX: Estación que desbloquea recetas de Escultura. Usada para crear estatuas de mármol.
 642.seafaring_prototyper
   en: Think Tank
   ko: 싱크 탱크
   app: O
   source: Placed crafting station (prototyper). Unlocks tier-2 Seafaring tech tree recipes when nearby. Must be placed on a boat. Hammerable.
+  desc_en: Boat-only crafting station that unlocks tier-2 Seafaring recipes when nearby.
+  desc_ko: 보트 위에만 설치 가능하며 근처에 있을 때 2단계 항해 레시피를 해금하는 제작 스테이션.
+  desc_ja: ボート上にのみ設置可能で、近くにいるとティア2の航海レシピを解放するクラフトステーション。
+  desc_zh_CN: 仅可放置在船上的制作站，靠近时解锁二级航海配方。
+  desc_zh_TW: 僅可放置在船上的製作站，靠近時解鎖二級航海配方。
+  desc_fr: Station de fabrication uniquement pour bateau, débloquant les recettes de Navigation niveau 2 à proximité.
+  desc_de: Nur auf Booten platzierbare Herstellungsstation, die Seefahrt-Rezepte der Stufe 2 freischaltet.
+  desc_it: Stazione piazzabile solo su barche che sblocca le ricette di Navigazione livello 2 nelle vicinanze.
+  desc_pl: Stacja rzemieślnicza wyłącznie na łódź, odblokowująca przepisy Żeglarstwa poziomu 2 w pobliżu.
+  desc_pt_BR: Estação exclusiva para barcos que desbloqueia receitas de Navegação nível 2 quando próxima.
+  desc_ru: Станция крафта только для лодок, открывающая рецепты Мореходства 2-го уровня вблизи.
+  desc_es: Estación exclusiva para barcos que desbloquea recetas de Navegación nivel 2 al estar cerca.
+  desc_es_MX: Estación exclusiva para barcos que desbloquea recetas de Navegación nivel 2 al estar cerca.
 643.security_pulse_cage_full
   en: Spark Ark
   ko: 방전 방주
   app: X
   type: deconstruct
   source: Inventory item (filled cage). Contains a captured Archive Security Pulse. Emits light (radius 0.5, intensity 0.5). Created by using an empty cage on a "power_point" entity. Plays idle animations with periodic funny idle.
+  desc_en: Filled cage containing a captured Archive Security Pulse. Emits light (radius 0.5). Created by using an empty cage on a power point.
+  desc_ko: 포획된 기록 보관소 보안 펄스가 담긴 우리. 빛을 방출합니다(반경 0.5). 빈 우리를 전력 지점에 사용하여 생성합니다.
+  desc_ja: 捕獲されたアーカイブセキュリティパルスが入った檻。光を放ちます（半径0.5）。空の檻をパワーポイントに使用して作成。
+  desc_zh_CN: 装有捕获的档案安全脉冲的笼子。发出光（半径0.5）。用空笼在能量点上使用获得。
+  desc_zh_TW: 裝有捕獲的檔案安全脈衝的籠子。發出光（半徑0.5）。用空籠在能量點上使用獲得。
+  desc_fr: Cage contenant une Impulsion de Sécurité d'Archive capturée. Émet de la lumière (rayon 0,5). Créée en utilisant une cage vide sur un point d'énergie.
+  desc_de: Gefüllter Käfig mit einem gefangenen Archiv-Sicherheitspuls. Strahlt Licht aus (Radius 0,5). Erstellt durch Anwenden eines leeren Käfigs auf einen Energiepunkt.
+  desc_it: Gabbia piena contenente un Impulso di Sicurezza dell'Archivio catturato. Emette luce (raggio 0.5). Creata usando una gabbia vuota su un punto di energia.
+  desc_pl: Wypełniona klatka z przechwyconym Impulsem Bezpieczeństwa Archiwum. Emituje światło (zasięg 0,5). Tworzona przez użycie pustej klatki na punkcie mocy.
+  desc_pt_BR: Gaiola cheia contendo um Pulso de Segurança de Arquivo capturado. Emite luz (raio 0.5). Criada usando uma gaiola vazia em um ponto de energia.
+  desc_ru: Клетка с захваченным Импульсом безопасности Архива. Излучает свет (радиус 0,5). Создаётся при использовании пустой клетки на точке энергии.
+  desc_es: Jaula llena con un Pulso de Seguridad de Archivo capturado. Emite luz (radio 0,5). Creada usando una jaula vacía en un punto de energía.
+  desc_es_MX: Jaula llena con un Pulso de Seguridad de Archivo capturado. Emite luz (radio 0,5). Creada usando una jaula vacía en un punto de energía.
 644.seedpouch
   en: Seed Pack-It
   ko: 씨앗 줘-머니
   app: O
   source: Body slot backpack. Seed-only container (2x8 slots). Preserves seeds at 50% spoilage rate (2x slower). Cannot be placed inside other containers.
+  desc_en: Seed-only backpack with 16 slots. Preserves seeds at 50% spoilage rate (2x slower). Occupies body slot.
+  desc_ko: 씨앗 전용 16칸 배낭. 부패 속도를 50%(2배 느림)로 줄여 씨앗을 보존합니다. 몸통 슬롯 장착.
+  desc_ja: 種専用16スロットのバックパック。腐敗速度を50%（2倍遅い）に抑えます。ボディスロット装備。
+  desc_zh_CN: 种子专用16格背包。将种子腐烂速度降至50%（慢2倍）。占用身体槽位。
+  desc_zh_TW: 種子專用16格背包。將種子腐爛速度降至50%（慢2倍）。佔用身體欄位。
+  desc_fr: Sac à dos pour graines uniquement (16 emplacements). Préserve les graines à 50 % de pourriture (2x plus lent). Occupe l'emplacement corps.
+  desc_de: Rucksack nur für Samen mit 16 Slots. Konserviert Samen bei 50 % Verrottung (2x langsamer). Belegt den Körperslot.
+  desc_it: Zaino per soli semi con 16 slot. Preserva i semi al 50% di deterioramento (2 volte più lento). Occupa lo slot corpo.
+  desc_pl: Plecak wyłącznie na nasiona z 16 slotami. Zachowuje nasiona przy 50% prędkości psucia (2x wolniej). Zajmuje slot na ciało.
+  desc_pt_BR: Mochila só para sementes com 16 slots. Preserva sementes a 50% da taxa de deterioração (2x mais lento). Ocupa o slot de corpo.
+  desc_ru: Рюкзак только для семян на 16 слотов. Сохраняет семена при 50% скорости порчи (в 2 раза медленнее). Занимает слот тела.
+  desc_es: Mochila solo para semillas con 16 ranuras. Conserva semillas al 50 % de deterioro (2 veces más lento). Ocupa la ranura de cuerpo.
+  desc_es_MX: Mochila solo para semillas con 16 ranuras. Conserva semillas al 50 % de deterioro (2 veces más lento). Ocupa la ranura de cuerpo.
 645.sentryward
   en: Ocuvigil
   ko: 오큐비질
   app: O
   source: Placed structure. Reveals a circular area of the map (fog revealer) permanently while standing. Hammerable (4 hits). Burnable. With Deerclops Eyeball upgrade: radius 35, overrides temperature to -10, spawns rock ice nearby (base 7 days, variance 5 days, max 6 within radius 12).
+  desc_en: Placed structure that permanently reveals a map area. Deerclops Eyeball upgrade: radius 35, -10 temperature override, spawns rock ice nearby.
+  desc_ko: 지도 영역을 영구적으로 밝히는 설치 구조물. 디어클롭스 안구 업그레이드: 반경 35, 온도 -10 고정, 근처 돌얼음 생성.
+  desc_ja: マップの範囲を永久に可視化する設置構造物。ディアクロプスの目のアップグレード：半径35、温度-10に上書き、近くにロックアイス生成。
+  desc_zh_CN: 永久揭示地图区域的放置结构。独眼巨鹿眼球升级：半径35，温度覆盖为-10，附近生成岩冰。
+  desc_zh_TW: 永久揭示地圖區域的放置結構。獨眼巨鹿眼球升級：半徑35，溫度覆蓋為-10，附近生成岩冰。
+  desc_fr: Structure qui révèle en permanence une zone de la carte. Amélioration Œil de Deerclops : rayon 35, température forcée à -10, génère de la roche de glace.
+  desc_de: Platzierte Struktur, die einen Kartenbereich dauerhaft aufdeckt. Deerclops-Auge-Upgrade: Radius 35, Temperatur auf -10 gesetzt, erzeugt Felseis.
+  desc_it: Struttura che rivela permanentemente un'area della mappa. Upgrade Occhio di Deerclops: raggio 35, temperatura forzata a -10, genera ghiaccio roccioso.
+  desc_pl: Konstrukcja trwale odsłaniająca obszar mapy. Ulepszenie Okiem Deerclops: zasięg 35, temperatura ustawiona na -10, generuje lodową skałę.
+  desc_pt_BR: Estrutura que revela permanentemente uma área do mapa. Melhoria Olho de Deerclops: raio 35, temperatura forçada a -10, gera gelo rochoso.
+  desc_ru: Структура, постоянно раскрывающая область карты. Улучшение Глазом Циклопа-оленя: радиус 35, температура -10, создаёт каменный лёд.
+  desc_es: Estructura que revela permanentemente un área del mapa. Mejora Ojo de Deerclops: radio 35, temperatura forzada a -10, genera hielo rocoso.
+  desc_es_MX: Estructura que revela permanentemente un área del mapa. Mejora Ojo de Deerclops: radio 35, temperatura forzada a -10, genera hielo rocoso.
 646.sewing_kit
   en: Sewing Kit
   ko: 바느질 도구
   app: O
   source: Repair tool. 5 uses, repairs 2400s (5 day) worth of durability per use on clothing/hats. Consumed on depletion.
+  desc_en: Repair tool that restores 5 days of durability to clothing and hats per use. 5 uses total.
+  desc_ko: 사용당 옷과 모자의 내구도를 5일치 회복하는 수리 도구. 총 5회 사용.
+  desc_ja: 使用ごとに衣類や帽子の耐久度を5日分回復する修理ツール。全5回使用可能。
+  desc_zh_CN: 每次使用为衣物和帽子恢复5天耐久的修复工具。共5次使用。
+  desc_zh_TW: 每次使用為衣物和帽子恢復5天耐久的修復工具。共5次使用。
+  desc_fr: Outil de réparation restaurant 5 jours de durabilité par utilisation sur les vêtements et chapeaux. 5 utilisations au total.
+  desc_de: Reparaturwerkzeug, das pro Einsatz 5 Tage Haltbarkeit bei Kleidung und Hüten wiederherstellt. 5 Ladungen.
+  desc_it: Strumento di riparazione che ripristina 5 giorni di durabilità per uso su vestiti e cappelli. 5 usi totali.
+  desc_pl: Narzędzie naprawcze przywracające 5 dni wytrzymałości odzieży i kapeluszy na użycie. Łącznie 5 użyć.
+  desc_pt_BR: Ferramenta de reparo que restaura 5 dias de durabilidade por uso em roupas e chapéus. 5 usos no total.
+  desc_ru: Инструмент починки, восстанавливающий 5 дней прочности одежды и шляп за использование. 5 зарядов.
+  desc_es: Herramienta de reparación que restaura 5 días de durabilidad por uso en ropa y sombreros. 5 usos en total.
+  desc_es_MX: Herramienta de reparación que restaura 5 días de durabilidad por uso en ropa y sombreros. 5 usos en total.
 647.sewing_mannequin
   en: Mannequin
   ko: 마네킹
   app: O
   source: Placed structure. Accepts equipment in head, body, and hand slots for display. Giving an item auto-equips it; swaps if slot is occupied. Hammerable (drops all equipped items). Decorative equipment display stand.
+  desc_en: Decorative display stand for equipment (head, body, hand slots). Auto-equips given items and swaps if occupied.
+  desc_ko: 장비(머리, 몸통, 손 슬롯)를 전시하는 장식용 진열대. 아이템을 주면 자동 장착하며 슬롯이 차있으면 교체합니다.
+  desc_ja: 装備品（頭・体・手スロット）の装飾展示台。アイテムを渡すと自動装備し、スロットが埋まっていれば交換します。
+  desc_zh_CN: 用于展示装备（头、身体、手槽位）的装饰展示架。给予物品自动穿戴，已占则替换。
+  desc_zh_TW: 用於展示裝備（頭、身體、手欄位）的裝飾展示架。給予物品自動穿戴，已佔則替換。
+  desc_fr: Présentoir décoratif pour l'équipement (tête, corps, main). Équipe automatiquement les objets donnés et échange si occupé.
+  desc_de: Dekorative Ausstellungsfigur für Ausrüstung (Kopf, Körper, Hand). Rüstet gegebene Gegenstände automatisch aus und tauscht bei Belegung.
+  desc_it: Espositore decorativo per equipaggiamento (testa, corpo, mano). Equipaggia automaticamente gli oggetti e scambia se occupato.
+  desc_pl: Dekoracyjny stojak wystawowy na ekwipunek (głowa, ciało, ręka). Automatycznie zakłada dane przedmioty i zamienia, jeśli slot jest zajęty.
+  desc_pt_BR: Expositor decorativo para equipamentos (cabeça, corpo, mão). Equipa automaticamente itens dados e troca se ocupado.
+  desc_ru: Декоративный манекен для снаряжения (голова, тело, рука). Автоматически надевает предметы и заменяет при занятости.
+  desc_es: Expositor decorativo para equipamiento (cabeza, cuerpo, mano). Equipa automáticamente los objetos y cambia si está ocupado.
+  desc_es_MX: Expositor decorativo para equipamiento (cabeza, cuerpo, mano). Equipa automáticamente los objetos y cambia si está ocupado.
 648.sewing_tape
   en: Trusty Tape
   ko: 믿음직한 테이프
   app: O
   source: Repair item. Stackable, single use. Repairs 2400s (5 day) of durability on clothing/hats. Also functions as a boat patch (tape type). Winona starts with 3.
+  desc_en: Stackable single-use repair item restoring 5 days of durability to clothing/hats. Also patches boats. Winona starts with 3.
+  desc_ko: 옷/모자의 내구도를 5일치 회복하는 쌓기 가능한 1회용 수리 아이템. 보트 수리에도 사용 가능. 위노나는 3개 시작.
+  desc_ja: 衣類/帽子の耐久度を5日分回復するスタック可能な使い捨て修理アイテム。ボートの修理にも使用可能。ウィノナは3個所持で開始。
+  desc_zh_CN: 可堆叠的一次性修复物品，为衣物/帽子恢复5天耐久。也可修补船只。薇诺娜初始携带3个。
+  desc_zh_TW: 可堆疊的一次性修復物品，為衣物/帽子恢復5天耐久。也可修補船隻。薇諾娜初始攜帶3個。
+  desc_fr: Réparation empilable à usage unique restaurant 5 jours de durabilité. Sert aussi de rustine pour bateaux. Winona commence avec 3.
+  desc_de: Stapelbares Einweg-Reparaturmaterial, das 5 Tage Haltbarkeit wiederherstellt. Dient auch als Bootsflicken. Winona startet mit 3.
+  desc_it: Riparazione impilabile monouso che ripristina 5 giorni di durabilità. Funziona anche come toppa per barche. Winona inizia con 3.
+  desc_pl: Jednorazowy naprawialny materiał przywracający 5 dni wytrzymałości. Służy też jako łata na łodzie. Winona zaczyna z 3.
+  desc_pt_BR: Item de reparo empilhável de uso único que restaura 5 dias de durabilidade. Também conserta barcos. Winona começa com 3.
+  desc_ru: Складываемый одноразовый ремонтный предмет, восстанавливающий 5 дней прочности. Также чинит лодки. Винона начинает с 3.
+  desc_es: Reparación apilable de un solo uso que restaura 5 días de durabilidad. También parchea barcos. Winona empieza con 3.
+  desc_es_MX: Reparación apilable de un solo uso que restaura 5 días de durabilidad. También parchea barcos. Winona empieza con 3.
 649.shadow_battleaxe
   en: Shadow Maul
   ko: 그림자 분쇄도끼
   app: O
   source: Weapon + axe. 38 base damage (34*2-30), 200 uses. Shadow level 3. 4 levels based on hunger (thresholds 0/3/6/9 kills): planar damage 10/14/18/22, chopping efficiency 1.5x/1.75x/2x/2.25x, life steal 0/1.7/2.55/3.4. Sanity drain -26.7/min (DAPPERNESS_MED). +10% vs lunar. Hunger system: max 500, gains 50 per kill, decays over time at higher levels. Voidcloth set bonus: 1.1x damage +5 planar.
+  desc_en: Shadow axe-weapon dealing 38 base damage with 200 uses. Levels up via kills (10-22 planar damage, 1.5-2.25x chopping). Drains sanity -26.7/min. Shadow level 3.
+  desc_ko: 38 기본 피해, 200회 사용의 그림자 도끼 무기. 처치로 레벨업(차원 피해 10~22, 벌목 1.5~2.25배). 정신력 -26.7/분 소모. 그림자 레벨 3.
+  desc_ja: 基本38ダメージ・200回使用のシャドウアックス武器。キルでレベルアップ（プレーナーダメージ10〜22、伐採1.5〜2.25倍）。正気度-26.7/分。シャドウレベル3。
+  desc_zh_CN: 暗影斧武器，38基础伤害，200次使用。击杀升级（位面伤害10-22，砍伐1.5-2.25倍）。理智消耗-26.7/分钟。暗影等级3。
+  desc_zh_TW: 暗影斧武器，38基礎傷害，200次使用。擊殺升級（位面傷害10-22，砍伐1.5-2.25倍）。理智消耗-26.7/分鐘。暗影等級3。
+  desc_fr: Hache-arme d'ombre infligeant 38 dégâts de base, 200 utilisations. Monte en niveau par les éliminations (10-22 dégâts planaires, coupe 1,5-2,25x). Drain de santé mentale -26,7/min. Niveau d'ombre 3.
+  desc_de: Schatten-Axtwaffe mit 38 Grundschaden und 200 Ladungen. Stuft durch Kills auf (10-22 Planarschaden, 1,5-2,25x Holzfällen). Verstand -26,7/min. Schattenstufe 3.
+  desc_it: Ascia-arma d'ombra con 38 danni base e 200 usi. Sale di livello con le uccisioni (10-22 danni planari, taglio 1.5-2.25x). Sanità -26.7/min. Livello ombra 3.
+  desc_pl: Cienisty topór-broń zadający 38 bazowych obrażeń, 200 użyć. Awansuje przez zabójstwa (10-22 obrażeń planarnych, rąbanie 1,5-2,25x). Poczytalność -26,7/min. Poziom cienia 3.
+  desc_pt_BR: Machado-arma sombrio com 38 de dano base e 200 usos. Evolui com abates (10-22 dano planar, corte 1.5-2.25x). Sanidade -26.7/min. Nível sombrio 3.
+  desc_ru: Теневой топор-оружие с 38 базовым уроном и 200 зарядами. Прокачивается убийствами (10-22 планарного урона, рубка 1,5-2,25x). Рассудок -26,7/мин. Уровень тени 3.
+  desc_es: Hacha-arma de sombra con 38 de daño base y 200 usos. Sube de nivel al matar (10-22 daño planar, tala 1,5-2,25x). Cordura -26,7/min. Nivel de sombra 3.
+  desc_es_MX: Hacha-arma de sombra con 38 de daño base y 200 usos. Sube de nivel al matar (10-22 daño planar, tala 1,5-2,25x). Cordura -26,7/min. Nivel de sombra 3.
 650.shadow_beef_bell
   en: Beefalo Gloom Bell
   ko: 비팔로 암울방울
   app: O
   source: Shadow beefalo bell. Bonds a beefalo permanently (shadow variant). On bonding curse: -50% max health penalty, -100 sanity. Beefalo poop disappears after 5s. Revive cooldown 15 days (7200s) if beefalo dies. Rechargeable.
+  desc_en: Shadow bell that permanently bonds a beefalo. Curse: -50% max health, -100 sanity. Bonded beefalo revives after 15-day cooldown if it dies.
+  desc_ko: 비팔로를 영구적으로 결속하는 그림자 종. 저주: 최대 체력 -50%, 정신력 -100. 결속된 비팔로 사망 시 15일 쿨다운 후 부활.
+  desc_ja: ビーファローを永続的に結びつけるシャドウベル。呪い：最大HP-50%、正気度-100。結ばれたビーファローは死亡後15日のクールダウンで復活。
+  desc_zh_CN: 永久绑定牛的暗影铃铛。诅咒：最大生命-50%，理智-100。绑定牛死亡后15天冷却后复活。
+  desc_zh_TW: 永久綁定牛的暗影鈴鐺。詛咒：最大生命-50%，理智-100。綁定牛死亡後15天冷卻後復活。
+  desc_fr: Cloche d'ombre liant un beefalo en permanence. Malédiction : -50 % PV max, -100 santé mentale. Le beefalo lié renaît après 15 jours s'il meurt.
+  desc_de: Schattenglocke, die ein Beefalo dauerhaft bindet. Fluch: -50 % max. Gesundheit, -100 Verstand. Gebundenes Beefalo belebt nach 15 Tagen wieder.
+  desc_it: Campana d'ombra che lega permanentemente un beefalo. Maledizione: -50% HP max, -100 sanità. Il beefalo legato rivive dopo 15 giorni.
+  desc_pl: Cienisty dzwonek trwale wiążący bizona. Klątwa: -50% maks. HP, -100 poczytalności. Związany bizon odradza się po 15 dniach.
+  desc_pt_BR: Sino sombrio que vincula um beefalo permanentemente. Maldição: -50% vida máxima, -100 sanidade. Beefalo vinculado revive após 15 dias.
+  desc_ru: Теневой колокольчик, навсегда привязывающий бифало. Проклятие: -50% макс. здоровья, -100 рассудка. Привязанный бифало возрождается через 15 дней.
+  desc_es: Campana de sombra que vincula un beefalo permanentemente. Maldición: -50 % salud máx., -100 cordura. El beefalo vinculado revive tras 15 días.
+  desc_es_MX: Campana de sombra que vincula un beefalo permanentemente. Maldición: -50 % salud máx., -100 cordura. El beefalo vinculado revive tras 15 días.
 651.shadow_forge
   en: Shadowcraft Plinth
   ko: 암영술 재단사
   app: X
   type: deconstruct
   source: Placed crafting station (prototyper). Unlocks Shadow Forge tech tree recipes. 6s crafting animation with sound. Hammerable (4 hits). Built from shadow_forge_kit.
+  desc_en: Crafting station that unlocks Shadow Forge recipes. 6s crafting animation. Built from a Shadowcraft Plinth Kit.
+  desc_ko: 암영술 제련소 레시피를 해금하는 제작 스테이션. 6초 제작 애니메이션. 암영술 재단사 키트로 건설.
+  desc_ja: シャドウフォージレシピを解放するクラフトステーション。6秒のクラフトアニメーション。シャドウクラフトプリンスキットから建設。
+  desc_zh_CN: 解锁暗影锻造配方的制作站。6秒制作动画。由暗影工匠基座套件建造。
+  desc_zh_TW: 解鎖暗影鍛造配方的製作站。6秒製作動畫。由暗影工匠基座套件建造。
+  desc_fr: Station débloquant les recettes de la Forge d'Ombre. Animation de 6s. Construite à partir d'un Kit de Piédestal d'Ombreartisanat.
+  desc_de: Herstellungsstation, die Schattenschmiede-Rezepte freischaltet. 6s Herstellungsanimation. Aus einem Schattenkunst-Sockel-Kit gebaut.
+  desc_it: Stazione che sblocca le ricette della Forgia d'Ombra. Animazione di 6s. Costruita dal Kit Piedistallo Ombrartigianale.
+  desc_pl: Stacja odblokowująca przepisy Kuźni Cieni. 6s animacja wytwarzania. Zbudowana z Zestawu Cokołu Cieniokraftu.
+  desc_pt_BR: Estação que desbloqueia receitas da Forja Sombria. Animação de 6s. Construída com o Kit de Plinto de Artesanato Sombrio.
+  desc_ru: Станция крафта, открывающая рецепты Теневой Кузни. 6с анимация крафта. Строится из набора Теневого пьедестала.
+  desc_es: Estación que desbloquea recetas de la Forja de Sombra. Animación de 6s. Construida a partir de un Kit de Plinto de Sombra.
+  desc_es_MX: Estación que desbloquea recetas de la Forja de Sombra. Animación de 6s. Construida a partir de un Kit de Plinto de Sombra.
 652.shadow_forge_kit
   en: Shadowcraft Plinth Kit
   ko: 암영술 재단사 키트
   app: O
   source: Deployable kit that places a Shadowcraft Plinth (shadow_forge) structure. Consumed on placement. No combat stats.
+  desc_en: Deployable kit that places a Shadowcraft Plinth structure. Consumed on placement.
+  desc_ko: 암영술 재단사 구조물을 설치하는 배치 키트. 설치 시 소모됩니다.
+  desc_ja: シャドウクラフトプリンス構造物を設置するキット。設置時に消費されます。
+  desc_zh_CN: 放置暗影工匠基座结构的部署套件。放置后消耗。
+  desc_zh_TW: 放置暗影工匠基座結構的部署套件。放置後消耗。
+  desc_fr: Kit déployable plaçant une structure de Piédestal d'Ombreartisanat. Consommé au placement.
+  desc_de: Platzierbares Kit, das eine Schattenkunst-Sockel-Struktur platziert. Wird beim Platzieren verbraucht.
+  desc_it: Kit piazzabile che installa una struttura Piedistallo Ombrartigianale. Consumato al posizionamento.
+  desc_pl: Zestaw do postawienia konstrukcji Cokołu Cieniokraftu. Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit implantável que coloca uma estrutura de Plinto de Artesanato Sombrio. Consumido ao posicionar.
+  desc_ru: Набор для установки Теневого пьедестала. Расходуется при размещении.
+  desc_es: Kit desplegable que coloca una estructura de Plinto de Sombra. Se consume al colocarlo.
+  desc_es_MX: Kit desplegable que coloca una estructura de Plinto de Sombra. Se consume al colocarlo.
 653.shadowdigger_builder
   en: Shadow Digger
   ko: 그림자 채굴자
   app: X
   source: Maxwell-exclusive. Summons a Shadow Digger minion that automatically digs objects. Costs sanity to maintain (SHADOWWORKER rate 15%). Fuel cost: nightmare fuel.
+  desc_en: Maxwell-exclusive summon. Creates a Shadow Digger minion that auto-digs objects. Costs ongoing sanity (15% rate) and nightmare fuel.
+  desc_ko: 맥스웰 전용 소환. 자동으로 물체를 파는 그림자 채굴자 소환수를 생성합니다. 지속적 정신력(15%) 및 악몽 연료 소모.
+  desc_ja: マクスウェル専用召喚。自動で掘るシャドウディガーを召喚。持続的に正気度（15%レート）とナイトメア燃料を消費。
+  desc_zh_CN: 麦斯威尔专属召唤。创建自动挖掘的暗影掘者仆从。持续消耗理智（15%速率）和噩梦燃料。
+  desc_zh_TW: 麥斯威爾專屬召喚。創建自動挖掘的暗影掘者僕從。持續消耗理智（15%速率）和噩夢燃料。
+  desc_fr: Invocation exclusive à Maxwell. Crée un Mineur d'Ombre qui creuse automatiquement. Coûte de la santé mentale (15 %) et du carburant de cauchemar.
+  desc_de: Maxwell-exklusive Beschwörung. Erzeugt einen Schattengräber, der automatisch gräbt. Kostet laufend Verstand (15 %) und Alptraumkraftstoff.
+  desc_it: Evocazione esclusiva di Maxwell. Crea un Scavatore d'Ombra che scava automaticamente. Costa sanità (15%) e carburante da incubo.
+  desc_pl: Wyłączne przywołanie Maxwella. Tworzy Cienistego Kopacza automatycznie kopiącego obiekty. Kosztuje poczytalność (15%) i paliwo koszmarów.
+  desc_pt_BR: Invocação exclusiva de Maxwell. Cria um Escavador Sombrio que cava automaticamente. Custa sanidade (15%) e combustível de pesadelo.
+  desc_ru: Эксклюзивный призыв Максвелла. Создаёт Теневого Копателя, автоматически копающего объекты. Стоит рассудок (15%) и топливо кошмаров.
+  desc_es: Invocación exclusiva de Maxwell. Crea un Excavador de Sombra que cava automáticamente. Cuesta cordura (15 %) y combustible de pesadilla.
+  desc_es_MX: Invocación exclusiva de Maxwell. Crea un Excavador de Sombra que cava automáticamente. Cuesta cordura (15 %) y combustible de pesadilla.
 654.shadowduelist_builder
   en: Shadow Duelist
   ko: 그림자 투사
   app: X
   source: Maxwell-exclusive. Summons a Shadow Duelist minion that fights enemies. Costs sanity to maintain (SHADOW_WORKER rate 5%). Fuel cost: nightmare fuel.
+  desc_en: Maxwell-exclusive summon. Creates a Shadow Duelist minion that fights enemies. Costs ongoing sanity (5% rate) and nightmare fuel.
+  desc_ko: 맥스웰 전용 소환. 적과 싸우는 그림자 투사 소환수를 생성합니다. 지속적 정신력(5%) 및 악몽 연료 소모.
+  desc_ja: マクスウェル専用召喚。敵と戦うシャドウデュエリストを召喚。持続的に正気度（5%レート）とナイトメア燃料を消費。
+  desc_zh_CN: 麦斯威尔专属召唤。创建与敌人战斗的暗影决斗者仆从。持续消耗理智（5%速率）和噩梦燃料。
+  desc_zh_TW: 麥斯威爾專屬召喚。創建與敵人戰鬥的暗影決鬥者僕從。持續消耗理智（5%速率）和噩夢燃料。
+  desc_fr: Invocation exclusive à Maxwell. Crée un Duelliste d'Ombre qui combat les ennemis. Coûte de la santé mentale (5 %) et du carburant de cauchemar.
+  desc_de: Maxwell-exklusive Beschwörung. Erzeugt einen Schattenduellanten, der Feinde bekämpft. Kostet laufend Verstand (5 %) und Alptraumkraftstoff.
+  desc_it: Evocazione esclusiva di Maxwell. Crea un Duellante d'Ombra che combatte i nemici. Costa sanità (5%) e carburante da incubo.
+  desc_pl: Wyłączne przywołanie Maxwella. Tworzy Cienistego Pojedynkowicza walczącego z wrogami. Kosztuje poczytalność (5%) i paliwo koszmarów.
+  desc_pt_BR: Invocação exclusiva de Maxwell. Cria um Duelista Sombrio que luta contra inimigos. Custa sanidade (5%) e combustível de pesadelo.
+  desc_ru: Эксклюзивный призыв Максвелла. Создаёт Теневого Дуэлянта, сражающегося с врагами. Стоит рассудок (5%) и топливо кошмаров.
+  desc_es: Invocación exclusiva de Maxwell. Crea un Duelista de Sombra que combate enemigos. Cuesta cordura (5 %) y combustible de pesadilla.
+  desc_es_MX: Invocación exclusiva de Maxwell. Crea un Duelista de Sombra que combate enemigos. Cuesta cordura (5 %) y combustible de pesadilla.
 655.shadowlumber_builder
   en: Shadow Logger
   ko: 그림자 나무꾼
   app: X
   source: Maxwell-exclusive. Summons a Shadow Logger minion that automatically chops trees. Costs sanity to maintain (SHADOWWORKER rate 15%). Fuel cost: nightmare fuel.
+  desc_en: Maxwell-exclusive summon. Creates a Shadow Logger minion that auto-chops trees. Costs ongoing sanity (15% rate) and nightmare fuel.
+  desc_ko: 맥스웰 전용 소환. 자동으로 나무를 베는 그림자 나무꾼 소환수를 생성합니다. 지속적 정신력(15%) 및 악몽 연료 소모.
+  desc_ja: マクスウェル専用召喚。自動で木を切るシャドウロガーを召喚。持続的に正気度（15%レート）とナイトメア燃料を消費。
+  desc_zh_CN: 麦斯威尔专属召唤。创建自动砍树的暗影伐木者仆从。持续消耗理智（15%速率）和噩梦燃料。
+  desc_zh_TW: 麥斯威爾專屬召喚。創建自動砍樹的暗影伐木者僕從。持續消耗理智（15%速率）和噩夢燃料。
+  desc_fr: Invocation exclusive à Maxwell. Crée un Bûcheron d'Ombre qui coupe les arbres automatiquement. Coûte de la santé mentale (15 %) et du carburant de cauchemar.
+  desc_de: Maxwell-exklusive Beschwörung. Erzeugt einen Schattenholzfäller, der automatisch Bäume fällt. Kostet laufend Verstand (15 %) und Alptraumkraftstoff.
+  desc_it: Evocazione esclusiva di Maxwell. Crea un Boscaiolo d'Ombra che taglia alberi automaticamente. Costa sanità (15%) e carburante da incubo.
+  desc_pl: Wyłączne przywołanie Maxwella. Tworzy Cienistego Drwala automatycznie ścinającego drzewa. Kosztuje poczytalność (15%) i paliwo koszmarów.
+  desc_pt_BR: Invocação exclusiva de Maxwell. Cria um Lenhador Sombrio que corta árvores automaticamente. Custa sanidade (15%) e combustível de pesadelo.
+  desc_ru: Эксклюзивный призыв Максвелла. Создаёт Теневого Лесоруба, автоматически рубящего деревья. Стоит рассудок (15%) и топливо кошмаров.
+  desc_es: Invocación exclusiva de Maxwell. Crea un Leñador de Sombra que tala árboles automáticamente. Cuesta cordura (15 %) y combustible de pesadilla.
+  desc_es_MX: Invocación exclusiva de Maxwell. Crea un Leñador de Sombra que tala árboles automáticamente. Cuesta cordura (15 %) y combustible de pesadilla.
 656.shadowminer_builder
   en: Shadow Miner
   ko: 그림자 광부
   app: X
   source: Maxwell-exclusive. Summons a Shadow Miner minion that automatically mines rocks. Costs sanity to maintain (SHADOWWORKER rate 15%). Fuel cost: nightmare fuel.
+  desc_en: Maxwell-exclusive summon. Creates a Shadow Miner minion that auto-mines rocks. Costs ongoing sanity (15% rate) and nightmare fuel.
+  desc_ko: 맥스웰 전용 소환. 자동으로 바위를 캐는 그림자 광부 소환수를 생성합니다. 지속적 정신력(15%) 및 악몽 연료 소모.
+  desc_ja: マクスウェル専用召喚。自動で岩を掘るシャドウマイナーを召喚。持続的に正気度（15%レート）とナイトメア燃料を消費。
+  desc_zh_CN: 麦斯威尔专属召唤。创建自动采矿的暗影矿工仆从。持续消耗理智（15%速率）和噩梦燃料。
+  desc_zh_TW: 麥斯威爾專屬召喚。創建自動採礦的暗影礦工僕從。持續消耗理智（15%速率）和噩夢燃料。
+  desc_fr: Invocation exclusive à Maxwell. Crée un Mineur d'Ombre qui mine les roches automatiquement. Coûte de la santé mentale (15 %) et du carburant de cauchemar.
+  desc_de: Maxwell-exklusive Beschwörung. Erzeugt einen Schattenminenarbeiter, der automatisch Felsen abbaut. Kostet laufend Verstand (15 %) und Alptraumkraftstoff.
+  desc_it: Evocazione esclusiva di Maxwell. Crea un Minatore d'Ombra che estrae rocce automaticamente. Costa sanità (15%) e carburante da incubo.
+  desc_pl: Wyłączne przywołanie Maxwella. Tworzy Cienistego Górnika automatycznie wydobywającego kamienie. Kosztuje poczytalność (15%) i paliwo koszmarów.
+  desc_pt_BR: Invocação exclusiva de Maxwell. Cria um Minerador Sombrio que minera rochas automaticamente. Custa sanidade (15%) e combustível de pesadelo.
+  desc_ru: Эксклюзивный призыв Максвелла. Создаёт Теневого Шахтёра, автоматически добывающего камни. Стоит рассудок (15%) и топливо кошмаров.
+  desc_es: Invocación exclusiva de Maxwell. Crea un Minero de Sombra que pica rocas automáticamente. Cuesta cordura (15 %) y combustible de pesadilla.
+  desc_es_MX: Invocación exclusiva de Maxwell. Crea un Minero de Sombra que pica rocas automáticamente. Cuesta cordura (15 %) y combustible de pesadilla.
 657.shellweaver
   en: Combriner
   ko: 엽합기
   app: O
   source: Placed crafting station (prototyper + mad science lab). Unlocks Shellweaver tech tree recipes (L1 = tier 1, L2 = tier 3). Crafting takes 6s with cooking animation. Hammerable (drops recipe ingredients if crafting). Requires proximity to use.
+  desc_en: Crafting station that unlocks Shellweaver recipes (tier 1-3). Crafting takes 6s with a cooking animation.
+  desc_ko: 셸위버 레시피(1~3단계)를 해금하는 제작 스테이션. 제작에 6초가 걸리며 요리 애니메이션이 재생됩니다.
+  desc_ja: シェルウィーバーのレシピ（ティア1〜3）を解放するクラフトステーション。製作に6秒かかり、料理アニメーションが再生されます。
+  desc_zh_CN: 解锁贝壳编织者配方（1-3级）的制作站。制作耗时6秒，伴有烹饪动画。
+  desc_zh_TW: 解鎖貝殼編織者配方（1-3級）的製作站。製作耗時6秒，伴有烹飪動畫。
+  desc_fr: Station de fabrication qui débloque les recettes Shellweaver (niveaux 1-3). La fabrication prend 6s avec une animation de cuisson.
+  desc_de: Herstellungsstation, die Shellweaver-Rezepte (Stufe 1-3) freischaltet. Herstellung dauert 6s mit Kochanimation.
+  desc_it: Stazione di fabbricazione che sblocca le ricette Shellweaver (livello 1-3). La fabbricazione richiede 6s con animazione di cottura.
+  desc_pl: Stacja rzemieślnicza odblokowująca przepisy Shellweaver (poziom 1-3). Wytwarzanie trwa 6s z animacją gotowania.
+  desc_pt_BR: Estação de fabricação que desbloqueia receitas Shellweaver (nível 1-3). A fabricação leva 6s com animação de cozimento.
+  desc_ru: Станция крафта, открывающая рецепты Shellweaver (уровни 1-3). Изготовление занимает 6с с анимацией варки.
+  desc_es: Estación de fabricación que desbloquea recetas Shellweaver (nivel 1-3). La fabricación tarda 6s con animación de cocción.
+  desc_es_MX: Estación de fabricación que desbloquea recetas Shellweaver (nivel 1-3). La fabricación tarda 6s con animación de cocción.
 658.shellweaver_desiccant
   en: Desiccant Pouch
   ko: 흡습제 주머니
   app: O
   source: Shellweaver-crafted item. Absorbs wetness from items or the environment. Basic tier desiccant. Crafted at the Combriner.
+  desc_en: Basic desiccant that absorbs wetness from items or the environment. Crafted at the Combriner.
+  desc_ko: 아이템이나 환경의 습기를 흡수하는 기본 흡습제. 엽합기에서 제작합니다.
+  desc_ja: アイテムや環境の湿気を吸収する基本的な乾燥剤。コンブライナーで製作します。
+  desc_zh_CN: 从物品或环境中吸收湿气的基础干燥剂。在拼合器中制作。
+  desc_zh_TW: 從物品或環境中吸收濕氣的基礎乾燥劑。在拼合器中製作。
+  desc_fr: Dessiccant basique qui absorbe l'humidité des objets ou de l'environnement. Fabriqué au Combriner.
+  desc_de: Einfaches Trockenmittel, das Nässe von Gegenständen oder der Umgebung absorbiert. Am Combriner hergestellt.
+  desc_it: Essiccante base che assorbe l'umidità da oggetti o dall'ambiente. Fabbricato al Combriner.
+  desc_pl: Podstawowy pochłaniacz wilgoci absorbujący wilgoć z przedmiotów lub otoczenia. Wytwarzany w Kombinerze.
+  desc_pt_BR: Dessecante básico que absorve umidade de itens ou do ambiente. Fabricado no Combriner.
+  desc_ru: Базовый осушитель, поглощающий влагу с предметов или из окружения. Изготавливается в Комбайнере.
+  desc_es: Desecante básico que absorbe la humedad de objetos o del entorno. Fabricado en el Combriner.
+  desc_es_MX: Desecante básico que absorbe la humedad de objetos o del entorno. Fabricado en el Combriner.
 659.shellweaver_desiccantboosted
   en: Desiccant Sack
   ko: 흡습제 포대
   app: O
   source: Shellweaver-crafted item. Upgraded desiccant with enhanced wetness absorption. Crafted at the Combriner (higher tier).
+  desc_en: Upgraded desiccant with enhanced wetness absorption. Higher-tier version crafted at the Combriner.
+  desc_ko: 향상된 습기 흡수력을 가진 상위 흡습제. 엽합기에서 제작하는 고급 버전입니다.
+  desc_ja: 強化された湿気吸収力を持つ上位乾燥剤。コンブライナーで製作する上級バージョンです。
+  desc_zh_CN: 升级版干燥剂，吸湿能力增强。在拼合器中制作的高级版本。
+  desc_zh_TW: 升級版乾燥劑，吸濕能力增強。在拼合器中製作的高級版本。
+  desc_fr: Dessiccant amélioré avec une absorption d'humidité renforcée. Version supérieure fabriquée au Combriner.
+  desc_de: Verbessertes Trockenmittel mit erhöhter Nässeabsorption. Höherstufige Version, am Combriner hergestellt.
+  desc_it: Essiccante potenziato con assorbimento umidità migliorato. Versione superiore fabbricata al Combriner.
+  desc_pl: Ulepszony pochłaniacz wilgoci ze wzmocnioną absorpcją. Wersja wyższego poziomu z Kombinera.
+  desc_pt_BR: Dessecante aprimorado com absorção de umidade reforçada. Versão superior fabricada no Combriner.
+  desc_ru: Улучшенный осушитель с усиленным поглощением влаги. Продвинутая версия из Комбайнера.
+  desc_es: Desecante mejorado con absorción de humedad reforzada. Versión superior fabricada en el Combriner.
+  desc_es_MX: Desecante mejorado con absorción de humedad reforzada. Versión superior fabricada en el Combriner.
 660.shellweaver_hermitcrab_shell
   en: Portage Conch
   ko: 보내는 고둥
   app: O
   source: Shellweaver-crafted item. Hermit crab shell container that enables remote item sending. Crafted at the Combriner.
+  desc_en: Hermit crab shell container that enables remote item sending. Crafted at the Combriner.
+  desc_ko: 원격으로 아이템을 보낼 수 있는 소라게 껍데기 컨테이너. 엽합기에서 제작합니다.
+  desc_ja: アイテムを遠隔送信できるヤドカリの殻コンテナ。コンブライナーで製作します。
+  desc_zh_CN: 可远程发送物品的寄居蟹壳容器。在拼合器中制作。
+  desc_zh_TW: 可遠程發送物品的寄居蟹殼容器。在拼合器中製作。
+  desc_fr: Conteneur en coquille de bernard-l'hermite permettant l'envoi d'objets à distance. Fabriqué au Combriner.
+  desc_de: Einsiedlerkrebs-Schalenbehälter für den Fernversand von Gegenständen. Am Combriner hergestellt.
+  desc_it: Contenitore a guscio di paguro che permette l'invio remoto di oggetti. Fabbricato al Combriner.
+  desc_pl: Pojemnik z muszli kraba pustelnika umożliwiający zdalne wysyłanie przedmiotów. Wytwarzany w Kombinerze.
+  desc_pt_BR: Recipiente de concha de caranguejo-eremita que permite o envio remoto de itens. Fabricado no Combriner.
+  desc_ru: Контейнер из панциря рака-отшельника для удалённой отправки предметов. Изготавливается в Комбайнере.
+  desc_es: Contenedor de concha de cangrejo ermitaño que permite enviar objetos a distancia. Fabricado en el Combriner.
+  desc_es_MX: Contenedor de concha de cangrejo ermitaño que permite enviar objetos a distancia. Fabricado en el Combriner.
 661.shellweaver_icestaff2
   en: Flash Freeze Staff
   ko: 빙결 지팡이
   app: O
   source: Shellweaver-crafted weapon/tool. Upgraded ice staff variant. Freezes targets on hit. Crafted at the Combriner.
+  desc_en: Upgraded ice staff variant that freezes targets on hit. Crafted at the Combriner.
+  desc_ko: 명중 시 대상을 얼리는 상위 얼음 지팡이. 엽합기에서 제작합니다.
+  desc_ja: 命中時にターゲットを凍結させる上位アイススタッフ。コンブライナーで製作します。
+  desc_zh_CN: 命中时冻结目标的升级版冰杖。在拼合器中制作。
+  desc_zh_TW: 命中時凍結目標的升級版冰杖。在拼合器中製作。
+  desc_fr: Variante améliorée du bâton de glace qui gèle les cibles à l'impact. Fabriquée au Combriner.
+  desc_de: Verbesserte Eisstab-Variante, die Ziele beim Treffer einfriert. Am Combriner hergestellt.
+  desc_it: Variante potenziata del bastone di ghiaccio che congela i bersagli al colpo. Fabbricata al Combriner.
+  desc_pl: Ulepszona wersja lodowej laski zamrażająca cele przy trafieniu. Wytwarzana w Kombinerze.
+  desc_pt_BR: Variante aprimorada do cajado de gelo que congela alvos ao acertar. Fabricada no Combriner.
+  desc_ru: Улучшенный ледяной посох, замораживающий цели при попадании. Изготавливается в Комбайнере.
+  desc_es: Variante mejorada del bastón de hielo que congela objetivos al impactar. Fabricada en el Combriner.
+  desc_es_MX: Variante mejorada del bastón de hielo que congela objetivos al impactar. Fabricada en el Combriner.
 662.shellweaver_icestaff3
   en: Deep Freeze Staff
   ko: 냉동 지팡이
   app: O
   source: Shellweaver-crafted weapon/tool. Top-tier ice staff variant with enhanced freezing capability. Crafted at the Combriner.
+  desc_en: Top-tier ice staff with enhanced freezing capability. The strongest Shellweaver freezing weapon, crafted at the Combriner.
+  desc_ko: 강화된 빙결 능력을 가진 최상위 얼음 지팡이. 엽합기에서 제작하는 가장 강력한 셸위버 빙결 무기입니다.
+  desc_ja: 強化された凍結能力を持つ最上位アイススタッフ。コンブライナーで製作する最強のシェルウィーバー凍結武器です。
+  desc_zh_CN: 拥有增强冻结能力的顶级冰杖。在拼合器中制作的最强贝壳编织者冻结武器。
+  desc_zh_TW: 擁有增強凍結能力的頂級冰杖。在拼合器中製作的最強貝殼編織者凍結武器。
+  desc_fr: Bâton de glace de haut niveau avec capacité de gel renforcée. L'arme gelante Shellweaver la plus puissante, fabriquée au Combriner.
+  desc_de: Erstklassiger Eisstab mit verstärkter Einfrierfähigkeit. Die stärkste Shellweaver-Gefrierwaffe, am Combriner hergestellt.
+  desc_it: Bastone di ghiaccio di livello massimo con capacità di congelamento potenziata. L'arma Shellweaver più potente, fabbricata al Combriner.
+  desc_pl: Najwyższego poziomu lodowa laska ze wzmocnioną zdolnością zamrażania. Najpotężniejsza broń mrożąca Shellweaver, wytwarzana w Kombinerze.
+  desc_pt_BR: Cajado de gelo de nível máximo com capacidade de congelamento aprimorada. A arma Shellweaver mais poderosa, fabricada no Combriner.
+  desc_ru: Ледяной посох высшего уровня с усиленной заморозкой. Самое мощное замораживающее оружие Shellweaver из Комбайнера.
+  desc_es: Bastón de hielo de nivel máximo con capacidad de congelación mejorada. El arma congelante Shellweaver más poderosa, fabricada en el Combriner.
+  desc_es_MX: Bastón de hielo de nivel máximo con capacidad de congelación mejorada. El arma congelante Shellweaver más poderosa, fabricada en el Combriner.
 663.shellweaver_messagebottleempty
   en: Empty Bottle
   ko: 빈 병
   app: O
   source: Shellweaver-crafted item. Empty bottle that can be filled and sent as a message. Crafted at the Combriner.
+  desc_en: Empty bottle that can be filled and sent as a message in a bottle. Crafted at the Combriner.
+  desc_ko: 메시지를 넣어 보낼 수 있는 빈 병. 엽합기에서 제작합니다.
+  desc_ja: メッセージを入れて送れる空き瓶。コンブライナーで製作します。
+  desc_zh_CN: 可装入信息并发送的空瓶。在拼合器中制作。
+  desc_zh_TW: 可裝入訊息並發送的空瓶。在拼合器中製作。
+  desc_fr: Bouteille vide pouvant être remplie et envoyée comme message à la mer. Fabriquée au Combriner.
+  desc_de: Leere Flasche, die mit einer Nachricht gefüllt und verschickt werden kann. Am Combriner hergestellt.
+  desc_it: Bottiglia vuota che può essere riempita e inviata come messaggio in bottiglia. Fabbricata al Combriner.
+  desc_pl: Pusta butelka, którą można napełnić i wysłać jako wiadomość w butelce. Wytwarzana w Kombinerze.
+  desc_pt_BR: Garrafa vazia que pode ser preenchida e enviada como mensagem na garrafa. Fabricada no Combriner.
+  desc_ru: Пустая бутылка, которую можно наполнить и отправить как послание в бутылке. Изготавливается в Комбайнере.
+  desc_es: Botella vacía que se puede llenar y enviar como mensaje en una botella. Fabricada en el Combriner.
+  desc_es_MX: Botella vacía que se puede llenar y enviar como mensaje en una botella. Fabricada en el Combriner.
 664.shellweaver_nonslipgrit
   en: Grit Duster
   ko: 소금 뿌리개
   app: O
   source: Shellweaver-crafted item. Sprinkles grit on icy ground to prevent slipping. Basic tier. Crafted at the Combriner.
+  desc_en: Sprinkles grit on icy ground to prevent slipping. Basic-tier anti-slip tool crafted at the Combriner.
+  desc_ko: 빙판에 소금을 뿌려 미끄러짐을 방지하는 기본 도구. 엽합기에서 제작합니다.
+  desc_ja: 凍った地面に砂を撒いて滑り止めにする基本ツール。コンブライナーで製作します。
+  desc_zh_CN: 在冰面上撒砂砾防滑的基础工具。在拼合器中制作。
+  desc_zh_TW: 在冰面上撒砂礫防滑的基礎工具。在拼合器中製作。
+  desc_fr: Saupoudre du gravier sur le sol gelé pour éviter de glisser. Outil antidérapant basique fabriqué au Combriner.
+  desc_de: Streut Splitt auf vereisten Boden, um Ausrutschen zu verhindern. Grundlegendes Anti-Rutsch-Werkzeug, am Combriner hergestellt.
+  desc_it: Sparge graniglia sul terreno ghiacciato per evitare scivolamenti. Strumento antiscivolo base fabbricato al Combriner.
+  desc_pl: Posypuje żwirem oblodzony grunt, aby zapobiec poślizgnięciu. Podstawowe narzędzie przeciwpoślizgowe z Kombinera.
+  desc_pt_BR: Espalha areia no chão gelado para evitar escorregões. Ferramenta antiderrapante básica fabricada no Combriner.
+  desc_ru: Рассыпает крошку по обледенелой земле для предотвращения скольжения. Базовый инструмент из Комбайнера.
+  desc_es: Esparce arena en el suelo helado para evitar resbalones. Herramienta antideslizante básica fabricada en el Combriner.
+  desc_es_MX: Esparce arena en el suelo helado para evitar resbalones. Herramienta antideslizante básica fabricada en el Combriner.
 665.shellweaver_nonslipgritboosted
   en: Grit Grinder
   ko: 소금 갈개
   app: O
   source: Shellweaver-crafted item. Upgraded grit duster with enhanced anti-slip coverage. Crafted at the Combriner.
+  desc_en: Upgraded grit tool with enhanced anti-slip coverage area. Higher-tier version crafted at the Combriner.
+  desc_ko: 향상된 미끄럼 방지 범위를 가진 상위 소금 도구. 엽합기에서 제작하는 고급 버전입니다.
+  desc_ja: 滑り止め範囲が拡大された上位砂撒きツール。コンブライナーで製作する上級バージョンです。
+  desc_zh_CN: 升级版砂砾工具，防滑覆盖范围扩大。在拼合器中制作的高级版本。
+  desc_zh_TW: 升級版砂礫工具，防滑覆蓋範圍擴大。在拼合器中製作的高級版本。
+  desc_fr: Outil à gravier amélioré avec une couverture antidérapante étendue. Version supérieure fabriquée au Combriner.
+  desc_de: Verbessertes Splittwerkzeug mit erweiterter Anti-Rutsch-Abdeckung. Höherstufige Version, am Combriner hergestellt.
+  desc_it: Strumento a graniglia potenziato con copertura antiscivolo ampliata. Versione superiore fabbricata al Combriner.
+  desc_pl: Ulepszony posypywacz żwiru ze zwiększonym zasięgiem antypoślizgowym. Wersja wyższego poziomu z Kombinera.
+  desc_pt_BR: Ferramenta de areia aprimorada com maior cobertura antiderrapante. Versão superior fabricada no Combriner.
+  desc_ru: Улучшенная крошкосыпка с расширенным покрытием против скольжения. Продвинутая версия из Комбайнера.
+  desc_es: Herramienta de arena mejorada con mayor cobertura antideslizante. Versión superior fabricada en el Combriner.
+  desc_es_MX: Herramienta de arena mejorada con mayor cobertura antideslizante. Versión superior fabricada en el Combriner.
 666.shellweaver_salty_doghat
   en: Salty Dog's Hat
   ko: 짭짤개 모자
   app: O
   source: Hat. Shellweaver-crafted headwear. Crafted at the Combriner. Themed around salt/ocean content.
+  desc_en: Shellweaver-crafted hat with a salt/ocean theme. Crafted at the Combriner.
+  desc_ko: 소금/바다 테마의 셸위버 제작 모자. 엽합기에서 제작합니다.
+  desc_ja: 塩・海をテーマにしたシェルウィーバー製の帽子。コンブライナーで製作します。
+  desc_zh_CN: 以盐/海洋为主题的贝壳编织者帽子。在拼合器中制作。
+  desc_zh_TW: 以鹽/海洋為主題的貝殼編織者帽子。在拼合器中製作。
+  desc_fr: Chapeau Shellweaver sur le thème du sel et de l'océan. Fabriqué au Combriner.
+  desc_de: Shellweaver-Hut mit Salz-/Ozean-Thema. Am Combriner hergestellt.
+  desc_it: Cappello Shellweaver a tema sale/oceano. Fabbricato al Combriner.
+  desc_pl: Kapelusz Shellweaver o tematyce solno-morskiej. Wytwarzany w Kombinerze.
+  desc_pt_BR: Chapéu Shellweaver com tema de sal/oceano. Fabricado no Combriner.
+  desc_ru: Шляпа Shellweaver на тему соли и океана. Изготавливается в Комбайнере.
+  desc_es: Sombrero Shellweaver con temática de sal/océano. Fabricado en el Combriner.
+  desc_es_MX: Sombrero Shellweaver con temática de sal/océano. Fabricado en el Combriner.
 667.shieldofterror
   en: Shield of Terror
   ko: 공포의 방패
   app: X
   type: deconstruct
   source: Hand slot weapon + armor. 51 damage (34*1.5), 315 HP (150*3*0.7), 80% absorption. Shadow level 2. Loses 2 armor HP per attack dealt. Can be fed raw meat/monster meat to restore armor (4x health absorption, 1.75x hunger absorption). Eats horrible food. Shadow-aligned.
+  desc_en: Weapon-shield hybrid dealing 51 damage with 315 HP armor (80% absorption). Feed raw/monster meat to restore durability. Shadow level 2.
+  desc_ko: 51 피해의 무기 겸 315 HP 방패(80% 흡수). 날고기/괴물 고기를 먹여 내구도를 회복합니다. 그림자 레벨 2.
+  desc_ja: 51ダメージの武器兼315 HP防具（80%吸収）。生肉/モンスター肉で耐久回復。シャドウレベル2。
+  desc_zh_CN: 武器兼盾牌，51伤害，315 HP护甲（80%吸收）。喂食生肉/怪物肉恢复耐久。暗影等级2。
+  desc_zh_TW: 武器兼盾牌，51傷害，315 HP護甲（80%吸收）。餵食生肉/怪物肉恢復耐久。暗影等級2。
+  desc_fr: Hybride arme-bouclier infligeant 51 dégâts avec 315 PV d'armure (80 % absorption). Nourrir de viande crue/monstre pour restaurer la durabilité. Niveau d'ombre 2.
+  desc_de: Waffen-Schild-Hybrid mit 51 Schaden und 315 TP Rüstung (80 % Absorption). Rohes/Monsterfleisch verfüttern, um Haltbarkeit wiederherzustellen. Schattenstufe 2.
+  desc_it: Ibrido arma-scudo con 51 danni e 315 HP armatura (80% assorbimento). Nutrire con carne cruda/mostro per ripristinare la durabilità. Livello ombra 2.
+  desc_pl: Hybryda broni i tarczy — 51 obrażeń, 315 HP zbroi (80% absorpcji). Nakarm surowym/potwornym mięsem, aby odnowić wytrzymałość. Poziom cienia 2.
+  desc_pt_BR: Híbrido arma-escudo com 51 de dano e 315 HP de armadura (80% absorção). Alimente com carne crua/monstro para restaurar durabilidade. Nível sombrio 2.
+  desc_ru: Гибрид оружия и щита: 51 урон, 315 ХП брони (80% поглощение). Кормите сырым/монстр-мясом для восстановления. Уровень тени 2.
+  desc_es: Híbrido arma-escudo con 51 de daño y 315 PV de armadura (80 % absorción). Alimentar con carne cruda/monstruo para restaurar durabilidad. Nivel de sombra 2.
+  desc_es_MX: Híbrido arma-escudo con 51 de daño y 315 PV de armadura (80 % absorción). Alimentar con carne cruda/monstruo para restaurar durabilidad. Nivel de sombra 2.
 668.shovel
   en: Shovel
   ko: 삽
   app: O
   source: Tool + weapon. 17 damage (34*0.5), 25 uses. Digs plants, stumps, and graves. 1 use consumed per dig action. Gold Shovel variant: 4x durability (uses consumed at 0.25 rate).
+  desc_en: Digging tool with 17 damage and 25 uses. Digs plants, stumps, and graves. Gold variant has 4x durability.
+  desc_ko: 17 피해, 25회 사용 가능한 굴착 도구. 식물, 그루터기, 무덤을 팝니다. 금 버전은 내구도가 4배입니다.
+  desc_ja: 17ダメージ、25回使用の掘削ツール。植物、切り株、墓を掘れます。金バージョンは耐久4倍。
+  desc_zh_CN: 挖掘工具，17伤害，25次使用。可挖植物、树桩和坟墓。金版耐久4倍。
+  desc_zh_TW: 挖掘工具，17傷害，25次使用。可挖植物、樹樁和墳墓。金版耐久4倍。
+  desc_fr: Outil de creusage infligeant 17 dégâts, 25 utilisations. Creuse plantes, souches et tombes. Variante dorée : durabilité ×4.
+  desc_de: Grabwerkzeug mit 17 Schaden und 25 Ladungen. Gräbt Pflanzen, Stümpfe und Gräber aus. Goldvariante hat 4× Haltbarkeit.
+  desc_it: Strumento da scavo con 17 danni e 25 usi. Scava piante, ceppi e tombe. Variante d'oro con durabilità ×4.
+  desc_pl: Narzędzie do kopania — 17 obrażeń, 25 użyć. Wykopuje rośliny, pniaki i groby. Złota wersja ma 4× wytrzymałość.
+  desc_pt_BR: Ferramenta de escavação com 17 de dano e 25 usos. Cava plantas, tocos e túmulos. Versão dourada tem 4× durabilidade.
+  desc_ru: Инструмент для копания: 17 урона, 25 зарядов. Копает растения, пни и могилы. Золотой вариант — прочность ×4.
+  desc_es: Herramienta de excavación con 17 de daño y 25 usos. Excava plantas, tocones y tumbas. Variante dorada: durabilidad ×4.
+  desc_es_MX: Herramienta de excavación con 17 de daño y 25 usos. Excava plantas, tocones y tumbas. Variante dorada: durabilidad ×4.
 669.shovel_lunarplant
   en: Brightshade Shoevel
   ko: 빛말풀 괭이삽
   app: O
   source: Tool + weapon. 17.2 base damage (34*0.8-10), 10 planar damage, 250 uses. Digs and tills (farm tiller). +10% vs shadow-aligned. Lunarplant set bonus (with Brightshade Helm): 1.1x damage +5 planar. Forge-repairable with lunar plant husk. Spawns lunar plant tentacle on attack.
+  desc_en: Lunar shovel with 17.2 base + 10 planar damage and 250 uses. Digs and tills. +10% vs shadows; spawns a lunar tentacle on attack.
+  desc_ko: 17.2 기본 + 10 차원 피해, 250회 사용의 달 삽. 굴착 및 경작 가능. 그림자 대상 +10%, 공격 시 달 촉수를 소환합니다.
+  desc_ja: 17.2基本+10プレーナーダメージ、250回使用の月の掘削具。掘削と耕作が可能。影に+10%、攻撃時に月の触手を召喚。
+  desc_zh_CN: 月亮铲，17.2基础+10位面伤害，250次使用。可挖掘和耕作。对暗影+10%，攻击时召唤月亮触手。
+  desc_zh_TW: 月亮鏟，17.2基礎+10位面傷害，250次使用。可挖掘和耕作。對暗影+10%，攻擊時召喚月亮觸手。
+  desc_fr: Pelle lunaire infligeant 17,2 + 10 dégâts planaires, 250 utilisations. Creuse et laboure. +10 % vs ombres ; invoque un tentacule lunaire à l'attaque.
+  desc_de: Mondschaufel mit 17,2 + 10 planarem Schaden und 250 Ladungen. Gräbt und pflügt. +10 % gegen Schatten; beschwört Mondtentakel bei Angriff.
+  desc_it: Pala lunare con 17.2 base + 10 danni planari e 250 usi. Scava e ara. +10% vs ombra; evoca tentacolo lunare all'attacco.
+  desc_pl: Księżycowa łopata — 17,2 + 10 obrażeń planarnych, 250 użyć. Kopie i orze. +10% vs cienie; przywołuje księżycową mackę przy ataku.
+  desc_pt_BR: Pá lunar com 17.2 base + 10 dano planar e 250 usos. Cava e ara. +10% vs sombras; invoca tentáculo lunar ao atacar.
+  desc_ru: Лунная лопата: 17,2 + 10 планарного урона, 250 зарядов. Копает и пашет. +10% против теней; при атаке вызывает лунное щупальце.
+  desc_es: Pala lunar con 17,2 + 10 de daño planar y 250 usos. Excava y labra. +10 % vs sombras; invoca tentáculo lunar al atacar.
+  desc_es_MX: Pala lunar con 17,2 + 10 de daño planar y 250 usos. Excava y labra. +10 % vs sombras; invoca tentáculo lunar al atacar.
 670.siestahut
   en: Siesta Lean-to
   ko: 낮잠용 오두막
   app: O
   source: Placed sleeping structure. 15 uses. Daytime-only sleep (sleeps through day). Hunger drain 1/3 of normal tent (-0.33/tick vs -1/tick). Heals 2 HP/tick (double normal). Dries wetness. Cools temperature toward target. Burnable. Hammerable (4 hits).
+  desc_en: Daytime sleeping structure with 15 uses. Heals 2 HP/tick (double normal) with only 1/3 hunger drain. Also dries wetness and cools temperature.
+  desc_ko: 15회 사용 가능한 낮잠 구조물. 틱당 체력 2 회복(일반 2배)이며 허기 소모는 1/3입니다. 습기 제거 및 온도 냉각 효과도 있습니다.
+  desc_ja: 15回使用の昼間用睡眠構造物。ティックごとにHP2回復（通常の2倍）、空腹消費は1/3。濡れを乾かし、体温を下げます。
+  desc_zh_CN: 白天睡眠结构，15次使用。每刻回复2 HP（双倍），饥饿消耗仅1/3。还能去除潮湿并降温。
+  desc_zh_TW: 白天睡眠結構，15次使用。每刻回復2 HP（雙倍），飢餓消耗僅1/3。還能去除潮濕並降溫。
+  desc_fr: Structure de sommeil diurne, 15 utilisations. Soigne 2 PV/tick (double du normal) avec seulement 1/3 de perte de faim. Sèche et rafraîchit.
+  desc_de: Schlafstruktur für tagsüber mit 15 Ladungen. Heilt 2 TP/Tick (doppelt normal) bei nur 1/3 Hungerverbrauch. Trocknet und kühlt.
+  desc_it: Struttura per dormire di giorno con 15 usi. Cura 2 HP/tick (doppio del normale) con solo 1/3 del consumo di fame. Asciuga e rinfresca.
+  desc_pl: Konstrukcja do spania w dzień, 15 użyć. Leczy 2 HP/tick (podwójnie), zużywa tylko 1/3 głodu. Suszy i chłodzi.
+  desc_pt_BR: Estrutura de sono diurno com 15 usos. Cura 2 HP/tick (dobro do normal) com apenas 1/3 do consumo de fome. Seca e resfria.
+  desc_ru: Дневная спальная конструкция на 15 использований. Лечит 2 ХП/тик (вдвое больше нормы) при расходе голода в 1/3. Также сушит и охлаждает.
+  desc_es: Estructura de sueño diurno con 15 usos. Cura 2 PV/tick (doble de lo normal) con solo 1/3 de consumo de hambre. Seca y enfría.
+  desc_es_MX: Estructura de sueño diurno con 15 usos. Cura 2 PV/tick (doble de lo normal) con solo 1/3 de consumo de hambre. Seca y enfría.
 671.sisturn
   en: Sisturn
   ko: 자매의 헌화당
   app: O
   source: Placed structure (Wendy-themed). 4-slot container for flower petals. When full: emits sanity aura (SANITYAURA_SMALL = +25/min). Evil petals reverse aura. Moon blossoms enable lunar mode (max health boost up to 300). Skill tree upgrades: 50% petal preservation, increased aura to SANITYAURA_MED (+40/min). Hammerable (4 hits). Burnable.
+  desc_en: Wendy's 4-slot petal structure. When full, emits +25/min sanity aura (upgradeable to +40/min). Moon blossoms enable a max health boost up to 300.
+  desc_ko: 웬디의 4칸 꽃잎 구조물. 가득 채우면 정신력 +25/분 오라 방출(업그레이드 시 +40/분). 달꽃을 넣으면 최대 체력을 300까지 올립니다.
+  desc_ja: ウェンディの花びら4スロット構造物。満杯時に正気度+25/分のオーラ（アップグレードで+40/分）。月の花で最大HP300までブースト。
+  desc_zh_CN: 温蒂的4格花瓣结构。装满时散发+25/分钟理智光环（升级后+40/分钟）。月花可将最大生命提升至300。
+  desc_zh_TW: 溫蒂的4格花瓣結構。裝滿時散發+25/分鐘理智光環（升級後+40/分鐘）。月花可將最大生命提升至300。
+  desc_fr: Structure à 4 emplacements de pétales de Wendy. Pleine : aura de +25/min de santé mentale (améliorable à +40/min). Les fleurs lunaires augmentent la santé max jusqu'à 300.
+  desc_de: Wendys 4-Slot-Blütenblatt-Struktur. Voll: +25/min Verstandsaura (aufwertbar auf +40/min). Mondblumen erhöhen max. Gesundheit auf bis zu 300.
+  desc_it: Struttura a 4 slot di petali di Wendy. Piena: aura +25/min di sanità (migliorabile a +40/min). I fiori lunari aumentano la salute max fino a 300.
+  desc_pl: Konstrukcja Wendy na 4 płatki. Pełna: aura +25 poczytalności/min (ulepszona do +40/min). Księżycowe kwiaty zwiększają maks. HP do 300.
+  desc_pt_BR: Estrutura de 4 slots de pétalas da Wendy. Cheia: aura de +25/min de sanidade (melhorável para +40/min). Flores lunares aumentam vida máxima até 300.
+  desc_ru: Структура Венди на 4 лепестка. В полном виде: аура рассудка +25/мин (улучшается до +40/мин). Лунные цветы повышают макс. здоровье до 300.
+  desc_es: Estructura de 4 ranuras de pétalos de Wendy. Llena: aura de +25/min de cordura (mejorable a +40/min). Las flores lunares aumentan la salud máxima hasta 300.
+  desc_es_MX: Estructura de 4 ranuras de pétalos de Wendy. Llena: aura de +25/min de cordura (mejorable a +40/min). Las flores lunares aumentan la salud máxima hasta 300.
 672.skeletonhat
   en: Bone Helm
   ko: 뼈 투구
   app: X
   type: deconstruct
   source: Hat + armor. 945 HP (150*9*0.7), 70% absorption. Shadow level 3. Grants shadow dominance. Sanity drain -100/min (CRAZINESS_MED). 20% waterproof.
+  desc_en: Hat-armor with 945 HP and 70% absorption. Grants shadow dominance at shadow level 3. Drains sanity at -100/min. 20% waterproof.
+  desc_ko: 945 HP, 70% 흡수의 모자 갑옷. 그림자 레벨 3으로 그림자 지배력 부여. 정신력 -100/분 소모. 20% 방수.
+  desc_ja: 945 HP・70%吸収のヘルメット型防具。シャドウレベル3でシャドウ支配権を付与。正気度-100/分。20%防水。
+  desc_zh_CN: 头盔护甲，945 HP，70%吸收。暗影等级3，赋予暗影统治力。理智流失-100/分钟。20%防水。
+  desc_zh_TW: 頭盔護甲，945 HP，70%吸收。暗影等級3，賦予暗影統治力。理智流失-100/分鐘。20%防水。
+  desc_fr: Casque-armure avec 945 PV et 70 % d'absorption. Confère la dominance d'ombre au niveau 3. Draine -100/min de santé mentale. 20 % imperméable.
+  desc_de: Helm-Rüstung mit 945 TP und 70 % Absorption. Gewährt Schattendominanz bei Stufe 3. Entzieht -100 Verstand/min. 20 % wasserdicht.
+  desc_it: Elmo-corazza con 945 HP e 70% assorbimento. Concede dominio d'ombra al livello 3. Drena sanità -100/min. 20% impermeabile.
+  desc_pl: Hełm-zbroja z 945 HP i 70% absorpcji. Daje dominację cienia na poziomie 3. Drenuje -100 poczytalności/min. 20% wodoodporny.
+  desc_pt_BR: Elmo-armadura com 945 HP e 70% de absorção. Concede domínio sombrio no nível 3. Drena -100 sanidade/min. 20% impermeável.
+  desc_ru: Шлем-броня с 945 ХП и 70% поглощением. Даёт теневое господство (уровень 3). Расход рассудка -100/мин. 20% водонепроницаемость.
+  desc_es: Casco-armadura con 945 PV y 70 % de absorción. Otorga dominio de sombra nivel 3. Drena -100 cordura/min. 20 % impermeable.
+  desc_es_MX: Casco-armadura con 945 PV y 70 % de absorción. Otorga dominio de sombra nivel 3. Drena -100 cordura/min. 20 % impermeable.
 673.sleepbomb
   en: Napsack
   ko: 잠주머니
   app: O
   source: Throwable projectile. 0 direct damage. Creates a sleep cloud on impact that puts nearby creatures to sleep for 20s. Range 8 (max 10). Stackable. Horizontal speed 15, gravity -35.
+  desc_en: Throwable projectile that creates a sleep cloud on impact, putting nearby creatures to sleep for 20s. Range 8. Stackable.
+  desc_ko: 충돌 시 수면 구름을 생성하여 주변 생물을 20초간 재우는 투척 아이템. 사거리 8. 쌓기 가능.
+  desc_ja: 着弾時に睡眠雲を生成し、周囲の生物を20秒間眠らせる投擲物。射程8。スタック可能。
+  desc_zh_CN: 投掷物，着地时产生催眠云雾，使附近生物入睡20秒。射程8。可堆叠。
+  desc_zh_TW: 投擲物，著地時產生催眠雲霧，使附近生物入睡20秒。射程8。可堆疊。
+  desc_fr: Projectile lançable créant un nuage soporifique à l'impact, endormant les créatures proches pendant 20s. Portée 8. Empilable.
+  desc_de: Werfbares Geschoss, das bei Aufprall eine Schlafwolke erzeugt und nahe Kreaturen 20s einschläfert. Reichweite 8. Stapelbar.
+  desc_it: Proiettile lanciabile che crea una nube di sonno all'impatto, addormentando le creature vicine per 20s. Gittata 8. Impilabile.
+  desc_pl: Pocisk do rzucania tworzący chmurę snu przy uderzeniu, usypiającą pobliskie stworzenia na 20s. Zasięg 8. Stackowalny.
+  desc_pt_BR: Projétil arremessável que cria uma nuvem de sono ao impacto, adormecendo criaturas próximas por 20s. Alcance 8. Empilhável.
+  desc_ru: Метательный снаряд, создающий при ударе облако сна, усыпляющее ближайших существ на 20с. Дальность 8. Складываемый.
+  desc_es: Proyectil lanzable que crea una nube de sueño al impactar, durmiendo criaturas cercanas durante 20s. Alcance 8. Apilable.
+  desc_es_MX: Proyectil lanzable que crea una nube de sueño al impactar, durmiendo criaturas cercanas durante 20s. Alcance 8. Apilable.
 674.slingshot
   en: Trusty Slingshot
   ko: 믿음직한 새총
   app: O
   source: Walter-exclusive ranged weapon. 0 base damage (damage comes from ammo). Range 10 (max 14). Infinite durability. Ammo loaded into container slot. Supports mod parts (band, frame, handle). Max charge time 0.5s for 2x damage and 1.25x speed. Walter spawns with this + 10 rock ammo.
+  desc_en: Walter-exclusive ranged weapon with infinite durability. Damage depends on ammo type. Range 10, charge shot deals 2x damage at 1.25x speed. Supports mod parts.
+  desc_ko: 월터 전용 원거리 무기, 내구도 무한. 피해는 탄환 종류에 따라 결정. 사거리 10, 차지 샷은 2배 피해/1.25배 속도. 모드 부품 장착 가능.
+  desc_ja: ウォルター専用の遠距離武器、耐久無限。ダメージは弾薬依存。射程10、チャージショットは2倍ダメージ・1.25倍速。MODパーツ対応。
+  desc_zh_CN: 沃尔特专属远程武器，耐久无限。伤害取决于弹药类型。射程10，蓄力射击2倍伤害、1.25倍速度。支持改装部件。
+  desc_zh_TW: 沃爾特專屬遠程武器，耐久無限。傷害取決於彈藥類型。射程10，蓄力射擊2倍傷害、1.25倍速度。支持改裝部件。
+  desc_fr: Arme à distance exclusive à Walter, durabilité infinie. Dégâts selon le type de munition. Portée 10, tir chargé : dégâts ×2 et vitesse ×1,25. Compatible avec les mods.
+  desc_de: Walter-exklusive Fernkampfwaffe mit unendlicher Haltbarkeit. Schaden hängt von Munition ab. Reichweite 10, Aufladeschuss: 2× Schaden, 1,25× Geschwindigkeit. Mod-Teile möglich.
+  desc_it: Arma a distanza esclusiva di Walter con durabilità infinita. Danno dipende dal tipo di munizioni. Gittata 10, colpo caricato ×2 danni e ×1.25 velocità. Supporta mod.
+  desc_pl: Broń dystansowa wyłączna dla Waltera, nieskończona wytrzymałość. Obrażenia zależą od amunicji. Zasięg 10, naładowany strzał: 2× obrażeń, 1,25× prędkości. Obsługuje modyfikacje.
+  desc_pt_BR: Arma de longo alcance exclusiva de Walter, durabilidade infinita. Dano depende do tipo de munição. Alcance 10, tiro carregado: 2× dano e 1.25× velocidade. Suporta mods.
+  desc_ru: Дальнобойное оружие Уолтера с бесконечной прочностью. Урон зависит от патронов. Дальность 10, заряженный выстрел: урон ×2, скорость ×1,25. Поддерживает модификации.
+  desc_es: Arma a distancia exclusiva de Walter con durabilidad infinita. Daño según tipo de munición. Alcance 10, disparo cargado: daño ×2 y velocidad ×1,25. Compatible con mods.
+  desc_es_MX: Arma a distancia exclusiva de Walter con durabilidad infinita. Daño según tipo de munición. Alcance 10, disparo cargado: daño ×2 y velocidad ×1,25. Compatible con mods.
 675.slingshot_band_pigskin
   en: Pig Skin Slingshot Band
   ko: 돼지가죽 새총줄
   app: O
   source: Slingshot mod part (band slot). +1 bonus range (11/15), 1.1x projectile speed multiplier. Requires walter_slingshot_modding skill.
+  desc_en: Slingshot band mod that adds +1 range (11/15) and 1.1x projectile speed. Requires modding skill unlock.
+  desc_ko: 사거리 +1(11/15) 및 투사체 속도 1.1배를 추가하는 새총줄 모드. 모딩 스킬 해금 필요.
+  desc_ja: 射程+1（11/15）と投射速度1.1倍を追加するスリングショットバンドMOD。モディングスキル解放が必要。
+  desc_zh_CN: 弹弓皮筋改装，增加+1射程（11/15）和1.1倍弹速。需解锁改装技能。
+  desc_zh_TW: 彈弓皮筋改裝，增加+1射程（11/15）和1.1倍彈速。需解鎖改裝技能。
+  desc_fr: Mod de bande de lance-pierre ajoutant +1 de portée (11/15) et ×1,1 de vitesse de projectile. Nécessite la compétence de modding.
+  desc_de: Schleuderband-Mod mit +1 Reichweite (11/15) und 1,1× Geschossgeschwindigkeit. Erfordert Modding-Fähigkeit.
+  desc_it: Mod banda della fionda che aggiunge +1 gittata (11/15) e velocità proiettile ×1.1. Richiede abilità di modding.
+  desc_pl: Modyfikacja opaski procy: +1 zasięg (11/15) i 1,1× prędkość pocisku. Wymaga umiejętności modyfikacji.
+  desc_pt_BR: Mod de elástico da atiradeira que adiciona +1 alcance (11/15) e 1.1× velocidade de projétil. Requer habilidade de modding.
+  desc_ru: Модификация резинки рогатки: +1 дальность (11/15) и скорость снаряда ×1,1. Требуется навык модификации.
+  desc_es: Mod de banda de tirachinas que añade +1 alcance (11/15) y velocidad de proyectil ×1,1. Requiere habilidad de modding.
+  desc_es_MX: Mod de banda de tirachinas que añade +1 alcance (11/15) y velocidad de proyectil ×1,1. Requiere habilidad de modding.
 676.slingshot_band_tentacle
   en: Flailing Slingshot Band
   ko: 휘날리는 새총줄
   app: O
   source: Slingshot mod part (band slot). +2 bonus range (12/16), 1.2x projectile speed multiplier. Requires walter_slingshot_bands skill.
+  desc_en: Advanced slingshot band mod that adds +2 range (12/16) and 1.2x projectile speed. Requires bands skill unlock.
+  desc_ko: 사거리 +2(12/16) 및 투사체 속도 1.2배를 추가하는 고급 새총줄 모드. 줄 스킬 해금 필요.
+  desc_ja: 射程+2（12/16）と投射速度1.2倍を追加する上級バンドMOD。バンドスキル解放が必要。
+  desc_zh_CN: 高级弹弓皮筋改装，增加+2射程（12/16）和1.2倍弹速。需解锁皮筋技能。
+  desc_zh_TW: 高級彈弓皮筋改裝，增加+2射程（12/16）和1.2倍彈速。需解鎖皮筋技能。
+  desc_fr: Mod de bande avancé ajoutant +2 de portée (12/16) et ×1,2 de vitesse de projectile. Nécessite la compétence de bandes.
+  desc_de: Fortgeschrittene Schleuderband-Mod mit +2 Reichweite (12/16) und 1,2× Geschossgeschwindigkeit. Erfordert Band-Fähigkeit.
+  desc_it: Mod banda avanzata che aggiunge +2 gittata (12/16) e velocità proiettile ×1.2. Richiede abilità bande.
+  desc_pl: Zaawansowana modyfikacja opaski: +2 zasięg (12/16) i 1,2× prędkość pocisku. Wymaga umiejętności opasek.
+  desc_pt_BR: Mod avançado de elástico que adiciona +2 alcance (12/16) e 1.2× velocidade de projétil. Requer habilidade de elásticos.
+  desc_ru: Продвинутая модификация резинки: +2 дальность (12/16) и скорость снаряда ×1,2. Требуется навык резинок.
+  desc_es: Mod de banda avanzado que añade +2 alcance (12/16) y velocidad de proyectil ×1,2. Requiere habilidad de bandas.
+  desc_es_MX: Mod de banda avanzado que añade +2 alcance (12/16) y velocidad de proyectil ×1,2. Requiere habilidad de bandas.
 677.slingshot_frame_bone
   en: Bony Slingshot Frame
   ko: 뼈다귀 새총몸
   app: O
   source: Slingshot mod part (frame slot). Upgrades slingshot to Mk II (slingshot2). Adds a second ammo slot — auto-moves ammo from slot 2 to slot 1 after firing.
+  desc_en: Frame mod that upgrades slingshot to Mk II. Adds a second ammo slot with auto-reload from slot 2 after firing.
+  desc_ko: 새총을 Mk II로 업그레이드하는 프레임 모드. 발사 후 2번 슬롯에서 자동 재장전되는 2번째 탄환 슬롯 추가.
+  desc_ja: スリングショットをMk IIにアップグレードするフレームMOD。発射後にスロット2から自動装填される2番目の弾薬スロットを追加。
+  desc_zh_CN: 将弹弓升级为Mk II的框架改装。增加第二弹药槽，发射后自动从槽2装填。
+  desc_zh_TW: 將彈弓升級為Mk II的框架改裝。增加第二彈藥槽，發射後自動從槽2裝填。
+  desc_fr: Mod de cadre qui améliore le lance-pierre en Mk II. Ajoute un 2e slot de munitions avec rechargement automatique après tir.
+  desc_de: Rahmen-Mod, die die Schleuder zum Mk II aufwertet. Fügt einen 2. Munitionsslot mit automatischem Nachladen hinzu.
+  desc_it: Mod telaio che migliora la fionda a Mk II. Aggiunge un 2° slot munizioni con ricarica automatica dopo lo sparo.
+  desc_pl: Modyfikacja ramy ulepszająca procę do Mk II. Dodaje 2. slot amunicji z automatycznym przeładowaniem po strzale.
+  desc_pt_BR: Mod de estrutura que melhora a atiradeira para Mk II. Adiciona 2° slot de munição com recarga automática após disparo.
+  desc_ru: Модификация рамы, улучшающая рогатку до Mk II. Добавляет 2-й слот патронов с автоматической перезарядкой после выстрела.
+  desc_es: Mod de marco que mejora el tirachinas a Mk II. Añade un 2.° ranura de munición con recarga automática tras disparar.
+  desc_es_MX: Mod de marco que mejora el tirachinas a Mk II. Añade un 2.° ranura de munición con recarga automática tras disparar.
 678.slingshot_frame_gems
   en: Thulecite Slingshot Frame
   ko: 툴레사이트 새총몸
   app: O
   source: Slingshot mod part (frame slot). Upgrades slingshot to Mk II (slingshot2ex). Adds a second special ammo slot + AOE targeting spell to fire the special ammo at a targeted position.
+  desc_en: Thulecite frame mod that upgrades slingshot to Mk II. Adds a special ammo slot with AOE targeting spell for area attacks.
+  desc_ko: 새총을 Mk II로 업그레이드하는 툴레사이트 프레임 모드. 범위 공격용 AOE 조준 마법이 포함된 특수 탄환 슬롯 추가.
+  desc_ja: スリングショットをMk IIにアップグレードするスーレサイトフレームMOD。AOE照準魔法付き特殊弾薬スロットを追加。
+  desc_zh_CN: 铥矿框架改装，将弹弓升级为Mk II。增加特殊弹药槽和AOE瞄准法术进行范围攻击。
+  desc_zh_TW: 銩礦框架改裝，將彈弓升級為Mk II。增加特殊彈藥槽和AOE瞄準法術進行範圍攻擊。
+  desc_fr: Mod de cadre en thulécite améliorant le lance-pierre en Mk II. Ajoute un slot de munitions spéciales avec un sort de ciblage AOE.
+  desc_de: Thulezit-Rahmen-Mod, die die Schleuder zum Mk II aufwertet. Fügt einen Spezial-Munitionsslot mit AOE-Zielzauber hinzu.
+  desc_it: Mod telaio in thulecite che migliora la fionda a Mk II. Aggiunge slot munizioni speciali con incantesimo di mira AOE.
+  desc_pl: Modyfikacja ramy z tulecytu ulepszająca procę do Mk II. Dodaje slot specjalnej amunicji z zaklęciem celowania AOE.
+  desc_pt_BR: Mod de estrutura de thulecita que melhora a atiradeira para Mk II. Adiciona slot de munição especial com feitiço de mira AOE.
+  desc_ru: Модификация рамы из тулецита, улучшающая рогатку до Mk II. Добавляет слот спец. патронов с АОЕ-заклинанием наведения.
+  desc_es: Mod de marco de thulecita que mejora el tirachinas a Mk II. Añade ranura de munición especial con hechizo de apuntado AOE.
+  desc_es_MX: Mod de marco de thulecita que mejora el tirachinas a Mk II. Añade ranura de munición especial con hechizo de apuntado AOE.
 679.slingshot_frame_wagpunk
   en: Scrappier Slingshot Frame
   ko: 고철떼기 새총몸
   app: X
   type: deconstruct
   source: Slingshot mod part (frame slot). Upgraded wagpunk frame. Enables infinite stack size in the ammo container and charge-shot reticule. Requires skill unlock.
+  desc_en: Upgraded wagpunk frame that enables infinite ammo stacking and a charge-shot reticule. Requires skill unlock.
+  desc_ko: 무한 탄약 적재 및 차지 샷 조준기를 활성화하는 상위 왜그펑크 프레임. 스킬 해금 필요.
+  desc_ja: 弾薬の無限スタックとチャージショット照準器を有効にする上位ワグパンクフレーム。スキル解放が必要。
+  desc_zh_CN: 升级版瓦格朋克框架，启用无限弹药堆叠和蓄力瞄准。需解锁技能。
+  desc_zh_TW: 升級版瓦格朋克框架，啟用無限彈藥堆疊和蓄力瞄準。需解鎖技能。
+  desc_fr: Cadre wagpunk amélioré activant l'empilement infini de munitions et un réticule de tir chargé. Nécessite un déverrouillage de compétence.
+  desc_de: Verbesserter Wagpunk-Rahmen mit unendlicher Munitionsstapelung und Aufladeschuss-Fadenkreuz. Erfordert Fähigkeitsfreischaltung.
+  desc_it: Telaio wagpunk migliorato che abilita impilamento infinito munizioni e reticolo di tiro caricato. Richiede sblocco abilità.
+  desc_pl: Ulepszony frame wagpunk umożliwiający nieskończone stackowanie amunicji i celownik strzału ładowanego. Wymaga odblokowania umiejętności.
+  desc_pt_BR: Estrutura wagpunk aprimorada que permite empilhamento infinito de munição e retículo de tiro carregado. Requer desbloqueio de habilidade.
+  desc_ru: Улучшенная рама wagpunk с бесконечным стакированием патронов и прицелом заряженного выстрела. Требуется навык.
+  desc_es: Marco wagpunk mejorado que habilita apilamiento infinito de munición y retícula de disparo cargado. Requiere desbloqueo de habilidad.
+  desc_es_MX: Marco wagpunk mejorado que habilita apilamiento infinito de munición y retícula de disparo cargado. Requiere desbloqueo de habilidad.
 680.slingshot_frame_wagpunk_0
   en: Scrappy Slingshot Frame
   ko: 고철 새총몸
   app: O
   source: Slingshot mod part (frame slot). Basic wagpunk frame. Enables charge-shot reticule for the slingshot. Requires skill unlock.
+  desc_en: Basic wagpunk frame mod that enables a charge-shot reticule for the slingshot. Requires skill unlock.
+  desc_ko: 새총에 차지 샷 조준기를 활성화하는 기본 왜그펑크 프레임 모드. 스킬 해금 필요.
+  desc_ja: スリングショットにチャージショット照準器を追加する基本ワグパンクフレームMOD。スキル解放が必要。
+  desc_zh_CN: 基础瓦格朋克框架改装，为弹弓启用蓄力瞄准。需解锁技能。
+  desc_zh_TW: 基礎瓦格朋克框架改裝，為彈弓啟用蓄力瞄準。需解鎖技能。
+  desc_fr: Mod de cadre wagpunk basique activant un réticule de tir chargé pour le lance-pierre. Nécessite un déverrouillage de compétence.
+  desc_de: Einfacher Wagpunk-Rahmen-Mod, der ein Aufladeschuss-Fadenkreuz aktiviert. Erfordert Fähigkeitsfreischaltung.
+  desc_it: Mod telaio wagpunk base che abilita il reticolo di tiro caricato per la fionda. Richiede sblocco abilità.
+  desc_pl: Podstawowa modyfikacja ramy wagpunk aktywująca celownik strzału ładowanego. Wymaga odblokowania umiejętności.
+  desc_pt_BR: Mod de estrutura wagpunk básica que ativa o retículo de tiro carregado para a atiradeira. Requer desbloqueio de habilidade.
+  desc_ru: Базовая модификация рамы wagpunk, активирующая прицел заряженного выстрела. Требуется навык.
+  desc_es: Mod de marco wagpunk básico que activa una retícula de disparo cargado. Requiere desbloqueo de habilidad.
+  desc_es_MX: Mod de marco wagpunk básico que activa una retícula de disparo cargado. Requiere desbloqueo de habilidad.
 681.slingshot_frame_wagpunk_1
   en: Slingshot Frame
   ko: 새총 프레임
   app: O
   source: Slingshot mod part (frame slot). Intermediate wagpunk frame variant. Enables charge-shot reticule for the slingshot.
+  desc_en: Intermediate wagpunk frame variant that enables a charge-shot reticule for the slingshot.
+  desc_ko: 새총에 차지 샷 조준기를 활성화하는 중급 왜그펑크 프레임 변형.
+  desc_ja: スリングショットにチャージショット照準器を追加する中級ワグパンクフレーム。
+  desc_zh_CN: 中级瓦格朋克框架变体，为弹弓启用蓄力瞄准。
+  desc_zh_TW: 中級瓦格朋克框架變體，為彈弓啟用蓄力瞄準。
+  desc_fr: Variante de cadre wagpunk intermédiaire activant un réticule de tir chargé.
+  desc_de: Mittlere Wagpunk-Rahmen-Variante, die ein Aufladeschuss-Fadenkreuz aktiviert.
+  desc_it: Variante intermedia del telaio wagpunk che abilita il reticolo di tiro caricato.
+  desc_pl: Pośrednia wersja ramy wagpunk aktywująca celownik strzału ładowanego.
+  desc_pt_BR: Variante intermediária da estrutura wagpunk que ativa o retículo de tiro carregado.
+  desc_ru: Промежуточный вариант рамы wagpunk, активирующий прицел заряженного выстрела.
+  desc_es: Variante intermedia del marco wagpunk que activa la retícula de disparo cargado.
+  desc_es_MX: Variante intermedia del marco wagpunk que activa la retícula de disparo cargado.
 682.slingshot_handle_jelly
   en: Slingshot Jelly Grip
   ko: 젤리 새총 손잡이
   app: O
   source: Slingshot mod part (handle slot). Provides a grip modification to the slingshot. Requires skill unlock.
+  desc_en: Jelly grip handle mod for the slingshot. Provides a grip modification. Requires skill unlock.
+  desc_ko: 새총의 젤리 그립 손잡이 모드. 그립 수정을 제공합니다. 스킬 해금 필요.
+  desc_ja: スリングショット用ゼリーグリップハンドルMOD。グリップを改良します。スキル解放が必要。
+  desc_zh_CN: 弹弓果冻握把改装。提供握持改良。需解锁技能。
+  desc_zh_TW: 彈弓果凍握把改裝。提供握持改良。需解鎖技能。
+  desc_fr: Mod de poignée en gelée pour le lance-pierre. Modifie la prise en main. Nécessite un déverrouillage de compétence.
+  desc_de: Gelee-Griff-Mod für die Schleuder. Verändert den Griff. Erfordert Fähigkeitsfreischaltung.
+  desc_it: Mod impugnatura in gelatina per la fionda. Modifica la presa. Richiede sblocco abilità.
+  desc_pl: Modyfikacja galaretowego uchwytu procy. Zmienia chwyt. Wymaga odblokowania umiejętności.
+  desc_pt_BR: Mod de cabo de geleia para a atiradeira. Modifica a empunhadura. Requer desbloqueio de habilidade.
+  desc_ru: Модификация ручки рогатки из желе. Улучшает хват. Требуется навык.
+  desc_es: Mod de agarre de gelatina para el tirachinas. Modifica el agarre. Requiere desbloqueo de habilidad.
+  desc_es_MX: Mod de agarre de gelatina para el tirachinas. Modifica el agarre. Requiere desbloqueo de habilidad.
 683.slingshot_handle_silk
   en: Slingshot Grip Tape
   ko: 새총 그립테이프
   app: O
   source: Slingshot mod part (handle slot). Provides a grip modification to the slingshot. Requires skill unlock.
+  desc_en: Silk grip tape handle mod for the slingshot. Provides a grip modification. Requires skill unlock.
+  desc_ko: 새총의 실크 그립 테이프 손잡이 모드. 그립 수정을 제공합니다. 스킬 해금 필요.
+  desc_ja: スリングショット用シルクグリップテープMOD。グリップを改良します。スキル解放が必要。
+  desc_zh_CN: 弹弓丝绸握带改装。提供握持改良。需解锁技能。
+  desc_zh_TW: 彈弓絲綢握帶改裝。提供握持改良。需解鎖技能。
+  desc_fr: Mod de ruban adhésif en soie pour le lance-pierre. Modifie la prise en main. Nécessite un déverrouillage de compétence.
+  desc_de: Seidengriffband-Mod für die Schleuder. Verändert den Griff. Erfordert Fähigkeitsfreischaltung.
+  desc_it: Mod nastro impugnatura in seta per la fionda. Modifica la presa. Richiede sblocco abilità.
+  desc_pl: Modyfikacja jedwabnej taśmy uchwytu procy. Zmienia chwyt. Wymaga odblokowania umiejętności.
+  desc_pt_BR: Mod de fita de seda para empunhadura da atiradeira. Modifica a empunhadura. Requer desbloqueio de habilidade.
+  desc_ru: Модификация шёлковой ленты для ручки рогатки. Улучшает хват. Требуется навык.
+  desc_es: Mod de cinta de seda para el agarre del tirachinas. Modifica el agarre. Requiere desbloqueo de habilidad.
+  desc_es_MX: Mod de cinta de seda para el agarre del tirachinas. Modifica el agarre. Requiere desbloqueo de habilidad.
 684.slingshot_handle_sticky
   en: Slingshot Sticky Grip
   ko: 끈끈이 새총 손잡이
   app: O
   source: Slingshot mod part (handle slot). Provides a grip modification to the slingshot. Requires skill unlock.
+  desc_en: Sticky grip handle mod for the slingshot. Provides a grip modification. Requires skill unlock.
+  desc_ko: 새총의 끈끈이 그립 손잡이 모드. 그립 수정을 제공합니다. 스킬 해금 필요.
+  desc_ja: スリングショット用粘着グリップMOD。グリップを改良します。スキル解放が必要。
+  desc_zh_CN: 弹弓粘性握把改装。提供握持改良。需解锁技能。
+  desc_zh_TW: 彈弓粘性握把改裝。提供握持改良。需解鎖技能。
+  desc_fr: Mod de poignée collante pour le lance-pierre. Modifie la prise en main. Nécessite un déverrouillage de compétence.
+  desc_de: Klebegriff-Mod für die Schleuder. Verändert den Griff. Erfordert Fähigkeitsfreischaltung.
+  desc_it: Mod impugnatura appiccicosa per la fionda. Modifica la presa. Richiede sblocco abilità.
+  desc_pl: Modyfikacja lepkiego uchwytu procy. Zmienia chwyt. Wymaga odblokowania umiejętności.
+  desc_pt_BR: Mod de empunhadura pegajosa para a atiradeira. Modifica a empunhadura. Requer desbloqueio de habilidade.
+  desc_ru: Модификация липкой ручки рогатки. Улучшает хват. Требуется навык.
+  desc_es: Mod de agarre pegajoso para el tirachinas. Modifica el agarre. Requiere desbloqueo de habilidad.
+  desc_es_MX: Mod de agarre pegajoso para el tirachinas. Modifica el agarre. Requiere desbloqueo de habilidad.
 685.slingshot_handle_voidcloth
   en: Slingshot Void Wrap
   ko: 공허의 새총 손잡이띠
   app: O
   source: Slingshot mod part (handle slot). Shadow-themed grip modification. Requires skill unlock.
+  desc_en: Shadow-themed void wrap handle mod for the slingshot. Provides a shadow-aligned grip modification. Requires skill unlock.
+  desc_ko: 그림자 테마의 공허 천 손잡이 모드. 그림자 계열 그립 수정을 제공합니다. 스킬 해금 필요.
+  desc_ja: シャドウテーマのヴォイドラップハンドルMOD。シャドウ系グリップ改良を提供。スキル解放が必要。
+  desc_zh_CN: 暗影主题的虚空包裹握把改装。提供暗影系握持改良。需解锁技能。
+  desc_zh_TW: 暗影主題的虛空包裹握把改裝。提供暗影系握持改良。需解鎖技能。
+  desc_fr: Mod de poignée en tissu du vide sur le thème de l'ombre. Modifie la prise avec un alignement ombre. Nécessite un déverrouillage de compétence.
+  desc_de: Schattenthematischer Leerentuch-Griff-Mod. Schattenausgerichtete Griffanpassung. Erfordert Fähigkeitsfreischaltung.
+  desc_it: Mod impugnatura a tema ombra in tessuto del vuoto. Offre una modifica della presa allineata all'ombra. Richiede sblocco abilità.
+  desc_pl: Modyfikacja uchwytu z próżniowej tkaniny o tematyce cienia. Zapewnia chwyt dopasowany do cieni. Wymaga odblokowania umiejętności.
+  desc_pt_BR: Mod de empunhadura em tecido do vazio com tema sombrio. Modifica a empunhadura com alinhamento sombrio. Requer desbloqueio de habilidade.
+  desc_ru: Модификация ручки из ткани пустоты с теневой тематикой. Теневой хват. Требуется навык.
+  desc_es: Mod de agarre con tela del vacío temática de sombra. Proporciona un agarre alineado a la sombra. Requiere desbloqueo de habilidad.
+  desc_es_MX: Mod de agarre con tela del vacío temática de sombra. Proporciona un agarre alineado a la sombra. Requiere desbloqueo de habilidad.
 686.slingshot2
   en: Slingshot Mk II
   ko: 새총 Mk II
   app: X
   type: deconstruct
   source: Upgraded slingshot (assembled from slingshot + bone frame). 2 ammo slots — auto-feeds slot 2 into slot 1 after firing. Same base stats as slingshot (0 damage, range 10/14). Cannot be directly crafted; created by installing slingshot_frame_bone.
+  desc_en: Upgraded slingshot with 2 ammo slots (auto-feeds from slot 2). Same range 10/14. Created by installing a Bony Slingshot Frame.
+  desc_ko: 2개 탄환 슬롯(2번에서 자동 급탄)을 가진 업그레이드 새총. 사거리 10/14 동일. 뼈다귀 새총몸 장착으로 생성.
+  desc_ja: 弾薬2スロット（スロット2から自動装填）の改良スリングショット。射程10/14。ボーンフレーム装着で作成。
+  desc_zh_CN: 升级版弹弓，2个弹药槽（从槽2自动装填）。射程10/14不变。安装骨头框架创建。
+  desc_zh_TW: 升級版彈弓，2個彈藥槽（從槽2自動裝填）。射程10/14不變。安裝骨頭框架創建。
+  desc_fr: Lance-pierre amélioré avec 2 slots de munitions (alimentation auto depuis le slot 2). Portée 10/14 inchangée. Créé en installant un cadre osseux.
+  desc_de: Verbesserte Schleuder mit 2 Munitionsslots (automatische Zuführung aus Slot 2). Reichweite 10/14 unverändert. Erstellt durch Knochen-Rahmen.
+  desc_it: Fionda migliorata con 2 slot munizioni (alimentazione automatica dallo slot 2). Gittata 10/14 invariata. Creata installando un telaio osseo.
+  desc_pl: Ulepszona proca z 2 slotami amunicji (auto-ładowanie ze slotu 2). Zasięg 10/14 bez zmian. Tworzona przez instalację kościanej ramy.
+  desc_pt_BR: Atiradeira aprimorada com 2 slots de munição (alimentação automática do slot 2). Alcance 10/14 inalterado. Criada instalando uma estrutura óssea.
+  desc_ru: Улучшенная рогатка с 2 слотами патронов (автоподача из слота 2). Дальность 10/14 без изменений. Создаётся установкой костяной рамы.
+  desc_es: Tirachinas mejorado con 2 ranuras de munición (alimentación automática desde la ranura 2). Alcance 10/14 sin cambios. Creado instalando un marco óseo.
+  desc_es_MX: Tirachinas mejorado con 2 ranuras de munición (alimentación automática desde la ranura 2). Alcance 10/14 sin cambios. Creado instalando un marco óseo.
 687.slingshot2ex
   en: Slingshot Mk II
   ko: 새총 Mk II
   app: X
   type: deconstruct
   source: Upgraded slingshot (assembled from slingshot + thulecite frame). Slot 2 is a special ammo slot. Has AOE targeting spell to fire special ammo at a chosen position (magic-amplified shot). Created by installing slingshot_frame_gems.
+  desc_en: Thulecite-upgraded slingshot with a special ammo slot and AOE targeting spell for magic-amplified shots. Created by installing a Thulecite frame.
+  desc_ko: 특수 탄환 슬롯과 마법 증폭 AOE 조준 마법을 가진 툴레사이트 업그레이드 새총. 툴레사이트 프레임 장착으로 생성.
+  desc_ja: 特殊弾薬スロットと魔法増幅AOE照準を持つスーレサイトアップグレードスリングショット。スーレサイトフレーム装着で作成。
+  desc_zh_CN: 铥矿升级弹弓，带特殊弹药槽和魔法增幅AOE瞄准。安装铥矿框架创建。
+  desc_zh_TW: 銩礦升級彈弓，帶特殊彈藥槽和魔法增幅AOE瞄準。安裝銩礦框架創建。
+  desc_fr: Lance-pierre amélioré en thulécite avec slot de munitions spéciales et sort de ciblage AOE amplifié. Créé en installant un cadre en thulécite.
+  desc_de: Thulezit-Schleuder mit Spezial-Munitionsslot und magieverstärktem AOE-Zielzauber. Erstellt durch Thulezit-Rahmen.
+  desc_it: Fionda migliorata in thulecite con slot munizioni speciali e incantesimo AOE amplificato. Creata installando un telaio in thulecite.
+  desc_pl: Proca ulepszona tulecytem ze slotem specjalnej amunicji i zaklęciem celowania AOE. Tworzona przez instalację ramy z tulecytu.
+  desc_pt_BR: Atiradeira de thulecita com slot de munição especial e feitiço AOE amplificado. Criada instalando uma estrutura de thulecita.
+  desc_ru: Рогатка из тулецита со слотом спец. патронов и АОЕ-заклинанием магического усиления. Создаётся установкой рамы из тулецита.
+  desc_es: Tirachinas de thulecita con ranura de munición especial y hechizo AOE amplificado. Creado instalando un marco de thulecita.
+  desc_es_MX: Tirachinas de thulecita con ranura de munición especial y hechizo AOE amplificado. Creado instalando un marco de thulecita.
 688.slingshot999ex
   en: Slingshot
   ko: 새총
   app: X
   type: deconstruct
   source: Upgraded slingshot (assembled from slingshot + scrappier wagpunk frame). Enables infinite stack size in the ammo container and charge-shot reticule. Created by installing slingshot_frame_wagpunk.
+  desc_en: Wagpunk-upgraded slingshot with infinite ammo stacking and charge-shot reticule. Created by installing a Scrappier frame.
+  desc_ko: 무한 탄약 적재 및 차지 샷 조준기를 가진 왜그펑크 업그레이드 새총. 고철떼기 프레임 장착으로 생성.
+  desc_ja: 弾薬無限スタックとチャージショット照準を持つワグパンクアップグレードスリングショット。スクラッピアーフレーム装着で作成。
+  desc_zh_CN: 瓦格朋克升级弹弓，弹药无限堆叠并带蓄力瞄准。安装破铜烂铁框架创建。
+  desc_zh_TW: 瓦格朋克升級彈弓，彈藥無限堆疊並帶蓄力瞄準。安裝破銅爛鐵框架創建。
+  desc_fr: Lance-pierre amélioré wagpunk avec empilement infini de munitions et réticule de tir chargé. Créé en installant un cadre Scrappier.
+  desc_de: Wagpunk-Schleuder mit unendlicher Munitionsstapelung und Aufladeschuss-Fadenkreuz. Erstellt durch Scrappier-Rahmen.
+  desc_it: Fionda migliorata wagpunk con impilamento infinito munizioni e reticolo di tiro caricato. Creata installando un telaio Scrappier.
+  desc_pl: Proca ulepszona wagpunkiem z nieskończonym stackowaniem amunicji i celownikiem ładowania. Tworzona przez instalację ramy Scrappier.
+  desc_pt_BR: Atiradeira wagpunk com empilhamento infinito de munição e retículo de tiro carregado. Criada instalando uma estrutura Scrappier.
+  desc_ru: Рогатка wagpunk с бесконечным стакированием патронов и прицелом заряженного выстрела. Создаётся установкой рамы Scrappier.
+  desc_es: Tirachinas wagpunk con apilamiento infinito de munición y retícula de disparo cargado. Creado instalando un marco Scrappier.
+  desc_es_MX: Tirachinas wagpunk con apilamiento infinito de munición y retícula de disparo cargado. Creado instalando un marco Scrappier.
 689.slingshotammo_container
   en: Ammo Pouch
   ko: 탄환 파우치
   app: O
   source: Container for slingshot ammo. Opens on interaction, stores multiple ammo types. Functions as an inventory container item — cannot be equipped. Minimap icon visible.
+  desc_en: Inventory container that stores multiple types of slingshot ammo. Cannot be equipped; opens on interaction.
+  desc_ko: 여러 종류의 새총 탄환을 저장하는 인벤토리 컨테이너. 장착 불가, 상호작용 시 열립니다.
+  desc_ja: 複数種の弾薬を格納するインベントリコンテナ。装備不可、操作で開きます。
+  desc_zh_CN: 存储多种弹弓弹药的背包容器。不可装备，交互时打开。
+  desc_zh_TW: 存儲多種彈弓彈藥的背包容器。不可裝備，交互時打開。
+  desc_fr: Conteneur d'inventaire stockant plusieurs types de munitions de lance-pierre. Non équipable ; s'ouvre à l'interaction.
+  desc_de: Inventarbehälter für verschiedene Schleuder-Munitionstypen. Nicht ausrüstbar; öffnet sich bei Interaktion.
+  desc_it: Contenitore inventario che conserva diversi tipi di munizioni per fionda. Non equipaggiabile; si apre all'interazione.
+  desc_pl: Pojemnik ekwipunku przechowujący różne typy amunicji do procy. Nie można go założyć; otwiera się przy interakcji.
+  desc_pt_BR: Recipiente de inventário que armazena vários tipos de munição de atiradeira. Não equipável; abre ao interagir.
+  desc_ru: Контейнер в инвентаре, хранящий несколько типов патронов для рогатки. Не надевается; открывается при взаимодействии.
+  desc_es: Contenedor de inventario que almacena varios tipos de munición de tirachinas. No equipable; se abre al interactuar.
+  desc_es_MX: Contenedor de inventario que almacena varios tipos de munición de tirachinas. No equipable; se abre al interactuar.
 690.slingshotammo_dreadstone
   en: Dread Pebbles
   ko: 공포석 짱돌
   app: O
   source: Slingshot ammo. 58 damage (34*2-10), 10 planar damage. +10% vs lunar-aligned. 50% chance to recover ammo on hit. Voidcloth set bonus: 1.1x damage +5 planar. Tagged "recoverableammo". Requires walter_ammo_lucky skill.
+  desc_en: Shadow ammo dealing 58 + 10 planar damage. +10% vs lunar-aligned. 50% chance to recover ammo on hit. Voidcloth set bonus available.
+  desc_ko: 58 + 10 차원 피해의 그림자 탄환. 달 계열 대상 +10%. 명중 시 50% 확률로 탄환 회수. 공허의 천 세트 보너스 가능.
+  desc_ja: 58+10プレーナーダメージのシャドウ弾薬。月系に+10%。命中時50%で弾回収。ヴォイドクロスセットボーナス対応。
+  desc_zh_CN: 暗影弹药，58+10位面伤害。对月亮系+10%。命中50%几率回收弹药。可触发虚空布套装加成。
+  desc_zh_TW: 暗影彈藥，58+10位面傷害。對月亮系+10%。命中50%機率回收彈藥。可觸發虛空布套裝加成。
+  desc_fr: Munition d'ombre infligeant 58 + 10 dégâts planaires. +10 % vs lunaires. 50 % de chance de récupérer la munition. Bonus de set tissu du vide.
+  desc_de: Schattenmunition mit 58 + 10 planarem Schaden. +10 % gegen Mondausrichtung. 50 % Chance auf Munitionsrückgewinnung. Leerentuch-Set-Bonus möglich.
+  desc_it: Munizioni d'ombra con 58 + 10 danni planari. +10% vs lunari. 50% di possibilità di recupero munizioni. Bonus set tessuto del vuoto.
+  desc_pl: Amunicja cienia — 58 + 10 obrażeń planarnych. +10% vs księżycowe. 50% szansy na odzyskanie amunicji. Bonus zestawu próżniowej tkaniny.
+  desc_pt_BR: Munição sombria com 58 + 10 de dano planar. +10% vs lunares. 50% de chance de recuperar munição. Bônus de conjunto de tecido do vazio.
+  desc_ru: Теневые патроны: 58 + 10 планарного урона. +10% против лунных. 50% шанс вернуть патрон. Бонус комплекта ткани пустоты.
+  desc_es: Munición de sombra con 58 + 10 de daño planar. +10 % vs lunares. 50 % de probabilidad de recuperar munición. Bonificación de set de tela del vacío.
+  desc_es_MX: Munición de sombra con 58 + 10 de daño planar. +10 % vs lunares. 50 % de probabilidad de recuperar munición. Bonificación de set de tela del vacío.
 691.slingshotammo_freeze
   en: Freeze Rounds
   ko: 냉동탄
   app: O
   source: Slingshot ammo. 0 base damage. Applies 2 coldness on hit (freezes after enough stacks). Can extinguish fires. AOE splash possible. Can be magic-amplified. Requires no skill unlock.
+  desc_en: Slingshot ammo that applies cold on hit, freezing after enough stacks. Can extinguish fires.
+  desc_ko: 새총 탄환. 적중 시 냉기를 부여하며, 누적되면 빙결. 불 진화 가능.
+  desc_ja: パチンコ弾。命中時に冷気を付与、蓄積で凍結。火の消火も可能。
+  desc_zh_CN: 弹弓弹药。命中时施加寒冷，累积后冻结。可灭火。
+  desc_zh_TW: 彈弓彈藥。命中時施加寒冷，累積後凍結。可滅火。
+  desc_fr: Munition de fronde. Applique du froid à l'impact, gèle après accumulation. Peut éteindre les feux.
+  desc_de: Schleuder-Munition. Verursacht Kälte bei Treffer, friert nach Stapeln ein. Kann Feuer löschen.
+  desc_it: Munizione per fionda. Applica freddo al colpo, congela dopo accumulo. Può spegnere incendi.
+  desc_pl: Amunicja do procy. Zadaje zimno przy trafieniu, zamraża po nagromadzeniu. Może gasić ogień.
+  desc_pt_BR: Munição de estilingue. Aplica frio ao acertar, congela após acúmulo. Pode apagar incêndios.
+  desc_ru: Снаряд для рогатки. Наносит холод при попадании, замораживает при накоплении. Может тушить огонь.
+  desc_es: Munición de tirachinas. Aplica frío al impactar, congela tras acumulación. Puede apagar fuegos.
+  desc_es_MX: Munición de resortera. Aplica frío al impactar, congela tras acumulación. Puede apagar fuegos.
 692.slingshotammo_gelblob
   en: Ickies
   ko: 찐득이
   app: O
   source: Slingshot ammo. 0 base damage. Applies gel blob debuff on hit (slows target for 60s, move speed 2/3, max 3 stacks on speed reduction lasting 30s each). Requires walter_ammo_shadow skill.
+  desc_en: Slingshot ammo that applies gel blob debuff, slowing target by 1/3 for 60s. Max 3 stacks.
+  desc_ko: 새총 탄환. 젤 블롭 디버프를 부여해 이동속도 1/3 감소 (60초). 최대 3중첩.
+  desc_ja: パチンコ弾。ジェルブロブデバフを付与し移動速度1/3減少（60秒）。最大3スタック。
+  desc_zh_CN: 弹弓弹药。施加凝胶减速效果，移动速度降低1/3（60秒）。最多3层。
+  desc_zh_TW: 彈弓彈藥。施加凝膠減速效果，移動速度降低1/3（60秒）。最多3層。
+  desc_fr: Munition de fronde. Applique un ralentissement de 1/3 pendant 60s. Max 3 charges.
+  desc_de: Schleuder-Munition. Verlangsamt Ziel um 1/3 für 60s. Max 3 Stapel.
+  desc_it: Munizione per fionda. Rallenta il bersaglio di 1/3 per 60s. Max 3 accumuli.
+  desc_pl: Amunicja do procy. Spowalnia cel o 1/3 na 60s. Maks. 3 ładunki.
+  desc_pt_BR: Munição de estilingue. Reduz velocidade em 1/3 por 60s. Máx. 3 acúmulos.
+  desc_ru: Снаряд для рогатки. Замедляет цель на 1/3 на 60с. Макс. 3 заряда.
+  desc_es: Munición de tirachinas. Ralentiza al objetivo 1/3 durante 60s. Máx. 3 cargas.
+  desc_es_MX: Munición de resortera. Ralentiza al objetivo 1/3 durante 60s. Máx. 3 cargas.
 693.slingshotammo_gold
   en: Gold Rounds
   ko: 황금탄
   app: O
   source: Slingshot ammo. 34 damage (wilson_attack*1). Standard mid-tier ammo with no special effects.
+  desc_en: Slingshot ammo dealing 34 damage. Standard mid-tier ammo with no special effects.
+  desc_ko: 새총 탄환. 34 피해. 특수 효과 없는 중급 탄환.
+  desc_ja: パチンコ弾。34ダメージ。特殊効果なしの中級弾薬。
+  desc_zh_CN: 弹弓弹药。34伤害。无特殊效果的中级弹药。
+  desc_zh_TW: 彈弓彈藥。34傷害。無特殊效果的中級彈藥。
+  desc_fr: Munition de fronde. 34 dégâts. Munition standard sans effet spécial.
+  desc_de: Schleuder-Munition. 34 Schaden. Standard-Munition ohne Spezialeffekt.
+  desc_it: Munizione per fionda. 34 danni. Munizione standard senza effetti speciali.
+  desc_pl: Amunicja do procy. 34 obrażeń. Standardowa amunicja bez efektów specjalnych.
+  desc_pt_BR: Munição de estilingue. 34 de dano. Munição padrão sem efeitos especiais.
+  desc_ru: Снаряд для рогатки. 34 урона. Стандартный снаряд без спецэффектов.
+  desc_es: Munición de tirachinas. 34 de daño. Munición estándar sin efectos especiales.
+  desc_es_MX: Munición de resortera. 34 de daño. Munición estándar sin efectos especiales.
 694.slingshotammo_gunpowder
   en: Kablooies
   ko: 콩알탄
   app: O
   source: Slingshot ammo. 59.5 damage (34*1.75). Leaves gunpowder dust on the ground (AOE radius 3, 5s timeout). 5% chance per tick to trigger explosion dealing 2x damage. Requires walter_ammo_lucky skill.
+  desc_en: Slingshot ammo dealing 59.5 damage. Leaves gunpowder dust on ground (AOE radius 3, explodes on ignition).
+  desc_ko: 새총 탄환. 59.5 피해. 바닥에 화약 먼지 생성 (반경 3, 점화 시 폭발).
+  desc_ja: パチンコ弾。59.5ダメージ。地面に火薬粉を残す（半径3、着火で爆発）。
+  desc_zh_CN: 弹弓弹药。59.5伤害。在地面留下火药尘（范围3，点燃时爆炸）。
+  desc_zh_TW: 彈弓彈藥。59.5傷害。在地面留下火藥塵（範圍3，點燃時爆炸）。
+  desc_fr: Munition de fronde. 59.5 dégâts. Laisse de la poudre au sol (rayon 3, explose si enflammée).
+  desc_de: Schleuder-Munition. 59,5 Schaden. Hinterlässt Schießpulverstaub (Radius 3, explodiert bei Entzündung).
+  desc_it: Munizione per fionda. 59.5 danni. Lascia polvere da sparo al suolo (raggio 3, esplode se accesa).
+  desc_pl: Amunicja do procy. 59.5 obrażeń. Zostawia pył prochowy (promień 3, eksploduje po podpaleniu).
+  desc_pt_BR: Munição de estilingue. 59.5 de dano. Deixa pó de pólvora no chão (raio 3, explode ao acender).
+  desc_ru: Снаряд для рогатки. 59.5 урона. Оставляет пороховую пыль (радиус 3, взрывается при поджигании).
+  desc_es: Munición de tirachinas. 59.5 de daño. Deja polvo de pólvora (radio 3, explota al encender).
+  desc_es_MX: Munición de resortera. 59.5 de daño. Deja polvo de pólvora (radio 3, explota al encender).
 695.slingshotammo_honey
   en: Stickies
   ko: 끈끈이
   app: O
   source: Slingshot ammo. 0 base damage. Applies sticky debuff on hit (slows movement for 8s). Utility ammo — no direct damage. Requires walter_ammo_utility skill.
+  desc_en: Slingshot ammo that applies sticky debuff, slowing target movement for 8s. No direct damage.
+  desc_ko: 새총 탄환. 끈적이 디버프로 8초간 이동속도 감소. 직접 피해 없음.
+  desc_ja: パチンコ弾。粘着デバフで8秒間移動速度低下。直接ダメージなし。
+  desc_zh_CN: 弹弓弹药。施加粘性减速8秒。无直接伤害。
+  desc_zh_TW: 彈弓彈藥。施加黏性減速8秒。無直接傷害。
+  desc_fr: Munition de fronde. Ralentit la cible pendant 8s. Pas de dégâts directs.
+  desc_de: Schleuder-Munition. Verlangsamt Ziel für 8s. Kein direkter Schaden.
+  desc_it: Munizione per fionda. Rallenta il bersaglio per 8s. Nessun danno diretto.
+  desc_pl: Amunicja do procy. Spowalnia cel na 8s. Brak bezpośrednich obrażeń.
+  desc_pt_BR: Munição de estilingue. Reduz velocidade por 8s. Sem dano direto.
+  desc_ru: Снаряд для рогатки. Замедляет цель на 8с. Без прямого урона.
+  desc_es: Munición de tirachinas. Ralentiza al objetivo 8s. Sin daño directo.
+  desc_es_MX: Munición de resortera. Ralentiza al objetivo 8s. Sin daño directo.
 696.slingshotammo_horrorfuel
   en: Pure Horror Rounds
   ko: 순수한 공포탄
   app: O
   source: Slingshot ammo. 17 damage (34*0.5), 20 planar damage. +10% vs lunar-aligned. Applies horror planar DOT (10 planar damage per tick, 7 ticks; 9 with set bonus). Voidcloth set bonus: 1.1x damage +5 planar. Can be magic-amplified. Requires walter_ammo_shadow skill.
+  desc_en: Slingshot ammo dealing 17 damage + 20 planar damage. Applies horror planar DOT. +10% vs lunar.
+  desc_ko: 새총 탄환. 17 피해 + 20 차원 피해. 공포 차원 지속 피해 부여. 달 진영 +10%.
+  desc_ja: パチンコ弾。17ダメージ+20プレーナーダメージ。恐怖プレーナーDOT付与。月陣営+10%。
+  desc_zh_CN: 弹弓弹药。17伤害+20位面伤害。施加恐惧位面持续伤害。对月亮阵营+10%。
+  desc_zh_TW: 彈弓彈藥。17傷害+20位面傷害。施加恐懼位面持續傷害。對月亮陣營+10%。
+  desc_fr: Munition de fronde. 17 + 20 dégâts planaires. DOT planaire d'horreur. +10% vs lunaire.
+  desc_de: Schleuder-Munition. 17 + 20 planarer Schaden. Horror-DOT. +10% gegen Mond.
+  desc_it: Munizione per fionda. 17 + 20 danni planari. DOT planare d'orrore. +10% vs lunare.
+  desc_pl: Amunicja do procy. 17 + 20 obrażeń planarnych. Planarny DOT grozy. +10% vs księżyc.
+  desc_pt_BR: Munição de estilingue. 17 + 20 dano planar. DOT planar de horror. +10% vs lunar.
+  desc_ru: Снаряд для рогатки. 17 + 20 планарного урона. Планарный DOT ужаса. +10% против лунных.
+  desc_es: Munición de tirachinas. 17 + 20 daño planar. DOT planar de horror. +10% vs lunar.
+  desc_es_MX: Munición de resortera. 17 + 20 daño planar. DOT planar de horror. +10% vs lunar.
 697.slingshotammo_lunarplanthusk
   en: Brightshade Husk Rounds
   ko: 빛말풀 거죽탄
   app: O
   source: Slingshot ammo. 38 damage (34*2-30), 30 planar damage. +10% vs shadow-aligned. Spawns a lunar plant tentacle on hit. Requires walter_ammo_lunar skill.
+  desc_en: Slingshot ammo dealing 38 damage + 30 planar damage. Spawns lunar tentacle on hit. +10% vs shadow.
+  desc_ko: 새총 탄환. 38 피해 + 30 차원 피해. 적중 시 달 촉수 소환. 그림자 진영 +10%.
+  desc_ja: パチンコ弾。38ダメージ+30プレーナーダメージ。命中時に月の触手を召喚。影陣営+10%。
+  desc_zh_CN: 弹弓弹药。38伤害+30位面伤害。命中时召唤月亮触手。对暗影阵营+10%。
+  desc_zh_TW: 彈弓彈藥。38傷害+30位面傷害。命中時召喚月亮觸手。對暗影陣營+10%。
+  desc_fr: Munition de fronde. 38 + 30 dégâts planaires. Invoque un tentacule lunaire. +10% vs ombre.
+  desc_de: Schleuder-Munition. 38 + 30 planarer Schaden. Beschwört Mond-Tentakel. +10% gegen Schatten.
+  desc_it: Munizione per fionda. 38 + 30 danni planari. Evoca tentacolo lunare. +10% vs ombra.
+  desc_pl: Amunicja do procy. 38 + 30 obrażeń planarnych. Przywołuje księżycową macę. +10% vs cień.
+  desc_pt_BR: Munição de estilingue. 38 + 30 dano planar. Invoca tentáculo lunar. +10% vs sombra.
+  desc_ru: Снаряд для рогатки. 38 + 30 планарного урона. Призывает лунное щупальце. +10% против теней.
+  desc_es: Munición de tirachinas. 38 + 30 daño planar. Invoca tentáculo lunar. +10% vs sombra.
+  desc_es_MX: Munición de resortera. 38 + 30 daño planar. Invoca tentáculo lunar. +10% vs sombra.
 698.slingshotammo_marble
   en: Marbles
   ko: 대리석 구슬
   app: O
   source: Slingshot ammo. 51 damage (34*1.5). Standard high-damage physical ammo with no special effects.
+  desc_en: Slingshot ammo dealing 51 damage. High-damage physical ammo with no special effects.
+  desc_ko: 새총 탄환. 51 피해. 특수 효과 없는 고위력 탄환.
+  desc_ja: パチンコ弾。51ダメージ。特殊効果なしの高火力弾薬。
+  desc_zh_CN: 弹弓弹药。51伤害。无特殊效果的高伤害弹药。
+  desc_zh_TW: 彈弓彈藥。51傷害。無特殊效果的高傷害彈藥。
+  desc_fr: Munition de fronde. 51 dégâts. Munition haute puissance sans effet spécial.
+  desc_de: Schleuder-Munition. 51 Schaden. Hochschaden-Munition ohne Spezialeffekt.
+  desc_it: Munizione per fionda. 51 danni. Munizione ad alto danno senza effetti speciali.
+  desc_pl: Amunicja do procy. 51 obrażeń. Amunicja o wysokich obrażeniach bez efektów specjalnych.
+  desc_pt_BR: Munição de estilingue. 51 de dano. Munição de alto dano sem efeitos especiais.
+  desc_ru: Снаряд для рогатки. 51 урона. Мощный снаряд без спецэффектов.
+  desc_es: Munición de tirachinas. 51 de daño. Munición de alto daño sin efectos especiales.
+  desc_es_MX: Munición de resortera. 51 de daño. Munición de alto daño sin efectos especiales.
 699.slingshotammo_moonglass
   en: Moonshots
   ko: 달나라탄
   app: O
   source: Slingshot ammo. 51 damage (34*1.5). Shatters on hit dealing AOE damage (34 damage in radius 2.75 to nearby enemies). Requires walter_ammo_shattershots skill.
+  desc_en: Slingshot ammo dealing 51 damage. Shatters on hit dealing AOE damage (34 dmg, radius 2.75).
+  desc_ko: 새총 탄환. 51 피해. 적중 시 파편 범위 피해 (34 피해, 반경 2.75).
+  desc_ja: パチンコ弾。51ダメージ。命中時に破片で範囲ダメージ（34ダメージ、半径2.75）。
+  desc_zh_CN: 弹弓弹药。51伤害。命中时碎裂造成范围伤害（34伤害，半径2.75）。
+  desc_zh_TW: 彈弓彈藥。51傷害。命中時碎裂造成範圍傷害（34傷害，半徑2.75）。
+  desc_fr: Munition de fronde. 51 dégâts. Se brise à l'impact (AOE 34 dégâts, rayon 2.75).
+  desc_de: Schleuder-Munition. 51 Schaden. Zerbricht bei Treffer (AOE 34 Schaden, Radius 2,75).
+  desc_it: Munizione per fionda. 51 danni. Si frantuma all'impatto (AOE 34 danni, raggio 2.75).
+  desc_pl: Amunicja do procy. 51 obrażeń. Rozpryskuje się (AOE 34 obrażeń, promień 2.75).
+  desc_pt_BR: Munição de estilingue. 51 de dano. Estilhaça ao acertar (AOE 34 dano, raio 2.75).
+  desc_ru: Снаряд для рогатки. 51 урона. Разлетается при попадании (AOE 34 урона, радиус 2.75).
+  desc_es: Munición de tirachinas. 51 de daño. Se rompe al impactar (AOE 34 daño, radio 2.75).
+  desc_es_MX: Munición de resortera. 51 de daño. Se rompe al impactar (AOE 34 daño, radio 2.75).
 700.slingshotammo_poop
   en: Poop Pellets
   ko: 오물덩이
   app: O
   source: Slingshot ammo. 0 base damage. Distraction effect — causes target to drop aggro briefly (hostile creatures retarget shortly after). 1/10th fuel value of regular poop. No skill requirement.
+  desc_en: Slingshot ammo with no damage. Causes target to briefly drop aggro. Fertilizes the ground on impact.
+  desc_ko: 새총 탄환. 피해 없음. 적의 어그로를 잠시 해제. 착탄 지점 비료 효과.
+  desc_ja: パチンコ弾。ダメージなし。ターゲットのアグロを一時的に解除。着弾地点に肥料効果。
+  desc_zh_CN: 弹弓弹药。无伤害。使目标短暂失去仇恨。着弹点施肥效果。
+  desc_zh_TW: 彈弓彈藥。無傷害。使目標短暫失去仇恨。著彈點施肥效果。
+  desc_fr: Munition de fronde. Pas de dégâts. Fait perdre l'aggro brièvement. Fertilise le sol à l'impact.
+  desc_de: Schleuder-Munition. Kein Schaden. Ziel verliert kurz Aggro. Düngt den Boden bei Einschlag.
+  desc_it: Munizione per fionda. Nessun danno. Il bersaglio perde l'aggro brevemente. Fertilizza il terreno.
+  desc_pl: Amunicja do procy. Brak obrażeń. Cel traci aggro na chwilę. Nawozi ziemię przy trafieniu.
+  desc_pt_BR: Munição de estilingue. Sem dano. Alvo perde aggro brevemente. Fertiliza o solo ao impactar.
+  desc_ru: Снаряд для рогатки. Без урона. Цель ненадолго теряет агро. Удобряет землю при попадании.
+  desc_es: Munición de tirachinas. Sin daño. El objetivo pierde aggro brevemente. Fertiliza el suelo.
+  desc_es_MX: Munición de resortera. Sin daño. El objetivo pierde aggro brevemente. Fertiliza el suelo.
 701.slingshotammo_purebrilliance
   en: Pure Brilliance Rounds
   ko: 순수한 광휘탄
@@ -7686,181 +14602,649 @@
   ko: 체크무늬 바닥
   app: O
   source: Turf item (tiledefs.lua "CHECKER"). Flooring, hard ground. 1.3x movement speed (roadways).
+  desc_en: Flooring turf with 1.3x movement speed. Hard ground, functions as roadway.
+  desc_ko: 이동 속도 1.3배의 바닥재. 단단한 지면이며 도로로 기능합니다.
+  desc_ja: 移動速度1.3倍の床材。硬い地面で道路として機能します。
+  desc_zh_CN: 移动速度1.3倍的地板。硬地面，作为道路使用。
+  desc_zh_TW: 移動速度1.3倍的地板。硬地面，作為道路使用。
+  desc_fr: Revêtement de sol avec vitesse de déplacement ×1.3. Sol dur, fonctionne comme route.
+  desc_de: Bodenbelag mit 1,3-facher Bewegungsgeschwindigkeit. Harter Boden, funktioniert als Straße.
+  desc_it: Pavimento con velocità di movimento ×1.3. Terreno duro, funziona come strada.
+  desc_pl: Podłoga z prędkością ruchu ×1.3. Twarde podłoże, działa jak droga.
+  desc_pt_BR: Piso com velocidade de movimento ×1.3. Solo duro, funciona como estrada.
+  desc_ru: Покрытие с множителем скорости ×1.3. Твёрдый грунт, работает как дорога.
+  desc_es: Suelo con velocidad de movimiento ×1.3. Suelo duro, funciona como camino.
+  desc_es_MX: Suelo con velocidad de movimiento ×1.3. Suelo duro, funciona como camino.
 802.turf_cotl_brick
   en: Brick Flooring
   ko: 벽돌 바닥
   app: O
   source: Turf item (tiledefs.lua "COTL_BRICK"). Hard ground. 1.3x movement speed (roadways).
+  desc_en: Decorative brick flooring. Hard ground with no speed bonus.
+  desc_ko: 장식용 벽돌 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 装飾用レンガ床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 装饰性砖地板。硬地面，无速度加成。
+  desc_zh_TW: 裝飾性磚地板。硬地面，無速度加成。
+  desc_fr: Revêtement en brique décoratif. Sol dur sans bonus de vitesse.
+  desc_de: Dekorativer Ziegelboden. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento in mattoni decorativo. Terreno duro senza bonus velocità.
+  desc_pl: Dekoracyjna podłoga z cegieł. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso decorativo de tijolos. Solo duro sem bônus de velocidade.
+  desc_ru: Декоративный кирпичный пол. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo decorativo de ladrillo. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo decorativo de ladrillo. Suelo duro sin bonificación de velocidad.
 803.turf_cotl_gold
   en: Gold Flooring
   ko: 황금 바닥
   app: O
   source: Turf item (tiledefs.lua "COTL_GOLD"). Flooring, hard ground. No speed bonus.
+  desc_en: Decorative gold flooring. Hard ground with no speed bonus.
+  desc_ko: 장식용 황금 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 装飾用ゴールド床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 装饰性黄金地板。硬地面，无速度加成。
+  desc_zh_TW: 裝飾性黃金地板。硬地面，無速度加成。
+  desc_fr: Revêtement en or décoratif. Sol dur sans bonus de vitesse.
+  desc_de: Dekorativer Goldboden. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento dorato decorativo. Terreno duro senza bonus velocità.
+  desc_pl: Dekoracyjna złota podłoga. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso decorativo de ouro. Solo duro sem bônus de velocidade.
+  desc_ru: Декоративный золотой пол. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo decorativo de oro. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo decorativo de oro. Suelo duro sin bonificación de velocidad.
 804.turf_deciduous
   en: Deciduous Turf
   ko: 낙엽 바닥
   app: O
   source: Turf item (tiledefs.lua "DECIDUOUS"). Natural biome turf. No special properties.
+  desc_en: Natural deciduous biome turf. No special properties.
+  desc_ko: 자연 낙엽수림 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 自然の落葉樹バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 自然落叶林生态地皮。无特殊属性。
+  desc_zh_TW: 自然落葉林生態地皮。無特殊屬性。
+  desc_fr: Gazon naturel du biome feuillu. Pas de propriétés spéciales.
+  desc_de: Natürlicher Laubbaumsbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle naturale del bioma deciduo. Nessuna proprietà speciale.
+  desc_pl: Naturalna darń z biomu liściastego. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa natural do bioma de floresta decídua. Sem propriedades especiais.
+  desc_ru: Природный дёрн лиственного биома. Без особых свойств.
+  desc_es: Césped natural del bioma caducifolio. Sin propiedades especiales.
+  desc_es_MX: Césped natural del bioma caducifolio. Sin propiedades especiales.
 805.turf_desertdirt
   en: Sandy Turf
   ko: 모래 바닥
   app: O
   source: Turf item (tiledefs.lua "DESERT_DIRT"). Natural biome turf. No special properties.
+  desc_en: Natural desert biome turf. No special properties.
+  desc_ko: 자연 사막 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 自然の砂漠バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 自然沙漠生态地皮。无特殊属性。
+  desc_zh_TW: 自然沙漠生態地皮。無特殊屬性。
+  desc_fr: Gazon naturel du biome désertique. Pas de propriétés spéciales.
+  desc_de: Natürlicher Wüstenbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle naturale del bioma desertico. Nessuna proprietà speciale.
+  desc_pl: Naturalna darń z biomu pustynnego. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa natural do bioma desértico. Sem propriedades especiais.
+  desc_ru: Природный дёрн пустынного биома. Без особых свойств.
+  desc_es: Césped natural del bioma desértico. Sin propiedades especiales.
+  desc_es_MX: Césped natural del bioma desértico. Sin propiedades especiales.
 806.turf_dragonfly
   en: Scaled Flooring
   ko: 비늘 바닥
   app: O
   source: Turf item (tiledefs.lua "SCALE"). Flooring, hard ground. Prevents fire spread (no_fire_spread). No speed bonus.
+  desc_en: Scaled flooring that prevents fire spread. Hard ground with no speed bonus.
+  desc_ko: 화재 확산을 방지하는 비늘 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 延焼を防ぐスケール床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 防止火焰蔓延的鳞片地板。硬地面，无速度加成。
+  desc_zh_TW: 防止火焰蔓延的鱗片地板。硬地面，無速度加成。
+  desc_fr: Revêtement en écailles empêchant la propagation du feu. Sol dur sans bonus de vitesse.
+  desc_de: Schuppenboden, der Feuerausbreitung verhindert. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento in scaglie che previene la propagazione del fuoco. Terreno duro senza bonus velocità.
+  desc_pl: Podłoga z łusek zapobiegająca rozprzestrzenianiu się ognia. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso de escamas que previne a propagação do fogo. Solo duro sem bônus de velocidade.
+  desc_ru: Чешуйчатый пол, предотвращающий распространение огня. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo de escamas que previene la propagación del fuego. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo de escamas que previene la propagación del fuego. Suelo duro sin bonificación de velocidad.
 807.turf_forest
   en: Forest Turf
   ko: 숲 바닥
   app: O
   source: Turf item (tiledefs.lua "FOREST"). Natural biome turf. No special properties.
+  desc_en: Natural forest biome turf. No special properties.
+  desc_ko: 자연 숲 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 自然の森バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 自然森林生态地皮。无特殊属性。
+  desc_zh_TW: 自然森林生態地皮。無特殊屬性。
+  desc_fr: Gazon naturel du biome forestier. Pas de propriétés spéciales.
+  desc_de: Natürlicher Waldbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle naturale del bioma forestale. Nessuna proprietà speciale.
+  desc_pl: Naturalna darń z biomu leśnego. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa natural do bioma florestal. Sem propriedades especiais.
+  desc_ru: Природный дёрн лесного биома. Без особых свойств.
+  desc_es: Césped natural del bioma forestal. Sin propiedades especiales.
+  desc_es_MX: Césped natural del bioma forestal. Sin propiedades especiales.
 808.turf_fungus
   en: Fungal Turf
   ko: 버섯 바닥
   app: O
   source: Turf item (tiledefs.lua "FUNGUS"). Cave biome turf (blue fungus). No special properties.
+  desc_en: Blue fungal cave biome turf. No special properties.
+  desc_ko: 파란 버섯 동굴 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 青キノコ洞窟バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 蓝色真菌洞穴生态地皮。无特殊属性。
+  desc_zh_TW: 藍色真菌洞穴生態地皮。無特殊屬性。
+  desc_fr: Gazon de biome fongique bleu des cavernes. Pas de propriétés spéciales.
+  desc_de: Blauer Pilzhöhlenbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle del bioma fungino blu delle caverne. Nessuna proprietà speciale.
+  desc_pl: Darń z niebieskiego biomu grzybów jaskiniowych. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa do bioma de fungos azuis da caverna. Sem propriedades especiais.
+  desc_ru: Дёрн голубого грибного биома пещер. Без особых свойств.
+  desc_es: Césped del bioma de hongos azules de cueva. Sin propiedades especiales.
+  desc_es_MX: Césped del bioma de hongos azules de cueva. Sin propiedades especiales.
 809.turf_fungus_green
   en: Fungal Turf
   ko: 버섯 바닥
   app: O
   source: Turf item (tiledefs.lua "FUNGUSGREEN"). Cave biome turf (green fungus). No special properties.
+  desc_en: Green fungal cave biome turf. No special properties.
+  desc_ko: 초록 버섯 동굴 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 緑キノコ洞窟バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 绿色真菌洞穴生态地皮。无特殊属性。
+  desc_zh_TW: 綠色真菌洞穴生態地皮。無特殊屬性。
+  desc_fr: Gazon de biome fongique vert des cavernes. Pas de propriétés spéciales.
+  desc_de: Grüner Pilzhöhlenbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle del bioma fungino verde delle caverne. Nessuna proprietà speciale.
+  desc_pl: Darń z zielonego biomu grzybów jaskiniowych. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa do bioma de fungos verdes da caverna. Sem propriedades especiais.
+  desc_ru: Дёрн зелёного грибного биома пещер. Без особых свойств.
+  desc_es: Césped del bioma de hongos verdes de cueva. Sin propiedades especiales.
+  desc_es_MX: Césped del bioma de hongos verdes de cueva. Sin propiedades especiales.
 810.turf_fungus_moon
   en: Mutated Fungal Turf
   ko: 돌연변이 버섯 바닥
   app: O
   source: Turf item (tiledefs.lua "FUNGUSMOON"). Cave biome turf (moon fungus). No special properties.
+  desc_en: Mutated moon fungal cave biome turf. No special properties.
+  desc_ko: 돌연변이 달 버섯 동굴 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 変異した月キノコ洞窟バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 突变月亮真菌洞穴生态地皮。无特殊属性。
+  desc_zh_TW: 突變月亮真菌洞穴生態地皮。無特殊屬性。
+  desc_fr: Gazon de biome fongique lunaire muté des cavernes. Pas de propriétés spéciales.
+  desc_de: Mutierter Mondpilzhöhlenbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle del bioma fungino lunare mutato delle caverne. Nessuna proprietà speciale.
+  desc_pl: Darń ze zmutowanego biomu grzybów księżycowych. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa do bioma de fungos lunares mutados da caverna. Sem propriedades especiais.
+  desc_ru: Дёрн мутировавшего лунного грибного биома пещер. Без особых свойств.
+  desc_es: Césped del bioma de hongos lunares mutados de cueva. Sin propiedades especiales.
+  desc_es_MX: Césped del bioma de hongos lunares mutados de cueva. Sin propiedades especiales.
 811.turf_fungus_red
   en: Fungal Turf
   ko: 버섯 바닥
   app: O
   source: Turf item (tiledefs.lua "FUNGUSRED"). Cave biome turf (red fungus). No special properties.
+  desc_en: Red fungal cave biome turf. No special properties.
+  desc_ko: 빨간 버섯 동굴 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 赤キノコ洞窟バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 红色真菌洞穴生态地皮。无特殊属性。
+  desc_zh_TW: 紅色真菌洞穴生態地皮。無特殊屬性。
+  desc_fr: Gazon de biome fongique rouge des cavernes. Pas de propriétés spéciales.
+  desc_de: Roter Pilzhöhlenbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle del bioma fungino rosso delle caverne. Nessuna proprietà speciale.
+  desc_pl: Darń z czerwonego biomu grzybów jaskiniowych. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa do bioma de fungos vermelhos da caverna. Sem propriedades especiais.
+  desc_ru: Дёрн красного грибного биома пещер. Без особых свойств.
+  desc_es: Césped del bioma de hongos rojos de cueva. Sin propiedades especiales.
+  desc_es_MX: Césped del bioma de hongos rojos de cueva. Sin propiedades especiales.
 812.turf_grass
   en: Grass Turf
   ko: 잔디 바닥
   app: O
   source: Turf item (tiledefs.lua "GRASS"). Natural biome turf. No special properties.
+  desc_en: Natural grassland biome turf. No special properties.
+  desc_ko: 자연 초원 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 自然の草原バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 自然草地生态地皮。无特殊属性。
+  desc_zh_TW: 自然草地生態地皮。無特殊屬性。
+  desc_fr: Gazon naturel du biome herbeux. Pas de propriétés spéciales.
+  desc_de: Natürlicher Grasbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle naturale del bioma erboso. Nessuna proprietà speciale.
+  desc_pl: Naturalna darń z biomu trawiastego. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa natural do bioma de grama. Sem propriedades especiais.
+  desc_ru: Природный дёрн травяного биома. Без особых свойств.
+  desc_es: Césped natural del bioma de hierba. Sin propiedades especiales.
+  desc_es_MX: Césped natural del bioma de hierba. Sin propiedades especiales.
 813.turf_marsh
   en: Marsh Turf
   ko: 늪지 바닥
   app: O
   source: Turf item (tiledefs.lua "MARSH"). Natural biome turf. No special properties.
+  desc_en: Natural marsh biome turf. No special properties.
+  desc_ko: 자연 늪지 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 自然の沼地バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 自然沼泽生态地皮。无特殊属性。
+  desc_zh_TW: 自然沼澤生態地皮。無特殊屬性。
+  desc_fr: Gazon naturel du biome marécageux. Pas de propriétés spéciales.
+  desc_de: Natürlicher Sumpfbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle naturale del bioma paludoso. Nessuna proprietà speciale.
+  desc_pl: Naturalna darń z biomu bagiennego. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa natural do bioma pantanoso. Sem propriedades especiais.
+  desc_ru: Природный дёрн болотного биома. Без особых свойств.
+  desc_es: Césped natural del bioma pantanoso. Sin propiedades especiales.
+  desc_es_MX: Césped natural del bioma pantanoso. Sin propiedades especiales.
 814.turf_meteor
   en: Moon Crater Turf
   ko: 월면 바닥
   app: O
   source: Turf item (tiledefs.lua "METEOR"). Lunar island biome turf. No special properties.
+  desc_en: Lunar island biome turf from meteor craters. No special properties.
+  desc_ko: 운석 분화구의 달 섬 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 隕石クレーターのルナーアイランドバイオームのターフ。特殊効果なし。
+  desc_zh_CN: 月岛陨石坑生态地皮。无特殊属性。
+  desc_zh_TW: 月島隕石坑生態地皮。無特殊屬性。
+  desc_fr: Gazon du biome lunaire des cratères de météorites. Pas de propriétés spéciales.
+  desc_de: Mondinselboden aus Meteorkratern. Keine besonderen Eigenschaften.
+  desc_it: Zolle del bioma lunare dai crateri di meteoriti. Nessuna proprietà speciale.
+  desc_pl: Darń z biomu wyspy księżycowej z kraterów meteorytów. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa do bioma da ilha lunar de crateras de meteoro. Sem propriedades especiais.
+  desc_ru: Дёрн лунного биома из метеорных кратеров. Без особых свойств.
+  desc_es: Césped del bioma lunar de cráteres de meteoritos. Sin propiedades especiales.
+  desc_es_MX: Césped del bioma lunar de cráteres de meteoritos. Sin propiedades especiales.
 815.turf_monkey_ground
   en: Moon Quay Beach Turf
   ko: 월숭이 섬 해변 바닥
   app: O
   source: Turf item (tiledefs.lua "MONKEY_GROUND"). Moon Quay island biome turf. No special properties.
+  desc_en: Moon Quay island beach biome turf. No special properties.
+  desc_ko: 월숭이 섬 해변 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: ムーンキー島ビーチバイオームのターフ。特殊効果なし。
+  desc_zh_CN: 月猴岛海滩生态地皮。无特殊属性。
+  desc_zh_TW: 月猴島海灘生態地皮。無特殊屬性。
+  desc_fr: Gazon de plage du biome de l'île Moon Quay. Pas de propriétés spéciales.
+  desc_de: Moon Quay Insel-Strandbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle della spiaggia del bioma dell'isola Moon Quay. Nessuna proprietà speciale.
+  desc_pl: Darń z plaży biomu wyspy Moon Quay. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa da praia do bioma da ilha Moon Quay. Sem propriedades especiais.
+  desc_ru: Дёрн пляжного биома острова Лунного причала. Без особых свойств.
+  desc_es: Césped de playa del bioma de la isla Moon Quay. Sin propiedades especiales.
+  desc_es_MX: Césped de playa del bioma de la isla Moon Quay. Sin propiedades especiales.
 816.turf_mosaic_blue
   en: Blue Mosaic Flooring
   ko: 파랑 모자이크 바닥
   app: O
   source: Turf item (tiledefs.lua "MOSAIC_BLUE"). Flooring, hard ground. No speed bonus.
+  desc_en: Blue mosaic decorative flooring. Hard ground with no speed bonus.
+  desc_ko: 파랑 모자이크 장식 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 青モザイク装飾床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 蓝色马赛克装饰地板。硬地面，无速度加成。
+  desc_zh_TW: 藍色馬賽克裝飾地板。硬地面，無速度加成。
+  desc_fr: Revêtement décoratif en mosaïque bleue. Sol dur sans bonus de vitesse.
+  desc_de: Blauer Mosaikboden. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento decorativo a mosaico blu. Terreno duro senza bonus velocità.
+  desc_pl: Dekoracyjna niebieska podłoga mozaikowa. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso decorativo de mosaico azul. Solo duro sem bônus de velocidade.
+  desc_ru: Декоративный синий мозаичный пол. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo decorativo de mosaico azul. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo decorativo de mosaico azul. Suelo duro sin bonificación de velocidad.
 817.turf_mosaic_grey
   en: Grey Mosaic Flooring
   ko: 회색 모자이크 바닥
   app: O
   source: Turf item (tiledefs.lua "MOSAIC_GREY"). Flooring, hard ground. No speed bonus.
+  desc_en: Grey mosaic decorative flooring. Hard ground with no speed bonus.
+  desc_ko: 회색 모자이크 장식 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 灰色モザイク装飾床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 灰色马赛克装饰地板。硬地面，无速度加成。
+  desc_zh_TW: 灰色馬賽克裝飾地板。硬地面，無速度加成。
+  desc_fr: Revêtement décoratif en mosaïque grise. Sol dur sans bonus de vitesse.
+  desc_de: Grauer Mosaikboden. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento decorativo a mosaico grigio. Terreno duro senza bonus velocità.
+  desc_pl: Dekoracyjna szara podłoga mozaikowa. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso decorativo de mosaico cinza. Solo duro sem bônus de velocidade.
+  desc_ru: Декоративный серый мозаичный пол. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo decorativo de mosaico gris. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo decorativo de mosaico gris. Suelo duro sin bonificación de velocidad.
 818.turf_mosaic_red
   en: Red Mosaic Flooring
   ko: 빨강 모자이크 바닥
   app: O
   source: Turf item (tiledefs.lua "MOSAIC_RED"). Flooring, hard ground. No speed bonus.
+  desc_en: Red mosaic decorative flooring. Hard ground with no speed bonus.
+  desc_ko: 빨강 모자이크 장식 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 赤モザイク装飾床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 红色马赛克装饰地板。硬地面，无速度加成。
+  desc_zh_TW: 紅色馬賽克裝飾地板。硬地面，無速度加成。
+  desc_fr: Revêtement décoratif en mosaïque rouge. Sol dur sans bonus de vitesse.
+  desc_de: Roter Mosaikboden. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento decorativo a mosaico rosso. Terreno duro senza bonus velocità.
+  desc_pl: Dekoracyjna czerwona podłoga mozaikowa. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso decorativo de mosaico vermelho. Solo duro sem bônus de velocidade.
+  desc_ru: Декоративный красный мозаичный пол. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo decorativo de mosaico rojo. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo decorativo de mosaico rojo. Suelo duro sin bonificación de velocidad.
 819.turf_mud
   en: Mud Turf
   ko: 진흙 바닥
   app: O
   source: Turf item (tiledefs.lua "MUD"). Cave biome turf. No special properties.
+  desc_en: Cave biome mud turf. No special properties.
+  desc_ko: 동굴 바이옴 진흙 바닥재. 특수 효과 없음.
+  desc_ja: 洞窟バイオームの泥ターフ。特殊効果なし。
+  desc_zh_CN: 洞穴泥地生态地皮。无特殊属性。
+  desc_zh_TW: 洞穴泥地生態地皮。無特殊屬性。
+  desc_fr: Gazon boueux du biome des cavernes. Pas de propriétés spéciales.
+  desc_de: Schlammiger Höhlenbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle di fango del bioma delle caverne. Nessuna proprietà speciale.
+  desc_pl: Błotnista darń z biomu jaskiniowego. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa de lama do bioma de caverna. Sem propriedades especiais.
+  desc_ru: Грязевой дёрн пещерного биома. Без особых свойств.
+  desc_es: Césped de barro del bioma de cueva. Sin propiedades especiales.
+  desc_es_MX: Césped de barro del bioma de cueva. Sin propiedades especiales.
 820.turf_pebblebeach
   en: Rocky Beach Turf
   ko: 바위 해안 바닥
   app: O
   source: Turf item (tiledefs.lua "PEBBLEBEACH"). Lunar island beach turf. No special properties.
+  desc_en: Lunar island pebble beach biome turf. No special properties.
+  desc_ko: 달 섬 자갈 해안 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: ルナーアイランドの小石ビーチバイオームのターフ。特殊効果なし。
+  desc_zh_CN: 月岛卵石海滩生态地皮。无特殊属性。
+  desc_zh_TW: 月島卵石海灘生態地皮。無特殊屬性。
+  desc_fr: Gazon de plage de galets du biome lunaire. Pas de propriétés spéciales.
+  desc_de: Kieselstrandbiom-Rasen der Mondinsel. Keine besonderen Eigenschaften.
+  desc_it: Zolle della spiaggia di ciottoli del bioma lunare. Nessuna proprietà speciale.
+  desc_pl: Darń z kamienistej plaży biomu wyspy księżycowej. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa da praia de seixos do bioma da ilha lunar. Sem propriedades especiais.
+  desc_ru: Дёрн галечного пляжа лунного биома. Без особых свойств.
+  desc_es: Césped de playa de guijarros del bioma lunar. Sin propiedades especiales.
+  desc_es_MX: Césped de playa de guijarros del bioma lunar. Sin propiedades especiales.
 821.turf_road
   en: Cobblestones
   ko: 자갈 길
   app: O
   source: Turf item (tiledefs.lua "ROAD"). Hard ground. 1.3x movement speed (roadways).
+  desc_en: Cobblestone road turf with 1.3x movement speed. Hard ground, functions as roadway.
+  desc_ko: 이동 속도 1.3배의 자갈 길 바닥재. 단단한 지면이며 도로로 기능합니다.
+  desc_ja: 移動速度1.3倍の石畳道ターフ。硬い地面で道路として機能します。
+  desc_zh_CN: 移动速度1.3倍的鹅卵石路地皮。硬地面，作为道路使用。
+  desc_zh_TW: 移動速度1.3倍的鵝卵石路地皮。硬地面，作為道路使用。
+  desc_fr: Pavé de route avec vitesse de déplacement ×1.3. Sol dur, fonctionne comme route.
+  desc_de: Kopfsteinpflaster mit 1,3-facher Bewegungsgeschwindigkeit. Harter Boden, funktioniert als Straße.
+  desc_it: Selciato con velocità di movimento ×1.3. Terreno duro, funziona come strada.
+  desc_pl: Bruk z prędkością ruchu ×1.3. Twarde podłoże, działa jak droga.
+  desc_pt_BR: Calçamento de pedra com velocidade ×1.3. Solo duro, funciona como estrada.
+  desc_ru: Мощёная дорога с множителем скорости ×1.3. Твёрдый грунт, работает как дорога.
+  desc_es: Adoquín con velocidad de movimiento ×1.3. Suelo duro, funciona como camino.
+  desc_es_MX: Adoquín con velocidad de movimiento ×1.3. Suelo duro, funciona como camino.
 822.turf_rocky
   en: Rocky Turf
   ko: 바위 바닥
   app: O
   source: Turf item (tiledefs.lua "ROCKY"). Hard ground. No speed bonus.
+  desc_en: Rocky terrain turf. Hard ground with no speed bonus.
+  desc_ko: 바위 지형 바닥재. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 岩場の地形ターフ。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 岩石地形地皮。硬地面，无速度加成。
+  desc_zh_TW: 岩石地形地皮。硬地面，無速度加成。
+  desc_fr: Gazon de terrain rocheux. Sol dur sans bonus de vitesse.
+  desc_de: Felsiger Geländerasen. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Zolle di terreno roccioso. Terreno duro senza bonus velocità.
+  desc_pl: Darń skalistego terenu. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Turfa de terreno rochoso. Solo duro sem bônus de velocidade.
+  desc_ru: Дёрн скалистой местности. Твёрдый грунт без бонуса к скорости.
+  desc_es: Césped de terreno rocoso. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Césped de terreno rocoso. Suelo duro sin bonificación de velocidad.
 823.turf_ruinsbrick
   en: Ancient Flooring
   ko: 고대의 바닥
   app: O
   source: Turf item (tiledefs.lua "BRICK"). Cave ruins turf (glowing bricks). Hard ground. No speed bonus.
+  desc_en: Ancient ruins brick flooring from caves. Hard ground with no speed bonus.
+  desc_ko: 동굴 고대 유적 벽돌 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 洞窟の古代遺跡レンガ床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 洞穴古代遗迹砖地板。硬地面，无速度加成。
+  desc_zh_TW: 洞穴古代遺跡磚地板。硬地面，無速度加成。
+  desc_fr: Revêtement en briques des ruines anciennes des cavernes. Sol dur sans bonus de vitesse.
+  desc_de: Antiker Ruinenziegelboden aus Höhlen. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento in mattoni delle rovine antiche delle caverne. Terreno duro senza bonus velocità.
+  desc_pl: Podłoga z cegieł starożytnych ruin jaskiniowych. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso de tijolos das ruínas antigas da caverna. Solo duro sem bônus de velocidade.
+  desc_ru: Кирпичный пол древних руин пещер. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo de ladrillo de ruinas antiguas de cueva. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo de ladrillo de ruinas antiguas de cueva. Suelo duro sin bonificación de velocidad.
 824.turf_ruinsbrick_glow
   en: Imitation Ancient Flooring
   ko: 모조품 고대의 바닥
   app: O
   source: Turf item (tiledefs.lua "BRICK_GLOW"). Cave ruins turf (pale bricks). Hard ground. No speed bonus.
+  desc_en: Imitation ancient ruins brick flooring. Hard ground with no speed bonus. Craftable variant.
+  desc_ko: 모조품 고대 유적 벽돌 바닥. 속도 보너스 없는 단단한 지면입니다. 제작 가능 변형.
+  desc_ja: 模造古代遺跡レンガ床。速度ボーナスのない硬い地面。製作可能バリアント。
+  desc_zh_CN: 仿制古代遗迹砖地板。硬地面，无速度加成。可制作变体。
+  desc_zh_TW: 仿製古代遺跡磚地板。硬地面，無速度加成。可製作變體。
+  desc_fr: Imitation de revêtement en briques des ruines. Sol dur sans bonus de vitesse. Variante artisanale.
+  desc_de: Nachahmung des antiken Ruinenziegelbodens. Harter Boden ohne Geschwindigkeitsbonus. Herstellbare Variante.
+  desc_it: Imitazione del pavimento in mattoni delle rovine. Terreno duro senza bonus velocità. Variante fabbricabile.
+  desc_pl: Imitacja podłogi z cegieł starożytnych ruin. Twarde podłoże bez bonusu prędkości. Wariant do wytworzenia.
+  desc_pt_BR: Imitação do piso de tijolos das ruínas. Solo duro sem bônus de velocidade. Variante fabricável.
+  desc_ru: Имитация кирпичного пола древних руин. Твёрдый грунт без бонуса к скорости. Создаваемый вариант.
+  desc_es: Imitación de suelo de ladrillo de ruinas. Suelo duro sin bonificación de velocidad. Variante fabricable.
+  desc_es_MX: Imitación de suelo de ladrillo de ruinas. Suelo duro sin bonificación de velocidad. Variante fabricable.
 825.turf_ruinstiles
   en: Ancient Tilework
   ko: 고대의 타일 장식
   app: O
   source: Turf item (tiledefs.lua "TILES"). Cave ruins turf (glowing tiles). Hard ground. No speed bonus.
+  desc_en: Ancient ruins tile flooring from caves. Hard ground with no speed bonus.
+  desc_ko: 동굴 고대 유적 타일 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 洞窟の古代遺跡タイル床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 洞穴古代遗迹瓷砖地板。硬地面，无速度加成。
+  desc_zh_TW: 洞穴古代遺跡磁磚地板。硬地面，無速度加成。
+  desc_fr: Revêtement en tuiles des ruines anciennes des cavernes. Sol dur sans bonus de vitesse.
+  desc_de: Antiker Ruinenfliesenboden aus Höhlen. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento in piastrelle delle rovine antiche delle caverne. Terreno duro senza bonus velocità.
+  desc_pl: Podłoga z płytek starożytnych ruin jaskiniowych. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso de ladrilhos das ruínas antigas da caverna. Solo duro sem bônus de velocidade.
+  desc_ru: Плиточный пол древних руин пещер. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo de azulejos de ruinas antiguas de cueva. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo de azulejos de ruinas antiguas de cueva. Suelo duro sin bonificación de velocidad.
 826.turf_ruinstiles_glow
   en: Imitation Ancient Tilework
   ko: 모조품 고대의 타일 장식
   app: O
   source: Turf item (tiledefs.lua "TILES_GLOW"). Cave ruins turf (pale tiles). Hard ground. No speed bonus.
+  desc_en: Imitation ancient ruins tile flooring. Hard ground with no speed bonus. Craftable variant.
+  desc_ko: 모조품 고대 유적 타일 바닥. 속도 보너스 없는 단단한 지면입니다. 제작 가능 변형.
+  desc_ja: 模造古代遺跡タイル床。速度ボーナスのない硬い地面。製作可能バリアント。
+  desc_zh_CN: 仿制古代遗迹瓷砖地板。硬地面，无速度加成。可制作变体。
+  desc_zh_TW: 仿製古代遺跡磁磚地板。硬地面，無速度加成。可製作變體。
+  desc_fr: Imitation de revêtement en tuiles des ruines. Sol dur sans bonus de vitesse. Variante artisanale.
+  desc_de: Nachahmung des antiken Ruinenfliesenbodens. Harter Boden ohne Geschwindigkeitsbonus. Herstellbare Variante.
+  desc_it: Imitazione del pavimento in piastrelle delle rovine. Terreno duro senza bonus velocità. Variante fabbricabile.
+  desc_pl: Imitacja podłogi z płytek starożytnych ruin. Twarde podłoże bez bonusu prędkości. Wariant do wytworzenia.
+  desc_pt_BR: Imitação do piso de ladrilhos das ruínas. Solo duro sem bônus de velocidade. Variante fabricável.
+  desc_ru: Имитация плиточного пола древних руин. Твёрдый грунт без бонуса к скорости. Создаваемый вариант.
+  desc_es: Imitación de suelo de azulejos de ruinas. Suelo duro sin bonificación de velocidad. Variante fabricable.
+  desc_es_MX: Imitación de suelo de azulejos de ruinas. Suelo duro sin bonificación de velocidad. Variante fabricable.
 827.turf_ruinstrim
   en: Ancient Brickwork
   ko: 고대의 벽돌 장식
   app: O
   source: Turf item (tiledefs.lua "TRIM"). Cave ruins turf (glowing trim). Hard ground. No speed bonus.
+  desc_en: Ancient ruins brickwork trim flooring from caves. Hard ground with no speed bonus.
+  desc_ko: 동굴 고대 유적 벽돌 장식 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 洞窟の古代遺跡レンガ装飾床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 洞穴古代遗迹砖饰地板。硬地面，无速度加成。
+  desc_zh_TW: 洞穴古代遺跡磚飾地板。硬地面，無速度加成。
+  desc_fr: Revêtement en briques décoratives des ruines anciennes. Sol dur sans bonus de vitesse.
+  desc_de: Antiker Ruinenzierziegel aus Höhlen. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento decorativo in muratura delle rovine antiche. Terreno duro senza bonus velocità.
+  desc_pl: Podłoga z dekoracyjnej cegły starożytnych ruin. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso de alvenaria decorativa das ruínas antigas. Solo duro sem bônus de velocidade.
+  desc_ru: Декоративный кирпичный пол древних руин пещер. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo de mampostería decorativa de ruinas antiguas. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo de mampostería decorativa de ruinas antiguas. Suelo duro sin bonificación de velocidad.
 828.turf_ruinstrim_glow
   en: Imitation Ancient Brickwork
   ko: 모조품 고대의 벽돌 장식
   app: O
   source: Turf item (tiledefs.lua "TRIM_GLOW"). Cave ruins turf (pale trim). Hard ground. No speed bonus.
+  desc_en: Imitation ancient ruins brickwork trim flooring. Hard ground with no speed bonus. Craftable variant.
+  desc_ko: 모조품 고대 유적 벽돌 장식 바닥. 속도 보너스 없는 단단한 지면입니다. 제작 가능 변형.
+  desc_ja: 模造古代遺跡レンガ装飾床。速度ボーナスのない硬い地面。製作可能バリアント。
+  desc_zh_CN: 仿制古代遗迹砖饰地板。硬地面，无速度加成。可制作变体。
+  desc_zh_TW: 仿製古代遺跡磚飾地板。硬地面，無速度加成。可製作變體。
+  desc_fr: Imitation de briques décoratives des ruines. Sol dur sans bonus de vitesse. Variante artisanale.
+  desc_de: Nachahmung des antiken Ruinenzierziegels. Harter Boden ohne Geschwindigkeitsbonus. Herstellbare Variante.
+  desc_it: Imitazione del pavimento decorativo in muratura delle rovine. Terreno duro senza bonus velocità. Variante fabbricabile.
+  desc_pl: Imitacja podłogi z dekoracyjnej cegły ruin. Twarde podłoże bez bonusu prędkości. Wariant do wytworzenia.
+  desc_pt_BR: Imitação do piso de alvenaria decorativa das ruínas. Solo duro sem bônus de velocidade. Variante fabricável.
+  desc_ru: Имитация декоративного кирпичного пола руин. Твёрдый грунт без бонуса к скорости. Создаваемый вариант.
+  desc_es: Imitación de mampostería decorativa de ruinas. Suelo duro sin bonificación de velocidad. Variante fabricable.
+  desc_es_MX: Imitación de mampostería decorativa de ruinas. Suelo duro sin bonificación de velocidad. Variante fabricable.
 829.turf_savanna
   en: Savanna Turf
   ko: 사바나 바닥
   app: O
   source: Turf item (tiledefs.lua "SAVANNA"). Natural biome turf. No special properties.
+  desc_en: Natural savanna biome turf. No special properties.
+  desc_ko: 자연 사바나 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 自然のサバンナバイオームのターフ。特殊効果なし。
+  desc_zh_CN: 自然热带草原生态地皮。无特殊属性。
+  desc_zh_TW: 自然熱帶草原生態地皮。無特殊屬性。
+  desc_fr: Gazon naturel du biome de savane. Pas de propriétés spéciales.
+  desc_de: Natürlicher Savannenbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle naturale del bioma della savana. Nessuna proprietà speciale.
+  desc_pl: Naturalna darń z biomu sawanny. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa natural do bioma de savana. Sem propriedades especiais.
+  desc_ru: Природный дёрн биома саванны. Без особых свойств.
+  desc_es: Césped natural del bioma de sabana. Sin propiedades especiales.
+  desc_es_MX: Césped natural del bioma de sabana. Sin propiedades especiales.
 830.turf_shellbeach
   en: Shell Beach Turf
   ko: 조개 껍질 바닥
   app: O
   source: Turf item (tiledefs.lua "SHELLBEACH"). Coastal biome turf. No special properties.
+  desc_en: Coastal shell beach biome turf. No special properties.
+  desc_ko: 해안 조개 껍질 해변 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 海岸の貝殻ビーチバイオームのターフ。特殊効果なし。
+  desc_zh_CN: 海岸贝壳海滩生态地皮。无特殊属性。
+  desc_zh_TW: 海岸貝殼海灘生態地皮。無特殊屬性。
+  desc_fr: Gazon de plage coquillière côtière. Pas de propriétés spéciales.
+  desc_de: Küsten-Muschelstrandbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle della spiaggia di conchiglie costiera. Nessuna proprietà speciale.
+  desc_pl: Darń z przybrzeżnej plaży muszlowej. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa da praia de conchas costeira. Sem propriedades especiais.
+  desc_ru: Дёрн прибрежного ракушечного пляжа. Без особых свойств.
+  desc_es: Césped de playa de conchas costero. Sin propiedades especiales.
+  desc_es_MX: Césped de playa de conchas costero. Sin propiedades especiales.
 831.turf_sinkhole
   en: Slimy Turf
   ko: 미끈한 바닥
   app: O
   source: Turf item (tiledefs.lua "SINKHOLE"). Cave biome turf. No special properties.
+  desc_en: Cave sinkhole biome turf. No special properties.
+  desc_ko: 동굴 싱크홀 바이옴 바닥재. 특수 효과 없음.
+  desc_ja: 洞窟の陥没穴バイオームのターフ。特殊効果なし。
+  desc_zh_CN: 洞穴天坑生态地皮。无特殊属性。
+  desc_zh_TW: 洞穴天坑生態地皮。無特殊屬性。
+  desc_fr: Gazon de biome de gouffre des cavernes. Pas de propriétés spéciales.
+  desc_de: Höhlensenklochbiom-Rasen. Keine besonderen Eigenschaften.
+  desc_it: Zolle del bioma delle doline delle caverne. Nessuna proprietà speciale.
+  desc_pl: Darń z biomu jaskiniowego leja krasowego. Brak specjalnych właściwości.
+  desc_pt_BR: Turfa do bioma de sumidouro da caverna. Sem propriedades especiais.
+  desc_ru: Дёрн биома провала пещер. Без особых свойств.
+  desc_es: Césped del bioma de sumidero de cueva. Sin propiedades especiales.
+  desc_es_MX: Césped del bioma de sumidero de cueva. Sin propiedades especiales.
 832.turf_underrock
   en: Cave Rock Turf
   ko: 동굴 바위 바닥
   app: O
   source: Turf item (tiledefs.lua "UNDERROCK"). Cave biome turf. Hard ground. No speed bonus.
+  desc_en: Cave rock biome turf. Hard ground with no speed bonus.
+  desc_ko: 동굴 바위 바이옴 바닥재. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 洞窟の岩バイオームのターフ。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 洞穴岩石生态地皮。硬地面，无速度加成。
+  desc_zh_TW: 洞穴岩石生態地皮。硬地面，無速度加成。
+  desc_fr: Gazon rocheux du biome des cavernes. Sol dur sans bonus de vitesse.
+  desc_de: Höhlenfelsbiom-Rasen. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Zolle rocciose del bioma delle caverne. Terreno duro senza bonus velocità.
+  desc_pl: Darń skalna z biomu jaskiniowego. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Turfa rochosa do bioma de caverna. Solo duro sem bônus de velocidade.
+  desc_ru: Дёрн скального биома пещер. Твёрдый грунт без бонуса к скорости.
+  desc_es: Césped rocoso del bioma de cueva. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Césped rocoso del bioma de cueva. Suelo duro sin bonificación de velocidad.
 833.turf_vault
   en: Ancient Sanctum Stonework
   ko: 고대 성소 석조
   app: O
   source: Turf item (tiledefs.lua "VAULT_CLEAN"). Hard ground. Cannot be dug from VAULT tile (cannotbedug). Craftable variant is diggable.
+  desc_en: Ancient sanctum stonework turf. Hard ground. Cannot be dug from vault tiles; craftable variant is diggable.
+  desc_ko: 고대 성소 석조 바닥재. 단단한 지면. 금고 타일에서 채취 불가; 제작 변형은 채취 가능.
+  desc_ja: 古代聖域の石造ターフ。硬い地面。金庫タイルからは掘れないが、製作バリアントは掘削可能。
+  desc_zh_CN: 古代圣殿石砌地皮。硬地面。无法从金库地块挖取；可制作变体可挖掘。
+  desc_zh_TW: 古代聖殿石砌地皮。硬地面。無法從金庫地塊挖取；可製作變體可挖掘。
+  desc_fr: Dallage en pierre du sanctuaire ancien. Sol dur. Non récupérable des tuiles de voûte ; la variante artisanale est récupérable.
+  desc_de: Antikes Heiligtumsteinwerk. Harter Boden. Kann nicht aus Tresorplatten gegraben werden; die herstellbare Variante ist grabbar.
+  desc_it: Pavimento in pietra del santuario antico. Terreno duro. Non scavabile dai riquadri del caveau; la variante fabbricabile è scavabile.
+  desc_pl: Kamieniarka starożytnego sanktuarium. Twarde podłoże. Nie można wykopać z płytek skarbca; wariant do wytworzenia jest kopalny.
+  desc_pt_BR: Pavimento em pedra do santuário antigo. Solo duro. Não pode ser cavado dos ladrilhos do cofre; a variante fabricável é escavável.
+  desc_ru: Каменная кладка древнего святилища. Твёрдый грунт. Нельзя выкопать из плиток хранилища; создаваемый вариант можно выкопать.
+  desc_es: Cantería del santuario antiguo. Suelo duro. No se puede excavar de baldosas de bóveda; la variante fabricable sí es excavable.
+  desc_es_MX: Cantería del santuario antiguo. Suelo duro. No se puede excavar de baldosas de bóveda; la variante fabricable sí es excavable.
 834.turf_vent
   en: Cave Fumarole Turf
   ko: 동굴 분기공 바닥
   app: O
   source: Turf item (tiledefs.lua "VENT"). Cave biome turf. Hard ground. No speed bonus.
+  desc_en: Cave fumarole biome turf. Hard ground with no speed bonus.
+  desc_ko: 동굴 분기공 바이옴 바닥재. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 洞窟の噴気孔バイオームのターフ。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 洞穴喷气孔生态地皮。硬地面，无速度加成。
+  desc_zh_TW: 洞穴噴氣孔生態地皮。硬地面，無速度加成。
+  desc_fr: Gazon de biome de fumerolle des cavernes. Sol dur sans bonus de vitesse.
+  desc_de: Höhlenfumarolenbiom-Rasen. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Zolle del bioma delle fumarole delle caverne. Terreno duro senza bonus velocità.
+  desc_pl: Darń z biomu fumaroli jaskiniowych. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Turfa do bioma de fumarola da caverna. Solo duro sem bônus de velocidade.
+  desc_ru: Дёрн биома фумарол пещер. Твёрдый грунт без бонуса к скорости.
+  desc_es: Césped del bioma de fumarolas de cueva. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Césped del bioma de fumarolas de cueva. Suelo duro sin bonificación de velocidad.
 835.turf_woodfloor
   en: Wooden Flooring
   ko: 목제 마루
   app: O
   source: Turf item (tiledefs.lua "WOODFLOOR"). Flooring, hard ground. No speed bonus.
+  desc_en: Wooden decorative flooring. Hard ground with no speed bonus.
+  desc_ko: 목재 장식 바닥. 속도 보너스 없는 단단한 지면입니다.
+  desc_ja: 木製の装飾床。速度ボーナスのない硬い地面です。
+  desc_zh_CN: 木质装饰地板。硬地面，无速度加成。
+  desc_zh_TW: 木質裝飾地板。硬地面，無速度加成。
+  desc_fr: Revêtement décoratif en bois. Sol dur sans bonus de vitesse.
+  desc_de: Dekorativer Holzboden. Harter Boden ohne Geschwindigkeitsbonus.
+  desc_it: Pavimento decorativo in legno. Terreno duro senza bonus velocità.
+  desc_pl: Dekoracyjna drewniana podłoga. Twarde podłoże bez bonusu prędkości.
+  desc_pt_BR: Piso decorativo de madeira. Solo duro sem bônus de velocidade.
+  desc_ru: Декоративный деревянный пол. Твёрдый грунт без бонуса к скорости.
+  desc_es: Suelo decorativo de madera. Suelo duro sin bonificación de velocidad.
+  desc_es_MX: Suelo decorativo de madera. Suelo duro sin bonificación de velocidad.
 836.turfcraftingstation
   en: Terra Firma Tamper
   ko: 땅다지개
   app: O
   source: Crafting station (turfcraftingstation.lua). Prototyper for turf recipes (TURFCRAFTING tech tree). Hammerable (4 hits), burnable.
+  desc_en: Crafting station that prototypes turf recipes. Hammerable (4 hits), burnable.
+  desc_ko: 바닥재 레시피를 습득하는 제작 스테이션. 망치로 파괴 가능(4회), 연소 가능.
+  desc_ja: ターフレシピのプロトタイピングステーション。ハンマー4回で破壊可能、燃焼可能。
+  desc_zh_CN: 可研发地皮配方的制作站。可锤击（4次），可燃。
+  desc_zh_TW: 可研發地皮配方的製作站。可錘擊（4次），可燃。
+  desc_fr: Station d'artisanat pour prototyper les recettes de gazon. Démontable (4 coups), inflammable.
+  desc_de: Fertigungsstation für Bodenbelag-Rezepte. Abbruchfähig (4 Schläge), brennbar.
+  desc_it: Stazione di fabbricazione per prototipare ricette di zolle. Smontabile (4 colpi), infiammabile.
+  desc_pl: Stacja rzemieślnicza do prototypowania receptur darni. Rozbijalna (4 uderzenia), palna.
+  desc_pt_BR: Estação de fabricação para prototipar receitas de turfa. Desmontável (4 golpes), inflamável.
+  desc_ru: Станция создания для прототипирования рецептов дёрна. Разрушается молотком (4 удара), горючая.
+  desc_es: Estación de artesanía para prototipar recetas de césped. Desmontable (4 golpes), inflamable.
+  desc_es_MX: Estación de artesanía para prototipar recetas de césped. Desmontable (4 golpes), inflamable.
 837.umbrella
   en: Umbrella
   ko: 우산
@@ -7882,21 +15266,73 @@
     equippable.dapperness = TUNING.DAPPERNESS_SMALL
     insulator:SetInsulation(TUNING.INSULATION_MED)
     waterproofer:SetEffectiveness(TUNING.WATERPROOFNESS_MED)
+  desc_en: Hand slot item. 100% waterproof, medium insulation. Lasts 6 days. Dapperness +3.3/min.
+  desc_ko: 손 장비. 방수 100%, 중간 단열. 6일 지속. 품격 +3.3/분.
+  desc_ja: 手装備。防水100%、中断熱。6日持続。おしゃれ度+3.3/分。
+  desc_zh_CN: 手持装备。100%防水，中等隔热。持续6天。优雅度+3.3/分。
+  desc_zh_TW: 手持裝備。100%防水，中等隔熱。持續6天。優雅度+3.3/分。
+  desc_fr: Équipement de main. 100 % imperméable, isolation moyenne. Dure 6 jours. Élégance +3,3/min.
+  desc_de: Handausrüstung. 100 % wasserdicht, mittlere Isolierung. Hält 6 Tage. Eleganz +3,3/min.
+  desc_it: Equipaggiamento mano. 100% impermeabile, isolamento medio. Dura 6 giorni. Eleganza +3.3/min.
+  desc_pl: Wyposażenie ręczne. 100% wodoodporność, średnia izolacja. Wytrzymuje 6 dni. Elegancja +3.3/min.
+  desc_pt_BR: Equipamento de mão. 100% à prova d'água, isolamento médio. Dura 6 dias. Elegância +3.3/min.
+  desc_ru: Экипировка руки. 100% водонепроницаемость, средняя изоляция. Длится 6 дней. Элегантность +3.3/мин.
+  desc_es: Equipo de mano. 100 % impermeable, aislamiento medio. Dura 6 días. Elegancia +3,3/min.
+  desc_es_MX: Equipo de mano. 100 % impermeable, aislamiento medio. Dura 6 días. Elegancia +3,3/min.
 838.vaultrelic_bowl
   en: Replica Sanctum Bowl
   ko: 모조 성소 그릇
   app: O
   source: Decorative furniture (vaultrelic.lua). Ancient vault relic with moss variants. Hammerable. Can be placed on furniture.
+  desc_en: Decorative ancient vault relic. Hammerable. Can be placed on furniture.
+  desc_ko: 장식용 고대 금고 유물. 망치로 파괴 가능. 가구 위에 배치 가능.
+  desc_ja: 装飾用の古代金庫遺物。ハンマーで破壊可能。家具の上に配置可能。
+  desc_zh_CN: 装饰性古代金库遗物。可锤击。可放在家具上。
+  desc_zh_TW: 裝飾性古代金庫遺物。可錘擊。可放在傢俱上。
+  desc_fr: Relique décorative de voûte ancienne. Démontable. Peut être placée sur un meuble.
+  desc_de: Dekoratives antikes Tresorrelikt. Abbruchfähig. Kann auf Möbeln platziert werden.
+  desc_it: Reliquia decorativa dell'antico caveau. Smontabile. Può essere posizionata su mobili.
+  desc_pl: Dekoracyjna relikwia starożytnego skarbca. Rozbijalna. Można postawić na meblach.
+  desc_pt_BR: Relíquia decorativa do cofre antigo. Desmontável. Pode ser colocada em mobília.
+  desc_ru: Декоративная реликвия древнего хранилища. Разрушается молотком. Можно разместить на мебели.
+  desc_es: Reliquia decorativa de bóveda antigua. Desmontable. Se puede colocar sobre muebles.
+  desc_es_MX: Reliquia decorativa de bóveda antigua. Desmontable. Se puede colocar sobre muebles.
 839.vaultrelic_planter
   en: Replica Sanctum Planter
   ko: 모조 성소 화분
   app: O
   source: Decorative furniture (vaultrelic.lua). Ancient vault relic with moss variants. Hammerable. Can be placed on furniture.
+  desc_en: Decorative ancient vault planter relic. Hammerable. Can be placed on furniture.
+  desc_ko: 장식용 고대 금고 화분 유물. 망치로 파괴 가능. 가구 위에 배치 가능.
+  desc_ja: 装飾用の古代金庫プランター遺物。ハンマーで破壊可能。家具の上に配置可能。
+  desc_zh_CN: 装饰性古代金库花盆遗物。可锤击。可放在家具上。
+  desc_zh_TW: 裝飾性古代金庫花盆遺物。可錘擊。可放在傢俱上。
+  desc_fr: Relique de jardinière de voûte ancienne décorative. Démontable. Peut être placée sur un meuble.
+  desc_de: Dekoratives antikes Tresor-Pflanzgefäß-Relikt. Abbruchfähig. Kann auf Möbeln platziert werden.
+  desc_it: Reliquia decorativa della fioriera dell'antico caveau. Smontabile. Può essere posizionata su mobili.
+  desc_pl: Dekoracyjna relikwia doniczki starożytnego skarbca. Rozbijalna. Można postawić na meblach.
+  desc_pt_BR: Relíquia decorativa do vaso do cofre antigo. Desmontável. Pode ser colocada em mobília.
+  desc_ru: Декоративная реликвия-кашпо древнего хранилища. Разрушается молотком. Можно разместить на мебели.
+  desc_es: Reliquia decorativa de maceta de bóveda antigua. Desmontable. Se puede colocar sobre muebles.
+  desc_es_MX: Reliquia decorativa de maceta de bóveda antigua. Desmontable. Se puede colocar sobre muebles.
 840.vaultrelic_vase
   en: Replica Sanctum Vase
   ko: 모조 성소 꽃병
   app: O
   source: Decorative furniture (vaultrelic.lua). Ancient vault relic with vase component for flowers. Hammerable. Can be placed on furniture.
+  desc_en: Decorative ancient vault vase relic with flower slot. Hammerable. Can be placed on furniture.
+  desc_ko: 꽃꽂이 가능한 장식용 고대 금고 꽃병 유물. 망치로 파괴 가능. 가구 위에 배치 가능.
+  desc_ja: 花を挿せる装飾用の古代金庫花瓶遺物。ハンマーで破壊可能。家具の上に配置可能。
+  desc_zh_CN: 带花槽的装饰性古代金库花瓶遗物。可锤击。可放在家具上。
+  desc_zh_TW: 帶花槽的裝飾性古代金庫花瓶遺物。可錘擊。可放在傢俱上。
+  desc_fr: Relique de vase de voûte ancienne avec emplacement pour fleur. Démontable. Peut être placée sur un meuble.
+  desc_de: Dekoratives antikes Tresorvasen-Relikt mit Blumensteckplatz. Abbruchfähig. Kann auf Möbeln platziert werden.
+  desc_it: Reliquia decorativa del vaso dell'antico caveau con slot per fiori. Smontabile. Può essere posizionata su mobili.
+  desc_pl: Dekoracyjna relikwia wazonu starożytnego skarbca z miejscem na kwiaty. Rozbijalna. Można postawić na meblach.
+  desc_pt_BR: Relíquia decorativa do vaso do cofre antigo com espaço para flores. Desmontável. Pode ser colocada em mobília.
+  desc_ru: Декоративная реликвия-ваза древнего хранилища с местом для цветов. Разрушается молотком. Можно разместить на мебели.
+  desc_es: Reliquia decorativa de jarrón de bóveda antigua con ranura para flores. Desmontable. Se puede colocar sobre muebles.
+  desc_es_MX: Reliquia decorativa de jarrón de bóveda antigua con ranura para flores. Desmontable. Se puede colocar sobre muebles.
 841.voidcloth_boomerang
   en: Gloomerang
   ko: 까매랑
@@ -7921,11 +15357,37 @@
     damagetypebonus:AddBonus("lunar_aligned", inst)
     tag: shadow_item
     rechargeable (cooldown)
+  desc_en: Shadow boomerang. 85 uses, 5–27.2 damage + 5–27.2 planar damage. 1.25x bonus vs lunar. +10% speed. Shadow level 3.
+  desc_ko: 그림자 부메랑. 85회 사용, 5~27.2 피해 + 5~27.2 차원 피해. 달 속성 1.25배. 속도 +10%. 그림자 레벨 3.
+  desc_ja: シャドウブーメラン。85回使用、5〜27.2ダメージ＋5〜27.2プレーナーダメージ。月属性に1.25倍。速度+10%。シャドウレベル3。
+  desc_zh_CN: 暗影回旋镖。85次使用，5–27.2伤害+5–27.2位面伤害。对月亮属性1.25倍。速度+10%。暗影等级3。
+  desc_zh_TW: 暗影迴旋鏢。85次使用，5–27.2傷害+5–27.2位面傷害。對月亮屬性1.25倍。速度+10%。暗影等級3。
+  desc_fr: Boomerang d'ombre. 85 utilisations, 5–27.2 dégâts + 5–27.2 planaires. ×1.25 contre lunaire. Vitesse +10 %. Niveau d'ombre 3.
+  desc_de: Schattenboomerang. 85 Ladungen, 5–27,2 Schaden + 5–27,2 planarer Schaden. 1,25× gegen Lunar. Tempo +10 %. Schattenstufe 3.
+  desc_it: Boomerang d'ombra. 85 usi, 5–27.2 danni + 5–27.2 planari. ×1.25 vs lunare. Velocità +10%. Livello ombra 3.
+  desc_pl: Cienisty bumerang. 85 użyć, 5–27.2 obrażeń + 5–27.2 planarnych. ×1.25 vs księżycowe. Prędkość +10%. Poziom cienia 3.
+  desc_pt_BR: Bumerangue sombrio. 85 usos, 5–27.2 dano + 5–27.2 planar. ×1.25 vs lunar. Velocidade +10%. Nível sombrio 3.
+  desc_ru: Теневой бумеранг. 85 зарядов, 5–27.2 урона + 5–27.2 планарного. ×1.25 против лунных. Скорость +10%. Уровень тени 3.
+  desc_es: Bumerán sombrío. 85 usos, 5–27.2 daño + 5–27.2 planar. ×1.25 vs lunar. Velocidad +10 %. Nivel de sombra 3.
+  desc_es_MX: Bumerán sombrío. 85 usos, 5–27.2 daño + 5–27.2 planar. ×1.25 vs lunar. Velocidad +10 %. Nivel de sombra 3.
 842.voidcloth_kit
   en: Void Repair Kit
   ko: 공허의 수리 도구
   app: O
   source: Repair kit (forge_repair_kits.lua). Repairs void cloth (shadow) equipment via forgerepair component (FORGEMATERIALS.VOIDCLOTH). Stackable.
+  desc_en: Repair kit for void cloth (shadow) equipment. Stackable.
+  desc_ko: 공허 천(그림자) 장비 수리 도구. 중첩 가능.
+  desc_ja: ヴォイドクロス（シャドウ）装備の修理キット。スタック可能。
+  desc_zh_CN: 虚空布（暗影）装备修理套件。可堆叠。
+  desc_zh_TW: 虛空布（暗影）裝備修理套件。可堆疊。
+  desc_fr: Kit de réparation pour équipement en tissu du vide (ombre). Empilable.
+  desc_de: Reparaturset für Leerstoff-(Schatten-)Ausrüstung. Stapelbar.
+  desc_it: Kit di riparazione per equipaggiamento in tessuto del vuoto (ombra). Impilabile.
+  desc_pl: Zestaw naprawczy do sprzętu z pustki (cień). Można stackować.
+  desc_pt_BR: Kit de reparo para equipamento de pano do vazio (sombra). Empilhável.
+  desc_ru: Набор для ремонта снаряжения из пустотной ткани (тень). Складывается.
+  desc_es: Kit de reparación de equipo de tela del vacío (sombra). Apilable.
+  desc_es_MX: Kit de reparación de equipo de tela del vacío (sombra). Apilable.
 843.voidcloth_scythe
   en: Shadow Reaper
   ko: 그림자 수확자
@@ -7947,6 +15409,19 @@
     equippable.dapperness = -TUNING.DAPPERNESS_MED
     damagetypebonus:AddBonus("lunar_aligned", inst)
     tag: shadow_item
+  desc_en: Shadow scythe. 200 uses, 38 damage + 18 planar damage. Harvests in 4-radius, 165° arc. Shadow level 3.
+  desc_ko: 그림자 낫. 200회 사용, 38 피해 + 18 차원 피해. 반경 4, 165° 호로 수확. 그림자 레벨 3.
+  desc_ja: シャドウサイス。200回使用、38ダメージ＋18プレーナーダメージ。半径4、165°弧で収穫。シャドウレベル3。
+  desc_zh_CN: 暗影镰刀。200次使用，38伤害+18位面伤害。半径4、165°弧形收割。暗影等级3。
+  desc_zh_TW: 暗影鐮刀。200次使用，38傷害+18位面傷害。半徑4、165°弧形收割。暗影等級3。
+  desc_fr: Faux d'ombre. 200 utilisations, 38 dégâts + 18 planaires. Récolte rayon 4, arc 165°. Niveau d'ombre 3.
+  desc_de: Schattensense. 200 Ladungen, 38 Schaden + 18 planarer Schaden. Erntet im Radius 4, 165°-Bogen. Schattenstufe 3.
+  desc_it: Falce d'ombra. 200 usi, 38 danni + 18 planari. Raccoglie in raggio 4, arco 165°. Livello ombra 3.
+  desc_pl: Cienisty sierp. 200 użyć, 38 obrażeń + 18 planarnych. Zbiera w promieniu 4, łuk 165°. Poziom cienia 3.
+  desc_pt_BR: Foice sombria. 200 usos, 38 dano + 18 planar. Colhe em raio 4, arco 165°. Nível sombrio 3.
+  desc_ru: Теневая коса. 200 зарядов, 38 урона + 18 планарного. Собирает в радиусе 4, дуга 165°. Уровень тени 3.
+  desc_es: Guadaña sombría. 200 usos, 38 daño + 18 planar. Cosecha en radio 4, arco 165°. Nivel de sombra 3.
+  desc_es_MX: Guadaña sombría. 200 usos, 38 daño + 18 planar. Cosecha en radio 4, arco 165°. Nivel de sombra 3.
 844.voidcloth_umbrella
   en: Umbralla
   ko: 음산
@@ -7966,6 +15441,19 @@
     sanityaura.aura = -TUNING.SANITYAURA_SMALL
     tag: shadow_item
     raindome
+  desc_en: Shadow umbrella. 100% waterproof, large insulation, rain dome radius 16. Lasts 15 days. Shadow level 3. Sanity drain.
+  desc_ko: 그림자 우산. 방수 100%, 높은 단열, 비 차단 반경 16. 15일 지속. 그림자 레벨 3. 정신력 감소.
+  desc_ja: シャドウ傘。防水100%、大断熱、雨ドーム半径16。15日持続。シャドウレベル3。正気度減少。
+  desc_zh_CN: 暗影伞。100%防水，高隔热，雨幕半径16。持续15天。暗影等级3。降低理智。
+  desc_zh_TW: 暗影傘。100%防水，高隔熱，雨幕半徑16。持續15天。暗影等級3。降低理智。
+  desc_fr: Parapluie d'ombre. 100 % imperméable, grande isolation, dôme anti-pluie rayon 16. Dure 15 jours. Niveau d'ombre 3. Perte de santé mentale.
+  desc_de: Schattenschirm. 100 % wasserdicht, große Isolierung, Regenkuppel Radius 16. Hält 15 Tage. Schattenstufe 3. Geistige-Gesundheit-Entzug.
+  desc_it: Ombrello d'ombra. 100% impermeabile, grande isolamento, cupola anti-pioggia raggio 16. Dura 15 giorni. Livello ombra 3. Drenaggio sanità.
+  desc_pl: Cienisty parasol. 100% wodoodporność, duża izolacja, kopuła deszczowa promień 16. Wytrzymuje 15 dni. Poziom cienia 3. Utrata zdrowia psychicznego.
+  desc_pt_BR: Guarda-chuva sombrio. 100% à prova d'água, grande isolamento, domo de chuva raio 16. Dura 15 dias. Nível sombrio 3. Dreno de sanidade.
+  desc_ru: Теневой зонт. 100% водонепроницаемость, высокая изоляция, купол дождя радиус 16. Длится 15 дней. Уровень тени 3. Снижение рассудка.
+  desc_es: Paraguas sombrío. 100 % impermeable, gran aislamiento, cúpula de lluvia radio 16. Dura 15 días. Nivel de sombra 3. Pérdida de cordura.
+  desc_es_MX: Paraguas sombrío. 100 % impermeable, gran aislamiento, cúpula de lluvia radio 16. Dura 15 días. Nivel de sombra 3. Pérdida de cordura.
 845.voidclothhat
   en: Void Cowl
   ko: 공허의 두건
@@ -7975,6 +15463,19 @@
     VOIDCLOTHHAT_SHADOW_LEVEL = 3,
     hats.lua:
     ARMOR_VOIDCLOTH_HAT = wilson_health * 6 * multiplayer_armor_durability_modifier + 20 * 10,
+  desc_en: Shadow hat with armor. Absorption based on void cloth armor formula. Shadow level 3.
+  desc_ko: 방어력이 있는 그림자 모자. 공허 천 방어구 공식 기반 흡수. 그림자 레벨 3.
+  desc_ja: 防御力を持つシャドウハット。ヴォイドクロスアーマー計算式に基づく吸収。シャドウレベル3。
+  desc_zh_CN: 带护甲的暗影帽子。基于虚空布护甲公式的吸收。暗影等级3。
+  desc_zh_TW: 帶護甲的暗影帽子。基於虛空布護甲公式的吸收。暗影等級3。
+  desc_fr: Chapeau d'ombre avec armure. Absorption basée sur la formule d'armure en tissu du vide. Niveau d'ombre 3.
+  desc_de: Schattenhut mit Rüstung. Absorption basiert auf Leerenstoff-Rüstungsformel. Schattenstufe 3.
+  desc_it: Cappello d'ombra con armatura. Assorbimento basato sulla formula dell'armatura in tessuto del vuoto. Livello ombra 3.
+  desc_pl: Cienisty kapelusz z pancerzem. Absorpcja oparta na formule zbroi z pustki. Poziom cienia 3.
+  desc_pt_BR: Chapéu sombrio com armadura. Absorção baseada na fórmula de armadura de pano do vazio. Nível sombrio 3.
+  desc_ru: Теневая шляпа с бронёй. Поглощение по формуле брони из пустотной ткани. Уровень тени 3.
+  desc_es: Sombrero sombrío con armadura. Absorción basada en la fórmula de armadura de tela del vacío. Nivel de sombra 3.
+  desc_es_MX: Sombrero sombrío con armadura. Absorción basada en la fórmula de armadura de tela del vacío. Nivel de sombra 3.
 846.wagboss_robot_constructionsite_kit
   en: W.A.R.B.O.T. Base Kit
   ko: W.A.R.B.O.T. 기단부 키트
@@ -7982,41 +15483,145 @@
   source:
     tuning.lua:
     WAGBOSS_ROBOT_CONSTRUCTIONSITE_KIT_PLACEMENT_RADIUS = 4,
+  desc_en: Deployable kit that places a W.A.R.B.O.T. construction base. Placement radius 4.
+  desc_ko: W.A.R.B.O.T. 건설 기단부를 설치하는 배치 키트. 설치 반경 4.
+  desc_ja: W.A.R.B.O.T.建設基地を配置するキット。配置半径4。
+  desc_zh_CN: 部署W.A.R.B.O.T.建设基地的套件。放置半径4。
+  desc_zh_TW: 部署W.A.R.B.O.T.建設基地的套件。放置半徑4。
+  desc_fr: Kit déployable plaçant une base de construction W.A.R.B.O.T. Rayon de placement 4.
+  desc_de: Platzierbares Kit für eine W.A.R.B.O.T.-Konstruktionsbasis. Platzierungsradius 4.
+  desc_it: Kit piazzabile che crea una base di costruzione W.A.R.B.O.T. Raggio di posizionamento 4.
+  desc_pl: Zestaw do postawienia bazy budowy W.A.R.B.O.T. Promień umieszczania 4.
+  desc_pt_BR: Kit implantável que coloca uma base de construção W.A.R.B.O.T. Raio de posicionamento 4.
+  desc_ru: Набор для установки строительной базы W.A.R.B.O.T. Радиус размещения 4.
+  desc_es: Kit desplegable que coloca una base de construcción W.A.R.B.O.T. Radio de colocación 4.
+  desc_es_MX: Kit desplegable que coloca una base de construcción W.A.R.B.O.T. Radio de colocación 4.
 847.wagboss_robot_creation_parts
   en: W.A.R.B.O.T. Parts
   ko: W.A.R.B.O.T. 부품
   app: O
   source: Crafting material (wagboss_robot_constructionsite.lua). Inventory item used to fill the W.A.R.B.O.T. construction site. Stackable.
+  desc_en: Crafting material used to fill the W.A.R.B.O.T. construction site. Stackable.
+  desc_ko: W.A.R.B.O.T. 건설 현장을 채우는 데 사용하는 제작 재료. 중첩 가능.
+  desc_ja: W.A.R.B.O.T.建設現場を埋めるための素材。スタック可能。
+  desc_zh_CN: 用于填充W.A.R.B.O.T.建设工地的制作材料。可堆叠。
+  desc_zh_TW: 用於填充W.A.R.B.O.T.建設工地的製作材料。可堆疊。
+  desc_fr: Matériau d'artisanat pour remplir le chantier W.A.R.B.O.T. Empilable.
+  desc_de: Herstellungsmaterial zum Befüllen der W.A.R.B.O.T.-Baustelle. Stapelbar.
+  desc_it: Materiale di fabbricazione per riempire il cantiere W.A.R.B.O.T. Impilabile.
+  desc_pl: Materiał rzemieślniczy do wypełnienia placu budowy W.A.R.B.O.T. Można stackować.
+  desc_pt_BR: Material de fabricação para preencher o canteiro W.A.R.B.O.T. Empilhável.
+  desc_ru: Материал для заполнения строительной площадки W.A.R.B.O.T. Складывается.
+  desc_es: Material de fabricación para llenar el sitio de construcción W.A.R.B.O.T. Apilable.
+  desc_es_MX: Material de fabricación para llenar el sitio de construcción W.A.R.B.O.T. Apilable.
 848.wagpunk_floor_kit
   en: Substrate Extrapolator
   ko: 기질 추론기
   app: O
   source: Deployable turf kit (wagpunk_floor_kit.lua). Places WAGSTAFF_FLOOR tile in wagpunk arena over ocean tiles adjacent to land. Stackable.
+  desc_en: Deployable turf kit that places wagpunk arena flooring over ocean tiles adjacent to land. Stackable.
+  desc_ko: 육지 인접 해양 타일 위에 웨그펑크 아레나 바닥을 설치하는 배치 키트. 중첩 가능.
+  desc_ja: 陸地に隣接する海洋タイルにワグパンクアリーナ床を設置するキット。スタック可能。
+  desc_zh_CN: 在陆地相邻海洋瓷砖上放置瓦格朋克竞技场地板的部署套件。可堆叠。
+  desc_zh_TW: 在陸地相鄰海洋磁磚上放置瓦格龐克競技場地板的部署套件。可堆疊。
+  desc_fr: Kit de gazon déployable plaçant un sol d'arène wagpunk sur les tuiles océaniques adjacentes à la terre. Empilable.
+  desc_de: Platzierbares Rasenstück-Kit für Wagpunk-Arenaboden über Ozeanplatten neben Land. Stapelbar.
+  desc_it: Kit di zolle piazzabile che crea pavimento dell'arena wagpunk sopra le piastrelle oceaniche adiacenti alla terra. Impilabile.
+  desc_pl: Zestaw darni do postawienia podłogi areny wagpunk na kafelkach oceanu przylegających do lądu. Można stackować.
+  desc_pt_BR: Kit de turfa implantável que coloca piso de arena wagpunk sobre ladrilhos oceânicos adjacentes à terra. Empilhável.
+  desc_ru: Набор для размещения пола арены вагпанк поверх океанских плиток рядом с сушей. Складывается.
+  desc_es: Kit de césped desplegable que coloca piso de arena wagpunk sobre baldosas oceánicas adyacentes a tierra. Apilable.
+  desc_es_MX: Kit de césped desplegable que coloca piso de arena wagpunk sobre baldosas oceánicas adyacentes a tierra. Apilable.
 849.wagpunk_workstation_blueprint_moon_device_construction1
   en: Incomplete Experiment
   ko: 미완성 실험
   app: O
   source: Workstation recipe (recipes.lua). Crafted at wagpunk workstation from 1 papyrus. Produces moon_device_construction1_blueprint (rare blueprint).
+  desc_en: Wagpunk workstation recipe producing a rare moon device blueprint. Crafted from 1 papyrus.
+  desc_ko: 희귀 달 장치 블루프린트를 생산하는 웨그펑크 워크스테이션 레시피. 파피루스 1개로 제작.
+  desc_ja: 希少な月のデバイスの設計図を生産するワグパンクワークステーションレシピ。パピルス1個で製作。
+  desc_zh_CN: 生产稀有月亮装置蓝图的瓦格朋克工作站配方。用1张纸莎草制作。
+  desc_zh_TW: 生產稀有月亮裝置藍圖的瓦格龐克工作站配方。用1張紙莎草製作。
+  desc_fr: Recette de station wagpunk produisant un plan rare de dispositif lunaire. Fabriqué avec 1 papyrus.
+  desc_de: Wagpunk-Werkstattrezept für einen seltenen Mondgeräte-Bauplan. Hergestellt aus 1 Papyrus.
+  desc_it: Ricetta della stazione wagpunk che produce un raro progetto di dispositivo lunare. Fabbricato con 1 papiro.
+  desc_pl: Receptura stacji wagpunk produkująca rzadki plan urządzenia księżycowego. Wytwarzana z 1 papirusu.
+  desc_pt_BR: Receita da estação wagpunk que produz um raro projeto de dispositivo lunar. Fabricado com 1 papiro.
+  desc_ru: Рецепт станции вагпанк, производящий редкий чертёж лунного устройства. Создаётся из 1 папируса.
+  desc_es: Receta de estación wagpunk que produce un raro plano de dispositivo lunar. Fabricado con 1 papiro.
+  desc_es_MX: Receta de estación wagpunk que produce un raro plano de dispositivo lunar. Fabricado con 1 papiro.
 850.wagpunk_workstation_blueprint_moonstorm_goggleshat
   en: Astroggles
   ko: 천문 고글
   app: O
   source: Workstation recipe (recipes.lua). Crafted at wagpunk workstation from 1 papyrus. Produces moonstorm_goggleshat_blueprint (rare blueprint).
+  desc_en: Wagpunk workstation recipe producing Astroggles hat blueprint. Crafted from 1 papyrus.
+  desc_ko: 천문 고글 모자 블루프린트를 생산하는 웨그펑크 워크스테이션 레시피. 파피루스 1개로 제작.
+  desc_ja: アストロゴーグル帽子の設計図を生産するワグパンクワークステーションレシピ。パピルス1個で製作。
+  desc_zh_CN: 生产天文护目镜帽蓝图的瓦格朋克工作站配方。用1张纸莎草制作。
+  desc_zh_TW: 生產天文護目鏡帽藍圖的瓦格龐克工作站配方。用1張紙莎草製作。
+  desc_fr: Recette de station wagpunk produisant un plan de chapeau Astroggles. Fabriqué avec 1 papyrus.
+  desc_de: Wagpunk-Werkstattrezept für einen Astroggles-Hut-Bauplan. Hergestellt aus 1 Papyrus.
+  desc_it: Ricetta della stazione wagpunk che produce un progetto del cappello Astroggles. Fabbricato con 1 papiro.
+  desc_pl: Receptura stacji wagpunk produkująca plan kapelusza Astroggles. Wytwarzana z 1 papirusu.
+  desc_pt_BR: Receita da estação wagpunk que produz um projeto do chapéu Astroggles. Fabricado com 1 papiro.
+  desc_ru: Рецепт станции вагпанк, производящий чертёж шляпы Астрогглс. Создаётся из 1 папируса.
+  desc_es: Receta de estación wagpunk que produce un plano de sombrero Astroggles. Fabricado con 1 papiro.
+  desc_es_MX: Receta de estación wagpunk que produce un plano de sombrero Astroggles. Fabricado con 1 papiro.
 851.wagpunk_workstation_moonstorm_static_catcher
   en: Static Restrainer
   ko: 정전기 포집기
   app: O
   source: Workstation recipe (recipes.lua). Crafted at wagpunk workstation from 2 moonglass + 1 wagpunk_bits. Produces moonstorm_static_catcher (equippable tool to catch static).
+  desc_en: Wagpunk workstation recipe. Crafted from 2 moon glass + 1 wagpunk bits. Produces a static restrainer tool.
+  desc_ko: 웨그펑크 워크스테이션 레시피. 달 유리 2개 + 웨그펑크 조각 1개로 제작. 정전기 포집기 도구 생산.
+  desc_ja: ワグパンクワークステーションレシピ。ムーングラス2＋ワグパンクビッツ1で製作。スタティックレストレイナーツールを生産。
+  desc_zh_CN: 瓦格朋克工作站配方。用2月亮玻璃+1瓦格朋克碎片制作。生产静电束缚器工具。
+  desc_zh_TW: 瓦格龐克工作站配方。用2月亮玻璃+1瓦格龐克碎片製作。生產靜電束縛器工具。
+  desc_fr: Recette de station wagpunk. 2 verre lunaire + 1 pièce wagpunk. Produit un outil de capture de statique.
+  desc_de: Wagpunk-Werkstattrezept. 2 Mondglas + 1 Wagpunk-Teile. Erzeugt ein Statik-Fanggerät.
+  desc_it: Ricetta della stazione wagpunk. 2 vetro lunare + 1 pezzo wagpunk. Produce uno strumento cattura-statico.
+  desc_pl: Receptura stacji wagpunk. 2 szkło księżycowe + 1 kawałek wagpunk. Produkuje narzędzie do łapania statyczności.
+  desc_pt_BR: Receita da estação wagpunk. 2 vidro lunar + 1 peça wagpunk. Produz uma ferramenta de contenção estática.
+  desc_ru: Рецепт станции вагпанк. 2 лунного стекла + 1 кусочек вагпанка. Создаёт ловушку для статического электричества.
+  desc_es: Receta de estación wagpunk. 2 vidrio lunar + 1 pieza wagpunk. Produce una herramienta de captura estática.
+  desc_es_MX: Receta de estación wagpunk. 2 vidrio lunar + 1 pieza wagpunk. Produce una herramienta de captura estática.
 852.wagpunk_workstation_security_pulse_cage
   en: Spark Ark
   ko: 보안 펄스 케이지
   app: O
   source: Workstation recipe (recipes.lua). Crafted at wagpunk workstation from 2 thulecite + 1 moonstorm_static_item + 1 coolant. Produces security_pulse_cage (traps archive security pulses).
+  desc_en: Wagpunk workstation recipe. Crafted from 2 thulecite + 1 static item + 1 coolant. Traps archive security pulses.
+  desc_ko: 웨그펑크 워크스테이션 레시피. 툴레사이트 2개 + 정전기 아이템 1개 + 냉각제 1개로 제작. 아카이브 보안 펄스를 포획.
+  desc_ja: ワグパンクワークステーションレシピ。トゥレサイト2＋スタティックアイテム1＋冷却材1で製作。アーカイブセキュリティパルスを捕獲。
+  desc_zh_CN: 瓦格朋克工作站配方。用2铥矿石+1静电物品+1冷却液制作。捕捉档案馆安全脉冲。
+  desc_zh_TW: 瓦格龐克工作站配方。用2銩礦石+1靜電物品+1冷卻液製作。捕捉檔案館安全脈衝。
+  desc_fr: Recette de station wagpunk. 2 thulécite + 1 objet statique + 1 liquide de refroidissement. Piège les impulsions de sécurité de l'archive.
+  desc_de: Wagpunk-Werkstattrezept. 2 Thulezit + 1 Statik-Gegenstand + 1 Kühlmittel. Fängt Archiv-Sicherheitsimpulse.
+  desc_it: Ricetta della stazione wagpunk. 2 tulecite + 1 oggetto statico + 1 refrigerante. Intrappola gli impulsi di sicurezza dell'archivio.
+  desc_pl: Receptura stacji wagpunk. 2 tulecyt + 1 przedmiot statyczny + 1 chłodziwo. Pułapkuje impulsy bezpieczeństwa archiwum.
+  desc_pt_BR: Receita da estação wagpunk. 2 tulecita + 1 item estático + 1 refrigerante. Captura pulsos de segurança do arquivo.
+  desc_ru: Рецепт станции вагпанк. 2 тулецита + 1 статический предмет + 1 хладагент. Ловит импульсы защиты архива.
+  desc_es: Receta de estación wagpunk. 2 tulecita + 1 objeto estático + 1 refrigerante. Atrapa pulsos de seguridad del archivo.
+  desc_es_MX: Receta de estación wagpunk. 2 tulecita + 1 objeto estático + 1 refrigerante. Atrapa pulsos de seguridad del archivo.
 853.wagpunkbits_kit
   en: Auto-Mat-O-Chanic
   ko: 자동 수리-0
   app: O
   source: Repair kit (forge_repair_kits.lua). Repairs wagpunk equipment via forgerepair component (FORGEMATERIALS.WAGPUNKBITS). Stackable.
+  desc_en: Repair kit for wagpunk equipment. Stackable.
+  desc_ko: 웨그펑크 장비 수리 도구. 중첩 가능.
+  desc_ja: ワグパンク装備の修理キット。スタック可能。
+  desc_zh_CN: 瓦格朋克装备修理套件。可堆叠。
+  desc_zh_TW: 瓦格龐克裝備修理套件。可堆疊。
+  desc_fr: Kit de réparation pour équipement wagpunk. Empilable.
+  desc_de: Reparaturset für Wagpunk-Ausrüstung. Stapelbar.
+  desc_it: Kit di riparazione per equipaggiamento wagpunk. Impilabile.
+  desc_pl: Zestaw naprawczy do sprzętu wagpunk. Można stackować.
+  desc_pt_BR: Kit de reparo para equipamento wagpunk. Empilhável.
+  desc_ru: Набор для ремонта снаряжения вагпанк. Складывается.
+  desc_es: Kit de reparación de equipo wagpunk. Apilable.
+  desc_es_MX: Kit de reparación de equipo wagpunk. Apilable.
 854.wagpunkhat
   en: W.A.R.B.I.S. Head Gear
   ko: 와.비.스. 헤드기어
@@ -8024,6 +15629,19 @@
   source:
     hats.lua:
     ARMOR_WAGPUNK_HAT = wilson_health * 6 * multiplayer_armor_durability_modifier + 20 * 5,
+  desc_en: Wagpunk head gear with armor. Absorption based on wagpunk hat armor formula.
+  desc_ko: 방어력이 있는 웨그펑크 헤드기어. 웨그펑크 모자 방어구 공식 기반 흡수.
+  desc_ja: 防御力を持つワグパンクヘッドギア。ワグパンクハットアーマー計算式に基づく吸収。
+  desc_zh_CN: 带护甲的瓦格朋克头部装备。基于瓦格朋克帽护甲公式的吸收。
+  desc_zh_TW: 帶護甲的瓦格龐克頭部裝備。基於瓦格龐克帽護甲公式的吸收。
+  desc_fr: Casque wagpunk avec armure. Absorption basée sur la formule d'armure du chapeau wagpunk.
+  desc_de: Wagpunk-Kopfausrüstung mit Rüstung. Absorption basiert auf Wagpunk-Hut-Rüstungsformel.
+  desc_it: Copricapo wagpunk con armatura. Assorbimento basato sulla formula dell'armatura del cappello wagpunk.
+  desc_pl: Nakrycie głowy wagpunk z pancerzem. Absorpcja oparta na formule zbroi kapelusza wagpunk.
+  desc_pt_BR: Equipamento de cabeça wagpunk com armadura. Absorção baseada na fórmula de armadura do chapéu wagpunk.
+  desc_ru: Головной убор вагпанк с бронёй. Поглощение по формуле брони шляпы вагпанк.
+  desc_es: Casco wagpunk con armadura. Absorción basada en la fórmula de armadura del sombrero wagpunk.
+  desc_es_MX: Casco wagpunk con armadura. Absorción basada en la fórmula de armadura del sombrero wagpunk.
 855.walking_stick
   en: Wooden Walking Stick
   ko: 나무 지팡이
@@ -8035,53 +15653,183 @@
     walking_stick.lua:
     fueled:InitializeFuelLevel(TUNING.WALKING_STICK_PERISHTIME)
     equippable.walkspeedmult = TUNING.WALKING_STICK_SPEED_MULT
+  desc_en: Walking cane. +15% movement speed. Lasts 4 days. Fuel-based durability.
+  desc_ko: 지팡이. 이동 속도 +15%. 4일 지속. 연료 기반 내구도.
+  desc_ja: 杖。移動速度+15%。4日持続。燃料ベースの耐久度。
+  desc_zh_CN: 手杖。移动速度+15%。持续4天。燃料型耐久度。
+  desc_zh_TW: 手杖。移動速度+15%。持續4天。燃料型耐久度。
+  desc_fr: Canne de marche. +15 % vitesse de déplacement. Dure 4 jours. Durabilité basée sur le combustible.
+  desc_de: Gehstock. +15 % Bewegungsgeschwindigkeit. Hält 4 Tage. Brennstoffbasierte Haltbarkeit.
+  desc_it: Bastone da passeggio. +15% velocità di movimento. Dura 4 giorni. Durabilità a combustibile.
+  desc_pl: Laska. +15% prędkości ruchu. Wytrzymuje 4 dni. Wytrzymałość oparta na paliwie.
+  desc_pt_BR: Bengala. +15% de velocidade de movimento. Dura 4 dias. Durabilidade baseada em combustível.
+  desc_ru: Трость. +15% скорости передвижения. Длится 4 дня. Прочность на основе топлива.
+  desc_es: Bastón. +15 % velocidad de movimiento. Dura 4 días. Durabilidad basada en combustible.
+  desc_es_MX: Bastón. +15 % velocidad de movimiento. Dura 4 días. Durabilidad basada en combustible.
 856.wall_dreadstone_item
   en: Dreadstone Wall
   ko: 공포석 벽
   app: O
   source: Wall item (walls.lua). HP=800, 25 hammer hits, 75% player damage reduction. Drops dreadstone. Not flammable. Stackable, deployable.
+  desc_en: Dreadstone wall segment. 800 HP, 75% player damage reduction. Not flammable. Stackable, deployable.
+  desc_ko: 공포석 벽 조각. 체력 800, 플레이어 피해 75% 감소. 불연성. 중첩 및 배치 가능.
+  desc_ja: ドレッドストーン壁セグメント。HP800、プレイヤーダメージ75%減少。不燃。スタック＆配置可能。
+  desc_zh_CN: 恐惧石墙段。800生命值，75%玩家伤害减免。不可燃。可堆叠、可部署。
+  desc_zh_TW: 恐懼石牆段。800生命值，75%玩家傷害減免。不可燃。可堆疊、可部署。
+  desc_fr: Segment de mur en pierre de terreur. 800 PV, 75 % de réduction de dégâts joueur. Ininflammable. Empilable, déployable.
+  desc_de: Schreckensteinmauer-Segment. 800 LP, 75 % Spielerschadensreduktion. Nicht brennbar. Stapelbar, platzierbar.
+  desc_it: Segmento di muro in pietra terrifica. 800 PV, 75% riduzione danni giocatore. Non infiammabile. Impilabile, piazzabile.
+  desc_pl: Segment muru z kamienia grozy. 800 PŻ, 75% redukcja obrażeń graczy. Niepalny. Można stackować i stawiać.
+  desc_pt_BR: Segmento de parede de pedra do pavor. 800 PV, 75% de redução de dano de jogador. Não inflamável. Empilhável, implantável.
+  desc_ru: Сегмент стены из камня ужаса. 800 ОЗ, 75% снижение урона от игроков. Не горит. Складывается, размещается.
+  desc_es: Segmento de muro de piedra pavor. 800 PV, 75 % reducción de daño de jugador. No inflamable. Apilable, desplegable.
+  desc_es_MX: Segmento de muro de piedra pavor. 800 PV, 75 % reducción de daño de jugador. No inflamable. Apilable, desplegable.
 857.wall_hay_item
   en: Hay Wall
   ko: 풀 벽
   app: O
   source: Wall item (walls.lua). HP=100. Flammable. Drops cutgrass. Stackable, deployable.
+  desc_en: Hay wall segment. 100 HP. Flammable. Stackable, deployable.
+  desc_ko: 풀 벽 조각. 체력 100. 가연성. 중첩 및 배치 가능.
+  desc_ja: 干し草壁セグメント。HP100。可燃。スタック＆配置可能。
+  desc_zh_CN: 干草墙段。100生命值。可燃。可堆叠、可部署。
+  desc_zh_TW: 乾草牆段。100生命值。可燃。可堆疊、可部署。
+  desc_fr: Segment de mur de foin. 100 PV. Inflammable. Empilable, déployable.
+  desc_de: Heumauer-Segment. 100 LP. Brennbar. Stapelbar, platzierbar.
+  desc_it: Segmento di muro di fieno. 100 PV. Infiammabile. Impilabile, piazzabile.
+  desc_pl: Segment muru ze słomy. 100 PŻ. Palny. Można stackować i stawiać.
+  desc_pt_BR: Segmento de parede de feno. 100 PV. Inflamável. Empilhável, implantável.
+  desc_ru: Сегмент стены из сена. 100 ОЗ. Горючий. Складывается, размещается.
+  desc_es: Segmento de muro de heno. 100 PV. Inflamable. Apilable, desplegable.
+  desc_es_MX: Segmento de muro de heno. 100 PV. Inflamable. Apilable, desplegable.
 858.wall_moonrock_item
   en: Moon Rock Wall
   ko: 월석 벽
   app: O
   source: Wall item (walls.lua). HP=600, 25 hammer hits, 75% player damage reduction. Drops moonrocknugget. Not flammable. Stackable, deployable.
+  desc_en: Moon rock wall segment. 600 HP, 75% player damage reduction. Not flammable. Stackable, deployable.
+  desc_ko: 월석 벽 조각. 체력 600, 플레이어 피해 75% 감소. 불연성. 중첩 및 배치 가능.
+  desc_ja: ムーンロック壁セグメント。HP600、プレイヤーダメージ75%減少。不燃。スタック＆配置可能。
+  desc_zh_CN: 月岩墙段。600生命值，75%玩家伤害减免。不可燃。可堆叠、可部署。
+  desc_zh_TW: 月岩牆段。600生命值，75%玩家傷害減免。不可燃。可堆疊、可部署。
+  desc_fr: Segment de mur en pierre lunaire. 600 PV, 75 % de réduction de dégâts joueur. Ininflammable. Empilable, déployable.
+  desc_de: Mondsteinmauer-Segment. 600 LP, 75 % Spielerschadensreduktion. Nicht brennbar. Stapelbar, platzierbar.
+  desc_it: Segmento di muro in roccia lunare. 600 PV, 75% riduzione danni giocatore. Non infiammabile. Impilabile, piazzabile.
+  desc_pl: Segment muru z kamienia księżycowego. 600 PŻ, 75% redukcja obrażeń graczy. Niepalny. Można stackować i stawiać.
+  desc_pt_BR: Segmento de parede de rocha lunar. 600 PV, 75% de redução de dano de jogador. Não inflamável. Empilhável, implantável.
+  desc_ru: Сегмент стены из лунного камня. 600 ОЗ, 75% снижение урона от игроков. Не горит. Складывается, размещается.
+  desc_es: Segmento de muro de roca lunar. 600 PV, 75 % reducción de daño de jugador. No inflamable. Apilable, desplegable.
+  desc_es_MX: Segmento de muro de roca lunar. 600 PV, 75 % reducción de daño de jugador. No inflamable. Apilable, desplegable.
 859.wall_ruins_2_item
   en: Archival Thulecite Wall
   ko: 기록 보관소의 툴레사이트 벽
   app: X
   type: deconstruct
   source: Wall item (walls.lua). HP=800. Drops thulecite_pieces. Not flammable. Archival variant of ruins wall. Stackable, deployable.
+  desc_en: Archival thulecite wall segment. 800 HP. Not flammable. Archival variant of ruins wall. Stackable, deployable.
+  desc_ko: 기록 보관소의 툴레사이트 벽 조각. 체력 800. 불연성. 유적 벽의 기록 보관소 변형. 중첩 및 배치 가능.
+  desc_ja: アーカイブ・トゥレサイト壁セグメント。HP800。不燃。遺跡壁のアーカイブバリアント。スタック＆配置可能。
+  desc_zh_CN: 档案铥矿石墙段。800生命值。不可燃。遗迹墙的档案变体。可堆叠、可部署。
+  desc_zh_TW: 檔案銩礦石牆段。800生命值。不可燃。遺跡牆的檔案變體。可堆疊、可部署。
+  desc_fr: Segment de mur archivistique en thulécite. 800 PV. Ininflammable. Variante archivistique du mur de ruines. Empilable, déployable.
+  desc_de: Archivalisches Thulezitmauer-Segment. 800 LP. Nicht brennbar. Archiv-Variante der Ruinenmauer. Stapelbar, platzierbar.
+  desc_it: Segmento di muro archivistico in tulecite. 800 PV. Non infiammabile. Variante d'archivio del muro delle rovine. Impilabile, piazzabile.
+  desc_pl: Archiwalny segment muru z tulecytu. 800 PŻ. Niepalny. Wariant archiwalny muru ruin. Można stackować i stawiać.
+  desc_pt_BR: Segmento de parede arquival de tulecita. 800 PV. Não inflamável. Variante arquival da parede de ruínas. Empilhável, implantável.
+  desc_ru: Архивный сегмент стены из тулецита. 800 ОЗ. Не горит. Архивный вариант стены руин. Складывается, размещается.
+  desc_es: Segmento de muro archivístico de tulecita. 800 PV. No inflamable. Variante archivística del muro de ruinas. Apilable, desplegable.
+  desc_es_MX: Segmento de muro archivístico de tulecita. 800 PV. No inflamable. Variante archivística del muro de ruinas. Apilable, desplegable.
 860.wall_ruins_item
   en: Thulecite Wall
   ko: 툴레사이트 벽
   app: O
   source: Wall item (walls.lua). HP=800. Drops thulecite_pieces. Not flammable. Stackable, deployable.
+  desc_en: Thulecite wall segment. 800 HP. Not flammable. Stackable, deployable.
+  desc_ko: 툴레사이트 벽 조각. 체력 800. 불연성. 중첩 및 배치 가능.
+  desc_ja: トゥレサイト壁セグメント。HP800。不燃。スタック＆配置可能。
+  desc_zh_CN: 铥矿石墙段。800生命值。不可燃。可堆叠、可部署。
+  desc_zh_TW: 銩礦石牆段。800生命值。不可燃。可堆疊、可部署。
+  desc_fr: Segment de mur en thulécite. 800 PV. Ininflammable. Empilable, déployable.
+  desc_de: Thulezitmauer-Segment. 800 LP. Nicht brennbar. Stapelbar, platzierbar.
+  desc_it: Segmento di muro in tulecite. 800 PV. Non infiammabile. Impilabile, piazzabile.
+  desc_pl: Segment muru z tulecytu. 800 PŻ. Niepalny. Można stackować i stawiać.
+  desc_pt_BR: Segmento de parede de tulecita. 800 PV. Não inflamável. Empilhável, implantável.
+  desc_ru: Сегмент стены из тулецита. 800 ОЗ. Не горит. Складывается, размещается.
+  desc_es: Segmento de muro de tulecita. 800 PV. No inflamable. Apilable, desplegable.
+  desc_es_MX: Segmento de muro de tulecita. 800 PV. No inflamable. Apilable, desplegable.
 861.wall_scrap_item
   en: Scrap Wall
   ko: 고철 벽
   app: O
   source: Wall item (walls.lua). HP=600, 10 hammer hits, 75% player damage reduction. Drops wagpunk_bits. Not flammable. Stackable, deployable.
+  desc_en: Scrap wall segment. 600 HP, 75% player damage reduction. Not flammable. Stackable, deployable.
+  desc_ko: 고철 벽 조각. 체력 600, 플레이어 피해 75% 감소. 불연성. 중첩 및 배치 가능.
+  desc_ja: スクラップ壁セグメント。HP600、プレイヤーダメージ75%減少。不燃。スタック＆配置可能。
+  desc_zh_CN: 废铁墙段。600生命值，75%玩家伤害减免。不可燃。可堆叠、可部署。
+  desc_zh_TW: 廢鐵牆段。600生命值，75%玩家傷害減免。不可燃。可堆疊、可部署。
+  desc_fr: Segment de mur en ferraille. 600 PV, 75 % de réduction de dégâts joueur. Ininflammable. Empilable, déployable.
+  desc_de: Schrottmauer-Segment. 600 LP, 75 % Spielerschadensreduktion. Nicht brennbar. Stapelbar, platzierbar.
+  desc_it: Segmento di muro di rottami. 600 PV, 75% riduzione danni giocatore. Non infiammabile. Impilabile, piazzabile.
+  desc_pl: Segment muru ze złomu. 600 PŻ, 75% redukcja obrażeń graczy. Niepalny. Można stackować i stawiać.
+  desc_pt_BR: Segmento de parede de sucata. 600 PV, 75% de redução de dano de jogador. Não inflamável. Empilhável, implantável.
+  desc_ru: Сегмент стены из лома. 600 ОЗ, 75% снижение урона от игроков. Не горит. Складывается, размещается.
+  desc_es: Segmento de muro de chatarra. 600 PV, 75 % reducción de daño de jugador. No inflamable. Apilable, desplegable.
+  desc_es_MX: Segmento de muro de chatarra. 600 PV, 75 % reducción de daño de jugador. No inflamable. Apilable, desplegable.
 862.wall_stone_2_item
   en: Archival Stone Wall
   ko: 기록 보관소의 바위 벽
   app: X
   type: deconstruct
   source: Wall item (walls.lua). HP=400. Drops rocks. Not flammable. Archival variant of stone wall. Stackable, deployable.
+  desc_en: Archival stone wall segment. 400 HP. Not flammable. Archival variant of stone wall. Stackable, deployable.
+  desc_ko: 기록 보관소의 바위 벽 조각. 체력 400. 불연성. 돌 벽의 기록 보관소 변형. 중첩 및 배치 가능.
+  desc_ja: アーカイブ石壁セグメント。HP400。不燃。石壁のアーカイブバリアント。スタック＆配置可能。
+  desc_zh_CN: 档案石墙段。400生命值。不可燃。石墙的档案变体。可堆叠、可部署。
+  desc_zh_TW: 檔案石牆段。400生命值。不可燃。石牆的檔案變體。可堆疊、可部署。
+  desc_fr: Segment de mur en pierre archivistique. 400 PV. Ininflammable. Variante archivistique du mur de pierre. Empilable, déployable.
+  desc_de: Archivalisches Steinmauer-Segment. 400 LP. Nicht brennbar. Archiv-Variante der Steinmauer. Stapelbar, platzierbar.
+  desc_it: Segmento di muro in pietra archivistico. 400 PV. Non infiammabile. Variante d'archivio del muro in pietra. Impilabile, piazzabile.
+  desc_pl: Archiwalny segment muru kamiennego. 400 PŻ. Niepalny. Wariant archiwalny muru kamiennego. Można stackować i stawiać.
+  desc_pt_BR: Segmento de parede de pedra arquival. 400 PV. Não inflamável. Variante arquival da parede de pedra. Empilhável, implantável.
+  desc_ru: Архивный сегмент каменной стены. 400 ОЗ. Не горит. Архивный вариант каменной стены. Складывается, размещается.
+  desc_es: Segmento de muro de piedra archivístico. 400 PV. No inflamable. Variante archivística del muro de piedra. Apilable, desplegable.
+  desc_es_MX: Segmento de muro de piedra archivístico. 400 PV. No inflamable. Variante archivística del muro de piedra. Apilable, desplegable.
 863.wall_stone_item
   en: Stone Wall
   ko: 돌 벽
   app: O
   source: Wall item (walls.lua). HP=400. Drops rocks. Not flammable. Stackable, deployable.
+  desc_en: Stone wall segment. 400 HP. Not flammable. Stackable, deployable.
+  desc_ko: 돌 벽 조각. 체력 400. 불연성. 중첩 및 배치 가능.
+  desc_ja: 石壁セグメント。HP400。不燃。スタック＆配置可能。
+  desc_zh_CN: 石墙段。400生命值。不可燃。可堆叠、可部署。
+  desc_zh_TW: 石牆段。400生命值。不可燃。可堆疊、可部署。
+  desc_fr: Segment de mur en pierre. 400 PV. Ininflammable. Empilable, déployable.
+  desc_de: Steinmauer-Segment. 400 LP. Nicht brennbar. Stapelbar, platzierbar.
+  desc_it: Segmento di muro in pietra. 400 PV. Non infiammabile. Impilabile, piazzabile.
+  desc_pl: Segment muru kamiennego. 400 PŻ. Niepalny. Można stackować i stawiać.
+  desc_pt_BR: Segmento de parede de pedra. 400 PV. Não inflamável. Empilhável, implantável.
+  desc_ru: Сегмент каменной стены. 400 ОЗ. Не горит. Складывается, размещается.
+  desc_es: Segmento de muro de piedra. 400 PV. No inflamable. Apilable, desplegable.
+  desc_es_MX: Segmento de muro de piedra. 400 PV. No inflamable. Apilable, desplegable.
 864.wall_wood_item
   en: Wood Wall
   ko: 나무 벽
   app: O
   source: Wall item (walls.lua). HP=200. Flammable. Drops log. Stackable, deployable.
+  desc_en: Wood wall segment. 200 HP. Flammable. Stackable, deployable.
+  desc_ko: 나무 벽 조각. 체력 200. 가연성. 중첩 및 배치 가능.
+  desc_ja: 木壁セグメント。HP200。可燃。スタック＆配置可能。
+  desc_zh_CN: 木墙段。200生命值。可燃。可堆叠、可部署。
+  desc_zh_TW: 木牆段。200生命值。可燃。可堆疊、可部署。
+  desc_fr: Segment de mur en bois. 200 PV. Inflammable. Empilable, déployable.
+  desc_de: Holzmauer-Segment. 200 LP. Brennbar. Stapelbar, platzierbar.
+  desc_it: Segmento di muro in legno. 200 PV. Infiammabile. Impilabile, piazzabile.
+  desc_pl: Segment muru drewnianego. 200 PŻ. Palny. Można stackować i stawiać.
+  desc_pt_BR: Segmento de parede de madeira. 200 PV. Inflamável. Empilhável, implantável.
+  desc_ru: Сегмент деревянной стены. 200 ОЗ. Горючий. Складывается, размещается.
+  desc_es: Segmento de muro de madera. 200 PV. Inflamable. Apilable, desplegable.
+  desc_es_MX: Segmento de muro de madera. 200 PV. Inflamable. Apilable, desplegable.
 865.walter_rope
   en: Rope
   ko: 밧줄
@@ -8089,6 +15837,19 @@
   source:
     walter.lua:
     equippable.dapperness = true
+  desc_en: Walter-exclusive rope item with dapperness bonus when equipped.
+  desc_ko: 월터 전용 밧줄 아이템. 장착 시 품격 보너스.
+  desc_ja: ウォルター専用ロープアイテム。装備時におしゃれ度ボーナス。
+  desc_zh_CN: 沃尔特专用绳索物品。装备时获得优雅度加成。
+  desc_zh_TW: 沃爾特專用繩索物品。裝備時獲得優雅度加成。
+  desc_fr: Corde exclusive à Walter avec bonus d'élégance à l'équipement.
+  desc_de: Walter-exklusives Seil mit Eleganzbonus beim Anlegen.
+  desc_it: Corda esclusiva di Walter con bonus eleganza all'equipaggiamento.
+  desc_pl: Wyłączna lina Waltera z bonusem elegancji po założeniu.
+  desc_pt_BR: Corda exclusiva de Walter com bônus de elegância ao equipar.
+  desc_ru: Верёвка Уолтера с бонусом элегантности при экипировке.
+  desc_es: Cuerda exclusiva de Walter con bonificación de elegancia al equipar.
+  desc_es_MX: Cuerda exclusiva de Walter con bonificación de elegancia al equipar.
 866.walterhat
   en: Pinetree Pioneer Hat
   ko: 소나무 개척단 모자
@@ -8099,61 +15860,217 @@
     WALTER = {"walterhat", "slingshot", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock"},
     WALTERHAT_SANITY_DAMAGE_PROTECTION = .5,
     WALTERHAT_IMPROVED_SANITY_DAMAGE_PROTECTION = 0.25,
+  desc_en: Walter's hat. 50% sanity damage protection. Lasts 10 days. Improved version offers 75% protection.
+  desc_ko: 월터의 모자. 정신력 피해 50% 보호. 10일 지속. 개선 버전은 75% 보호.
+  desc_ja: ウォルターの帽子。正気度ダメージ50%防御。10日持続。改良版は75%防御。
+  desc_zh_CN: 沃尔特的帽子。50%理智伤害保护。持续10天。改良版提供75%保护。
+  desc_zh_TW: 沃爾特的帽子。50%理智傷害保護。持續10天。改良版提供75%保護。
+  desc_fr: Chapeau de Walter. 50 % de protection contre les dégâts de santé mentale. Dure 10 jours. La version améliorée offre 75 %.
+  desc_de: Walters Hut. 50 % Geistige-Gesundheitsschutz. Hält 10 Tage. Verbesserte Version bietet 75 %.
+  desc_it: Cappello di Walter. 50% protezione danni sanità. Dura 10 giorni. La versione migliorata offre 75%.
+  desc_pl: Kapelusz Waltera. 50% ochrona przed obrażeniami zdrowia psychicznego. Wytrzymuje 10 dni. Ulepszona wersja daje 75%.
+  desc_pt_BR: Chapéu de Walter. 50% de proteção contra dano de sanidade. Dura 10 dias. Versão melhorada oferece 75%.
+  desc_ru: Шляпа Уолтера. 50% защиты от урона рассудку. Длится 10 дней. Улучшенная версия даёт 75%.
+  desc_es: Sombrero de Walter. 50 % protección contra daño de cordura. Dura 10 días. Versión mejorada ofrece 75 %.
+  desc_es_MX: Sombrero de Walter. 50 % protección contra daño de cordura. Dura 10 días. Versión mejorada ofrece 75 %.
 867.wanderingtradershop_bluegem
   en: Blue Gem
   ko: 푸른 보석
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Rare trade ware. Quantity 1 per restock.
+  desc_en: Rare trade ware from the Wandering Trader. Blue Gem, quantity 1 per restock.
+  desc_ko: 떠돌이 상인의 희귀 교역품. 푸른 보석, 재입고당 1개.
+  desc_ja: 放浪商人のレア交易品。ブルージェム、再入荷ごとに1個。
+  desc_zh_CN: 流浪商人的稀有贸易品。蓝宝石，每次补货1个。
+  desc_zh_TW: 流浪商人的稀有貿易品。藍寶石，每次補貨1個。
+  desc_fr: Marchandise rare du marchand itinérant. Gemme bleue, 1 par réapprovisionnement.
+  desc_de: Seltene Ware des wandernden Händlers. Blauer Edelstein, 1 pro Nachschub.
+  desc_it: Merce rara del mercante errante. Gemma blu, 1 per rifornimento.
+  desc_pl: Rzadki towar wędrownego kupca. Niebieski klejnot, 1 na uzupełnienie.
+  desc_pt_BR: Mercadoria rara do Comerciante Errante. Gema azul, 1 por reabastecimento.
+  desc_ru: Редкий товар бродячего торговца. Синий самоцвет, 1 за пополнение.
+  desc_es: Mercancía rara del comerciante errante. Gema azul, 1 por reabastecimiento.
+  desc_es_MX: Mercancía rara del comerciante errante. Gema azul, 1 por reabastecimiento.
 868.wanderingtradershop_cutgrass
   en: Cut Grass
   ko: 풀 줄기
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Seasonal ware (1-5 in spring, 0-1 in winter/summer, 1-3 in autumn). Limit 4-16.
+  desc_en: Wandering Trader ware. Seasonal stock: 1–5 in spring, 0–1 in winter/summer, 1–3 in autumn. Limit 4–16.
+  desc_ko: 떠돌이 상인 교역품. 계절별 재고: 봄 1~5, 겨울/여름 0~1, 가을 1~3. 한도 4~16.
+  desc_ja: 放浪商人の交易品。季節在庫：春1〜5、冬/夏0〜1、秋1〜3。上限4〜16。
+  desc_zh_CN: 流浪商人贸易品。季节库存：春季1–5，冬/夏0–1，秋季1–3。上限4–16。
+  desc_zh_TW: 流浪商人貿易品。季節庫存：春季1–5，冬/夏0–1，秋季1–3。上限4–16。
+  desc_fr: Marchandise du marchand itinérant. Stock saisonnier : 1–5 au printemps, 0–1 en hiver/été, 1–3 en automne. Limite 4–16.
+  desc_de: Ware des wandernden Händlers. Saisonbestand: 1–5 im Frühling, 0–1 im Winter/Sommer, 1–3 im Herbst. Limit 4–16.
+  desc_it: Merce del mercante errante. Stock stagionale: 1–5 in primavera, 0–1 in inverno/estate, 1–3 in autunno. Limite 4–16.
+  desc_pl: Towar wędrownego kupca. Zapas sezonowy: 1–5 wiosną, 0–1 zimą/latem, 1–3 jesienią. Limit 4–16.
+  desc_pt_BR: Mercadoria do Comerciante Errante. Estoque sazonal: 1–5 na primavera, 0–1 no inverno/verão, 1–3 no outono. Limite 4–16.
+  desc_ru: Товар бродячего торговца. Сезонный запас: 1–5 весной, 0–1 зимой/летом, 1–3 осенью. Лимит 4–16.
+  desc_es: Mercancía del comerciante errante. Stock estacional: 1–5 en primavera, 0–1 en invierno/verano, 1–3 en otoño. Límite 4–16.
+  desc_es_MX: Mercancía del comerciante errante. Stock estacional: 1–5 en primavera, 0–1 en invierno/verano, 1–3 en otoño. Límite 4–16.
 869.wanderingtradershop_cutreeds
   en: Cut Reeds
   ko: 갈대 줄기
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Seasonal ware (2-3 in spring, 0-1 in autumn). Limit 6-12.
+  desc_en: Wandering Trader ware. Seasonal stock: 2–3 in spring, 0–1 in autumn. Limit 6–12.
+  desc_ko: 떠돌이 상인 교역품. 계절별 재고: 봄 2~3, 가을 0~1. 한도 6~12.
+  desc_ja: 放浪商人の交易品。季節在庫：春2〜3、秋0〜1。上限6〜12。
+  desc_zh_CN: 流浪商人贸易品。季节库存：春季2–3，秋季0–1。上限6–12。
+  desc_zh_TW: 流浪商人貿易品。季節庫存：春季2–3，秋季0–1。上限6–12。
+  desc_fr: Marchandise du marchand itinérant. Stock saisonnier : 2–3 au printemps, 0–1 en automne. Limite 6–12.
+  desc_de: Ware des wandernden Händlers. Saisonbestand: 2–3 im Frühling, 0–1 im Herbst. Limit 6–12.
+  desc_it: Merce del mercante errante. Stock stagionale: 2–3 in primavera, 0–1 in autunno. Limite 6–12.
+  desc_pl: Towar wędrownego kupca. Zapas sezonowy: 2–3 wiosną, 0–1 jesienią. Limit 6–12.
+  desc_pt_BR: Mercadoria do Comerciante Errante. Estoque sazonal: 2–3 na primavera, 0–1 no outono. Limite 6–12.
+  desc_ru: Товар бродячего торговца. Сезонный запас: 2–3 весной, 0–1 осенью. Лимит 6–12.
+  desc_es: Mercancía del comerciante errante. Stock estacional: 2–3 en primavera, 0–1 en otoño. Límite 6–12.
+  desc_es_MX: Mercancía del comerciante errante. Stock estacional: 2–3 en primavera, 0–1 en otoño. Límite 6–12.
 870.wanderingtradershop_flint
   en: Flint
   ko: 부싯돌
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Always-available ware. Quantity 1-2, limit 4.
+  desc_en: Wandering Trader ware. Always available, quantity 1–2, limit 4.
+  desc_ko: 떠돌이 상인 교역품. 항상 판매, 수량 1~2, 한도 4.
+  desc_ja: 放浪商人の交易品。常時入手可能、数量1〜2、上限4。
+  desc_zh_CN: 流浪商人贸易品。常驻商品，数量1–2，上限4。
+  desc_zh_TW: 流浪商人貿易品。常駐商品，數量1–2，上限4。
+  desc_fr: Marchandise du marchand itinérant. Toujours disponible, quantité 1–2, limite 4.
+  desc_de: Ware des wandernden Händlers. Immer verfügbar, Menge 1–2, Limit 4.
+  desc_it: Merce del mercante errante. Sempre disponibile, quantità 1–2, limite 4.
+  desc_pl: Towar wędrownego kupca. Zawsze dostępny, ilość 1–2, limit 4.
+  desc_pt_BR: Mercadoria do Comerciante Errante. Sempre disponível, quantidade 1–2, limite 4.
+  desc_ru: Товар бродячего торговца. Всегда доступен, количество 1–2, лимит 4.
+  desc_es: Mercancía del comerciante errante. Siempre disponible, cantidad 1–2, límite 4.
+  desc_es_MX: Mercancía del comerciante errante. Siempre disponible, cantidad 1–2, límite 4.
 871.wanderingtradershop_gears
   en: Gears
   ko: 톱니바퀴
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Starter + uncommon ware. Quantity 1, limit 1.
+  desc_en: Wandering Trader ware. Starter + uncommon stock, quantity 1, limit 1.
+  desc_ko: 떠돌이 상인 교역품. 초기 + 비흔 재고, 수량 1, 한도 1.
+  desc_ja: 放浪商人の交易品。スターター＋アンコモン在庫、数量1、上限1。
+  desc_zh_CN: 流浪商人贸易品。初始+非普通库存，数量1，上限1。
+  desc_zh_TW: 流浪商人貿易品。初始+非普通庫存，數量1，上限1。
+  desc_fr: Marchandise du marchand itinérant. Stock initial + peu commun, quantité 1, limite 1.
+  desc_de: Ware des wandernden Händlers. Starter + ungewöhnlicher Bestand, Menge 1, Limit 1.
+  desc_it: Merce del mercante errante. Stock iniziale + non comune, quantità 1, limite 1.
+  desc_pl: Towar wędrownego kupca. Początkowy + rzadki zapas, ilość 1, limit 1.
+  desc_pt_BR: Mercadoria do Comerciante Errante. Estoque inicial + incomum, quantidade 1, limite 1.
+  desc_ru: Товар бродячего торговца. Начальный + нечастый запас, количество 1, лимит 1.
+  desc_es: Mercancía del comerciante errante. Stock inicial + poco común, cantidad 1, límite 1.
+  desc_es_MX: Mercancía del comerciante errante. Stock inicial + poco común, cantidad 1, límite 1.
 872.wanderingtradershop_livinglog
   en: Living Log
   ko: 생목
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Uncommon ware. Quantity 1.
+  desc_en: Wandering Trader ware. Uncommon stock, quantity 1.
+  desc_ko: 떠돌이 상인 교역품. 비흔 재고, 수량 1.
+  desc_ja: 放浪商人の交易品。アンコモン在庫、数量1。
+  desc_zh_CN: 流浪商人贸易品。非普通库存，数量1。
+  desc_zh_TW: 流浪商人貿易品。非普通庫存，數量1。
+  desc_fr: Marchandise du marchand itinérant. Stock peu commun, quantité 1.
+  desc_de: Ware des wandernden Händlers. Ungewöhnlicher Bestand, Menge 1.
+  desc_it: Merce del mercante errante. Stock non comune, quantità 1.
+  desc_pl: Towar wędrownego kupca. Rzadki zapas, ilość 1.
+  desc_pt_BR: Mercadoria do Comerciante Errante. Estoque incomum, quantidade 1.
+  desc_ru: Товар бродячего торговца. Нечастый запас, количество 1.
+  desc_es: Mercancía del comerciante errante. Stock poco común, cantidad 1.
+  desc_es_MX: Mercancía del comerciante errante. Stock poco común, cantidad 1.
 873.wanderingtradershop_moonglass
   en: Moon Shard
   ko: 달 파편
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Special ware during lunar hail. Quantity 2-4, limit 8.
+  desc_en: Wandering Trader ware. Special stock during lunar hail events, quantity 2–4, limit 8.
+  desc_ko: 떠돌이 상인 교역품. 달 우박 이벤트 시 특별 재고, 수량 2~4, 한도 8.
+  desc_ja: 放浪商人の交易品。月の雹イベント中の特別在庫、数量2〜4、上限8。
+  desc_zh_CN: 流浪商人贸易品。月亮冰雹事件期间的特殊库存，数量2–4，上限8。
+  desc_zh_TW: 流浪商人貿易品。月亮冰雹事件期間的特殊庫存，數量2–4，上限8。
+  desc_fr: Marchandise du marchand itinérant. Stock spécial lors d'événements de grêle lunaire, quantité 2–4, limite 8.
+  desc_de: Ware des wandernden Händlers. Sonderbestand bei Mondhagel-Events, Menge 2–4, Limit 8.
+  desc_it: Merce del mercante errante. Stock speciale durante eventi di grandine lunare, quantità 2–4, limite 8.
+  desc_pl: Towar wędrownego kupca. Specjalny zapas podczas wydarzeń księżycowego gradu, ilość 2–4, limit 8.
+  desc_pt_BR: Mercadoria do Comerciante Errante. Estoque especial durante eventos de granizo lunar, quantidade 2–4, limite 8.
+  desc_ru: Товар бродячего торговца. Специальный запас во время лунного града, количество 2–4, лимит 8.
+  desc_es: Mercancía del comerciante errante. Stock especial durante eventos de granizo lunar, cantidad 2–4, límite 8.
+  desc_es_MX: Mercancía del comerciante errante. Stock especial durante eventos de granizo lunar, cantidad 2–4, límite 8.
 874.wanderingtradershop_pigskin
   en: Pig Skin
   ko: 돼지 가죽
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Uncommon ware. Quantity 1-2.
+  desc_en: Wandering Trader ware. Uncommon stock, quantity 1–2.
+  desc_ko: 떠돌이 상인 교역품. 비흔 재고, 수량 1~2.
+  desc_ja: 放浪商人の交易品。アンコモン在庫、数量1〜2。
+  desc_zh_CN: 流浪商人贸易品。非普通库存，数量1–2。
+  desc_zh_TW: 流浪商人貿易品。非普通庫存，數量1–2。
+  desc_fr: Marchandise du marchand itinérant. Stock peu commun, quantité 1–2.
+  desc_de: Ware des wandernden Händlers. Ungewöhnlicher Bestand, Menge 1–2.
+  desc_it: Merce del mercante errante. Stock non comune, quantità 1–2.
+  desc_pl: Towar wędrownego kupca. Rzadki zapas, ilość 1–2.
+  desc_pt_BR: Mercadoria do Comerciante Errante. Estoque incomum, quantidade 1–2.
+  desc_ru: Товар бродячего торговца. Нечастый запас, количество 1–2.
+  desc_es: Mercancía del comerciante errante. Stock poco común, cantidad 1–2.
+  desc_es_MX: Mercancía del comerciante errante. Stock poco común, cantidad 1–2.
 875.wanderingtradershop_redgem
   en: Red Gem
   ko: 붉은 보석
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Rare trade ware. Quantity 1 per restock.
+  desc_en: Rare trade ware from the Wandering Trader. Red Gem, quantity 1 per restock.
+  desc_ko: 떠돌이 상인의 희귀 교역품. 붉은 보석, 재입고당 1개.
+  desc_ja: 放浪商人のレア交易品。レッドジェム、再入荷ごとに1個。
+  desc_zh_CN: 流浪商人的稀有贸易品。红宝石，每次补货1个。
+  desc_zh_TW: 流浪商人的稀有貿易品。紅寶石，每次補貨1個。
+  desc_fr: Marchandise rare du marchand itinérant. Gemme rouge, 1 par réapprovisionnement.
+  desc_de: Seltene Ware des wandernden Händlers. Roter Edelstein, 1 pro Nachschub.
+  desc_it: Merce rara del mercante errante. Gemma rossa, 1 per rifornimento.
+  desc_pl: Rzadki towar wędrownego kupca. Czerwony klejnot, 1 na uzupełnienie.
+  desc_pt_BR: Mercadoria rara do Comerciante Errante. Gema vermelha, 1 por reabastecimento.
+  desc_ru: Редкий товар бродячего торговца. Красный самоцвет, 1 за пополнение.
+  desc_es: Mercancía rara del comerciante errante. Gema roja, 1 por reabastecimiento.
+  desc_es_MX: Mercancía rara del comerciante errante. Gema roja, 1 por reabastecimiento.
 876.wanderingtradershop_twigs
   en: Twigs
   ko: 잔가지
   app: O
   source: Wandering trader recipe (wanderingtrader.lua). Seasonal ware (1-5 in spring, 0-1 in winter/summer, 1-3 in autumn). Limit 4-16.
+  desc_en: Wandering Trader ware. Seasonal stock: 1–5 in spring, 0–1 in winter/summer, 1–3 in autumn. Limit 4–16.
+  desc_ko: 떠돌이 상인 교역품. 계절별 재고: 봄 1~5, 겨울/여름 0~1, 가을 1~3. 한도 4~16.
+  desc_ja: 放浪商人の交易品。季節在庫：春1〜5、冬/夏0〜1、秋1〜3。上限4〜16。
+  desc_zh_CN: 流浪商人贸易品。季节库存：春季1–5，冬/夏0–1，秋季1–3。上限4–16。
+  desc_zh_TW: 流浪商人貿易品。季節庫存：春季1–5，冬/夏0–1，秋季1–3。上限4–16。
+  desc_fr: Marchandise du marchand itinérant. Stock saisonnier : 1–5 au printemps, 0–1 en hiver/été, 1–3 en automne. Limite 4–16.
+  desc_de: Ware des wandernden Händlers. Saisonbestand: 1–5 im Frühling, 0–1 im Winter/Sommer, 1–3 im Herbst. Limit 4–16.
+  desc_it: Merce del mercante errante. Stock stagionale: 1–5 in primavera, 0–1 in inverno/estate, 1–3 in autunno. Limite 4–16.
+  desc_pl: Towar wędrownego kupca. Zapas sezonowy: 1–5 wiosną, 0–1 zimą/latem, 1–3 jesienią. Limit 4–16.
+  desc_pt_BR: Mercadoria do Comerciante Errante. Estoque sazonal: 1–5 na primavera, 0–1 no inverno/verão, 1–3 no outono. Limite 4–16.
+  desc_ru: Товар бродячего торговца. Сезонный запас: 1–5 весной, 0–1 зимой/летом, 1–3 осенью. Лимит 4–16.
+  desc_es: Mercancía del comerciante errante. Stock estacional: 1–5 en primavera, 0–1 en invierno/verano, 1–3 en otoño. Límite 4–16.
+  desc_es_MX: Mercancía del comerciante errante. Stock estacional: 1–5 en primavera, 0–1 en invierno/verano, 1–3 en otoño. Límite 4–16.
 877.wardrobe
   en: Wardrobe
   ko: 옷장
   app: O
   source: Structure (wardrobe.lua). Allows character skin changes via wardrobe component. Hammerable (4 hits), burnable.
+  desc_en: Structure that allows character skin changes. Hammerable (4 hits), burnable.
+  desc_ko: 캐릭터 스킨을 변경할 수 있는 구조물. 망치로 파괴 가능(4회), 연소 가능.
+  desc_ja: キャラクタースキンを変更できる構造物。ハンマー4回で破壊可能、燃焼可能。
+  desc_zh_CN: 允许更换角色皮肤的建筑。可锤击（4次），可燃。
+  desc_zh_TW: 允許更換角色皮膚的建築。可錘擊（4次），可燃。
+  desc_fr: Structure permettant de changer les skins de personnage. Démontable (4 coups), inflammable.
+  desc_de: Struktur zum Ändern von Charakter-Skins. Abbruchfähig (4 Schläge), brennbar.
+  desc_it: Struttura che permette di cambiare skin del personaggio. Smontabile (4 colpi), infiammabile.
+  desc_pl: Budowla umożliwiająca zmianę skórek postaci. Rozbijalna (4 uderzenia), palna.
+  desc_pt_BR: Estrutura que permite mudar skins de personagem. Desmontável (4 golpes), inflamável.
+  desc_ru: Конструкция для смены скинов персонажа. Разрушается молотком (4 удара), горючая.
+  desc_es: Estructura que permite cambiar skins de personaje. Desmontable (4 golpes), inflamable.
+  desc_es_MX: Estructura que permite cambiar skins de personaje. Desmontable (4 golpes), inflamable.
 878.wargshrine
   en: Varg Shrine
   ko: 바르그 사당
@@ -8161,6 +16078,19 @@
   source:
     tuning.lua:
     WARGSHRINE = TechTree.Create({
+  desc_en: Varg shrine crafting station. Unlocks Varg-related tech tree recipes.
+  desc_ko: 바르그 사당 제작 스테이션. 바르그 관련 기술 트리 레시피 해금.
+  desc_ja: ヴァルグの祠の製作ステーション。ヴァルグ関連テックツリーレシピを解放。
+  desc_zh_CN: 座狼神殿制作站。解锁座狼相关科技树配方。
+  desc_zh_TW: 座狼神殿製作站。解鎖座狼相關科技樹配方。
+  desc_fr: Station d'artisanat du sanctuaire de Varg. Débloque les recettes de l'arbre technologique Varg.
+  desc_de: Varg-Schrein-Fertigungsstation. Schaltet Varg-Technologiebaum-Rezepte frei.
+  desc_it: Stazione di fabbricazione del santuario del Varg. Sblocca le ricette dell'albero tecnologico Varg.
+  desc_pl: Stacja rzemieślnicza kapliczki Varga. Odblokowuje receptury drzewka technologicznego Varga.
+  desc_pt_BR: Estação de fabricação do santuário Varg. Desbloqueia receitas da árvore tecnológica Varg.
+  desc_ru: Станция создания святилища Варга. Открывает рецепты технологического дерева Варга.
+  desc_es: Estación de artesanía del santuario Varg. Desbloquea recetas del árbol tecnológico Varg.
+  desc_es_MX: Estación de artesanía del santuario Varg. Desbloquea recetas del árbol tecnológico Varg.
 879.waterballoon
   en: Waterballoon
   ko: 물풍선
@@ -8171,6 +16101,19 @@
     WATERBALLOON_TEMP_REDUCTION = 5,
     WATERBALLOON_ADD_WETNESS = 20,
     WATERBALLOON_PROTECTION_TIME = 30,
+  desc_en: Throwable projectile. Extinguishes fires, reduces temperature by 5, adds 20 wetness. 30s fire protection.
+  desc_ko: 투척 가능한 발사체. 화재 진압, 온도 5 감소, 젖음 20 추가. 30초 화재 보호.
+  desc_ja: 投擲可能な飛び道具。消火、温度5低下、濡れ度20追加。30秒間防火。
+  desc_zh_CN: 可投掷物。灭火，降温5度，增加20湿度。30秒防火保护。
+  desc_zh_TW: 可投擲物。滅火，降溫5度，增加20濕度。30秒防火保護。
+  desc_fr: Projectile lançable. Éteint les feux, réduit la température de 5, ajoute 20 de mouillure. 30s de protection anti-feu.
+  desc_de: Werfbares Projektil. Löscht Feuer, senkt Temperatur um 5, fügt 20 Nässe hinzu. 30s Feuerschutz.
+  desc_it: Proiettile lanciabile. Estingue incendi, riduce temperatura di 5, aggiunge 20 bagnato. 30s protezione fuoco.
+  desc_pl: Rzucany pocisk. Gasi ogień, obniża temperaturę o 5, dodaje 20 wilgoci. 30s ochrony przed ogniem.
+  desc_pt_BR: Projétil arremessável. Extingue incêndios, reduz temperatura em 5, adiciona 20 de molhamento. 30s de proteção contra fogo.
+  desc_ru: Метательный снаряд. Тушит огонь, снижает температуру на 5, добавляет 20 влажности. 30с защиты от огня.
+  desc_es: Proyectil lanzable. Extingue fuegos, reduce temperatura en 5, añade 20 de humedad. 30s de protección contra fuego.
+  desc_es_MX: Proyectil lanzable. Extingue fuegos, reduce temperatura en 5, añade 20 de humedad. 30s de protección contra fuego.
 880.wateringcan
   en: Empty Watering Can
   ko: 빈 물뿌리개
@@ -8188,11 +16131,37 @@
     wateringcan.lua:
     weapon:SetDamage(TUNING.UNARMED_DAMAGE)
     finiteuses:SetMaxUses(uses)
+  desc_en: Watering tool with 40 uses. Extinguishes fires, reduces temperature by 5. Splash radius 2.25. 30s fire protection.
+  desc_ko: 40회 사용 가능한 물주기 도구. 화재 진압, 온도 5 감소. 물튀김 반경 2.25. 30초 화재 보호.
+  desc_ja: 40回使用の水やりツール。消火、温度5低下。飛沫半径2.25。30秒間防火。
+  desc_zh_CN: 40次使用的浇水工具。灭火，降温5度。溅射半径2.25。30秒防火保护。
+  desc_zh_TW: 40次使用的澆水工具。滅火，降溫5度。濺射半徑2.25。30秒防火保護。
+  desc_fr: Outil d'arrosage à 40 utilisations. Éteint les feux, réduit la température de 5. Rayon d'éclaboussure 2.25. 30s de protection anti-feu.
+  desc_de: Gießwerkzeug mit 40 Ladungen. Löscht Feuer, senkt Temperatur um 5. Spritzradius 2,25. 30s Feuerschutz.
+  desc_it: Strumento d'irrigazione con 40 usi. Estingue incendi, riduce temperatura di 5. Raggio schizzo 2.25. 30s protezione fuoco.
+  desc_pl: Narzędzie do podlewania z 40 użyciami. Gasi ogień, obniża temperaturę o 5. Promień rozprysku 2.25. 30s ochrony przed ogniem.
+  desc_pt_BR: Ferramenta de irrigação com 40 usos. Extingue incêndios, reduz temperatura em 5. Raio de respingo 2.25. 30s de proteção contra fogo.
+  desc_ru: Инструмент для полива, 40 зарядов. Тушит огонь, снижает температуру на 5. Радиус брызг 2.25. 30с защиты от огня.
+  desc_es: Herramienta de riego con 40 usos. Extingue fuegos, reduce temperatura en 5. Radio de salpicadura 2.25. 30s de protección contra fuego.
+  desc_es_MX: Herramienta de riego con 40 usos. Extingue fuegos, reduce temperatura en 5. Radio de salpicadura 2.25. 30s de protección contra fuego.
 881.watermelonhat
   en: Fashion Melon
   ko: 수박 모자
   app: O
   source: Head equipment (hats.lua). Summer cooling hat: -55 temperature (WATERMELON_COOLER). Summer insulation (INSULATION_MED). Adds 0.5 wetness/sec. Perishes in 3 days (PERISH_SUPERFAST).
+  desc_en: Summer cooling hat. -55 temperature, medium insulation. Adds 0.5 wetness/sec. Perishes in 3 days.
+  desc_ko: 여름 냉각 모자. 온도 -55, 중간 단열. 초당 0.5 젖음 추가. 3일 후 부패.
+  desc_ja: 夏の冷却帽子。温度-55、中断熱。毎秒0.5の濡れ追加。3日で腐敗。
+  desc_zh_CN: 夏季降温帽。温度-55，中等隔热。每秒增加0.5湿度。3天后腐烂。
+  desc_zh_TW: 夏季降溫帽。溫度-55，中等隔熱。每秒增加0.5濕度。3天後腐爛。
+  desc_fr: Chapeau rafraîchissant d'été. Température -55, isolation moyenne. Ajoute 0.5 de mouillure/s. Périt en 3 jours.
+  desc_de: Sommerkühlhut. Temperatur -55, mittlere Isolierung. +0,5 Nässe/s. Verdirbt in 3 Tagen.
+  desc_it: Cappello rinfrescante estivo. Temperatura -55, isolamento medio. Aggiunge 0.5 bagnato/s. Deperisce in 3 giorni.
+  desc_pl: Letni chłodzący kapelusz. Temperatura -55, średnia izolacja. Dodaje 0.5 wilgoci/s. Psuje się w 3 dni.
+  desc_pt_BR: Chapéu refrescante de verão. Temperatura -55, isolamento médio. Adiciona 0.5 de molhamento/s. Perece em 3 dias.
+  desc_ru: Летняя охлаждающая шляпа. Температура -55, средняя изоляция. +0.5 влажности/с. Портится за 3 дня.
+  desc_es: Sombrero refrescante de verano. Temperatura -55, aislamiento medio. Añade 0.5 humedad/s. Perece en 3 días.
+  desc_es_MX: Sombrero refrescante de verano. Temperatura -55, aislamiento medio. Añade 0.5 humedad/s. Perece en 3 días.
 882.waterpump
   en: Fire Pump
   ko: 소방 펌프
@@ -8204,6 +16173,19 @@
             {
                 MAXRANGE = 7.5,
             }
+  desc_en: Fire extinguishing pump structure. Max range 7.5 units.
+  desc_ko: 화재 진압 펌프 구조물. 최대 사거리 7.5.
+  desc_ja: 消火ポンプ構造物。最大射程7.5。
+  desc_zh_CN: 灭火泵建筑。最大范围7.5。
+  desc_zh_TW: 滅火泵建築。最大範圍7.5。
+  desc_fr: Structure de pompe anti-incendie. Portée max 7.5 unités.
+  desc_de: Feuerlöschpumpen-Struktur. Max. Reichweite 7,5 Einheiten.
+  desc_it: Struttura pompa antincendio. Gittata max 7.5 unità.
+  desc_pl: Budowla pompy gaśniczej. Maks. zasięg 7.5 jednostek.
+  desc_pt_BR: Estrutura de bomba de incêndio. Alcance máximo 7.5 unidades.
+  desc_ru: Конструкция пожарного насоса. Макс. дальность 7.5 единиц.
+  desc_es: Estructura de bomba contra incendios. Alcance máx. 7.5 unidades.
+  desc_es_MX: Estructura de bomba contra incendios. Alcance máx. 7.5 unidades.
 883.wathgrithr_improvedhat
   en: Commander's Helm
   ko: 지휘관의 투구
@@ -8212,6 +16194,19 @@
     tuning.lua:
     ARMOR_WATHGRITHR_IMPROVEDHAT = wilson_health * 6.5 * multiplayer_armor_durability_modifier,
     ARMOR_WATHGRITHR_IMPROVEDHAT_ABSORPTION = .8 * multiplayer_armor_absorption_modifier,
+  desc_en: Wigfrid's improved helmet. 80% absorption. Armor HP based on 6.5x player health formula.
+  desc_ko: 위그프리드의 개선된 투구. 80% 흡수. 플레이어 체력 6.5배 공식 기반 방어력.
+  desc_ja: ウィグフリッドの改良ヘルメット。80%吸収。プレイヤーHP×6.5の防御力。
+  desc_zh_CN: 薇格弗里德的改良头盔。80%吸收。基于6.5倍玩家生命值公式的护甲。
+  desc_zh_TW: 薇格弗里德的改良頭盔。80%吸收。基於6.5倍玩家生命值公式的護甲。
+  desc_fr: Casque amélioré de Wigfrid. 80 % d'absorption. PV d'armure basés sur 6,5× la formule de santé du joueur.
+  desc_de: Wigfrids verbesserter Helm. 80 % Absorption. Rüstungs-LP basiert auf 6,5× Spielergesundheitsformel.
+  desc_it: Elmo migliorato di Wigfrid. 80% assorbimento. PV armatura basati sulla formula 6.5× salute giocatore.
+  desc_pl: Ulepszony hełm Wigfrid. 80% absorpcja. PŻ pancerza oparte na formule 6.5× zdrowie gracza.
+  desc_pt_BR: Elmo melhorado de Wigfrid. 80% absorção. PV de armadura baseados na fórmula 6.5× vida do jogador.
+  desc_ru: Улучшенный шлем Вигфрид. 80% поглощение. ОЗ брони по формуле 6.5× здоровье игрока.
+  desc_es: Casco mejorado de Wigfrid. 80 % absorción. PV de armadura basados en fórmula 6.5× salud del jugador.
+  desc_es_MX: Casco mejorado de Wigfrid. 80 % absorción. PV de armadura basados en fórmula 6.5× salud del jugador.
 884.wathgrithr_shield
   en: Battle Rönd
   ko: 원형 방패
@@ -8231,6 +16226,19 @@
     weapon:SetDamage(DamageFn)
     armor:InitCondition(TUNING.WATHGRITHR_SHIELD_ARMOR, TUNING.WATHGRITHR_SHIELD_ABSORPTION)
     rechargeable (cooldown)
+  desc_en: Wigfrid's shield. 51 damage, 85% absorption. Parry arc 178°, 1s parry window, 10s cooldown. Successful parry reduces cooldown to 30%.
+  desc_ko: 위그프리드의 방패. 51 피해, 85% 흡수. 패리 범위 178°, 패리 1초, 쿨다운 10초. 성공 시 쿨다운 30%로 감소.
+  desc_ja: ウィグフリッドの盾。51ダメージ、85%吸収。パリー弧178°、1秒パリー、10秒クールダウン。パリー成功時クールダウン30%に短縮。
+  desc_zh_CN: 薇格弗里德的盾牌。51伤害，85%吸收。格挡弧度178°，1秒格挡窗口，10秒冷却。格挡成功后冷却缩短至30%。
+  desc_zh_TW: 薇格弗里德的盾牌。51傷害，85%吸收。格擋弧度178°，1秒格擋窗口，10秒冷卻。格擋成功後冷卻縮短至30%。
+  desc_fr: Bouclier de Wigfrid. 51 dégâts, 85 % d'absorption. Arc de parade 178°, fenêtre 1s, recharge 10s. Parade réussie réduit la recharge à 30 %.
+  desc_de: Wigfrids Schild. 51 Schaden, 85 % Absorption. Parierwinkel 178°, 1s Parierfenster, 10s Abklingzeit. Erfolgreiche Parade senkt Abklingzeit auf 30 %.
+  desc_it: Scudo di Wigfrid. 51 danni, 85% assorbimento. Arco parata 178°, finestra 1s, ricarica 10s. Parata riuscita riduce ricarica al 30%.
+  desc_pl: Tarcza Wigfrid. 51 obrażeń, 85% absorpcja. Łuk parowania 178°, okno 1s, odnowienie 10s. Udane parowanie skraca odnowienie do 30%.
+  desc_pt_BR: Escudo de Wigfrid. 51 dano, 85% absorção. Arco de bloqueio 178°, janela 1s, recarga 10s. Bloqueio bem-sucedido reduz recarga para 30%.
+  desc_ru: Щит Вигфрид. 51 урона, 85% поглощение. Дуга парирования 178°, окно 1с, перезарядка 10с. Успешное парирование снижает перезарядку до 30%.
+  desc_es: Escudo de Wigfrid. 51 daño, 85 % absorción. Arco de parada 178°, ventana 1s, recarga 10s. Parada exitosa reduce recarga al 30 %.
+  desc_es_MX: Escudo de Wigfrid. 51 daño, 85 % absorción. Arco de parada 178°, ventana 1s, recarga 10s. Parada exitosa reduce recarga al 30 %.
 885.wathgrithrhat
   en: Battle Helm
   ko: 전투 투구
@@ -8245,11 +16253,37 @@
     hats.lua:
     ARMOR_WATHGRITHRHAT = wilson_health * 5*multiplayer_armor_durability_modifier,
     ARMOR_WATHGRITHR_IMPROVEDHAT = wilson_health * 6.5 * multiplayer_armor_durability_modifier,
+  desc_en: Wigfrid's battle helmet. 80% absorption. Armor HP based on 5x player health formula. Boosts beefalo domestication by 15%.
+  desc_ko: 위그프리드의 전투 투구. 80% 흡수. 플레이어 체력 5배 공식 기반 방어력. 비팔로 길들이기 15% 증가.
+  desc_ja: ウィグフリッドの戦闘ヘルメット。80%吸収。プレイヤーHP×5の防御力。ビーファロー家畜化15%向上。
+  desc_zh_CN: 薇格弗里德的战斗头盔。80%吸收。基于5倍玩家生命值公式的护甲。牛驯化速度提升15%。
+  desc_zh_TW: 薇格弗里德的戰鬥頭盔。80%吸收。基於5倍玩家生命值公式的護甲。牛馴化速度提升15%。
+  desc_fr: Casque de bataille de Wigfrid. 80 % d'absorption. PV d'armure 5× santé joueur. Domestication des beefalos +15 %.
+  desc_de: Wigfrids Kampfhelm. 80 % Absorption. Rüstungs-LP 5× Spielergesundheit. Beefalo-Domestizierung +15 %.
+  desc_it: Elmo da battaglia di Wigfrid. 80% assorbimento. PV armatura 5× salute giocatore. Addomesticamento beefalo +15%.
+  desc_pl: Hełm bojowy Wigfrid. 80% absorpcja. PŻ pancerza 5× zdrowie gracza. Oswajanie beefalów +15%.
+  desc_pt_BR: Elmo de batalha de Wigfrid. 80% absorção. PV armadura 5× vida do jogador. Domesticação de beefalo +15%.
+  desc_ru: Боевой шлем Вигфрид. 80% поглощение. ОЗ брони 5× здоровье игрока. Приручение бифало +15%.
+  desc_es: Casco de batalla de Wigfrid. 80 % absorción. PV armadura 5× salud jugador. Domesticación de beefalo +15 %.
+  desc_es_MX: Casco de batalla de Wigfrid. 80 % absorción. PV armadura 5× salud jugador. Domesticación de beefalo +15 %.
 886.waxpaper
   en: Wax Paper
   ko: 밀랍지
   app: O
   source: Crafting material (waxpaper.lua). Stackable (STACK_SIZE_SMALLITEM). Fuel (SMALL_FUEL). Tradable. Burnable with low flashpoint (10-15).
+  desc_en: Crafting material. Stackable, burnable with low flashpoint (10–15). Small fuel value.
+  desc_ko: 제작 재료. 중첩 가능, 낮은 인화점(10~15)으로 연소. 소량 연료 가치.
+  desc_ja: 製作素材。スタック可能、低引火点（10〜15）で燃焼。少量の燃料価値。
+  desc_zh_CN: 制作材料。可堆叠，低闪点（10–15）可燃。少量燃料价值。
+  desc_zh_TW: 製作材料。可堆疊，低閃點（10–15）可燃。少量燃料價值。
+  desc_fr: Matériau d'artisanat. Empilable, inflammable à faible point d'éclair (10–15). Faible valeur combustible.
+  desc_de: Herstellungsmaterial. Stapelbar, brennbar mit niedrigem Flammpunkt (10–15). Geringer Brennwert.
+  desc_it: Materiale di fabbricazione. Impilabile, infiammabile con basso punto di infiammabilità (10–15). Valore combustibile basso.
+  desc_pl: Materiał rzemieślniczy. Można stackować, palny z niskim punktem zapłonu (10–15). Mała wartość opałowa.
+  desc_pt_BR: Material de fabricação. Empilhável, inflamável com baixo ponto de fulgor (10–15). Valor de combustível baixo.
+  desc_ru: Материал для создания. Складывается, горит при низкой температуре вспышки (10–15). Малая топливная ценность.
+  desc_es: Material de fabricación. Apilable, inflamable con punto de inflamación bajo (10–15). Valor de combustible bajo.
+  desc_es_MX: Material de fabricación. Apilable, inflamable con punto de inflamación bajo (10–15). Valor de combustible bajo.
 887.waxwelljournal
   en: Codex Umbra
   ko: 본영의 서
@@ -8261,6 +16295,19 @@
     WAXWELL = {"waxwelljournal", "nightmarefuel", "nightmarefuel", "nightmarefuel", "nightmarefuel", "nightmarefuel", "nightmarefuel"},
     waxwelljournal.lua:
     fueled:InitializeFuelLevel(TUNING.LARGE_FUEL * 4)
+  desc_en: Maxwell's spellbook. Fuel-based durability (4x large fuel). Unlocks shadow minion summoning. Shadow tech tree crafting station.
+  desc_ko: 맥스웰의 마법서. 연료 기반 내구도(대형 연료 4배). 그림자 하수인 소환 해금. 그림자 기술 트리 제작 스테이션.
+  desc_ja: マクスウェルの魔法書。燃料ベース耐久度（大燃料×4）。シャドウミニオン召喚を解放。シャドウテックツリー製作ステーション。
+  desc_zh_CN: 麦克斯韦的魔法书。燃料型耐久度（大燃料×4）。解锁暗影仆从召唤。暗影科技树制作站。
+  desc_zh_TW: 麥克斯韋的魔法書。燃料型耐久度（大燃料×4）。解鎖暗影僕從召喚。暗影科技樹製作站。
+  desc_fr: Grimoire de Maxwell. Durabilité à combustible (4× grand combustible). Débloque l'invocation de sbires d'ombre. Station d'artisanat de l'arbre d'ombre.
+  desc_de: Maxwells Zauberbuch. Brennstoffbasierte Haltbarkeit (4× großer Brennstoff). Schaltet Schattendiener-Beschwörung frei. Schatten-Technologiebaum-Station.
+  desc_it: Libro di incantesimi di Maxwell. Durabilità a combustibile (4× grande). Sblocca l'evocazione di servitori d'ombra. Stazione dell'albero tecnologico ombra.
+  desc_pl: Księga zaklęć Maxwella. Wytrzymałość oparta na paliwie (4× duże paliwo). Odblokowuje przyzywanie cienistych sług. Stacja drzewka technologicznego cienia.
+  desc_pt_BR: Livro de feitiços de Maxwell. Durabilidade baseada em combustível (4× grande). Desbloqueia invocação de lacaios sombrios. Estação da árvore tecnológica sombria.
+  desc_ru: Книга заклинаний Максвелла. Прочность на основе топлива (4× большое топливо). Открывает призыв теневых слуг. Станция теневого дерева технологий.
+  desc_es: Libro de hechizos de Maxwell. Durabilidad basada en combustible (4× grande). Desbloquea invocación de esbirros de sombra. Estación del árbol tecnológico de sombra.
+  desc_es_MX: Libro de hechizos de Maxwell. Durabilidad basada en combustible (4× grande). Desbloquea invocación de esbirros de sombra. Estación del árbol tecnológico de sombra.
 888.wendy_butterfly
   en: Butterfly
   ko: 나비
@@ -8268,6 +16315,19 @@
   source:
     wendy.lua:
     neg_aura_modifiers (immunity)
+  desc_en: Wendy's butterfly ritual item. Provides sanity aura immunity. Wendy-exclusive.
+  desc_ko: 웬디의 나비 의식 아이템. 정신력 오라 면역 부여. 웬디 전용.
+  desc_ja: ウェンディの蝶儀式アイテム。正気度オーラ免疫付与。ウェンディ専用。
+  desc_zh_CN: 温蒂的蝴蝶仪式物品。提供理智光环免疫。温蒂专用。
+  desc_zh_TW: 溫蒂的蝴蝶儀式物品。提供理智光環免疫。溫蒂專用。
+  desc_fr: Objet rituel papillon de Wendy. Confère l'immunité à l'aura de santé mentale. Exclusif à Wendy.
+  desc_de: Wendys Schmetterlingsritual-Gegenstand. Verleiht Immunitiy gegen Geistesstärke-Aura. Wendy-exklusiv.
+  desc_it: Oggetto rituale farfalla di Wendy. Fornisce immunità all'aura di sanità. Esclusivo di Wendy.
+  desc_pl: Przedmiot rytuału motyla Wendy. Zapewnia odporność na aurę zdrowia psychicznego. Wyłączny dla Wendy.
+  desc_pt_BR: Item ritual de borboleta de Wendy. Fornece imunidade à aura de sanidade. Exclusivo de Wendy.
+  desc_ru: Ритуальный предмет-бабочка Венди. Даёт иммунитет к ауре рассудка. Только для Венди.
+  desc_es: Objeto ritual de mariposa de Wendy. Otorga inmunidad al aura de cordura. Exclusivo de Wendy.
+  desc_es_MX: Objeto ritual de mariposa de Wendy. Otorga inmunidad al aura de cordura. Exclusivo de Wendy.
 889.wendy_gravestone
   en: Gravestone
   ko: 묘비
@@ -8275,6 +16335,19 @@
   source:
     wendy.lua:
     neg_aura_modifiers (immunity)
+  desc_en: Wendy's gravestone ritual item. Provides sanity aura immunity. Wendy-exclusive.
+  desc_ko: 웬디의 묘비 의식 아이템. 정신력 오라 면역 부여. 웬디 전용.
+  desc_ja: ウェンディの墓石儀式アイテム。正気度オーラ免疫付与。ウェンディ専用。
+  desc_zh_CN: 温蒂的墓碑仪式物品。提供理智光环免疫。温蒂专用。
+  desc_zh_TW: 溫蒂的墓碑儀式物品。提供理智光環免疫。溫蒂專用。
+  desc_fr: Objet rituel pierre tombale de Wendy. Confère l'immunité à l'aura de santé mentale. Exclusif à Wendy.
+  desc_de: Wendys Grabstein-Ritual-Gegenstand. Verleiht Immunität gegen Geistesstärke-Aura. Wendy-exklusiv.
+  desc_it: Oggetto rituale lapide di Wendy. Fornisce immunità all'aura di sanità. Esclusivo di Wendy.
+  desc_pl: Przedmiot rytuału nagrobka Wendy. Zapewnia odporność na aurę zdrowia psychicznego. Wyłączny dla Wendy.
+  desc_pt_BR: Item ritual de lápide de Wendy. Fornece imunidade à aura de sanidade. Exclusivo de Wendy.
+  desc_ru: Ритуальный предмет-надгробие Венди. Даёт иммунитет к ауре рассудка. Только для Венди.
+  desc_es: Objeto ritual de lápida de Wendy. Otorga inmunidad al aura de cordura. Exclusivo de Wendy.
+  desc_es_MX: Objeto ritual de lápida de Wendy. Otorga inmunidad al aura de cordura. Exclusivo de Wendy.
 890.wendy_moonbutterfly
   en: Moon Moth
   ko: 달 나방
@@ -8282,26 +16355,91 @@
   source:
     wendy.lua:
     neg_aura_modifiers (immunity)
+  desc_en: Wendy's moon moth ritual item. Provides sanity aura immunity. Wendy-exclusive.
+  desc_ko: 웬디의 달 나방 의식 아이템. 정신력 오라 면역 부여. 웬디 전용.
+  desc_ja: ウェンディの月蛾儀式アイテム。正気度オーラ免疫付与。ウェンディ専用。
+  desc_zh_CN: 温蒂的月蛾仪式物品。提供理智光环免疫。温蒂专用。
+  desc_zh_TW: 溫蒂的月蛾儀式物品。提供理智光環免疫。溫蒂專用。
+  desc_fr: Objet rituel papillon de lune de Wendy. Confère l'immunité à l'aura de santé mentale. Exclusif à Wendy.
+  desc_de: Wendys Mondmotten-Ritual-Gegenstand. Verleiht Immunität gegen Geistesstärke-Aura. Wendy-exklusiv.
+  desc_it: Oggetto rituale falena lunare di Wendy. Fornisce immunità all'aura di sanità. Esclusivo di Wendy.
+  desc_pl: Przedmiot rytuału księżycowej ćmy Wendy. Zapewnia odporność na aurę zdrowia psychicznego. Wyłączny dla Wendy.
+  desc_pt_BR: Item ritual de mariposa lunar de Wendy. Fornece imunidade à aura de sanidade. Exclusivo de Wendy.
+  desc_ru: Ритуальный предмет — лунная моль Венди. Даёт иммунитет к ауре рассудка. Только для Венди.
+  desc_es: Objeto ritual de polilla lunar de Wendy. Otorga inmunidad al aura de cordura. Exclusivo de Wendy.
+  desc_es_MX: Objeto ritual de polilla lunar de Wendy. Otorga inmunidad al aura de cordura. Exclusivo de Wendy.
 891.wendy_resurrectiongrave
   en: Perennial Altar
   ko: 여러해살이 제단
   app: O
   source: Wendy-exclusive resurrection structure (wendy_resurrectiongrave.lua). Attunable — costs EFFIGY_HEALTH_PENALTY HP to attune. Resurrects the linked player on death. Hammerable.
+  desc_en: Wendy-exclusive resurrection structure. Costs HP to attune. Resurrects linked player on death. Hammerable.
+  desc_ko: 웬디 전용 부활 구조물. 귀속 시 체력 소모. 사망 시 연결된 플레이어 부활. 망치로 파괴 가능.
+  desc_ja: ウェンディ専用復活構造物。帰属にHP消費。死亡時リンクされたプレイヤーを復活。ハンマーで破壊可能。
+  desc_zh_CN: 温蒂专用复活建筑。绑定需消耗生命值。死亡时复活绑定玩家。可锤击。
+  desc_zh_TW: 溫蒂專用復活建築。綁定需消耗生命值。死亡時復活綁定玩家。可錘擊。
+  desc_fr: Structure de résurrection exclusive à Wendy. Coûte des PV pour s'attacher. Ressuscite le joueur lié à la mort. Démontable.
+  desc_de: Wendy-exklusive Auferstehungsstruktur. Kostet LP zum Binden. Belebt verbundenen Spieler bei Tod wieder. Abbruchfähig.
+  desc_it: Struttura di resurrezione esclusiva di Wendy. Costa PV per attivare. Resuscita il giocatore collegato alla morte. Smontabile.
+  desc_pl: Wyłączna budowla wskrzeszenia Wendy. Kosztuje PŻ do przypisania. Wskrzesza przypisanego gracza po śmierci. Rozbijalna.
+  desc_pt_BR: Estrutura de ressurreição exclusiva de Wendy. Custa PV para vincular. Ressuscita jogador vinculado na morte. Desmontável.
+  desc_ru: Конструкция воскрешения только для Венди. Привязка стоит ОЗ. Воскрешает привязанного игрока при гибели. Разрушается молотком.
+  desc_es: Estructura de resurrección exclusiva de Wendy. Cuesta PV vincular. Resucita al jugador vinculado al morir. Desmontable.
+  desc_es_MX: Estructura de resurrección exclusiva de Wendy. Cuesta PV vincular. Resucita al jugador vinculado al morir. Desmontable.
 892.wereitem_beaver
   en: Kitschy Beaver Idol
   ko: 미숙한 비버 우상
   app: O
   source: Woodie wereform food (wereitems.lua). Edible meat (CALORIES_MED hunger). -HEALING_MED HP, -SANITY_MED sanity for non-Woodie. Triggers beaver transformation for Woodie.
+  desc_en: Woodie's beaver idol food. Medium hunger, -HP, -sanity for non-Woodie. Triggers beaver wereform for Woodie.
+  desc_ko: 우디의 비버 우상 음식. 중간 허기, 비우디에게 -체력, -정신력. 우디에게 비버 변신 발동.
+  desc_ja: ウッディのビーバーアイドル食品。中腹、非ウッディに-HP、-正気度。ウッディにビーバー変身を発動。
+  desc_zh_CN: 伍迪的海狸偶像食物。中等饥饿，非伍迪减生命值和理智。伍迪触发海狸变身。
+  desc_zh_TW: 伍迪的海狸偶像食物。中等飢餓，非伍迪減生命值和理智。伍迪觸發海狸變身。
+  desc_fr: Nourriture idole de castor de Woodie. Faim moyenne, -PV, -santé mentale pour les non-Woodie. Déclenche la forme castor pour Woodie.
+  desc_de: Woodies Biber-Idol-Nahrung. Mittlerer Hunger, -LP, -geistige Gesundheit für Nicht-Woodie. Löst Biber-Verwandlung für Woodie aus.
+  desc_it: Cibo idolo castoro di Woodie. Fame media, -PV, -sanità per non-Woodie. Innesca la forma castoro per Woodie.
+  desc_pl: Jedzenie bożka bobra Woodiego. Średni głód, -PŻ, -zdrowie psychiczne dla nie-Woodiego. Wywołuje przemianę w bobra dla Woodiego.
+  desc_pt_BR: Comida ídolo castor de Woodie. Fome média, -PV, -sanidade para não-Woodie. Ativa forma castor para Woodie.
+  desc_ru: Еда-идол бобра Вуди. Средний голод, -ОЗ, -рассудок для не-Вуди. Запускает превращение в бобра для Вуди.
+  desc_es: Comida ídolo castor de Woodie. Hambre media, -PV, -cordura para no-Woodie. Activa forma castor para Woodie.
+  desc_es_MX: Comida ídolo castor de Woodie. Hambre media, -PV, -cordura para no-Woodie. Activa forma castor para Woodie.
 893.wereitem_goose
   en: Kitschy Goose Idol
   ko: 미숙한 거위 우상
   app: O
   source: Woodie wereform food (wereitems.lua). Edible meat (CALORIES_MED hunger). -HEALING_MED HP, -SANITY_MED sanity for non-Woodie. Triggers goose transformation for Woodie.
+  desc_en: Woodie's goose idol food. Medium hunger, -HP, -sanity for non-Woodie. Triggers goose wereform for Woodie.
+  desc_ko: 우디의 거위 우상 음식. 중간 허기, 비우디에게 -체력, -정신력. 우디에게 거위 변신 발동.
+  desc_ja: ウッディのグースアイドル食品。中腹、非ウッディに-HP、-正気度。ウッディにグース変身を発動。
+  desc_zh_CN: 伍迪的鹅偶像食物。中等饥饿，非伍迪减生命值和理智。伍迪触发鹅变身。
+  desc_zh_TW: 伍迪的鵝偶像食物。中等飢餓，非伍迪減生命值和理智。伍迪觸發鵝變身。
+  desc_fr: Nourriture idole d'oie de Woodie. Faim moyenne, -PV, -santé mentale pour les non-Woodie. Déclenche la forme oie pour Woodie.
+  desc_de: Woodies Gans-Idol-Nahrung. Mittlerer Hunger, -LP, -geistige Gesundheit für Nicht-Woodie. Löst Gans-Verwandlung für Woodie aus.
+  desc_it: Cibo idolo oca di Woodie. Fame media, -PV, -sanità per non-Woodie. Innesca la forma oca per Woodie.
+  desc_pl: Jedzenie bożka gęsi Woodiego. Średni głód, -PŻ, -zdrowie psychiczne dla nie-Woodiego. Wywołuje przemianę w gęś dla Woodiego.
+  desc_pt_BR: Comida ídolo ganso de Woodie. Fome média, -PV, -sanidade para não-Woodie. Ativa forma ganso para Woodie.
+  desc_ru: Еда-идол гуся Вуди. Средний голод, -ОЗ, -рассудок для не-Вуди. Запускает превращение в гуся для Вуди.
+  desc_es: Comida ídolo ganso de Woodie. Hambre media, -PV, -cordura para no-Woodie. Activa forma ganso para Woodie.
+  desc_es_MX: Comida ídolo ganso de Woodie. Hambre media, -PV, -cordura para no-Woodie. Activa forma ganso para Woodie.
 894.wereitem_moose
   en: Kitschy Moose Idol
   ko: 미숙한 사슴 우상
   app: O
   source: Woodie wereform food (wereitems.lua). Edible meat (CALORIES_MED hunger). -HEALING_MED HP, -SANITY_MED sanity for non-Woodie. Triggers moose transformation for Woodie.
+  desc_en: Woodie's moose idol food. Medium hunger, -HP, -sanity for non-Woodie. Triggers moose wereform for Woodie.
+  desc_ko: 우디의 사슴 우상 음식. 중간 허기, 비우디에게 -체력, -정신력. 우디에게 사슴 변신 발동.
+  desc_ja: ウッディのムースアイドル食品。中腹、非ウッディに-HP、-正気度。ウッディにムース変身を発動。
+  desc_zh_CN: 伍迪的驼鹿偶像食物。中等饥饿，非伍迪减生命值和理智。伍迪触发驼鹿变身。
+  desc_zh_TW: 伍迪的駝鹿偶像食物。中等飢餓，非伍迪減生命值和理智。伍迪觸發駝鹿變身。
+  desc_fr: Nourriture idole d'orignal de Woodie. Faim moyenne, -PV, -santé mentale pour les non-Woodie. Déclenche la forme orignal pour Woodie.
+  desc_de: Woodies Elch-Idol-Nahrung. Mittlerer Hunger, -LP, -geistige Gesundheit für Nicht-Woodie. Löst Elch-Verwandlung für Woodie aus.
+  desc_it: Cibo idolo alce di Woodie. Fame media, -PV, -sanità per non-Woodie. Innesca la forma alce per Woodie.
+  desc_pl: Jedzenie bożka łosia Woodiego. Średni głód, -PŻ, -zdrowie psychiczne dla nie-Woodiego. Wywołuje przemianę w łosia dla Woodiego.
+  desc_pt_BR: Comida ídolo alce de Woodie. Fome média, -PV, -sanidade para não-Woodie. Ativa forma alce para Woodie.
+  desc_ru: Еда-идол лося Вуди. Средний голод, -ОЗ, -рассудок для не-Вуди. Запускает превращение в лося для Вуди.
+  desc_es: Comida ídolo alce de Woodie. Hambre media, -PV, -cordura para no-Woodie. Activa forma alce para Woodie.
+  desc_es_MX: Comida ídolo alce de Woodie. Hambre media, -PV, -cordura para no-Woodie. Activa forma alce para Woodie.
 895.whip
   en: Tail o' Three Cats
   ko: 세 고양이 꼬리
@@ -8318,6 +16456,19 @@
     whip.lua:
     weapon:SetDamage(TUNING.WHIP_DAMAGE)
     finiteuses:SetMaxUses(TUNING.WHIP_USES)
+  desc_en: Whip weapon. 175 uses, 27.2 damage, range 2. Crack chance to scare: 5% bosses, 20% monsters, 25% creatures. Super crack range 14.
+  desc_ko: 채찍 무기. 175회 사용, 27.2 피해, 사거리 2. 위협 확률: 보스 5%, 몬스터 20%, 생물 25%. 초강력 채찍질 사거리 14.
+  desc_ja: 鞭武器。175回使用、27.2ダメージ、射程2。威嚇確率：ボス5%、モンスター20%、クリーチャー25%。超級クラック射程14。
+  desc_zh_CN: 鞭子武器。175次使用，27.2伤害，范围2。恐吓概率：Boss 5%，怪物20%，生物25%。超级鞭响范围14。
+  desc_zh_TW: 鞭子武器。175次使用，27.2傷害，範圍2。恐嚇概率：Boss 5%，怪物20%，生物25%。超級鞭響範圍14。
+  desc_fr: Arme fouet. 175 utilisations, 27.2 dégâts, portée 2. Chance de fuite : 5 % boss, 20 % monstres, 25 % créatures. Portée super-claquement 14.
+  desc_de: Peitsche. 175 Ladungen, 27,2 Schaden, Reichweite 2. Einschüchterungschance: 5 % Bosse, 20 % Monster, 25 % Kreaturen. Superknall-Reichweite 14.
+  desc_it: Frusta. 175 usi, 27.2 danni, gittata 2. Probabilità di spavento: 5% boss, 20% mostri, 25% creature. Raggio super-schiocco 14.
+  desc_pl: Bicz. 175 użyć, 27.2 obrażeń, zasięg 2. Szansa na straszenie: 5% bossów, 20% potworów, 25% stworzeń. Zasięg super-trzasku 14.
+  desc_pt_BR: Chicote. 175 usos, 27.2 dano, alcance 2. Chance de assustar: 5% chefes, 20% monstros, 25% criaturas. Alcance de super-estalo 14.
+  desc_ru: Кнут. 175 зарядов, 27.2 урона, дальность 2. Шанс испугать: 5% боссов, 20% монстров, 25% существ. Дальность суперщелчка 14.
+  desc_es: Látigo. 175 usos, 27.2 daño, alcance 2. Probabilidad de asustar: 5 % jefes, 20 % monstruos, 25 % criaturas. Alcance de super chasquido 14.
+  desc_es_MX: Látigo. 175 usos, 27.2 daño, alcance 2. Probabilidad de asustar: 5 % jefes, 20 % monstruos, 25 % criaturas. Alcance de super chasquido 14.
 896.winch
   en: Pinchin' Winch
   ko: 집게 도르래
@@ -8325,6 +16476,19 @@
   source:
     tuning.lua:
     BOAT_WINCH =
+  desc_en: Boat winch structure for retrieving items from the ocean floor.
+  desc_ko: 해저에서 아이템을 인양하는 보트 도르래 구조물.
+  desc_ja: 海底からアイテムを引き上げるボートウインチ構造物。
+  desc_zh_CN: 从海底打捞物品的船用绞车建筑。
+  desc_zh_TW: 從海底打撈物品的船用絞車建築。
+  desc_fr: Structure de treuil de bateau pour récupérer les objets du fond de l'océan.
+  desc_de: Bootswinden-Struktur zum Bergen von Gegenständen vom Meeresboden.
+  desc_it: Struttura argano della barca per recuperare oggetti dal fondale marino.
+  desc_pl: Budowla wciągarki łodzi do wyciągania przedmiotów z dna oceanu.
+  desc_pt_BR: Estrutura de guincho de barco para recuperar itens do fundo do oceano.
+  desc_ru: Лодочная лебёдка для подъёма предметов со дна океана.
+  desc_es: Estructura de cabrestante de barco para recuperar objetos del fondo del océano.
+  desc_es_MX: Estructura de cabrestante de barco para recuperar objetos del fondo del océano.
 897.winona_battery_high
   en: Winona's G.E.M.erator
   ko: 위노나의 발G.E.M.기
@@ -8338,6 +16502,19 @@
     WINONA_BATTERY_HIGH_OVERLOAD_DURATION = 10, --seconds
     winona_battery_high.lua:
     fueled:InitializeFuelLevel(inst.components.fueled.maxfuel)
+  desc_en: Winona's advanced generator. Fuel lasts 6 days. Gem-powered with shard regen. 2s overload threshold, 10s overload duration.
+  desc_ko: 위노나의 고급 발전기. 연료 6일 지속. 보석 전력, 파편 재생. 과부하 한계 2초, 과부하 지속 10초.
+  desc_ja: ウィノナの上級発電機。燃料6日持続。ジェム駆動でシャード再生。過負荷閾値2秒、過負荷持続10秒。
+  desc_zh_CN: 薇诺娜的高级发电机。燃料持续6天。宝石供电，碎片再生。过载阈值2秒，过载持续10秒。
+  desc_zh_TW: 薇諾娜的高級發電機。燃料持續6天。寶石供電，碎片再生。過載閾值2秒，過載持續10秒。
+  desc_fr: Générateur avancé de Winona. Combustible pour 6 jours. Alimenté par gemmes avec régénération de cristaux. Seuil de surcharge 2s, durée 10s.
+  desc_de: Winonas fortschrittlicher Generator. Brennstoff für 6 Tage. Edelsteinbetrieben mit Scherbenregeneration. Überlastungsschwelle 2s, Dauer 10s.
+  desc_it: Generatore avanzato di Winona. Combustibile per 6 giorni. Alimentato a gemme con rigenerazione frammenti. Soglia sovraccarico 2s, durata 10s.
+  desc_pl: Zaawansowany generator Winony. Paliwo na 6 dni. Zasilany klejnotami z regeneracją odłamków. Próg przeciążenia 2s, czas trwania 10s.
+  desc_pt_BR: Gerador avançado de Winona. Combustível para 6 dias. Alimentado por gemas com regeneração de fragmentos. Limiar de sobrecarga 2s, duração 10s.
+  desc_ru: Продвинутый генератор Виноны. Топлива на 6 дней. Работает на самоцветах с регенерацией осколков. Порог перегрузки 2с, длительность 10с.
+  desc_es: Generador avanzado de Winona. Combustible para 6 días. Alimentado por gemas con regeneración de fragmentos. Umbral de sobrecarga 2s, duración 10s.
+  desc_es_MX: Generador avanzado de Winona. Combustible para 6 días. Alimentado por gemas con regeneración de fragmentos. Umbral de sobrecarga 2s, duración 10s.
 898.winona_battery_high_item
   en: Winona's G.E.M.erator
   ko: 위노나의 발G.E.M.기
@@ -8345,6 +16522,19 @@
   source:
     winona_battery_high.lua:
     fueled:InitializeFuelLevel(inst.components.fueled.maxfuel)
+  desc_en: Deployable kit that places Winona's G.E.M.erator structure. Consumed on placement.
+  desc_ko: 위노나의 발G.E.M.기 구조물을 설치하는 배치 키트. 설치 시 소모.
+  desc_ja: ウィノナのG.E.M.発電機構造物を配置するキット。設置時に消費。
+  desc_zh_CN: 部署薇诺娜G.E.M.发电机建筑的套件。放置后消耗。
+  desc_zh_TW: 部署薇諾娜G.E.M.發電機建築的套件。放置後消耗。
+  desc_fr: Kit déployable plaçant la structure G.E.M.érateur de Winona. Consommé au placement.
+  desc_de: Platzierbares Kit für Winonas G.E.M.erator-Struktur. Wird beim Platzieren verbraucht.
+  desc_it: Kit piazzabile che crea la struttura G.E.M.erator di Winona. Consumato al posizionamento.
+  desc_pl: Zestaw do postawienia budowli G.E.M.eratora Winony. Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit implantável que coloca a estrutura G.E.M.erator de Winona. Consumido ao posicionar.
+  desc_ru: Набор для установки конструкции G.E.M.ератора Виноны. Расходуется при размещении.
+  desc_es: Kit desplegable que coloca la estructura G.E.M.erator de Winona. Se consume al colocarlo.
+  desc_es_MX: Kit desplegable que coloca la estructura G.E.M.erator de Winona. Se consume al colocarlo.
 899.winona_battery_low
   en: Winona's Generator
   ko: 위노나의 발전기
@@ -8356,6 +16546,19 @@
     WINONA_BATTERY_LOW_SHADOW_FUEL_RATE_MULT = .1875, --changes max fuel to last 2 full days
     winona_battery_low.lua:
     fueled:InitializeFuelLevel(TUNING.WINONA_BATTERY_LOW_MAX_FUEL_TIME)
+  desc_en: Winona's basic generator. Nitre-powered, lasts 1 day (or 2 days with shadow fuel). Rate multiplier 0.375.
+  desc_ko: 위노나의 기본 발전기. 초석 전력, 1일 지속(그림자 연료 시 2일). 비율 배수 0.375.
+  desc_ja: ウィノナの基本発電機。硝石駆動、1日持続（シャドウ燃料で2日）。倍率0.375。
+  desc_zh_CN: 薇诺娜的基础发电机。硝石供电，持续1天（暗影燃料2天）。倍率0.375。
+  desc_zh_TW: 薇諾娜的基礎發電機。硝石供電，持續1天（暗影燃料2天）。倍率0.375。
+  desc_fr: Générateur de base de Winona. Alimenté au salpêtre, dure 1 jour (ou 2 avec combustible d'ombre). Multiplicateur 0.375.
+  desc_de: Winonas Basis-Generator. Salpeterbetrieben, hält 1 Tag (oder 2 mit Schattenbrennstoff). Multiplikator 0,375.
+  desc_it: Generatore base di Winona. Alimentato a salnitro, dura 1 giorno (o 2 con combustibile ombra). Moltiplicatore 0.375.
+  desc_pl: Podstawowy generator Winony. Zasilany saletrą, wytrzymuje 1 dzień (lub 2 z paliwem cienia). Mnożnik 0.375.
+  desc_pt_BR: Gerador básico de Winona. Alimentado por salitre, dura 1 dia (ou 2 com combustível sombrio). Multiplicador 0.375.
+  desc_ru: Базовый генератор Виноны. Работает на селитре, длится 1 день (или 2 на теневом топливе). Множитель 0.375.
+  desc_es: Generador básico de Winona. Alimentado por salitre, dura 1 día (o 2 con combustible de sombra). Multiplicador 0.375.
+  desc_es_MX: Generador básico de Winona. Alimentado por salitre, dura 1 día (o 2 con combustible de sombra). Multiplicador 0.375.
 900.winona_battery_low_item
   en: Winona's Generator
   ko: 위노나의 발전기
@@ -8363,6 +16566,19 @@
   source:
     winona_battery_low.lua:
     fueled:InitializeFuelLevel(TUNING.WINONA_BATTERY_LOW_MAX_FUEL_TIME)
+  desc_en: Deployable kit that places Winona's Generator structure. Consumed on placement.
+  desc_ko: 위노나의 발전기 구조물을 설치하는 배치 키트. 설치 시 소모.
+  desc_ja: ウィノナの発電機構造物を配置するキット。設置時に消費。
+  desc_zh_CN: 部署薇诺娜发电机建筑的套件。放置后消耗。
+  desc_zh_TW: 部署薇諾娜發電機建築的套件。放置後消耗。
+  desc_fr: Kit déployable plaçant la structure du Générateur de Winona. Consommé au placement.
+  desc_de: Platzierbares Kit für Winonas Generator-Struktur. Wird beim Platzieren verbraucht.
+  desc_it: Kit piazzabile che crea la struttura Generatore di Winona. Consumato al posizionamento.
+  desc_pl: Zestaw do postawienia budowli Generatora Winony. Zużywany przy umieszczaniu.
+  desc_pt_BR: Kit implantável que coloca a estrutura Gerador de Winona. Consumido ao posicionar.
+  desc_ru: Набор для установки конструкции генератора Виноны. Расходуется при размещении.
+  desc_es: Kit desplegable que coloca la estructura Generador de Winona. Se consume al colocarlo.
+  desc_es_MX: Kit desplegable que coloca la estructura Generador de Winona. Se consume al colocarlo.
 901.winona_catapult
   en: Winona's Catapult
   ko: 위노나의 투석기
