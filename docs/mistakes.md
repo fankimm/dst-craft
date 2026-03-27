@@ -103,6 +103,10 @@
   - `nightstick` — 전기 무기 + 광원
 - **교훈**: 스탯 추가 시 prefab 소스코드의 `onattack`, `onequip`, `AddComponent` 호출을 반드시 확인. 수치만 보지 말고 특수 로직도 체크
 
+### ko.ts 중복 키 추가
+- **문제**: 이미 존재하는 아이템 번역(shadowlumber_builder 등)을 확인 없이 재추가 → 빌드 실패
+- **교훈**: 로캘 데이터 추가 전 반드시 기존 키 존재 여부 grep으로 확인
+
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
 - pixel_format 0=DXT1(bcn 1), 1=DXT3(bcn 2), 2=DXT5(bcn 3)

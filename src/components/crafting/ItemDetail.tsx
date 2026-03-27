@@ -238,8 +238,13 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               <span className="text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-600 dark:text-amber-400 rounded px-1.5 py-0.5 leading-none w-fit">Beta</span>
               {STAT_DISPLAY_ORDER.filter((k) => stats[k] != null).map((k) => (
                 k === "usage" ? (
-                  <div key={k} className="text-xs text-foreground">
-                    {formatItemStat(k, stats[k]!, resolvedLocale)}
+                  <div key={k} className="text-xs text-foreground space-y-0.5">
+                    {formatItemStat(k, stats[k]!, resolvedLocale)
+                      .split(/[.,]\s*/)
+                      .filter(Boolean)
+                      .map((line, i) => (
+                        <p key={i}>{line}</p>
+                      ))}
                   </div>
                 ) : (
                   <div key={k} className="flex items-center gap-2 text-xs">

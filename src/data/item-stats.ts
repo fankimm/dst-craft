@@ -473,4 +473,10 @@ export const itemStats: Record<string, ItemStats> = {
   // === TURF ===
   turf_road: { speed_mult: 1.3, usage: { ko: "도로 — 이동속도 30% 증가", en: "Road — 30% movement speed boost" } },
   turf_dragonfly: { usage: { ko: "용비늘 바닥 — 산불 면역 지면", en: "Scaled flooring — fireproof ground" } },
+
+  // === MAXWELL SHADOW MINIONS ===
+  shadowlumber_builder: { usage: { ko: "그림자 나무꾼 소환. 75 HP, 40 데미지. 자동 벌목. 최대 정신력 15% 소모", en: "Summons Shadow Logger. 75 HP, 40 dmg. Auto-chops trees. Costs 15% max sanity" } },
+  shadowminer_builder: { usage: { ko: "그림자 광부 소환. 75 HP, 40 데미지. 자동 채굴. 최대 정신력 15% 소모", en: "Summons Shadow Miner. 75 HP, 40 dmg. Auto-mines rocks. Costs 15% max sanity" } },
+  shadowdigger_builder: { usage: { ko: "그림자 채굴자 소환. 75 HP, 40 데미지. 자동 굴착. 최대 정신력 15% 소모", en: "Summons Shadow Digger. 75 HP, 40 dmg. Auto-digs. Costs 15% max sanity" } },
+  shadowduelist_builder: { usage: { ko: "그림자 투사 소환. 75 HP, 40 데미지. 적 자동 공격. 최대 정신력 15% 소모", en: "Summons Shadow Duelist. 75 HP, 40 dmg. Auto-attacks enemies. Costs 15% max sanity" } },
 };
