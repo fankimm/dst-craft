@@ -240,7 +240,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
                 k === "usage" ? (
                   <div key={k} className="text-xs text-foreground space-y-0.5">
                     {formatItemStat(k, stats[k]!, resolvedLocale)
-                      .split(/[.,]\s*/)
+                      .split(/(?<!\d)\.(?!\d)\s*|,\s+/)
                       .filter(Boolean)
                       .map((line, i) => (
                         <p key={i}>{line}</p>
