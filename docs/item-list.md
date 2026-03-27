@@ -5,44 +5,44 @@
   en: Abigail's Flower
   ko: 아비게일의 꽃
   app: O
-  source: Wendy-exclusive. Summons/controls Abigail ghost via spellbook interface. Bond level displayed by flower animation (levels 0-3). Proximity detection range 36 (6^2). Decays in 3 days (1440s) if dropped on ground. No combat stats — purely a summoning/command item.
-  desc_en: Summons and controls Abigail's ghost. Bond strengthens over time, unlocking new commands.
-  desc_ko: 아비게일의 유령을 소환하고 조종합니다. 시간이 지나면 유대가 강해져 새로운 명령이 해금됩니다.
-  desc_ja: アビゲイルのゴーストを召喚・操作します。時間と共に絆が深まり、新しいコマンドが解放されます。
-  desc_zh_CN: 召唤并控制阿比盖尔的幽灵。随时间推移羁绊加深，解锁新命令。
-  desc_zh_TW: 召喚並控制阿比蓋爾的幽靈。隨時間推移羈絆加深，解鎖新命令。
-  desc_fr: Invoque et contrôle le fantôme d'Abigail. Le lien se renforce avec le temps, débloquant de nouvelles commandes.
-  desc_de: Beschwört und kontrolliert Abigails Geist. Die Bindung wird mit der Zeit stärker und schaltet neue Befehle frei.
-  desc_it: Evoca e controlla il fantasma di Abigail. Il legame si rafforza nel tempo, sbloccando nuovi comandi.
-  desc_pl: Przywołuje i kontroluje ducha Abigail. Więź wzmacnia się z czasem, odblokowując nowe komendy.
-  desc_pt_BR: Invoca e controla o fantasma de Abigail. O vínculo se fortalece com o tempo, desbloqueando novos comandos.
-  desc_ru: Призывает и управляет призраком Абигейл. Связь укрепляется со временем, открывая новые команды.
-  desc_es: Invoca y controla el fantasma de Abigail. El vínculo se fortalece con el tiempo, desbloqueando nuevos comandos.
-  desc_es_MX: Invoca y controla el fantasma de Abigail. El vínculo se fortalece con el tiempo, desbloqueando nuevos comandos.
+  source: Wendy-exclusive. Summons/controls Abigail ghost via spellbook interface. Bond levels 0-3 (1 day per level, x4 mult). Spellbook commands update based on owner skills. Proximity detection range 36 (6^2). Decays in 3 days (1440s) if dropped on ground. Tracks equipped/backpack state for owner detection. No combat stats.
+  desc_en: Wendy-exclusive. Summons and controls Abigail's ghost via spellbook. Bond levels up every day (0→3), unlocking new commands. Decays in 3 days on ground.
+  desc_ko: 웬디 전용. 주문서로 아비게일 유령을 소환/조종. 유대 레벨이 매일 상승 (0→3)하며 새 명령 해금. 바닥에 놓으면 3일 후 소멸.
+  desc_ja: ウェンディ専用。スペルブックでアビゲイルのゴーストを召喚・操作。絆レベルが毎日上昇（0→3）し新コマンド解放。地面に置くと3日で消滅。
+  desc_zh_CN: 温蒂专属。通过法术书召唤/控制阿比盖尔幽灵。羁绊每天升级（0→3），解锁新命令。放在地上3天后消失。
+  desc_zh_TW: 溫蒂專屬。透過法術書召喚/控制阿比蓋爾幽靈。羈絆每天升級（0→3），解鎖新命令。放在地上3天後消失。
+  desc_fr: Exclusif à Wendy. Invoque et contrôle le fantôme d'Abigail via grimoire. Le lien monte chaque jour (0→3), débloquant de nouvelles commandes. Se décompose en 3 jours au sol.
+  desc_de: Wendy-exklusiv. Beschwört und kontrolliert Abigails Geist per Zauberbuch. Bindung steigt täglich (0→3) und schaltet neue Befehle frei. Zerfällt in 3 Tagen am Boden.
+  desc_it: Esclusivo di Wendy. Evoca e controlla il fantasma di Abigail tramite libro. Il legame sale ogni giorno (0→3), sbloccando nuovi comandi. Si deteriora in 3 giorni a terra.
+  desc_pl: Ekskluzywne dla Wendy. Przywołuje i kontroluje ducha Abigail przez księgę zaklęć. Więź rośnie codziennie (0→3), odblokowując komendy. Rozpada się w 3 dni na ziemi.
+  desc_pt_BR: Exclusivo de Wendy. Invoca e controla o fantasma de Abigail via grimório. Vínculo sobe todo dia (0→3), desbloqueando comandos. Deteriora em 3 dias no chão.
+  desc_ru: Эксклюзив Венди. Призывает и управляет призраком Абигейл через книгу заклинаний. Связь растёт ежедневно (0→3), открывая команды. Разлагается за 3 дня на земле.
+  desc_es: Exclusivo de Wendy. Invoca y controla el fantasma de Abigail mediante grimorio. El vínculo sube cada día (0→3), desbloqueando comandos. Se deteriora en 3 días en el suelo.
+  desc_es_MX: Exclusivo de Wendy. Invoca y controla el fantasma de Abigail mediante grimorio. El vínculo sube cada día (0→3), desbloqueando comandos. Se deteriora en 3 días en el suelo.
 2.alterguardianhat
   en: Enlightened Crown
   ko: 계몽의 왕관
   app: X
   type: deconstruct
-  source: Hat. Gestalt attacks deal 42.5 damage (34*1.25). Consumes Enlightened seeds for planar conversion: 3 seeds for full 25% conversion, extra damage up to 8.5 (34*0.25). Lunar-aligned headwear from Celestial Champion.
-  desc_en: Hat that boosts Gestalt attacks to 42.5 damage. Consumes Enlightened seeds for up to 25% planar conversion.
-  desc_ko: 게슈탈트 공격력을 42.5로 높이는 모자. 계몽 씨앗을 소모해 최대 25% 차원 전환 효과를 얻습니다.
-  desc_ja: ゲシュタルト攻撃を42.5ダメージに強化する帽子。啓蒙の種を消費して最大25%のプレーナー変換を得ます。
-  desc_zh_CN: 将意志体攻击提升至42.5伤害的帽子。消耗启蒙种子获得最高25%的位面转化。
-  desc_zh_TW: 將意志體攻擊提升至42.5傷害的帽子。消耗啟蒙種子獲得最高25%的位面轉化。
-  desc_fr: Chapeau augmentant les attaques Gestalt à 42.5 dégâts. Consomme des graines éclairées pour une conversion planaire de 25 %.
-  desc_de: Hut, der Gestalt-Angriffe auf 42,5 Schaden verstärkt. Verbraucht erleuchtete Samen für bis zu 25 % planare Konversion.
-  desc_it: Cappello che potenzia gli attacchi Gestalt a 42.5 danni. Consuma semi illuminati per una conversione planare fino al 25%.
-  desc_pl: Kapelusz wzmacniający ataki Gestalt do 42.5 obrażeń. Zużywa oświecone nasiona, zapewniając do 25% konwersji planarnej.
-  desc_pt_BR: Chapéu que aumenta os ataques Gestalt para 42.5 de dano. Consome sementes iluminadas para até 25% de conversão planar.
-  desc_ru: Шляпа, усиливающая атаки Гештальтов до 42.5 урона. Потребляет просвещённые семена для планарной конверсии до 25%.
-  desc_es: Sombrero que potencia los ataques Gestalt a 42.5 de daño. Consume semillas iluminadas para una conversión planar del 25 %.
-  desc_es_MX: Sombrero que potencia los ataques Gestalt a 42.5 de daño. Consume semillas iluminadas para una conversión planar del 25 %.
+  source: Hat with 6-slot container (seeds/spores). Activates at 85%+ sanity. On attack: spawns gestalt projectile (42.5 dmg, -1 sanity). Seeds convert up to 25% physical to planar dmg (3 seeds). Extra seeds add up to +8.5 physical. All 6 seeds: forced enlightenment + auto-spawns gestalt guards (max 3, costs 3 charged moonglass each). Spores change light color. Provides light. Gestaltprotection tag.
+  desc_en: Activates above 85% sanity. Attacks summon gestalts (42.5 dmg, -1 sanity). 6-slot container for seeds/spores: seeds convert damage to planar, all 6 trigger enlightenment and auto-spawn gestalt guards. Provides light.
+  desc_ko: 정신력 85% 이상에서 활성화. 공격 시 게슈탈트 소환 (42.5 피해, 정신력 -1). 6슬롯 컨테이너: 씨앗으로 차원 피해 전환, 6개 꽉 차면 강제 계몽 + 게슈탈트 가드 자동 소환. 광원 제공.
+  desc_ja: 正気度85%以上で発動。攻撃でゲシュタルト召喚（42.5ダメージ、正気度-1）。6スロット：種で次元変換、6個満タンで強制啓蒙+ゲシュタルトガード自動召喚。光源提供。
+  desc_zh_CN: 理智85%以上时激活。攻击召唤意志体（42.5伤害，-1理智）。6格容器：种子转化位面伤害，装满6颗触发启蒙+自动召唤意志体守卫。提供光源。
+  desc_zh_TW: 理智85%以上時啟動。攻擊召喚意志體（42.5傷害，-1理智）。6格容器：種子轉化位面傷害，裝滿6顆觸發啟蒙+自動召喚意志體守衛。提供光源。
+  desc_fr: S'active au-dessus de 85% de santé mentale. Les attaques invoquent des Gestalts (42.5 dégâts, -1 santé mentale). 6 emplacements : les graines convertissent en dégâts planaires, 6 graines déclenchent l'illumination + gardes Gestalt. Fournit de la lumière.
+  desc_de: Aktiviert ab 85% geistiger Gesundheit. Angriffe beschwören Gestalten (42,5 Schaden, -1 Verstand). 6 Slots: Samen wandeln in planaren Schaden um, 6 Samen lösen Erleuchtung + Gestalt-Wachen aus. Lichtquelle.
+  desc_it: Si attiva sopra l'85% di sanità. Gli attacchi evocano Gestalt (42.5 danni, -1 sanità). 6 slot: i semi convertono in danno planare, 6 semi attivano illuminazione + guardie Gestalt. Fornisce luce.
+  desc_pl: Aktywuje się powyżej 85% poczytalności. Ataki przywołują Gestalty (42.5 obrażeń, -1 poczytalność). 6 slotów: nasiona konwertują na obrażenia planarne, 6 nasion wywołuje oświecenie + strażników Gestalt. Źródło światła.
+  desc_pt_BR: Ativa acima de 85% de sanidade. Ataques invocam Gestalts (42.5 dano, -1 sanidade). 6 slots: sementes convertem em dano planar, 6 sementes ativam iluminação + guardas Gestalt. Fornece luz.
+  desc_ru: Активируется при рассудке выше 85%. Атаки призывают Гештальтов (42.5 урона, -1 рассудок). 6 слотов: семена конвертируют в планарный урон, 6 семян активируют просветление + стражей. Источник света.
+  desc_es: Se activa sobre 85% de cordura. Los ataques invocan Gestalts (42.5 daño, -1 cordura). 6 ranuras: semillas convierten a daño planar, 6 semillas activan iluminación + guardias Gestalt. Proporciona luz.
+  desc_es_MX: Se activa sobre 85% de cordura. Los ataques invocan Gestalts (42.5 daño, -1 cordura). 6 ranuras: semillas convierten a daño planar, 6 semillas activan iluminación + guardias Gestalt. Proporciona luz.
 3.amulet
   en: Life Giving Amulet
   ko: 생명의 부적
   app: O
-  source: Body slot. Red Amulet (Life Giving Amulet): 20 uses, converts 5 hunger to 5 health every 30s. Resurrects on haunt. Shadow level 1. Dapperness +3.3/min. Also used as base prefab name for all amulets (blue/purple/green/orange/yellow share amulet.lua).
+  source: Body slot. 20 uses. Converts 5 hunger to 5 HP every 30s (consumes 1 use per conversion). Resurrector tag = auto-revive on death. Dapperness DAPPERNESS_SMALL (+3.3/min). Shadow level 1. is_magic_dapperness. Shared prefab file with all amulets (blue/purple/green/orange/yellow).
   desc_en: Converts 5 hunger to 5 health every 30s (20 uses). Resurrects the wearer on death. Shadow level 1.
   desc_ko: 30초마다 허기 5를 체력 5로 전환합니다(20회). 착용 시 사망하면 부활합니다. 그림자 레벨 1.
   desc_ja: 30秒ごとに空腹5を体力5に変換（20回）。装着中に死亡すると復活します。シャドウレベル1。
@@ -10055,7 +10055,7 @@
   en: Gramophone
   ko: 축음기
   app: O
-  source:
+  source: Deployable structure. Plays music. Attracts nearby creatures. Decor item.
     tuning.lua:
     PHONOGRAPH_PLAY_TIME = 64,
     PHONOGRAPH_TEND_RANGE = 8,
@@ -10076,7 +10076,7 @@
   en: Pickaxe
   ko: 곡괭이
   app: O
-  source:
+  source: Tool+weapon. 27.2 damage (34*0.8), 33 uses. Mines rocks/minerals.
     tuning.lua:
     PICKAXE_USES = 33,
     MULTITOOL_AXE_PICKAXE_USES = 800,
@@ -10107,7 +10107,7 @@
   en: Brightshade Smasher
   ko: 빛말풀 부수개
   app: O
-  source:
+  source: Tool+weapon. 32.5 damage (34*1.25-10), 600 uses. 10 planar damage, +1.1x vs shadow. 4/3 mining efficiency. Brightshade set bonus. Forge-repairable.
     tuning.lua:
     PICKAXE_LUNARPLANT_USES = 600,
     PICKAXE_LUNARPLANT_EFFICIENCY = 4/3,
@@ -10135,7 +10135,7 @@
   en: Piggyback
   ko: 돼지등가방
   app: O
-  source:
+  source: Body slot backpack. 12 slots. -10% walk speed. Stores items while worn.
     tuning.lua:
     PIGGYBACK_SPEED_MULT = 0.9,
     piggyback.lua:
@@ -10178,7 +10178,7 @@
   en: Pig House
   ko: 돼지집
   app: O
-  source:
+  source: Structure. Houses 1 pig that emerges during daytime. Pig follows nearest player with food. Hammerable for resources.
     tuning.lua:
     PIGHOUSE_SPAWN_TIME = total_day_time * 4,
     PIGHOUSE_ENABLED = true,
@@ -10199,7 +10199,7 @@
   en: Pig Shrine
   ko: 돼지 사당
   app: O
-  source:
+  source: Year of the Pig event shrine. Crafting station for event recipes.
     tuning.lua:
     PIGSHRINE = TechTree.Create({
   desc_en: Structure/prototyper for Pig Shrine tech tree. Unlocks pig-themed crafting recipes.
@@ -10237,7 +10237,7 @@
   en: Pitchfork
   ko: 쇠스랑
   app: O
-  source:
+  source: Tool+weapon. 17 damage (34*0.5), 25 uses. Digs up turf tiles.
     tuning.lua:
     PITCHFORK_USES = 25,
     PITCHFORK_DAMAGE = wilson_attack*.5,
@@ -10279,7 +10279,7 @@
   en: Pocket Scale
   ko: 휴대용 저울
   app: O
-  source:
+  source: Tool. 100 uses. Weighs fish/items for trophy scale display.
     pocket_scale.lua:
     finiteuses:SetMaxUses(TUNING.POCKETSCALE_USES)
   desc_en: Tool for weighing caught ocean fish. Limited uses. Records fish weight for the fishing log.
@@ -10317,7 +10317,7 @@
   en: Ageless Watch
   ko: 불로의 시계
   app: O
-  source:
+  source: Wanda-exclusive. Heals +20 HP. Rechargeable with 120s (2 min) cooldown.
     tuning.lua:
     WANDA = {"pocketwatch_heal", "pocketwatch_parts", "pocketwatch_parts", "pocketwatch_parts"},
     POCKETWATCH_HEAL_COOLDOWN = seg_time * 4,
@@ -11850,19 +11850,19 @@
   ko: 그림자 분쇄도끼
   app: O
   source: Weapon + axe. 38 base damage (34*2-30), 200 uses. Shadow level 3. 4 levels based on hunger (thresholds 0/3/6/9 kills): planar damage 10/14/18/22, chopping efficiency 1.5x/1.75x/2x/2.25x, life steal 0/1.7/2.55/3.4. Sanity drain -26.7/min (DAPPERNESS_MED). +10% vs lunar. Hunger system: max 500, gains 50 per kill, decays over time at higher levels. Voidcloth set bonus: 1.1x damage +5 planar.
-  desc_en: Shadow axe-weapon dealing 38 base damage with 200 uses. Levels up via kills (10-22 planar damage, 1.5-2.25x chopping). Drains sanity -26.7/min. Shadow level 3.
-  desc_ko: 38 기본 피해, 200회 사용의 그림자 도끼 무기. 처치로 레벨업(차원 피해 10~22, 벌목 1.5~2.25배). 정신력 -26.7/분 소모. 그림자 레벨 3.
-  desc_ja: 基本38ダメージ・200回使用のシャドウアックス武器。キルでレベルアップ（プレーナーダメージ10〜22、伐採1.5〜2.25倍）。正気度-26.7/分。シャドウレベル3。
-  desc_zh_CN: 暗影斧武器，38基础伤害，200次使用。击杀升级（位面伤害10-22，砍伐1.5-2.25倍）。理智消耗-26.7/分钟。暗影等级3。
-  desc_zh_TW: 暗影斧武器，38基礎傷害，200次使用。擊殺升級（位面傷害10-22，砍伐1.5-2.25倍）。理智消耗-26.7/分鐘。暗影等級3。
-  desc_fr: Hache-arme d'ombre infligeant 38 dégâts de base, 200 utilisations. Monte en niveau par les éliminations (10-22 dégâts planaires, coupe 1,5-2,25x). Drain de santé mentale -26,7/min. Niveau d'ombre 3.
-  desc_de: Schatten-Axtwaffe mit 38 Grundschaden und 200 Ladungen. Stuft durch Kills auf (10-22 Planarschaden, 1,5-2,25x Holzfällen). Verstand -26,7/min. Schattenstufe 3.
-  desc_it: Ascia-arma d'ombra con 38 danni base e 200 usi. Sale di livello con le uccisioni (10-22 danni planari, taglio 1.5-2.25x). Sanità -26.7/min. Livello ombra 3.
-  desc_pl: Cienisty topór-broń zadający 38 bazowych obrażeń, 200 użyć. Awansuje przez zabójstwa (10-22 obrażeń planarnych, rąbanie 1,5-2,25x). Poczytalność -26,7/min. Poziom cienia 3.
-  desc_pt_BR: Machado-arma sombrio com 38 de dano base e 200 usos. Evolui com abates (10-22 dano planar, corte 1.5-2.25x). Sanidade -26.7/min. Nível sombrio 3.
-  desc_ru: Теневой топор-оружие с 38 базовым уроном и 200 зарядами. Прокачивается убийствами (10-22 планарного урона, рубка 1,5-2,25x). Рассудок -26,7/мин. Уровень тени 3.
-  desc_es: Hacha-arma de sombra con 38 de daño base y 200 usos. Sube de nivel al matar (10-22 daño planar, tala 1,5-2,25x). Cordura -26,7/min. Nivel de sombra 3.
-  desc_es_MX: Hacha-arma de sombra con 38 de daño base y 200 usos. Sube de nivel al matar (10-22 daño planar, tala 1,5-2,25x). Cordura -26,7/min. Nivel de sombra 3.
+  desc_en: Shadow axe+weapon (38 dmg, 200 uses). Levels up via kills: planar 10→22, chop 1.5→2.25x, life steal 0→3.4 HP (-1.7 sanity). Hunger system (max 500, +50/kill, decays at high levels). +10% vs lunar. Voidcloth set bonus.
+  desc_ko: 그림자 도끼+무기 (38 피해, 200회). 처치로 레벨업: 차원 10→22, 벌목 1.5→2.25배, 생명력 흡수 0→3.4 (정신력 -1.7). 자체 허기 시스템 (최대 500, 킬당 +50). 달 진영 +10%. 공허천 세트 보너스.
+  desc_ja: 影の斧+武器（38ダメ、200回）。キルでレベルアップ：次元10→22、伐採1.5→2.25倍、ライフスティール0→3.4（正気-1.7）。空腹システム（最大500、キル+50）。月+10%。虚布セットボーナス。
+  desc_zh_CN: 暗影斧+武器（38伤害，200次）。击杀升级：位面10→22，砍伐1.5→2.25倍，吸血0→3.4（-1.7理智）。饥饿系统（满500，击杀+50）。对月+10%。虚空布套装加成。
+  desc_zh_TW: 暗影斧+武器（38傷害，200次）。擊殺升級：位面10→22，砍伐1.5→2.25倍，吸血0→3.4（-1.7理智）。飢餓系統（滿500，擊殺+50）。對月+10%。虛空布套裝加成。
+  desc_fr: Hache+arme d'ombre (38 dégâts, 200 uses). Monte par kills : planaire 10→22, coupe 1.5→2.25x, vol de vie 0→3.4 (-1.7 santé mentale). Système de faim (max 500, +50/kill). +10% vs lunaire. Bonus set Tissu du Vide.
+  desc_de: Schatten-Axt+Waffe (38 Schaden, 200 Ladungen). Stuft durch Kills auf: Planar 10→22, Holz 1.5→2.25x, Lebensraub 0→3.4 (-1.7 Verstand). Hungersystem (max 500, +50/Kill). +10% gegen Mond. Leerentuch-Set-Bonus.
+  desc_it: Ascia+arma d'ombra (38 danni, 200 usi). Livella con uccisioni: planare 10→22, taglio 1.5→2.25x, furto vita 0→3.4 (-1.7 sanità). Sistema fame (max 500, +50/kill). +10% vs lunare. Bonus set Tessuto del Vuoto.
+  desc_pl: Cienisty topór+broń (38 obrażeń, 200 użyć). Awans przez zabójstwa: planarne 10→22, rąbanie 1.5→2.25x, kradzież życia 0→3.4 (-1.7 poczytalność). System głodu (maks. 500, +50/zabójstwo). +10% vs księżyc. Bonus zestawu Pustotkaniny.
+  desc_pt_BR: Machado+arma sombrio (38 dano, 200 usos). Evolui com abates: planar 10→22, corte 1.5→2.25x, roubo de vida 0→3.4 (-1.7 sanidade). Sistema de fome (máx. 500, +50/abate). +10% vs lunar. Bônus de conjunto Tecido do Vazio.
+  desc_ru: Теневой топор+оружие (38 урона, 200 зарядов). Прокачка убийствами: планарный 10→22, рубка 1.5→2.25x, кража жизни 0→3.4 (-1.7 рассудок). Система голода (макс. 500, +50/убийство). +10% против лунных. Сет-бонус Пустотной ткани.
+  desc_es: Hacha+arma de sombra (38 daño, 200 usos). Sube con muertes: planar 10→22, tala 1.5→2.25x, robo de vida 0→3.4 (-1.7 cordura). Sistema de hambre (máx. 500, +50/muerte). +10% vs lunar. Bonus set Tela del Vacío.
+  desc_es_MX: Hacha+arma de sombra (38 daño, 200 usos). Sube con muertes: planar 10→22, tala 1.5→2.25x, robo de vida 0→3.4 (-1.7 cordura). Sistema de hambre (máx. 500, +50/muerte). +10% vs lunar. Bonus set Tela del Vacío.
 650.shadow_beef_bell
   en: Beefalo Gloom Bell
   ko: 비팔로 암울방울
@@ -15249,7 +15249,7 @@
   en: Umbrella
   ko: 우산
   app: O
-  source:
+  source: Hand slot. 50% waterproof, 120 insulation (winter). Dapperness +3.3/min. Fueled 6 days (2880s).
     tuning.lua:
     UMBRELLA_DAMAGE = wilson_attack*.5,
     GRASS_UMBRELLA_PERISHTIME = 2*total_day_time*perish_warp,
@@ -15337,7 +15337,7 @@
   en: Gloomerang
   ko: 까매랑
   app: O
-  source:
+  source: Hand weapon. 85 uses. Damage 5-27.2, planar 5-27.2. +1.25x vs lunar. Speed +10%. Shadow level 3. Auto-fires projectiles (max 2, set bonus with voidclothhat: max 3). Projectiles deal scaling damage.
     tuning.lua:
     VOIDCLOTH_BOOMERANG_SHADOW_LEVEL = 3,
     VOIDCLOTH_BOOMERANG_ATTACK_DIST = 10,
@@ -15392,7 +15392,7 @@
   en: Shadow Reaper
   ko: 그림자 수확자
   app: O
-  source:
+  source: Weapon+tool. 38 damage (34*2-30), 200 uses, 18 planar damage. AoE harvest (radius 4, 165 degree arc) for grass/plants. Shadow level 3. Talks periodically (30s interval). Set bonus with voidclothhat: 1.1x damage + extra planar. Can chop trees.
     tuning.lua:
     VOIDCLOTH_SCYTHE_SHADOW_LEVEL = 3,
     VOIDCLOTH_SCYTHE_USES = 200,
@@ -15426,7 +15426,7 @@
   en: Umbralla
   ko: 음산
   app: O
-  source:
+  source: Hand slot. 100% waterproof, 240 insulation. Fueled 15 days (7200s). Can be placed on ground to create rain/hail protection dome (sanity drain aura while active).
     tuning.lua:
     VOIDCLOTH_UMBRELLA_SHADOW_LEVEL = 3,
     VOIDCLOTH_UMBRELLA_PERISHTIME = total_day_time*15,
@@ -15458,7 +15458,7 @@
   en: Void Cowl
   ko: 공허의 두건
   app: O
-  source:
+  source: Head armor. 830 HP, 80% absorption, 10 planar defense. Shadow level 3. Set bonus with voidcloth weapons: ramping planar damage on consecutive hits. Forge-repairable.
     tuning.lua:
     VOIDCLOTHHAT_SHADOW_LEVEL = 3,
     hats.lua:
@@ -15480,7 +15480,7 @@
   en: W.A.R.B.O.T. Base Kit
   ko: W.A.R.B.O.T. 기단부 키트
   app: O
-  source:
+  source: Deployable kit. Places W.A.R.B.O.T. construction site for the Wagstaff boss encounter.
     tuning.lua:
     WAGBOSS_ROBOT_CONSTRUCTIONSITE_KIT_PLACEMENT_RADIUS = 4,
   desc_en: Deployable kit that places a W.A.R.B.O.T. construction base. Placement radius 4.
@@ -15626,7 +15626,7 @@
   en: W.A.R.B.I.S. Head Gear
   ko: 와.비.스. 헤드기어
   app: O
-  source:
+  source: Head armor. 730 HP, 85% absorption, 5 planar defense. Target tracking system: speed boost ramps 5%→10%→15%→20% over 10/16/20 seconds of combat.
     hats.lua:
     ARMOR_WAGPUNK_HAT = wilson_health * 6 * multiplayer_armor_durability_modifier + 20 * 5,
   desc_en: Wagpunk head gear with armor. Absorption based on wagpunk hat armor formula.
@@ -15646,7 +15646,7 @@
   en: Wooden Walking Stick
   ko: 나무 지팡이
   app: O
-  source:
+  source: Hand weapon. 17 damage. +15% walk speed. Fueled 4 days (1920s). Light source when equipped.
     tuning.lua:
     WALKING_STICK_SPEED_MULT = 1.15,
     WALKING_STICK_PERISHTIME = 4 * total_day_time,
@@ -15834,7 +15834,7 @@
   en: Rope
   ko: 밧줄
   app: O
-  source:
+  source: Walter-exclusive. Rope crafted from silk. Same as regular rope but character-specific recipe.
     walter.lua:
     equippable.dapperness = true
   desc_en: Walter-exclusive rope item with dapperness bonus when equipped.
@@ -15854,7 +15854,7 @@
   en: Pinetree Pioneer Hat
   ko: 소나무 개척단 모자
   app: O
-  source:
+  source: Walter-exclusive hat. Pinetree Pioneer Hat. Perishes in 10 days. Provides 50% sanity drain protection from monsters.
     tuning.lua:
     WALTERHAT_PERISHTIME = total_day_time*10,
     WALTER = {"walterhat", "slingshot", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock", "slingshotammo_rock"},
@@ -16075,7 +16075,7 @@
   en: Varg Shrine
   ko: 바르그 사당
   app: O
-  source:
+  source: Year of the Varg event shrine. Crafting station for event recipes.
     tuning.lua:
     WARGSHRINE = TechTree.Create({
   desc_en: Varg shrine crafting station. Unlocks Varg-related tech tree recipes.
@@ -16095,7 +16095,7 @@
   en: Waterballoon
   ko: 물풍선
   app: O
-  source:
+  source: Throwable. Extinguishes fires + wets target on impact. Stackable.
     tuning.lua:
     WATERBALLOON_EXTINGUISH_HEAT_PERCENT = -1,
     WATERBALLOON_TEMP_REDUCTION = 5,
@@ -16118,7 +16118,7 @@
   en: Empty Watering Can
   ko: 빈 물뿌리개
   app: O
-  source:
+  source: Tool. 40 uses (basic) / 160 uses (premium). Waters farm plants. Refillable at ponds/ocean.
     tuning.lua:
     WATERINGCAN_WATER_AMOUNT = 25,
     WATERINGCAN_USES = 40,
@@ -16166,7 +16166,7 @@
   en: Fire Pump
   ko: 소방 펌프
   app: O
-  source:
+  source: Boat structure. Extinguishes fires on boats. Range 7.5. Requires boat placement.
     tuning.lua:
     WATERPUMP =
     WATERPUMP =
@@ -16190,7 +16190,7 @@
   en: Commander's Helm
   ko: 지휘관의 투구
   app: O
-  source:
+  source: Wigfrid-exclusive head armor. 682.5 HP, 80% absorption. Skill-tree upgrade of Battle Helm.
     tuning.lua:
     ARMOR_WATHGRITHR_IMPROVEDHAT = wilson_health * 6.5 * multiplayer_armor_durability_modifier,
     ARMOR_WATHGRITHR_IMPROVEDHAT_ABSORPTION = .8 * multiplayer_armor_absorption_modifier,
@@ -16211,7 +16211,7 @@
   en: Battle Rönd
   ko: 원형 방패
   app: O
-  source:
+  source: Wigfrid-exclusive hand shield. 420 HP, 85% absorption. Parry mechanic: 1s window, 10s cooldown, 51 counter-damage on successful parry (34*1.5). Lunge attack on parry.
     tuning.lua:
     WATHGRITHR_SHIELD_DAMAGE = wilson_attack * 1.5,
     WATHGRITHR_SHIELD_ABSORPTION = .85 * multiplayer_armor_absorption_modifier,
@@ -16243,7 +16243,7 @@
   en: Battle Helm
   ko: 전투 투구
   app: O
-  source:
+  source: Wigfrid-exclusive head armor. 525 HP, 80% absorption. Battle Helm. Dapperness +4.4/min (magic).
     tuning.lua:
     ARMOR_WATHGRITHRHAT = wilson_health * 5*multiplayer_armor_durability_modifier,
     ARMOR_WATHGRITHRHAT_ABSORPTION = .8*multiplayer_armor_absorption_modifier,
@@ -16288,7 +16288,7 @@
   en: Codex Umbra
   ko: 본영의 서
   app: O
-  source:
+  source: Maxwell-exclusive spellbook. Summons shadow minions (digger/lumberjack/duelist/miner). Fueled ~1.5 days. Consumes nightmare fuel per summon.
     tuning.lua:
     WAXWELLJOURNAL = TechTree.Create({
     WAXWELLJOURNAL_SPELL_COST =
@@ -16312,7 +16312,7 @@
   en: Butterfly
   ko: 나비
   app: O
-  source:
+  source: Wendy-exclusive. Decorative butterfly. Provides sanity aura immunity when near Abigail.
     wendy.lua:
     neg_aura_modifiers (immunity)
   desc_en: Wendy's butterfly ritual item. Provides sanity aura immunity. Wendy-exclusive.
@@ -16332,7 +16332,7 @@
   en: Gravestone
   ko: 묘비
   app: O
-  source:
+  source: Wendy-exclusive structure. Decorative gravestone. Can be haunted.
     wendy.lua:
     neg_aura_modifiers (immunity)
   desc_en: Wendy's gravestone ritual item. Provides sanity aura immunity. Wendy-exclusive.
@@ -16352,7 +16352,7 @@
   en: Moon Moth
   ko: 달 나방
   app: O
-  source:
+  source: Wendy-exclusive. Moon Moth. Provides sanity aura immunity when near Abigail. Lunar variant.
     wendy.lua:
     neg_aura_modifiers (immunity)
   desc_en: Wendy's moon moth ritual item. Provides sanity aura immunity. Wendy-exclusive.
@@ -16444,7 +16444,7 @@
   en: Tail o' Three Cats
   ko: 세 고양이 꼬리
   app: O
-  source:
+  source: Weapon. 27.2 damage (34*0.8), 175 uses, range 2. On-hit supercrack: drops aggro of nearby enemies (radius 14). Chance: 25% creatures, 20% monsters, 5% epic. Hit reaction forces "hit" stategraph on non-epic targets.
     tuning.lua:
     WHIP_USES = 175,
     WHIP_DAMAGE = wilson_attack*.8,
@@ -16473,7 +16473,7 @@
   en: Pinchin' Winch
   ko: 집게 도르래
   app: O
-  source:
+  source: Boat structure. Pinchin' Winch. Retrieves items from ocean floor. Requires boat placement.
     tuning.lua:
     BOAT_WINCH =
   desc_en: Boat winch structure for retrieving items from the ocean floor.
@@ -16493,7 +16493,7 @@
   en: Winona's G.E.M.erator
   ko: 위노나의 발G.E.M.기
   app: O
-  source:
+  source: Winona-exclusive structure. G.E.M.erator. Powers Winona machines. Fueled by gems (6 days per gem). Higher output than basic generator.
     tuning.lua:
     WINONA_BATTERY_HIGH_MAX_FUEL_TIME = total_day_time * 6,
     WINONA_BATTERY_HIGH_SHARD_DELAY = 4, --seconds
@@ -16519,7 +16519,7 @@
   en: Winona's G.E.M.erator
   ko: 위노나의 발G.E.M.기
   app: O
-  source:
+  source: Deployable kit for G.E.M.erator. Winona-exclusive.
     winona_battery_high.lua:
     fueled:InitializeFuelLevel(inst.components.fueled.maxfuel)
   desc_en: Deployable kit that places Winona's G.E.M.erator structure. Consumed on placement.
@@ -16539,7 +16539,7 @@
   en: Winona's Generator
   ko: 위노나의 발전기
   app: O
-  source:
+  source: Winona-exclusive structure. Generator. Powers Winona machines. Fueled by nitre (1 day) or nightmare fuel (2 days).
     tuning.lua:
     WINONA_BATTERY_LOW_MAX_FUEL_TIME = seg_time * 6,
     WINONA_BATTERY_LOW_FUEL_RATE_MULT = .375, --changes max fuel to last 1 full day, while still only costing 2 nitre
@@ -16563,7 +16563,7 @@
   en: Winona's Generator
   ko: 위노나의 발전기
   app: O
-  source:
+  source: Deployable kit for Generator. Winona-exclusive.
     winona_battery_low.lua:
     fueled:InitializeFuelLevel(TUNING.WINONA_BATTERY_LOW_MAX_FUEL_TIME)
   desc_en: Deployable kit that places Winona's Generator structure. Consumed on placement.

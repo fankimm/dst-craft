@@ -242,7 +242,7 @@ export const itemStats: Record<string, ItemStats> = {
   staff_tornado: { uses: 15, usage: { ko: "토네이도 소환 (적 밀어냄)", en: "Summons tornado (pushes enemies)" } },
   strawhat: { waterproof: 0.2, summer_insulation: 60 },
   sweatervest: { dapperness: 0.0556, fuel_time: 4800 },
-  sword_lunarplant: { damage: 51, uses: 200, planar_damage: 30, shadow_bonus: 1.1, usage: { ko: "빛칼날 세트 보너스: 데미지 1.1배 + 차원 피해 +5", en: "Brightshade set bonus: 1.1x dmg + 5 planar" } },
+  sword_lunarplant: { damage: 38, uses: 200, planar_damage: 30, shadow_bonus: 1.1, usage: { ko: "빛칼날 세트 보너스: 데미지 1.1배 + 차원 피해 +5", en: "Brightshade set bonus: 1.1x dmg + 5 planar" } },
   telestaff: { uses: 5, usage: { ko: "랜덤 위치로 순간이동 (정신력 -50)", en: "Teleports to random location (-50 Sanity)" } },
   tent: { uses: 15, health_regen: 2, hunger_drain: -1 },
   thulecitebugnet: { damage: 4.25, uses: 100 },
