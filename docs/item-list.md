@@ -16288,7 +16288,7 @@
   en: Codex Umbra
   ko: 본영의 서
   app: O
-  source: Maxwell-exclusive spellbook. Summons shadow minions (digger/lumberjack/duelist/miner). Fueled ~1.5 days. Consumes nightmare fuel per summon.
+  source: Maxwell-exclusive spellbook. Summons shadow workers (lumber/miner/digger: 75 HP, 40 dmg, 15% sanity penalty each, permanent) and protectors (75 HP, 20 dmg +4/level, 120s duration, 15% penalty). Fueled ~1.5 days. Nightmare fuel per summon. Also acts as Shadow crafting station.
     tuning.lua:
     WAXWELLJOURNAL = TechTree.Create({
     WAXWELLJOURNAL_SPELL_COST =
