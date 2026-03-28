@@ -140,3 +140,31 @@
 - **게임 아이템 나열** → `ItemSlot` 사용 (flex-wrap gap-4)
 - **수치 정보** → 인라인 스탯 행 (아이콘 + 값)
 - **텍스트 정보** → flex justify-between 행
+
+---
+
+## 데이터 자동 파생 패턴
+
+데이터 파일에서 플래그 하나로 파생 항목을 자동 생성하는 패턴들. 수정 시 원본만 고치면 파생 항목도 자동 반영됨.
+
+### 요리솥 재료 (`cookpot-ingredients.ts`)
+
+| 플래그 | 자동 생성 | 이름 규칙 | 이미지 규칙 |
+|--------|----------|----------|------------|
+| `cookable: true` | Cooked 변형 | `"Cooked " + name` / `nameKo + " (조리됨)"` | `${id}_cooked.png` (또는 `cookedImage` 오버라이드) |
+| `dryable: true` | Dried 변형 | `"Dried " + name` / `nameKo + " (건조)"` | `${id}_dried.png` |
+| `rawCookable: false` | 원본은 솥에 못 넣고 cooked/dried만 사용 가능 | — | — |
+
+**핵심**: `name`/`nameKo`를 수정하면 Cooked/Dried 파생 이름도 자동으로 바뀜. 파생 항목을 별도 수정할 필요 없음.
+
+### 아이템 이미지 (`items.ts`, `item-stats.ts`)
+
+| 필드 | 규칙 |
+|------|------|
+| `image` 생략 시 | `${id}.png` 자동 적용 |
+| `image` 명시 시 | 해당 파일명 사용 (id와 이미지명이 다른 경우) |
+
+### 아이템 스탯 (`item-stats.ts`)
+
+- `itemStats[itemId]`로 매핑 — 아이템 `id`와 키가 일치해야 자동 연결
+- `usage` 필드는 `{ ko, en }` 구조로 다국어 지원

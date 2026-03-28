@@ -40,7 +40,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "fig", name: "Fig", nameKo: "무화과", tags: { fruit: 0.5 }, category: "fruits", cookable: true },
   { id: "durian", name: "Durian", nameKo: "두리안", tags: { fruit: 0.5, monster: 1 }, category: "fruits", cookable: true },
   { id: "watermelon", name: "Watermelon", nameKo: "수박", tags: { fruit: 1 }, category: "fruits", cookable: true },
-  { id: "ancientfruit_nightvision", name: "Nightshade Nostrum", nameKo: "독말풀 보약", tags: { fruit: 1 }, category: "fruits", cookable: true },
+  { id: "ancientfruit_nightvision", name: "Nightberry", nameKo: "밤베리", tags: { fruit: 1 }, category: "fruits", cookable: true },
 
   // === Veggies ===
   { id: "carrot", name: "Carrot", nameKo: "당근", tags: { veggie: 1 }, category: "veggies", cookable: true },
