@@ -139,11 +139,13 @@
     @apply border-border outline-ring/50;
   }
   html {
-    overflow-x: hidden;
+    overflow: hidden;
+    height: 100dvh;
   }
   body {
     @apply bg-background text-foreground;
-    overflow-x: hidden;
+    overflow: hidden;
+    height: 100dvh;
   }
 }
 
