@@ -290,6 +290,7 @@ function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
     { label: "플립보드 미리보기", action: () => window.open("/flip-board", "_blank") },
     { label: "아이템 스탯 리뷰", action: () => window.open("/item-stats", "_blank") },
     { label: "게임 아이템 DB (1028)", action: () => window.open("/dev/item-database", "_blank") },
+    { label: "인기 조합 패널 비교", action: () => window.open("/dev/combo-panel", "_blank") },
   ];
 
   return (
