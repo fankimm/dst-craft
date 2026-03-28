@@ -144,6 +144,20 @@ export function AppShell() {
     return () => window.removeEventListener("dst-fav-local-warning", handler);
   }, [resolvedLocale]);
 
+  // Lock body scroll — AppShell manages its own scroll internally
+  useEffect(() => {
+    document.documentElement.style.overflow = "hidden";
+    document.documentElement.style.height = "100dvh";
+    document.body.style.overflow = "hidden";
+    document.body.style.height = "100dvh";
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+    };
+  }, []);
+
   return (
     <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
       {/* Status bar cover — sits above overlays so status bar area never dims */}
