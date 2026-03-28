@@ -13,7 +13,7 @@ import { simulate } from "@/lib/cookpot-engine";
 import type { CookingRecipe } from "@/data/recipes";
 import { IngredientPicker } from "./IngredientPicker";
 import { Footer } from "../crafting/Footer";
-import { trackItemClick } from "@/lib/analytics";
+import { trackItemClick, trackCombo } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 
 // ---------------------------------------------------------------------------
@@ -57,6 +57,7 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
     const topId = result.recipes[0]?.id;
     if (topId && topId !== "wetgoop" && topId !== prevResultId.current) {
       trackItemClick(`sim:${topId}`);
+      trackCombo(topId, filledIngredients.map(i => i.id));
       prevResultId.current = topId;
     }
   }, [result]);

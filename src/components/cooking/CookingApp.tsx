@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
-import { trackItemClick } from "@/lib/analytics";
+import { trackItemClick, fetchCombos } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
 import { cookpotIngredients, ingredientImage } from "@/data/cookpot-ingredients";
@@ -784,6 +784,30 @@ function RecipeDetail({
   const showAltName = locale !== "en" && localName !== recipe.name;
   const cookSeconds = recipe.cookTime * COOK_TIME_BASE;
 
+  const [activeTab, setActiveTab] = useState<"detail" | "combos">("detail");
+  const [combos, setCombos] = useState<{ ingredients: string[]; count: number }[]>([]);
+  const [combosLoading, setCombosLoading] = useState(false);
+  const combosFetched = useRef<string | null>(null);
+
+  // Fetch combos when switching to combos tab (or on mount if already on combos tab)
+  useEffect(() => {
+    if (activeTab !== "combos") return;
+    if (combosFetched.current === recipe.id) return;
+    combosFetched.current = recipe.id;
+    setCombosLoading(true);
+    fetchCombos(recipe.id).then(data => {
+      setCombos(data);
+      setCombosLoading(false);
+    });
+  }, [activeTab, recipe.id]);
+
+  // Reset tab when recipe changes
+  useEffect(() => {
+    setActiveTab("detail");
+    combosFetched.current = null;
+    setCombos([]);
+  }, [recipe.id]);
+
   return (
     <div className="p-4 pt-3 space-y-4">
       {/* Header */}
@@ -866,48 +890,168 @@ function RecipeDetail({
         />
       </div>
 
-      {/* Info row — perish / cooktime / temp inline */}
-      <div className="flex items-center py-1 text-sm">
-        <div className="flex-1 flex items-center justify-center gap-1.5">
-          <img src={assetPath("/images/ui/perish.png")} alt="" className="size-4 object-contain" />
-          <div>
-            <div className="font-semibold tabular-nums leading-tight">
-              {recipe.perishDays == null
-                ? t(locale, "cooking_no_perish")
-                : <>{recipe.perishDays}<span className="text-muted-foreground font-normal">{t(locale, "cooking_days")}</span></>}
-            </div>
-            <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_perish")}</div>
-          </div>
-        </div>
-        <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
-          <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" />
-          <div>
-            <div className="font-semibold tabular-nums leading-tight">{cookSeconds}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></div>
-            <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_cooktime")}</div>
-          </div>
-        </div>
-        {recipe.temperature != null && (
-          <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
-            <img
-              src={assetPath(`/images/game-items/${recipe.temperature > 0 ? "campfire" : "ice"}.png`)}
-              alt=""
-              className="size-4 object-contain"
-            />
-            <div>
-              <div className="font-semibold tabular-nums leading-tight">
-                {recipe.temperature > 0 ? "+" : ""}{recipe.temperature}°
-                {recipe.temperatureDuration != null && <>{" / "}{recipe.temperatureDuration}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></>}
-              </div>
-              <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_temp")}</div>
-            </div>
-          </div>
-        )}
+      {/* Tab switcher */}
+      <div className="flex rounded-lg border border-border bg-surface p-0.5">
+        <button
+          onClick={() => setActiveTab("detail")}
+          className={cn(
+            "flex-1 text-xs font-medium py-1.5 rounded-md transition-colors",
+            activeTab === "detail"
+              ? "bg-card text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          {locale === "ko" ? "상세정보" : "Details"}
+        </button>
+        <button
+          onClick={() => setActiveTab("combos")}
+          className={cn(
+            "flex-1 text-xs font-medium py-1.5 rounded-md transition-colors",
+            activeTab === "combos"
+              ? "bg-card text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          {locale === "ko" ? "인기 조합" : "Popular Combos"}
+          {combos.length > 0 && <span className="ml-1 text-[10px] text-muted-foreground">{combos.length}</span>}
+        </button>
       </div>
 
-      {/* Requirements — split into needed / excluded */}
-      {recipe.requirements && <RequirementsSections text={recipe.requirements} locale={locale} />}
+      {/* Tab content */}
+      {activeTab === "detail" ? (
+        <>
+          {/* Info row — perish / cooktime / temp inline */}
+          <div className="flex items-center py-1 text-sm">
+            <div className="flex-1 flex items-center justify-center gap-1.5">
+              <img src={assetPath("/images/ui/perish.png")} alt="" className="size-4 object-contain" />
+              <div>
+                <div className="font-semibold tabular-nums leading-tight">
+                  {recipe.perishDays == null
+                    ? t(locale, "cooking_no_perish")
+                    : <>{recipe.perishDays}<span className="text-muted-foreground font-normal">{t(locale, "cooking_days")}</span></>}
+                </div>
+                <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_perish")}</div>
+              </div>
+            </div>
+            <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
+              <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" />
+              <div>
+                <div className="font-semibold tabular-nums leading-tight">{cookSeconds}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></div>
+                <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_cooktime")}</div>
+              </div>
+            </div>
+            {recipe.temperature != null && (
+              <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
+                <img
+                  src={assetPath(`/images/game-items/${recipe.temperature > 0 ? "campfire" : "ice"}.png`)}
+                  alt=""
+                  className="size-4 object-contain"
+                />
+                <div>
+                  <div className="font-semibold tabular-nums leading-tight">
+                    {recipe.temperature > 0 ? "+" : ""}{recipe.temperature}°
+                    {recipe.temperatureDuration != null && <>{" / "}{recipe.temperatureDuration}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></>}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_temp")}</div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Requirements — split into needed / excluded */}
+          {recipe.requirements && <RequirementsSections text={recipe.requirements} locale={locale} />}
+        </>
+      ) : (
+        <CombosTab combos={combos} loading={combosLoading} locale={locale} />
+      )}
     </div>
   );
+}
+
+// ---------------------------------------------------------------------------
+// Combos tab — popular ingredient combinations from user simulations
+// ---------------------------------------------------------------------------
+
+const comboIngMap = new Map(cookpotIngredients.map(i => [i.id, i]));
+
+function CombosTab({ combos, loading, locale }: {
+  combos: { ingredients: string[]; count: number }[];
+  loading: boolean;
+  locale: Locale;
+}) {
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-8 text-muted-foreground">
+        <span className="text-sm">{locale === "ko" ? "불러오는 중..." : "Loading..."}</span>
+      </div>
+    );
+  }
+
+  if (combos.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
+        <p className="text-sm">{locale === "ko" ? "아직 조합 데이터가 없습니다" : "No combo data yet"}</p>
+        <p className="text-xs mt-1">{locale === "ko" ? "요리솥 시뮬레이터에서 레시피를 만들어보세요!" : "Try making this recipe in the Crock Pot simulator!"}</p>
+      </div>
+    );
+  }
+
+  const totalCount = combos.reduce((s, c) => s + c.count, 0);
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-muted-foreground font-medium">
+          {locale === "ko" ? "인기순" : "Most popular"}
+        </span>
+        <span className="text-[10px] text-muted-foreground">
+          {locale === "ko" ? `총 ${totalCount}회` : `${totalCount} total`}
+        </span>
+      </div>
+      <div className="space-y-3">
+        {combos.map((combo, i) => {
+          // Group same ingredients with count
+          const grouped = groupIngredients(combo.ingredients);
+          return (
+            <div key={i} className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground tabular-nums w-10 text-right shrink-0">
+                {combo.count}{locale === "ko" ? "회" : "×"}
+              </span>
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                {grouped.map((g, j) => {
+                  const ing = comboIngMap.get(g.id);
+                  const image = ing ? ingredientImage(ing) : undefined;
+                  const name = locale === "ko" ? (ing?.nameKo ?? ing?.name ?? g.id) : (ing?.name ?? g.id);
+                  return (
+                    <ItemSlot
+                      key={j}
+                      icon={image}
+                      label={name}
+                      badge={g.count > 1 ? `${g.count}` : undefined}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** Group sorted ingredient IDs into [{ id, count }] */
+function groupIngredients(ids: string[]): { id: string; count: number }[] {
+  const result: { id: string; count: number }[] = [];
+  for (const id of ids) {
+    const last = result[result.length - 1];
+    if (last?.id === id) {
+      last.count++;
+    } else {
+      result.push({ id, count: 1 });
+    }
+  }
+  return result;
 }
 
 // ---------------------------------------------------------------------------

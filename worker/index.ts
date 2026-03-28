@@ -253,6 +253,45 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       });
     }
 
+    // POST /combo — store a simulation combo (recipeId + sorted ingredients)
+    if (url.pathname === "/combo" && request.method === "POST") {
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const recipeId = typeof body.recipeId === "string" ? body.recipeId.slice(0, 60) : "";
+      const ingredients = Array.isArray(body.ingredients) ? body.ingredients : [];
+      if (!recipeId || ingredients.length !== 4 || !ingredients.every((i: any) => typeof i === "string")) {
+        return new Response(JSON.stringify({ error: "recipeId + 4 ingredient strings required" }), {
+          status: 400,
+          headers: { ...headers, "Content-Type": "application/json" },
+        });
+      }
+      // Sort to normalize order, then join as key
+      const comboKey = (ingredients as string[]).map(s => s.slice(0, 60)).sort().join(",");
+      await redisPipeline(env, [
+        ["ZINCRBY", `dst:combo:${recipeId}`, "1", comboKey],
+      ]);
+      return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
+    }
+
+    // GET /combos/:recipeId — top combos for a recipe
+    if (url.pathname.startsWith("/combos/") && request.method === "GET") {
+      const recipeId = url.pathname.replace("/combos/", "").slice(0, 60);
+      if (!recipeId) {
+        return new Response(JSON.stringify({ combos: [] }), { headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const limit = Math.min(Number(url.searchParams.get("limit") ?? "20"), 50);
+      const result = await redisPipeline(env, [
+        ["ZREVRANGE", `dst:combo:${recipeId}`, "0", `${limit - 1}`, "WITHSCORES"],
+      ]) as any;
+      const raw: string[] = result?.[0]?.result ?? [];
+      const combos: { ingredients: string[]; count: number }[] = [];
+      for (let i = 0; i < raw.length; i += 2) {
+        combos.push({ ingredients: raw[i].split(","), count: Number(raw[i + 1]) });
+      }
+      return new Response(JSON.stringify({ combos }), {
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=120" },
+      });
+    }
+
     // POST /rate — submit a star rating (1~5)
     if (url.pathname === "/rate" && request.method === "POST") {
       const body = await request.json().catch(() => ({})) as Record<string, any>;

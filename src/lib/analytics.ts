@@ -143,6 +143,28 @@ export function trackItemClick(itemId: string) {
   );
 }
 
+/** Track a simulation combo (recipeId + 4 ingredients) */
+export function trackCombo(recipeId: string, ingredientIds: string[]) {
+  if (!WORKER_URL || ingredientIds.length !== 4) return;
+  navigator.sendBeacon(
+    `${WORKER_URL}/combo`,
+    JSON.stringify({ recipeId, ingredients: ingredientIds }),
+  );
+}
+
+/** Fetch popular combos for a recipe */
+export async function fetchCombos(recipeId: string): Promise<{ ingredients: string[]; count: number }[]> {
+  if (!WORKER_URL) return [];
+  try {
+    const res = await fetch(`${WORKER_URL}/combos/${recipeId}`);
+    if (!res.ok) return [];
+    const data = await res.json() as { combos: { ingredients: string[]; count: number }[] };
+    return data.combos ?? [];
+  } catch {
+    return [];
+  }
+}
+
 /** Submit anonymous feedback */
 export async function submitFeedback(message: string): Promise<boolean> {
   if (!WORKER_URL) return false;
