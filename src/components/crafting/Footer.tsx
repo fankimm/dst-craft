@@ -2,7 +2,7 @@ import { Heart } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="mt-auto flex flex-col items-center gap-1 px-4 pt-1.5 text-xs text-muted-foreground/60 border-t border-border/50" style={{ paddingBottom: "max(4px, calc(env(safe-area-inset-bottom, 4px) * 0.5))" }}>
+    <footer className="mt-auto flex flex-col items-center gap-1 px-4 pt-1.5 text-xs text-muted-foreground/60 border-t border-border/50" style={{ paddingBottom: "max(8px, env(safe-area-inset-bottom, 8px))" }}>
       {/* Ko-fi support button */}
       <a
         href="https://ko-fi.com/fankim"
