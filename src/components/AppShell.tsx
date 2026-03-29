@@ -144,6 +144,19 @@ export function AppShell() {
     return () => window.removeEventListener("dst-fav-local-warning", handler);
   }, [resolvedLocale]);
 
+  // Generic toast event listener (used by ShareButton etc.)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const msg = (e as CustomEvent).detail;
+      if (typeof msg === "string") {
+        setToast(msg);
+        setTimeout(() => setToast(null), 2000);
+      }
+    };
+    window.addEventListener("dst-toast", handler);
+    return () => window.removeEventListener("dst-toast", handler);
+  }, []);
+
   // Lock body scroll — AppShell manages its own scroll internally
   useEffect(() => {
     document.documentElement.style.overflow = "hidden";

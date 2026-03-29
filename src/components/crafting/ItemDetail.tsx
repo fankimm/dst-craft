@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { usePopularity } from "@/hooks/use-popularity";
 import { ViewCount } from "@/components/ui/ViewCount";
+import { ShareButton } from "@/components/ui/ShareButton";
 import { itemStats, type ItemStats } from "@/data/item-stats";
 
 const STAT_DISPLAY_ORDER: (keyof ItemStats)[] = [
@@ -148,6 +149,10 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             >
               <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFavorite(item.id) && "opacity-30 grayscale")} />
             </button>
+            <ShareButton
+              url={`/?cat=${item.category[0] || "tools"}&item=${item.id}`}
+              toastMessage={resolvedLocale === "ko" ? "링크가 복사되었습니다" : "Link copied"}
+            />
           </div>
           {itemAltName(item, resolvedLocale) && (
             <p className="text-xs text-muted-foreground">

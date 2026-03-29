@@ -20,6 +20,7 @@ import { TagChip } from "../ui/TagChip";
 import { useAuth } from "@/hooks/use-auth";
 import { ViewCount } from "@/components/ui/ViewCount";
 import { useRecent } from "@/hooks/use-recent";
+import { ShareButton } from "../ui/ShareButton";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { DetailPanel } from "@/components/ui/DetailPanel";
@@ -827,6 +828,10 @@ function RecipeDetail({
             >
               <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} />
             </button>
+            <ShareButton
+              url={`/?tab=cooking&cat=all&recipe=${recipe.id}`}
+              toastMessage={locale === "ko" ? "링크가 복사되었습니다" : "Link copied"}
+            />
           </div>
           {showAltName && (
             <p className="text-sm text-muted-foreground">{recipe.name}</p>
