@@ -1151,7 +1151,7 @@ export const ko: LocaleData = {
     "fishing": { name: "낚시" },
     "seafaring": { name: "항해" },
     "beefalo": { name: "비팔로 라이딩" },
-    "ancient": { name: "고대" },
+    "ancient": { name: "고대 유사과학" },
     "celestial": { name: "천상" },
     "lunar_forge": { name: "대황간" },
     "shadow_forge": { name: "그림자 공예" },
