@@ -34,7 +34,7 @@ export const stationImages: Record<CraftingStation, string | null> = {
   science_2: "game-items/Alchemy_Engine.png",
   magic_1: "game-items/Prestihatitator.png",
   magic_2: "game-items/Shadow_Manipulator.png",
-  ancient: "game-items/Ancient_Pseudoscience_Station.png",
+  ancient: "category-icons/ancient.png",
   celestial: "category-icons/celestial.png",
   think_tank: "game-items/Think_Tank.png",
   cartography: "game-items/Cartography_Desk.png",
