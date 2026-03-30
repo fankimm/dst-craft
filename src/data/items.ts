@@ -1242,7 +1242,7 @@ export const allItems: CraftingItem[] = [
     name: "Cursed Rounds",
     description: "What could go wrong?",
     image: "slingshotammo_thulecite.png",
-    category: ["character"],
+    category: ["character", "ancient"],
     station: "ancient",
     materials: [
       { materialId: "thulecite_pieces", quantity: 1 },
@@ -1473,7 +1473,7 @@ export const allItems: CraftingItem[] = [
     name: "Slingshot Frame Gems",
     description: "",
     image: "slingshot_frame_gems.png",
-    category: ["character"],
+    category: ["character", "ancient"],
     station: "ancient",
     materials: [
       { materialId: "thulecite", quantity: 2 },
@@ -7346,7 +7346,7 @@ export const allItems: CraftingItem[] = [
     name: "Thulecite",
     description: "Combine tiny bits into a big chunk.",
     image: "thulecite.png",
-    category: ["structures"],
+    category: ["ancient", "refined"],
     station: "ancient",
     materials: [
       { materialId: "thulecite_pieces", quantity: 6 },
@@ -7359,7 +7359,7 @@ export const allItems: CraftingItem[] = [
     name: "Thulecite Wall",
     description: "These walls will take quite a beating.",
     image: "wall_ruins_item.png",
-    category: ["structures"],
+    category: ["ancient", "structures"],
     station: "ancient",
     materials: [
       { materialId: "thulecite", quantity: 1 },
@@ -7372,7 +7372,7 @@ export const allItems: CraftingItem[] = [
     name: "Thulecite Medallion",
     description: "Track the flow of ambient magic levels.",
     image: "nightmare_timepiece.png",
-    category: ["structures"],
+    category: ["ancient", "magic"],
     station: "ancient",
     materials: [
       { materialId: "thulecite", quantity: 2 },
@@ -7386,7 +7386,7 @@ export const allItems: CraftingItem[] = [
     name: "The Lazy Forager",
     description: "For those who don't like to pick items up.",
     image: "orangeamulet.png",
-    category: ["structures"],
+    category: ["ancient", "magic"],
     station: "ancient",
     materials: [
       { materialId: "thulecite", quantity: 2 },
@@ -7401,7 +7401,7 @@ export const allItems: CraftingItem[] = [
     name: "Magiluminescence",
     description: "Pull power from the heavens.",
     image: "yellowamulet.png",
-    category: ["structures"],
+    category: ["ancient", "magic"],
     station: "ancient",
     materials: [
       { materialId: "thulecite", quantity: 2 },
@@ -7416,7 +7416,7 @@ export const allItems: CraftingItem[] = [
     name: "Construction Amulet",
     description: "Craft with a discount!",
     image: "greenamulet.png",
-    category: ["structures"],
+    category: ["ancient", "magic"],
     station: "ancient",
     materials: [
       { materialId: "thulecite", quantity: 2 },
@@ -7431,7 +7431,7 @@ export const allItems: CraftingItem[] = [
     name: "The Lazy Explorer",
     description: "For those who don't like walking.",
     image: "orangestaff.png",
-    category: ["structures"],
+    category: ["ancient", "magic"],
     station: "ancient",
     materials: [
       { materialId: "nightmarefuel", quantity: 2 },
@@ -7446,7 +7446,7 @@ export const allItems: CraftingItem[] = [
     name: "Star Caller's Staff",
     description: "Summon a tiny star.",
     image: "yellowstaff.png",
-    category: ["structures"],
+    category: ["ancient", "magic"],
     station: "ancient",
     materials: [
       { materialId: "nightmarefuel", quantity: 4 },
@@ -7461,7 +7461,7 @@ export const allItems: CraftingItem[] = [
     name: "Deconstruction Staff",
     description: "Clean and efficient destruction.",
     image: "greenstaff.png",
-    category: ["structures"],
+    category: ["ancient", "magic"],
     station: "ancient",
     materials: [
       { materialId: "nightmarefuel", quantity: 4 },
@@ -7476,7 +7476,7 @@ export const allItems: CraftingItem[] = [
     name: "Pick/Axe",
     description: "Doubly useful.",
     image: "multitool_axe_pickaxe.png",
-    category: ["structures"],
+    category: ["ancient", "tools"],
     station: "ancient",
     materials: [
       { materialId: "goldenaxe", quantity: 1 },
@@ -7491,7 +7491,7 @@ export const allItems: CraftingItem[] = [
     name: "Premier Gardeneer Hat",
     description: "Visualize your garden's success.",
     image: "nutrientsgoggleshat.png",
-    category: ["structures"],
+    category: ["ancient", "clothing"],
     station: "ancient",
     materials: [
       { materialId: "plantregistryhat", quantity: 1 },
@@ -7506,7 +7506,7 @@ export const allItems: CraftingItem[] = [
     name: "Thulecite Crown",
     description: "Complete with ancient force field!",
     image: "ruinshat.png",
-    category: ["structures"],
+    category: ["ancient", "armor"],
     station: "ancient",
     materials: [
       { materialId: "thulecite", quantity: 4 },
@@ -7520,7 +7520,7 @@ export const allItems: CraftingItem[] = [
     name: "Thulecite Suit",
     description: "Flashy AND protective.",
     image: "armorruins.png",
-    category: ["structures"],
+    category: ["ancient", "armor"],
     station: "ancient",
     materials: [
       { materialId: "thulecite", quantity: 6 },
@@ -7534,7 +7534,7 @@ export const allItems: CraftingItem[] = [
     name: "Thulecite Club",
     description: "Spikes make everything better.",
     image: "ruins_bat.png",
-    category: ["structures"],
+    category: ["ancient", "weapons"],
     station: "ancient",
     materials: [
       { materialId: "livinglog", quantity: 3 },
@@ -7549,7 +7549,7 @@ export const allItems: CraftingItem[] = [
     name: "Houndius Shootius",
     description: "Keep nasties away. By killing them.",
     image: "eyeturret_item.png",
-    category: ["structures"],
+    category: ["ancient", "structures"],
     station: "ancient",
     materials: [
       { materialId: "deerclops_eyeball", quantity: 1 },
@@ -7564,7 +7564,7 @@ export const allItems: CraftingItem[] = [
     name: "Shadow Forge Kit",
     description: "Create horrors for your convenience.",
     image: "shadow_forge_kit.png",
-    category: ["structures"],
+    category: ["ancient", "prototypers"],
     station: "ancient",
     materials: [
       { materialId: "nightmarefuel", quantity: 5 },
@@ -7579,7 +7579,7 @@ export const allItems: CraftingItem[] = [
     name: "Ruins Turf Blueprints",
     description: "Build a floor in the style of a long-gone civilization.",
     image: "blueprint_craftingset_ruins_builder.png",
-    category: ["structures"],
+    category: ["ancient", "structures"],
     station: "ancient",
     materials: [
       { materialId: "papyrus", quantity: 3 },
@@ -7592,7 +7592,7 @@ export const allItems: CraftingItem[] = [
     name: "Imitation Ruins Turf Blueprints",
     description: "As faithful a recreation as could be mustered.",
     image: "blueprint_craftingset_ruinsglow_builder.png",
-    category: ["structures"],
+    category: ["ancient", "structures"],
     station: "ancient",
     materials: [
       { materialId: "papyrus", quantity: 3 },

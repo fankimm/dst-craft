@@ -39,6 +39,7 @@ export type CategoryId =
   | "fishing"
   | "seafaring"
   | "beefalo"
+  | "ancient"
   | "celestial"
   | "lunar_forge"
   | "shadow_forge"

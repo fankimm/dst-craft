@@ -23,8 +23,9 @@ export const categories: Category[] = [
   { id: "winter", name: "Winter Items", icon: "snowflake", order: 18 },
   { id: "summer", name: "Summer Items", icon: "sun", order: 19 },
   { id: "rain", name: "Rain Gear", icon: "cloud-rain", order: 20 },
-  { id: "celestial", name: "Celestial", icon: "moon", order: 21 },
-  { id: "lunar_forge", name: "Lunar Forge", icon: "sun", order: 22 },
-  { id: "shadow_forge", name: "Shadow Forge", icon: "skull", order: 23 },
-  { id: "critter_lab", name: "Critter Den", icon: "heart", order: 24 },
+  { id: "ancient", name: "Ancient", icon: "atom", order: 21 },
+  { id: "celestial", name: "Celestial", icon: "moon", order: 22 },
+  { id: "lunar_forge", name: "Lunar Forge", icon: "sun", order: 23 },
+  { id: "shadow_forge", name: "Shadow Forge", icon: "skull", order: 24 },
+  { id: "critter_lab", name: "Critter Den", icon: "heart", order: 25 },
 ];
