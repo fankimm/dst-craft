@@ -1198,4 +1198,18 @@ export const cookingRecipes: CookingRecipe[] = [
     specialEffect: "hunger_regen",
     cardIngredients: [["batnose", 1], ["kelp", 1], ["goatmilk", 1], ["milkywhites", 1]],
   },
+  {
+    id: "dustmeringue",
+    name: "Dust Meringue",
+    requirements: "Powdercake Dust ×1",
+    foodType: "nonfood",
+    health: 0,
+    hunger: 12.5,
+    sanity: 0,
+    perishDays: null,
+    cookTime: 2,
+    priority: 100,
+    station: "cookpot",
+    specialEffect: "dust_moth_food",
+  },
 ];

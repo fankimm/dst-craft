@@ -121,6 +121,16 @@
 - **교훈**: 크록팟 재료 데이터는 **반드시 인게임 `cooking.lua`와 1:1 대조** 후 입력. 위키도 틀릴 수 있음. 게임 소스코드 경로: `dontstarve_steam.app/Contents/data/databundles/scripts.zip` → `scripts/cooking.lua`
 - **검증 방법**: `unzip -o scripts.zip "scripts/cooking.lua"` → `grep "AddIngredientValues" cooking.lua`로 전수 대조
 
+### 크록팟 레시피 테스트 함수 대규모 오류
+- **문제**: `cookpot-engine.ts`의 레시피 테스트 함수가 인게임 `preparedfoods.lua`와 17개 항목에서 불일치
+- **주요 오류 유형**:
+  1. **raw vs cooked 혼동**: 게임은 `names.mandrake`(raw만) 체크하는데 우리는 `n.mandrake + n.mandrake_cooked >= 1`로 cooked도 허용 (mandrakesoup, turkeydinner, shroomcake, shroombait, talleggs, watermelonicle, guacamole 등 9개)
+  2. **정확한 개수 vs 이상**: 게임은 `names.boneshard == 2`(정확히 2개)인데 우리는 `>= 2`로 변환 (californiaroll, nightmarepie, bonesoup)
+  3. **누락 재료 대안**: fishtacos/powcake에서 Corn Cod 대안 누락, unagi에서 pondeel 누락
+  4. **없는 레시피 누락**: dustmeringue(엠버로시아) 미구현
+- **원인**: Lua→TypeScript 포팅 시 `names.xxx`를 일괄적으로 `n.xxx + n.xxx_cooked >= 1`로 변환한 것이 주원인. 게임에서 raw만 체크하는 경우가 많음
+- **교훈**: Lua `names.xxx` → `!!n.xxx`, Lua `(names.xxx or 0) + (names.xxx_cooked or 0) >= N` → `n.xxx + n.xxx_cooked >= N`. 각 레시피마다 cooked 포함 여부를 개별 확인. `==` vs `>=` 구분도 주의
+
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
 - pixel_format 0=DXT1(bcn 1), 1=DXT3(bcn 2), 2=DXT5(bcn 3)

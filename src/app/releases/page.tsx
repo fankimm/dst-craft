@@ -15,6 +15,28 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.8.2",
+    date: "2026-04-04",
+    dev: [
+      "인게임 preparedfoods.lua 기반 레시피 테스트 함수 전수 검증 (17개 불일치 수정)",
+      "raw-only 체크: mandrakesoup, turkeydinner, shroomcake, shroombait 등 9개",
+      "정확한 개수: californiaroll(==2), nightmarepie(==2), bonesoup(==2)",
+      "누락 재료: fishtacos/powcake에 Corn Cod, unagi에 pondeel, trailmix에 juicy berries 추가",
+      "barnaclesushi에서 kelp_dried 제거 (인게임 미지원)",
+      "dustmeringue 레시피 신규 추가 (preparednonfoods.lua)",
+    ],
+    changes: {
+      ko: [
+        "크록팟 시뮬레이터 레시피 판정 로직 인게임 소스 기반 전수 수정 (17개 오류)",
+        "엠버로시아(Dust Meringue) 레시피 추가",
+      ],
+      en: [
+        "Fixed 17 crock pot recipe test logic errors based on in-game preparedfoods.lua",
+        "Added Dust Meringue (Amberosia) recipe",
+      ],
+    },
+  },
+  {
     version: "0.8.1",
     date: "2026-04-04",
     dev: [

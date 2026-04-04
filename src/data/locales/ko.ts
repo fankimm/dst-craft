@@ -1200,6 +1200,7 @@ export const ko: LocaleData = {
     "bananapop": { name: "바나나 팝" },
     "barnaclepita": { name: "거북순 피타" },
     "batnosehat": { name: "우유 짜는 모자" },
+    "dustmeringue": { name: "엠버로시아" },
     "barnaclestuffedfishhead": { name: "속 채운 생선 머리" },
     "barnaclesushi": { name: "거북순 초밥" },
     "barnaclinguine": { name: "거북순 링귀니" },

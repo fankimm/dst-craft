@@ -52,7 +52,7 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
 
   barnaclesushi: (n, t) =>
     n.barnacle + n.barnacle_cooked >= 1 &&
-    n.kelp + n.kelp_cooked + n.kelp_dried >= 1 &&
+    (!!n.kelp || !!n.kelp_cooked) &&
     t.egg >= 1,
 
   barnaclestuffedfishhead: (n, t) =>
@@ -73,10 +73,10 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
     t.frozen >= 2 && t.meat > 0 && t.meat < 1 && !t.inedible,
 
   butterflymuffin: (n, t) =>
-    n.butterflywings + n.moonbutterflywings >= 1 && !t.meat && t.veggie >= 0.5,
+    (!!n.butterflywings || !!n.moonbutterflywings) && !t.meat && t.veggie >= 0.5,
 
   californiaroll: (n, t) =>
-    n.kelp + n.kelp_cooked + n.kelp_dried >= 2 && t.fish >= 1,
+    n.kelp + n.kelp_cooked + n.kelp_dried === 2 && t.fish >= 1,
 
   ceviche: (_, t) =>
     t.fish >= 2 && t.frozen > 0 && !t.inedible && !t.egg,
@@ -94,7 +94,7 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
     t.fish > 0 && n.twigs >= 1 && t.inedible <= 1,
 
   fishtacos: (n, t) =>
-    t.fish > 0 && n.corn + n.corn_cooked >= 1,
+    t.fish > 0 && (!!n.corn || !!n.corn_cooked || !!n.oceanfish_small_5_inv || !!n.oceanfish_medium_5_inv),
 
   flowersalad: (n, t) =>
     n.cactus_flower >= 1 && t.veggie >= 2 && !t.meat && !t.inedible && !t.egg && !t.sweetener && !t.fruit,
@@ -112,9 +112,7 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
     t.fruit >= 3 && !t.meat && !t.veggie,
 
   guacamole: (n, t) =>
-    n.mole >= 1 &&
-    n.rock_avocado_fruit_ripe + n.rock_avocado_fruit_ripe_cooked + n.cactus_meat + n.cactus_meat_cooked >= 1 &&
-    !t.fruit,
+    !!n.mole && (!!n.rock_avocado_fruit_ripe || !!n.cactus_meat) && !t.fruit,
 
   honeyham: (n, t) =>
     n.honey >= 1 && t.meat > 1.5 && !t.inedible,
@@ -156,14 +154,13 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
     n.plantmeat + n.plantmeat_cooked >= 2 && t.sweetener >= 2,
 
   lobsterbisque: (n, t) =>
-    n.wobster_sheller_land + n.wobster_sheller_land_cooked >= 1 && t.frozen > 0,
+    !!n.wobster_sheller_land && t.frozen > 0,
 
   lobsterdinner: (n, t) =>
-    n.wobster_sheller_land + n.wobster_sheller_land_cooked >= 1 &&
-    n.butter >= 1 && t.meat >= 1 && t.fish >= 1 && !t.frozen,
+    !!n.wobster_sheller_land && n.butter >= 1 && t.meat >= 1 && t.fish >= 1 && !t.frozen,
 
   mandrakesoup: (n) =>
-    n.mandrake + n.mandrake_cooked >= 1,
+    !!n.mandrake,
 
   mashedpotatoes: (n, t) =>
     n.potato + n.potato_cooked >= 2 &&
@@ -190,7 +187,7 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
     t.monster <= 1 && !t.meat && t.inedible <= 2,
 
   powcake: (n) =>
-    n.twigs >= 1 && n.honey >= 1 && n.corn + n.corn_cooked >= 1,
+    !!n.twigs && !!n.honey && (!!n.corn || !!n.corn_cooked || !!n.oceanfish_small_5_inv || !!n.oceanfish_medium_5_inv),
 
   pumpkincookie: (n, t) =>
     n.pumpkin + n.pumpkin_cooked >= 1 && t.sweetener >= 2,
@@ -207,14 +204,10 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
     t.fish > 2,
 
   shroomcake: (n) =>
-    n.moon_cap + n.moon_cap_cooked >= 1 &&
-    n.red_cap + n.red_cap_cooked >= 1 &&
-    n.blue_cap + n.blue_cap_cooked >= 1 &&
-    n.green_cap + n.green_cap_cooked >= 1,
+    !!n.moon_cap && !!n.red_cap && !!n.blue_cap && !!n.green_cap,
 
   shroombait: (n) =>
-    n.moon_cap + n.moon_cap_cooked >= 2 &&
-    n.monstermeat + n.monstermeat_cooked + n.monstermeat_dried >= 1,
+    n.moon_cap >= 2 && !!n.monstermeat,
 
   stuffedeggplant: (n, t) =>
     n.eggplant + n.eggplant_cooked >= 1 && t.veggie > 1,
@@ -232,21 +225,21 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
     t.sweetener >= 3 && !t.meat,
 
   talleggs: (n, t) =>
-    n.tallbirdegg + n.tallbirdegg_cooked >= 1 && t.veggie >= 1,
+    !!n.tallbirdegg && t.veggie >= 1,
 
   trailmix: (n, t) =>
     n.acorn + n.acorn_cooked >= 1 && t.seed >= 1 &&
-    n.berries + n.berries_cooked >= 1 && t.fruit >= 1 &&
+    (!!n.berries || !!n.berries_cooked || !!n.berries_juicy || !!n.berries_juicy_cooked) && t.fruit >= 1 &&
     !t.meat && !t.veggie && !t.egg && !t.dairy,
 
   turkeydinner: (n, t) =>
-    n.drumstick + n.drumstick_cooked >= 2 &&
+    n.drumstick >= 2 &&
     t.meat > 1 &&
     (t.veggie >= 0.5 || t.fruit > 0),
 
   unagi: (n) =>
-    n.cutlichen + n.kelp + n.kelp_cooked + n.kelp_dried >= 1 &&
-    n.eel + n.eel_cooked >= 1,
+    (!!n.cutlichen || !!n.kelp || !!n.kelp_cooked || !!n.kelp_dried) &&
+    (!!n.eel || !!n.eel_cooked || !!n.pondeel),
 
   veggieomlet: (_, t) =>
     t.egg >= 1 && t.veggie >= 1 && !t.meat && !t.dairy,
@@ -257,12 +250,11 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
 
   waffles: (n, t) =>
     n.butter >= 1 &&
-    n.berries + n.berries_cooked + n.berries_juicy + n.berries_juicy_cooked >= 1 &&
+    (!!n.berries || !!n.berries_cooked || !!n.berries_juicy || !!n.berries_juicy_cooked) &&
     t.egg > 0,
 
   watermelonicle: (n, t) =>
-    n.watermelon + n.watermelon_cooked >= 1 &&
-    t.frozen > 0 && n.twigs >= 1 &&
+    !!n.watermelon && t.frozen > 0 && n.twigs >= 1 &&
     !t.meat && !t.veggie && !t.egg,
 
   wetgoop: () => true, // priority -10 fallback
@@ -270,14 +262,15 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
   // ==================== Non-Food Cookpot Recipes ====================
 
   batnosehat: (n, t) =>
-    n.batnose + n.batnose_cooked >= 1 &&
-    n.kelp + n.kelp_cooked + n.kelp_dried >= 1 &&
-    t.dairy >= 1,
+    !!n.batnose && !!n.kelp && t.dairy >= 1,
+
+  dustmeringue: (n) =>
+    !!n.refined_dust,
 
   // ==================== Portable Cookpot (Warly) ====================
 
   bonesoup: (n, t) =>
-    n.boneshard >= 2 &&
+    n.boneshard === 2 &&
     n.onion + n.onion_cooked >= 1 &&
     t.inedible < 3,
 
@@ -296,8 +289,7 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
     n.asparagus + n.asparagus_cooked >= 2 && t.frozen >= 2,
 
   glowberrymousse: (n, t) =>
-    (n.wormlight + n.wormlight_cooked >= 1 ||
-      n.wormlight_lesser + n.wormlight_lesser_cooked >= 2) &&
+    (!!n.wormlight || n.wormlight_lesser >= 2) &&
     t.fruit >= 2 && !t.meat && !t.inedible,
 
   monstertartare: (_, t) =>
@@ -310,7 +302,7 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
     !t.inedible,
 
   nightmarepie: (n) =>
-    n.nightmarefuel >= 2 &&
+    n.nightmarefuel === 2 &&
     n.potato + n.potato_cooked >= 1 &&
     n.onion + n.onion_cooked >= 1,
 
