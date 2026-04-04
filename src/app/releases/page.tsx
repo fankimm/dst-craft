@@ -15,6 +15,28 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.8.1",
+    date: "2026-04-04",
+    dev: [
+      "인게임 cooking.lua 기반 크록팟 재료 태그 전수 검증 및 수정 (15개 불일치 수정)",
+      "rock_avocado_fruit_ripe: fruit:0.5 → veggie:1, plantmeat: veggie 태그 제거",
+      "fish/pondeel/pondfish/wobster 등 어류 태그 값 수정",
+      "wormlight/lightninggoathorn 잘못된 태그 제거, cookable/dryable 플래그 수정",
+      "말린 재료 7종 직접 정의 (petals_dried 등 태그 오류 수정 + 4종 신규 추가)",
+      "rawCookable 필드 제거 (더 이상 불필요)",
+    ],
+    changes: {
+      ko: [
+        "크록팟 시뮬레이터 재료 데이터 인게임 소스 기반 전수 수정 (15개 오류)",
+        "익은 아보카돌, 풀고기, 물고기, 왑스터, 두리안 등 시뮬레이션 결과 정확도 개선",
+      ],
+      en: [
+        "Fixed 15 crock pot ingredient tag errors based on in-game cooking.lua",
+        "Improved simulation accuracy for Stone Fruit, Leafy Meat, Fish, Wobster, Durian, etc.",
+      ],
+    },
+  },
+  {
     version: "0.8.0",
     date: "2026-03-26",
     dev: [

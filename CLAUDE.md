@@ -68,6 +68,7 @@
 ```
 jihwan-kim3 (macOS):
   game:    ~/Library/Application Support/Steam/steamapps/common/Don't Starve Together/
+  scripts: ~/Library/Application Support/Steam/steamapps/common/Don't Starve Together/dontstarve_steam.app/Contents/data/databundles/scripts.zip
   workshop: ~/Library/Application Support/Steam/steamapps/workshop/content/322330/
   한글모드: ~/Library/Application Support/Steam/steamapps/workshop/content/322330/2391246365/
   ko.po:   ~/Library/Application Support/Steam/steamapps/workshop/content/322330/2391246365/scripts/languages/ko.po

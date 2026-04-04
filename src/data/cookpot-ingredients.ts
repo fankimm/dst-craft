@@ -21,7 +21,6 @@ export interface CookpotIngredient {
   cookable?: boolean;    // auto-generate cooked variant
   dryable?: boolean;     // auto-generate dried variant
   cookedImage?: string;  // override for cooked variant image
-  rawCookable?: boolean; // false = raw form cannot be used in crock pot (only dried/cooked)
 }
 
 // ---------------------------------------------------------------------------
@@ -33,12 +32,12 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "pomegranate", name: "Pomegranate", nameKo: "석류", tags: { fruit: 1 }, category: "fruits", cookable: true },
   { id: "dragonfruit", name: "Dragon Fruit", nameKo: "용과", tags: { fruit: 1 }, category: "fruits", cookable: true },
   { id: "cave_banana", name: "Cave Banana", nameKo: "바나나", tags: { fruit: 1 }, category: "fruits", cookable: true },
-  { id: "wormlight", name: "Glow Berry", nameKo: "발광 베리", tags: { fruit: 1, magic: 1 }, category: "fruits", cookable: true },
-  { id: "wormlight_lesser", name: "Lesser Glow Berry", nameKo: "작은 발광 베리", tags: { fruit: 0.5 }, category: "fruits", cookable: true },
+  { id: "wormlight", name: "Glow Berry", nameKo: "발광 베리", tags: { fruit: 1 }, category: "fruits" },
+  { id: "wormlight_lesser", name: "Lesser Glow Berry", nameKo: "작은 발광 베리", tags: { fruit: 0.5 }, category: "fruits" },
   { id: "berries", name: "Berries", nameKo: "베리", tags: { fruit: 0.5 }, category: "fruits", cookable: true },
   { id: "berries_juicy", name: "Juicy Berries", nameKo: "즙 많은 베리", tags: { fruit: 0.5 }, category: "fruits", cookable: true },
   { id: "fig", name: "Fig", nameKo: "무화과", tags: { fruit: 0.5 }, category: "fruits", cookable: true },
-  { id: "durian", name: "Durian", nameKo: "두리안", tags: { fruit: 0.5, monster: 1 }, category: "fruits", cookable: true },
+  { id: "durian", name: "Durian", nameKo: "두리안", tags: { fruit: 1, monster: 1 }, category: "fruits", cookable: true },
   { id: "watermelon", name: "Watermelon", nameKo: "수박", tags: { fruit: 1 }, category: "fruits", cookable: true },
   { id: "ancientfruit_nightvision", name: "Nightberry", nameKo: "밤베리", tags: { fruit: 1 }, category: "fruits", cookable: true },
 
@@ -47,7 +46,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "corn", name: "Corn", nameKo: "옥수수", tags: { veggie: 1 }, category: "veggies", cookable: true },
   { id: "pumpkin", name: "Pumpkin", nameKo: "호박", tags: { veggie: 1 }, category: "veggies", cookable: true },
   { id: "eggplant", name: "Eggplant", nameKo: "가지", tags: { veggie: 1 }, category: "veggies", cookable: true },
-  { id: "cutlichen", name: "Cut Lichen", nameKo: "이끼", tags: { veggie: 0.5 }, category: "veggies" },
+  { id: "cutlichen", name: "Cut Lichen", nameKo: "이끼", tags: { veggie: 1 }, category: "veggies", cookable: true },
   { id: "asparagus", name: "Asparagus", nameKo: "아스파라거스", tags: { veggie: 1 }, category: "veggies", cookable: true },
   { id: "onion", name: "Onion", nameKo: "양파", tags: { veggie: 1 }, category: "veggies", image: "quagmire_onion.png", cookable: true, cookedImage: "quagmire_onion_cooked.png" },
   { id: "garlic", name: "Garlic", nameKo: "마늘", tags: { veggie: 1 }, category: "veggies", cookable: true },
@@ -61,7 +60,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "kelp", name: "Kelp Fronds", nameKo: "다시마 잎", tags: { veggie: 0.5 }, category: "veggies", cookable: true, dryable: true },
   { id: "mandrake", name: "Mandrake", nameKo: "맨드레이크", tags: { veggie: 1, magic: 1 }, category: "veggies", cookable: true, cookedImage: "cookedmandrake.png" },
   { id: "cactus_meat", name: "Cactus Flesh", nameKo: "선인장 과육", tags: { veggie: 1 }, category: "veggies", cookable: true },
-  { id: "rock_avocado_fruit_ripe", name: "Ripe Stone Fruit", nameKo: "익은 아보카돌", tags: { fruit: 0.5 }, category: "veggies", cookable: true },
+  { id: "rock_avocado_fruit_ripe", name: "Ripe Stone Fruit", nameKo: "익은 아보카돌", tags: { veggie: 1 }, category: "veggies", cookable: true },
   { id: "cactus_flower", name: "Cactus Flower", nameKo: "선인장 꽃", tags: { veggie: 0.5 }, category: "veggies" },
 
   // === Meats ===
@@ -71,24 +70,24 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "drumstick", name: "Drumstick", nameKo: "닭다리", tags: { meat: 0.5 }, category: "meats", cookable: true },
   { id: "batwing", name: "Batilisk Wing", nameKo: "바틸리스크 날개", tags: { meat: 0.5 }, category: "meats", cookable: true },
   { id: "smallmeat", name: "Morsel", nameKo: "고깃조각", tags: { meat: 0.5 }, category: "meats", dryable: true, cookable: true, cookedImage: "cookedsmallmeat.png" },
-  { id: "batnose", name: "Batnose", nameKo: "박쥐코", tags: { meat: 0.5 }, category: "meats", cookable: true },
+  { id: "batnose", name: "Batnose", nameKo: "박쥐코", tags: { meat: 0.5 }, category: "meats", cookable: true, dryable: true },
   { id: "mole", name: "Naked Mole Bat", nameKo: "벌거숭이두더박쥐", tags: { meat: 0.5 }, category: "meats" },
   { id: "trunk_summer", name: "Koalefant Trunk", nameKo: "코알라판트 코", tags: { meat: 1 }, category: "meats" },
   { id: "trunk_winter", name: "Winter Koalefant Trunk", nameKo: "겨울 코알라판트 코", tags: { meat: 1 }, category: "meats" },
-  { id: "trunk_cooked", name: "Cooked Koalefant Trunk", nameKo: "구운 코알라판트 코", tags: { meat: 1, precook: 1 }, category: "meats" },
-  { id: "plantmeat", name: "Leafy Meat", nameKo: "풀고기", tags: { meat: 1, veggie: 1 }, category: "meats" },
-  { id: "plantmeat_cooked", name: "Cooked Leafy Meat", nameKo: "구운 풀고기", tags: { meat: 1, veggie: 1, precook: 1 }, category: "meats" },
+  { id: "trunk_cooked", name: "Cooked Koalefant Trunk", nameKo: "구운 코알라판트 코", tags: { meat: 1 }, category: "meats" },
+  { id: "plantmeat", name: "Leafy Meat", nameKo: "풀고기", tags: { meat: 1 }, category: "meats" },
+  { id: "plantmeat_cooked", name: "Cooked Leafy Meat", nameKo: "구운 풀고기", tags: { meat: 1 }, category: "meats" },
 
   // === Fish ===
   { id: "eel", name: "Eel", nameKo: "장어", tags: { fish: 1, meat: 0.5 }, category: "fish", cookable: true },
-  { id: "fish", name: "Fish", nameKo: "물고기", tags: { fish: 1, meat: 0.5 }, category: "fish", cookable: true },
-  { id: "pondeel", name: "Pond Eel", nameKo: "연못 장어", tags: { fish: 0.5, meat: 0.25 }, category: "fish", cookable: true },
-  { id: "pondfish", name: "Pond Fish", nameKo: "연못 물고기", tags: { fish: 0.5, meat: 0.25 }, category: "fish", cookable: true },
+  { id: "fish", name: "Fish", nameKo: "물고기", tags: { fish: 1, meat: 1 }, category: "fish", cookable: true },
+  { id: "pondeel", name: "Pond Eel", nameKo: "연못 장어", tags: { fish: 1, meat: 0.5 }, category: "fish", cookable: true },
+  { id: "pondfish", name: "Pond Fish", nameKo: "연못 물고기", tags: { fish: 0.5, meat: 0.5 }, category: "fish" },
   { id: "fishmeat_small", name: "Small Fish Morsel", nameKo: "작은 생선살", tags: { fish: 0.5, meat: 0.5 }, category: "fish", cookable: true, dryable: true },
   { id: "fishmeat", name: "Fish Morsel", nameKo: "생선 조각", tags: { fish: 1, meat: 1 }, category: "fish", cookable: true, dryable: true },
-  { id: "wobster_sheller_land", name: "Wobster", nameKo: "왑스터", tags: { fish: 2, meat: 1 }, category: "fish", cookable: true, cookedImage: "wobster_sheller_dead_cooked.png" },
+  { id: "wobster_sheller_land", name: "Wobster", nameKo: "왑스터", tags: { fish: 1, meat: 1 }, category: "fish" },
   { id: "barnacle", name: "Barnacle", nameKo: "거북순", tags: { fish: 0.25, meat: 0.25 }, category: "fish" },
-  { id: "barnacle_cooked", name: "Cooked Barnacle", nameKo: "구운 거북순", tags: { fish: 0.25, meat: 0.25, precook: 1 }, category: "fish" },
+  { id: "barnacle_cooked", name: "Cooked Barnacle", nameKo: "구운 거북순", tags: { fish: 0.25, meat: 0.25 }, category: "fish" },
   { id: "oceanfish_small_5_inv", name: "Corn Cod", nameKo: "옥수수 대구", tags: { fish: 0.5, meat: 0.5 }, category: "fish" },
   { id: "oceanfish_medium_5_inv", name: "Corn Cod", nameKo: "옥수수대구", tags: { fish: 1, meat: 1 }, category: "fish" },
 
@@ -106,18 +105,24 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "moonbutterflywings", name: "Moon Moth Wings", nameKo: "달 나방 날개", tags: { decoration: 2 }, category: "misc" },
   { id: "butter", name: "Butter", nameKo: "버터", tags: { fat: 1, dairy: 1 }, category: "misc" },
   { id: "twigs", name: "Twigs", nameKo: "잔가지", tags: { inedible: 1 }, category: "misc" },
-  { id: "lightninggoathorn", name: "Volt Goat Horn", nameKo: "번개 염소의 뿔", tags: { inedible: 1, magic: 2 }, category: "misc" },
+  { id: "lightninggoathorn", name: "Volt Goat Horn", nameKo: "번개 염소의 뿔", tags: { inedible: 1 }, category: "misc" },
   { id: "ice", name: "Ice", nameKo: "얼음", tags: { frozen: 1 }, category: "misc" },
-  { id: "acorn", name: "Birchnut", nameKo: "버치넛", tags: { seed: 1 }, category: "misc", cookable: true },
+  { id: "acorn", name: "Birchnut", nameKo: "버치넛", tags: { seed: 1 }, category: "misc" },
+  { id: "acorn_cooked", name: "Roasted Birchnut", nameKo: "구운 버치넛", tags: { seed: 1 }, category: "misc" },
   { id: "goatmilk", name: "Electric Milk", nameKo: "전기 우유", tags: { dairy: 1 }, category: "misc" },
   { id: "milkywhites", name: "Milky Whites", nameKo: "흰자위", tags: { dairy: 1 }, category: "misc" },
   { id: "nightmarefuel", name: "Nightmare Fuel", nameKo: "악몽 연료", tags: { inedible: 1, magic: 1 }, category: "misc" },
   { id: "boneshard", name: "Bone Shards", nameKo: "뼛조각", tags: { inedible: 1 }, category: "misc" },
-  { id: "refined_dust", name: "Powdercake Dust", nameKo: "파우더 케이크 가루", tags: { inedible: 1 }, category: "misc" },
+  { id: "refined_dust", name: "Powdercake Dust", nameKo: "파우더 케이크 가루", tags: { decoration: 2 }, category: "misc" },
   { id: "forgetmelots", name: "Forget-Me-Lots", nameKo: "건망초", tags: { decoration: 1 }, category: "misc", dryable: true },
-  { id: "petals", name: "Petals", nameKo: "꽃잎", tags: { decoration: 0.5 }, category: "misc", dryable: true, rawCookable: false },
-  { id: "petals_evil", name: "Dark Petals", nameKo: "어둠의 꽃잎", tags: { decoration: 0.5 }, category: "misc", dryable: true, rawCookable: false },
-  { id: "foliage", name: "Foliage", nameKo: "나뭇잎", tags: { decoration: 0.5 }, category: "misc", dryable: true, rawCookable: false },
+  // Dried-only ingredients (raw forms are NOT cooking ingredients in the game)
+  { id: "petals_dried", name: "Dried Petals", nameKo: "말린 꽃잎", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "petals_evil_dried", name: "Dried Dark Petals", nameKo: "말린 어둠의 꽃잎", tags: { decoration: 1, magic: 0.5, dried: 1 }, category: "misc" },
+  { id: "foliage_dried", name: "Dried Foliage", nameKo: "말린 나뭇잎", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "succulent_picked_dried", name: "Dried Succulent", nameKo: "말린 다육식물", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "firenettles_dried", name: "Dried Fire Nettles", nameKo: "말린 불쐐기풀", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "tillweed_dried", name: "Dried Tillweed", nameKo: "말린 잡초", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "moon_tree_blossom_dried", name: "Dried Moon Tree Blossom", nameKo: "말린 달나무 꽃", tags: { decoration: 1, dried: 1 }, category: "misc" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -126,9 +131,7 @@ const baseIngredients: CookpotIngredient[] = [
 
 // Images that do NOT exist for cooked variants — use base image
 const missingCookedImages = new Set([
-  "tomato_cooked", "pondeel_cooked", "pondfish_cooked", "honey_cooked",
-  "wormlight_cooked", "wormlight_lesser_cooked", "cutlichen_cooked",
-  "cactus_flower_cooked", "mole_cooked",
+  "tomato_cooked", "pondeel_cooked", "cutlichen_cooked",
 ]);
 
 function generateVariants(bases: CookpotIngredient[]): CookpotIngredient[] {
@@ -176,7 +179,7 @@ const variants = generateVariants(baseIngredients);
 // ---------------------------------------------------------------------------
 
 export const cookpotIngredients: CookpotIngredient[] = [
-  ...baseIngredients.filter((i) => i.rawCookable !== false),
+  ...baseIngredients,
   ...variants,
 ];
 

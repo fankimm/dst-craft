@@ -107,6 +107,20 @@
 - **문제**: 이미 존재하는 아이템 번역(shadowlumber_builder 등)을 확인 없이 재추가 → 빌드 실패
 - **교훈**: 로캘 데이터 추가 전 반드시 기존 키 존재 여부 grep으로 확인
 
+### 크록팟 재료 태그 데이터 대규모 오류
+- **문제**: `cookpot-ingredients.ts`의 재료 태그가 인게임 `cooking.lua`와 15개 항목에서 불일치
+- **주요 오류**:
+  - `rock_avocado_fruit_ripe`: `fruit: 0.5` → 실제 `veggie: 1` (완전히 다른 태그)
+  - `plantmeat`/`plantmeat_cooked`: `veggie: 1` 태그 추가되어 있었으나 인게임에는 없음
+  - `fish(물고기)`: `meat: 0.5` → 실제 `meat: 1`
+  - `wobster_sheller_land`: `fish: 2` → 실제 `fish: 1`, cookable=true → 실제 NOT cookable
+  - `durian`: `fruit: 0.5` → 실제 `fruit: 1`
+  - `lightninggoathorn`: `magic: 2` 태그 존재 → 인게임에는 없음
+  - `wormlight`: `magic: 1` 태그 + cookable → 인게임에는 둘 다 없음
+- **원인**: 위키/커뮤니티 자료 기반으로 데이터를 입력하면서 인게임 소스(`cooking.lua`)와 대조하지 않음
+- **교훈**: 크록팟 재료 데이터는 **반드시 인게임 `cooking.lua`와 1:1 대조** 후 입력. 위키도 틀릴 수 있음. 게임 소스코드 경로: `dontstarve_steam.app/Contents/data/databundles/scripts.zip` → `scripts/cooking.lua`
+- **검증 방법**: `unzip -o scripts.zip "scripts/cooking.lua"` → `grep "AddIngredientValues" cooking.lua`로 전수 대조
+
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
 - pixel_format 0=DXT1(bcn 1), 1=DXT3(bcn 2), 2=DXT5(bcn 3)
