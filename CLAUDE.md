@@ -54,6 +54,9 @@
 - `worker/wrangler.toml` — Worker 설정
 - `docs/terminology.md` — UI 용어집
 - `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
+- `docs/stats/` — 인게임 소스 기반 아이템 스펙 md (파이프라인 산출물)
+- `docs/item-stats-pipeline.md` — 아이템 스펙 추출 파이프라인 설계
+- `docs/item-stats-todo.md` — 파이프라인 TODO
 
 ## Deploy Checklist
 배포 전 반드시 확인:
@@ -74,6 +77,23 @@ jihwan-kim3 (macOS):
   ko.po:   ~/Library/Application Support/Steam/steamapps/workshop/content/322330/2391246365/scripts/languages/ko.po
 ```
 
+## Game Source Files (scripts.zip 내부)
+인게임 데이터 원본. `unzip -o <scripts.zip 경로> "scripts/<파일>"` 로 추출하여 참조.
+
+| 파일 | 역할 | 앱 관련성 |
+|------|------|-----------|
+| `scripts/recipes.lua` | 모든 제작법 (재료, 수량, 기술 티어, 제작대) | 제작탭 데이터 원본 |
+| `scripts/tuning.lua` | 모든 수치 (내구도, 피해량, 흡수율, 체력/허기/정신력 등) | 아이템 스펙 원본 |
+| `scripts/prefabs/*.lua` | 아이템별 동작 로직 (장착 효과, 세트보너스 등) | 특수 효과 설명용 |
+| `scripts/preparedfoods.lua` | 요리솥 레시피 (재료 조건, 음식 스탯) | 요리탭 데이터 원본 |
+| `scripts/preparedfoods_warly.lua` | 월리 전용 요리 레시피 | 요리탭 (월리) |
+| `scripts/recipes_filter.lua` | 제작 카테고리 분류 정의 | 카테고리 구조 참조 |
+| `scripts/techtree.lua` | 기술 트리 정의 (SCIENCE, MAGIC, ANCIENT 등) | 제작대/스테이션 매핑 |
+| `scripts/strings.lua` | 영문 텍스트 (아이템 이름, 설명) | 영문명 원본 |
+| `scripts/skilltreedata.lua` | 캐릭터 스킬트리 정의 | 캐릭터 전용 제작 조건 |
+| `scripts/containers.lua` | 컨테이너 슬롯/크기 정의 | 저장소 아이템 정보 |
+| `scripts/constants.lua` | 게임 상수 (FOODTYPE, EQUIPSLOTS 등) | 코드 해석용 |
+
 ## Korean Translation Rules
 - 게임 내 아이템/재료/음식 이름의 한국어 번역 기준: **DST 커뮤니티 한글모드** ([Steam Workshop #2391246365](https://steamcommunity.com/sharedfiles/filedetails/?id=2391246365))
 - 번역 원본 파일: 위 Game & Mod Paths의 `ko.po` 경로 참조
@@ -87,6 +107,15 @@ jihwan-kim3 (macOS):
   - `src/components/cooking/CookingApp.tsx` — `reqTranslations` (요리 조건 번역)
   - `src/data/cookpot-ingredients.ts` — `nameKo` (재료 이름)
   - `src/data/locales/ko.ts` — 로캘 데이터 (아이템/스테이션 이름)
+
+## Item Stats Pipeline Rules
+- `docs/stats/*.md` 파일은 인게임 소스(tuning.lua, prefabs/*.lua)에서 추출한 아이템 스펙
+- **양식 필수**: `## {id} — {영문명} ({한글명})` + `- {필드}: {값}` 형식. h3(###) 금지, 테이블 형식 금지
+- **소스 참조**: 인게임 소스만 참조. `src/data/items.ts`, `item-stats.ts` 등 앱 소스 절대 참조 금지 (검증 대상이므로)
+- **한글명**: 반드시 ko.po에서 `STRINGS.NAMES.<UPPER_ID>` → `msgstr` 확인. 추측 금지
+- **함수명으로 동작 추측 금지**: 반드시 구현부(함수 본문)를 읽은 후 작성
+- **프리팹 필수 확인**: tuning.lua만으로 스펙이 완전하다고 판단하지 말 것 (dapperness, SetConsumption, attackwear 등 프리팹에서만 설정하는 속성 있음)
+- 상세 설계: `docs/item-stats-pipeline.md` 참조
 
 ## Mistakes & Lessons (오답노트)
 - 작업 중 실수/교훈은 **`docs/mistakes.md`** 에 기록할 것. 같은 실수 반복 방지 목적.

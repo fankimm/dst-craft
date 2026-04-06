@@ -251,11 +251,11 @@ export default async function CharacterPage({
                     />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground leading-tight truncate">
-                        {itemNameKo ?? item.name}
+                        {item.name}
                       </p>
                       {itemNameKo && (
                         <p className="text-[10px] text-muted-foreground truncate">
-                          {item.name}
+                          {itemNameKo}
                         </p>
                       )}
                     </div>
@@ -304,11 +304,13 @@ export default async function CharacterPage({
                 />
                 <div className="min-w-0">
                   <p className="text-xs font-medium text-foreground truncate">
-                    {c.nameKo ?? c.name}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground truncate">
                     {c.name}
                   </p>
+                  {c.nameKo && (
+                    <p className="text-[10px] text-muted-foreground truncate">
+                      {c.nameKo}
+                    </p>
+                  )}
                 </div>
               </Link>
             ))}
@@ -332,7 +334,7 @@ export default async function CharacterPage({
             Browse all character-specific items, crock pot recipes, and boss guides
           </p>
           <Link
-            href="/"
+            href={`/?cat=character&char=${char.id}`}
             className="inline-block mt-1 rounded-lg bg-foreground text-background text-sm font-semibold px-5 py-2 hover:opacity-80 transition-opacity"
           >
             Open Crafting Guide →

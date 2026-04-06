@@ -142,7 +142,7 @@ export default async function FoodPage({
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <Link
-            href="/?tab=cooking"
+            href={`/?tab=cooking&cat=all&recipe=${recipe.id}`}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             ← Back to dstcraft.com
@@ -375,11 +375,11 @@ export default async function FoodPage({
                     />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground truncate">
-                        {rNameKo ?? r.name}
+                        {r.name}
                       </p>
                       {rNameKo && (
                         <p className="text-[10px] text-muted-foreground truncate">
-                          {r.name}
+                          {rNameKo}
                         </p>
                       )}
                     </div>
@@ -399,7 +399,7 @@ export default async function FoodPage({
             Simulate crock pot combinations and find crafting recipes
           </p>
           <Link
-            href="/?tab=cooking"
+            href={`/?tab=cooking&cat=all&recipe=${recipe.id}`}
             className="inline-block mt-1 rounded-lg bg-foreground text-background text-sm font-semibold px-5 py-2 hover:opacity-80 transition-opacity"
           >
             Open Cooking Guide →

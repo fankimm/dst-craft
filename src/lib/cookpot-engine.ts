@@ -261,11 +261,11 @@ const recipeTests: Record<string, (n: N, t: T) => boolean> = {
 
   // ==================== Non-Food Cookpot Recipes ====================
 
-  batnosehat: (n, t) =>
-    !!n.batnose && !!n.kelp && t.dairy >= 1,
-
   dustmeringue: (n) =>
     !!n.refined_dust,
+
+  batnosehat: (n, t) =>
+    !!n.batnose && !!n.kelp && t.dairy >= 1,
 
   // ==================== Portable Cookpot (Warly) ====================
 

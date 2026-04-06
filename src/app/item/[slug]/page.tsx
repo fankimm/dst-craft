@@ -201,7 +201,7 @@ export default async function ItemPage({
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <Link
-            href="/"
+            href={`/?item=${item.id}`}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             ← Back to dstcraft.com
@@ -312,11 +312,11 @@ export default async function ItemPage({
                   </div>
                   <div className="min-w-0">
                     <p className="text-xs font-medium text-foreground leading-tight truncate">
-                      {matNameKo ?? mat?.name ?? m.materialId}
+                      {mat?.name ?? m.materialId}
                     </p>
                     {matNameKo && (
                       <p className="text-[10px] text-muted-foreground truncate">
-                        {mat?.name ?? m.materialId}
+                        {matNameKo}
                       </p>
                     )}
                   </div>
@@ -390,11 +390,11 @@ export default async function ItemPage({
                     />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground leading-tight truncate">
-                        {otherNameKo ?? other.name}
+                        {other.name}
                       </p>
                       {otherNameKo && (
                         <p className="text-[10px] text-muted-foreground truncate">
-                          {other.name}
+                          {otherNameKo}
                         </p>
                       )}
                     </div>
@@ -433,7 +433,7 @@ export default async function ItemPage({
             Search all items, crock pot recipes, and character-specific crafts
           </p>
           <Link
-            href="/"
+            href={`/?item=${item.id}`}
             className="inline-block mt-1 rounded-lg bg-foreground text-background text-sm font-semibold px-5 py-2 hover:opacity-80 transition-opacity"
           >
             Open Crafting Guide →

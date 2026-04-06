@@ -134,7 +134,7 @@ export default async function BossPage({
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <Link
-            href="/?tab=bosses"
+            href={`/?tab=bosses&boss=${boss.id}`}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             ← Back to dstcraft.com
@@ -218,11 +218,11 @@ export default async function BossPage({
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-medium text-foreground leading-tight truncate">
-                      {nameKoVal !== nameEn ? nameKoVal : nameEn}
+                      {nameEn}
                     </p>
                     {nameKoVal !== nameEn && (
                       <p className="text-[10px] text-muted-foreground truncate">
-                        {nameEn}
+                        {nameKoVal}
                       </p>
                     )}
                     <div className="flex items-center gap-1.5 mt-0.5">
@@ -312,10 +312,10 @@ export default async function BossPage({
                     />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground truncate">
-                        {b.nameKo}
+                        {b.name}
                       </p>
                       <p className="text-[10px] text-muted-foreground truncate">
-                        {b.name}
+                        {b.nameKo}
                       </p>
                     </div>
                   </Link>
@@ -334,7 +334,7 @@ export default async function BossPage({
             Boss drops, crafting recipes, and crock pot guides
           </p>
           <Link
-            href="/?tab=bosses"
+            href={`/?tab=bosses&boss=${boss.id}`}
             className="inline-block mt-1 rounded-lg bg-foreground text-background text-sm font-semibold px-5 py-2 hover:opacity-80 transition-opacity"
           >
             Open Boss Guide →

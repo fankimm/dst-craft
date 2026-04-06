@@ -113,7 +113,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "milkywhites", name: "Milky Whites", nameKo: "흰자위", tags: { dairy: 1 }, category: "misc" },
   { id: "nightmarefuel", name: "Nightmare Fuel", nameKo: "악몽 연료", tags: { inedible: 1, magic: 1 }, category: "misc" },
   { id: "boneshard", name: "Bone Shards", nameKo: "뼛조각", tags: { inedible: 1 }, category: "misc" },
-  { id: "refined_dust", name: "Powdercake Dust", nameKo: "파우더 케이크 가루", tags: { decoration: 2 }, category: "misc" },
+  { id: "refined_dust", name: "Collected Dust", nameKo: "먼지 덩어리", tags: { decoration: 2 }, category: "misc" },
   { id: "forgetmelots", name: "Forget-Me-Lots", nameKo: "건망초", tags: { decoration: 1 }, category: "misc", dryable: true },
   // Dried-only ingredients (raw forms are NOT cooking ingredients in the game)
   { id: "petals_dried", name: "Dried Petals", nameKo: "말린 꽃잎", tags: { decoration: 1, dried: 1 }, category: "misc" },

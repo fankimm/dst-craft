@@ -25,6 +25,8 @@ const specialEffectDescriptions: Record<string, string> = {
   beefalo_food: "can be used to feed Beefalo for domestication",
   speed: "grants a temporary speed boost",
   sanity_aura: "provides a sanity aura effect",
+  dust_moth_food: "is food for Dust Moths and is used in the Ancient Archive quest",
+  hunger_regen: "slowly restores hunger over time while worn",
 };
 
 function describeStats(health: number, hunger: number, sanity: number): string {

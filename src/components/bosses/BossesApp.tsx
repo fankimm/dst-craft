@@ -180,6 +180,20 @@ export function BossesApp({
     setLootTags([]);
   }, []);
 
+  // URL param deep link: ?tab=bosses&boss={id}
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const bossId = params.get("boss");
+    if (bossId) {
+      const boss = bosses.find((b) => b.id === bossId);
+      if (boss) {
+        setSelectedBoss(boss);
+        addRecent(boss.id);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Re-tap active tab → go home
   useEffect(() => {
     const handler = () => handleGoHome();

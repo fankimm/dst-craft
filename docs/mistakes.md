@@ -12,6 +12,34 @@
 - **해결**: 데이터 모델에 `blueprint: boolean` 필드 분리, `TECH.LOST` 기준으로만 블루프린트 뱃지 표시
 - **검증**: `grep "TECH.LOST" recipes.lua`로 블루프린트 아이템, `grep "nounlock=true" recipes.lua`로 프로토타입 불가 아이템 별도 확인
 
+### 한글명을 ko.po 확인 없이 임의 작성
+- **문제**: 아이템 스펙 문서(armor.md)에 한글명을 ko.po 원본 확인 없이 아이템 ID에서 추측하여 작성 → 23개 중 7개 불일치
+- **원인**: 영문명/ID에서 한글명을 유추하여 적음 (예: voidclothhat → "공허천 투구", 정답은 "공허의 두건")
+- **교훈**: 한글명은 반드시 ko.po 파일에서 `STRINGS.NAMES.<ID>` → `msgstr` 값을 확인한 후 작성할 것. 절대 추측 금지.
+- **검증**: `grep -A 2 'STRINGS.NAMES.<ID>' ko.po | grep msgstr`로 원본 확인
+
+### 함수명만 보고 동작을 추측
+- **문제**: `MakeForgeRepairable` 함수명만 보고 "대장간에서 수리 가능"이라고 작성 → 실제로는 전용 수리 키트로 수리하는 구조
+- **원인**: 함수 내부 구현(standardcomponents.lua)과 관련 컴포넌트(forgerepair.lua, forgerepairable.lua)를 읽지 않고 함수명에서 의미를 추측
+- **교훈**: 함수명/변수명에서 동작을 추측하지 말 것. 반드시 구현부를 읽고 확인한 후 작성.
+- **검증**: 함수 정의 → 호출하는 컴포넌트 → 실제 동작까지 추적
+
+### 통합 파일에서 다른 아이템 코드를 해당 아이템 것으로 혼동
+- **문제**: hats.lua에서 wathgrithr_improvedhat 스펙을 추출할 때, 근처에 있던 walter_refreshattunedskills(월터 모자)의 보온/방수 업그레이드를 wathgrithr_improvedhat 것으로 잘못 기재. 또한 캐릭터 본체 스킬(wathgrithr_combat_defense, BONUS_PLANAR_DEF=5)을 투구 스킬로 혼동.
+- **원인**: 여러 아이템이 한 파일에 정의된 통합 파일(hats.lua 등)에서 함수 경계를 정확히 추적하지 않고, 근처 코드를 해당 아이템의 것으로 간주.
+- **교훈**: 통합 파일에서는 반드시 함수 스코프를 확인할 것. 특히 `fns.아이템명 = function()` 블록 내부인지, 별도 함수인지 구분. 스킬트리 코드는 스킬 ID와 적용 대상(아이템 vs 캐릭터)을 정확히 추적.
+- **검증**: 해당 함수가 어디서 호출되는지 역추적 (ListenForEvent, onequip 등)
+
+### tuning.lua만으로 스펙 작성하고 프리팹 파일 미확인
+- **문제**: 어둠의 검(nightsword)의 정신력 감소(dapperness=CRAZINESS_MED)를 누락. tuning.lua에 NIGHTSWORD_DAPPERNESS 같은 전용 변수가 없어서 grep에 안 잡힘.
+- **원인**: 갑옷에서는 프리팹을 전부 읽었으나, 무기에서는 시간 절약을 위해 tuning.lua grep만으로 스펙을 작성. dapperness, walkspeedmult, insulated 등 프리팹 코드에서 직접 대입하는 속성을 놓침.
+- **교훈**: 모든 카테고리에서 반드시 프리팹 파일도 읽을 것. tuning.lua는 수치 원본이지만, 프리팹에서만 설정하는 속성(dapperness, insulated, walkspeedmult, SetConsumption, 내구도 유무 등)이 존재함. 절대 tuning.lua만으로 스펙이 완전하다고 판단하지 말 것. 아이템 수가 많아도 "단순해 보이는 것"을 건너뛰지 말 것 — 단순해 보이는 아이템이 오히려 예외(내구도 무한 등)일 수 있음.
+
+### 유저 피드백을 검증 없이 반영
+- **문제**: 폴리 로저 모자의 스펙을 유저가 알려준 내용 그대로 반영하고 인게임 소스를 확인하지 않음
+- **원인**: 유저가 게임에 익숙하니 맞을 것이라고 판단하고 검증 생략
+- **교훈**: 유저 피드백이라도 반드시 소스에서 검증한 후 반영할 것. 유저의 기억이 정확할 수도 있지만, 패치로 변경되었거나 세부 동작이 다를 수 있음. 소스가 유일한 진실(source of truth).
+
 ### 스킬 이름 ID 불일치
 - **문제**: `builderSkill` ID ≠ ko.po 키 ≠ 아이콘 파일명
 - **예시**:
@@ -117,6 +145,7 @@
   - `durian`: `fruit: 0.5` → 실제 `fruit: 1`
   - `lightninggoathorn`: `magic: 2` 태그 존재 → 인게임에는 없음
   - `wormlight`: `magic: 1` 태그 + cookable → 인게임에는 둘 다 없음
+  - `refined_dust`: `inedible: 1` → 실제 `decoration: 2`, 이름도 "Powdercake Dust" → "Collected Dust"
 - **원인**: 위키/커뮤니티 자료 기반으로 데이터를 입력하면서 인게임 소스(`cooking.lua`)와 대조하지 않음
 - **교훈**: 크록팟 재료 데이터는 **반드시 인게임 `cooking.lua`와 1:1 대조** 후 입력. 위키도 틀릴 수 있음. 게임 소스코드 경로: `dontstarve_steam.app/Contents/data/databundles/scripts.zip` → `scripts/cooking.lua`
 - **검증 방법**: `unzip -o scripts.zip "scripts/cooking.lua"` → `grep "AddIngredientValues" cooking.lua`로 전수 대조
@@ -130,6 +159,11 @@
   4. **없는 레시피 누락**: dustmeringue(엠버로시아) 미구현
 - **원인**: Lua→TypeScript 포팅 시 `names.xxx`를 일괄적으로 `n.xxx + n.xxx_cooked >= 1`로 변환한 것이 주원인. 게임에서 raw만 체크하는 경우가 많음
 - **교훈**: Lua `names.xxx` → `!!n.xxx`, Lua `(names.xxx or 0) + (names.xxx_cooked or 0) >= N` → `n.xxx + n.xxx_cooked >= N`. 각 레시피마다 cooked 포함 여부를 개별 확인. `==` vs `>=` 구분도 주의
+
+### preparednonfoods.lua 존재를 간과
+- **문제**: Amberosia(dustmeringue)가 `preparedfoods.lua`에 없어서 게임에 없는 것으로 착각
+- **실제**: `preparednonfoods.lua`에 비음식 요리솥 레시피로 별도 정의되어 있음
+- **교훈**: 요리솥 레시피 소스는 3개 파일을 모두 확인: `preparedfoods.lua`, `preparedfoods_warly.lua`, `preparednonfoods.lua`
 
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`

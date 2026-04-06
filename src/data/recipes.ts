@@ -1184,6 +1184,21 @@ export const cookingRecipes: CookingRecipe[] = [
   // Non-Food Cookpot Recipes (from preparednonfoods.lua)
   // ============================================================
   {
+    id: "dustmeringue",
+    name: "Amberosia",
+    requirements: "Collected Dust ×1",
+    foodType: "nonfood",
+    health: 0,
+    hunger: 12.5,
+    sanity: 0,
+    perishDays: null,
+    cookTime: 2,
+    priority: 100,
+    station: "cookpot",
+    specialEffect: "dust_moth_food",
+    cardIngredients: [["refined_dust", 1], ["twigs", 3]],
+  },
+  {
     id: "batnosehat",
     name: "Milkmade Hat",
     requirements: "Batnose ×1, Kelp ×1, Dairy ≥ 1",

@@ -15,46 +15,19 @@ interface Release {
 
 const releases: Release[] = [
   {
-    version: "0.8.2",
-    date: "2026-04-04",
+    version: "0.8.3",
+    date: "2026-04-06",
     dev: [
-      "인게임 preparedfoods.lua 기반 레시피 테스트 함수 전수 검증 (17개 불일치 수정)",
-      "raw-only 체크: mandrakesoup, turkeydinner, shroomcake, shroombait 등 9개",
-      "정확한 개수: californiaroll(==2), nightmarepie(==2), bonesoup(==2)",
-      "누락 재료: fishtacos/powcake에 Corn Cod, unagi에 pondeel, trailmix에 juicy berries 추가",
-      "barnaclesushi에서 kelp_dried 제거 (인게임 미지원)",
-      "dustmeringue 레시피 신규 추가 (preparednonfoods.lua)",
+      "SEO 페이지 CTA 딥링크 적용 (food, item, boss, character → 해당 상세패널 직접 열기)",
+      "Boss 탭 URL 파라미터 딥링크 지원 추가 (?tab=bosses&boss={id})",
+      "SEO 페이지 영어 통일 — 아이템/보스/캐릭터 리스트에서 영어를 주요 이름으로 변경",
     ],
     changes: {
       ko: [
-        "크록팟 시뮬레이터 레시피 판정 로직 인게임 소스 기반 전수 수정 (17개 오류)",
-        "엠버로시아(Dust Meringue) 레시피 추가",
+        "SEO 페이지에서 앱으로 이동 시 해당 아이템 상세를 바로 표시",
       ],
       en: [
-        "Fixed 17 crock pot recipe test logic errors based on in-game preparedfoods.lua",
-        "Added Dust Meringue (Amberosia) recipe",
-      ],
-    },
-  },
-  {
-    version: "0.8.1",
-    date: "2026-04-04",
-    dev: [
-      "인게임 cooking.lua 기반 크록팟 재료 태그 전수 검증 및 수정 (15개 불일치 수정)",
-      "rock_avocado_fruit_ripe: fruit:0.5 → veggie:1, plantmeat: veggie 태그 제거",
-      "fish/pondeel/pondfish/wobster 등 어류 태그 값 수정",
-      "wormlight/lightninggoathorn 잘못된 태그 제거, cookable/dryable 플래그 수정",
-      "말린 재료 7종 직접 정의 (petals_dried 등 태그 오류 수정 + 4종 신규 추가)",
-      "rawCookable 필드 제거 (더 이상 불필요)",
-    ],
-    changes: {
-      ko: [
-        "크록팟 시뮬레이터 재료 데이터 인게임 소스 기반 전수 수정 (15개 오류)",
-        "익은 아보카돌, 풀고기, 물고기, 왑스터, 두리안 등 시뮬레이션 결과 정확도 개선",
-      ],
-      en: [
-        "Fixed 15 crock pot ingredient tag errors based on in-game cooking.lua",
-        "Improved simulation accuracy for Stone Fruit, Leafy Meat, Fish, Wobster, Durian, etc.",
+        "SEO pages now deep-link to the specific item detail panel",
       ],
     },
   },
