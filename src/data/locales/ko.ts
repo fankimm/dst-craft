@@ -67,6 +67,7 @@ export const ko: LocaleData = {
     "battlesong_lunaraligned": { name: "계몽의 자장가" },
     "battlesong_shadowaligned": { name: "어둠의 애가" },
     "spear_wathgrithr_lightning": { name: "뇌전창", desc: "번개의 힘을 그대 손 안에." },
+    "spear_wathgrithr_lightning_charged": { name: "충전된 뇌전창" },
     "wathgrithr_improvedhat": { name: "지휘관의 투구", desc: "발키리 여왕의 투구." },
     "saddle_wathgrithr": { name: "전사의 안장" },
     "battlesong_container": { name: "전투 영창 통", desc: "히트곡들을 담아보세요." },

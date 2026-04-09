@@ -36,7 +36,7 @@
 - [x] 4-2. `ItemDetail.tsx` 수정 — 기존 스탯 블록 → ItemStatsPanel 교체
 
 ## Phase 5: 정리 및 검증
-- [ ] 5-1. 번역 검증 — v3 내 모든 아이템명 참조 vs ko.ts 크로스 체크
+- [x] 5-1. 번역 검증 — v3 아이템 vs ko.ts 크로스 체크 (충전된 뇌전창 추가)
 - [x] 5-2. 문서 업데이트 — docs/ui.md (ItemStatsPanel 추가)
 - [x] 5-3. `npm run build` 통과 확인
-- [ ] 5-4. 오답노트 작성 (docs/mistakes.md) — v2에서 발생한 번역/구조 실수 기록
+- [x] 5-4. 오답노트 작성 (docs/mistakes.md) — v2 구조적 한계 + 병렬 에이전트 주의
