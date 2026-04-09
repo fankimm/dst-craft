@@ -171,6 +171,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
         {/* Stats */}
         {itemStats[item.id] && (
           <ItemStatsPanel
+            itemId={item.id}
             stats={itemStats[item.id]}
             statsV3={activeStatsV3?.[item.id]}
             locale={resolvedLocale}

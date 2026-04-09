@@ -88,9 +88,19 @@ const RESISTANCE_LABELS: Record<string, Record<string, string>> = {
   lunar: { ko: "달 저항", en: "Lunar Resist" },
 };
 
+// ── Set member definitions ──
+
+const SET_MEMBERS: Record<string, string[]> = {
+  brightshade: ["armor_lunarplant", "lunarplanthat", "sword_lunarplant", "pickaxe_lunarplant", "shovel_lunarplant", "staff_lunarplant"],
+  voidcloth: ["armor_voidcloth", "voidclothhat", "voidcloth_scythe", "voidcloth_boomerang"],
+  dreadstone: ["armordreadstone", "dreadstonehat"],
+  wagpunk: ["armorwagpunk", "wagpunkhat"],
+};
+
 // ── Component ──
 
 interface ItemStatsPanelProps {
+  itemId: string;
   stats: ItemStats;
   statsV3: ItemStatsV3 | undefined;
   locale: string;
@@ -116,7 +126,7 @@ function StatGroup({ title, children }: { title: string; children: React.ReactNo
   );
 }
 
-export function ItemStatsPanel({ stats, statsV3, locale }: ItemStatsPanelProps) {
+export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPanelProps) {
   const l = locale === "ko" ? "ko" : "en";
 
   // Collect stat rows per group
@@ -254,14 +264,32 @@ export function ItemStatsPanel({ stats, statsV3, locale }: ItemStatsPanelProps) 
           )}
 
           {/* Set bonus */}
-          {setBonus && (
-            <div className="text-xs border border-amber-300/50 bg-amber-50/50 dark:border-amber-700/30 dark:bg-amber-950/30 rounded px-2 py-1 space-y-0.5">
-              <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400">
-                {l === "ko" ? "세트 효과" : "Set Bonus"}
-              </span>
-              <p className="text-foreground leading-relaxed">{l === "ko" ? setBonus.effects.ko : setBonus.effects.en}</p>
-            </div>
-          )}
+          {setBonus && (() => {
+            const members = SET_MEMBERS[setBonus.set_id] ?? [];
+            return (
+              <div className="text-xs border border-amber-300/50 bg-amber-50/50 dark:border-amber-700/30 dark:bg-amber-950/30 rounded px-2 py-1.5 space-y-1">
+                <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400">
+                  {l === "ko" ? "세트 효과" : "Set Bonus"}
+                </span>
+                <p className="text-foreground leading-relaxed">{l === "ko" ? setBonus.effects.ko : setBonus.effects.en}</p>
+                {members.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 pt-0.5">
+                    {members.map((mid) => (
+                      <div key={mid} className={cn("flex items-center gap-1 text-[10px]", mid === itemId ? "text-amber-600 dark:text-amber-400 font-semibold" : "text-muted-foreground")}>
+                        <img
+                          src={assetPath(`/images/game-items/${mid}.png`)}
+                          alt=""
+                          className="size-4 object-contain"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                        />
+                        <span>{itemName({ id: mid } as any, l)}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Repair */}
           {repair && (
@@ -276,6 +304,9 @@ export function ItemStatsPanel({ stats, statsV3, locale }: ItemStatsPanelProps) 
                 {l === "ko" ? "수리: " : "Repair: "}
                 <span className="text-foreground font-medium">
                   {itemName({ id: repair.item_id } as any, l)}
+                </span>
+                <span className="text-muted-foreground">
+                  {l === "ko" ? " (내구도 100% 복구)" : " (restores 100%)"}
                 </span>
               </span>
             </div>
