@@ -162,6 +162,7 @@ export const itemStatsV3: Record<string, ItemStatsV3> = {
   carpentry_blade_moonglass: { effects: [{ ko: "목공 레벨 3을 해금한다", en: "Unlocks Carpentry Level 3" }] },
   catcoonhat: { insulation: 60, fuel_time: 4800 },
   cattoy_mouse: { effects: [{ ko: "고양이를 위한 장난감", en: "A toy for cats" }] },
+  chestupgrade_stacksize: { effects: [{ ko: "비늘 상자에 사용하면 아이템 스택 무한 보관이 가능해진다", en: "Use on a Scaled Chest to enable infinite item stack size" }, { ko: "사용하면 소모된다", en: "Consumed on use" }] },
   chesspiece_bishop_builder: { effects: [{ ko: "보름달이나 초승달에 활성화되어 그림자 비숍을 소환할 수 있다", en: "Activates on full/new moon, allowing Shadow Bishop summoning" }] },
   chesspiece_butterfly_sketch: { effects: [{ ko: "도예가의 돌림판에서 달 나방 조각상 제작법을 해금한다", en: "Unlocks Moon Moth sculpture recipe at the Potter's Wheel" }, { ko: "사용하면 소모된다", en: "Consumed on use" }] },
   chesspiece_hornucopia_builder: { speed_mult: 0.15, effects: [{ ko: "무거운 아이템이라 컨테이너에 넣을 수 없고, 몸통 슬롯에 장착된다", en: "A heavy item that cannot be stored in containers and equips in the body slot" }, { ko: "볼프강 체육관 무게가 3이다", en: "Has a gym weight of 3 for Wolfgang" }, { ko: "해머로 부수면 재료를 돌려받는다", en: "Returns materials when hammered" }] },
