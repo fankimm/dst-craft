@@ -14,7 +14,8 @@ import { assetPath } from "@/lib/asset-path";
 import { usePopularity } from "@/hooks/use-popularity";
 import { ViewCount } from "@/components/ui/ViewCount";
 import { ShareButton } from "@/components/ui/ShareButton";
-import { itemStats, type ItemStats } from "@/data/item-stats";
+import type { ItemStats } from "@/data/item-stats";
+import { useItemStatsVersion } from "@/hooks/use-item-stats-version";
 
 const STAT_DISPLAY_ORDER: (keyof ItemStats)[] = [
   "damage", "planar_damage", "shadow_bonus", "uses", "armor_hp", "absorption", "planar_def",
@@ -105,6 +106,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { getClicks } = usePopularity();
+  const { activeStats: itemStats } = useItemStatsVersion();
   const clicks = item ? getClicks(item.id) : 0;
 
   if (!item) {

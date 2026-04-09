@@ -815,5 +815,40 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       });
     }
 
+    // GET /config?key=... — read a global config value (public)
+    if (url.pathname === "/config" && request.method === "GET") {
+      const key = url.searchParams.get("key");
+      if (!key || !/^[a-z_-]+$/.test(key)) {
+        return new Response(JSON.stringify({ error: "Invalid key" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const result = await redisPipeline(env, [["GET", `dst:config:${key}`]]) as any;
+      const value = result?.[0]?.result ?? null;
+      return new Response(JSON.stringify({ key, value }), {
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
+
+    // POST /config — set a global config value (admin only)
+    if (url.pathname === "/config" && request.method === "POST") {
+      const auth = request.headers.get("Authorization") ?? "";
+      if (!auth.startsWith("Bearer ")) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const jwtPayload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+      if (!jwtPayload || jwtPayload.role !== "admin") {
+        return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const key = body.key as string;
+      const value = body.value as string;
+      if (!key || !/^[a-z_-]+$/.test(key) || typeof value !== "string") {
+        return new Response(JSON.stringify({ error: "Invalid request" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      await redisPipeline(env, [["SET", `dst:config:${key}`, value]]);
+      return new Response(JSON.stringify({ ok: true, key, value }), {
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
+
     return new Response("Not Found", { status: 404, headers });
 }

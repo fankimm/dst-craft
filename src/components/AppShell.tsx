@@ -13,6 +13,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { useItemStatsVersion } from "@/hooks/use-item-stats-version";
 
 type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "settings";
 
@@ -35,7 +36,7 @@ function readTabFromUrl(): TabId {
 export function AppShell() {
   const [activeTab, setActiveTab] = useState<TabId>("crafting");
   const { resolvedLocale } = useSettings();
-  const { isAdmin } = useAuth();
+  const { isAdmin, token } = useAuth();
   const [toast, setToast] = useState<string | null>(null);
   const [pendingRecipeId, setPendingRecipeId] = useState<string | null>(null);
   const [pendingItemId, setPendingItemId] = useState<string | null>(null);
@@ -235,7 +236,7 @@ export function AppShell() {
 
       {/* Dev menu */}
       {(process.env.NODE_ENV === "development" || isAdmin) && (
-        <DevMenu onOpenReview={() => setShowReview(true)} />
+        <DevMenu onOpenReview={() => setShowReview(true)} token={token} />
       )}
 
       {/* Toast */}
@@ -254,7 +255,7 @@ export function AppShell() {
 // Dev-only floating menu (stripped from production builds)
 // ---------------------------------------------------------------------------
 
-function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
+function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: string | null }) {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ x: 12, y: 80 }); // bottom-right offset
   const ref = useRef<HTMLDivElement>(null);
@@ -296,6 +297,8 @@ function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
     setTimeout(() => { dragging.current = false; }, 0);
   }, []);
 
+  const { version, setRemoteVersion } = useItemStatsVersion();
+
   const handleClick = useCallback(() => {
     if (dragging.current) return;
     setOpen((v) => !v);
@@ -318,6 +321,16 @@ function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
     { label: "아이템 스탯 리뷰", action: () => window.open("/item-stats", "_blank") },
     { label: "게임 아이템 DB (1028)", action: () => window.open("/dev/item-database", "_blank") },
     { label: "인기 조합 패널 비교", action: () => window.open("/dev/combo-panel", "_blank") },
+    {
+      label: `스탯 버전: ${version.toUpperCase()}`,
+      action: async () => {
+        const next = version === "v1" ? "v2" : "v1";
+        if (token) {
+          await setRemoteVersion(next, token);
+        }
+      },
+      highlight: true,
+    },
   ];
 
   return (
@@ -329,7 +342,12 @@ function DevMenu({ onOpenReview }: { onOpenReview: () => void }) {
             <button
               key={item.label}
               onClick={() => { item.action(); setOpen(false); }}
-              className="w-full text-left px-3 py-2 text-xs text-popover-foreground hover:bg-accent/50 transition-colors"
+              className={cn(
+                "w-full text-left px-3 py-2 text-xs transition-colors",
+                "highlight" in item && item.highlight
+                  ? "text-amber-600 dark:text-amber-400 font-semibold hover:bg-amber-500/10"
+                  : "text-popover-foreground hover:bg-accent/50",
+              )}
             >
               {item.label}
             </button>

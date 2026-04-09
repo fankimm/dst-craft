@@ -3,7 +3,8 @@
 import { useState, useMemo } from "react";
 import { allItems } from "@/data/items";
 import { allLocales } from "@/data/locales";
-import { itemStats, type ItemStats } from "@/data/item-stats";
+import type { ItemStats } from "@/data/item-stats";
+import { useItemStatsVersion } from "@/hooks/use-item-stats-version";
 import { categories } from "@/data/categories";
 import { BackToHome } from "@/components/ui/BackToHome";
 import Image from "next/image";
@@ -90,10 +91,11 @@ export default function ItemStatsPage() {
   const [filter, setFilter] = useState<FilterMode>("all");
   const [group, setGroup] = useState<GroupMode>("category");
   const [search, setSearch] = useState("");
+  const { version, activeStats: itemStats } = useItemStatsVersion();
 
   const totalWithStats = useMemo(
     () => allItems.filter((i) => itemStats[i.id]).length,
-    [],
+    [itemStats],
   );
 
   const filtered = useMemo(() => {
@@ -112,7 +114,7 @@ export default function ItemStatsPage() {
       });
     }
     return items;
-  }, [filter, search]);
+  }, [filter, search, itemStats]);
 
   const grouped = useMemo(() => {
     if (group === "flat") return { "전체": filtered };
