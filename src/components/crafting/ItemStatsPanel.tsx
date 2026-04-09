@@ -7,6 +7,12 @@ import { itemName } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 
+/** itemName with ID fallback (for items not in CraftingItem data) */
+function safeItemName(id: string, locale: string): string {
+  const name = itemName({ id, name: id.replace(/_/g, " ") } as any, locale);
+  return name || id.replace(/_/g, " ");
+}
+
 // ── Stat formatting (shared with legacy) ──
 
 function formatStat(key: string, value: number, locale: string): string {
@@ -285,7 +291,7 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
                           className="size-4 object-contain"
                           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                         />
-                        <span>{itemName({ id: mid } as any, l)}</span>
+                        <span>{safeItemName(mid, l)}</span>
                       </div>
                     ))}
                   </div>
@@ -306,7 +312,7 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
               <span>
                 {l === "ko" ? "수리: " : "Repair: "}
                 <span className="text-foreground font-medium">
-                  {itemName({ id: repair.item_id } as any, l)}
+                  {safeItemName(repair.item_id, l)}
                 </span>
                 <span className="text-muted-foreground">
                   {l === "ko" ? " (내구도 100% 복구)" : " (restores 100%)"}
