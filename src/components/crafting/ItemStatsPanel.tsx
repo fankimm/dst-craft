@@ -90,9 +90,10 @@ const RESISTANCE_LABELS: Record<string, Record<string, string>> = {
 
 // ── Set member definitions ──
 
-const SET_MEMBERS: Record<string, string[]> = {
-  brightshade: ["armor_lunarplant", "armor_lunarplant_husk", "lunarplanthat", "sword_lunarplant", "pickaxe_lunarplant", "shovel_lunarplant", "staff_lunarplant"],
-  voidcloth: ["armor_voidcloth", "voidclothhat", "voidcloth_scythe", "voidcloth_boomerang"],
+/** 세트 활성 조건: 갑옷 + 투구 동시 착용 */
+const SET_ACTIVATION: Record<string, string[]> = {
+  brightshade: ["armor_lunarplant", "armor_lunarplant_husk", "lunarplanthat"],
+  voidcloth: ["armor_voidcloth", "voidclothhat"],
   dreadstone: ["armordreadstone", "dreadstonehat"],
   wagpunk: ["armorwagpunk", "wagpunkhat"],
 };
@@ -263,17 +264,12 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
 
           {/* Set bonus */}
           {setBonus && (() => {
-            const members = SET_MEMBERS[setBonus.set_id] ?? [];
+            const members = SET_ACTIVATION[setBonus.set_id] ?? [];
             return (
               <div className="text-xs border border-amber-300/50 bg-amber-50/50 dark:border-amber-700/30 dark:bg-amber-950/30 rounded px-2 py-1.5 space-y-1">
-                <div className="flex items-center justify-between">
                 <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400">
-                  {l === "ko" ? "세트 효과" : "Set Bonus"}
-                </span>
-                <span className="text-[9px] text-muted-foreground">
-                  {l === "ko" ? "갑옷 + 투구 착용 시" : "Armor + Helmet equipped"}
-                </span>
-              </div>
+                {l === "ko" ? "세트 효과" : "Set Bonus"}
+              </span>
               <p className="text-foreground leading-relaxed">{l === "ko" ? setBonus.effects.ko : setBonus.effects.en}</p>
                 {members.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 pt-0.5">
