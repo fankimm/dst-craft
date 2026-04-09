@@ -245,7 +245,7 @@ export const itemStatsV3: Record<string, ItemStatsV3> = {
   houndstooth_blowpipe: { damage: 34, planar_damage: 34, tags: ["ranged"], effects: [{ ko: "사거리 12 (최대 16)", en: "Range 12 (max 16)" }, { ko: "그림자 생물에 10% 추가 피해", en: "Deals 10% bonus damage to Shadow Creatures" }] },
   houndwhistle: { uses: 10, effects: [{ ko: "반경 25 안의 사냥개와 바르그를 길들인다 (달 정렬 시 제외)", en: "Tames Hounds and Varg within radius 25, except during lunar alignment" }, { ko: "길들인 충성은 40초간 유지된다", en: "Tamed loyalty lasts 40 seconds" }, { ko: "최대 5마리까지 따르게 할 수 있다", en: "Up to 5 can follow you at once" }] },
   icehat: { speed_mult: 0.9, insulation: 240, summer_insulation: 240, perish_time: 3840, effects: [{ ko: "착용 중 체온을 낮추지만 점점 젖음 (최대 49%)", en: "Lowers body temperature while worn but gradually increases wetness (max 49%)" }, { ko: "얼음으로 수리 가능", en: "Repairable with Ice" }] },
-  icepack: { slots: 8 },
+  icepack: { slots: 8, effects: [{ ko: "내부 음식 부패 속도 50% 감소", en: "Food inside spoils 50% slower" }] },
   icestaff: { uses: 20, tags: ["ranged"], effects: [{ ko: "대상을 얼린다", en: "Freezes the target" }] },
   inspectacleshat: { effects: [{ ko: "주변 게임 신호 감지, 5초마다 갱신", en: "Detects nearby game signals, refreshes every 5s" }, { ko: "스킬트리 해금 필요", en: "Requires skill tree unlock" }] },
   kelphat: { dapperness: -0.022, perish_time: 2880 },
