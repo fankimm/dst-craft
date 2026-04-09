@@ -157,9 +157,7 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
 
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-600 dark:text-amber-400 rounded px-1.5 py-0.5 leading-none w-fit">
-        {hasV3 ? "v3" : "Beta"}
-      </span>
+      <span className="text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 text-amber-600 dark:text-amber-400 rounded px-1.5 py-0.5 leading-none w-fit">Beta</span>
 
       {/* Combat */}
       {combatRows.length > 0 && (
@@ -268,10 +266,15 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
             const members = SET_MEMBERS[setBonus.set_id] ?? [];
             return (
               <div className="text-xs border border-amber-300/50 bg-amber-50/50 dark:border-amber-700/30 dark:bg-amber-950/30 rounded px-2 py-1.5 space-y-1">
+                <div className="flex items-center justify-between">
                 <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400">
                   {l === "ko" ? "세트 효과" : "Set Bonus"}
                 </span>
-                <p className="text-foreground leading-relaxed">{l === "ko" ? setBonus.effects.ko : setBonus.effects.en}</p>
+                <span className="text-[9px] text-muted-foreground">
+                  {l === "ko" ? "갑옷 + 투구 착용 시" : "Armor + Helmet equipped"}
+                </span>
+              </div>
+              <p className="text-foreground leading-relaxed">{l === "ko" ? setBonus.effects.ko : setBonus.effects.en}</p>
                 {members.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 pt-0.5">
                     {members.map((mid) => (

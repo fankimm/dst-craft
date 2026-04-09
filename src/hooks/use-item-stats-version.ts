@@ -35,14 +35,12 @@ async function fetchVersion(): Promise<StatsVersion> {
   }
 }
 
-// Init fetch on module load (client only)
-if (typeof window !== "undefined" && !fetched) {
-  fetched = true;
-  fetchVersion().then((v) => {
-    globalVersion = v;
-    notifyListeners();
-  });
-}
+// v3 is now the default — skip remote fetch (DevMenu toggle is local only)
+// To revert to remote config, uncomment below:
+// if (typeof window !== "undefined" && !fetched) {
+//   fetched = true;
+//   fetchVersion().then((v) => { globalVersion = v; notifyListeners(); });
+// }
 
 export function useItemStatsVersion() {
   const [version, setVersion] = useState<StatsVersion>(globalVersion);
