@@ -270,7 +270,11 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
                 <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400">
                 {l === "ko" ? "세트 효과" : "Set Bonus"}
               </span>
-              <p className="text-foreground leading-relaxed">{l === "ko" ? setBonus.effects.ko : setBonus.effects.en}</p>
+              <div className="text-foreground leading-relaxed space-y-0.5">
+                {(l === "ko" ? setBonus.effects.ko : setBonus.effects.en).split("\n").map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
                 {members.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 pt-0.5">
                     {members.map((mid) => (
