@@ -5,8 +5,8 @@
 - 타입: 구조물
 - usage:
   - 연료 270초
-  - CHEMICAL 연료
-  - 비 올 때 연료 소모 가속 (RAIN_RATE=2.5, 최대 강수 시 3.5배 소모)
+  - 화학 연료
+  - 비 올 때 연료 소모 가속 (최대 강수 시 3.5배 소모)
   - 냉각 화염
 
 ## coldfirepit — Cold Fire Pit (흡열 화덕)
@@ -14,8 +14,8 @@
 - usage:
   - 해머 4회
   - 연료 360초
-  - CHEMICAL 연료
-  - bonusmult 2
+  - 화학 연료
+  - 연료 보너스 배율 2배
 
 ## firesuppressor — Ice Flingomatic (얼음 분사기)
 - 타입: 구조물
@@ -30,7 +30,7 @@
 - 타입: 구조물
 - usage:
   - 해머 4회
-  - uses 15
+  - 사용 횟수 15
   - 낮 수면 전용
   - 냉각 모드
   - HP +2/초, 허기 -0.33/초
@@ -45,5 +45,6 @@
 
 ## turf_dragonfly — Scaled Flooring (비늘 바닥)
 - 타입: 바닥재
+- 스택: 20
 - usage:
   - 화재 확산 불가

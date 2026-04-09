@@ -25,20 +25,21 @@
 ## shadow_forge_kit — Shadow Forge Kit (암영술 재단사 키트)
 - 타입: 설치키트
 - usage:
-  - 설치 → shadow_forge 구조물 (SHADOWFORGING Lv2)
+  - 설치 → 암영술 재단사 (암영 제작 Lv2)
   - 해머 4회
 
 ## thulecite — Thulecite (툴레사이트)
 - 타입: 소재
+- 스택: 20
 - usage:
-  - THULECITE 수리 재료 (HP 100 회복, 작업량 1.5 회복)
-  - edible 컴포넌트 있음 (FOODTYPE.ELEMENTAL, 허기 +3) — 단 플레이어는 먹을 수 없음 (ELEMENTAL 식단은 NPC 전용: 먼지나방/두더지/달팽이거북)
-  - 두더지 미끼 (molebait 태그)
-- 소스: prefabs/thulecite.lua (repairer MATERIALS.THULECITE, edible FOODTYPE.ELEMENTAL)
+  - 툴레사이트 수리 재료 (HP 100 회복, 작업량 1.5 회복)
+  - 원소 식단 (허기 +3) — 단 플레이어는 먹을 수 없음 (NPC 전용: 먼지나방/두더지/달팽이거북)
+  - 두더지 미끼
+- 소스: thulecite.lua
 
 ## wall_ruins_item — Thulecite Wall (툴레사이트 벽)
 - 타입: 벽
 - usage:
   - HP 800 (배치 시 50%)
   - 해머 3회
-  - THULECITE 수리 가능
+  - 툴레사이트 수리 가능

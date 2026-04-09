@@ -11,10 +11,10 @@
 - usage:
   - 해머 4회
   - 맵 공개
-  - 반경 35 내 환경 온도를 -10도로 고정 (계절 무관, temperatureoverrider)
+  - 반경 35 내 환경 온도를 -10도로 고정 (계절 무관)
   - 7~12일마다 얼음 6개
 
 ## lunarplant_kit — Lunar Plant Repair Kit (빛말풀 수리 도구)
 - 타입: 수리키트
 - usage:
-  - 수리키트 LUNARPLANT
+  - 달식물 재질 수리키트

@@ -4,7 +4,7 @@
 ## beeswax_spray — Wax Sprayer (보존액 분무기)
 - 타입: 장착도구
 - usage:
-  - uses 75
+  - 사용 횟수 75
   - 식물 밀랍 코팅 (시듦 방지)
 
 ## gelblob_storage_kit — Slime Storage Kit (질뻑이 보존기 키트)
@@ -16,8 +16,8 @@
 ## saddle_shadow — Nightmare Saddle (악몽의 안장)
 - 타입: 장비
 - usage:
-  - uses 12
-  - speed 1.45
+  - 내구도 12
+  - 이동속도 ×1.45
   - 흡수 60%
   - 차원 방어 15
   - 차원 공격 18
@@ -32,4 +32,4 @@
 ## voidcloth_kit — Voidcloth Repair Kit (공허의 수리 도구)
 - 타입: 수리키트
 - usage:
-  - 수리키트 VOIDCLOTH
+  - 공허천 재질 수리키트

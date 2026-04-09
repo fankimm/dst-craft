@@ -3,6 +3,7 @@
 
 ## bathbomb — Bath Bomb (입욕탄)
 - 타입: 소모품
+- 스택: 20
 - usage:
   - 온천 활성화
   - 보름달 시 달유리 변환
@@ -10,7 +11,7 @@
 ## carpentry_blade_moonglass — Moon Glass Saw Blade (달유리 톱날)
 - 타입: 목공소부품
 - usage:
-  - CARPENTRY Lv3 해금
+  - 목공 Lv3 해금
 
 ## chesspiece_butterfly_sketch — Moon Moth Chess Piece Sketch (달 나방 조각상 도면)
 - 타입: 도면
@@ -25,7 +26,7 @@
 ## lunar_forge_kit — Astral Detainment Device Kit (대황간 키트)
 - 타입: 설치키트
 - usage:
-  - 설치 → lunar_forge 구조물 (LUNARFORGING Lv2)
+  - 설치 → 대황간 (달 제련 Lv2)
   - 해머 4회
 
 ## multiplayer_portal_moonrock_constr_plans — Portal Construction Plans (포탈 도구)
@@ -35,6 +36,8 @@
 
 ## turf_fungus_moon — Mutated Mushroom Turf (돌연변이 버섯 바닥)
 - 타입: 바닥재
+- 스택: 20
 
 ## turf_meteor — Lunar Turf (월면 바닥)
 - 타입: 바닥재
+- 스택: 20

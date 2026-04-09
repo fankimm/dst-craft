@@ -22,15 +22,17 @@
 - [x] 저장소 (storage.md) — 9개
 - [x] 농업 (food_gardening.md) — 10개
 
+### 작성 완료 (유저 확인 대기) 🔶
+- [ ] 치유 (healing.md) — 8개 + 4개 참조
+- [ ] 요리 (cooking.md) — 8개 + 1개 참조
+- [ ] 조명 (light.md) — 6개 + 4개 참조
+- [ ] 프로토타이퍼 (prototypers.md) — 19개
+- [ ] 낚시 (fishing.md) — 20개
+- [ ] 항해 (seafaring.md) — 24개
+- [ ] 장식 (decorations.md) — 88개 + 10개 참조
+
 ### 미작업 ❌
-- [ ] 구조물 (structures) — ~314개 신규
-- [ ] 장식 (decorations) — ~96개 신규
-- [ ] 항해 (seafaring) — ~27개 신규
-- [ ] 낚시 (fishing) — ~23개 신규
-- [ ] 프로토타이퍼 (prototypers) — ~22개 신규
-- [ ] 조명 (light) — ~20개 신규
-- [ ] 요리 (cooking) — ~20개 신규
-- [ ] 치유 (healing) — ~19개 신규
+- [ ] 구조물 (structures.md) — 244개 + 82개 참조 (작성 완료, 유저 확인 대기)
 
 ## 최종 반영
 - [ ] 모든 카테고리 유저 확인 완료

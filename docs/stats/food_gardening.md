@@ -22,21 +22,21 @@
 
 ## farm_plow_item — Hoe (텃밭 쟁기계)
 - 타입: 도구
-- uses: 4
+- 사용 횟수: 4
 - 효과: 타일 → 농장 흙 변환
 - 굴착 시간: 15초
 
 ## fertilizer — Fertilizer (거름통)
 - 타입: 도구
-- uses: 10
+- 사용 횟수: 10
 - 효과: 비료 300초
-- 영양소: {Compost 0, Growthformula 0, Manure 16}
+- 영양소: 퇴비 0 / 성장촉진제 0 / 거름 16
 
 ## mushroom_farm — Mushroom Farm (버섯 재배기)
 - 타입: 구조물
 - 수확: 4회
 - 성장 시간: 1800초
-- 수리 재료: livinglog
+- 수리 재료: 생목
 - 해머: 3회
 
 ## ocean_trawler_kit — Ocean Trawler Kit (바다 어망 키트)
@@ -48,15 +48,16 @@
 
 ## soil_amender — Soil Amender (성장 촉진제 원액)
 - 타입: 발효 아이템 (3단계)
-- 신선: 영양소 {Compost 8, Growthformula 0, Manure 0}
-- 숙성: 영양소 {Compost 16, Growthformula 0, Manure 0}
-- 발효: 영양소 {Compost 32, Growthformula 0, Manure 0}
-- 발효 후 사용 횟수: 5회
+- 신선: 영양소 퇴비 8 / 성장촉진제 0 / 거름 0
+- 숙성: 영양소 퇴비 16 / 성장촉진제 0 / 거름 0
+- 발효: 영양소 퇴비 32 / 성장촉진제 0 / 거름 0
+- 사용 횟수: 5 (발효 후)
 
 ## treegrowthsolution — Tree Growth Solution (나무 잼)
 - 타입: 도구
+- 스택: 10
 - 효과: 비료 + 나무 성장 + 보트 수리 20 HP
-- 영양소: {Compost 8, Growthformula 32, Manure 8}
+- 영양소: 퇴비 8 / 성장촉진제 32 / 거름 8
 
 ## trophyscale_oversizedveggies — Trophy Scale (농작물 등급 측정기)
 - 타입: 구조물

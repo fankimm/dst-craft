@@ -4,60 +4,60 @@
 ---
 
 ## bandage — Honey Poultice (꿀 반창고)
-- health: +30 HP (즉시 회복)
-- uses: 1 (1회 소비)
-- stacksize: 40
-- 소스: prefabs/bandage.lua
+- 체력: +30 HP (즉시 회복)
+- 사용 횟수: 1 (1회 소비)
+- 스택: 40
+- 소스: bandage.lua
 
 ## bedroll_straw — Straw Roll (밀짚 침낭)
-- stacksize: 10
+- 스택: 10
 - 수면 효과 (초당):
-  - health: +0.5/초
-  - sanity: +0.667/초
-  - hunger: -1/초
+  - 체력: +0.5/초
+  - 정신력: +0.667/초
+  - 허기: -1/초
 - 온도 조절: 없음
-- 소스: prefabs/bedroll_straw.lua
+- 소스: bedroll_straw.lua
 
 ## bedroll_furry — Fur Roll (토끼털 침낭)
-- uses: 3
+- 사용 횟수: 3
 - 수면 효과 (초당):
-  - health: +1/초
-  - sanity: +1/초
-  - hunger: -1/초
-- insulation: 온도 유지 30~45°C (방한 기능)
-- 소스: prefabs/bedroll_furry.lua
+  - 체력: +1/초
+  - 정신력: +1/초
+  - 허기: -1/초
+- 방한: 온도 유지 30~45°C
+- 소스: bedroll_furry.lua
 
 ## healingsalve — Healing Salve (고약)
-- health: +20 HP (즉시 회복)
-- uses: 1 (1회 소비)
-- stacksize: 40
-- 소스: prefabs/healingsalve.lua
+- 체력: +20 HP (즉시 회복)
+- 사용 횟수: 1 (1회 소비)
+- 스택: 40
+- 소스: healingsalve.lua
 
-## healingsalve_acid — Slimey Healing Salve (점액질 고약)
-- health: +20 HP (즉시 회복)
-- uses: 1 (1회 소비)
-- stacksize: 40
-- bonus: 사용 후 산성비 면역 240초
-- 소스: prefabs/healingsalve_acid.lua
+## healingsalve_acid — Slimy Salve (점액질 고약)
+- 체력: +20 HP (즉시 회복)
+- 사용 횟수: 1 (1회 소비)
+- 스택: 40
+- 추가 효과: 사용 후 산성비 면역 240초
+- 소스: healingsalve_acid.lua
 
-## lifeinjector — Life Giving Amulet Shot (예방주사)
-- effect: 최대 HP 패널티 25% 제거
-- uses: 1 (1회 소비)
-- stacksize: 40
-- 소스: prefabs/lifeinjector.lua
+## lifeinjector — Booster Shot (예방주사)
+- 효과: 최대 HP 패널티 25% 제거
+- 사용 횟수: 1 (1회 소비)
+- 스택: 40
+- 소스: lifeinjector.lua
 
-## reviver — Touch Stone Feather (고자질쟁이 심장)
-- effect: 유령 상태의 플레이어 부활
-- sanity_bonus: 부활한 플레이어 +80 SAN
-- penalty: 부활 대상 최대 HP 25% 패널티 적용
-- uses: 1 (1회 소비)
-- 소스: prefabs/reviver.lua
+## reviver — Telltale Heart (고자질쟁이 심장)
+- 효과: 유령 상태의 플레이어 부활
+- 부활 정신력: 부활한 플레이어 +80 SAN
+- 패널티: 부활 대상 최대 HP 25% 패널티 적용
+- 사용 횟수: 1 (1회 소비)
+- 소스: reviver.lua
 
 ## tillweedsalve — Tillweed Salve (뒤엎시라 고약)
-- health: +8 HP (즉시) + +1 HP/3초 × 60초 = +20 HP (지속), 합계 +28 HP
-- uses: 1 (1회 소비)
-- stacksize: 40
-- 소스: prefabs/tillweedsalve.lua
+- 체력: +8 HP (즉시) + +1 HP/3초 × 60초 = +20 HP (지속), 합계 +28 HP
+- 사용 횟수: 1 (1회 소비)
+- 스택: 40
+- 소스: tillweedsalve.lua
 
 ---
 
