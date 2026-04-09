@@ -38,6 +38,12 @@
 - **데이터 저장**: Upstash Redis (유저 정보, 즐겨찾기, 애널리틱스)
 - **인증**: Google Identity Services (GIS) — 클라이언트 측 renderButton 방식
 
+## TODO Management
+- `todo.md` — 프로젝트 전체 TODO (진행중/대기/완료)
+- `/todo` 스킬로 세션 시작 시 상태 확인 + 작업 재개
+- 대규모 작업은 별도 `TODO-*.md` 파일 생성 후 `todo.md`에서 참조
+- 작업 시작 → `[~]`, 완료 → `[x]` + 날짜
+
 ## Key Paths
 - `src/data/` — 게임 데이터 (categories, characters, materials, items/, item-stats-v3)
 - `src/data/item-stats-v3.ts` — v3 아이템 스펙 (구조화 필드: tags/character/resistance/set_bonus/repair/skill_tree/immunities/effects)
