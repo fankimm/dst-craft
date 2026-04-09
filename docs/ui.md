@@ -83,6 +83,13 @@
 ### MaterialSlot (`src/components/crafting/MaterialSlot.tsx`)
 - ItemSlot의 래퍼 — materialId로 자동 조회 + 클릭 시 해당 아이템으로 이동
 
+### ItemStatsPanel (`src/components/crafting/ItemStatsPanel.tsx`)
+- **용도**: 아이템 스펙 표시 (v3 구조화 데이터 기반)
+- **구조**: 4개 그룹 (전투/방어/유틸리티/특수) + 빈 그룹 자동 숨김
+- **v3 필드**: tags(TagChip), resistance, shadow_level, set_bonus(강조 카드), repair(아이템 이미지+이름), skill_tree(보라색 블록), immunities(에메랄드 뱃지), effects(불릿)
+- **v2 폴백**: v3 데이터 없을 시 기존 usage 텍스트 표시
+- **사용처**: ItemDetail
+
 ### SearchWithSuggestions (`src/components/ui/SearchWithSuggestions.tsx`)
 - **용도**: 드롭다운 서제스천 + 태그 지원 검색 입력
 - **사용처**: CookingApp, BossesApp

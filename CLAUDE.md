@@ -39,7 +39,9 @@
 - **인증**: Google Identity Services (GIS) — 클라이언트 측 renderButton 방식
 
 ## Key Paths
-- `src/data/` — 게임 데이터 (categories, characters, materials, items/)
+- `src/data/` — 게임 데이터 (categories, characters, materials, items/, item-stats-v3)
+- `src/data/item-stats-v3.ts` — v3 아이템 스펙 (구조화 필드: tags/character/resistance/set_bonus/repair/skill_tree/immunities/effects)
+- `src/components/crafting/ItemStatsPanel.tsx` — v3 스펙 렌더링 컴포넌트 (4그룹: 전투/방어/유틸리티/특수)
 - `src/components/crafting/` — 메인 앱 컴포넌트
 - `src/components/cooking/` — 요리 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지

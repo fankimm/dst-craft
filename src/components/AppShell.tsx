@@ -324,7 +324,7 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
     {
       label: `스탯 버전: ${version.toUpperCase()}`,
       action: async () => {
-        const next = version === "v1" ? "v2" : "v1";
+        const next = version === "v1" ? "v2" : version === "v2" ? "v3" : "v1";
         if (token) {
           await setRemoteVersion(next, token);
         }
