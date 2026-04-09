@@ -4,13 +4,15 @@ import type { ItemStatsV3 } from "@/data/item-stats-v3";
 import type { ItemStats } from "@/data/item-stats";
 import { TagChip } from "@/components/ui/TagChip";
 import { itemName } from "@/lib/i18n";
+import { getItemById } from "@/lib/crafting-data";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 
-/** itemName with ID fallback (for items not in CraftingItem data) */
-function safeItemName(id: string, locale: string): string {
-  const name = itemName({ id, name: id.replace(/_/g, " ") } as any, locale);
-  return name || id.replace(/_/g, " ");
+/** itemName using CraftingItem lookup (proper English name fallback) */
+function resolveItemName(id: string, locale: string): string {
+  const item = getItemById(id);
+  if (item) return itemName(item, locale);
+  return itemName({ id, name: id.replace(/_/g, " ") } as any, locale) || id;
 }
 
 // ── Stat formatting (shared with legacy) ──
@@ -291,7 +293,7 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
                           className="size-4 object-contain"
                           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                         />
-                        <span>{safeItemName(mid, l)}</span>
+                        <span>{resolveItemName(mid, l)}</span>
                       </div>
                     ))}
                   </div>
@@ -312,7 +314,7 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
               <span>
                 {l === "ko" ? "수리: " : "Repair: "}
                 <span className="text-foreground font-medium">
-                  {safeItemName(repair.item_id, l)}
+                  {resolveItemName(repair.item_id, l)}
                 </span>
                 <span className="text-muted-foreground">
                   {l === "ko" ? " (내구도 100% 복구)" : " (restores 100%)"}
