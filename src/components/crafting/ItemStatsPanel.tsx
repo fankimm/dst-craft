@@ -91,7 +91,7 @@ const RESISTANCE_LABELS: Record<string, Record<string, string>> = {
 // ── Set member definitions ──
 
 const SET_MEMBERS: Record<string, string[]> = {
-  brightshade: ["armor_lunarplant", "lunarplanthat", "sword_lunarplant", "pickaxe_lunarplant", "shovel_lunarplant", "staff_lunarplant"],
+  brightshade: ["armor_lunarplant", "armor_lunarplant_husk", "lunarplanthat", "sword_lunarplant", "pickaxe_lunarplant", "shovel_lunarplant", "staff_lunarplant"],
   voidcloth: ["armor_voidcloth", "voidclothhat", "voidcloth_scythe", "voidcloth_boomerang"],
   dreadstone: ["armordreadstone", "dreadstonehat"],
   wagpunk: ["armorwagpunk", "wagpunkhat"],
