@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "rm -rf .next && next dev",
-    "build": "next build",
+    "build": "node scripts/generate-sw.cjs && next build",
     "start": "next start",
     "lint": "eslint"
   },

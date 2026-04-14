@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# generated service worker (built from src/sw.template.js)
+public/sw.js
+
 # legacy files
 /_legacy/
 
