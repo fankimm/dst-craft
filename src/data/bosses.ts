@@ -266,10 +266,11 @@ export const bosses: Boss[] = [
     category: "raid",
     image: "alterguardian_phase3.png",
     loot: [
-      { item: "chesspiece_guardianphase3_sketch", chance: 1 },
+      { item: "alterguardianhat", chance: 1 },
       { item: "alterguardianhatshard", chance: 1 },
-      { item: "moonglass", chance: 1, count: 9 },
-      { item: "moonglass", chance: 0.66, count: 5 },
+      { item: "chesspiece_guardianphase3_sketch", chance: 1 },
+      { item: "moonglass", chance: 1, count: 13 },
+      { item: "moonglass", chance: 0.66, count: 8 },
       { item: "moonglass", chance: 0.33, count: 5 },
       { item: "moonglass_charged", chance: 1, count: 6 },
       { item: "moonglass_charged", chance: 0.66, count: 3 },
@@ -491,7 +492,7 @@ export const lootNameKo: Record<string, string> = {
   chesspiece_daywalker_sketch: "악몽화된 늑대돼지 조각상 스케치",
   chesspiece_minotaur_sketch: "고대 수호자 조각상 스케치",
   // 추가된 보스 전리품
-  alterguardianhatshard: "계몽의 왕관 조각", moonglass: "달 파편", moonglass_charged: "충전된 달 파편",
+  alterguardianhat: "계몽의 왕관", alterguardianhatshard: "계몽의 조각", moonglass: "달 파편", moonglass_charged: "충전된 달 파편",
   moonrocknugget: "월석", wagpunk_bits: "고철더미", scrap_monoclehat: "지평확장기",
   armor_sanity: "밤의 갑옷", nightsword: "어둠의 검", bootleg: "해적판 도주기",
   livinglog: "생목", houndstooth: "사냥개 이빨",
