@@ -259,6 +259,116 @@ export const bosses: Boss[] = [
       { item: "spiderhat", chance: 1 },
     ],
   },
+  {
+    id: "alterguardian_phase3",
+    name: "Celestial Champion",
+    nameKo: "천상의 대변자",
+    category: "raid",
+    image: "alterguardian_phase3.png",
+    loot: [
+      { item: "chesspiece_guardianphase3_sketch", chance: 1 },
+      { item: "alterguardianhatshard", chance: 1 },
+      { item: "moonglass", chance: 1, count: 9 },
+      { item: "moonglass", chance: 0.66, count: 5 },
+      { item: "moonglass", chance: 0.33, count: 5 },
+      { item: "moonglass_charged", chance: 1, count: 6 },
+      { item: "moonglass_charged", chance: 0.66, count: 3 },
+      { item: "moonglass_charged", chance: 0.33, count: 3 },
+      { item: "moonrocknugget", chance: 1, count: 4 },
+      { item: "moonrocknugget", chance: 0.66, count: 2 },
+    ],
+  },
+  {
+    id: "daywalker2",
+    name: "Scrappy Werepig",
+    nameKo: "고철덩이 늑대돼지",
+    category: "raid",
+    image: "daywalker2.png",
+    loot: [
+      { item: "wagpunk_bits", chance: 1, count: 4 },
+      { item: "wagpunk_bits", chance: 0.5 },
+      { item: "scrap_monoclehat", chance: 1 },
+      { item: "gears", chance: 0.5 },
+      { item: "chesspiece_daywalker2_sketch", chance: 1 },
+    ],
+  },
+  {
+    id: "shadow_chess",
+    name: "Shadow Pieces",
+    nameKo: "그림자 체스 말",
+    category: "raid",
+    image: ["shadow_rook.png", "shadow_knight.png", "shadow_bishop.png"],
+    loot: [
+      { item: "shadowheart", chance: 1 },
+      { item: "nightmarefuel", chance: 1 },
+      { item: "armor_sanity", chance: 1 },
+      { item: "nightsword", chance: 1 },
+    ],
+  },
+  {
+    id: "sharkboi",
+    name: "Frostjaw",
+    nameKo: "서리턱상어",
+    category: "ocean",
+    image: "sharkboi.png",
+    loot: [
+      { item: "bootleg", chance: 1 },
+      { item: "chesspiece_sharkboi_sketch", chance: 1 },
+    ],
+  },
+  {
+    id: "leif",
+    name: "Treeguard",
+    nameKo: "트리가드",
+    category: "mini",
+    image: "leif.png",
+    loot: [
+      { item: "livinglog", chance: 1, count: 6 },
+      { item: "monstermeat", chance: 1 },
+    ],
+  },
+  {
+    id: "warg",
+    name: "Warg",
+    nameKo: "바르그",
+    category: "mini",
+    image: "warg.png",
+    loot: [
+      { item: "monstermeat", chance: 1, count: 4 },
+      { item: "monstermeat", chance: 0.5, count: 2 },
+      { item: "houndstooth", chance: 1 },
+      { item: "houndstooth", chance: 0.66 },
+      { item: "houndstooth", chance: 0.33 },
+    ],
+  },
+  {
+    id: "mutatedwarg",
+    name: "Possessed Varg",
+    nameKo: "귀신들린 바르그",
+    category: "mini",
+    image: "mutatedwarg.png",
+    loot: [
+      { item: "chesspiece_warg_mutated_sketch", chance: 1 },
+      { item: "purebrilliance", chance: 1 },
+      { item: "purebrilliance", chance: 0.75 },
+      { item: "moonglass", chance: 1, count: 3 },
+      { item: "moonglass", chance: 0.75, count: 2 },
+      { item: "moonglass", chance: 0.25 },
+      { item: "spoiled_food", chance: 1, count: 2 },
+      { item: "spoiled_food", chance: 0.5 },
+    ],
+  },
+  {
+    id: "lordfruitfly",
+    name: "Lord of the Fruit Flies",
+    nameKo: "초파리 대왕",
+    category: "mini",
+    image: "lordfruitfly.png",
+    loot: [
+      { item: "plantmeat", chance: 1 },
+      { item: "fruitflyfruit", chance: 1 },
+    ],
+  },
 ];
 
 /** Korean names for loot items (from ko.po) */
@@ -301,6 +411,17 @@ export const lootNameKo: Record<string, string> = {
   chesspiece_antlion_sketch: "개미사자 조각상 스케치",
   chesspiece_daywalker_sketch: "악몽화된 늑대돼지 조각상 스케치",
   chesspiece_minotaur_sketch: "고대 수호자 조각상 스케치",
+  // 추가된 보스 전리품
+  alterguardianhatshard: "계몽의 조각", moonglass: "달 파편", moonglass_charged: "충전된 달 파편",
+  moonrocknugget: "월석", wagpunk_bits: "고철더미", scrap_monoclehat: "지평확장기",
+  armor_sanity: "밤의 갑옷", nightsword: "어둠의 검", bootleg: "해적판 도주기",
+  livinglog: "생목", houndstooth: "사냥개 이빨",
+  purebrilliance: "순수한 광휘", spoiled_food: "부패물",
+  plantmeat: "풀고기", fruitflyfruit: "친절한 초파리의 과일",
+  chesspiece_guardianphase3_sketch: "천상의 대변자 조각상 도면",
+  chesspiece_daywalker2_sketch: "고철덩이 늑대돼지 조각상 도면",
+  chesspiece_sharkboi_sketch: "서리턱상어 조각상 도면",
+  chesspiece_warg_mutated_sketch: "귀신들린 바르그 조각상 도면",
 };
 
 /** Sketches that have unique icon files */
@@ -308,6 +429,8 @@ const SKETCHES_WITH_ICONS = new Set([
   "chesspiece_crabking_sketch",
   "chesspiece_daywalker_sketch",
   "chesspiece_malbatross_sketch",
+  "chesspiece_guardianphase3_sketch",
+  "chesspiece_sharkboi_sketch",
 ]);
 
 /** Resolve image path for a loot item */

@@ -15,6 +15,29 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.9.0",
+    date: "2026-04-14",
+    dev: [
+      "보스 8종 추가: 천상의 대변자, 고철덩이 늑대돼지, 그림자 체스 말, 서리턱상어, 트리가드, 바르그, 귀신들린 바르그, 초파리 대왕",
+      "캐릭터 선호 음식 표시 (요리 탭 레시피 상세)",
+      "v1/v2 아이템 스탯 시스템 폐기 → v3 전용",
+      "버전 스위칭 훅(use-item-stats-version) 및 DevMenu 토글 제거",
+      "PWA SW 캐시 자동 갱신 (빌드마다 커밋 SHA 해시 주입)",
+    ],
+    changes: {
+      ko: [
+        "보스 8종 추가 — 천상의 대변자, 서리턱상어, 트리가드 등",
+        "요리 탭에서 캐릭터 선호 음식 표시",
+        "PWA 캐시 갱신 문제 해결",
+      ],
+      en: [
+        "Added 8 bosses — Celestial Champion, Frostjaw, Treeguard, and more",
+        "Character favorite food indicator in cooking tab",
+        "Fixed PWA cache refresh issues",
+      ],
+    },
+  },
+  {
     version: "0.8.3",
     date: "2026-04-06",
     dev: [

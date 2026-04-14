@@ -13,7 +13,6 @@ import { useAuth } from "@/hooks/use-auth";
 import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { useItemStatsVersion } from "@/hooks/use-item-stats-version";
 
 type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "settings";
 
@@ -297,8 +296,6 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
     setTimeout(() => { dragging.current = false; }, 0);
   }, []);
 
-  const { version, setRemoteVersion } = useItemStatsVersion();
-
   const handleClick = useCallback(() => {
     if (dragging.current) return;
     setOpen((v) => !v);
@@ -321,16 +318,6 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
     { label: "아이템 스탯 리뷰", action: () => window.open("/item-stats", "_blank") },
     { label: "게임 아이템 DB (1028)", action: () => window.open("/dev/item-database", "_blank") },
     { label: "인기 조합 패널 비교", action: () => window.open("/dev/combo-panel", "_blank") },
-    {
-      label: `스탯 버전: ${version.toUpperCase()}`,
-      action: async () => {
-        const next = version === "v1" ? "v2" : version === "v2" ? "v3" : "v1";
-        if (token) {
-          await setRemoteVersion(next, token);
-        }
-      },
-      highlight: true,
-    },
   ];
 
   return (

@@ -3,15 +3,15 @@
 import { useState, useMemo } from "react";
 import { allItems } from "@/data/items";
 import { allLocales } from "@/data/locales";
-import type { ItemStats } from "@/data/item-stats";
-import { useItemStatsVersion } from "@/hooks/use-item-stats-version";
+import type { ItemStatsV3 } from "@/data/item-stats-v3";
+import { itemStatsV3 } from "@/data/item-stats-v3";
 import { categories } from "@/data/categories";
 import { BackToHome } from "@/components/ui/BackToHome";
 import Image from "next/image";
 
 const ko = allLocales.ko;
 
-function statLabel(key: keyof ItemStats): string {
+function statLabel(key: keyof ItemStatsV3): string {
   const map: Record<string, string> = {
     damage: "공격력",
     uses: "내구도(횟수)",
@@ -24,13 +24,14 @@ function statLabel(key: keyof ItemStats): string {
     waterproof: "방수율",
     fuel_time: "연료시간(초)",
     perish_time: "부패시간(초)",
-    usage: "사용처",
+    planar_damage: "차원피해",
+    planar_def: "차원방어",
+    slots: "슬롯",
   };
   return map[key] ?? key;
 }
 
-function formatStat(key: string, value: number | string | { ko: string; en: string }): string {
-  if (typeof value === "object" && value !== null && "ko" in value) return value.ko;
+function formatStat(key: string, value: number | string): string {
   if (typeof value === "string") return value;
   if (key === "absorption" || key === "waterproof")
     return `${Math.round(value * 100)}%`;
@@ -64,7 +65,9 @@ function statColor(key: string): string {
     waterproof: "text-sky-400",
     fuel_time: "text-amber-400",
     perish_time: "text-rose-400",
-    usage: "text-emerald-400",
+    planar_damage: "text-violet-400",
+    planar_def: "text-violet-400",
+    slots: "text-teal-400",
   };
   return map[key] ?? "text-muted-foreground";
 }
@@ -72,11 +75,13 @@ function statColor(key: string): string {
 type FilterMode = "all" | "has-stats" | "no-stats";
 type GroupMode = "category" | "station" | "flat";
 
-const STAT_DISPLAY_ORDER: (keyof ItemStats)[] = [
+const STAT_DISPLAY_ORDER: (keyof ItemStatsV3)[] = [
   "damage",
   "uses",
   "armor_hp",
   "absorption",
+  "planar_damage",
+  "planar_def",
   "speed_mult",
   "dapperness",
   "insulation",
@@ -84,14 +89,14 @@ const STAT_DISPLAY_ORDER: (keyof ItemStats)[] = [
   "waterproof",
   "fuel_time",
   "perish_time",
-  "usage",
+  "slots",
 ];
 
 export default function ItemStatsPage() {
   const [filter, setFilter] = useState<FilterMode>("all");
   const [group, setGroup] = useState<GroupMode>("category");
   const [search, setSearch] = useState("");
-  const { version, activeStats: itemStats } = useItemStatsVersion();
+  const itemStats = itemStatsV3;
 
   const totalWithStats = useMemo(
     () => allItems.filter((i) => itemStats[i.id]).length,
@@ -262,7 +267,7 @@ export default function ItemStatsPage() {
                                   {statLabel(k)}
                                 </span>
                                 <span className={`font-medium ${statColor(k)}`}>
-                                  {formatStat(k, stats[k]!)}
+                                  {formatStat(k, stats[k] as number)}
                                 </span>
                               </span>
                             ))}

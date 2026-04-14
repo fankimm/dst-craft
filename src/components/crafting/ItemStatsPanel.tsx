@@ -1,7 +1,6 @@
 "use client";
 
 import type { ItemStatsV3 } from "@/data/item-stats-v3";
-import type { ItemStats } from "@/data/item-stats";
 import { TagChip } from "@/components/ui/TagChip";
 import { itemName } from "@/lib/i18n";
 import { getItemById } from "@/lib/crafting-data";
@@ -110,8 +109,7 @@ const SET_ACTIVATION: Record<string, string[]> = {
 
 interface ItemStatsPanelProps {
   itemId: string;
-  stats: ItemStats;
-  statsV3: ItemStatsV3 | undefined;
+  stats: ItemStatsV3;
   locale: string;
 }
 
@@ -135,7 +133,7 @@ function StatGroup({ title, children }: { title: string; children: React.ReactNo
   );
 }
 
-export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPanelProps) {
+export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
   const l = locale === "ko" ? "ko" : "en";
 
   // Collect stat rows per group
@@ -143,23 +141,17 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
   const defenseRows = DEFENSE_STATS.filter((k) => stats[k] != null);
   const utilityRows = UTILITY_STATS.filter((k) => stats[k] != null);
 
-  // V3-only structured fields
-  const hasV3 = !!statsV3;
-  const tags = statsV3?.tags;
-  const shadowLevel = statsV3?.shadow_level;
-  const resistance = statsV3?.resistance;
-  const immunities = statsV3?.immunities;
-  const setBonus = statsV3?.set_bonus;
-  const repair = statsV3?.repair;
-  const skillTree = statsV3?.skill_tree;
-  const effects = statsV3?.effects;
+  // Structured fields
+  const tags = stats.tags;
+  const shadowLevel = stats.shadow_level;
+  const resistance = stats.resistance;
+  const immunities = stats.immunities;
+  const setBonus = stats.set_bonus;
+  const repair = stats.repair;
+  const skillTree = stats.skill_tree;
+  const effects = stats.effects;
 
-  // Fallback: if no v3 data, show v2 usage
-  const usageText = !hasV3 && stats.usage
-    ? (l === "ko" ? stats.usage.ko : stats.usage.en)
-    : null;
-
-  const hasSpecial = !!(tags?.length || shadowLevel || resistance?.length || immunities?.length || setBonus || repair || skillTree?.length || effects?.length || usageText);
+  const hasSpecial = !!(tags?.length || shadowLevel || resistance?.length || immunities?.length || setBonus || repair || skillTree?.length || effects?.length);
   const hasAnyStat = combatRows.length > 0 || defenseRows.length > 0 || utilityRows.length > 0 || hasSpecial;
 
   if (!hasAnyStat) return null;
@@ -346,14 +338,6 @@ export function ItemStatsPanel({ itemId, stats, statsV3, locale }: ItemStatsPane
             </div>
           )}
 
-          {/* Fallback: v2 usage text */}
-          {usageText && (
-            <div className="text-xs text-foreground space-y-0.5">
-              {usageText.split("\n").filter(Boolean).map((line, i) => (
-                <p key={i} className="leading-relaxed">{line}</p>
-              ))}
-            </div>
-          )}
         </div>
       )}
     </div>

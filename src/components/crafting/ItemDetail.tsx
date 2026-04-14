@@ -14,7 +14,7 @@ import { assetPath } from "@/lib/asset-path";
 import { usePopularity } from "@/hooks/use-popularity";
 import { ViewCount } from "@/components/ui/ViewCount";
 import { ShareButton } from "@/components/ui/ShareButton";
-import { useItemStatsVersion } from "@/hooks/use-item-stats-version";
+import { itemStatsV3 } from "@/data/item-stats-v3";
 import { ItemStatsPanel } from "./ItemStatsPanel";
 
 // Higher-tier stations that can also craft items of the base station
@@ -37,7 +37,6 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { getClicks } = usePopularity();
-  const { activeStats: itemStats, activeStatsV3 } = useItemStatsVersion();
   const clicks = item ? getClicks(item.id) : 0;
 
   if (!item) {
@@ -169,11 +168,10 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
         </div>
 
         {/* Stats */}
-        {itemStats[item.id] && (
+        {itemStatsV3[item.id] && (
           <ItemStatsPanel
             itemId={item.id}
-            stats={itemStats[item.id]}
-            statsV3={activeStatsV3?.[item.id]}
+            stats={itemStatsV3[item.id]}
             locale={resolvedLocale}
           />
         )}
