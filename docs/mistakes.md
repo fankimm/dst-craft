@@ -180,6 +180,11 @@
 - **교훈**: 같은 파일을 여러 에이전트가 동시에 편집하면 후발 에이전트가 선발의 변경을 덮어쓸 수 있음. 가능하면 파일별로 에이전트를 분리하거나, 순차 실행할 것
 - **이번 케이스**: 각 에이전트가 다른 아이템 ID를 편집해서 실제 충돌은 없었으나, 운이 좋았음
 
+### 보스 2단계 드롭 메커니즘 누락
+- **문제**: 천상의 대변자(Celestial Champion)에서 계몽의 왕관(alterguardianhat) 드롭이 빠짐
+- **원인**: 보스 프리팹(`alterguardian_phase3.lua`)의 `SetSharedLootTable`만 확인하고 끝냄. 실제로는 보스 사망 → 오브(`alterguardian_phase3dead`) 스폰 → **오브의 loot table**에서 왕관 100% 드롭하는 2단계 구조
+- **교훈**: DST 보스의 전리품은 단일 loot table만이 아님. 사망 시 SpawnPrefab으로 생성되는 중간 엔티티(dead 오브, corpse 등)의 loot table도 반드시 확인. `grep "SpawnPrefab" stategraph`로 사망 애니메이션 중 스폰되는 프리팹 추적
+
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
 - pixel_format 0=DXT1(bcn 1), 1=DXT3(bcn 2), 2=DXT5(bcn 3)
