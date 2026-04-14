@@ -12,7 +12,7 @@ function fetchPopularity(): Promise<void> {
   if (fetchPromise) return fetchPromise;
   if (!WORKER_URL) return Promise.resolve();
 
-  fetchPromise = fetch(`${WORKER_URL}/popular`)
+  fetchPromise = fetch(`${WORKER_URL}/popular?limit=500`)
     .then((res) => (res.ok ? res.json() : null))
     .then((data) => {
       if (data?.items) {
