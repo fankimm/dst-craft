@@ -353,7 +353,8 @@ export function CookingApp({
     }
 
     return recipes;
-  }, [selectedCategory, activeFilter, debouncedQuery, resolvedLocale, favorites, recentIds]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- recentIds only matters when category is "recent"
+  }, [selectedCategory, activeFilter, debouncedQuery, resolvedLocale, favorites, selectedCategory === "recent" ? recentIds : null]);
 
   const displayRecipes = useMemo(() => {
     if (!sortByPopular) return filteredRecipes;
@@ -886,7 +887,7 @@ function RecipeDetail({
                   className="inline-flex items-center gap-1 text-xs rounded-full bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 text-violet-700 dark:text-violet-300"
                 >
                   <img
-                    src={assetPath(`/images/characters/${char.portrait}.png`)}
+                    src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
                     alt={name}
                     className="size-4 rounded-full object-cover"
                   />
@@ -1148,6 +1149,13 @@ function translateReq(text: string, locale: Locale): string {
 function parseReqEntry(text: string): { name: string; badge?: string } {
   // Strip parenthetical notes like "(or Lesser ×2)"
   const clean = text.replace(/\s*\(.*?\)\s*/, " ").trim();
+  // Handle "Name ≥ 0.5 or AltName" → split into "Name / AltName" with badge
+  const orMatch = clean.match(/^(.+?)\s*(×|≥|>|<|≤)\s*(\d+(?:\.\d+)?)\s+or\s+(.+)$/i);
+  if (orMatch) {
+    const op = orMatch[2];
+    const badge = op === "×" ? orMatch[3] : `${op}${orMatch[3]}`;
+    return { name: `${orMatch[1].trim()} / ${orMatch[4].trim()}`, badge };
+  }
   // Match patterns: "Name ×2", "Name ≥ 3", "Name > 2", "Name < 1", "Name ≤ 1"
   const m = clean.match(/^(.+?)\s*(×|≥|>|<|≤)\s*(\d+(?:\.\d+)?)$/);
   if (m) {
