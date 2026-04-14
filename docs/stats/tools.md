@@ -92,8 +92,9 @@
 ## pickaxe_lunarplant — Brightshade Smasher (빛말풀 부수개)
 - damage: 32.5
 - planar_damage: 10
-- uses: 600 (채광 효율 4/3배)
+- uses: 600 (작업 효율 4/3배)
 - usage:
+  - 곡괭이 + 망치 겸용
   - 그림자 적 10% 추가 피해
   - `[세트]` 빛말풀 세트 보너스 시 피해 10% 증가 + 차원 피해 +5
   - `[수리]` 달식물 수리 키트로 수리 (내구도 100% 복구)

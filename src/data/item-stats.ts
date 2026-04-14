@@ -176,7 +176,7 @@ export const itemStats: Record<string, ItemStats> = {
   orangestaff: { uses: 20, speed_mult: 1.25, usage: { ko: "지면 클릭 시 순간이동 (정신력 -15)", en: "Teleports to clicked location (-15 Sanity)" } },
   panflute: { uses: 10, usage: { ko: "주변 모든 생물 수면", en: "Puts all nearby creatures to sleep" } },
   pickaxe: { damage: 27.2, uses: 33 },
-  pickaxe_lunarplant: { damage: 32.5, uses: 600, planar_damage: 10, shadow_bonus: 1.1, usage: { ko: "채굴 33% 빠름 + 빛칼날 세트 보너스", en: "33% faster mining + Brightshade set bonus" } },
+  pickaxe_lunarplant: { damage: 32.5, uses: 600, planar_damage: 10, shadow_bonus: 1.1, usage: { ko: "채굴+해체 33% 빠름 + 빛칼날 세트 보너스", en: "33% faster mining & hammering + Brightshade set bonus" } },
   perdfan: { uses: 9 },
   piggyback: { slots: 12, speed_mult: 0.9 },
   pocketwatch_dismantler: { uses: 5, usage: { ko: "건축물을 재료로 분해", en: "Deconstructs structures into materials" } },
