@@ -23,6 +23,8 @@ import { useRecent } from "@/hooks/use-recent";
 import { ShareButton } from "../ui/ShareButton";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
+import { getAffinityCharacters } from "@/data/food-affinity";
+import { characters } from "@/data/characters";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { SortDropdown } from "@/components/ui/SortDropdown";
 import { FavClickBadge } from "@/components/ui/FavClickBadge";
@@ -867,6 +869,34 @@ function RecipeDetail({
           </div>
         </div>
       </div>
+
+      {/* Character food affinity */}
+      {(() => {
+        const affinityChars = getAffinityCharacters(recipe.id, recipe.foodType);
+        if (affinityChars.length === 0) return null;
+        return (
+          <div className="flex flex-wrap gap-1.5">
+            {affinityChars.map(({ character: charId }) => {
+              const char = characters.find((c) => c.id === charId);
+              if (!char) return null;
+              const name = locale === "ko" ? char.nameKo : char.name;
+              return (
+                <div
+                  key={charId}
+                  className="inline-flex items-center gap-1 text-xs rounded-full bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 text-violet-700 dark:text-violet-300"
+                >
+                  <img
+                    src={assetPath(`/images/characters/${char.portrait}.png`)}
+                    alt={name}
+                    className="size-4 rounded-full object-cover"
+                  />
+                  <span>{locale === "ko" ? `${name}의 선호 음식` : `${name}'s favorite`}</span>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })()}
 
       {/* Stats inline */}
       <div className="flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
