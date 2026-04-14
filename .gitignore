@@ -46,3 +46,4 @@ public/sw.js
 *.tsbuildinfo
 next-env.d.ts
 reference/
+pnpm-lock.yaml
