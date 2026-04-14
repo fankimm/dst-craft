@@ -9,14 +9,15 @@ import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
 import { cookpotIngredients, ingredientImage } from "@/data/cookpot-ingredients";
 import { useSettings } from "@/hooks/use-settings";
 import { useFavorites } from "@/hooks/use-favorites";
+import { useCookingSearch } from "@/hooks/use-cooking-search";
 import { useCookingState, type CookingCategoryId } from "@/hooks/use-cooking-state";
 import { t, foodName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { ItemSlot } from "../ui/ItemSlot";
-import { SearchWithSuggestions, type SearchSuggestion } from "../ui/SearchWithSuggestions";
 import { TagChip } from "../ui/TagChip";
+import { CookingSearchBar } from "./CookingSearchBar";
 import { useAuth } from "@/hooks/use-auth";
 import { ViewCount } from "@/components/ui/ViewCount";
 import { useRecent } from "@/hooks/use-recent";
@@ -39,13 +40,6 @@ interface CookingCategory {
   labelKey: TranslationKey;
   image: string; // path relative to /images/
   count: number;
-}
-
-interface CookingFilter {
-  type: "foodType" | "station" | "effect" | "ingredient";
-  value: string;
-  label: string;
-  icon?: string; // game-items image filename
 }
 
 const COOK_TIME_BASE = 40; // seconds per cookTime unit
@@ -107,52 +101,6 @@ function getRecipeIngredientNames(recipe: CookingRecipe, locale: Locale): string
   return names;
 }
 
-/** Cooking ingredient suggestions (matches crafting-tab getSuggestions pattern) */
-function getCookingIngredientSuggestions(query: string, locale: Locale) {
-  const lower = query.toLowerCase();
-  const results: Array<{ text: string; image: string; engName: string }> = [];
-
-  // 1. cookpotIngredients: match by name + nameKo
-  for (const ing of cookpotIngredients) {
-    const names = [ing.name.toLowerCase()];
-    if (ing.nameKo) names.push(ing.nameKo.toLowerCase());
-    if (names.some(n => n.includes(lower))) {
-      results.push({
-        text: locale === "ko" && ing.nameKo ? ing.nameKo : ing.name,
-        image: `game-items/${ingredientImage(ing)}`,
-        engName: ing.name,
-      });
-    }
-    if (results.length >= 5) return results;
-  }
-
-  // 2. Tag search (Meat→고기, Veggie→채소 etc.) via tagIcons + reqTagTranslations
-  for (const [engTag, icon] of Object.entries(tagIcons)) {
-    const translated = reqTagTranslations[locale]?.[engTag];
-    const names = [engTag.toLowerCase()];
-    if (translated) names.push(translated.toLowerCase());
-    if (names.some(n => n.includes(lower))) {
-      if (!results.some(r => r.engName === engTag)) {
-        results.push({
-          text: translated || engTag,
-          image: `game-items/${icon}`,
-          engName: engTag,
-        });
-      }
-    }
-    if (results.length >= 5) return results;
-  }
-
-  return results;
-}
-
-const cookingTypeLabels: Record<string, Record<string, string>> = {
-  ko: { ingredient: "재료", recipe: "요리" },
-  en: { ingredient: "Ingredient", recipe: "Recipe" },
-  ja: { ingredient: "素材", recipe: "料理" },
-  zh_CN: { ingredient: "材料", recipe: "料理" },
-  zh_TW: { ingredient: "材料", recipe: "料理" },
-};
 
 // ---------------------------------------------------------------------------
 // CookingApp
@@ -193,16 +141,11 @@ export function CookingApp({
   const { recentIds, addRecent } = useRecent("cooking");
   const [sortByPopular, setSortByPopular] = useState(false);
 
-  // Local transient state (search, filters, animation)
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState<CookingFilter | null>(null);
-
-  // Debounce search query (200ms)
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedQuery(searchQuery), 300);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
+  // Search (tag-based, same UX as crafting tab)
+  const {
+    tags: searchTags, inputValue: searchInput, setInputValue: setSearchInput,
+    addTag, removeTag, clearAll: clearSearch, results: searchResults, isSearching,
+  } = useCookingSearch(resolvedLocale);
 
   const slideClass = useSlideAnimation(selectedCategory, (v) => v === null);
 
@@ -212,8 +155,7 @@ export function CookingApp({
     const recipe = cookingRecipes.find((r) => r.id === pendingRecipeId);
     if (recipe) {
       openRecipeFromExternal(recipe.id, "all");
-      setSearchQuery("");
-      setActiveFilter(null);
+      clearSearch();
     }
     onClearPendingRecipe?.();
   }, [pendingRecipeId, onClearPendingRecipe, openRecipeFromExternal]);
@@ -222,9 +164,8 @@ export function CookingApp({
 
   const handleGoHome = useCallback(() => {
     goHome();
-    setSearchQuery("");
-    setActiveFilter(null);
-  }, [goHome]);
+    clearSearch();
+  }, [goHome, clearSearch]);
 
   // Re-tap active tab → go home
   useEffect(() => {
@@ -235,57 +176,39 @@ export function CookingApp({
 
   const handleSelectCategory = useCallback((id: CookingCategoryId) => {
     selectCategory(id);
-    setSearchQuery("");
-    setActiveFilter(null);
+    clearSearch();
     setSortByPopular(false);
-  }, [selectCategory]);
+  }, [selectCategory, clearSearch]);
 
   const handleClosePanel = useCallback(() => {
     selectRecipe(null);
   }, [selectRecipe]);
 
-  // Badge click handlers — close panel, go to "all", set filter
+  // Badge click handlers — close panel, go to "all", add search tag
   const handleFoodTypeClick = useCallback((foodType: string) => {
     selectRecipe(null);
     selectCategory("all");
-    setSearchQuery("");
     const ftIcons: Record<string, string> = { meat: "game-items/meat.png", veggie: "game-items/carrot.png", goodies: "game-items/honey.png", roughage: "game-items/cutlichen.png" };
     const ftLabelKeys: Record<string, TranslationKey> = { meat: "foodtype_meat", veggie: "foodtype_veggie", goodies: "foodtype_goodies", roughage: "foodtype_roughage" };
     const label = ftLabelKeys[foodType] ? t(resolvedLocale, ftLabelKeys[foodType]) : foodType;
-    setActiveFilter({ type: "foodType", value: foodType, label, icon: ftIcons[foodType] });
-  }, [resolvedLocale, selectRecipe, selectCategory]);
+    clearSearch();
+    addTag({ text: label, type: "foodType", image: ftIcons[foodType], engName: foodType });
+  }, [resolvedLocale, selectRecipe, selectCategory, addTag, clearSearch]);
 
   const handleStationClick = useCallback((station: string, label: string) => {
     selectRecipe(null);
     selectCategory("all");
-    setSearchQuery("");
     const stIcons: Record<string, string> = { cookpot: "game-items/cookpot.png", portablecookpot: "game-items/portablecookpot_item.png", campfire: "game-items/campfire.png", dryingrack: "game-items/meatrack.png" };
-    setActiveFilter({ type: "station", value: station, label, icon: stIcons[station] });
-  }, [selectRecipe, selectCategory]);
+    clearSearch();
+    addTag({ text: label, type: "station", image: stIcons[station], engName: station });
+  }, [selectRecipe, selectCategory, addTag, clearSearch]);
 
   const handleEffectClick = useCallback((effect: string) => {
     selectRecipe(null);
     selectCategory("all");
-    setSearchQuery("");
-    setActiveFilter({ type: "effect", value: effect, label: effectLabel(effect, resolvedLocale) });
-  }, [selectRecipe, selectCategory, resolvedLocale]);
-
-  const handleClearFilter = useCallback(() => {
-    setActiveFilter(null);
-  }, []);
-
-  const handleSearchSelectRecipe = useCallback((recipe: CookingRecipe) => {
-    selectCategory("all");
-    setSearchQuery("");
-    setActiveFilter(null);
-    selectRecipe(recipe.id);
-  }, [selectCategory, selectRecipe]);
-
-  const handleSearchSelectIngredient = useCallback((engName: string, label: string, image?: string) => {
-    selectCategory("all");
-    setSearchQuery("");
-    setActiveFilter({ type: "ingredient", value: engName, label, icon: image });
-  }, [selectCategory]);
+    clearSearch();
+    addTag({ text: effectLabel(effect, resolvedLocale), type: "effect", engName: effect });
+  }, [selectRecipe, selectCategory, resolvedLocale, addTag, clearSearch]);
 
   // Filtered recipes for selected category
   const filteredRecipes = useMemo(() => {
@@ -319,46 +242,17 @@ export function CookingApp({
       }
     }
 
-    // Active filter from badge click
-    if (activeFilter) {
-      switch (activeFilter.type) {
-        case "foodType":
-          recipes = recipes.filter((r) => r.foodType === activeFilter.value);
-          break;
-        case "station":
-          recipes = recipes.filter((r) => r.station === activeFilter.value);
-          break;
-        case "effect":
-          recipes = recipes.filter((r) => r.specialEffect === activeFilter.value);
-          break;
-        case "ingredient":
-          recipes = recipes.filter((r) => {
-            if (!r.requirements) return false;
-            const items = r.requirements.split(",").map(s => s.trim()).filter(Boolean);
-            return items.some(item => {
-              if (item.startsWith("No ")) return false;
-              const { name } = parseReqEntry(item);
-              return name.split(/\s*\/\s*/).some(part => part === activeFilter.value);
-            });
-          });
-          break;
-      }
-    }
-
-    // Search filter (uses debounced query)
-    if (debouncedQuery.trim()) {
-      const q = debouncedQuery.trim().toLowerCase();
-      recipes = recipes.filter((r) => {
-        const localName = foodName(r, resolvedLocale).toLowerCase();
-        const engName = r.name.toLowerCase();
-        return localName.includes(q) || engName.includes(q) ||
-          getRecipeIngredientNames(r, resolvedLocale).some(n => n.includes(q));
-      });
+    // Tag-based search filter (replaces old activeFilter + debouncedQuery)
+    if (isSearching && searchResults.length > 0) {
+      const searchIds = new Set(searchResults.map((r) => r.id));
+      recipes = recipes.filter((r) => searchIds.has(r.id));
+    } else if (isSearching) {
+      recipes = [];
     }
 
     return recipes;
   // eslint-disable-next-line react-hooks/exhaustive-deps -- recentIds only matters when category is "recent"
-  }, [selectedCategory, activeFilter, debouncedQuery, resolvedLocale, favorites, selectedCategory === "recent" ? recentIds : null]);
+  }, [selectedCategory, isSearching, searchResults, resolvedLocale, favorites, selectedCategory === "recent" ? recentIds : null]);
 
   const displayRecipes = useMemo(() => {
     if (!sortByPopular) return filteredRecipes;
@@ -386,15 +280,17 @@ export function CookingApp({
     </DetailPanel>
   );
 
-  // Filter chip component
-  const filterChip = activeFilter && (
-    <div className="flex items-center gap-1.5 px-4 py-2">
-      <TagChip
-        label={activeFilter.label}
-        icon={activeFilter.icon}
-        onRemove={handleClearFilter}
-      />
-    </div>
+  // Search bar component (shared between both views)
+  const searchBar = (
+    <CookingSearchBar
+      inputValue={searchInput}
+      tags={searchTags}
+      onInputChange={setSearchInput}
+      onAddTag={addTag}
+      onRemoveTag={removeTag}
+      onClearAll={clearSearch}
+      locale={resolvedLocale}
+    />
   );
 
   // -----------------------------------------------------------------------
@@ -406,7 +302,7 @@ export function CookingApp({
         {/* Header */}
         <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
           <CookingBreadcrumb locale={resolvedLocale} onHomeClick={handleGoHome} />
-          <CookingSearchInput value={searchQuery} debouncedValue={debouncedQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} onSelectIngredient={handleSearchSelectIngredient} />
+          {searchBar}
         </div>
 
         {/* Category grid */}
@@ -496,11 +392,8 @@ export function CookingApp({
             />
           </div>
         </div>
-        <CookingSearchInput value={searchQuery} debouncedValue={debouncedQuery} onChange={setSearchQuery} locale={resolvedLocale} onSelectRecipe={handleSearchSelectRecipe} onSelectIngredient={handleSearchSelectIngredient} />
+        {searchBar}
       </div>
-
-      {/* Filter chip */}
-      {filterChip}
 
       {/* Recipe grid */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
@@ -573,80 +466,6 @@ function CookingBreadcrumb({
 
 // ---------------------------------------------------------------------------
 // Search input with recipe suggestions
-// ---------------------------------------------------------------------------
-
-function CookingSearchInput({
-  value,
-  debouncedValue,
-  onChange,
-  locale,
-  onSelectRecipe,
-  onSelectIngredient,
-}: {
-  value: string;
-  debouncedValue: string;
-  onChange: (v: string) => void;
-  locale: Locale;
-  onSelectRecipe: (recipe: CookingRecipe) => void;
-  onSelectIngredient: (engName: string, label: string, image?: string) => void;
-}) {
-  const suggestions: SearchSuggestion[] = useMemo(() => {
-    const q = debouncedValue.trim().toLowerCase();
-    if (!q) return [];
-    const result: SearchSuggestion[] = [];
-
-    // Ingredient suggestions first (crafting tab: materials before items)
-    for (const s of getCookingIngredientSuggestions(debouncedValue, locale)) {
-      result.push({
-        key: `ing-${s.engName}`,
-        text: s.text,
-        image: s.image,
-        typeLabel: cookingTypeLabels[locale]?.ingredient ?? "Ingredient",
-        data: { type: "ingredient", engName: s.engName, label: s.text, image: s.image },
-      });
-    }
-
-    // Recipe suggestions after
-    const recipeMatches = cookingRecipes
-      .filter((r) => {
-        const localName = foodName(r, locale).toLowerCase();
-        const engName = r.name.toLowerCase();
-        return localName.includes(q) || engName.includes(q) ||
-          getRecipeIngredientNames(r, locale).some(n => n.includes(q));
-      })
-      .slice(0, 8 - result.length);
-
-    for (const r of recipeMatches) {
-      result.push({
-        key: r.id,
-        text: foodName(r, locale),
-        image: `game-items/${r.id}.png`,
-        typeLabel: cookingTypeLabels[locale]?.recipe ?? "Recipe",
-        data: { type: "recipe", recipe: r },
-      });
-    }
-
-    return result.slice(0, 8);
-  }, [debouncedValue, locale]);
-
-  return (
-    <SearchWithSuggestions
-      value={value}
-      onChange={onChange}
-      suggestions={suggestions}
-      onSelect={(s) => {
-        const d = s.data as { type: string; [key: string]: unknown };
-        if (d.type === "ingredient") {
-          onSelectIngredient(d.engName as string, d.label as string, d.image as string | undefined);
-        } else {
-          onSelectRecipe((d as { type: string; recipe: CookingRecipe }).recipe);
-        }
-      }}
-      placeholder={t(locale, "searchPlaceholder")}
-    />
-  );
-}
-
 // ---------------------------------------------------------------------------
 // Recipe card (matches ItemIcon style)
 // ---------------------------------------------------------------------------
