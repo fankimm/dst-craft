@@ -109,53 +109,46 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
         </div>
       </div>
 
-      {/* Scrollable main area */}
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain">
-        <div className="flex flex-col min-h-full max-w-4xl mx-auto w-full">
-          {/* Result + Slots area */}
-          <div className="px-3 pt-4 pb-2">
-            <div className="flex gap-2">
-              {/* Left: result card or empty placeholder — 50% */}
-              <div className="w-1/2 min-w-0">
-                <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} onViewRecipe={onViewRecipe} getSimClicks={(id) => getClicks(`sim:${id}`)} />
-              </div>
-
-              {/* Right: vertical slots + clear button — 50% */}
-              <div className="w-1/2 flex flex-col gap-1.5 items-start">
-                {slots.map((slot, i) => (
-                  <IngredientSlot
-                    key={i}
-                    slot={slot}
-                    index={i}
-                    locale={resolvedLocale}
-                    onRemove={handleRemoveSlot}
-                  />
-                ))}
-                {/* Clear button — always visible, disabled when empty */}
-                <button
-                  onClick={handleClear}
-                  disabled={filledIngredients.length === 0}
-                  className="flex items-center gap-1 mt-0.5 px-2 py-1 rounded-full text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-surface border border-border transition-colors disabled:opacity-30 disabled:pointer-events-none"
-                  title={t(resolvedLocale, "cookpot_clear")}
-                >
-                  <RotateCcw className="size-3" />
-                  {t(resolvedLocale, "cookpot_clear")}
-                </button>
-              </div>
-            </div>
+      {/* Result + Slots area — fixed, not scrollable */}
+      <div className="shrink-0 px-3 pt-4 pb-2 max-w-4xl mx-auto w-full">
+        <div className="flex gap-2">
+          {/* Left: result card or empty placeholder — 50% */}
+          <div className="w-1/2 min-w-0">
+            <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} onViewRecipe={onViewRecipe} getSimClicks={(id) => getClicks(`sim:${id}`)} />
           </div>
 
-          {/* Ingredient picker (always visible) */}
-          <div className="mt-auto">
-            <IngredientPicker
-              locale={resolvedLocale}
-              onSelect={handleAddIngredient}
-              disabled={allFilled}
-            />
+          {/* Right: vertical slots + clear button — 50% */}
+          <div className="w-1/2 flex flex-col gap-1.5 items-start">
+            {slots.map((slot, i) => (
+              <IngredientSlot
+                key={i}
+                slot={slot}
+                index={i}
+                locale={resolvedLocale}
+                onRemove={handleRemoveSlot}
+              />
+            ))}
+            {/* Clear button — always visible, disabled when empty */}
+            <button
+              onClick={handleClear}
+              disabled={filledIngredients.length === 0}
+              className="flex items-center gap-1 mt-0.5 px-2 py-1 rounded-full text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-surface border border-border transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              title={t(resolvedLocale, "cookpot_clear")}
+            >
+              <RotateCcw className="size-3" />
+              {t(resolvedLocale, "cookpot_clear")}
+            </button>
           </div>
-
-          <Footer />
         </div>
+      </div>
+
+      {/* Ingredient picker — fills remaining space, scrolls internally */}
+      <div className="flex-1 min-h-0">
+        <IngredientPicker
+          locale={resolvedLocale}
+          onSelect={handleAddIngredient}
+          disabled={allFilled}
+        />
       </div>
     </div>
   );

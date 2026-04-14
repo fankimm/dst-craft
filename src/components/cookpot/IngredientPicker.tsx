@@ -156,7 +156,7 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
 
   return (
     <div className={cn(
-      "flex flex-col border-t border-border bg-card rounded-t-xl",
+      "flex flex-col h-full border-t border-border bg-card rounded-t-xl",
       disabled && "opacity-50 pointer-events-none",
     )}>
       {/* Header: search + category tabs */}
@@ -207,7 +207,7 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
       </div>
 
       {/* Ingredient grid */}
-      <div className="overflow-y-auto overscroll-contain px-3" style={{ height: "40dvh", paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 1rem))" }}>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-3" style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 1rem))" }}>
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-muted-foreground text-sm">
             {category === "favorites"
