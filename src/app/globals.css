@@ -166,6 +166,15 @@
   background: var(--dim);
 }
 
+/* Hide scrollbar utility */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* Page slide transitions */
 @keyframes slide-in-right {
   from { transform: translateX(40%); opacity: 0; }
