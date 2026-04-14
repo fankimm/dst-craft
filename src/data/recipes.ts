@@ -1,4 +1,4 @@
-export type CookingStation = "cookpot" | "portablecookpot";
+export type CookingStation = "cookpot" | "portablecookpot" | "campfire" | "dryingrack";
 export type FoodType = "meat" | "veggie" | "goodies" | "roughage" | "generic" | "nonfood";
 
 export interface CookingRecipe {
@@ -1213,4 +1213,52 @@ export const cookingRecipes: CookingRecipe[] = [
     specialEffect: "hunger_regen",
     cardIngredients: [["batnose", 1], ["kelp", 1], ["goatmilk", 1], ["milkywhites", 1]],
   },
+
+  // ============================================================
+  // Campfire / Roasted (구이·조리)
+  // Source: meats.lua, veggies.lua, mushrooms.lua, etc.
+  // ============================================================
+  { id: "cookedmeat", name: "Cooked Meat", requirements: "Meat ×1", foodType: "meat", health: 3, hunger: 25, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "cookedsmallmeat", name: "Cooked Small Meat", requirements: "Small Meat ×1", foodType: "meat", health: 1, hunger: 12.5, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "cookedmonstermeat", name: "Cooked Monster Meat", requirements: "Monster Meat ×1", foodType: "meat", health: -3, hunger: 18.75, sanity: -10, perishDays: 15, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "drumstick_cooked", name: "Fried Drumstick", requirements: "Drumstick ×1", foodType: "meat", health: 1, hunger: 12.5, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "batwing_cooked", name: "Cooked Batilisk Wing", requirements: "Batilisk Wing ×1", foodType: "meat", health: 8, hunger: 18.75, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "fishmeat_cooked", name: "Cooked Fish", requirements: "Fish ×1", foodType: "meat", health: 8, hunger: 25, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "fishmeat_small_cooked", name: "Cooked Small Fish", requirements: "Small Fish ×1", foodType: "meat", health: 1, hunger: 12.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "froglegs_cooked", name: "Cooked Frog Legs", requirements: "Frog Legs ×1", foodType: "meat", health: 1, hunger: 12.5, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "eel_cooked", name: "Cooked Eel", requirements: "Eel ×1", foodType: "meat", health: 8, hunger: 12.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "barnacle_cooked", name: "Cooked Barnacle", requirements: "Barnacle ×1", foodType: "meat", health: 1, hunger: 12.5, sanity: 0, perishDays: 15, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "plantmeat_cooked", name: "Cooked Leafy Meat", requirements: "Leafy Meat ×1", foodType: "meat", health: 1, hunger: 18.75, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "bird_egg_cooked", name: "Cooked Egg", requirements: "Egg ×1", foodType: "generic", health: 0, hunger: 12.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "carrot_cooked", name: "Roasted Carrot", requirements: "Carrot ×1", foodType: "veggie", health: 3, hunger: 12.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "corn_cooked", name: "Popcorn", requirements: "Corn ×1", foodType: "veggie", health: 3, hunger: 12.5, sanity: 0, perishDays: 15, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "pumpkin_cooked", name: "Hot Pumpkin", requirements: "Pumpkin ×1", foodType: "veggie", health: 8, hunger: 37.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "eggplant_cooked", name: "Braised Eggplant", requirements: "Eggplant ×1", foodType: "veggie", health: 20, hunger: 25, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "pomegranate_cooked", name: "Sliced Pomegranate", requirements: "Pomegranate ×1", foodType: "veggie", health: 20, hunger: 12.5, sanity: 0, perishDays: 3, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "dragonfruit_cooked", name: "Prepared Dragon Fruit", requirements: "Dragon Fruit ×1", foodType: "veggie", health: 20, hunger: 12.5, sanity: 0, perishDays: 3, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "cactus_meat_cooked", name: "Cooked Cactus Flesh", requirements: "Cactus Flesh ×1", foodType: "veggie", health: 1, hunger: 12.5, sanity: 15, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "potato_cooked", name: "Roasted Potato", requirements: "Potato ×1", foodType: "veggie", health: 20, hunger: 25, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "asparagus_cooked", name: "Cooked Asparagus", requirements: "Asparagus ×1", foodType: "veggie", health: 3, hunger: 25, sanity: 0, perishDays: 3, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "tomato_cooked", name: "Roasted Tomato", requirements: "Tomato ×1", foodType: "veggie", health: 20, hunger: 12.5, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "onion_cooked", name: "Roasted Onion", requirements: "Onion ×1", foodType: "veggie", health: 1, hunger: 9.375, sanity: -5, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "garlic_cooked", name: "Roasted Garlic", requirements: "Garlic ×1", foodType: "veggie", health: 1, hunger: 9.375, sanity: -5, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "pepper_cooked", name: "Roasted Pepper", requirements: "Pepper ×1", foodType: "veggie", health: -3, hunger: 9.375, sanity: -10, perishDays: 15, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "red_cap_cooked", name: "Cooked Red Cap", requirements: "Red Cap ×1", foodType: "veggie", health: 1, hunger: 0, sanity: -10, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "green_cap_cooked", name: "Cooked Green Cap", requirements: "Green Cap ×1", foodType: "veggie", health: -1, hunger: 0, sanity: 15, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "blue_cap_cooked", name: "Cooked Blue Cap", requirements: "Blue Cap ×1", foodType: "veggie", health: -3, hunger: 0, sanity: 10, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "moon_cap_cooked", name: "Cooked Moon Shroom", requirements: "Moon Shroom ×1", foodType: "veggie", health: 0, hunger: -12.5, sanity: -10, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "berries_cooked", name: "Roasted Berries", requirements: "Berries ×1", foodType: "veggie", health: 1, hunger: 12.5, sanity: 0, perishDays: 3, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "seeds_cooked", name: "Toasted Seeds", requirements: "Seeds ×1", foodType: "generic", health: 1, hunger: 4.6875, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "kelp_cooked", name: "Dried Kelp Fronds", requirements: "Kelp Fronds ×1", foodType: "veggie", health: 0, hunger: 9.375, sanity: -5, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+
+  // ============================================================
+  // Drying Rack (건조대)
+  // Source: meats.lua, dryable component
+  // ============================================================
+  { id: "meat_dried", name: "Jerky", requirements: "Meat ×1", foodType: "meat", health: 20, hunger: 25, sanity: 15, perishDays: 20, cookTime: 2, priority: 0, station: "dryingrack" },
+  { id: "smallmeat_dried", name: "Small Jerky", requirements: "Small Meat / Drumstick / Batilisk Wing / Frog Legs ×1", foodType: "meat", health: 8, hunger: 12.5, sanity: 10, perishDays: 20, cookTime: 1, priority: 0, station: "dryingrack" },
+  { id: "monstermeat_dried", name: "Monster Jerky", requirements: "Monster Meat ×1", foodType: "meat", health: -3, hunger: 18.75, sanity: -5, perishDays: 20, cookTime: 1, priority: 0, station: "dryingrack" },
+  { id: "fishmeat_dried", name: "Fish Morsel", requirements: "Fish ×1", foodType: "meat", health: 30, hunger: 25, sanity: 15, perishDays: 15, cookTime: 1, priority: 0, station: "dryingrack" },
+  { id: "fishmeat_small_dried", name: "Small Fish Morsel", requirements: "Small Fish / Eel ×1", foodType: "meat", health: 15, hunger: 12.5, sanity: 20, perishDays: 15, cookTime: 0.5, priority: 0, station: "dryingrack" },
+  { id: "kelp_dried", name: "Dried Kelp Fronds", requirements: "Kelp Fronds ×1", foodType: "veggie", health: 1, hunger: 9.375, sanity: 10, perishDays: 20, cookTime: 0.25, priority: 0, station: "dryingrack" },
 ];

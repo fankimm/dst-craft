@@ -56,6 +56,8 @@ const HUNGER_THRESHOLD = 62.5;
 
 const cookpotCount = cookingRecipes.filter((r) => r.station === "cookpot").length;
 const portableCount = cookingRecipes.filter((r) => r.station === "portablecookpot").length;
+const campfireCount = cookingRecipes.filter((r) => r.station === "campfire").length;
+const dryingrackCount = cookingRecipes.filter((r) => r.station === "dryingrack").length;
 const healthRecommendCount = cookingRecipes.filter((r) => r.health >= HEALTH_THRESHOLD).length;
 const sanityRecommendCount = cookingRecipes.filter((r) => r.sanity >= SANITY_THRESHOLD).length;
 const hungerRecommendCount = cookingRecipes.filter((r) => r.hunger >= HUNGER_THRESHOLD).length;
@@ -64,6 +66,8 @@ const cookingCategories: CookingCategory[] = [
   { id: "all", labelKey: "cooking_all", image: "category-icons/cooking_all.png", count: cookingRecipes.length },
   { id: "cookpot", labelKey: "cooking_cookpot", image: "game-items/cookpot.png", count: cookpotCount },
   { id: "portablecookpot", labelKey: "cooking_portablecookpot", image: "game-items/portablecookpot_item.png", count: portableCount },
+  { id: "campfire", labelKey: "cooking_campfire", image: "game-items/campfire.png", count: campfireCount },
+  { id: "dryingrack", labelKey: "cooking_dryingrack", image: "game-items/meatrack.png", count: dryingrackCount },
   { id: "recommend_health", labelKey: "cooking_recommend_health", image: "ui/health.png", count: healthRecommendCount },
   { id: "recommend_sanity", labelKey: "cooking_recommend_sanity", image: "ui/sanity.png", count: sanityRecommendCount },
   { id: "recommend_hunger", labelKey: "cooking_recommend_hunger", image: "ui/hunger.png", count: hungerRecommendCount },
@@ -255,7 +259,7 @@ export function CookingApp({
     selectRecipe(null);
     selectCategory("all");
     setSearchQuery("");
-    const stIcons: Record<string, string> = { cookpot: "game-items/cookpot.png", portablecookpot: "game-items/portablecookpot_item.png" };
+    const stIcons: Record<string, string> = { cookpot: "game-items/cookpot.png", portablecookpot: "game-items/portablecookpot_item.png", campfire: "game-items/campfire.png", dryingrack: "game-items/meatrack.png" };
     setActiveFilter({ type: "station", value: station, label, icon: stIcons[station] });
   }, [selectRecipe, selectCategory]);
 
@@ -858,6 +862,20 @@ function RecipeDetail({
                 label={t(locale, "cooking_warly_exclusive")}
                 icon="game-items/portablecookpot_item.png"
                 onClick={onStationClick ? () => onStationClick("portablecookpot", t(locale, "cooking_warly_exclusive")) : undefined}
+              />
+            )}
+            {recipe.station === "campfire" && (
+              <TagChip
+                label={t(locale, "cooking_campfire")}
+                icon="game-items/campfire.png"
+                onClick={onStationClick ? () => onStationClick("campfire", t(locale, "cooking_campfire")) : undefined}
+              />
+            )}
+            {recipe.station === "dryingrack" && (
+              <TagChip
+                label={t(locale, "cooking_dryingrack")}
+                icon="game-items/meatrack.png"
+                onClick={onStationClick ? () => onStationClick("dryingrack", t(locale, "cooking_dryingrack")) : undefined}
               />
             )}
             {recipe.specialEffect && (
