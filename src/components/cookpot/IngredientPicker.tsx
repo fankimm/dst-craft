@@ -11,26 +11,31 @@ import {
 import { t, ingredientName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
+import { useFavorites } from "@/hooks/use-favorites";
 
 // ---------------------------------------------------------------------------
-// LocalStorage helpers
+// Constants
 // ---------------------------------------------------------------------------
 
-const FAV_KEY = "dst:cookpot-fav-ingredients";
+const ING_FAV_PREFIX = "ing:";
 const RECENT_KEY = "dst:cookpot-recent-ingredients";
 const MAX_RECENT = 20;
 
-function readList(key: string): string[] {
+// ---------------------------------------------------------------------------
+// Recent ingredients (localStorage — ephemeral history)
+// ---------------------------------------------------------------------------
+
+function readRecent(): string[] {
   if (typeof window === "undefined") return [];
   try {
-    return JSON.parse(localStorage.getItem(key) || "[]");
+    return JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
   } catch {
     return [];
   }
 }
 
-function writeList(key: string, list: string[]) {
-  localStorage.setItem(key, JSON.stringify(list));
+function writeRecent(list: string[]) {
+  localStorage.setItem(RECENT_KEY, JSON.stringify(list));
 }
 
 // ---------------------------------------------------------------------------
@@ -59,7 +64,7 @@ const categoryTabs: CategoryTab[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// IngredientPicker (inline, always visible)
+// IngredientPicker
 // ---------------------------------------------------------------------------
 
 interface IngredientPickerProps {
@@ -73,28 +78,29 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  // Favorites & recent state
-  const [favIds, setFavIds] = useState<string[]>([]);
+  // Favorites — reuse existing system with "ing:" prefix
+  const { isFavorite, toggleFavorite } = useFavorites();
+
+  const isIngFav = useCallback(
+    (id: string) => isFavorite(`${ING_FAV_PREFIX}${id}`),
+    [isFavorite],
+  );
+  const toggleIngFav = useCallback(
+    (id: string) => toggleFavorite(`${ING_FAV_PREFIX}${id}`),
+    [toggleFavorite],
+  );
+
+  // Recent — localStorage
   const [recentIds, setRecentIds] = useState<string[]>([]);
 
-  // Load from localStorage on mount
   useEffect(() => {
-    setFavIds(readList(FAV_KEY));
-    setRecentIds(readList(RECENT_KEY));
-  }, []);
-
-  const toggleFavorite = useCallback((id: string) => {
-    setFavIds((prev) => {
-      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
-      writeList(FAV_KEY, next);
-      return next;
-    });
+    setRecentIds(readRecent());
   }, []);
 
   const addRecent = useCallback((id: string) => {
     setRecentIds((prev) => {
       const next = [id, ...prev.filter((x) => x !== id)].slice(0, MAX_RECENT);
-      writeList(RECENT_KEY, next);
+      writeRecent(next);
       return next;
     });
   }, []);
@@ -104,10 +110,19 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
     return () => clearTimeout(timer);
   }, [search]);
 
+  // Favorite ingredient IDs (extract from global favorites set)
+  const { favorites } = useFavorites();
+  const favIngIds = useMemo(() => {
+    const ids: string[] = [];
+    favorites.forEach((fav) => {
+      if (fav.startsWith(ING_FAV_PREFIX)) ids.push(fav.slice(ING_FAV_PREFIX.length));
+    });
+    return ids;
+  }, [favorites]);
+
   const filtered = useMemo(() => {
-    // Special categories
     if (category === "favorites") {
-      const favSet = new Set(favIds);
+      const favSet = new Set(favIngIds);
       return cookpotIngredients.filter((i) => favSet.has(i.id));
     }
     if (category === "recent") {
@@ -117,12 +132,10 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
 
     let list = cookpotIngredients;
 
-    // Category filter
     if (category !== "all") {
       list = list.filter((i) => i.category === category);
     }
 
-    // Search filter
     const q = debouncedSearch.trim().toLowerCase();
     if (q) {
       list = list.filter((i) => {
@@ -133,15 +146,13 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
     }
 
     return list;
-  }, [category, debouncedSearch, locale, favIds, recentIds]);
+  }, [category, debouncedSearch, locale, favIngIds, recentIds]);
 
   const handleSelect = (ing: CookpotIngredient) => {
     if (disabled) return;
     addRecent(ing.id);
     onSelect(ing);
   };
-
-  const favSet = useMemo(() => new Set(favIds), [favIds]);
 
   return (
     <div className={cn(
@@ -150,7 +161,6 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
     )}>
       {/* Header: search + category tabs */}
       <div className="shrink-0 px-4 pt-3 pb-2 space-y-2">
-        {/* Search */}
         <div className="relative">
           <input
             type="text"
@@ -169,7 +179,6 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
           )}
         </div>
 
-        {/* Category tabs */}
         <div className="flex gap-1 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-none">
           {categoryTabs.map((tab) => {
             const isUi = tab.id === "favorites" || tab.id === "recent";
@@ -197,7 +206,7 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
         </div>
       </div>
 
-      {/* Ingredient grid — fixed height so layout doesn't jump */}
+      {/* Ingredient grid */}
       <div className="overflow-y-auto overscroll-contain px-3" style={{ height: "40dvh", paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 1rem))" }}>
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-muted-foreground text-sm">
@@ -214,9 +223,9 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
                 key={ing.id}
                 ingredient={ing}
                 locale={locale}
-                isFav={favSet.has(ing.id)}
+                isFav={isIngFav(ing.id)}
                 onSelect={handleSelect}
-                onToggleFav={toggleFavorite}
+                onToggleFav={toggleIngFav}
               />
             ))}
           </div>
