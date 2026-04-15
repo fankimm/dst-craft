@@ -218,8 +218,7 @@ export function SkillTreeView({
                     })();
 
                     return (
-                      <div key={item.node.id} className="flex items-center" style={{ minHeight: 44 }}>
-
+                      <div key={item.node.id} className="flex items-center mt-2" style={{ minHeight: 44 }}>
                         <div className="flex-1 min-w-0">
                           <SkillLockIndicator
                             lockType={item.node.lockType}
@@ -236,7 +235,7 @@ export function SkillTreeView({
                   if (item.isLock) {
                     // Lock without lockType — minimal gate
                     return (
-                      <div key={item.node.id} className="flex items-center" style={{ minHeight: 40 }}>
+                      <div key={item.node.id} className="flex items-center mt-2" style={{ minHeight: 40 }}>
 
                         <div className="flex-1 flex items-center gap-2 px-3">
                           <div className="flex-1 h-px bg-border" />
@@ -251,7 +250,7 @@ export function SkillTreeView({
                   const locked = !canLearn(item.node.id) && !isLearned(item.node.id);
                   return (
                     <div key={item.node.id}>
-                      {item.parentIds.length > 1 && (
+                      {item.parentIds.length > 0 && (
                         <PrereqIndicator parentIds={item.parentIds} locale={locale} color={group.color} isLearned={isLearned} />
                       )}
                       <div className="flex items-center" style={{ minHeight: 52 }}>
