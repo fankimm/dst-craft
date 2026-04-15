@@ -15,18 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
-    version: "0.10.1",
+    version: "0.10.2",
     date: "2026-04-15",
     dev: [
-      "ui: 스킬트리 필요 조건(prereq) 표시를 노드 위쪽 분리 라인 → 노드 카드 내부 상단 pill로 이동",
-      "refactor: PrereqIndicator 컴포넌트 제거, getPrereq 헬퍼로 대체 — SkillNodeCard에 prereq prop 전달",
+      "ui: 스킬트리 필요 조건(prereq)을 노드 카드 내부 상단 pill로 이동",
+      "ui: 헤드라이너/친화 등 lock 기반 게이트도 카드 내부로 이동 — 전용 lock만 흡수, 공유 lock(예: 친화 '총 12 스킬')은 그룹 상단에 게이트 라인으로 유지",
+      "ui: 조건 pill들은 기본 한 줄, 넘치면 줄바꿈(flex-wrap)",
+      "refactor: PrereqIndicator 제거, getPrereq/isLockSatisfied 헬퍼로 분리 — SkillNodeCard에 prereq/lockRequirements prop 전달",
+      "refactor: SkillLockIndicator에서 LockConditionPill 분리 — 게이트 라인/카드 내부 모두에서 재사용",
     ],
     changes: {
       ko: [
-        "스킬트리 — 필요 조건 표시가 노드 카드 안쪽으로 이동하여 더 깔끔해짐",
+        "스킬트리 — 각 스킬의 습득 조건(선행 스킬, 보스 처치, 커스텀 과제 등)이 노드 카드 안쪽으로 이동하여 레이아웃이 더 깔끔해짐",
+        "여러 조건은 기본적으로 한 줄, 넘치면 줄바꿈으로 표시",
+        "공유되는 조건(예: 친화의 '총 12개 스킬 습득')은 그룹 상단에 한 번만 표시",
       ],
       en: [
-        "Skill tree — prerequisite labels moved inside node cards for a cleaner layout",
+        "Skill tree — per-skill requirements (prerequisite skills, boss kills, custom tasks) are now displayed inside node cards for a cleaner layout",
+        "Multiple requirements display on a single row by default, wrapping when they overflow",
+        "Shared requirements (e.g., Affinity's 'Learn 12 skills') remain as a single group-level gate",
       ],
     },
   },

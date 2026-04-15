@@ -3,12 +3,12 @@
 import { useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import { RotateCcw } from "lucide-react";
-import type { CharacterSkillTree, SkillNode } from "@/data/skill-trees/types";
+import type { CharacterSkillTree, SkillNode, LockCondition } from "@/data/skill-trees/types";
 import { characters } from "@/data/characters";
 import { characterName, t, type Locale, type TranslationKey } from "@/lib/i18n";
 import { skillTranslations, groupTranslations } from "@/data/skill-trees/translations";
 import { linearizeGroup, type LinearNode } from "@/lib/skill-tree-layout";
-import { SkillNodeCard } from "./SkillNodeCard";
+import { SkillNodeCard, type LockRequirement } from "./SkillNodeCard";
 import { SkillLockIndicator } from "./SkillLockIndicator";
 import { Footer } from "../crafting/Footer";
 
@@ -65,6 +65,40 @@ function getPrereq(parentIds: string[], locale: Locale, isLearned: (id: string) 
   return { label, satisfied };
 }
 
+function isLockSatisfied(
+  lockType: LockCondition,
+  lockId: string,
+  activatedSkills: Set<string>,
+  manualLocks: Set<string>,
+  nodeMap: Map<string, SkillNode>,
+): boolean {
+  switch (lockType.type) {
+    case "skill_count": {
+      let count = 0;
+      for (const id of activatedSkills) {
+        const n = nodeMap.get(id);
+        if (n?.tags?.includes(lockType.tag)) count++;
+      }
+      return count >= lockType.count;
+    }
+    case "total_skills":
+      return activatedSkills.size >= lockType.count;
+    case "boss_kill":
+    case "manual":
+      return manualLocks.has(lockId);
+    case "no_opposing_faction": {
+      const tag = lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
+      for (const id of activatedSkills) {
+        const n = nodeMap.get(id);
+        if (n?.tags?.includes(tag)) return false;
+      }
+      return true;
+    }
+    default:
+      return true;
+  }
+}
+
 export function SkillTreeView({
   tree,
   locale,
@@ -80,6 +114,7 @@ export function SkillTreeView({
 }: Props) {
   const char = characters.find((c) => c.id === tree.characterId);
   const pointsRef = useRef<HTMLParagraphElement>(null);
+  const nodeMap = useMemo(() => new Map(tree.nodes.map((n) => [n.id, n])), [tree.nodes]);
 
   const handleNoPoints = useCallback(() => {
     const el = pointsRef.current;
@@ -140,7 +175,26 @@ export function SkillTreeView({
       {/* Scrollable tree */}
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain" data-scroll-container="">
         <div className="max-w-2xl mx-auto w-full pb-8">
-          {groupedLinear.map(({ group, items }) => (
+          {groupedLinear.map(({ group, items }) => {
+            // Count how many skills reference each lock as a parent within this group.
+            // Exclusive locks (count === 1) → move inside the skill card.
+            // Shared locks (count >= 2) → keep as separate gate row outside.
+            const lockRefCount = new Map<string, number>();
+            for (const item of items) {
+              if (item.isLock) continue;
+              for (const pid of item.parentIds) {
+                const pnode = nodeMap.get(pid);
+                if (pnode && isLockNode(pnode) && pnode.lockType) {
+                  lockRefCount.set(pid, (lockRefCount.get(pid) ?? 0) + 1);
+                }
+              }
+            }
+            const consumedLocks = new Set<string>();
+            for (const [lockId, count] of lockRefCount) {
+              if (count === 1) consumedLocks.add(lockId);
+            }
+
+            return (
             <div key={group.id} className="mt-3 first:mt-2">
               {/* Group card */}
               <div
@@ -161,48 +215,23 @@ export function SkillTreeView({
 
                 {/* Nodes */}
                 <div className="px-1.5 py-1.5 space-y-1.5">
-                {items.map((item, i) => {
+                {items.map((item) => {
 
                   if (item.isLock && item.node.lockType) {
-                    // Lock gate
-                    const satisfied = (() => {
-                      switch (item.node.lockType.type) {
-                        case "skill_count": {
-                          let count = 0;
-                          for (const id of activatedSkills) {
-                            const n = tree.nodes.find((x) => x.id === id);
-                            if (n?.tags?.includes(item.node.lockType.tag)) count++;
-                          }
-                          return count >= item.node.lockType.count;
-                        }
-                        case "total_skills":
-                          return activatedSkills.size >= item.node.lockType.count;
-                        case "boss_kill":
-                          return true;
-                        case "no_opposing_faction": {
-                          const tag = item.node.lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
-                          for (const id of activatedSkills) {
-                            const n = tree.nodes.find((x) => x.id === id);
-                            if (n?.tags?.includes(tag)) return false;
-                          }
-                          return true;
-                        }
-                        case "manual":
-                          return manualLocks.has(item.node.id);
-                        default:
-                          return true;
-                      }
-                    })();
+                    // Skip locks that are moved inside a skill card
+                    if (consumedLocks.has(item.node.id)) return null;
+                    const lockType = item.node.lockType;
+                    const satisfied = isLockSatisfied(lockType, item.node.id, activatedSkills, manualLocks, nodeMap);
+                    const isManual = lockType.type === "manual" || lockType.type === "boss_kill";
 
                     return (
                       <div key={item.node.id} className="flex items-center mt-2" style={{ minHeight: 44 }}>
                         <div className="flex-1 min-w-0">
                           <SkillLockIndicator
-                            lockType={item.node.lockType}
+                            lockType={lockType}
                             isSatisfied={satisfied}
-                            groupColor={group.color}
                             locale={locale}
-                            onToggle={(item.node.lockType.type === "manual" || item.node.lockType.type === "boss_kill") ? () => onToggleManualLock(item.node.id) : undefined}
+                            onToggle={isManual ? () => onToggleManualLock(item.node.id) : undefined}
                           />
                         </div>
                       </div>
@@ -226,6 +255,21 @@ export function SkillTreeView({
                   // Regular skill node
                   const locked = !canLearn(item.node.id) && !isLearned(item.node.id);
                   const prereq = getPrereq(item.parentIds, locale, isLearned);
+                  const lockRequirements: LockRequirement[] = [];
+                  for (const pid of item.parentIds) {
+                    if (!consumedLocks.has(pid)) continue;
+                    const pnode = nodeMap.get(pid);
+                    if (!pnode || !pnode.lockType) continue;
+                    const lockType = pnode.lockType;
+                    const isManual = lockType.type === "manual" || lockType.type === "boss_kill";
+                    lockRequirements.push({
+                      id: pnode.id,
+                      lockType,
+                      satisfied: isLockSatisfied(lockType, pnode.id, activatedSkills, manualLocks, nodeMap),
+                      onToggle: isManual ? () => onToggleManualLock(pnode.id) : undefined,
+                    });
+                  }
+
                   return (
                     <div key={item.node.id}>
                       <div className="flex items-center" style={{ minHeight: 52 }}>
@@ -245,6 +289,7 @@ export function SkillTreeView({
                             onViewItem={onViewItem}
                             onNoPoints={handleNoPoints}
                             prereq={prereq}
+                            lockRequirements={lockRequirements.length > 0 ? lockRequirements : undefined}
                           />
                         </div>
                       </div>
@@ -254,7 +299,8 @@ export function SkillTreeView({
               </div>
               </div>
             </div>
-          ))}
+            );
+          })}
           <Footer />
         </div>
       </div>

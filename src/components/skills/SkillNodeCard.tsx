@@ -5,8 +5,17 @@ import { Check, Lock, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getItemsBySkill } from "@/data/skill-trees/skill-items";
 import { ItemSlot } from "@/components/ui/ItemSlot";
-import { itemName } from "@/lib/i18n";
+import { itemName, type Locale } from "@/lib/i18n";
 import { allItems } from "@/data/items";
+import type { LockCondition } from "@/data/skill-trees/types";
+import { LockConditionPill } from "./SkillLockIndicator";
+
+export interface LockRequirement {
+  id: string;
+  lockType: LockCondition;
+  satisfied: boolean;
+  onToggle?: () => void;
+}
 
 interface Props {
   skillId: string;
@@ -17,11 +26,12 @@ interface Props {
   isLocked: boolean;
   canLearn: boolean;
   groupColor: string;
-  locale: string;
+  locale: Locale;
   onToggle: () => void;
   onViewItem?: (itemId: string) => void;
   onNoPoints?: () => void;
   prereq?: { label: string; satisfied: boolean };
+  lockRequirements?: LockRequirement[];
 }
 
 export function SkillNodeCard({
@@ -38,6 +48,7 @@ export function SkillNodeCard({
   onViewItem,
   onNoPoints,
   prereq,
+  lockRequirements,
 }: Props) {
   const iconSrc = icon ? `/images/skill-icons/${icon}.png` : undefined;
   const relatedItemIds = getItemsBySkill(skillId);
@@ -66,20 +77,31 @@ export function SkillNodeCard({
       )}
       style={isLearned ? { backgroundColor: `${groupColor}08`, borderColor: `${groupColor}50` } : undefined}
     >
-      {/* Prereq pill */}
-      {prereq && (
-        <div className="flex">
-          <div
-            className={cn(
-              "inline-flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full border",
-              prereq.satisfied
-                ? "border-green-500/40 text-green-600 dark:text-green-400 bg-green-500/5"
-                : "border-border text-muted-foreground bg-surface",
-            )}
-          >
-            <span className={`inline-block size-[6px] rounded-full ${prereq.satisfied ? "bg-green-500" : "bg-muted-foreground/40"}`} />
-            {prereq.label}
-          </div>
+      {/* Requirement pills (prereq + locks) */}
+      {(prereq || (lockRequirements && lockRequirements.length > 0)) && (
+        <div className="flex flex-wrap gap-1.5">
+          {prereq && (
+            <div
+              className={cn(
+                "inline-flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full border",
+                prereq.satisfied
+                  ? "border-green-500/40 text-green-600 dark:text-green-400 bg-green-500/5"
+                  : "border-border text-muted-foreground bg-surface",
+              )}
+            >
+              <span className={`inline-block size-[6px] rounded-full ${prereq.satisfied ? "bg-green-500" : "bg-muted-foreground/40"}`} />
+              {prereq.label}
+            </div>
+          )}
+          {lockRequirements?.map((lr) => (
+            <LockConditionPill
+              key={lr.id}
+              lockType={lr.lockType}
+              isSatisfied={lr.satisfied}
+              locale={locale}
+              onToggle={lr.onToggle}
+            />
+          ))}
         </div>
       )}
 
