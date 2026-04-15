@@ -201,7 +201,7 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
 
       return true;
     },
-    [tree, activatedSkills, nodeMap, parentMap],
+    [tree, activatedSkills, nodeMap, parentMap, manualLocks],
   );
 
   const canUnlearn = useCallback(
