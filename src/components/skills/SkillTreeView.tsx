@@ -77,20 +77,30 @@ function RailDot({ color, isLock }: { color: string; isLock: boolean }) {
 
 // ── Merge indicator ──
 
-function MergeIndicator({ parentIds, locale, color }: { parentIds: string[]; locale: Locale; color: string }) {
+function PrereqIndicator({ parentIds, locale, color, isLearned }: { parentIds: string[]; locale: Locale; color: string; isLearned: (id: string) => boolean }) {
   if (parentIds.length <= 1) return null;
+  const anySatisfied = parentIds.some((id) => isLearned(id));
   const sep = locale === "ko" ? " 또는 " : " or ";
   const parentNames = parentIds.map((id) => `"${getTitle(id, locale)}"`).join(sep);
   const label = locale === "ko"
     ? `${parentNames} 습득 필요`
     : `Requires ${parentNames}`;
   return (
-    <div className="flex items-center" style={{ minHeight: 28 }}>
+    <div className="flex items-center" style={{ minHeight: 36 }}>
       <div className="shrink-0 w-7 relative">
         <div className="absolute left-[13px] top-0 bottom-0 w-0.5" style={{ backgroundColor: `${color}4d` }} />
       </div>
-      <div className="text-[10px] text-muted-foreground px-2 py-0.5 truncate">
-        ↑ {label}
+      <div className="flex-1 flex items-center gap-2 px-1">
+        <div className="flex-1 h-px bg-border" />
+        <div className={`flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full border ${
+          anySatisfied
+            ? "border-green-500/40 text-green-600 dark:text-green-400 bg-green-500/5"
+            : "border-border text-muted-foreground bg-surface"
+        }`}>
+          <span className={`inline-block size-[6px] rounded-full ${anySatisfied ? "bg-green-500" : "bg-muted-foreground/40"}`} />
+          {label}
+        </div>
+        <div className="flex-1 h-px bg-border" />
       </div>
     </div>
   );
@@ -243,7 +253,7 @@ export function SkillTreeView({
                   return (
                     <div key={item.node.id}>
                       {item.parentIds.length > 1 && (
-                        <MergeIndicator parentIds={item.parentIds} locale={locale} color={group.color} />
+                        <PrereqIndicator parentIds={item.parentIds} locale={locale} color={group.color} isLearned={isLearned} />
                       )}
                       <div className="flex items-center" style={{ minHeight: 52 }}>
                         <RailDot color={group.color} isLock={item.isLock} />
