@@ -194,22 +194,24 @@ def extract_icons():
         v1 = float(elem.get('v1', 0))
         v2 = float(elem.get('v2', 0))
 
-        # Convert UV to pixel coordinates
+        # Convert UV to pixel coordinates (Klei TEX: top-left origin, no V flip)
         x1 = int(u1 * tex_w)
         x2 = int(u2 * tex_w)
-        # V coordinates are flipped in Klei's format
-        y1 = int((1.0 - v2) * tex_h)
-        y2 = int((1.0 - v1) * tex_h)
+        y1 = int(v1 * tex_h)
+        y2 = int(v2 * tex_h)
 
         out_path = os.path.join(OUT_DIR, f"{name}.png")
 
-        # Skip if already exists
-        if os.path.exists(out_path):
+        # Skip if already exists and is a real image (not placeholder)
+        if os.path.exists(out_path) and os.path.getsize(out_path) > 100:
             skip += 1
             continue
 
         # Crop the icon
         icon = full_img.crop((x1, y1, x2, y2))
+
+        # Flip vertically (Klei TEX stores images upside down)
+        icon = icon.transpose(Image.FLIP_TOP_BOTTOM)
 
         # Resize to 64x64 if needed
         if icon.size != (64, 64):
