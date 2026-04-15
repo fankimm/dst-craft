@@ -198,33 +198,34 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   return (
     <div className="flex flex-col h-full bg-background text-foreground overflow-hidden">
       {/* Breadcrumb */}
-      {selectedChar && (
-        <div className="border-b border-border bg-background/80 px-4 py-2.5 shrink-0">
-          <nav className="flex items-center gap-1 min-w-0 text-sm">
-            <button
-              onClick={handleGoHome}
-              className="shrink-0 rounded-sm hover:opacity-70 transition-opacity"
-            >
-              <img
-                src={charObj ? `/images/category-icons/characters/${charObj.portrait}.png` : "/images/category-icons/tools.png"}
-                alt=""
-                className="size-5 rounded-sm"
-              />
+      <div className="border-b border-border bg-background/80 px-4 py-2.5 shrink-0">
+        <nav className="flex items-center gap-1 min-w-0 text-sm">
+          {/* Home icon */}
+          {selectedChar ? (
+            <button onClick={handleGoHome} className="shrink-0 rounded-sm hover:opacity-70 transition-opacity">
+              <img src="/images/skill-icons/wilson_alchemy_1.png" alt="" className="size-5 rounded-sm" />
             </button>
-            <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
-            <button
-              onClick={handleGoHome}
-              className="text-muted-foreground hover:text-foreground transition-colors truncate"
-            >
-              {t(resolvedLocale, "skills_select_character" as TranslationKey)}
-            </button>
-            <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
+          ) : (
+            <img src="/images/skill-icons/wilson_alchemy_1.png" alt="" className="size-5 rounded-sm" />
+          )}
+          <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
+          {selectedChar ? (
+            <>
+              <button onClick={handleGoHome} className="text-muted-foreground hover:text-foreground transition-colors truncate">
+                {t(resolvedLocale, "tab_skills" as TranslationKey)}
+              </button>
+              <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
+              <span className="font-semibold text-foreground truncate">
+                {charObj ? characterName(charObj, resolvedLocale) : selectedChar}
+              </span>
+            </>
+          ) : (
             <span className="font-semibold text-foreground truncate">
-              {charObj ? characterName(charObj, resolvedLocale) : selectedChar}
+              {t(resolvedLocale, "tab_skills" as TranslationKey)}
             </span>
-          </nav>
-        </div>
-      )}
+          )}
+        </nav>
+      </div>
 
       {/* Content */}
       <div className={cn("flex-1 min-h-0 overflow-hidden", slideClass)}>

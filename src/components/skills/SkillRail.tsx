@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+
 interface RailNode {
   isLock: boolean;
   isLearned: boolean;
@@ -9,96 +11,64 @@ interface RailNode {
 interface Props {
   nodes: RailNode[];
   color: string;
-  nodeHeight: number;
 }
 
 /**
- * SVG vertical rail for a group of skill nodes.
- * Draws a colored vertical line with junction dots at each node position.
+ * CSS-based vertical rail for a group of skill nodes.
+ * Flexbox-aligned — each row matches the corresponding node card's height.
  */
-export function SkillRail({ nodes, color, nodeHeight }: Props) {
+export function SkillRail({ nodes, color }: Props) {
   if (nodes.length === 0) return null;
 
-  const width = 28;
-  const cx = width / 2;
-  const totalHeight = nodes.length * nodeHeight;
-
   return (
-    <svg
-      width={width}
-      height={totalHeight}
-      viewBox={`0 0 ${width} ${totalHeight}`}
-      className="shrink-0"
-    >
-      {/* Main vertical line */}
-      <line
-        x1={cx}
-        y1={nodeHeight / 2}
-        x2={cx}
-        y2={totalHeight - nodeHeight / 2}
-        stroke={color}
-        strokeWidth={2}
-        strokeOpacity={0.3}
-      />
-
-      {/* Active path segments */}
+    <div className="flex flex-col items-center shrink-0 w-7">
       {nodes.map((node, i) => {
-        if (!node.isLearned || i === nodes.length - 1) return null;
-        const nextNode = nodes[i + 1];
-        if (!nextNode?.isLearned) return null;
-        const y1 = i * nodeHeight + nodeHeight / 2;
-        const y2 = (i + 1) * nodeHeight + nodeHeight / 2;
+        const isFirst = i === 0;
+        const isLast = i === nodes.length - 1;
+        const nextLearned = i < nodes.length - 1 && nodes[i + 1].isLearned;
+        const segmentActive = node.isLearned && nextLearned;
+
         return (
-          <line
-            key={`active-${i}`}
-            x1={cx}
-            y1={y1}
-            x2={cx}
-            y2={y2}
-            stroke={color}
-            strokeWidth={2.5}
-            strokeOpacity={0.9}
-          />
-        );
-      })}
-
-      {/* Junction dots */}
-      {nodes.map((node, i) => {
-        const cy = i * nodeHeight + nodeHeight / 2;
-
-        if (node.isLock) {
-          // Diamond for lock nodes
-          const size = 4;
-          return (
-            <rect
-              key={i}
-              x={cx - size}
-              y={cy - size}
-              width={size * 2}
-              height={size * 2}
-              transform={`rotate(45 ${cx} ${cy})`}
-              fill={node.isLearned ? color : "transparent"}
-              stroke={color}
-              strokeWidth={1.5}
-              strokeOpacity={node.isLearned ? 1 : 0.5}
+          <div key={i} className="flex flex-col items-center flex-1 min-h-[52px]">
+            {/* Top segment line */}
+            <div
+              className="w-0.5 flex-1"
+              style={{
+                backgroundColor: isFirst ? "transparent" : `${color}${nodes[i - 1]?.isLearned && node.isLearned ? "e6" : "4d"}`,
+              }}
             />
-          );
-        }
 
-        // Circle for regular nodes
-        return (
-          <circle
-            key={i}
-            cx={cx}
-            cy={cy}
-            r={5}
-            fill={node.isLearned ? color : "transparent"}
-            stroke={color}
-            strokeWidth={node.isLearned ? 0 : 2}
-            strokeOpacity={node.canLearn || node.isLearned ? 1 : 0.3}
-          />
+            {/* Junction */}
+            {node.isLock ? (
+              <div
+                className="size-[10px] rotate-45 shrink-0"
+                style={{
+                  backgroundColor: node.isLearned ? color : "transparent",
+                  border: `1.5px solid ${color}`,
+                  opacity: node.isLearned ? 1 : 0.5,
+                }}
+              />
+            ) : (
+              <div
+                className={cn("size-[10px] rounded-full shrink-0")}
+                style={{
+                  backgroundColor: node.isLearned ? color : "transparent",
+                  border: node.isLearned ? "none" : `2px solid ${color}`,
+                  opacity: node.canLearn || node.isLearned ? 1 : 0.3,
+                }}
+              />
+            )}
+
+            {/* Bottom segment line */}
+            <div
+              className="w-0.5 flex-1"
+              style={{
+                backgroundColor: isLast ? "transparent" : `${color}${segmentActive ? "e6" : "4d"}`,
+              }}
+            />
+          </div>
         );
       })}
-    </svg>
+    </div>
   );
 }

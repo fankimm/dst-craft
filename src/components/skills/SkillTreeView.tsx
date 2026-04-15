@@ -59,7 +59,7 @@ function sortNodes(nodes: SkillNode[]): SkillNode[] {
   });
 }
 
-const NODE_HEIGHT = 52; // px per node row
+// Node heights are now dynamic (CSS flex) — no fixed height constant
 
 export function SkillTreeView({
   tree,
@@ -154,7 +154,6 @@ export function SkillTreeView({
                     canLearn: canLearn(n.id),
                   }))}
                   color={group.color}
-                  nodeHeight={NODE_HEIGHT}
                 />
 
                 {/* Node cards */}
@@ -193,7 +192,7 @@ export function SkillTreeView({
                         })();
 
                         return (
-                          <div key={node.id} style={{ height: NODE_HEIGHT }} className="flex items-center">
+                          <div key={node.id} style={{ minHeight: 52 }} className="flex items-center">
                             <SkillLockIndicator
                               lockType={node.lockType}
                               isSatisfied={satisfied}
@@ -206,7 +205,7 @@ export function SkillTreeView({
                       }
                       // Lock node without lockType: render as a simple gate line (always open in simulator)
                       return (
-                        <div key={node.id} style={{ height: NODE_HEIGHT }} className="flex items-center px-3">
+                        <div key={node.id} style={{ minHeight: 52 }} className="flex items-center px-3">
                           <div className="flex items-center gap-2 w-full">
                             <div className="flex-1 h-px bg-border" />
                             <span
@@ -220,7 +219,7 @@ export function SkillTreeView({
                     }
 
                     return (
-                      <div key={node.id} style={{ height: NODE_HEIGHT }} className="flex items-center pr-2">
+                      <div key={node.id} style={{ minHeight: 52 }} className="flex items-center pr-2">
                         <SkillNodeCard
                           skillId={node.id}
                           icon={node.icon}
