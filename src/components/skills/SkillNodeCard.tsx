@@ -3,6 +3,10 @@
 import Image from "next/image";
 import { Check, Lock, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getItemsBySkill } from "@/data/skill-trees/skill-items";
+import { ItemSlot } from "@/components/ui/ItemSlot";
+import { itemName } from "@/lib/i18n";
+import { allItems } from "@/data/items";
 
 interface Props {
   skillId: string;
@@ -13,8 +17,10 @@ interface Props {
   isLocked: boolean;
   canLearn: boolean;
   groupColor: string;
-  onTap: () => void;
+  locale: string;
   onToggle: () => void;
+  onViewItem?: (itemId: string) => void;
+  onNoPoints?: () => void;
 }
 
 export function SkillNodeCard({
@@ -26,86 +32,105 @@ export function SkillNodeCard({
   isLocked,
   canLearn,
   groupColor,
-  onTap,
+  locale,
   onToggle,
+  onViewItem,
+  onNoPoints,
 }: Props) {
-  const iconSrc = icon
-    ? `/images/skill-icons/${icon}.png`
-    : undefined;
+  const iconSrc = icon ? `/images/skill-icons/${icon}.png` : undefined;
+  const relatedItemIds = getItemsBySkill(skillId);
+  const relatedItems = relatedItemIds
+    .map((id) => allItems.find((item) => item.id === id))
+    .filter(Boolean) as typeof allItems;
+
+  const handleToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!canLearn && !isLearned && onNoPoints) {
+      onNoPoints();
+      return;
+    }
+    onToggle();
+  };
 
   return (
     <div
       className={cn(
-        "flex items-center gap-2.5 px-3 py-2 rounded-lg border transition-colors w-full",
+        "flex flex-col gap-1.5 px-3 py-2 rounded-lg border transition-colors w-full",
         isLocked
           ? "bg-surface/50 border-border/50 opacity-60"
           : !isLearned
-            ? "bg-surface border-border hover:bg-surface-hover hover:border-ring"
+            ? "bg-surface border-border"
             : "",
       )}
-      onClick={onTap}
-      role="button"
-      tabIndex={0}
       style={isLearned ? { backgroundColor: `${groupColor}08`, borderColor: `${groupColor}50` } : undefined}
     >
-      {/* Icon */}
-      <div
-        className={cn(
-          "shrink-0 size-10 rounded-md flex items-center justify-center overflow-hidden",
-        )}
-        style={!iconSrc ? { backgroundColor: `${groupColor}15`, borderColor: `${groupColor}40` } : undefined}
-      >
-        {iconSrc ? (
-          <Image src={iconSrc} alt="" width={40} height={40} className="size-10" />
-        ) : (
-          <div
-            className="size-5 rounded-full"
-            style={{ backgroundColor: `${groupColor}60` }}
-          />
-        )}
+      {/* Main row: icon + title + toggle */}
+      <div className="flex items-center gap-2.5">
+        {/* Icon */}
+        <div
+          className="shrink-0 size-10 rounded-md flex items-center justify-center overflow-hidden"
+          style={!iconSrc ? { backgroundColor: `${groupColor}15` } : undefined}
+        >
+          {iconSrc ? (
+            <Image src={iconSrc} alt="" width={40} height={40} className="size-10" />
+          ) : (
+            <div className="size-5 rounded-full" style={{ backgroundColor: `${groupColor}60` }} />
+          )}
+        </div>
+
+        {/* Title + description */}
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium text-foreground truncate">{title}</div>
+          {description && (
+            <div className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5">
+              {description}
+            </div>
+          )}
+        </div>
+
+        {/* Toggle button */}
+        <button
+          onClick={handleToggle}
+          disabled={isLocked && !isLearned}
+          className={cn(
+            "shrink-0 size-7 rounded-full flex items-center justify-center transition-all touch-manipulation",
+            isLearned
+              ? "text-white"
+              : canLearn
+                ? "border-2 text-muted-foreground hover:text-foreground"
+                : "border border-border/50 text-muted-foreground/50",
+          )}
+          style={
+            isLearned
+              ? { backgroundColor: groupColor }
+              : canLearn
+                ? { borderColor: groupColor, color: groupColor }
+                : undefined
+          }
+        >
+          {isLearned ? (
+            <Check className="size-4" strokeWidth={3} />
+          ) : isLocked ? (
+            <Lock className="size-3" />
+          ) : (
+            <Plus className="size-4" />
+          )}
+        </button>
       </div>
 
-      {/* Title + description */}
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-medium text-foreground truncate">{title}</div>
-        {description && (
-          <div className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5">
-            {description}
-          </div>
-        )}
-      </div>
-
-      {/* Toggle button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggle();
-        }}
-        disabled={isLocked && !isLearned}
-        className={cn(
-          "shrink-0 size-7 rounded-full flex items-center justify-center transition-all touch-manipulation",
-          isLearned
-            ? "text-white"
-            : canLearn
-              ? "border-2 text-muted-foreground hover:text-foreground"
-              : "border border-border/50 text-muted-foreground/50",
-        )}
-        style={
-          isLearned
-            ? { backgroundColor: groupColor }
-            : canLearn
-              ? { borderColor: groupColor, color: groupColor }
-              : undefined
-        }
-      >
-        {isLearned ? (
-          <Check className="size-4" strokeWidth={3} />
-        ) : isLocked ? (
-          <Lock className="size-3" />
-        ) : (
-          <Plus className="size-4" />
-        )}
-      </button>
+      {/* Related items (inline) */}
+      {relatedItems.length > 0 && (
+        <div className="flex flex-wrap gap-2 pl-[50px]">
+          {relatedItems.map((item) => (
+            <ItemSlot
+              key={item.id}
+              icon={item.image}
+              label={itemName(item, locale)}
+              onClick={onViewItem ? () => onViewItem(item.id) : undefined}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

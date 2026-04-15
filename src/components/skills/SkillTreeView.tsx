@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import { RotateCcw } from "lucide-react";
 import type { CharacterSkillTree, SkillNode } from "@/data/skill-trees/types";
@@ -22,10 +22,10 @@ interface Props {
   canLearn: (id: string) => boolean;
   canUnlearn: (id: string) => boolean;
   onToggle: (id: string) => void;
-  onNodeTap: (node: SkillNode) => void;
   manualLocks: Set<string>;
   onToggleManualLock: (id: string) => void;
   onReset: () => void;
+  onViewItem?: (itemId: string) => void;
 }
 
 function isLockNode(node: SkillNode): boolean {
@@ -96,12 +96,21 @@ export function SkillTreeView({
   isLearned,
   canLearn,
   onToggle,
-  onNodeTap,
   manualLocks,
   onToggleManualLock,
   onReset,
+  onViewItem,
 }: Props) {
   const char = characters.find((c) => c.id === tree.characterId);
+  const pointsRef = useRef<HTMLParagraphElement>(null);
+
+  const handleNoPoints = useCallback(() => {
+    const el = pointsRef.current;
+    if (!el) return;
+    el.classList.remove("animate-shake");
+    void el.offsetWidth; // force reflow
+    el.classList.add("animate-shake");
+  }, []);
 
   // Group and linearize nodes
   const groupedLinear = useMemo(() => {
@@ -134,10 +143,10 @@ export function SkillTreeView({
           <h2 className="text-sm font-semibold text-foreground truncate">
             {char ? characterName(char, locale) : tree.characterId}
           </h2>
-          <p className="text-xs text-muted-foreground">
+          <p ref={pointsRef} className="text-xs text-muted-foreground">
             {locale === "ko"
-              ? `습득 ${totalPoints} · 남은 포인트 ${15 - totalPoints}`
-              : `Learned ${totalPoints} · ${15 - totalPoints} points left`}
+              ? `습득 ${totalPoints} · 남은 포인트 ${Math.max(0, 15 - totalPoints)}`
+              : `Learned ${totalPoints} · ${Math.max(0, 15 - totalPoints)} points left`}
           </p>
         </div>
         {totalPoints > 0 && (
@@ -257,8 +266,10 @@ export function SkillTreeView({
                             isLocked={locked}
                             canLearn={canLearn(item.node.id)}
                             groupColor={group.color}
-                            onTap={() => onNodeTap(item.node)}
+                            locale={locale}
                             onToggle={() => onToggle(item.node.id)}
+                            onViewItem={onViewItem}
+                            onNoPoints={handleNoPoints}
                           />
                         </div>
                       </div>

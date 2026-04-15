@@ -255,10 +255,10 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
             canLearn={canLearn}
             canUnlearn={canUnlearn}
             onToggle={toggleSkill}
-            onNodeTap={handleNodeTap}
             manualLocks={manualLocks}
             onToggleManualLock={toggleManualLock}
             onReset={resetAll}
+            onViewItem={onViewCraftingItem}
           />
         ) : (
           <div className="h-full overflow-y-auto overscroll-contain" data-scroll-container="">

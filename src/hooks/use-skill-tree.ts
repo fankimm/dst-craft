@@ -160,6 +160,13 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
       if (isLockNode(node)) return false;
       if (node.tags?.includes("infographic")) return false;
 
+      // Check skill point limit (max 15)
+      const currentPoints = [...activatedSkills].filter((sid) => {
+        const n = nodeMap.get(sid);
+        return n && !isLockNode(n);
+      }).length;
+      if (currentPoints >= 15) return false;
+
       // Check parent requirement (OR gate): at least one parent must be activated
       // (or satisfied, for lock parents), OR node must be root
       if (node.root) {
