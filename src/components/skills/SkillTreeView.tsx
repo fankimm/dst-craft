@@ -107,7 +107,9 @@ export function SkillTreeView({
             {char ? characterName(char, locale) : tree.characterId}
           </h2>
           <p className="text-xs text-muted-foreground">
-            {t(locale, "skills_points" as TranslationKey)} {totalPoints}/{maxPoints}
+            {locale === "ko"
+              ? `습득 ${totalPoints} · 남은 포인트 ${15 - totalPoints}`
+              : `Learned ${totalPoints} · ${15 - totalPoints} points left`}
           </p>
         </div>
         {totalPoints > 0 && (
