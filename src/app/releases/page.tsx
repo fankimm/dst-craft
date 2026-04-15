@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.11.3",
+    date: "2026-04-16",
+    dev: [
+      "tooling: scripts/extract_skill_ui_icons.py — skilltree.tex 아틀라스에서 UI 아이콘 추출 (skill_icon, skill_icon_bw, locked, locked_skill, frame)",
+      "ui: 스킬 탭 아이콘을 인게임 눈 모양 아이콘(skill_icon.tex)으로 교체",
+      "ui: 스킬트리 헤더의 '습득/남은 포인트' 텍스트를 인게임 스타일로 변경 — 눈 아이콘 + '15 통찰력 남음' (인게임과 동일 표현)",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 — 인게임과 동일한 눈 아이콘 + '통찰력 남음' 표시로 변경",
+        "스킬 탭 아이콘도 인게임 눈 모양으로 교체",
+      ],
+      en: [
+        "Skill tree — switched to in-game eye icon + 'insight left' display",
+        "Skills tab now uses the in-game eye icon",
+      ],
+    },
+  },
+  {
     version: "0.11.2",
     date: "2026-04-16",
     dev: [

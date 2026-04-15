@@ -22,7 +22,7 @@ const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?
   { id: "cooking", labelKey: "tab_cooking", image: "/images/category-icons/cooking.png" },
   { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
   { id: "bosses", labelKey: "tab_bosses", image: "/images/game-items/deerclops_eyeball.png" },
-  { id: "skills", labelKey: "tab_skills", image: "/images/skill-icons/wilson_alchemy_1.png", adminOnly: true },
+  { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.png", adminOnly: true },
   { id: "settings", labelKey: "tab_settings", image: "/images/game-items/gears.png" },
 ];
 

@@ -125,7 +125,7 @@ export function SkillTreeView({
   onViewItem,
 }: Props) {
   const char = characters.find((c) => c.id === tree.characterId);
-  const pointsRef = useRef<HTMLParagraphElement>(null);
+  const pointsRef = useRef<HTMLDivElement>(null);
   const nodeMap = useMemo(() => new Map(tree.nodes.map((n) => [n.id, n])), [tree.nodes]);
 
   const handleNoPoints = useCallback(() => {
@@ -172,11 +172,18 @@ export function SkillTreeView({
               </span>
             )}
           </h2>
-          <p ref={pointsRef} className="text-xs text-muted-foreground">
-            {locale === "ko"
-              ? `습득 ${totalPoints} · 남은 포인트 ${Math.max(0, 15 - totalPoints)}`
-              : `Learned ${totalPoints} · ${Math.max(0, 15 - totalPoints)} points left`}
-          </p>
+          <div ref={pointsRef} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Image
+              src="/images/ui/skill_eye.png"
+              alt=""
+              width={16}
+              height={16}
+              className="size-4"
+            />
+            <span className="font-semibold text-foreground">{Math.max(0, 15 - totalPoints)}</span>
+            <span>{locale === "ko" ? "통찰력 남음" : "insight left"}</span>
+            <span className="opacity-60">· {locale === "ko" ? `습득 ${totalPoints}` : `learned ${totalPoints}`}</span>
+          </div>
         </div>
         {totalPoints > 0 && (
           <button
