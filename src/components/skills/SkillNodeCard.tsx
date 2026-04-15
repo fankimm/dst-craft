@@ -91,7 +91,6 @@ export function SkillNodeCard({
         {/* Toggle button */}
         <button
           onClick={handleToggle}
-          disabled={isLocked && !isLearned}
           className={cn(
             "shrink-0 size-7 rounded-full flex items-center justify-center transition-all touch-manipulation",
             isLearned
