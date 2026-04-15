@@ -44,6 +44,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     isLearned,
     canLearn,
     canUnlearn,
+    canUnlockManualLock,
     toggleSkill,
     resetAll,
   } = useSkillTree(tree, manualLocks);
@@ -68,14 +69,19 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     window.addEventListener("dst-tab-go-home", handler);
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, []);
-  const toggleManualLock = useCallback((nodeId: string) => {
+  const toggleManualLock = useCallback((nodeId: string, onBlocked?: () => void) => {
+    const currentlyOn = manualLocks.has(nodeId);
+    if (currentlyOn && !canUnlockManualLock(nodeId)) {
+      onBlocked?.();
+      return;
+    }
     setManualLocks((prev) => {
       const next = new Set(prev);
       if (next.has(nodeId)) next.delete(nodeId);
       else next.add(nodeId);
       return next;
     });
-  }, []);
+  }, [manualLocks, canUnlockManualLock]);
 
   const handleSelectChar = useCallback((charId: string) => {
     setSelectedChar(charId);

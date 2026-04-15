@@ -23,7 +23,7 @@ interface Props {
   canUnlearn: (id: string) => boolean;
   onToggle: (id: string) => void;
   manualLocks: Set<string>;
-  onToggleManualLock: (id: string) => void;
+  onToggleManualLock: (id: string, onBlocked?: () => void) => void;
   onReset: () => void;
   onViewItem?: (itemId: string) => void;
 }
@@ -231,7 +231,7 @@ export function SkillTreeView({
                             lockType={lockType}
                             isSatisfied={satisfied}
                             locale={locale}
-                            onToggle={isManual ? () => onToggleManualLock(item.node.id) : undefined}
+                            onToggle={isManual ? () => onToggleManualLock(item.node.id, handleNoPoints) : undefined}
                           />
                         </div>
                       </div>
@@ -266,7 +266,7 @@ export function SkillTreeView({
                       id: pnode.id,
                       lockType,
                       satisfied: isLockSatisfied(lockType, pnode.id, activatedSkills, manualLocks, nodeMap),
-                      onToggle: isManual ? () => onToggleManualLock(pnode.id) : undefined,
+                      onToggle: isManual ? () => onToggleManualLock(pnode.id, handleNoPoints) : undefined,
                     });
                   }
 

@@ -185,6 +185,12 @@
 - **원인**: 보스 프리팹(`alterguardian_phase3.lua`)의 `SetSharedLootTable`만 확인하고 끝냄. 실제로는 보스 사망 → 오브(`alterguardian_phase3dead`) 스폰 → **오브의 loot table**에서 왕관 100% 드롭하는 2단계 구조
 - **교훈**: DST 보스의 전리품은 단일 loot table만이 아님. 사망 시 SpawnPrefab으로 생성되는 중간 엔티티(dead 오브, corpse 등)의 loot table도 반드시 확인. `grep "SpawnPrefab" stategraph`로 사망 애니메이션 중 스폰되는 프리팹 추적
 
+### isLockSatisfied가 manualLocks를 받지 않아서 boss_kill/manual lock AND 게이트 통과 불가
+- **문제**: 친화(allegiance) 스킬(그림자/월광 가희)을 12스킬+보스 처치 토글 모두 켜도 잠금 상태로 남아 습득 불가
+- **원인**: `use-skill-tree.ts`의 `isLockSatisfied`가 `manualLocks` 파라미터를 받지 않고 boss_kill=false, manual=true로 하드코딩됨. `canLearn`의 locks(AND 게이트) 체크는 이 함수를 그대로 호출해서 boss_kill이 항상 미충족으로 판정. parent(OR 게이트) 쪽에만 `manualLocks` 특수 분기가 있었음
+- **교훈**: lock 충족 판정 로직은 한 곳(`isLockSatisfied`)으로 통합하고 `manualLocks`를 인자로 받을 것. 호출부마다 분기를 추가하면 일부 경로에서 누락됨. SkillTreeView에 같은 이름의 헬퍼를 만들면서 hook 쪽의 기존 버그를 보지 못했던 것도 원인
+- **검증**: 친화 그룹이 있는 캐릭터(Wilson 등)에서 12스킬 + fuelweaver/celestialchampion 토글 후 그림자/월광 스킬이 학습 가능한지 UI 확인
+
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
 - pixel_format 0=DXT1(bcn 1), 1=DXT3(bcn 2), 2=DXT5(bcn 3)

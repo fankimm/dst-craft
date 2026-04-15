@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.10.3",
+    date: "2026-04-15",
+    dev: [
+      "fix: 친화(allegiance) 스킬이 '총 12 스킬 + 보스 처치 토글' 조건 충족에도 잠금 상태로 남던 버그 — use-skill-tree.ts의 isLockSatisfied가 manualLocks를 받지 않아 boss_kill/manual lock의 AND 게이트 판정이 항상 실패",
+      "feat: manual/boss_kill lock을 해제할 때, 해당 lock에 의존하는 습득된 스킬이 있으면 토글 차단 + shake 효과 — hook에 canUnlockManualLock 추가",
+      "ui: 탭 메뉴 텍스트 줄바꿈 방지 — 'Crock Pot' 등 공백 포함 라벨이 두 줄로 깨지지 않도록 whitespace-nowrap 적용",
+    ],
+    changes: {
+      ko: [
+        "친화 스킬 잠금 버그 수정 — 12개 스킬 + 보스 처치 조건 충족 시 그림자/월광 스킬 정상 습득 가능",
+        "커스텀 과제(예: 전투의 함성 10번 사용) 해제가 습득된 하위 스킬을 깨뜨릴 경우 차단하고 shake 효과로 알림",
+        "탭 메뉴 텍스트가 두 줄로 깨지는 문제 수정",
+      ],
+      en: [
+        "Fix Affinity skill lock bug — Shadow/Lunar skills now learnable when 12-skill + boss-kill conditions are met",
+        "Prevent unlocking a custom task (e.g., 'Use Battle Cry 10 times') when it would break an already-learned downstream skill; shake on blocked action",
+        "Fix tab menu text wrapping onto two lines",
+      ],
+    },
+  },
+  {
     version: "0.10.2",
     date: "2026-04-15",
     dev: [

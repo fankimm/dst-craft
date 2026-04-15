@@ -224,7 +224,7 @@ export function AppShell() {
                   className={cn("size-4", !isActive && "opacity-50")}
                 />
               ) : null}
-              <span>{t(resolvedLocale, tab.labelKey)}</span>
+              <span className="whitespace-nowrap">{t(resolvedLocale, tab.labelKey)}</span>
               {isActive && (
                 <span className="absolute bottom-0 inset-x-4 h-0.5 bg-foreground rounded-full" />
               )}

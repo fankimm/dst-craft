@@ -10,6 +10,7 @@ interface UseSkillTreeReturn {
   isLearned: (id: string) => boolean;
   canLearn: (id: string) => boolean;
   canUnlearn: (id: string) => boolean;
+  canUnlockManualLock: (lockId: string) => boolean;
   toggleSkill: (id: string) => void;
   resetAll: () => void;
 }
@@ -75,6 +76,7 @@ function isLockSatisfied(
   node: SkillNode,
   activated: Set<string>,
   nodeMap: Map<string, SkillNode>,
+  manualLocks?: Set<string>,
 ): boolean {
   if (!node.lockType) return true;
 
@@ -84,16 +86,12 @@ function isLockSatisfied(
     case "total_skills":
       return activated.size >= node.lockType.count;
     case "boss_kill":
-      // Boss kills use manualLocks toggle (same as manual type)
-      return false; // controlled via manualLocks in canLearn
+    case "manual":
+      return manualLocks?.has(node.id) ?? false;
     case "no_opposing_faction": {
       const opposingTag = node.lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
       return countTag(opposingTag, activated, nodeMap) === 0;
     }
-    case "manual":
-      // Manual locks use external state — checked via manualLocks Set
-      // Return true here; actual check happens in canLearn with manualLocks param
-      return true;
     default:
       return true;
   }
@@ -176,13 +174,9 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
         if (parents && parents.length > 0) {
           const hasActiveParent = parents.some((pid) => {
             if (activatedSkills.has(pid)) return true;
-            // Lock parent: check if satisfied (via lockType or manualLocks)
             const parentNode = nodeMap.get(pid);
             if (parentNode && isLockNode(parentNode)) {
-              if (parentNode.lockType?.type === "manual" || parentNode.lockType?.type === "boss_kill") {
-                return manualLocks?.has(pid) ?? false;
-              }
-              return isLockSatisfied(parentNode, activatedSkills, nodeMap);
+              return isLockSatisfied(parentNode, activatedSkills, nodeMap, manualLocks);
             }
             return false;
           });
@@ -195,7 +189,7 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
         for (const lockId of node.locks) {
           const lockNode = nodeMap.get(lockId);
           if (!lockNode) return false;
-          if (!isLockSatisfied(lockNode, activatedSkills, nodeMap)) return false;
+          if (!isLockSatisfied(lockNode, activatedSkills, nodeMap, manualLocks)) return false;
         }
       }
 
@@ -240,7 +234,7 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
             simulated.delete(id);
             for (const lockId of depNode.locks) {
               const lockNode = nodeMap.get(lockId);
-              if (lockNode && !isLockSatisfied(lockNode, simulated, nodeMap)) {
+              if (lockNode && !isLockSatisfied(lockNode, simulated, nodeMap, manualLocks)) {
                 return false;
               }
             }
@@ -250,7 +244,47 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
 
       return true;
     },
-    [activatedSkills, nodeMap, parentMap, dependentMap],
+    [activatedSkills, nodeMap, parentMap, dependentMap, manualLocks],
+  );
+
+  const canUnlockManualLock = useCallback(
+    (lockId: string) => {
+      if (!tree) return true;
+      if (!manualLocks?.has(lockId)) return true; // already unlocked — toggle would turn ON
+      const simulated = new Set(manualLocks);
+      simulated.delete(lockId);
+      // Verify every activated skill still satisfies its parent requirement + AND locks
+      for (const skillId of activatedSkills) {
+        const node = nodeMap.get(skillId);
+        if (!node || isLockNode(node)) continue;
+        // Parent OR gate
+        if (!node.root) {
+          const parents = parentMap.get(skillId);
+          if (parents && parents.length > 0) {
+            const ok = parents.some((pid) => {
+              if (activatedSkills.has(pid)) return true;
+              const pn = nodeMap.get(pid);
+              if (pn && isLockNode(pn)) {
+                return isLockSatisfied(pn, activatedSkills, nodeMap, simulated);
+              }
+              return false;
+            });
+            if (!ok) return false;
+          }
+        }
+        // Locks AND gate
+        if (node.locks) {
+          for (const lId of node.locks) {
+            const ln = nodeMap.get(lId);
+            if (ln && !isLockSatisfied(ln, activatedSkills, nodeMap, simulated)) {
+              return false;
+            }
+          }
+        }
+      }
+      return true;
+    },
+    [tree, activatedSkills, manualLocks, nodeMap, parentMap],
   );
 
   const toggleSkill = useCallback(
@@ -287,6 +321,7 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
     isLearned,
     canLearn,
     canUnlearn,
+    canUnlockManualLock,
     toggleSkill,
     resetAll,
   };
