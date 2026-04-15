@@ -9,6 +9,7 @@ interface Props {
   isSatisfied: boolean;
   groupColor: string;
   locale: Locale;
+  onToggle?: () => void;
 }
 
 function lockLabel(lock: LockCondition, locale: Locale): string {
@@ -29,12 +30,16 @@ function lockLabel(lock: LockCondition, locale: Locale): string {
       return lock.faction === "lunar"
         ? t(locale, "skills_gate_no_lunar" as TranslationKey)
         : t(locale, "skills_gate_no_shadow" as TranslationKey);
+    case "manual":
+      return locale === "ko" ? lock.desc_ko : lock.desc_en;
     default:
       return "";
   }
 }
 
-export function SkillLockIndicator({ lockType, isSatisfied, groupColor, locale }: Props) {
+export function SkillLockIndicator({ lockType, isSatisfied, groupColor, locale, onToggle }: Props) {
+  const isManual = lockType.type === "manual";
+
   return (
     <div className="flex items-center gap-2 px-3 py-1.5">
       {/* Left line */}
@@ -47,15 +52,27 @@ export function SkillLockIndicator({ lockType, isSatisfied, groupColor, locale }
           isSatisfied
             ? "border-green-500/40 text-green-600 dark:text-green-400 bg-green-500/5"
             : "border-border text-muted-foreground bg-surface",
+          isManual && "cursor-pointer hover:border-ring transition-colors",
         )}
+        onClick={isManual ? onToggle : undefined}
+        role={isManual ? "button" : undefined}
       >
-        <span
-          className="inline-block size-2.5 rotate-45"
-          style={{
-            backgroundColor: isSatisfied ? "#22c55e" : `${groupColor}60`,
-            border: `1px solid ${isSatisfied ? "#22c55e" : groupColor}`,
-          }}
-        />
+        {isManual ? (
+          <span className={cn(
+            "inline-flex items-center justify-center size-3 rounded-sm border transition-colors",
+            isSatisfied ? "bg-green-500 border-green-500" : "border-muted-foreground/50",
+          )}>
+            {isSatisfied && <span className="text-white text-[8px]">✓</span>}
+          </span>
+        ) : (
+          <span
+            className="inline-block size-2.5 rotate-45"
+            style={{
+              backgroundColor: isSatisfied ? "#22c55e" : `${groupColor}60`,
+              border: `1px solid ${isSatisfied ? "#22c55e" : groupColor}`,
+            }}
+          />
+        )}
         {lockLabel(lockType, locale)}
       </div>
 

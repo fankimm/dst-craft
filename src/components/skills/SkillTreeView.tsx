@@ -23,6 +23,8 @@ interface Props {
   canUnlearn: (id: string) => boolean;
   onToggle: (id: string) => void;
   onNodeTap: (node: SkillNode) => void;
+  manualLocks: Set<string>;
+  onToggleManualLock: (id: string) => void;
   onReset: () => void;
 }
 
@@ -70,6 +72,8 @@ export function SkillTreeView({
   canUnlearn,
   onToggle,
   onNodeTap,
+  manualLocks,
+  onToggleManualLock,
   onReset,
 }: Props) {
   const char = characters.find((c) => c.id === tree.characterId);
@@ -181,6 +185,8 @@ export function SkillTreeView({
                               }
                               return true;
                             }
+                            case "manual":
+                              return manualLocks.has(node.id);
                             default:
                               return true;
                           }
@@ -193,6 +199,7 @@ export function SkillTreeView({
                               isSatisfied={satisfied}
                               groupColor={group.color}
                               locale={locale}
+                              onToggle={node.lockType.type === "manual" ? () => onToggleManualLock(node.id) : undefined}
                             />
                           </div>
                         );

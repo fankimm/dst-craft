@@ -36,11 +36,11 @@ export const wathgrithr: CharacterSkillTree = {
     { id: "wathgrithr_beefalo_saddle", group: "beefalo", pos: [107, 66], icon: "wathgrithr_beefalo_saddle", tags: ["beefalo", "saddle"] },
 
     // ── Songs ──
-    { id: "wathgrithr_songs_instantsong_cd_lock", group: "songs", pos: [-218, 180], root: true, connects: ["wathgrithr_songs_instantsong_cd"], tags: ["songs", "lock"] },
+    { id: "wathgrithr_songs_instantsong_cd_lock", group: "songs", pos: [-218, 180], root: true, connects: ["wathgrithr_songs_instantsong_cd"], lockType: { type: "manual", desc_ko: "전투의 함성을 10번 사용하세요", desc_en: "Use Battle Cry 10 times" }, tags: ["songs", "lock"] },
     { id: "wathgrithr_songs_instantsong_cd", group: "songs", pos: [-180, 180], icon: "wathgrithr_songs_instantsong_cd", tags: ["songs"] },
-    { id: "wathgrithr_songs_container_lock", group: "songs", pos: [-218, 142], root: true, connects: ["wathgrithr_songs_container"], tags: ["songs", "lock"] },
+    { id: "wathgrithr_songs_container_lock", group: "songs", pos: [-218, 142], root: true, connects: ["wathgrithr_songs_container"], lockType: { type: "manual", desc_ko: "6가지 악보를 동시에 보유하세요", desc_en: "Own all 6 song sheets at once" }, tags: ["songs", "lock"] },
     { id: "wathgrithr_songs_container", group: "songs", pos: [-180, 142], icon: "wathgrithr_songs_container", tags: ["songs"] },
-    { id: "wathgrithr_songs_revivewarrior_lock", group: "songs", pos: [-218, 104], root: true, connects: ["wathgrithr_songs_revivewarrior"], tags: ["songs", "lock"] },
+    { id: "wathgrithr_songs_revivewarrior_lock", group: "songs", pos: [-218, 104], root: true, connects: ["wathgrithr_songs_revivewarrior"], lockType: { type: "manual", desc_ko: "비팔로 뿔을 불어보세요", desc_en: "Blow the Beefalo Horn" }, tags: ["songs", "lock"] },
     { id: "wathgrithr_songs_revivewarrior", group: "songs", pos: [-180, 104], icon: "wathgrithr_songs_revivewarrior", tags: ["songs"] },
 
     // ── Combat ──

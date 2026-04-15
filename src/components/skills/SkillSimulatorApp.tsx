@@ -66,8 +66,20 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, []);
 
+  // Manual lock state (for lockType: "manual" nodes)
+  const [manualLocks, setManualLocks] = useState<Set<string>>(new Set());
+  const toggleManualLock = useCallback((nodeId: string) => {
+    setManualLocks((prev) => {
+      const next = new Set(prev);
+      if (next.has(nodeId)) next.delete(nodeId);
+      else next.add(nodeId);
+      return next;
+    });
+  }, []);
+
   const handleSelectChar = useCallback((charId: string) => {
     setSelectedChar(charId);
+    setManualLocks(new Set());
     const url = `${window.location.pathname}?tab=skills&char=${charId}`;
     window.history.pushState({ _appNav: true }, "", url);
   }, []);
@@ -228,6 +240,8 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
             canUnlearn={canUnlearn}
             onToggle={toggleSkill}
             onNodeTap={handleNodeTap}
+            manualLocks={manualLocks}
+            onToggleManualLock={toggleManualLock}
             onReset={resetAll}
           />
         ) : (
