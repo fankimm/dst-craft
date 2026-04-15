@@ -23,8 +23,9 @@ function isLockNode(node: SkillNode): boolean {
 }
 
 /**
- * Linearize a group's DAG into a flat list with depth/rail info.
- * Uses DFS from root nodes, following connects edges.
+ * Linearize a group's DAG into a flat list.
+ * Uses modified topological sort: merge nodes are deferred until all parents are visited.
+ * This ensures convergence points (like shield) appear after all their parent chains.
  */
 export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
   if (nodes.length === 0) return [];
@@ -33,47 +34,58 @@ export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
   const result: LinearNode[] = [];
   const visited = new Set<string>();
 
-  // Build reverse map: childId → parentIds
+  // Build reverse map: childId → parentIds (within this group only)
   const parentMap = new Map<string, string[]>();
   for (const node of nodes) {
     if (node.connects) {
       for (const childId of node.connects) {
-        const parents = parentMap.get(childId) ?? [];
-        parents.push(node.id);
-        parentMap.set(childId, parents);
+        if (nodeMap.has(childId)) {
+          const parents = parentMap.get(childId) ?? [];
+          parents.push(node.id);
+          parentMap.set(childId, parents);
+        }
       }
     }
   }
 
-  // Find root nodes (no parent within this group, or marked root)
-  const rootIds = nodes
+  // Find root nodes
+  const roots = nodes
     .filter((n) => n.root || !(parentMap.get(n.id)?.length))
     .sort((a, b) => {
-      // Sort roots: higher Y first (game convention)
       if (a.pos[1] !== b.pos[1]) return b.pos[1] - a.pos[1];
       return a.pos[0] - b.pos[0];
-    })
-    .map((n) => n.id);
+    });
 
-  function dfs(nodeId: string, depth: number) {
-    if (visited.has(nodeId)) return;
-    visited.add(nodeId);
+  // Process queue with deferred merge nodes
+  const deferred = new Set<string>();
 
-    const node = nodeMap.get(nodeId);
-    if (!node) return;
-
+  function canVisit(nodeId: string): boolean {
     const parents = parentMap.get(nodeId) ?? [];
-    const isMerge = parents.length > 1;
+    // All parents within this group must be visited
+    return parents.every((pid) => visited.has(pid));
+  }
+
+  function visit(nodeId: string) {
+    if (visited.has(nodeId)) return;
+    if (!canVisit(nodeId)) {
+      deferred.add(nodeId);
+      return;
+    }
+
+    visited.add(nodeId);
+    deferred.delete(nodeId);
+    const node = nodeMap.get(nodeId)!;
+    const parents = parentMap.get(nodeId) ?? [];
 
     result.push({
       node,
-      depth,
-      railAbove: "none", // will be computed after
+      depth: 0,
+      railAbove: "none",
       parentIds: parents,
       isLock: isLockNode(node),
     });
 
-    // Follow connects in order (sort children by pos for consistent ordering)
+    // Visit children, sorted by game position
     const children = (node.connects ?? [])
       .map((id) => nodeMap.get(id))
       .filter(Boolean) as SkillNode[];
@@ -83,57 +95,54 @@ export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
       return a.pos[0] - b.pos[0];
     });
 
-    if (children.length === 1) {
-      // Single child: continue at same depth
-      dfs(children[0].id, depth);
-    } else if (children.length > 1) {
-      // Multiple children: branch out
-      for (let i = 0; i < children.length; i++) {
-        dfs(children[i].id, depth + 1);
-      }
+    for (const child of children) {
+      visit(child.id);
     }
   }
 
-  for (const rootId of rootIds) {
-    dfs(rootId, 0);
+  for (const root of roots) {
+    visit(root.id);
   }
 
-  // Add any unvisited nodes (disconnected)
+  // Process deferred merge nodes (all parent chains completed)
+  let safety = 0;
+  while (deferred.size > 0 && safety < 100) {
+    safety++;
+    let progress = false;
+    for (const defId of [...deferred]) {
+      if (canVisit(defId)) {
+        visit(defId);
+        progress = true;
+      }
+    }
+    if (!progress) break;
+  }
+
+  // Process any remaining deferred
+  for (const defId of [...deferred]) {
+    if (!visited.has(defId)) {
+      visited.add(defId);
+      const node = nodeMap.get(defId)!;
+      result.push({
+        node,
+        depth: 0,
+        railAbove: "none",
+        parentIds: parentMap.get(defId) ?? [],
+        isLock: isLockNode(node),
+      });
+    }
+  }
+
+  // Add any completely disconnected nodes
   for (const node of nodes) {
     if (!visited.has(node.id)) {
       result.push({
         node,
         depth: 0,
         railAbove: "none",
-        parentIds: parentMap.get(node.id) ?? [],
+        parentIds: [],
         isLock: isLockNode(node),
       });
-    }
-  }
-
-  // Compute rail indicators
-  for (let i = 0; i < result.length; i++) {
-    const curr = result[i];
-    const prev = i > 0 ? result[i - 1] : null;
-    const children = curr.node.connects ?? [];
-    const isMerge = curr.parentIds.length > 1;
-
-    if (i === 0) {
-      curr.railAbove = "none";
-    } else if (isMerge) {
-      curr.railAbove = "merge";
-    } else if (prev && curr.depth > prev.depth) {
-      curr.railAbove = "branch-start";
-    } else if (prev && curr.depth === prev.depth && curr.depth > 0) {
-      // Check if next sibling exists at same depth
-      const next = i + 1 < result.length ? result[i + 1] : null;
-      if (next && next.depth === curr.depth) {
-        curr.railAbove = "branch-mid";
-      } else {
-        curr.railAbove = "branch-end";
-      }
-    } else {
-      curr.railAbove = "straight";
     }
   }
 
