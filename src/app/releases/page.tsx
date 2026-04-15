@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.11.4",
+    date: "2026-04-16",
+    dev: [
+      "fix: skilltree.tex 추출 아이콘들이 상하 반전된 상태로 저장되던 문제 — extract_skill_ui_icons.py에서 rotate(180°) 적용",
+      "ui: SkillLockIndicator의 LockConditionPill에서 잠금 상태일 때 인게임 자물쇠 아이콘(skill_lock_large) 표시",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 — 잠금 표시 아이콘을 인게임 자물쇠로 변경",
+        "눈 아이콘 상하 반전 수정",
+      ],
+      en: [
+        "Skill tree — lock indicator now uses the in-game lock icon",
+        "Fixed eye icon being upside-down",
+      ],
+    },
+  },
+  {
     version: "0.11.3",
     date: "2026-04-16",
     dev: [

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { LockCondition } from "@/data/skill-trees/types";
 import { t, type Locale, type TranslationKey } from "@/lib/i18n";
@@ -57,15 +58,21 @@ export function LockConditionPill({ lockType, isSatisfied, locale, onToggle }: P
       onClick={isManual && onToggle ? (e) => { e.stopPropagation(); onToggle(); } : undefined}
       role={isManual ? "button" : undefined}
     >
-      {isManual ? (
+      {isSatisfied ? (
         <span className={cn(
-          "inline-flex items-center justify-center size-3 rounded-sm border transition-colors",
-          isSatisfied ? "bg-green-500 border-green-500" : "border-muted-foreground/50",
+          "inline-flex items-center justify-center size-3 rounded-sm",
+          "bg-green-500",
         )}>
-          {isSatisfied && <span className="text-white text-[8px]">✓</span>}
+          <span className="text-white text-[8px]">✓</span>
         </span>
       ) : (
-        <span className={`inline-block size-[6px] rounded-full ${isSatisfied ? "bg-green-500" : "bg-muted-foreground/40"}`} />
+        <Image
+          src="/images/ui/skill_lock_large.png"
+          alt=""
+          width={14}
+          height={14}
+          className="size-3.5 shrink-0 opacity-80"
+        />
       )}
       {lockLabel(lockType, locale)}
     </div>

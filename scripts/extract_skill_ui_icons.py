@@ -62,6 +62,9 @@ def main() -> None:
         y1 = int(v1 * H)
         y2 = int(v2 * H)
         crop = full_img.crop((x1, y1, x2, y2))
+        # skilltree.tex elements appear vertically flipped vs. the source art —
+        # rotate 180° so the eye and lock icons display upright.
+        crop = crop.rotate(180)
         out = OUT_DIR / out_name
         crop.save(out)
         print(f"  ✅ {out}  ({crop.size[0]}x{crop.size[1]})")
