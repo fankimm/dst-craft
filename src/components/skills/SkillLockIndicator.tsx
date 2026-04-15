@@ -45,7 +45,7 @@ export function SkillLockIndicator({ lockType, isSatisfied, groupColor, locale, 
       {/* Left line */}
       <div className="flex-1 h-px bg-border" />
 
-      {/* Diamond + label */}
+      {/* Dot + label */}
       <div
         className={cn(
           "flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full border",
@@ -65,13 +65,7 @@ export function SkillLockIndicator({ lockType, isSatisfied, groupColor, locale, 
             {isSatisfied && <span className="text-white text-[8px]">✓</span>}
           </span>
         ) : (
-          <span
-            className="inline-block size-2.5 rotate-45"
-            style={{
-              backgroundColor: isSatisfied ? "#22c55e" : `${groupColor}60`,
-              border: `1px solid ${isSatisfied ? "#22c55e" : groupColor}`,
-            }}
-          />
+          <span className={`inline-block size-[6px] rounded-full ${isSatisfied ? "bg-green-500" : "bg-muted-foreground/40"}`} />
         )}
         {lockLabel(lockType, locale)}
       </div>

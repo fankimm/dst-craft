@@ -161,8 +161,17 @@ export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
     }
   }
 
-  // Post-process: for skills with `locks`, move their lock dependencies immediately before them
-  // This ensures allegiance-style groups render as: [lock1] [lock2] [skill] instead of [all locks] [all skills]
+  // Post-process: for skills with `locks`, move their EXCLUSIVE lock deps immediately before them
+  // Shared locks (referenced by multiple skills) stay in their original position
+  const lockRefCount = new Map<string, number>();
+  for (const item of result) {
+    if (item.node.locks) {
+      for (const lockId of item.node.locks) {
+        lockRefCount.set(lockId, (lockRefCount.get(lockId) ?? 0) + 1);
+      }
+    }
+  }
+
   const reordered: LinearNode[] = [];
   const placed = new Set<string>();
 
@@ -172,7 +181,8 @@ export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
     // If this node has locks, place its exclusive lock deps right before it
     if (item.node.locks && !item.isLock) {
       for (const lockId of item.node.locks) {
-        if (!placed.has(lockId)) {
+        if (!placed.has(lockId) && (lockRefCount.get(lockId) ?? 0) <= 1) {
+          // Exclusive lock — move before this skill
           const lockItem = result.find((r) => r.node.id === lockId);
           if (lockItem) {
             reordered.push(lockItem);
