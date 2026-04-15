@@ -202,7 +202,7 @@ export function AppShell() {
       />
       {/* Tab bar */}
       <div
-        className="flex items-center gap-4 border-b border-border bg-background shrink-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="flex items-center justify-between gap-4 border-b border-border bg-background shrink-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-3"
         style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
         {tabs.map((tab) => {

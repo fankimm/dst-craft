@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.10.5",
+    date: "2026-04-15",
+    dev: [
+      "ui: 탭 바에 justify-between + gap-4 조합 — 평소에는 탭이 균등 분배되고, 폭을 넘으면 gap 간격으로 가로 스크롤",
+    ],
+    changes: {
+      ko: [
+        "탭 메뉴 간격이 화면 폭에 맞춰 균등 분배되도록 조정",
+      ],
+      en: [
+        "Tab menu now distributes spacing evenly across the viewport width",
+      ],
+    },
+  },
+  {
     version: "0.10.4",
     date: "2026-04-15",
     dev: [
