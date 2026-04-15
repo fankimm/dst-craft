@@ -15,6 +15,14 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.10.6",
+    date: "2026-04-15",
+    dev: [
+      "dev: NODE_ENV=development일 때도 admin-only 탭(Skills)을 표시 — 로컬 개발 편의성",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.10.5",
     date: "2026-04-15",
     dev: [
