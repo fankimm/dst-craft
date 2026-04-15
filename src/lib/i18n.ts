@@ -178,6 +178,8 @@ const translations = {
     skills_gate_no_shadow: "그림자 친화 불가",
     skills_gate_no_lunar: "월광 친화 불가",
     skills_gate_total_skills: "총 스킬 {count}개 필요",
+    dev_menu: "개발자 메뉴",
+    dev_menu_desc: "우측 하단에 개발자 도구 버튼 표시",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -344,6 +346,8 @@ const translations = {
     skills_gate_no_shadow: "No Shadow Allegiance",
     skills_gate_no_lunar: "No Lunar Allegiance",
     skills_gate_total_skills: "{count} total skills required",
+    dev_menu: "Developer Menu",
+    dev_menu_desc: "Show developer tools button at bottom right",
   },
 } as const;
 

@@ -85,7 +85,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export function SettingsPage() {
-  const { theme, locale, resolvedLocale, setTheme, setLocale } = useSettings();
+  const { theme, locale, resolvedLocale, devMenuEnabled, setTheme, setLocale, setDevMenuEnabled } = useSettings();
   const { user, loading: authLoading, gisReady, isAdmin, logout, renderGoogleButton } = useAuth();
   const googleBtnRef = useRef<HTMLDivElement>(null);
 
@@ -499,6 +499,35 @@ export function SettingsPage() {
             <span>{t(resolvedLocale, "release_notes")}</span>
             <ChevronRight className="size-4" />
           </a>
+
+          {/* Dev menu toggle — admin only */}
+          {isAdmin && (
+            <button
+              type="button"
+              onClick={() => setDevMenuEnabled(!devMenuEnabled)}
+              className="w-full flex items-center justify-between rounded-lg border border-border px-3 py-2.5 text-sm text-muted-foreground hover:bg-surface-hover/50 transition-colors"
+            >
+              <span className="flex flex-col items-start gap-0.5 text-left">
+                <span>{t(resolvedLocale, "dev_menu")}</span>
+                <span className="text-xs text-muted-foreground/70">{t(resolvedLocale, "dev_menu_desc")}</span>
+              </span>
+              <span
+                role="switch"
+                aria-checked={devMenuEnabled}
+                className={cn(
+                  "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors",
+                  devMenuEnabled ? "bg-foreground" : "bg-border"
+                )}
+              >
+                <span
+                  className={cn(
+                    "inline-block size-4 rounded-full bg-background shadow-sm transition-transform",
+                    devMenuEnabled ? "translate-x-[18px]" : "translate-x-0.5"
+                  )}
+                />
+              </span>
+            </button>
+          )}
 
           {/* Ko-fi Support */}
           <a

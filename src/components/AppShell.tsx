@@ -37,10 +37,11 @@ function readTabFromUrl(): TabId {
 
 export function AppShell() {
   const [activeTab, setActiveTab] = useState<TabId>("crafting");
-  const { resolvedLocale } = useSettings();
+  const { resolvedLocale, devMenuEnabled } = useSettings();
   const { isAdmin, token } = useAuth();
   const isDev = process.env.NODE_ENV === "development";
   const tabs = allTabs.filter((tab) => !tab.adminOnly || isAdmin || isDev);
+  const showDevMenu = (isDev || isAdmin) && devMenuEnabled;
   const [toast, setToast] = useState<string | null>(null);
   const [pendingRecipeId, setPendingRecipeId] = useState<string | null>(null);
   const [pendingItemId, setPendingItemId] = useState<string | null>(null);
@@ -273,7 +274,7 @@ export function AppShell() {
       <ReviewPrompt open={showReview} onClose={handleReviewClose} locale={resolvedLocale} />
 
       {/* Dev menu */}
-      {(process.env.NODE_ENV === "development" || isAdmin) && (
+      {showDevMenu && (
         <DevMenu onOpenReview={() => setShowReview(true)} token={token} />
       )}
 

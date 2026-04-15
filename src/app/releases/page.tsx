@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.12.1",
+    date: "2026-04-15",
+    dev: [
+      "feat: 설정에 개발자 메뉴 토글 추가 (admin 전용) — localStorage `dst-dev-menu`에 저장, AppShell의 DevMenu 표시를 설정값으로 제어",
+      "i18n: dev_menu / dev_menu_desc 키 추가 (ko/en)",
+    ],
+    changes: {
+      ko: [
+        "(관리자) 설정에서 우측 하단 개발자 메뉴 버튼을 끄고 켤 수 있습니다",
+      ],
+      en: [
+        "(Admin) Toggle the bottom-right developer menu button from Settings",
+      ],
+    },
+  },
+  {
     version: "0.12.0",
     date: "2026-04-16",
     dev: [

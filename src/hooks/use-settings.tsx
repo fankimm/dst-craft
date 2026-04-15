@@ -19,8 +19,10 @@ interface SettingsContextValue {
   resolvedTheme: ResolvedTheme;
   locale: LocaleSetting;
   resolvedLocale: Locale;
+  devMenuEnabled: boolean;
   setTheme: (theme: ThemeSetting) => void;
   setLocale: (locale: LocaleSetting) => void;
+  setDevMenuEnabled: (enabled: boolean) => void;
 }
 
 const SettingsContext = createContext<SettingsContextValue | null>(null);
@@ -28,6 +30,7 @@ const SettingsContext = createContext<SettingsContextValue | null>(null);
 // SSR-safe defaults: must match on server and client initial render
 const DEFAULT_THEME: ThemeSetting = "light";
 const DEFAULT_LOCALE: LocaleSetting = "system";
+const DEFAULT_DEV_MENU_ENABLED = true;
 const SSR_RESOLVED_THEME: ResolvedTheme = "light";
 const SSR_RESOLVED_LOCALE: Locale = "ko";
 
@@ -66,6 +69,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
   const [theme, setThemeState] = useState<ThemeSetting>(DEFAULT_THEME);
   const [locale, setLocaleState] = useState<LocaleSetting>(DEFAULT_LOCALE);
+  const [devMenuEnabled, setDevMenuEnabledState] = useState<boolean>(DEFAULT_DEV_MENU_ENABLED);
 
   // Before mount, use SSR-safe resolved values to prevent hydration mismatch
   const resolvedTheme = useMemo(
@@ -88,14 +92,21 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("dst-locale", l);
   }, []);
 
+  const setDevMenuEnabled = useCallback((enabled: boolean) => {
+    setDevMenuEnabledState(enabled);
+    localStorage.setItem("dst-dev-menu", enabled ? "1" : "0");
+  }, []);
+
   // Read saved preferences after mount (hydration-safe)
   useEffect(() => {
     const savedTheme =
       (localStorage.getItem("dst-theme") as ThemeSetting) || DEFAULT_THEME;
     const savedLocale =
       (localStorage.getItem("dst-locale") as LocaleSetting) || DEFAULT_LOCALE;
+    const savedDevMenu = localStorage.getItem("dst-dev-menu");
     setThemeState(savedTheme);
     setLocaleState(savedLocale);
+    setDevMenuEnabledState(savedDevMenu === null ? DEFAULT_DEV_MENU_ENABLED : savedDevMenu === "1");
     applyTheme(resolveTheme(savedTheme));
     setMounted(true);
   }, []);
@@ -121,10 +132,12 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       resolvedTheme,
       locale,
       resolvedLocale,
+      devMenuEnabled,
       setTheme,
       setLocale,
+      setDevMenuEnabled,
     }),
-    [theme, resolvedTheme, locale, resolvedLocale, setTheme, setLocale]
+    [theme, resolvedTheme, locale, resolvedLocale, devMenuEnabled, setTheme, setLocale, setDevMenuEnabled]
   );
 
   return (
