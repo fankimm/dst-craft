@@ -349,6 +349,13 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
         sessionStorage.removeItem("dst:review-shown");
       },
     },
+    {
+      label: "스킬 투어 팝오버 초기화",
+      action: () => {
+        localStorage.removeItem("dst:tour-skills-v0.11.8");
+        location.reload();
+      },
+    },
     { label: "스킬 아이콘 목록", action: () => window.open("/skill-icons", "_blank") },
     { label: "블루프린트 아이템", action: () => window.open("/blueprints", "_blank") },
     { label: "보스 전리품", action: () => window.open("/bosses", "_blank") },
