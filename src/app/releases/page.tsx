@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.10.4",
+    date: "2026-04-15",
+    dev: [
+      "ui: 탭 바 레이아웃 조정 — flex-1 균등 분할 제거, 내용 폭 기반으로 변경",
+      "ui: 탭 간 간격 gap-4로 확대, 아이콘-라벨 간격 gap-1로 축소",
+      "ui: 탭 바 가로 스크롤 허용 + 스크롤바 시각적 숨김 (overflow-x-auto, scrollbar-width:none, ::-webkit-scrollbar:hidden)",
+    ],
+    changes: {
+      ko: [
+        "탭 메뉴 여백 조정 — 아이콘과 라벨은 더 붙이고, 탭 사이 간격은 넓힘",
+        "탭 메뉴가 화면 폭을 넘으면 가로로 스크롤되도록 개선",
+      ],
+      en: [
+        "Tab menu spacing — tighter icon-to-label, wider gap between tabs",
+        "Tab bar scrolls horizontally when it exceeds the viewport width",
+      ],
+    },
+  },
+  {
     version: "0.10.3",
     date: "2026-04-15",
     dev: [

@@ -201,7 +201,10 @@ export function AppShell() {
         style={{ height: "env(safe-area-inset-top, 0px)" }}
       />
       {/* Tab bar */}
-      <div className="flex items-center border-b border-border bg-background shrink-0" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
+      <div
+        className="flex items-center gap-4 border-b border-border bg-background shrink-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+      >
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -209,7 +212,7 @@ export function AppShell() {
               key={tab.id}
               onClick={() => handleTabClick(tab.id)}
               className={cn(
-                "flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium transition-colors relative touch-manipulation",
+                "shrink-0 flex items-center justify-center gap-1 px-0 py-2 text-xs font-medium transition-colors relative touch-manipulation",
                 isActive
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground/80"
@@ -226,7 +229,7 @@ export function AppShell() {
               ) : null}
               <span className="whitespace-nowrap">{t(resolvedLocale, tab.labelKey)}</span>
               {isActive && (
-                <span className="absolute bottom-0 inset-x-4 h-0.5 bg-foreground rounded-full" />
+                <span className="absolute bottom-0 inset-x-0 h-0.5 bg-foreground rounded-full" />
               )}
             </button>
           );
