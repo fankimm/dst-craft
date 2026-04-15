@@ -1,14 +1,13 @@
 "use client";
 
-import { useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import Image from "next/image";
 import { RotateCcw } from "lucide-react";
 import type { CharacterSkillTree, SkillNode } from "@/data/skill-trees/types";
-import { skillTranslations, groupTranslations } from "@/data/skill-trees/translations";
 import { characters } from "@/data/characters";
 import { characterName, t, type Locale, type TranslationKey } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
-import { SkillRail } from "./SkillRail";
+import { skillTranslations, groupTranslations } from "@/data/skill-trees/translations";
+import { linearizeGroup, type LinearNode } from "@/lib/skill-tree-layout";
 import { SkillNodeCard } from "./SkillNodeCard";
 import { SkillLockIndicator } from "./SkillLockIndicator";
 
@@ -29,8 +28,7 @@ interface Props {
 }
 
 function isLockNode(node: SkillNode): boolean {
-  // Lock nodes: have lockType, or have "lock" tag with no icon
-  return (!node.icon && (!!node.lockType || !!node.tags?.includes("lock")));
+  return !node.icon && (!!node.lockType || !!node.tags?.includes("lock"));
 }
 
 function getTitle(id: string, locale: Locale): string {
@@ -51,25 +49,85 @@ function getGroupLabel(groupId: string, locale: Locale): string {
   return locale === "ko" ? entry.ko : entry.en;
 }
 
-/** Sort nodes within a group: by y-position descending (game y=high is top), then x */
-function sortNodes(nodes: SkillNode[]): SkillNode[] {
-  return [...nodes].sort((a, b) => {
-    if (a.pos[1] !== b.pos[1]) return b.pos[1] - a.pos[1]; // higher y first
-    return a.pos[0] - b.pos[0]; // left to right
-  });
+// ── Rail segment renderer ──
+
+function RailSegment({ item, color, prevDepth }: { item: LinearNode; color: string; prevDepth: number }) {
+  const d = item.depth;
+  const indent = d * 16;
+
+  return (
+    <div className="flex items-stretch shrink-0" style={{ width: 28 + indent }}>
+      {/* Trunk line (always at left=14px) */}
+      <div className="relative" style={{ width: 28 }}>
+        {/* Vertical line */}
+        {item.railAbove !== "none" && (
+          <div
+            className="absolute left-[13px] top-0 bottom-0 w-0.5"
+            style={{ backgroundColor: `${color}4d` }}
+          />
+        )}
+        {/* Junction dot */}
+        {d === 0 && !item.isLock && (
+          <div className="absolute left-[9px] top-1/2 -translate-y-1/2">
+            <div
+              className="size-[10px] rounded-full"
+              style={{ backgroundColor: `${color}80`, border: `2px solid ${color}` }}
+            />
+          </div>
+        )}
+        {d === 0 && item.isLock && (
+          <div className="absolute left-[10px] top-1/2 -translate-y-1/2">
+            <div
+              className="size-[8px] rotate-45"
+              style={{ backgroundColor: `${color}40`, border: `1.5px solid ${color}` }}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Branch lines (indented levels) */}
+      {d > 0 && (
+        <div className="relative flex-1">
+          {/* Horizontal branch line from trunk to node */}
+          <div
+            className="absolute top-1/2 left-0 h-0.5 -translate-y-px"
+            style={{
+              width: indent - 4,
+              backgroundColor: `${color}4d`,
+            }}
+          />
+          {/* Branch dot */}
+          <div className="absolute top-1/2 -translate-y-1/2" style={{ right: 0 }}>
+            <div
+              className="size-[8px] rounded-full"
+              style={{ backgroundColor: `${color}60`, border: `1.5px solid ${color}` }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-// Node heights are now dynamic (CSS flex) — no fixed height constant
+// ── Merge indicator ──
+
+function MergeIndicator({ parentIds, locale }: { parentIds: string[]; locale: Locale }) {
+  if (parentIds.length <= 1) return null;
+  const parentNames = parentIds.map((id) => getTitle(id, locale)).join(" + ");
+  return (
+    <div className="text-[10px] text-muted-foreground ml-1 mb-0.5 truncate">
+      ← {parentNames}
+    </div>
+  );
+}
 
 export function SkillTreeView({
   tree,
   locale,
   activatedSkills,
   totalPoints,
-  maxPoints,
   isLearned,
   canLearn,
-  canUnlearn,
   onToggle,
   onNodeTap,
   manualLocks,
@@ -78,18 +136,17 @@ export function SkillTreeView({
 }: Props) {
   const char = characters.find((c) => c.id === tree.characterId);
 
-  // Group nodes by group ID, maintaining group order
-  const groupedNodes = useMemo(() => {
+  // Group and linearize nodes
+  const groupedLinear = useMemo(() => {
     const groups = new Map<string, SkillNode[]>();
     for (const node of tree.nodes) {
       const existing = groups.get(node.group) ?? [];
       existing.push(node);
       groups.set(node.group, existing);
     }
-    // Order by tree.groups order
     return tree.groups.map((g) => ({
       group: g,
-      nodes: sortNodes(groups.get(g.id) ?? []),
+      items: linearizeGroup(groups.get(g.id) ?? []),
     }));
   }, [tree]);
 
@@ -130,112 +187,110 @@ export function SkillTreeView({
       {/* Scrollable tree */}
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain" data-scroll-container="">
         <div className="max-w-2xl mx-auto w-full pb-8">
-          {groupedNodes.map(({ group, nodes }) => (
+          {groupedLinear.map(({ group, items }) => (
             <div key={group.id} className="mt-3 first:mt-2">
               {/* Group header */}
               <div className="flex items-center gap-2 px-4 py-1.5">
-                <span
-                  className="inline-block size-2.5 rounded-full"
-                  style={{ backgroundColor: group.color }}
-                />
+                <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: group.color }} />
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                   {getGroupLabel(group.id, locale)}
                 </span>
                 <div className="flex-1 h-px bg-border" />
               </div>
 
-              {/* Rail + Node cards */}
-              <div className="flex px-2">
-                {/* SVG Rail */}
-                <SkillRail
-                  nodes={nodes.map((n) => ({
-                    isLock: isLockNode(n),
-                    isLearned: isLearned(n.id),
-                    canLearn: canLearn(n.id),
-                  }))}
-                  color={group.color}
-                />
+              {/* Nodes */}
+              <div className="px-2">
+                {items.map((item, i) => {
+                  const prevDepth = i > 0 ? items[i - 1].depth : 0;
 
-                {/* Node cards */}
-                <div className="flex-1 min-w-0 overflow-hidden flex flex-col items-stretch">
-                  {nodes.map((node) => {
-                    if (isLockNode(node)) {
-                      if (node.lockType) {
-                        // Evaluate lock satisfaction
-                        const satisfied = (() => {
-                          switch (node.lockType.type) {
-                            case "skill_count": {
-                              let count = 0;
-                              for (const id of activatedSkills) {
-                                const n = tree.nodes.find((x) => x.id === id);
-                                if (n?.tags?.includes(node.lockType.tag)) count++;
-                              }
-                              return count >= node.lockType.count;
-                            }
-                            case "total_skills":
-                              return activatedSkills.size >= node.lockType.count;
-                            case "boss_kill":
-                              return true;
-                            case "no_opposing_faction": {
-                              const tag = node.lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
-                              for (const id of activatedSkills) {
-                                const n = tree.nodes.find((x) => x.id === id);
-                                if (n?.tags?.includes(tag)) return false;
-                              }
-                              return true;
-                            }
-                            case "manual":
-                              return manualLocks.has(node.id);
-                            default:
-                              return true;
+                  if (item.isLock && item.node.lockType) {
+                    // Lock gate
+                    const satisfied = (() => {
+                      switch (item.node.lockType.type) {
+                        case "skill_count": {
+                          let count = 0;
+                          for (const id of activatedSkills) {
+                            const n = tree.nodes.find((x) => x.id === id);
+                            if (n?.tags?.includes(item.node.lockType.tag)) count++;
                           }
-                        })();
-
-                        return (
-                          <div key={node.id} style={{ minHeight: 52 }} className="flex items-center">
-                            <SkillLockIndicator
-                              lockType={node.lockType}
-                              isSatisfied={satisfied}
-                              groupColor={group.color}
-                              locale={locale}
-                              onToggle={node.lockType.type === "manual" ? () => onToggleManualLock(node.id) : undefined}
-                            />
-                          </div>
-                        );
+                          return count >= item.node.lockType.count;
+                        }
+                        case "total_skills":
+                          return activatedSkills.size >= item.node.lockType.count;
+                        case "boss_kill":
+                          return true;
+                        case "no_opposing_faction": {
+                          const tag = item.node.lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
+                          for (const id of activatedSkills) {
+                            const n = tree.nodes.find((x) => x.id === id);
+                            if (n?.tags?.includes(tag)) return false;
+                          }
+                          return true;
+                        }
+                        case "manual":
+                          return manualLocks.has(item.node.id);
+                        default:
+                          return true;
                       }
-                      // Lock node without lockType: render as a simple gate line (always open in simulator)
-                      return (
-                        <div key={node.id} style={{ minHeight: 52 }} className="flex items-center px-3">
-                          <div className="flex items-center gap-2 w-full">
-                            <div className="flex-1 h-px bg-border" />
-                            <span
-                              className="inline-block size-2.5 rotate-45 border"
-                              style={{ borderColor: group.color, backgroundColor: `${group.color}30` }}
-                            />
-                            <div className="flex-1 h-px bg-border" />
-                          </div>
-                        </div>
-                      );
-                    }
+                    })();
 
                     return (
-                      <div key={node.id} style={{ minHeight: 52 }} className="flex items-center pr-2">
-                        <SkillNodeCard
-                          skillId={node.id}
-                          icon={node.icon}
-                          title={getTitle(node.id, locale)}
-                          description={getDesc(node.id, locale)}
-                          isLearned={isLearned(node.id)}
-                          isLocked={!canLearn(node.id) && !isLearned(node.id)}
-                          canLearn={canLearn(node.id)}
-                          groupColor={group.color}
-                          onTap={() => onNodeTap(node)}
-                          onToggle={() => onToggle(node.id)}
-                        />
+                      <div key={item.node.id} className="flex items-center" style={{ minHeight: 44 }}>
+                        <RailSegment item={item} color={group.color} prevDepth={prevDepth} />
+                        <div className="flex-1 min-w-0">
+                          <SkillLockIndicator
+                            lockType={item.node.lockType}
+                            isSatisfied={satisfied}
+                            groupColor={group.color}
+                            locale={locale}
+                            onToggle={item.node.lockType.type === "manual" ? () => onToggleManualLock(item.node.id) : undefined}
+                          />
+                        </div>
                       </div>
                     );
-                  })}
-                </div>
+                  }
+
+                  if (item.isLock) {
+                    // Lock without lockType — minimal gate
+                    return (
+                      <div key={item.node.id} className="flex items-center" style={{ minHeight: 40 }}>
+                        <RailSegment item={item} color={group.color} prevDepth={prevDepth} />
+                        <div className="flex-1 flex items-center gap-2 px-3">
+                          <div className="flex-1 h-px bg-border" />
+                          <span className="inline-block size-2.5 rotate-45 border" style={{ borderColor: group.color, backgroundColor: `${group.color}30` }} />
+                          <div className="flex-1 h-px bg-border" />
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  // Regular skill node
+                  const locked = !canLearn(item.node.id) && !isLearned(item.node.id);
+                  return (
+                    <div key={item.node.id}>
+                      {item.parentIds.length > 1 && (
+                        <MergeIndicator parentIds={item.parentIds} locale={locale} />
+                      )}
+                      <div className="flex items-center" style={{ minHeight: 52 }}>
+                        <RailSegment item={item} color={group.color} prevDepth={prevDepth} />
+                        <div className="flex-1 min-w-0 pr-2">
+                          <SkillNodeCard
+                            skillId={item.node.id}
+                            icon={item.node.icon}
+                            title={getTitle(item.node.id, locale)}
+                            description={getDesc(item.node.id, locale)}
+                            isLearned={isLearned(item.node.id)}
+                            isLocked={locked}
+                            canLearn={canLearn(item.node.id)}
+                            groupColor={group.color}
+                            onTap={() => onNodeTap(item.node)}
+                            onToggle={() => onToggle(item.node.id)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ))}
