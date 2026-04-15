@@ -214,9 +214,6 @@ export function CookingApp({
   const filteredRecipes = useMemo(() => {
     let recipes = cookingRecipes;
 
-    // Search query → search globally (ignore category filter, like crafting tab)
-    const isSearching = !!debouncedQuery.trim();
-
     if (!isSearching) {
       // Category filter (only when not searching)
       if (selectedCategory === "recent") {
@@ -246,31 +243,6 @@ export function CookingApp({
         }
       }
 
-      // Active filter from badge click (only when not searching)
-      if (activeFilter) {
-        switch (activeFilter.type) {
-          case "foodType":
-            recipes = recipes.filter((r) => r.foodType === activeFilter.value);
-            break;
-          case "station":
-            recipes = recipes.filter((r) => r.station === activeFilter.value);
-            break;
-          case "effect":
-            recipes = recipes.filter((r) => r.specialEffect === activeFilter.value);
-            break;
-          case "ingredient":
-            recipes = recipes.filter((r) => {
-              if (!r.requirements) return false;
-              const items = r.requirements.split(",").map(s => s.trim()).filter(Boolean);
-              return items.some(item => {
-                if (item.startsWith("No ")) return false;
-                const { name } = parseReqEntry(item);
-                return name.split(/\s*\/\s*/).some(part => part === activeFilter.value);
-              });
-            });
-            break;
-        }
-      }
     }
 
     // Tag-based search filter (replaces old activeFilter + debouncedQuery)

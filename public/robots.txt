@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
+Disallow: /dev/
+Disallow: /debug/
+Disallow: /blueprints
+Disallow: /bosses
+Disallow: /flip-board
+Disallow: /skill-icons
+Disallow: /item-stats
+Disallow: /stats
 
 Sitemap: https://www.dstcraft.com/sitemap.xml

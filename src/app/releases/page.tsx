@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.9.1",
+    date: "2026-04-15",
+    dev: [
+      "SEO: 정적 sitemap.xml 삭제 → 동적 sitemap.ts만 사용",
+      "SEO: robots.txt에 dev/debug 경로 차단 추가",
+      "SEO: 메인 페이지에 SSR 내부 링크 푸터 추가 (155개 링크 — item 60, food 40, boss 29, character 19)",
+      "fix: CookingApp 빌드 에러 수정 (debouncedQuery, activeFilter 잔재 코드 제거)",
+    ],
+    changes: {
+      ko: [
+        "검색엔진 최적화 개선 — 구글 인덱싱 속도 향상",
+      ],
+      en: [
+        "SEO improvements — faster Google indexing",
+      ],
+    },
+  },
+  {
     version: "0.9.0",
     date: "2026-04-14",
     dev: [
