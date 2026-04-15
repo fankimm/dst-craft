@@ -174,7 +174,7 @@ const translations = {
     skills_select_character: "캐릭터 선택",
     skills_gate_skill_count: "스킬 {count}개 필요",
     skills_gate_boss_fuelweaver: "고대 연료직공 처치",
-    skills_gate_boss_celestialchampion: "천상의 용사 처치",
+    skills_gate_boss_celestialchampion: "천상의 대변자 처치",
     skills_gate_no_shadow: "그림자 친화 불가",
     skills_gate_no_lunar: "월광 친화 불가",
     skills_gate_total_skills: "총 스킬 {count}개 필요",

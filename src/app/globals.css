@@ -197,7 +197,10 @@
   60% { transform: translateX(-3px); }
   80% { transform: translateX(2px); }
 }
+@keyframes shake-color {
+  0% { color: var(--color-red-500, #ef4444); }
+  100% { color: inherit; }
+}
 .animate-shake {
-  animation: shake 0.4s ease-out;
-  color: var(--color-red-500, #ef4444);
+  animation: shake 0.4s ease-out, shake-color 1.2s ease-out;
 }
