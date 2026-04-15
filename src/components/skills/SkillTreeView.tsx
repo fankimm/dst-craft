@@ -157,7 +157,7 @@ export function SkillTreeView({
                 />
 
                 {/* Node cards */}
-                <div className="flex-1 min-w-0 overflow-hidden flex flex-col">
+                <div className="flex-1 min-w-0 overflow-hidden flex flex-col items-stretch">
                   {nodes.map((node) => {
                     if (isLockNode(node)) {
                       if (node.lockType) {

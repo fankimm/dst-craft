@@ -36,7 +36,7 @@ export function SkillNodeCard({
   return (
     <div
       className={cn(
-        "flex items-center gap-2.5 px-3 py-2 rounded-lg border transition-colors",
+        "flex items-center gap-2.5 px-3 py-2 rounded-lg border transition-colors w-full",
         isLearned
           ? "bg-green-500/5 border-green-500/40 dark:bg-green-500/10 dark:border-green-500/30"
           : isLocked
