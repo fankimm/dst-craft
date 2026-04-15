@@ -225,7 +225,7 @@ export function SkillTreeView({
                             isSatisfied={satisfied}
                             groupColor={group.color}
                             locale={locale}
-                            onToggle={item.node.lockType.type === "manual" ? () => onToggleManualLock(item.node.id) : undefined}
+                            onToggle={(item.node.lockType.type === "manual" || item.node.lockType.type === "boss_kill") ? () => onToggleManualLock(item.node.id) : undefined}
                           />
                         </div>
                       </div>

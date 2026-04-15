@@ -84,8 +84,8 @@ function isLockSatisfied(
     case "total_skills":
       return activated.size >= node.lockType.count;
     case "boss_kill":
-      // In simulator, boss kills are always considered done
-      return true;
+      // Boss kills use manualLocks toggle (same as manual type)
+      return false; // controlled via manualLocks in canLearn
     case "no_opposing_faction": {
       const opposingTag = node.lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
       return countTag(opposingTag, activated, nodeMap) === 0;
@@ -179,7 +179,7 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
             // Lock parent: check if satisfied (via lockType or manualLocks)
             const parentNode = nodeMap.get(pid);
             if (parentNode && isLockNode(parentNode)) {
-              if (parentNode.lockType?.type === "manual") {
+              if (parentNode.lockType?.type === "manual" || parentNode.lockType?.type === "boss_kill") {
                 return manualLocks?.has(pid) ?? false;
               }
               return isLockSatisfied(parentNode, activatedSkills, nodeMap);

@@ -38,7 +38,7 @@ function lockLabel(lock: LockCondition, locale: Locale): string {
 }
 
 export function SkillLockIndicator({ lockType, isSatisfied, groupColor, locale, onToggle }: Props) {
-  const isManual = lockType.type === "manual";
+  const isManual = lockType.type === "manual" || lockType.type === "boss_kill";
 
   return (
     <div className="flex items-center gap-2 px-3 py-1.5">

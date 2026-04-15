@@ -119,17 +119,29 @@ export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
     visit(root.id);
   }
 
-  // Process deferred merge nodes (all parent chains completed)
+  // Process deferred merge nodes + unvisited nodes with locks-only dependencies
+  // Keep trying until no more progress
   let safety = 0;
-  while (deferred.size > 0 && safety < 100) {
+  while (safety < 100) {
     safety++;
     let progress = false;
+
+    // Try deferred first
     for (const defId of [...deferred]) {
       if (canVisit(defId)) {
         visit(defId);
         progress = true;
       }
     }
+
+    // Try any unvisited node whose parents are all visited
+    for (const node of nodes) {
+      if (!visited.has(node.id) && !deferred.has(node.id) && canVisit(node.id)) {
+        visit(node.id);
+        progress = true;
+      }
+    }
+
     if (!progress) break;
   }
 
