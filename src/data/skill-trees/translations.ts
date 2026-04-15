@@ -1168,29 +1168,224 @@ export const skillTranslations: Record<
     title: { en: "Leg Day", ko: "하체 운동" },
     desc: { en: "+10% speed boost when Normal.", ko: "평범한 상태에서 이동속도가 +10% 증가합니다." },
   },
+  willow_allegiance_lunar_bernie: {
+    title: { en: "Lunar Bernie", ko: "월광의 버니" },
+    desc: { en: "Entreat the moon to strengthen Bernie's planar attack and defense, particularly against shadow enemies.", ko: "달에게 소원을 빌어 버니가 차원 공격력/방어력을 얻습니다. 이 효과는 그림자 세력을 상대로 강해집니다." },
+  },
+  willow_allegiance_lunar_fire: {
+    title: { en: "Lunar Fire-Raiser", ko: "월광의 불지기" },
+    desc: { en: "The Cryptic Founder will reward your curiosity with the formula for lunar flames.\nUse Embers to blast cold lunar flames.", ko: "비밀스러운 창립자가 당신의 호기심에 대한 보답으로 '달의 불꽃' 제조법을 알려줍니다.\n불씨를 사용해 차가운 달의 불을 발사합니다." },
+  },
+  willow_allegiance_shadow_bernie: {
+    title: { en: "Shadow Bernie", ko: "그림자 버니" },
+    desc: { en: "Tap into the darkness to strengthen Bernie's planar attack and defense, particularly against lunar enemies.", ko: "어둠과 가까워져 버니가 차원 공격력/방어력을 얻습니다. 이 효과는 달의 세력을 상대로 강해집니다." },
+  },
+  willow_allegiance_shadow_fire: {
+    title: { en: "Shadow Fire-Raiser", ko: "그림자 불지기" },
+    desc: { en: "The Queen will reward your loyalty with the power of shadow fire.\nSummon multiple tendrils of black flame to seek out hostile targets.", ko: "여왕이 당신의 충성에 대한 보답으로 '그림자 불꽃'의 힘을 하사합니다.\n적을 추적 및 공격하는 흑염 줄기를 다수 소환합니다." },
+  },
+  willow_burnignbernie: {
+    title: { en: "Burning Bernie", ko: "불곰 버니" },
+    desc: { en: "Igniting Bernie will give him a firey aura for a short time.\nEnemies that attack an ignited Bernie will take damage back.", ko: "버니에게 불을 붙이면 잠시 동안 화염 오라가 둘러집니다.\n불이 붙은 버니를 공격한 적은 반사 피해를 입습니다." },
+  },
+  winona_catapult_boost_1: {
+    title: { en: "Barrage", ko: "일제 포격" },
+    desc: { en: "All Catapults within range of your Handy Remote have an increased firing rate for a short period of time.", ko: "만능 리모컨 범위 내에 있는 투석기의 공격 속도를 일시적으로 증가시킵니다." },
+  },
+  winona_catapult_volley_1: {
+    title: { en: "Precise Targeting", ko: "정밀 조준" },
+    desc: { en: "All Catapults within range of your Handy Remote fire at your selected target.", ko: "만능 리모컨 범위 내에 있는 모든 투석기가 명령한 지점에 공격을 가합니다." },
+  },
+  wolfgang_autogym: {
+    title: { en: "Gym Mastery", ko: "체육관 마스터리" },
+    desc: { en: "Perfect your gym workout.\nMini game will complete automatically.", ko: "체육관 운동을 완벽하게.\n미니게임이 자동으로 완료됩니다." },
+  },
+  wolfgang_normal_coach: {
+    title: { en: "Coach Wolfgang", ko: "코치 볼프강" },
+    desc: { en: "Learn to craft a Coaching Whistle.\nWhile coaching, Normal Wolfgang will raise friends' sanity and boost followers' damage.", ko: "'코칭 호루라기'을 제작할 수 있습니다.\n코칭을 하는 동안 보통 상태의 볼프강은 동료들의 정신력을 회복하고 추종자들의 피해를 높입니다." },
+  },
+  wolfgang_overbuff_1: {
+    title: { en: "Push the Limits I", ko: "한계돌파 I" },
+    desc: { en: "Use the gym to push your Mighty Meter past its limit.\n Mighty Meter can go up to 110.", ko: "체육관에서 운동하면 강인함 수치를 한계 이상으로 쌓을 수 있습니다.\n강인함 수치를 최대 110까지 쌓을 수 있습니다." },
+  },
+  wolfgang_overbuff_2: {
+    title: { en: "Push the Limits II", ko: "한계돌파 II" },
+    desc: { en: "Use the gym to push your Mighty Meter past its limit.\n Mighty Meter can go up to 120.", ko: "체육관에서 운동하면 강인함 수치를 한계 이상으로 쌓을 수 있습니다.\n강인함 수치를 최대 120까지 쌓을 수 있습니다." },
+  },
+  wolfgang_overbuff_3: {
+    title: { en: "Push the Limits III", ko: "한계돌파 III" },
+    desc: { en: "Use the gym to push your Mighty Meter past its limit.\n Mighty Meter can go up to 130.", ko: "체육관에서 운동하면 강인함 수치를 한계 이상으로 쌓을 수 있습니다.\n강인함 수치를 최대 130까지 쌓을 수 있습니다." },
+  },
+  wolfgang_overbuff_4: {
+    title: { en: "Push the Limits IV", ko: "한계돌파 IV" },
+    desc: { en: "Use the gym to push your Mighty Meter past its limit.\n Mighty Meter can go up to 140.", ko: "체육관에서 운동하면 강인함 수치를 한계 이상으로 쌓을 수 있습니다.\n강인함 수치를 최대 140까지 쌓을 수 있습니다." },
+  },
+  wolfgang_overbuff_5: {
+    title: { en: "Push the Limits V", ko: "한계돌파 V" },
+    desc: { en: "Use the gym to push your Mighty Meter past its limit.\n Mighty Meter can go up to 150.", ko: "체육관에서 운동하면 강인함 수치를 한계 이상으로 쌓을 수 있습니다.\n강인함 수치를 최대 150까지 쌓을 수 있습니다." },
+  },
+  wolfgang_planardamage_1: {
+    title: { en: "Mighty Weapons I", ko: "강력한 무기 I" },
+    desc: { en: "Bring out the full strength of planar melee weapons.\nAdd +5 Planar Damage to planar melee weapons when Mighty.", ko: "차원 피해를 입히는 근접 무기의 힘을 최대로 이끌어냅니다.\n강인한 상태에서 차원 피해를 입히는 근접 무기의 차원 피해가 +5 증가합니다." },
+  },
+  wolfgang_planardamage_2: {
+    title: { en: "Mighty Weapons II", ko: "강력한 무기 II" },
+    desc: { en: "Bring out the full strength of planar melee weapons.\nAdd +10 Planar Damage to planar melee weapons when Mighty.", ko: "차원 피해를 입히는 근접 무기의 힘을 최대로 이끌어냅니다.\n강인한 상태에서 차원 피해를 입히는 근접 무기의 차원 피해가 +10 증가합니다." },
+  },
+  wolfgang_planardamage_3: {
+    title: { en: "Mighty Weapons III", ko: "강력한 무기 III" },
+    desc: { en: "Bring out the full strength of planar melee weapons.\nAdd +15 Planar Damage to planar melee weapons when Mighty.", ko: "차원 피해를 입히는 근접 무기의 힘을 최대로 이끌어냅니다.\n강인한 상태에서 차원 피해를 입히는 근접 무기의 차원 피해가 +15 증가합니다." },
+  },
+  wolfgang_planardamage_4: {
+    title: { en: "Mighty Weapons IV", ko: "강력한 무기 IV" },
+    desc: { en: "Bring out the full strength of planar melee weapons.\nAdd +20 Planar Damage to planar melee weapons when Mighty.", ko: "차원 피해를 입히는 근접 무기의 힘을 최대로 이끌어냅니다.\n강인한 상태에서 차원 피해를 입히는 근접 무기의 차원 피해가 +20 증가합니다." },
+  },
+  wolfgang_planardamage_5: {
+    title: { en: "Mighty Weapons V", ko: "강력한 무기 V" },
+    desc: { en: "Bring out the full strength of planar melee weapons.\nAdd +25 Planar Damage to planar melee weapons when Mighty.", ko: "차원 피해를 입히는 근접 무기의 힘을 최대로 이끌어냅니다.\n강인한 상태에서 차원 피해를 입히는 근접 무기의 차원 피해가 +25 증가합니다." },
+  },
+  wormwood_allegiance_lunar_mutations_1: {
+    title: { en: "Lunar Cultivator I", ko: "월광의 경작자 I" },
+    desc: { en: "Tap into your lunar roots to transform Carrots into Carrats.\nCarrats you've created will retrieve food they find on the ground.", ko: "달의 뿌리를 활용하여 당근을 당근이쥐로 변형합니다.\n생성된 당근이쥐는 땅에 떨어진 음식을 찾아 가져다줍니다." },
+  },
+  wormwood_allegiance_lunar_mutations_2: {
+    title: { en: "Lunar Cultivator II", ko: "월광의 경작자 II" },
+    desc: { en: "Tap into your lunar roots to transform Lightbulbs into Bulbous Lightbugs.\nBulbous Lightbugs you've created will follow you around.\nThe more Lightbugs grouped together, the larger their light will glow.", ko: "달의 뿌리를 활용하여 전구근을 전구벌레로 변형합니다.\n생성된 전구벌레는 주인 곁을 따라다닙니다.\n전구벌레는 많을수록 더 밝은 빛을 냅니다." },
+  },
+  wormwood_allegiance_lunar_mutations_3: {
+    title: { en: "Lunar Cultivator III", ko: "월광의 경작자 III" },
+    desc: { en: "Tap into your lunar roots to transform Dragon Fruit into Saladmanders.\nSaladmanders you've created will attack things you do.\nTransforming maximum Saladmanders gives them a health boost.", ko: "달의 뿌리를 활용하여 용과를 샐러도마뱀으로 변형합니다.\n생성된 샐러도마뱀은 적을 함께 공격해 줍니다.\n샐러도마뱀은 최대 수량만큼 생성하면 최대 체력이 증가합니다." },
+  },
+  wormwood_allegiance_lunar_plant_gear_1: {
+    title: { en: "Lunar Guardian I", ko: "월광의 수호자 I" },
+    desc: { en: "Seize foes and keep them rooted in place while wearing Brightshade Armor.\nFuse Bramble Husks with Brightshade armor to create Brambleshade armor.", ko: "빛말풀 갑옷을 입으면 적을 뿌리로 묶을 수 있습니다.\n가시덤불 거죽을 빛말풀 갑옷과 합쳐 빛가시 갑옷을 만들 수 있습니다." },
+  },
+  wormwood_allegiance_lunar_plant_gear_2: {
+    title: { en: "Lunar Guardian II", ko: "월광의 수호자 II" },
+    desc: { en: "Summon vines to join the fray while attacking with Brightshade melee weapons.", ko: "빛말풀 계열 근접무기로 공격하면 적을 공격해주는 덩굴을 소환합니다." },
+  },
+  wormwood_armor_bramble: {
+    title: { en: "Bramble Husk Specialist", ko: "가시덤불 거죽 전문가" },
+    desc: { en: "Every three-hit attack streak you land without taking damage triggers a burst of spikes from your Bramble Husk.", ko: "피해를 받지 않은 상태에서 매 3타 공격 시마다 가시덤불 거죽에서 가시를 발사합니다." },
+  },
+  wormwood_berrybushcrafting: {
+    title: { en: "Berry Bush Crafting", ko: "베리 덤불 제작" },
+    desc: { en: "Sacrifice health to craft Berry Bushes.", ko: "체력을 소모하여 베리 덤불을 제작합니다." },
+  },
+  wormwood_blooming_farmrange1: {
+    title: { en: "Farmhand", ko: "농사꾼" },
+    desc: { en: "Tend farm plants within a larger range while full bloom.\nHarvest farm plants faster.", ko: "만개 상태일 때 더 넓은 범위의 작물을 돌봅니다.\n작물을 더 빠르게 수확합니다." },
+  },
+  wormwood_blooming_max_upgrade: {
+    title: { en: "Flower Power", ko: "화-력" },
+    desc: { en: "Fertilization of Wormwood is boosted 30%.", ko: "웜우드의 개화가 30% 빠르게 진행됩니다." },
+  },
+  wormwood_blooming_overheatprotection: {
+    title: { en: "Shade Plant", ko: "정자나무" },
+    desc: { en: "Gain increased protection from overheating when in full bloom.", ko: "만개 상태일 때 방서 효과를 얻습니다." },
+  },
+  wormwood_blooming_photosynthesis: {
+    title: { en: "Photosynthesis", ko: "광합성" },
+    desc: { en: "Slowly regenerate health when exposed to daylight in full bloom.", ko: "만개 상태에서 햇빛을 받으면 서서히 체력이 재생됩니다." },
+  },
+  wormwood_blooming_speed1: {
+    title: { en: "Growth Spurt I", ko: "성장 가속 I" },
+    desc: { en: "Reach full bloom a bit quicker.", ko: "만개 상태에 조금 더 빠르게 도달합니다." },
+  },
+  wormwood_blooming_speed2: {
+    title: { en: "Growth Spurt II", ko: "성장 가속 II" },
+    desc: { en: "Reach full bloom much quicker.", ko: "만개 상태에 훨씬 더 빠르게 도달합니다." },
+  },
+  wormwood_blooming_trapbramble: {
+    title: { en: "Bramble Trap Specialist", ko: "가시덤불 덫 전문가" },
+    desc: { en: "Reset nearby Bramble Traps while in full bloom.", ko: "만개 상태일 때 근처의 가시덤불 덫이 자동으로 초기화됩니다." },
+  },
+  wormwood_bugs: {
+    title: { en: "Bee Kind", ko: "벌벗" },
+    desc: { en: "Bees and Butterflies will tolerate Wormwood, unless provoked.", ko: "먼저 공격하지 않는 한, 벌과 나비가 웜우드를 적대하지 않습니다." },
+  },
+  wormwood_identify_plants2: {
+    title: { en: "Seed Sleuth", ko: "씨앗 탐정" },
+    desc: { en: "Learn to identify seeds that have just been planted, to determine what they will grow into.", ko: "방금 심은 씨앗을 식별하여, 자라서 무엇이 될지를 알아낼 수 있습니다." },
+  },
+  wormwood_juicyberrybushcrafting: {
+    title: { en: "Juicy Berry Bush Crafting", ko: "즙 많은 베리 덤불 제작" },
+    desc: { en: "Sacrifice health to craft Juicy Berry Bushes.", ko: "체력을 소모하여 즙 많은 베리 덤불을 제작합니다." },
+  },
+  wormwood_lureplantbulbcrafting: {
+    title: { en: "Lureplant Crafting", ko: "미끼식물 제작" },
+    desc: { en: "Sacrifice health to craft Lureplants.", ko: "체력을 소모하여 미끼식물을 제작합니다." },
+  },
+  wormwood_moon_cap_eating: {
+    title: { en: "Moon Shroom Cloud", ko: "달버섯구름" },
+    desc: { en: "Learn how to plant Moon Shrooms in Mushroom Planters, and release sleep-inducing spores when eating them.", ko: "버섯 재배기에 달버섯을 심을 수 있습니다. 또한 달버섯을 먹으면 수면 포자를 방출합니다." },
+  },
+  wormwood_mushroomplanter_ratebonus1: {
+    title: { en: "Mushroom Mastery I", ko: "버섯 마스터리 I" },
+    desc: { en: "Mushrooms planted in a Mushroom Planter grow a little faster.", ko: "버섯 재배기에 심은 버섯이 조금 더 빨리 자랍니다." },
+  },
+  wormwood_mushroomplanter_ratebonus2: {
+    title: { en: "Mushroom Mastery II", ko: "버섯 마스터리 II" },
+    desc: { en: "Mushrooms planted in a Mushroom Planter grow much faster.", ko: "버섯 재배기에 심은 버섯이 훨씬 더 빨리 자랍니다." },
+  },
+  wormwood_mushroomplanter_upgrade: {
+    title: { en: "Mushroom Multiplier", ko: "버섯 복사" },
+    desc: { en: "Mushrooms planted in a Mushroom Planter produce a higher yield.", ko: "버섯 재배기에 심은 버섯의 수확량이 증가합니다." },
+  },
+  wormwood_quick_selffertilizer: {
+    title: { en: "Compost Care", ko: "돌봐두엄" },
+    desc: { en: "Heal faster with Compost Wraps.", ko: "퇴비쌈 사용 속도가 빨라집니다." },
+  },
+  wormwood_reedscrafting: {
+    title: { en: "Monkeytail Crafting", ko: "원숭이꼬리풀 제작" },
+    desc: { en: "Sacrifice health to craft Monkeytails.", ko: "체력을 소모하여 원숭이꼬리풀을 제작합니다." },
+  },
+  wormwood_saplingcrafting: {
+    title: { en: "Sapling Crafting", ko: "묘목 제작" },
+    desc: { en: "Sacrifice health to craft Lunar Saplings.", ko: "체력을 소모하여 달 묘목을 제작합니다." },
+  },
+  wormwood_syrupcrafting: {
+    title: { en: "Poor Sap", ko: "불쌍한 수액기" },
+    desc: { en: "Learn to craft Ipecaca Syrup to induce pooping in other creatures.", ko: "다른 생물의 배변을 촉진하는 '토근 시럽'을 제작할 수 있습니다." },
+  },
 };
 
 /** Group/panel name translations */
 export const groupTranslations: Record<string, { en: string; ko: string }> = {
   alchemy: { en: "ALCHEMY", ko: "연금술" },
   allegiance: { en: "AFFINITY", ko: "친화" },
+  allegiance1: { en: "AFFINITY", ko: "친화" },
+  allegiance2: { en: "AFFINITY", ko: "친화" },
   amphibian: { en: "AMPHIBIAN", ko: "양서류" },
+  avengingghost: { en: "AVENGING GHOST", ko: "복수의 영혼" },
   arsenal: { en: "ARSENAL", ko: "무기고" },
   beard: { en: "BEARD", ko: "수염" },
   beefalo: { en: "RIDER", ko: "승마" },
   bernie: { en: "BERNIE", ko: "버니" },
   camping: { en: "SCOUTING", ko: "스카우트" },
+  charlie: { en: "CHARLIE", ko: "찰리" },
   chassis: { en: "CHASSIS", ko: "동체" },
   circuitry: { en: "CIRCUITRY", ko: "회로" },
+  combat: { en: "COMBAT", ko: "전투" },
+  crafting: { en: "CRAFTING", ko: "제작" },
   curse: { en: "CURSE", ko: "저주" },
   drones: { en: "DRONES", ko: "드론" },
+  gathering: { en: "GATHERING", ko: "채집" },
+  ghost_command: { en: "GHOST COMMAND", ko: "영혼 명령" },
+  ghostflower: { en: "GHOST FLOWER", ko: "영혼의 꽃" },
+  gravestone: { en: "GRAVESTONE", ko: "묘비" },
   human: { en: "LUMBERJACK", ko: "나무꾼" },
   lighter: { en: "LIGHTER", ko: "라이터" },
+  lowshelf: { en: "BOTTOM SHELF", ko: "하단 선반" },
+  midshelf: { en: "MIDDLE SHELF", ko: "중단 선반" },
   might: { en: "CHORES", ko: "노동" },
   naughty: { en: "NAUGHTY", ko: "악" },
   neutral: { en: "NEUTRAL", ko: "중립" },
   nice: { en: "NICE", ko: "선" },
   planardamage: { en: "MIGHT", ko: "힘" },
+  potion_upgrades: { en: "POTION UPGRADES", ko: "비약 강화" },
+  sisturn_upgrades: { en: "SISTURN UPGRADES", ko: "자매 항아리 강화" },
+  smallghost: { en: "SMALL GHOST", ko: "작은 영혼" },
   slingshotammo: { en: "AMMO", ko: "탄환" },
   slingshotmods: { en: "CUSTOMIZER", ko: "개조" },
   songs: { en: "HEADLINER", ko: "헤드라이너" },
@@ -1198,6 +1393,8 @@ export const groupTranslations: Record<string, { en: string; ko: string }> = {
   swampmaster: { en: "MERMDOM", ko: "어인 왕국" },
   torch: { en: "TORCH", ko: "횃불" },
   training: { en: "TRAINING", ko: "훈련" },
+  wagstaff: { en: "WAGSTAFF", ko: "와그스태프" },
+  wendy_alliegience: { en: "AFFINITY", ko: "친화" },
   woby: { en: "WOBY", ko: "워비" },
 };
 

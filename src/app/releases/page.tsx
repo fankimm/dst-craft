@@ -15,6 +15,28 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.11.1",
+    date: "2026-04-16",
+    dev: [
+      "tooling: scripts/check-skill-translations.py — 스킬/그룹/락 번역 누락 검사 (skillTranslations + groupTranslations 비교)",
+      "tooling: scripts/fill-skill-translations.py — strings.lua + ko.po + 캐릭터 lua의 명시적 SKILLTREESTRINGS 참조를 파싱하여 누락된 스킬 번역을 자동 생성",
+      "fix: 48개 스킬 번역 자동 추가 (willow/winona/wolfgang/wormwood) — DST 커뮤니티 한글모드 ko.po 기반",
+      "fix: 17개 그룹 번역 수동 추가 (allegiance1/2, charlie, combat, crafting, gathering, ghost_command, ghostflower, gravestone, lowshelf, midshelf, potion_upgrades, sisturn_upgrades, smallghost, wagstaff, wendy_alliegience, avengingghost)",
+      "체커 정확도 개선: 표준 lock 타입(boss_kill/skill_count/no_opposing_faction)은 i18n.ts의 skills_gate_* 키로 번역되므로 lockTranslations 검사에서 제외 (35 false-positive 제거)",
+      "결과: 스킬 333개, 그룹 44개, manual lock 모두 한글 번역 완료",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 — 윌로우/위노나/울프강/웜우드의 스킬 48개에 누락됐던 한글 번역 추가 (DST 커뮤니티 한글모드 기반)",
+        "스킬트리 — 누락됐던 17개 그룹 헤더 한글 번역 추가",
+      ],
+      en: [
+        "Skill tree — added 48 missing Korean translations for Willow/Winona/Wolfgang/Wormwood skills",
+        "Skill tree — added 17 missing group header translations",
+      ],
+    },
+  },
+  {
     version: "0.11.0",
     date: "2026-04-15",
     dev: [
