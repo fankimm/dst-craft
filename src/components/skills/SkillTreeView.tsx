@@ -113,7 +113,8 @@ function RailSegment({ item, color, prevDepth }: { item: LinearNode; color: stri
 
 function MergeIndicator({ parentIds, locale }: { parentIds: string[]; locale: Locale }) {
   if (parentIds.length <= 1) return null;
-  const parentNames = parentIds.map((id) => getTitle(id, locale)).join(" + ");
+  const sep = locale === "ko" ? " 또는 " : " or ";
+  const parentNames = parentIds.map((id) => getTitle(id, locale)).join(sep);
   return (
     <div className="text-[10px] text-muted-foreground ml-1 mb-0.5 truncate">
       ← {parentNames}
