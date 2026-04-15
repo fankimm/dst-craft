@@ -172,17 +172,25 @@ export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
     }
   }
 
+  // Identify exclusive locks (only referenced by 1 skill) — defer these
+  const exclusiveLocks = new Set<string>();
+  for (const [lockId, count] of lockRefCount) {
+    if (count <= 1) exclusiveLocks.add(lockId);
+  }
+
   const reordered: LinearNode[] = [];
   const placed = new Set<string>();
 
   for (const item of result) {
     if (placed.has(item.node.id)) continue;
 
+    // Skip exclusive locks — they'll be placed before their skill
+    if (exclusiveLocks.has(item.node.id)) continue;
+
     // If this node has locks, place its exclusive lock deps right before it
     if (item.node.locks && !item.isLock) {
       for (const lockId of item.node.locks) {
-        if (!placed.has(lockId) && (lockRefCount.get(lockId) ?? 0) <= 1) {
-          // Exclusive lock — move before this skill
+        if (!placed.has(lockId) && exclusiveLocks.has(lockId)) {
           const lockItem = result.find((r) => r.node.id === lockId);
           if (lockItem) {
             reordered.push(lockItem);
@@ -192,10 +200,8 @@ export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
       }
     }
 
-    if (!placed.has(item.node.id)) {
-      reordered.push(item);
-      placed.add(item.node.id);
-    }
+    reordered.push(item);
+    placed.add(item.node.id);
   }
 
   return reordered;
