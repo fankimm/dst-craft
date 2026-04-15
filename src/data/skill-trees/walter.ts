@@ -39,7 +39,7 @@ export const walter: CharacterSkillTree = {
       group: "slingshotammo",
       pos: [-209.1, 132.5],
       root: true,
-      tags: ["lock"],
+      tags: ["slingshotammo", "lock"],
       lockType: { type: "boss_kill", boss: "fuelweaver" },
     },
     {
@@ -47,7 +47,7 @@ export const walter: CharacterSkillTree = {
       group: "slingshotammo",
       pos: [-150.2, 132.5],
       root: true,
-      tags: ["lock"],
+      tags: ["slingshotammo", "lock"],
       lockType: { type: "boss_kill", boss: "celestialchampion" },
     },
     {
@@ -71,7 +71,7 @@ export const walter: CharacterSkillTree = {
       group: "slingshotammo",
       pos: [-181.5, 53],
       root: true,
-      tags: ["lock"],
+      tags: ["slingshotammo", "lock"],
       lockType: { type: "skill_count", tag: "slingshotammo_crafting", count: 2 },
     },
     {
@@ -181,7 +181,7 @@ export const walter: CharacterSkillTree = {
       group: "camping",
       pos: [52.7, 52.5],
       root: true,
-      tags: ["lock"],
+      tags: ["camping", "lock"],
       lockType: { type: "skill_count", tag: "camping", count: 3 },
     },
     {
@@ -231,7 +231,7 @@ export const walter: CharacterSkillTree = {
       group: "woby",
       pos: [197.8, 176.5],
       root: true,
-      tags: ["lock"],
+      tags: ["woby", "lock"],
       lockType: { type: "skill_count", tag: "woby_basics", count: 2 },
     },
     {
@@ -255,7 +255,7 @@ export const walter: CharacterSkillTree = {
       group: "woby",
       pos: [176, 54.5],
       root: true,
-      tags: ["lock"],
+      tags: ["woby", "lock"],
       lockType: { type: "boss_kill", boss: "fuelweaver" },
     },
     {
@@ -271,7 +271,7 @@ export const walter: CharacterSkillTree = {
       group: "woby",
       pos: [220.8, 54.5],
       root: true,
-      tags: ["lock"],
+      tags: ["woby", "lock"],
       lockType: { type: "boss_kill", boss: "celestialchampion" },
     },
     {

@@ -15,23 +15,23 @@ export const wolfgang: CharacterSkillTree = {
     { id: "wolfgang_critwork_3", group: "might", pos: [-218, 94], icon: "wolfgang_critwork_3", tags: ["might"] },
 
     // ── Training: Auto Gym ──
-    { id: "wolfgang_autogym", group: "training", pos: [-131, 170], root: true, icon: "wolfgang_autogym", tags: ["autogym"] },
+    { id: "wolfgang_autogym", group: "training", pos: [-131, 170], root: true, icon: "wolfgang_autogym", tags: ["training", "autogym"] },
 
     // ── Training: Coach & Speed ──
     { id: "wolfgang_normal_coach", group: "training", pos: [-93, 170], root: true, icon: "wolfgang_coach", connects: ["wolfgang_normal_speed"], tags: ["training"] },
     { id: "wolfgang_normal_speed", group: "training", pos: [-93, 132], icon: "wolfgang_speed", tags: ["training"] },
 
     // ── Training: Dumbbell ──
-    { id: "wolfgang_dumbbell_crafting", group: "training", pos: [-55, 170], root: true, icon: "wolfgang_dumbbell_crafting", connects: ["wolfgang_dumbbell_throwing_1"], tags: ["dumbbell_craft"] },
-    { id: "wolfgang_dumbbell_throwing_1", group: "training", pos: [-55, 132], icon: "wolfgang_dumbbell_throwing_1", connects: ["wolfgang_dumbbell_throwing_2"], tags: ["dumbbell_throwing"] },
-    { id: "wolfgang_dumbbell_throwing_2", group: "training", pos: [-55, 94], icon: "wolfgang_dumbbell_throwing_2", tags: ["dumbbell_throwing"] },
+    { id: "wolfgang_dumbbell_crafting", group: "training", pos: [-55, 170], root: true, icon: "wolfgang_dumbbell_crafting", connects: ["wolfgang_dumbbell_throwing_1"], tags: ["training", "dumbbell_craft"] },
+    { id: "wolfgang_dumbbell_throwing_1", group: "training", pos: [-55, 132], icon: "wolfgang_dumbbell_throwing_1", connects: ["wolfgang_dumbbell_throwing_2"], tags: ["training", "dumbbell_throwing"] },
+    { id: "wolfgang_dumbbell_throwing_2", group: "training", pos: [-55, 94], icon: "wolfgang_dumbbell_throwing_2", tags: ["training", "dumbbell_throwing"] },
 
     // ── Training: Overbuff ──
-    { id: "wolfgang_overbuff_1", group: "training", pos: [-17, 170], root: true, icon: "wolfgang_overbuff_1", connects: ["wolfgang_overbuff_2"], tags: ["overbuff"] },
-    { id: "wolfgang_overbuff_2", group: "training", pos: [-17, 132], icon: "wolfgang_overbuff_2", connects: ["wolfgang_overbuff_3"], tags: ["overbuff"] },
-    { id: "wolfgang_overbuff_3", group: "training", pos: [-17, 94], icon: "wolfgang_overbuff_3", connects: ["wolfgang_overbuff_4"], tags: ["overbuff"] },
-    { id: "wolfgang_overbuff_4", group: "training", pos: [-17, 56], icon: "wolfgang_overbuff_4", connects: ["wolfgang_overbuff_5"], tags: ["overbuff"] },
-    { id: "wolfgang_overbuff_5", group: "training", pos: [-17, 18], icon: "wolfgang_overbuff_5", tags: ["overbuff"] },
+    { id: "wolfgang_overbuff_1", group: "training", pos: [-17, 170], root: true, icon: "wolfgang_overbuff_1", connects: ["wolfgang_overbuff_2"], tags: ["training", "overbuff"] },
+    { id: "wolfgang_overbuff_2", group: "training", pos: [-17, 132], icon: "wolfgang_overbuff_2", connects: ["wolfgang_overbuff_3"], tags: ["training", "overbuff"] },
+    { id: "wolfgang_overbuff_3", group: "training", pos: [-17, 94], icon: "wolfgang_overbuff_3", connects: ["wolfgang_overbuff_4"], tags: ["training", "overbuff"] },
+    { id: "wolfgang_overbuff_4", group: "training", pos: [-17, 56], icon: "wolfgang_overbuff_4", connects: ["wolfgang_overbuff_5"], tags: ["training", "overbuff"] },
+    { id: "wolfgang_overbuff_5", group: "training", pos: [-17, 18], icon: "wolfgang_overbuff_5", tags: ["training", "overbuff"] },
 
     // ── Planar Damage ──
     { id: "wolfgang_planardamage_1", group: "planardamage", pos: [90, 170], root: true, icon: "wolfgang_planardamage_1", connects: ["wolfgang_planardamage_2"], tags: ["planardamage"] },

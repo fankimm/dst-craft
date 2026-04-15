@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.10.7",
+    date: "2026-04-15",
+    dev: [
+      "tooling: scripts/verify-skill-trees.py — 인게임 skilltree_<char>.lua 정적 파싱 후 우리 TS 데이터와 ID/group/root/connects/locks/tags/lock_open 비교 (위그프리드를 정답지 회귀테스트로 사용)",
+      "tooling: scripts/fix-skill-tree-tags.py — lua 후처리(group → tags 자동 추가)를 미러링하는 자동 수정 스크립트",
+      "fix: 10개 캐릭터 스킬트리 데이터에서 누락된 그룹-태그 70개 자동 보정 (willow/winona/wolfgang/woodie/wormwood/wortox/wurt/walter)",
+      "검증 결과 67 errors → 11 errors (84% 감소). 남은 11개는 의도적 divergence 후보 (walter/wormwood/wortox)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.10.6",
     date: "2026-04-15",
     dev: [

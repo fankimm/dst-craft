@@ -10,15 +10,15 @@ export const wortox: CharacterSkillTree = {
   ],
   nodes: [
     // ── Infographic: Inclination Meter ──
-    { id: "wortox_inclination_meter", group: "neutral", pos: [0, 199.9], root: true, icon: "wortox_scales", tags: ["infographic"] },
-    { id: "wortox_inclination_nice", group: "neutral", pos: [-176, 228.4], root: true, icon: "wortox_inclination_nice", lockType: { type: "manual", desc_ko: "착한/중립 스킬 총합 5개 이상 습득 필요", desc_en: "Requires 5+ Nice/Neutral skills" }, tags: ["infographic", "lock"] },
-    { id: "wortox_inclination_naughty", group: "neutral", pos: [176, 228.4], root: true, icon: "wortox_inclination_naughty", lockType: { type: "manual", desc_ko: "악한/중립 스킬 총합 5개 이상 습득 필요", desc_en: "Requires 5+ Naughty/Neutral skills" }, tags: ["infographic", "lock"] },
+    { id: "wortox_inclination_meter", group: "neutral", pos: [0, 199.9], root: true, icon: "wortox_scales", tags: ["neutral", "infographic"] },
+    { id: "wortox_inclination_nice", group: "neutral", pos: [-176, 228.4], root: true, icon: "wortox_inclination_nice", lockType: { type: "manual", desc_ko: "착한/중립 스킬 총합 5개 이상 습득 필요", desc_en: "Requires 5+ Nice/Neutral skills" }, tags: ["neutral", "infographic", "lock"] },
+    { id: "wortox_inclination_naughty", group: "neutral", pos: [176, 228.4], root: true, icon: "wortox_inclination_naughty", lockType: { type: "manual", desc_ko: "악한/중립 스킬 총합 5개 이상 습득 필요", desc_en: "Requires 5+ Naughty/Neutral skills" }, tags: ["neutral", "infographic", "lock"] },
 
     // ── Locks ──
-    { id: "wortox_lifebringer_lock", group: "nice", pos: [-225, 106], root: true, lockType: { type: "manual", desc_ko: "아래 스킬 및 선행/중립 스킬 5개 습득 시 해금", desc_en: "Requires skill below + 5 Nice/Neutral skills" }, tags: ["lock"] },
-    { id: "wortox_soulprotector_lock", group: "nice", pos: [-175, 95], root: true, lockType: { type: "manual", desc_ko: "아래 스킬 및 선행/중립 스킬 5개 습득 시 해금", desc_en: "Requires skill below + 5 Nice/Neutral skills" }, tags: ["lock"] },
-    { id: "wortox_souldecoy_lock", group: "naughty", pos: [225, 106], root: true, lockType: { type: "manual", desc_ko: "아래 스킬 및 악행/중립 스킬 5개 습득 시 해금", desc_en: "Requires skill below + 5 Naughty/Neutral skills" }, tags: ["lock"] },
-    { id: "wortox_thief_lock", group: "naughty", pos: [175, 95], root: true, lockType: { type: "manual", desc_ko: "아래 스킬 및 악행/중립 스킬 5개 습득 시 해금", desc_en: "Requires skill below + 5 Naughty/Neutral skills" }, tags: ["lock"] },
+    { id: "wortox_lifebringer_lock", group: "nice", pos: [-225, 106], root: true, lockType: { type: "manual", desc_ko: "아래 스킬 및 선행/중립 스킬 5개 습득 시 해금", desc_en: "Requires skill below + 5 Nice/Neutral skills" }, tags: ["nice", "lock"] },
+    { id: "wortox_soulprotector_lock", group: "nice", pos: [-175, 95], root: true, lockType: { type: "manual", desc_ko: "아래 스킬 및 선행/중립 스킬 5개 습득 시 해금", desc_en: "Requires skill below + 5 Nice/Neutral skills" }, tags: ["nice", "lock"] },
+    { id: "wortox_souldecoy_lock", group: "naughty", pos: [225, 106], root: true, lockType: { type: "manual", desc_ko: "아래 스킬 및 악행/중립 스킬 5개 습득 시 해금", desc_en: "Requires skill below + 5 Naughty/Neutral skills" }, tags: ["naughty", "lock"] },
+    { id: "wortox_thief_lock", group: "naughty", pos: [175, 95], root: true, lockType: { type: "manual", desc_ko: "아래 스킬 및 악행/중립 스킬 5개 습득 시 해금", desc_en: "Requires skill below + 5 Naughty/Neutral skills" }, tags: ["naughty", "lock"] },
 
     // ── Nice: Lifebringer ──
     { id: "wortox_lifebringer_1", group: "nice", pos: [-225, 32], root: true, icon: "wortox_lifebringer_1", connects: ["wortox_lifebringer_2"], tags: ["nice", "nice1"] },

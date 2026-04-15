@@ -34,10 +34,10 @@ export const willow: CharacterSkillTree = {
     { id: "willow_berniespeed_2", group: "bernie", pos: [44, 127], icon: "willow_berniespeed_2", tags: ["bernie", "bernie4", "bernie8"] },
 
     // ── Bernie Locks ──
-    { id: "willow_bernie_lock", group: "bernie", pos: [-45, 84], root: true, lockType: { type: "skill_count", tag: "bernie4", count: 4 }, connects: ["willow_berniehealth_1"], tags: ["lock"] },
+    { id: "willow_bernie_lock", group: "bernie", pos: [-45, 84], root: true, lockType: { type: "skill_count", tag: "bernie4", count: 4 }, connects: ["willow_berniehealth_1"], tags: ["bernie", "lock"] },
     { id: "willow_berniehealth_1", group: "bernie", pos: [-45, 49], icon: "willow_berniehealth_1", connects: ["willow_berniehealth_2"], tags: ["bernie", "bernie8"] },
     { id: "willow_berniehealth_2", group: "bernie", pos: [-45, 14], icon: "willow_berniehealth_2", tags: ["bernie", "bernie8"] },
-    { id: "willow_bernie_lock_2", group: "bernie", pos: [43, 84], root: true, lockType: { type: "skill_count", tag: "bernie8", count: 8 }, connects: ["willow_burnignbernie"], tags: ["lock"] },
+    { id: "willow_bernie_lock_2", group: "bernie", pos: [43, 84], root: true, lockType: { type: "skill_count", tag: "bernie8", count: 8 }, connects: ["willow_burnignbernie"], tags: ["bernie", "lock"] },
     { id: "willow_burnignbernie", group: "bernie", pos: [43, 49], icon: "willow_burnignbernie", tags: ["bernie", "bernie4"] },
 
     // ── Allegiance: Shadow ──

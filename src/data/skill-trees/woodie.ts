@@ -15,7 +15,7 @@ export const woodie: CharacterSkillTree = {
 
     // ── Curse: Master Lock ──
     { id: "woodie_curse_master_lock", group: "curse", pos: [-205, 58], root: true, lockType: { type: "skill_count", tag: "curse", count: 6 }, connects: ["woodie_curse_master"], tags: ["curse", "lock"] },
-    { id: "woodie_curse_master", group: "curse", pos: [-205, 20], icon: "woodie_curse_master", tags: ["cursemaster"] },
+    { id: "woodie_curse_master", group: "curse", pos: [-205, 20], icon: "woodie_curse_master", tags: ["curse", "cursemaster"] },
 
     // ── Curse: Beaver ──
     { id: "woodie_curse_beaver_1", group: "curse", pos: [-140, 172], root: true, icon: "woodie_curse_beaver_1", connects: ["woodie_curse_beaver_2"], tags: ["curse", "beaver"] },

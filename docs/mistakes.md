@@ -2,6 +2,12 @@
 
 ## 게임 데이터
 
+### lua 원본의 오타를 "고치지" 말 것
+- **문제**: wurt 스킬 데이터에서 `swampmaser` 태그(`t` 빠진 오타)가 lua 원본에 그대로 있는데, 우리 TS 데이터에서 "오타니까 정리"해서 모두 제거함
+- **원인**: 검증 스크립트가 "missing tags: ['swampmaster']"라고 출력 → 후에 다시 검증 시 이번엔 "missing tags: ['swampmaser']" → 처음엔 "swampmaster"가 정답이라 오해
+- **교훈**: 인게임 lua 데이터의 명백한 오타도 우리 TS는 그대로 매칭해야 함. 오타 자체가 게임 내 태그 검색 키이므로 "수정"하면 게임과 동작이 달라짐
+- **검증**: `grep "swampmaser" /tmp/dst-extract/scripts/prefabs/skilltree_wurt.lua` — lua 원본도 같은지 먼저 확인
+
 ### nounlock ≠ blueprint 혼동
 - **문제**: `nounlock: true`인 아이템 전부에 블루프린트 뱃지를 표시함
 - **원인**: `nounlock`(프로토타입 불가)과 `TECH.LOST`(블루프린트 필요)를 구분하지 않음

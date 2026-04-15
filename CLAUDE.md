@@ -127,6 +127,16 @@ jihwan-kim3 (macOS):
 - **프리팹 필수 확인**: tuning.lua만으로 스펙이 완전하다고 판단하지 말 것 (dapperness, SetConsumption, attackwear 등 프리팹에서만 설정하는 속성 있음)
 - 상세 설계: `docs/item-stats-pipeline.md` 참조
 
+## Skill Tree Verification
+- `scripts/verify-skill-trees.py` — 인게임 `skilltree_<char>.lua` vs 우리 `src/data/skill-trees/*.ts` 정적 비교
+  - 비교: 스킬 ID set, group, root, connects, locks(AND-deps), tags(set), lock_open 유무
+  - 스킵: lock_open 함수 본문 의미론 (수동 검토)
+  - 위그프리드는 정답지 (regression test)
+- `scripts/fix-skill-tree-tags.py` — 그룹명-태그 누락 자동 수정 (lua 후처리 미러)
+  - `--dry-run` 으로 미리보기
+- 인게임 소스 추출: `unzip <scripts.zip> 'scripts/prefabs/skilltree_*.lua' -d /tmp/dst-extract/`
+- 스킬트리 데이터 변경 후 항상 verify 실행
+
 ## Mistakes & Lessons (오답노트)
 - 작업 중 실수/교훈은 **`docs/mistakes.md`** 에 기록할 것. 같은 실수 반복 방지 목적.
 - 새 작업 전 반드시 참조할 것.

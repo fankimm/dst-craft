@@ -22,33 +22,33 @@ export const wurt: CharacterSkillTree = {
     { id: "wurt_amphibian_healing_2", group: "amphibian", pos: [-172.5, 20], icon: "wurt_amphibian_healing_2", tags: ["amphibian", "wetness_healing", "marsh_wetness"] },
 
     // ── Swampmaster: Mosquito ──
-    { id: "wurt_mosquito_craft_1", group: "swampmaster", pos: [-46.5, 172], root: true, icon: "wurt_mosquito_craft_1", connects: ["wurt_mosquito_craft_2"], tags: ["swampmaser", "mosquito"] },
-    { id: "wurt_mosquito_craft_2", group: "swampmaster", pos: [-46.5, 134], icon: "wurt_mosquito_craft_2", connects: ["wurt_mosquito_craft_3"], tags: ["swampmaser", "mosquito"] },
-    { id: "wurt_mosquito_craft_3", group: "swampmaster", pos: [-46.5, 96], icon: "wurt_mosquito_craft_3", tags: ["swampmaser", "mosquito"] },
+    { id: "wurt_mosquito_craft_1", group: "swampmaster", pos: [-46.5, 172], root: true, icon: "wurt_mosquito_craft_1", connects: ["wurt_mosquito_craft_2"], tags: ["swampmaster", "swampmaser", "mosquito"] },
+    { id: "wurt_mosquito_craft_2", group: "swampmaster", pos: [-46.5, 134], icon: "wurt_mosquito_craft_2", connects: ["wurt_mosquito_craft_3"], tags: ["swampmaster", "swampmaser", "mosquito"] },
+    { id: "wurt_mosquito_craft_3", group: "swampmaster", pos: [-46.5, 96], icon: "wurt_mosquito_craft_3", tags: ["swampmaster", "swampmaser", "mosquito"] },
 
     // ── Swampmaster: Merm King Shoulders/Crown/Trident ──
-    { id: "wurt_mermkingshoulders", group: "swampmaster", pos: [5.75, 172], root: true, icon: "wurt_mermkingshoulders", connects: ["wurt_mermkingcrown"], tags: ["swampmaser", "mermking_quest"] },
-    { id: "wurt_mermkingcrown", group: "swampmaster", pos: [5.75, 134], icon: "wurt_mermkingcrown", connects: ["wurt_mermkingtrident"], tags: ["swampmaser", "mermking_quest"] },
-    { id: "wurt_mermkingtrident", group: "swampmaster", pos: [5.75, 96], icon: "wurt_mermkingtrident", tags: ["swampmaser", "mermking_quest"] },
+    { id: "wurt_mermkingshoulders", group: "swampmaster", pos: [5.75, 172], root: true, icon: "wurt_mermkingshoulders", connects: ["wurt_mermkingcrown"], tags: ["swampmaster", "swampmaser", "mermking_quest"] },
+    { id: "wurt_mermkingcrown", group: "swampmaster", pos: [5.75, 134], icon: "wurt_mermkingcrown", connects: ["wurt_mermkingtrident"], tags: ["swampmaster", "swampmaser", "mermking_quest"] },
+    { id: "wurt_mermkingtrident", group: "swampmaster", pos: [5.75, 96], icon: "wurt_mermkingtrident", tags: ["swampmaster", "swampmaser", "mermking_quest"] },
 
     // ── Swampmaster: Merm King Hunger ──
-    { id: "wurt_merm_king_hunger_1", group: "swampmaster", pos: [58, 172], root: true, icon: "wurt_merm_king_hunger_1", connects: ["wurt_merm_king_hunger_2"], tags: ["swampmaser", "merm_king_max_hunger"] },
-    { id: "wurt_merm_king_hunger_2", group: "swampmaster", pos: [58, 134], icon: "wurt_merm_king_hunger_2", connects: ["wurt_merm_king_hunger_3"], tags: ["swampmaser", "merm_king_max_hunger"] },
-    { id: "wurt_merm_king_hunger_3", group: "swampmaster", pos: [58, 96], icon: "wurt_merm_king_hunger_3", tags: ["swampmaser", "merm_king_hunger_rate"] },
+    { id: "wurt_merm_king_hunger_1", group: "swampmaster", pos: [58, 172], root: true, icon: "wurt_merm_king_hunger_1", connects: ["wurt_merm_king_hunger_2"], tags: ["swampmaster", "swampmaser", "merm_king_max_hunger"] },
+    { id: "wurt_merm_king_hunger_2", group: "swampmaster", pos: [58, 134], icon: "wurt_merm_king_hunger_2", connects: ["wurt_merm_king_hunger_3"], tags: ["swampmaster", "swampmaser", "merm_king_max_hunger"] },
+    { id: "wurt_merm_king_hunger_3", group: "swampmaster", pos: [58, 96], icon: "wurt_merm_king_hunger_3", tags: ["swampmaster", "swampmaser", "merm_king_hunger_rate"] },
 
     // ── Swampmaster: Civilization ──
-    { id: "wurt_civ_1", group: "swampmaster", pos: [-32.25, 58], root: true, icon: "wurt_civ_1", connects: ["wurt_civ_1_2"], tags: ["swampmaser", "civ"] },
-    { id: "wurt_civ_1_2", group: "swampmaster", pos: [-32.25, 20], icon: "wurt_civ_1_2", tags: ["swampmaser", "civ"] },
-    { id: "wurt_civ_2", group: "swampmaster", pos: [5.75, 58], root: true, icon: "wurt_civ_2", connects: ["wurt_civ_2_2"], tags: ["swampmaser", "civ"] },
-    { id: "wurt_civ_2_2", group: "swampmaster", pos: [5.75, 20], icon: "wurt_civ_2_2", tags: ["swampmaser", "civ"] },
-    { id: "wurt_civ_3", group: "swampmaster", pos: [43.75, 58], root: true, icon: "wurt_civ_3", connects: ["wurt_civ_3_2"], tags: ["swampmaser", "civ"] },
-    { id: "wurt_civ_3_2", group: "swampmaster", pos: [43.75, 20], icon: "wurt_civ_3_2", tags: ["swampmaser", "civ"] },
+    { id: "wurt_civ_1", group: "swampmaster", pos: [-32.25, 58], root: true, icon: "wurt_civ_1", connects: ["wurt_civ_1_2"], tags: ["swampmaster", "swampmaser", "civ"] },
+    { id: "wurt_civ_1_2", group: "swampmaster", pos: [-32.25, 20], icon: "wurt_civ_1_2", tags: ["swampmaster", "swampmaser", "civ"] },
+    { id: "wurt_civ_2", group: "swampmaster", pos: [5.75, 58], root: true, icon: "wurt_civ_2", connects: ["wurt_civ_2_2"], tags: ["swampmaster", "swampmaser", "civ"] },
+    { id: "wurt_civ_2_2", group: "swampmaster", pos: [5.75, 20], icon: "wurt_civ_2_2", tags: ["swampmaster", "swampmaser", "civ"] },
+    { id: "wurt_civ_3", group: "swampmaster", pos: [43.75, 58], root: true, icon: "wurt_civ_3", connects: ["wurt_civ_3_2"], tags: ["swampmaster", "swampmaser", "civ"] },
+    { id: "wurt_civ_3_2", group: "swampmaster", pos: [43.75, 20], icon: "wurt_civ_3_2", tags: ["swampmaster", "swampmaser", "civ"] },
 
     // ── Swampmaster: Pathfinder ──
-    { id: "wurt_pathfinder", group: "swampmaster", pos: [92.2, 39], root: true, icon: "wurt_pathfinder", tags: ["swampmaser", "pathfinder"] },
+    { id: "wurt_pathfinder", group: "swampmaster", pos: [92.2, 39], root: true, icon: "wurt_pathfinder", tags: ["swampmaster", "swampmaser", "pathfinder"] },
 
     // ── Swampmaster: Merm Flee ──
-    { id: "wurt_merm_flee", group: "swampmaster", pos: [-80.7, 39], root: true, icon: "wurt_merm_flee", tags: ["swampmaser", "merm_flee"] },
+    { id: "wurt_merm_flee", group: "swampmaster", pos: [-80.7, 39], root: true, icon: "wurt_merm_flee", tags: ["swampmaster", "swampmaser", "merm_flee"] },
 
     // ── Allegiance ──
     { id: "wurt_allegiance_lock_1", group: "allegiance", pos: [203.5, 172], root: true, lockType: { type: "total_skills", count: 12 }, tags: ["allegiance", "lock"] },
