@@ -51,73 +51,47 @@ function getGroupLabel(groupId: string, locale: Locale): string {
 
 // ── Rail segment renderer ──
 
-function RailSegment({ item, color, prevDepth }: { item: LinearNode; color: string; prevDepth: number }) {
-  const d = item.depth;
-  const indent = d * 16;
-
+function RailDot({ color, isLock }: { color: string; isLock: boolean }) {
   return (
-    <div className="flex items-stretch shrink-0" style={{ width: 28 + indent }}>
-      {/* Trunk line (always at left=14px) */}
-      <div className="relative" style={{ width: 28 }}>
+    <div className="flex items-stretch shrink-0 w-7">
+      <div className="relative w-7">
         {/* Vertical line */}
-        {item.railAbove !== "none" && (
-          <div
-            className="absolute left-[13px] top-0 bottom-0 w-0.5"
-            style={{ backgroundColor: `${color}4d` }}
-          />
-        )}
-        {/* Junction dot */}
-        {d === 0 && !item.isLock && (
-          <div className="absolute left-[9px] top-1/2 -translate-y-1/2">
-            <div
-              className="size-[10px] rounded-full"
-              style={{ backgroundColor: `${color}80`, border: `2px solid ${color}` }}
-            />
-          </div>
-        )}
-        {d === 0 && item.isLock && (
+        <div
+          className="absolute left-[13px] top-0 bottom-0 w-0.5"
+          style={{ backgroundColor: `${color}4d` }}
+        />
+        {/* Junction */}
+        {isLock ? (
           <div className="absolute left-[10px] top-1/2 -translate-y-1/2">
-            <div
-              className="size-[8px] rotate-45"
-              style={{ backgroundColor: `${color}40`, border: `1.5px solid ${color}` }}
-            />
+            <div className="size-[8px] rotate-45" style={{ backgroundColor: `${color}40`, border: `1.5px solid ${color}` }} />
+          </div>
+        ) : (
+          <div className="absolute left-[9px] top-1/2 -translate-y-1/2">
+            <div className="size-[10px] rounded-full" style={{ backgroundColor: `${color}80`, border: `2px solid ${color}` }} />
           </div>
         )}
       </div>
-
-      {/* Branch lines (indented levels) */}
-      {d > 0 && (
-        <div className="relative flex-1">
-          {/* Horizontal branch line from trunk to node */}
-          <div
-            className="absolute top-1/2 left-0 h-0.5 -translate-y-px"
-            style={{
-              width: indent - 4,
-              backgroundColor: `${color}4d`,
-            }}
-          />
-          {/* Branch dot */}
-          <div className="absolute top-1/2 -translate-y-1/2" style={{ right: 0 }}>
-            <div
-              className="size-[8px] rounded-full"
-              style={{ backgroundColor: `${color}60`, border: `1.5px solid ${color}` }}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
 // ── Merge indicator ──
 
-function MergeIndicator({ parentIds, locale }: { parentIds: string[]; locale: Locale }) {
+function MergeIndicator({ parentIds, locale, color }: { parentIds: string[]; locale: Locale; color: string }) {
   if (parentIds.length <= 1) return null;
   const sep = locale === "ko" ? " 또는 " : " or ";
-  const parentNames = parentIds.map((id) => getTitle(id, locale)).join(sep);
+  const parentNames = parentIds.map((id) => `"${getTitle(id, locale)}"`).join(sep);
+  const label = locale === "ko"
+    ? `${parentNames} 습득 필요`
+    : `Requires ${parentNames}`;
   return (
-    <div className="text-[10px] text-muted-foreground ml-1 mb-0.5 truncate">
-      ← {parentNames}
+    <div className="flex items-center" style={{ minHeight: 28 }}>
+      <div className="shrink-0 w-7 relative">
+        <div className="absolute left-[13px] top-0 bottom-0 w-0.5" style={{ backgroundColor: `${color}4d` }} />
+      </div>
+      <div className="text-[10px] text-muted-foreground px-2 py-0.5 truncate">
+        ↑ {label}
+      </div>
     </div>
   );
 }
@@ -202,7 +176,6 @@ export function SkillTreeView({
               {/* Nodes */}
               <div className="px-2">
                 {items.map((item, i) => {
-                  const prevDepth = i > 0 ? items[i - 1].depth : 0;
 
                   if (item.isLock && item.node.lockType) {
                     // Lock gate
@@ -237,7 +210,7 @@ export function SkillTreeView({
 
                     return (
                       <div key={item.node.id} className="flex items-center" style={{ minHeight: 44 }}>
-                        <RailSegment item={item} color={group.color} prevDepth={prevDepth} />
+                        <RailDot color={group.color} isLock={item.isLock} />
                         <div className="flex-1 min-w-0">
                           <SkillLockIndicator
                             lockType={item.node.lockType}
@@ -255,7 +228,7 @@ export function SkillTreeView({
                     // Lock without lockType — minimal gate
                     return (
                       <div key={item.node.id} className="flex items-center" style={{ minHeight: 40 }}>
-                        <RailSegment item={item} color={group.color} prevDepth={prevDepth} />
+                        <RailDot color={group.color} isLock={item.isLock} />
                         <div className="flex-1 flex items-center gap-2 px-3">
                           <div className="flex-1 h-px bg-border" />
                           <span className="inline-block size-2.5 rotate-45 border" style={{ borderColor: group.color, backgroundColor: `${group.color}30` }} />
@@ -270,10 +243,10 @@ export function SkillTreeView({
                   return (
                     <div key={item.node.id}>
                       {item.parentIds.length > 1 && (
-                        <MergeIndicator parentIds={item.parentIds} locale={locale} />
+                        <MergeIndicator parentIds={item.parentIds} locale={locale} color={group.color} />
                       )}
                       <div className="flex items-center" style={{ minHeight: 52 }}>
-                        <RailSegment item={item} color={group.color} prevDepth={prevDepth} />
+                        <RailDot color={group.color} isLock={item.isLock} />
                         <div className="flex-1 min-w-0 pr-2">
                           <SkillNodeCard
                             skillId={item.node.id}
