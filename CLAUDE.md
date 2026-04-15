@@ -50,8 +50,10 @@
 - `src/components/crafting/ItemStatsPanel.tsx` — v3 스펙 렌더링 컴포넌트 (4그룹: 전투/방어/유틸리티/특수)
 - `src/components/crafting/` — 메인 앱 컴포넌트
 - `src/components/cooking/` — 요리 탭 컴포넌트
+- `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지
-- `src/hooks/` — 커스텀 훅 (use-crafting-state, use-settings, use-search, use-auth, use-favorites)
+- `src/data/skill-trees/` — 스킬트리 데이터 (11캐릭터, 번역, 타입)
+- `src/hooks/` — 커스텀 훅 (use-crafting-state, use-settings, use-search, use-auth, use-favorites, use-skill-tree)
 - `src/lib/` — 유틸리티 (types, i18n, crafting-data, utils, favorites-api)
 - `src/lib/version.ts` — 앱 버전 (`APP_VERSION`)
 - `src/app/releases/page.tsx` — 릴리즈 노트 페이지

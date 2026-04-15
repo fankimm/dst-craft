@@ -15,6 +15,30 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.10.0",
+    date: "2026-04-15",
+    dev: [
+      "feat: 스킬트리 시뮬레이터 탭 추가 (Git Graph 스타일 UI)",
+      "data: 11개 캐릭터 스킬트리 데이터 추출 — 게임 Lua → TypeScript 변환 (~403 노드)",
+      "data: ko.po + strings.lua에서 스킬 번역 추출 (타이틀/설명/그룹명/잠금 조건)",
+      "feat: 스킬 습득/해제 시뮬레이션 + 의존성 검증 + 상호 배제 (월광/그림자)",
+      "feat: 스킬 상세 패널에서 해금 제작 아이템 크로스링크 (스킬→제작탭)",
+      "feat: localStorage 기반 상태 저장 (캐릭터별)",
+      "ui: SVG Rail + SkillNodeCard + SkillLockIndicator + SkillDetailSheet 컴포넌트",
+      "ui: AppShell에 스킬 탭 추가 (6탭 구성)",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 시뮬레이터 추가 — 11개 캐릭터의 스킬트리를 확인하고 습득 시뮬레이션",
+        "스킬 상세 패널에서 해금 아이템 확인 및 제작탭 이동 지원",
+      ],
+      en: [
+        "Skill tree simulator — browse and simulate skill allocation for 11 characters",
+        "View unlocked crafting items from skill detail panel",
+      ],
+    },
+  },
+  {
     version: "0.9.2",
     date: "2026-04-15",
     dev: [

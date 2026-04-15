@@ -7,6 +7,7 @@ import { CookingApp } from "./cooking/CookingApp";
 import { CookpotApp } from "./cookpot/CookpotApp";
 import { BossesApp } from "./bosses/BossesApp";
 import { SettingsPage } from "./settings/SettingsPage";
+import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
@@ -14,13 +15,14 @@ import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "settings";
+type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "skills" | "settings";
 
-const tabs: { id: TabId; labelKey: TranslationKey; image?: string }[] = [
+const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?: boolean }[] = [
   { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.png" },
   { id: "cooking", labelKey: "tab_cooking", image: "/images/category-icons/cooking.png" },
   { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
   { id: "bosses", labelKey: "tab_bosses", image: "/images/game-items/deerclops_eyeball.png" },
+  { id: "skills", labelKey: "tab_skills", image: "/images/skill-icons/wilson_alchemy_1.png", adminOnly: true },
   { id: "settings", labelKey: "tab_settings", image: "/images/game-items/gears.png" },
 ];
 
@@ -28,7 +30,7 @@ const tabs: { id: TabId; labelKey: TranslationKey; image?: string }[] = [
 function readTabFromUrl(): TabId {
   if (typeof window === "undefined") return "crafting";
   const tab = new URLSearchParams(window.location.search).get("tab");
-  if (tab === "cooking" || tab === "cookpot" || tab === "bosses" || tab === "settings") return tab;
+  if (tab === "cooking" || tab === "cookpot" || tab === "bosses" || tab === "skills" || tab === "settings") return tab;
   return "crafting";
 }
 
@@ -36,6 +38,7 @@ export function AppShell() {
   const [activeTab, setActiveTab] = useState<TabId>("crafting");
   const { resolvedLocale } = useSettings();
   const { isAdmin, token } = useAuth();
+  const tabs = allTabs.filter((tab) => !tab.adminOnly || isAdmin);
   const [toast, setToast] = useState<string | null>(null);
   const [pendingRecipeId, setPendingRecipeId] = useState<string | null>(null);
   const [pendingItemId, setPendingItemId] = useState<string | null>(null);
@@ -224,6 +227,9 @@ export function AppShell() {
         </div>
         <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
           <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} />
+        </div>
+        <div className={activeTab === "skills" ? "h-full" : "hidden"}>
+          <SkillSimulatorApp onViewCraftingItem={handleViewCraftingItem} />
         </div>
         <div className={activeTab === "settings" ? "h-full" : "hidden"}>
           <SettingsPage />
