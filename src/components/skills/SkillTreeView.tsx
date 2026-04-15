@@ -10,6 +10,7 @@ import { skillTranslations, groupTranslations } from "@/data/skill-trees/transla
 import { linearizeGroup, type LinearNode } from "@/lib/skill-tree-layout";
 import { SkillNodeCard } from "./SkillNodeCard";
 import { SkillLockIndicator } from "./SkillLockIndicator";
+import { Footer } from "../crafting/Footer";
 
 interface Props {
   tree: CharacterSkillTree;
@@ -56,10 +57,16 @@ function getGroupLabel(groupId: string, locale: Locale): string {
 // ── Merge indicator ──
 
 function PrereqIndicator({ parentIds, locale, color, isLearned }: { parentIds: string[]; locale: Locale; color: string; isLearned: (id: string) => boolean }) {
-  if (parentIds.length <= 1) return null;
-  const anySatisfied = parentIds.some((id) => isLearned(id));
-  const sep = locale === "ko" ? " 또는 " : " or ";
-  const parentNames = parentIds.map((id) => `"${getTitle(id, locale)}"`).join(sep);
+  if (parentIds.length === 0) return null;
+  // Filter out lock nodes from display (they have their own indicators)
+  const skillParents = parentIds.filter((id) => {
+    const entry = skillTranslations[id];
+    return !!entry; // only show parents that have translations (= real skills, not locks)
+  });
+  if (skillParents.length === 0) return null;
+  const anySatisfied = skillParents.some((id) => isLearned(id));
+  const sep = skillParents.length > 1 ? (locale === "ko" ? " 또는 " : " or ") : "";
+  const parentNames = skillParents.map((id) => `"${getTitle(id, locale)}"`).join(sep);
   const label = locale === "ko"
     ? `${parentNames} 습득 필요`
     : `Requires ${parentNames}`;
@@ -258,6 +265,7 @@ export function SkillTreeView({
               </div>
             </div>
           ))}
+          <Footer />
         </div>
       </div>
     </div>
