@@ -161,13 +161,17 @@ export function SkillTreeView({
                 className="mx-3 rounded-lg border-2 overflow-hidden"
                 style={{ borderColor: `${group.color}40` }}
               >
-                {/* Group header */}
-                <div className="flex items-center gap-2 px-3 py-1.5">
-                  <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: group.color }} />
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                    {getGroupLabel(group.id, locale)}
-                  </span>
-                </div>
+                {/* Group header — hide for single-node groups */}
+                {items.length > 1 ? (
+                  <div className="flex items-center gap-2 px-3 py-1.5">
+                    <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: group.color }} />
+                    <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                      {getGroupLabel(group.id, locale)}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="py-1" />
+                )}
 
                 {/* Nodes */}
                 <div className="px-1 py-1 space-y-1">
