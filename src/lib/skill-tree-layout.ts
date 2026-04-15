@@ -35,6 +35,7 @@ export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
   const visited = new Set<string>();
 
   // Build reverse map: childId → parentIds (within this group only)
+  // Includes both connects (OR gate) and locks (AND gate) relationships
   const parentMap = new Map<string, string[]>();
   for (const node of nodes) {
     if (node.connects) {
@@ -43,6 +44,20 @@ export function linearizeGroup(nodes: SkillNode[]): LinearNode[] {
           const parents = parentMap.get(childId) ?? [];
           parents.push(node.id);
           parentMap.set(childId, parents);
+        }
+      }
+    }
+  }
+  // Also add locks relationships (lock → dependent)
+  for (const node of nodes) {
+    if (node.locks) {
+      for (const lockId of node.locks) {
+        if (nodeMap.has(lockId)) {
+          const parents = parentMap.get(node.id) ?? [];
+          if (!parents.includes(lockId)) {
+            parents.push(lockId);
+            parentMap.set(node.id, parents);
+          }
         }
       }
     }
