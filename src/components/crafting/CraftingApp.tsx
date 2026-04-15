@@ -33,10 +33,12 @@ export function CraftingApp({
   pendingItemId,
   onClearPendingItem,
   onBlueprintClick,
+  onSkillClick,
 }: {
   pendingItemId?: string | null;
   onClearPendingItem?: () => void;
   onBlueprintClick?: (itemId: string) => void;
+  onSkillClick?: (skillId: string) => void;
 }) {
   const {
     selectedCategory,
@@ -183,7 +185,7 @@ export function CraftingApp({
 
   const detailPanel = panelItem && (
     <DetailPanel open={panelOpen} onClose={() => setItem(null)}>
-      <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} />
+      <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} onSkillClick={onSkillClick} />
     </DetailPanel>
   );
 

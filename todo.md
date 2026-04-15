@@ -34,7 +34,7 @@
 - [x] SkillLockIndicator에 체크박스 토글 UI 추가
 
 ### 크로스탭 연동
-- [ ] 제작탭 → 스킬탭 이동 — ItemDetail의 스킬 필요 필(TagChip) 클릭 시 해당 캐릭터 스킬트리로 이동
+- [x] 제작탭 → 스킬탭 이동 — 스킬 TagChip 클릭 시 해당 캐릭터 스킬트리로 이동
 
 ### 공개 조건
 - [ ] 위 항목 모두 완료 후 AppShell의 `adminOnly: true` 제거하여 일반 사용자에게 공개

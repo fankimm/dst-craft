@@ -30,9 +30,10 @@ interface ItemDetailProps {
   onCharacterClick?: (characterId: string) => void;
   onStationClick?: (stationLabel: string, station?: string) => void;
   onBlueprintClick?: (itemId: string) => void;
+  onSkillClick?: (skillId: string) => void;
 }
 
-export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick, onBlueprintClick }: ItemDetailProps) {
+export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick, onBlueprintClick, onSkillClick }: ItemDetailProps) {
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -148,6 +149,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
                 ? `${skillName(item.builderSkill, resolvedLocale)} 스킬 필요`
                 : `${skillName(item.builderSkill, resolvedLocale)} Skill Required`}
               icon={`skill-icons/${item.builderSkill}.png`}
+              onClick={onSkillClick ? () => onSkillClick(item.builderSkill!) : undefined}
               className="border-[#dab74e] bg-[#dab74e] text-black dark:border-[#dab74e] dark:bg-[#dab74e] dark:text-black"
             />
           )}

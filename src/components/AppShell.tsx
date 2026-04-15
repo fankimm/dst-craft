@@ -137,6 +137,25 @@ export function AppShell() {
     setPendingLootItemId(null);
   }, []);
 
+  const handleSkillClick = useCallback((skillId: string) => {
+    // Extract character from skill ID (e.g., "wilson_alchemy_1" → "wilson")
+    const charPrefixes = ["wilson", "willow", "wendy", "woodie", "wathgrithr", "wormwood", "winona", "wortox", "wurt", "walter", "wolfgang"];
+    // Map internal IDs to display IDs used in skill tree URL
+    const charMap: Record<string, string> = { wathgrithr: "wigfrid" };
+    let charId = "";
+    for (const prefix of charPrefixes) {
+      if (skillId.startsWith(prefix + "_")) {
+        charId = charMap[prefix] ?? prefix;
+        break;
+      }
+    }
+    if (!charId) return;
+    const url = `${window.location.pathname}?tab=skills&char=${charId}`;
+    window.history.pushState({ _appNav: true }, "", url);
+    setActiveTab("skills");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  }, []);
+
   // Listen for local-only favorites warning
   useEffect(() => {
     const handler = () => {
@@ -217,7 +236,7 @@ export function AppShell() {
       {/* Tab content */}
       <div className="flex-1 min-h-0 overflow-hidden">
         <div className={activeTab === "crafting" ? "h-full" : "hidden"}>
-          <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} />
+          <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} />
         </div>
         <div className={activeTab === "cooking" ? "h-full" : "hidden"}>
           <CookingApp pendingRecipeId={pendingRecipeId} onClearPendingRecipe={handleClearPendingRecipe} />
