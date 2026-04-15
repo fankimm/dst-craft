@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.10.8",
+    date: "2026-04-15",
+    dev: [
+      "fix: 같은 보스를 요구하는 lock 노드들이 서로 독립적으로 토글되던 버그 — manualLocks의 키를 node.id에서 lockType별 derived key(boss:<boss>)로 변경. lua는 lock_open이 TheGenericKV의 글로벌 보스 처치 상태를 참조하므로 시뮬레이터도 이를 미러링해야 함",
+      "src/lib/skill-tree-keys.ts: manualLockKey 헬퍼 추가 (boss_kill → boss:<boss>, manual → manual:<id>)",
+      "use-skill-tree.ts, SkillTreeView.tsx, SkillSimulatorApp.tsx: isLockSatisfied/toggleManualLock/canUnlockManualLock 모두 derived key 사용",
+      "위그프리드는 캐릭터당 boss_kill lock이 1개씩이라 회귀 영향 없음",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 — 같은 보스(퓨얼위버/대변자) 처치 조건을 공유하는 lock 노드들이 한 번의 토글로 함께 풀리도록 수정 (월터의 슬링샷 탄약/워비 영역 등)",
+      ],
+      en: [
+        "Skill tree — lock nodes sharing the same boss-kill condition (Fuelweaver / Celestial Champion) now toggle together (e.g. Walter's slingshot ammo and Woby sections)",
+      ],
+    },
+  },
+  {
     version: "0.10.7",
     date: "2026-04-15",
     dev: [

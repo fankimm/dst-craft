@@ -11,6 +11,7 @@ import { characters } from "@/data/characters";
 import { skillTrees, CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 import { skillTranslations } from "@/data/skill-trees/translations";
 import type { SkillNode } from "@/data/skill-trees/types";
+import { manualLockKey } from "@/lib/skill-tree-keys";
 import type { UnlockRequirement } from "./SkillDetailSheet";
 import { cn } from "@/lib/utils";
 import { SkillCharacterGrid } from "./SkillCharacterGrid";
@@ -70,18 +71,21 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, []);
   const toggleManualLock = useCallback((nodeId: string, onBlocked?: () => void) => {
-    const currentlyOn = manualLocks.has(nodeId);
+    const node = tree?.nodes.find((n) => n.id === nodeId);
+    if (!node?.lockType) return;
+    const key = manualLockKey(node.lockType, nodeId);
+    const currentlyOn = manualLocks.has(key);
     if (currentlyOn && !canUnlockManualLock(nodeId)) {
       onBlocked?.();
       return;
     }
     setManualLocks((prev) => {
       const next = new Set(prev);
-      if (next.has(nodeId)) next.delete(nodeId);
-      else next.add(nodeId);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
       return next;
     });
-  }, [manualLocks, canUnlockManualLock]);
+  }, [tree, manualLocks, canUnlockManualLock]);
 
   const handleSelectChar = useCallback((charId: string) => {
     setSelectedChar(charId);
@@ -140,7 +144,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
             reqs.push({
               type: "lock_gate",
               label: resolvedLocale === "ko" ? parent.lockType.desc_ko : parent.lockType.desc_en,
-              satisfied: manualLocks.has(parent.id),
+              satisfied: manualLocks.has(manualLockKey(parent.lockType, parent.id)),
             });
           } else if (parent.lockType) {
             // Other lock types — skip (handled by lock gate section)

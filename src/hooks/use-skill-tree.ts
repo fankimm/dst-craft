@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from "react";
 import type { CharacterSkillTree, SkillNode } from "@/data/skill-trees/types";
+import { manualLockKey } from "@/lib/skill-tree-keys";
 
 interface UseSkillTreeReturn {
   activatedSkills: Set<string>;
@@ -87,7 +88,7 @@ function isLockSatisfied(
       return activated.size >= node.lockType.count;
     case "boss_kill":
     case "manual":
-      return manualLocks?.has(node.id) ?? false;
+      return manualLocks?.has(manualLockKey(node.lockType, node.id)) ?? false;
     case "no_opposing_faction": {
       const opposingTag = node.lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
       return countTag(opposingTag, activated, nodeMap) === 0;
@@ -250,9 +251,12 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
   const canUnlockManualLock = useCallback(
     (lockId: string) => {
       if (!tree) return true;
-      if (!manualLocks?.has(lockId)) return true; // already unlocked — toggle would turn ON
+      const lockNode = nodeMap.get(lockId);
+      if (!lockNode?.lockType) return true;
+      const key = manualLockKey(lockNode.lockType, lockNode.id);
+      if (!manualLocks?.has(key)) return true; // already off — toggle would turn ON
       const simulated = new Set(manualLocks);
-      simulated.delete(lockId);
+      simulated.delete(key);
       // Verify every activated skill still satisfies its parent requirement + AND locks
       for (const skillId of activatedSkills) {
         const node = nodeMap.get(skillId);

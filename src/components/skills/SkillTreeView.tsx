@@ -8,6 +8,7 @@ import { characters } from "@/data/characters";
 import { characterName, t, type Locale, type TranslationKey } from "@/lib/i18n";
 import { skillTranslations, groupTranslations } from "@/data/skill-trees/translations";
 import { linearizeGroup, type LinearNode } from "@/lib/skill-tree-layout";
+import { manualLockKey } from "@/lib/skill-tree-keys";
 import { SkillNodeCard, type LockRequirement } from "./SkillNodeCard";
 import { SkillLockIndicator } from "./SkillLockIndicator";
 import { Footer } from "../crafting/Footer";
@@ -85,7 +86,7 @@ function isLockSatisfied(
       return activatedSkills.size >= lockType.count;
     case "boss_kill":
     case "manual":
-      return manualLocks.has(lockId);
+      return manualLocks.has(manualLockKey(lockType, lockId));
     case "no_opposing_faction": {
       const tag = lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
       for (const id of activatedSkills) {
