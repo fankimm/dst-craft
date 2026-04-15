@@ -127,6 +127,21 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     if (!panelNode.root) {
       const parents = tree.nodes.filter((n: SkillNode) => n.connects?.includes(panelNode.id));
       for (const parent of parents) {
+        // If parent is a lock node, show its condition description
+        const isLock = !parent.icon && (!!parent.lockType || parent.tags?.includes("lock"));
+        if (isLock) {
+          if (parent.lockType?.type === "manual") {
+            reqs.push({
+              type: "lock_gate",
+              label: resolvedLocale === "ko" ? parent.lockType.desc_ko : parent.lockType.desc_en,
+              satisfied: manualLocks.has(parent.id),
+            });
+          } else if (parent.lockType) {
+            // Other lock types — skip (handled by lock gate section)
+            continue;
+          }
+          continue;
+        }
         const parentTitle = skillTranslations[parent.id]
           ? (resolvedLocale === "ko" ? skillTranslations[parent.id].title.ko : skillTranslations[parent.id].title.en)
           : parent.id;

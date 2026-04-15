@@ -202,10 +202,7 @@ def extract_icons():
 
         out_path = os.path.join(OUT_DIR, f"{name}.png")
 
-        # Skip if already exists and is a real image (not placeholder)
-        if os.path.exists(out_path) and os.path.getsize(out_path) > 100:
-            skip += 1
-            continue
+        # Always overwrite — re-extract all icons from atlas
 
         # Crop the icon
         icon = full_img.crop((x1, y1, x2, y2))
