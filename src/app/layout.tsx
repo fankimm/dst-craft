@@ -23,9 +23,9 @@ const notoSansKR = Noto_Sans_KR({
 const SITE_URL = "https://www.dstcraft.com";
 
 export const metadata: Metadata = {
-  title: "Don't Craft Without Recipes | 굶지마 투게더 제작·요리 가이드",
+  title: "Don't Craft Without Recipes — DST Crafting & Cooking Guide",
   description:
-    "Don't Starve Together crafting & cooking guide — DST craft calculator, crock pot simulator, and recipe finder. 굶지마 투게더 제작법·요리 레시피 가이드 — 굶지마 제작, 굶지마 요리, 굶지마 요리 레시피, 굶지마 요리 제작법, 요리솥 레시피, 모든 아이템 제작법을 한눈에 검색하세요.",
+    "Don't Starve Together crafting & cooking guide — DST craft calculator, crock pot simulator, and recipe finder. Search all crafting recipes, crock pot recipes, materials & character-specific items.",
   keywords: [
     "Don't Starve Together",
     "DST",
@@ -45,16 +45,6 @@ export const metadata: Metadata = {
     "DST food",
     "crafting station",
     "DST items",
-    "크래프팅",
-    "레시피",
-    "굶지마 투게더",
-    "굶지마 투게더 요리",
-    "굶지마 투게더 요리솥",
-    "제작법",
-    "가이드",
-    "돈스타브",
-    "DST 요리 레시피",
-    "DST 크래프팅 가이드",
     "dont starve together recipes",
     "dst crafting guide",
     "dst recipes",
@@ -67,10 +57,6 @@ export const metadata: Metadata = {
     "dont starve recipe finder",
     "dst crafting list mobile",
     "dont starve together item list",
-    "굶지마 제작",
-    "굶지마 요리",
-    "굶지마 요리 레시피",
-    "굶지마 요리 제작법",
   ],
   metadataBase: new URL(SITE_URL),
   alternates: {
@@ -89,7 +75,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "Don't Craft Without Recipes — Don't Starve Together Guide",
     description:
-      "Complete Don't Starve Together crafting & cooking guide. Search all crafting recipes, crock pot recipes, materials & character-specific items. 모든 제작법과 요리 레시피를 검색하세요.",
+      "Complete Don't Starve Together crafting & cooking guide. Search all crafting recipes, crock pot recipes, materials & character-specific items.",
     siteName: "Don't Craft Without Recipes",
     locale: "en_US",
     alternateLocale: ["ko_KR", "ja_JP", "zh_CN", "zh_TW", "fr_FR", "de_DE", "es_ES", "ru_RU", "pt_BR", "pl_PL", "it_IT"],
@@ -206,7 +192,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebApplication",
               name: "Don't Craft Without Recipes",
-              alternateName: "DST 크래프팅·쿠킹 가이드",
+              alternateName: "DST Crafting & Cooking Guide",
               url: SITE_URL,
               description:
                 "Complete Don't Starve Together crafting & cooking guide. Search all crafting recipes, crock pot recipes, materials, stations, and character-specific items.",

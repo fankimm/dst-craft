@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title:
     "Crock Pot Simulator & Recipe Calculator — Don't Starve Together",
   description:
-    "Interactive crock pot simulator for Don't Starve Together. Add 4 ingredients to predict recipes. Browse all 80+ crock pot recipes with stats, ingredients, and cooking tips. DST 요리솥 시뮬레이터 — 재료 4개를 넣고 결과를 미리 확인하세요.",
+    "Interactive crock pot simulator for Don't Starve Together. Add 4 ingredients to predict recipes. Browse all 80+ crock pot recipes with stats, ingredients, and cooking tips.",
   keywords: [
     "dst crock pot",
     "dst cooking",
@@ -25,10 +25,6 @@ export const metadata: Metadata = {
     "don't starve together crock pot",
     "dst food recipes",
     "dst recipe calculator",
-    "굶지마 요리",
-    "굶지마 요리솥",
-    "굶지마 요리 레시피",
-    "굶지마 요리솥 시뮬레이터",
   ],
   alternates: { canonical: `${SITE_URL}/cookpot` },
   openGraph: {
@@ -152,8 +148,8 @@ export default function CookpotPage() {
             recipes, check stats, and find the best food for your situation.
           </p>
           <p className="text-sm text-muted-foreground">
-            DST 요리솥 시뮬레이터 — 재료 4개를 넣고 어떤 요리가 나올지 미리
-            확인하세요.
+            DST crock pot simulator — add 4 ingredients and see what you can
+            cook.
           </p>
           <Link
             href="/?tab=cookpot"

@@ -39,9 +39,7 @@ export async function generateMetadata({
     })
     .join(", ");
 
-  const title = nameKo
-    ? `${item.name} (${nameKo}) — Don't Starve Together Crafting Recipe`
-    : `${item.name} — Don't Starve Together Crafting Recipe`;
+  const title = `${item.name} — Don't Starve Together Crafting Recipe`;
 
   const description = `How to craft ${item.name} in Don't Starve Together. ${item.description} Materials: ${matList}. See crafting station, uses, and tips.`;
 

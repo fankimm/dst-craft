@@ -25,9 +25,7 @@ export async function generateMetadata({
   const char = characters.find((c) => c.id === slug);
   if (!char) return {};
 
-  const title = char.nameKo
-    ? `${char.name} (${char.nameKo}) — Don't Starve Together Character Guide`
-    : `${char.name} — Don't Starve Together Character Guide`;
+  const title = `${char.name} — Don't Starve Together Character Guide`;
 
   const perksShort = char.perks.slice(0, 2).join(". ");
   const description = `${char.name} guide for Don't Starve Together. Stats: ${char.health} HP, ${char.hunger} Hunger, ${char.sanity} Sanity. ${perksShort}. See perks, tips, and exclusive items.`;

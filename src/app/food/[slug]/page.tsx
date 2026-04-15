@@ -28,10 +28,7 @@ export async function generateMetadata({
   const recipe = cookingRecipes.find((r) => r.id === slugToId(slug));
   if (!recipe) return {};
 
-  const nameKo = ko.foods?.[recipe.id]?.name;
-  const title = nameKo
-    ? `${recipe.name} (${nameKo}) — DST Crock Pot Recipe`
-    : `${recipe.name} — Don't Starve Together Crock Pot Recipe`;
+  const title = `${recipe.name} — Don't Starve Together Crock Pot Recipe`;
 
   const stationLabel =
     recipe.station === "portablecookpot" ? "Portable Crock Pot" : "Crock Pot";

@@ -48,7 +48,7 @@ export async function generateMetadata({
     ...new Set(boss.loot.map((l) => lootDisplayName(l.item, "en"))),
   ].join(", ");
 
-  const title = `${boss.name} (${boss.nameKo}) — Don't Starve Together Boss Guide`;
+  const title = `${boss.name} — Don't Starve Together Boss Guide`;
   const description = `How to defeat ${boss.name} in Don't Starve Together. ${categoryLabels[boss.category] ?? boss.category} — drops: ${lootList}. Strategy, loot table, and tips.`;
 
   const image = Array.isArray(boss.image) ? boss.image[0] : boss.image;
