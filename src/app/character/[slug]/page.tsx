@@ -136,7 +136,13 @@ export default async function CharacterPage({
               {char.name} | Don&apos;t Starve Together
             </h1>
             {char.nameKo && (
-              <p className="text-base text-muted-foreground mt-0.5">{char.nameKo}</p>
+              <p className="text-base text-muted-foreground mt-0.5">
+                {char.nameKo}
+                {char.titleKo && <span className="ml-2 text-sm text-foreground/60">· {char.titleKo}</span>}
+              </p>
+            )}
+            {char.title && !char.nameKo && (
+              <p className="text-sm text-muted-foreground mt-0.5">{char.title}</p>
             )}
             {char.motto && (
               <p className="text-sm text-foreground/60 mt-1 italic">

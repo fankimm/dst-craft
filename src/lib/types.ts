@@ -82,6 +82,9 @@ export interface Character {
   name: string;
   portrait: string;
   nameKo?: string;
+  /** Epithet / subtitle shown on the in-game character select screen. */
+  title?: string;
+  titleKo?: string;
   motto?: string;
   mottoKo?: string;
   health: number;

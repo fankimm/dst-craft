@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.11.2",
+    date: "2026-04-16",
+    dev: [
+      "data: 19개 캐릭터 모두에 title/titleKo 필드 추가 (인게임 CHARACTER_TITLES + ko.po 한글모드 기준)",
+      "i18n: characterTitle() 헬퍼 추가",
+      "ui: 스킬트리 헤더, 스킬 시뮬레이터 캐릭터 그리드, 캐릭터 개별 페이지에 별명 표시",
+      "fix: ko.ts characters에서 'wilson'/'wickerbottom'을 풀네임/존칭에서 짧은 이름으로 되돌림 — 게임 캐릭터 선택 화면은 CHARACTER_NAMES(풀네임)이 아닌 CHARACTER_TITLES(별명)을 표시함을 lobbyscreen.lua에서 확인",
+    ],
+    changes: {
+      ko: [
+        "캐릭터 이름 옆에 별명 표시 — 윌슨 → 윌슨 · 신사 과학자, 위그프리드 → 위그프리드 · 공연 예술가 등",
+        "윌슨 풀네임을 게임 캐릭터 선택 화면과 동일하게 짧은 이름으로 변경",
+      ],
+      en: [
+        "Show character epithet next to name — e.g., Wilson · The Gentleman Scientist, Wigfrid · The Performance Artist",
+      ],
+    },
+  },
+  {
     version: "0.11.1",
     date: "2026-04-16",
     dev: [

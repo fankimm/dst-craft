@@ -1163,12 +1163,12 @@ export const ko: LocaleData = {
     },
   characters: {
 
-    "wilson": { name: "윌슨 퍼시벌 힉스버리" },
+    "wilson": { name: "윌슨" },
     "willow": { name: "윌로우" },
     "wolfgang": { name: "볼프강" },
     "wendy": { name: "웬디" },
     "wx-78": { name: "WX-78" },
-    "wickerbottom": { name: "위커바텀 여사" },
+    "wickerbottom": { name: "위커바텀" },
     "woodie": { name: "우디" },
     "wes": { name: "웨스" },
     "maxwell": { name: "맥스웰" },

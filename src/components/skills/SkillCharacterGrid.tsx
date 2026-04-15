@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { characters } from "@/data/characters";
-import { characterName, type Locale } from "@/lib/i18n";
+import { characterName, characterTitle, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 import { Footer } from "../crafting/Footer";
@@ -39,6 +39,11 @@ export function SkillCharacterGrid({ locale, onSelect }: Props) {
             <span className="text-xs font-medium text-foreground truncate w-full text-center">
               {characterName(char, locale)}
             </span>
+            {characterTitle(char, locale) && (
+              <span className="text-[10px] text-muted-foreground truncate w-full text-center -mt-1">
+                {characterTitle(char, locale)}
+              </span>
+            )}
           </button>
         ))}
       </div>

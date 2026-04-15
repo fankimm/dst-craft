@@ -402,6 +402,15 @@ export function characterName(char: Pick<Character, "id" | "name">, locale: stri
   return locales[locale]?.characters[char.id]?.name ?? char.name;
 }
 
+/** Character epithet (e.g., "신사 과학자" / "The Gentleman Scientist"). Returns null if not defined. */
+export function characterTitle(
+  char: Pick<Character, "title" | "titleKo">,
+  locale: string,
+): string | null {
+  if (locale === "ko") return char.titleKo ?? char.title ?? null;
+  return char.title ?? null;
+}
+
 export function foodName(food: { id: string; name: string }, locale: string): string {
   return locales[locale]?.foods?.[food.id]?.name ?? food.name;
 }

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { RotateCcw } from "lucide-react";
 import type { CharacterSkillTree, SkillNode, LockCondition } from "@/data/skill-trees/types";
 import { characters } from "@/data/characters";
-import { characterName, t, type Locale, type TranslationKey } from "@/lib/i18n";
+import { characterName, characterTitle, t, type Locale, type TranslationKey } from "@/lib/i18n";
 import { skillTranslations, groupTranslations } from "@/data/skill-trees/translations";
 import { linearizeGroup, type LinearNode } from "@/lib/skill-tree-layout";
 import { manualLockKey } from "@/lib/skill-tree-keys";
@@ -166,6 +166,11 @@ export function SkillTreeView({
         <div className="flex-1 min-w-0">
           <h2 className="text-sm font-semibold text-foreground truncate">
             {char ? characterName(char, locale) : tree.characterId}
+            {char && characterTitle(char, locale) && (
+              <span className="ml-2 text-xs font-normal text-muted-foreground">
+                {characterTitle(char, locale)}
+              </span>
+            )}
           </h2>
           <p ref={pointsRef} className="text-xs text-muted-foreground">
             {locale === "ko"
