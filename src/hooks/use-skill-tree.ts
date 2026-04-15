@@ -86,7 +86,16 @@ function isLockSatisfied(
       return countTag(node.lockType.tag, activated, nodeMap) >= node.lockType.count;
     case "total_skills":
       return activated.size >= node.lockType.count;
-    case "boss_kill":
+    case "boss_kill": {
+      const bossOk = manualLocks?.has(manualLockKey(node.lockType, node.id)) ?? false;
+      if (!bossOk) return false;
+      // Optional mutual exclusion: must have 0 opposing-faction skills.
+      if (node.lockType.excludes) {
+        const opposingTag = node.lockType.excludes === "lunar" ? "lunar_favor" : "shadow_favor";
+        if (countTag(opposingTag, activated, nodeMap) > 0) return false;
+      }
+      return true;
+    }
     case "manual":
       return manualLocks?.has(manualLockKey(node.lockType, node.id)) ?? false;
     case "no_opposing_faction": {

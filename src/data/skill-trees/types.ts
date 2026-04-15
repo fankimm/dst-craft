@@ -1,7 +1,14 @@
 /** Lock condition for gate nodes */
 export type LockCondition =
   | { type: "skill_count"; tag: string; count: number }
-  | { type: "boss_kill"; boss: "fuelweaver" | "celestialchampion" }
+  /**
+   * Boss kill gate. Optionally combined with mutual exclusion: when `excludes`
+   * is set, the lock additionally requires that no skills with the opposing
+   * faction tag have been activated. This mirrors lua's combined check pattern
+   * (e.g. willow_allegiance_lock_1 — `lunar_favor > 0 → false; else fuelweaver_killed`).
+   * Faction values match the tag suffix: "lunar" excludes lunar_favor, "shadow" excludes shadow_favor.
+   */
+  | { type: "boss_kill"; boss: "fuelweaver" | "celestialchampion"; excludes?: "lunar" | "shadow" }
   | { type: "no_opposing_faction"; faction: "lunar" | "shadow" }
   | { type: "total_skills"; count: number }
   | { type: "manual"; desc_ko: string; desc_en: string };

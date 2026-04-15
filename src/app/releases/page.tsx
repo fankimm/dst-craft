@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.11.0",
+    date: "2026-04-15",
+    dev: [
+      "fix: walter/willow의 shadow-lunar 진영 상호 배타 미구현 — lua는 한 lock에서 boss_kill + 반대 진영 미보유를 동시에 검사하지만, 우리 데이터는 boss_kill만 검사하던 버그",
+      "type: LockCondition.boss_kill에 optional `excludes: 'lunar' | 'shadow'` 필드 추가 — 한 lock 노드에서 보스 처치 AND 반대 진영 미보유를 함께 검사",
+      "use-skill-tree.ts, SkillTreeView.tsx: isLockSatisfied가 boss_kill의 excludes 필드도 검사하도록 확장",
+      "walter (4 locks): walter_ammo_shadow_lock + walter_woby_shadow_lock에 excludes:'lunar', _lunar_lock 변형들에 excludes:'shadow' 추가",
+      "willow (2 locks): willow_allegiance_lock_1에 excludes:'lunar', _lock_4에 excludes:'shadow' 추가",
+      "전수 조사: 9개 캐릭터 lua에 mutual exclusion 패턴 존재. wilson/wendy/woodie/wigfrid/wortox/wurt/wolfgang은 이미 구현됨, walter/willow만 누락이었음",
+    ],
+    changes: {
+      ko: [
+        "월터/윌로우 — shadow ↔ lunar 진영 상호 배타 구현. 한쪽 진영 스킬을 찍으면 반대 진영 lock이 영구 잠금되어 인게임과 동일하게 동작",
+      ],
+      en: [
+        "Walter / Willow — implemented shadow ↔ lunar mutual exclusion. Picking one faction's skill permanently locks the opposite faction, matching in-game behavior",
+      ],
+    },
+  },
+  {
     version: "0.10.9",
     date: "2026-04-15",
     dev: [

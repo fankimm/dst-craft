@@ -40,7 +40,7 @@ export const walter: CharacterSkillTree = {
       pos: [-209.1, 132.5],
       root: true,
       tags: ["slingshotammo", "lock"],
-      lockType: { type: "boss_kill", boss: "fuelweaver" },
+      lockType: { type: "boss_kill", boss: "fuelweaver", excludes: "lunar" },
     },
     {
       id: "walter_ammo_lunar_lock",
@@ -48,7 +48,7 @@ export const walter: CharacterSkillTree = {
       pos: [-150.2, 132.5],
       root: true,
       tags: ["slingshotammo", "lock"],
-      lockType: { type: "boss_kill", boss: "celestialchampion" },
+      lockType: { type: "boss_kill", boss: "celestialchampion", excludes: "shadow" },
     },
     {
       id: "walter_ammo_shadow",
@@ -256,7 +256,7 @@ export const walter: CharacterSkillTree = {
       pos: [176, 54.5],
       root: true,
       tags: ["woby", "lock"],
-      lockType: { type: "boss_kill", boss: "fuelweaver" },
+      lockType: { type: "boss_kill", boss: "fuelweaver", excludes: "lunar" },
     },
     {
       id: "walter_woby_shadow",
@@ -272,7 +272,7 @@ export const walter: CharacterSkillTree = {
       pos: [220.8, 54.5],
       root: true,
       tags: ["woby", "lock"],
-      lockType: { type: "boss_kill", boss: "celestialchampion" },
+      lockType: { type: "boss_kill", boss: "celestialchampion", excludes: "shadow" },
     },
     {
       id: "walter_woby_lunar",

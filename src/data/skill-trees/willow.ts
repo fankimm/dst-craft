@@ -41,14 +41,14 @@ export const willow: CharacterSkillTree = {
     { id: "willow_burnignbernie", group: "bernie", pos: [43, 49], icon: "willow_burnignbernie", tags: ["bernie", "bernie4"] },
 
     // ── Allegiance: Shadow ──
-    { id: "willow_allegiance_lock_1", group: "allegiance", pos: [180, 174], root: true, lockType: { type: "boss_kill", boss: "fuelweaver" }, connects: ["willow_allegiance_shadow_fire", "willow_allegiance_shadow_bernie"], tags: ["allegiance", "lock"] },
+    { id: "willow_allegiance_lock_1", group: "allegiance", pos: [180, 174], root: true, lockType: { type: "boss_kill", boss: "fuelweaver", excludes: "lunar" }, connects: ["willow_allegiance_shadow_fire", "willow_allegiance_shadow_bernie"], tags: ["allegiance", "lock"] },
     { id: "willow_allegiance_lock_2", group: "allegiance", pos: [146, 144], root: true, lockType: { type: "skill_count", tag: "bernie", count: 6 }, connects: ["willow_allegiance_shadow_bernie"], tags: ["allegiance", "lock"] },
     { id: "willow_allegiance_lock_3", group: "allegiance", pos: [214, 144], root: true, lockType: { type: "skill_count", tag: "lighter", count: 7 }, connects: ["willow_allegiance_shadow_fire"], tags: ["allegiance", "lock"] },
     { id: "willow_allegiance_shadow_fire", group: "allegiance", pos: [214, 109], icon: "willow_allegiance_shadow_fire", locks: ["willow_allegiance_lock_1", "willow_allegiance_lock_3"], tags: ["allegiance", "shadow_favor"] },
     { id: "willow_allegiance_shadow_bernie", group: "allegiance", pos: [146, 109], icon: "willow_allegiance_shadow_bernie", locks: ["willow_allegiance_lock_1", "willow_allegiance_lock_2"], tags: ["allegiance", "shadow_favor"] },
 
     // ── Allegiance: Lunar ──
-    { id: "willow_allegiance_lock_4", group: "allegiance", pos: [180, 73], root: true, lockType: { type: "boss_kill", boss: "celestialchampion" }, connects: ["willow_allegiance_lunar_fire", "willow_allegiance_lunar_bernie"], tags: ["allegiance", "lock"] },
+    { id: "willow_allegiance_lock_4", group: "allegiance", pos: [180, 73], root: true, lockType: { type: "boss_kill", boss: "celestialchampion", excludes: "shadow" }, connects: ["willow_allegiance_lunar_fire", "willow_allegiance_lunar_bernie"], tags: ["allegiance", "lock"] },
     { id: "willow_allegiance_lock_5", group: "allegiance", pos: [214, 43], root: true, lockType: { type: "skill_count", tag: "lighter", count: 7 }, connects: ["willow_allegiance_lunar_fire"], tags: ["allegiance", "lock"] },
     { id: "willow_allegiance_lock_6", group: "allegiance", pos: [146, 43], root: true, lockType: { type: "skill_count", tag: "bernie", count: 6 }, connects: ["willow_allegiance_lunar_bernie"], tags: ["allegiance", "lock"] },
     { id: "willow_allegiance_lunar_fire", group: "allegiance", pos: [214, 8], icon: "willow_allegiance_lunar_fire", locks: ["willow_allegiance_lock_4", "willow_allegiance_lock_5"], tags: ["allegiance", "lunar_favor"] },
