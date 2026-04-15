@@ -51,29 +51,7 @@ function getGroupLabel(groupId: string, locale: Locale): string {
 
 // ── Rail segment renderer ──
 
-function RailDot({ color, isLock }: { color: string; isLock: boolean }) {
-  return (
-    <div className="flex items-stretch shrink-0 w-7">
-      <div className="relative w-7">
-        {/* Vertical line */}
-        <div
-          className="absolute left-[13px] top-0 bottom-0 w-0.5"
-          style={{ backgroundColor: `${color}4d` }}
-        />
-        {/* Junction */}
-        {isLock ? (
-          <div className="absolute left-[10px] top-1/2 -translate-y-1/2">
-            <div className="size-[8px] rotate-45" style={{ backgroundColor: `${color}40`, border: `1.5px solid ${color}` }} />
-          </div>
-        ) : (
-          <div className="absolute left-[9px] top-1/2 -translate-y-1/2">
-            <div className="size-[10px] rounded-full" style={{ backgroundColor: `${color}80`, border: `2px solid ${color}` }} />
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+// Rail dots removed — group card border replaces visual grouping
 
 // ── Merge indicator ──
 
@@ -87,9 +65,6 @@ function PrereqIndicator({ parentIds, locale, color, isLearned }: { parentIds: s
     : `Requires ${parentNames}`;
   return (
     <div className="flex items-center" style={{ minHeight: 36 }}>
-      <div className="shrink-0 w-7 relative">
-        <div className="absolute left-[13px] top-0 bottom-0 w-0.5" style={{ backgroundColor: `${color}4d` }} />
-      </div>
       <div className="flex-1 flex items-center gap-2 px-1">
         <div className="flex-1 h-px bg-border" />
         <div className={`flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full border ${
@@ -174,17 +149,21 @@ export function SkillTreeView({
         <div className="max-w-2xl mx-auto w-full pb-8">
           {groupedLinear.map(({ group, items }) => (
             <div key={group.id} className="mt-3 first:mt-2">
-              {/* Group header */}
-              <div className="flex items-center gap-2 px-4 py-1.5">
-                <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: group.color }} />
-                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                  {getGroupLabel(group.id, locale)}
-                </span>
-                <div className="flex-1 h-px bg-border" />
-              </div>
+              {/* Group card */}
+              <div
+                className="mx-3 rounded-lg border-2 overflow-hidden"
+                style={{ borderColor: `${group.color}40` }}
+              >
+                {/* Group header */}
+                <div className="flex items-center gap-2 px-3 py-1.5" style={{ backgroundColor: `${group.color}10` }}>
+                  <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: group.color }} />
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    {getGroupLabel(group.id, locale)}
+                  </span>
+                </div>
 
-              {/* Nodes */}
-              <div className="px-2">
+                {/* Nodes */}
+                <div className="px-1">
                 {items.map((item, i) => {
 
                   if (item.isLock && item.node.lockType) {
@@ -220,7 +199,7 @@ export function SkillTreeView({
 
                     return (
                       <div key={item.node.id} className="flex items-center" style={{ minHeight: 44 }}>
-                        <RailDot color={group.color} isLock={item.isLock} />
+
                         <div className="flex-1 min-w-0">
                           <SkillLockIndicator
                             lockType={item.node.lockType}
@@ -238,7 +217,7 @@ export function SkillTreeView({
                     // Lock without lockType — minimal gate
                     return (
                       <div key={item.node.id} className="flex items-center" style={{ minHeight: 40 }}>
-                        <RailDot color={group.color} isLock={item.isLock} />
+
                         <div className="flex-1 flex items-center gap-2 px-3">
                           <div className="flex-1 h-px bg-border" />
                           <span className="inline-block size-2.5 rotate-45 border" style={{ borderColor: group.color, backgroundColor: `${group.color}30` }} />
@@ -256,7 +235,7 @@ export function SkillTreeView({
                         <PrereqIndicator parentIds={item.parentIds} locale={locale} color={group.color} isLearned={isLearned} />
                       )}
                       <div className="flex items-center" style={{ minHeight: 52 }}>
-                        <RailDot color={group.color} isLock={item.isLock} />
+
                         <div className="flex-1 min-w-0 pr-2">
                           <SkillNodeCard
                             skillId={item.node.id}
@@ -275,6 +254,7 @@ export function SkillTreeView({
                     </div>
                   );
                 })}
+              </div>
               </div>
             </div>
           ))}

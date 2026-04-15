@@ -50,8 +50,7 @@ export function SkillNodeCard({
       {/* Icon */}
       <div
         className={cn(
-          "shrink-0 size-10 rounded-md border flex items-center justify-center overflow-hidden",
-          isLearned ? "border-green-500/50" : "border-border",
+          "shrink-0 size-10 rounded-md flex items-center justify-center overflow-hidden",
         )}
         style={!iconSrc ? { backgroundColor: `${groupColor}15`, borderColor: `${groupColor}40` } : undefined}
       >
