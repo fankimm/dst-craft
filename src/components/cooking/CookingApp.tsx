@@ -752,7 +752,7 @@ function RecipeDetail({
               return (
                 <div
                   key={charId}
-                  className="inline-flex items-center gap-1 text-xs rounded-full bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 text-violet-700 dark:text-violet-300"
+                  className="inline-flex items-center gap-1 text-xs rounded-full bg-pink-500/12 border border-pink-500/20 px-2 py-0.5 text-pink-700 dark:text-pink-300"
                 >
                   <img
                     src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
