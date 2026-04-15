@@ -183,7 +183,7 @@ export function SkillTreeView({
                 )}
 
                 {/* Nodes */}
-                <div className="px-1 py-1 space-y-1">
+                <div className="px-1.5 py-1.5 space-y-1.5">
                 {items.map((item, i) => {
 
                   if (item.isLock && item.node.lockType) {
