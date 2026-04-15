@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.11.5",
+    date: "2026-04-16",
+    dev: [
+      "ui: lock 충족 시 인게임 unlocked.tex(skill_unlock_large) 아이콘 사용 — 토글 상태 시각화가 인게임과 동일",
+      "fix: 0.11.4의 잘못된 180° 회전 되돌림 — 원본이 이미 올바른 방향이었음 (눈꺼풀이 위, 광선이 아래)",
+      "extract_skill_ui_icons.py에서 rotate(180) 제거",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 — lock 충족 시 인게임 열린 자물쇠 아이콘 표시 (체크 표시 대체)",
+        "눈/자물쇠 아이콘 방향 바로잡음",
+      ],
+      en: [
+        "Skill tree — show in-game open-lock icon when condition is satisfied",
+        "Fixed eye/lock icon orientation",
+      ],
+    },
+  },
+  {
     version: "0.11.4",
     date: "2026-04-16",
     dev: [

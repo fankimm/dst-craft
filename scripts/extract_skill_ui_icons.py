@@ -25,8 +25,10 @@ OUT_DIR = Path("public/images/ui")
 TARGETS = {
     "skill_icon.tex":     "skill_eye.png",         # eye icon (active, used for skill points display)
     "skill_icon_bw.tex":  "skill_eye_locked.png",  # locked/grayscale variant
-    "locked.tex":         "skill_lock.png",        # 44x44 lock icon
-    "locked_skill.tex":   "skill_lock_large.png",  # 67x67 lock icon
+    "locked.tex":         "skill_lock.png",        # 44x44 lock icon (closed)
+    "locked_skill.tex":   "skill_lock_large.png",  # 67x67 lock icon (closed)
+    "unlocked.tex":       "skill_unlock_large.png", # 67x67 unlocked icon
+    "unlocked_over.tex":  "skill_unlock.png",      # 44x44 unlocked icon
     "frame.tex":          "skill_frame.png",       # decorative frame
 }
 
@@ -62,9 +64,6 @@ def main() -> None:
         y1 = int(v1 * H)
         y2 = int(v2 * H)
         crop = full_img.crop((x1, y1, x2, y2))
-        # skilltree.tex elements appear vertically flipped vs. the source art —
-        # rotate 180° so the eye and lock icons display upright.
-        crop = crop.rotate(180)
         out = OUT_DIR / out_name
         crop.save(out)
         print(f"  ✅ {out}  ({crop.size[0]}x{crop.size[1]})")
