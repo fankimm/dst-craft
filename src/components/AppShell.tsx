@@ -9,6 +9,7 @@ import { BossesApp } from "./bosses/BossesApp";
 import { SettingsPage } from "./settings/SettingsPage";
 import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
 import { ReviewPrompt } from "./ReviewPrompt";
+import { SkillsTourPopover } from "./SkillsTourPopover";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import { t } from "@/lib/i18n";
@@ -22,7 +23,7 @@ const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?
   { id: "cooking", labelKey: "tab_cooking", image: "/images/category-icons/cooking.png" },
   { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
   { id: "bosses", labelKey: "tab_bosses", image: "/images/game-items/deerclops_eyeball.png" },
-  { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.png", adminOnly: true },
+  { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.png" },
   { id: "settings", labelKey: "tab_settings", image: "/images/game-items/gears.png" },
 ];
 
@@ -258,6 +259,15 @@ export function AppShell() {
           <SettingsPage />
         </div>
       </div>
+
+      {/* Skills tour — first-load popover guiding users to the new Skill Simulator */}
+      <SkillsTourPopover
+        skillsTabIndex={tabs.findIndex((t) => t.id === "skills")}
+        totalTabs={tabs.length}
+        isOnSkillsTab={activeTab === "skills"}
+        onTryNow={() => handleTabClick("skills")}
+        locale={resolvedLocale}
+      />
 
       {/* Review Prompt */}
       <ReviewPrompt open={showReview} onClose={handleReviewClose} locale={resolvedLocale} />

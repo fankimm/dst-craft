@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.12.0",
+    date: "2026-04-16",
+    dev: [
+      "feat: Skill Simulator 정식 공개 — AppShell의 skills 탭 adminOnly 플래그 제거",
+      "feat: SkillsTourPopover — 첫 접속 시 스킬 탭으로 유도하는 일회성 팝오버. localStorage 키 dst:tour-skills-v0.11.8 로 노출 여부 추적, 사용자가 직접 스킬 탭 클릭하면 자동 dismiss",
+      "ui: 탭 위에 펄싱 글로우 + 아래쪽 화살표 팝오버, '체험하기' 버튼으로 바로 이동",
+    ],
+    changes: {
+      ko: [
+        "🎉 스킬 시뮬레이터 정식 공개 — 11명 캐릭터의 스킬트리를 미리 짜볼 수 있어요",
+        "보스 처치 / 커스텀 과제 해금 토글, 진영 상호 배타까지 인게임과 동일하게 동작",
+        "첫 접속 시 스킬 탭 안내 팝오버 표시",
+      ],
+      en: [
+        "🎉 Skill Simulator now publicly available — plan skill trees for all 11 characters",
+        "Boss-kill toggles, custom-task unlocks, and faction mutual-exclusion all match in-game behavior",
+        "First-visit popover guides new users to the Skills tab",
+      ],
+    },
+  },
+  {
     version: "0.11.7",
     date: "2026-04-16",
     dev: [
