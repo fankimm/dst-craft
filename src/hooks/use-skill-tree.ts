@@ -90,6 +90,10 @@ function isLockSatisfied(
       const opposingTag = node.lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
       return countTag(opposingTag, activated, nodeMap) === 0;
     }
+    case "manual":
+      // Manual locks use external state — checked via manualLocks Set
+      // Return true here; actual check happens in canLearn with manualLocks param
+      return true;
     default:
       return true;
   }
@@ -100,7 +104,7 @@ function isLockNode(node: SkillNode): boolean {
   return !node.icon && (!!node.lockType || !!node.tags?.includes("lock"));
 }
 
-export function useSkillTree(tree: CharacterSkillTree | null): UseSkillTreeReturn {
+export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<string>): UseSkillTreeReturn {
   const [activatedSkills, setActivatedSkills] = useState<Set<string>>(new Set());
 
   const nodeMap = useMemo(() => tree ? buildNodeMap(tree) : new Map<string, SkillNode>(), [tree]);
@@ -156,14 +160,25 @@ export function useSkillTree(tree: CharacterSkillTree | null): UseSkillTreeRetur
       if (isLockNode(node)) return false;
       if (node.tags?.includes("infographic")) return false;
 
-      // Check parent requirement (OR gate): at least one parent must be activated,
-      // OR node must be root
+      // Check parent requirement (OR gate): at least one parent must be activated
+      // (or satisfied, for lock parents), OR node must be root
       if (node.root) {
         // Root nodes have no parent requirement via connects
       } else {
         const parents = parentMap.get(id);
         if (parents && parents.length > 0) {
-          const hasActiveParent = parents.some((pid) => activatedSkills.has(pid));
+          const hasActiveParent = parents.some((pid) => {
+            if (activatedSkills.has(pid)) return true;
+            // Lock parent: check if satisfied (via lockType or manualLocks)
+            const parentNode = nodeMap.get(pid);
+            if (parentNode && isLockNode(parentNode)) {
+              if (parentNode.lockType?.type === "manual") {
+                return manualLocks?.has(pid) ?? false;
+              }
+              return isLockSatisfied(parentNode, activatedSkills, nodeMap);
+            }
+            return false;
+          });
           if (!hasActiveParent) return false;
         }
       }

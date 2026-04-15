@@ -33,6 +33,9 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   const [selectedChar, setSelectedChar] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<SkillNode | null>(null);
 
+  // Manual lock state (for lockType: "manual" nodes) — must be before useSkillTree
+  const [manualLocks, setManualLocks] = useState<Set<string>>(new Set());
+
   const tree = selectedChar ? skillTrees[selectedChar] ?? null : null;
   const {
     activatedSkills,
@@ -43,7 +46,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     canUnlearn,
     toggleSkill,
     resetAll,
-  } = useSkillTree(tree);
+  } = useSkillTree(tree, manualLocks);
 
   const slideClass = useSlideAnimation(selectedChar, (v) => v === null);
   const { panelItem: panelNode, panelOpen } = useDetailPanel(selectedNode);
@@ -65,9 +68,6 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     window.addEventListener("dst-tab-go-home", handler);
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, []);
-
-  // Manual lock state (for lockType: "manual" nodes)
-  const [manualLocks, setManualLocks] = useState<Set<string>>(new Set());
   const toggleManualLock = useCallback((nodeId: string) => {
     setManualLocks((prev) => {
       const next = new Set(prev);

@@ -37,15 +37,16 @@ export function SkillNodeCard({
     <div
       className={cn(
         "flex items-center gap-2.5 px-3 py-2 rounded-lg border transition-colors w-full",
-        isLearned
-          ? "bg-green-500/5 border-green-500/40 dark:bg-green-500/10 dark:border-green-500/30"
-          : isLocked
-            ? "bg-surface/50 border-border/50 opacity-60"
-            : "bg-surface border-border hover:bg-surface-hover hover:border-ring",
+        isLocked
+          ? "bg-surface/50 border-border/50 opacity-60"
+          : !isLearned
+            ? "bg-surface border-border hover:bg-surface-hover hover:border-ring"
+            : "",
       )}
       onClick={onTap}
       role="button"
       tabIndex={0}
+      style={isLearned ? { backgroundColor: `${groupColor}08`, borderColor: `${groupColor}50` } : undefined}
     >
       {/* Icon */}
       <div

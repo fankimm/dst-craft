@@ -155,7 +155,7 @@ export function SkillTreeView({
                 style={{ borderColor: `${group.color}40` }}
               >
                 {/* Group header */}
-                <div className="flex items-center gap-2 px-3 py-1.5" style={{ backgroundColor: `${group.color}10` }}>
+                <div className="flex items-center gap-2 px-3 py-1.5">
                   <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: group.color }} />
                   <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                     {getGroupLabel(group.id, locale)}
@@ -163,7 +163,7 @@ export function SkillTreeView({
                 </div>
 
                 {/* Nodes */}
-                <div className="px-1">
+                <div className="px-1 py-1 space-y-1">
                 {items.map((item, i) => {
 
                   if (item.isLock && item.node.lockType) {
