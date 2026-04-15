@@ -214,31 +214,62 @@ export function CookingApp({
   const filteredRecipes = useMemo(() => {
     let recipes = cookingRecipes;
 
-    // Category filter
-    if (selectedCategory === "recent") {
-      recipes = recentIds
-        .map((id) => cookingRecipes.find((r) => r.id === id))
-        .filter((r): r is CookingRecipe => !!r);
-    } else if (selectedCategory === "favorites") {
-      recipes = recipes.filter((r) => favorites.has(r.id));
-    } else if (selectedCategory && selectedCategory !== "all") {
-      if (isRecommendCategory(selectedCategory)) {
-        switch (selectedCategory) {
-          case "recommend_health":
-            recipes = recipes.filter((r) => r.health >= HEALTH_THRESHOLD);
-            recipes = [...recipes].sort((a, b) => b.health - a.health);
+    // Search query → search globally (ignore category filter, like crafting tab)
+    const isSearching = !!debouncedQuery.trim();
+
+    if (!isSearching) {
+      // Category filter (only when not searching)
+      if (selectedCategory === "recent") {
+        recipes = recentIds
+          .map((id) => cookingRecipes.find((r) => r.id === id))
+          .filter((r): r is CookingRecipe => !!r);
+      } else if (selectedCategory === "favorites") {
+        recipes = recipes.filter((r) => favorites.has(r.id));
+      } else if (selectedCategory && selectedCategory !== "all") {
+        if (isRecommendCategory(selectedCategory)) {
+          switch (selectedCategory) {
+            case "recommend_health":
+              recipes = recipes.filter((r) => r.health >= HEALTH_THRESHOLD);
+              recipes = [...recipes].sort((a, b) => b.health - a.health);
+              break;
+            case "recommend_sanity":
+              recipes = recipes.filter((r) => r.sanity >= SANITY_THRESHOLD);
+              recipes = [...recipes].sort((a, b) => b.sanity - a.sanity);
+              break;
+            case "recommend_hunger":
+              recipes = recipes.filter((r) => r.hunger >= HUNGER_THRESHOLD);
+              recipes = [...recipes].sort((a, b) => b.hunger - a.hunger);
+              break;
+          }
+        } else {
+          recipes = recipes.filter((r) => r.station === selectedCategory);
+        }
+      }
+
+      // Active filter from badge click (only when not searching)
+      if (activeFilter) {
+        switch (activeFilter.type) {
+          case "foodType":
+            recipes = recipes.filter((r) => r.foodType === activeFilter.value);
             break;
-          case "recommend_sanity":
-            recipes = recipes.filter((r) => r.sanity >= SANITY_THRESHOLD);
-            recipes = [...recipes].sort((a, b) => b.sanity - a.sanity);
+          case "station":
+            recipes = recipes.filter((r) => r.station === activeFilter.value);
             break;
-          case "recommend_hunger":
-            recipes = recipes.filter((r) => r.hunger >= HUNGER_THRESHOLD);
-            recipes = [...recipes].sort((a, b) => b.hunger - a.hunger);
+          case "effect":
+            recipes = recipes.filter((r) => r.specialEffect === activeFilter.value);
+            break;
+          case "ingredient":
+            recipes = recipes.filter((r) => {
+              if (!r.requirements) return false;
+              const items = r.requirements.split(",").map(s => s.trim()).filter(Boolean);
+              return items.some(item => {
+                if (item.startsWith("No ")) return false;
+                const { name } = parseReqEntry(item);
+                return name.split(/\s*\/\s*/).some(part => part === activeFilter.value);
+              });
+            });
             break;
         }
-      } else {
-        recipes = recipes.filter((r) => r.station === selectedCategory);
       }
     }
 
