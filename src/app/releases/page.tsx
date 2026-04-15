@@ -15,6 +15,16 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.10.9",
+    date: "2026-04-15",
+    dev: [
+      "verify: factory lock 함수의 extra_data.group/connects override 파싱 추가 (웜우드 false-positive 해결)",
+      "verify: EXPECTED_DIVERGENCES 화이트리스트 도입 — walter 시각그룹/카운트태그 분리(2 skills) + wortox infographic 장식 노드(3 skills) 의도적 divergence 문서화",
+      "검증 결과: 11/11 캐릭터 0 errors, 0 warnings 달성",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.10.8",
     date: "2026-04-15",
     dev: [

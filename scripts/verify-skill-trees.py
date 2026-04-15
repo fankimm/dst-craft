@@ -48,6 +48,30 @@ CHAR_TO_LUA = {
 # Map lua filename stem → TS filename stem (wigfrid uses wathgrithr.ts)
 LUA_TO_TS = {v: ("wathgrithr" if v == "wathgrithr" else v) for v in CHAR_TO_LUA.values()}
 
+# Documented intentional divergences from lua. Each entry suppresses the matching
+# diff for that character/skill. Add a `reason` so future devs understand why.
+EXPECTED_DIVERGENCES: dict[tuple[str, str], dict[str, str]] = {
+    # Walter: lua's `group` of CreateSkillCountLock locks is the COUNTING TAG
+    # (e.g. "slingshotammo_crafting"), not a visual group. Our app puts the lock
+    # in the visual column with related skills (e.g. "slingshotammo"). The counting
+    # tag is preserved in our `lockType: { type: "skill_count", tag: ..., count: 2 }`.
+    ("walter", "walter_ammo_lock"): {
+        "group_diff": "lua group is the count-tag (slingshotammo_crafting); we use visual group",
+        "tag_diff": "lua group→tag auto-add expects count-tag; we use visual group",
+    },
+    ("walter", "walter_woby_lock"): {
+        "group_diff": "lua group is the count-tag (woby_basics); we use visual group",
+        "tag_diff": "lua group→tag auto-add expects count-tag; we use visual group",
+    },
+    # Wortox: `infographic` tag marks decorative info-display nodes that don't
+    # consume a skill point in our simulator (use-skill-tree.ts:115). lua doesn't
+    # have this concept (in-game UI handles inclination differently).
+    ("wortox", "wortox_inclination_meter"):  {"tag_diff": "app-only `infographic` tag for decorative node"},
+    ("wortox", "wortox_inclination_naughty"): {"tag_diff": "app-only `infographic` tag for decorative node"},
+    ("wortox", "wortox_inclination_nice"):   {"tag_diff": "app-only `infographic` tag for decorative node"},
+}
+
+
 # Factory functions in skilltree_defs.lua → known lock entry shape
 FACTORY_LOCKS = {
     "MakeFuelWeaverLock":       {"group": "allegiance", "tags": ["allegiance", "lock"], "root": True},
@@ -180,11 +204,21 @@ def _parse_skills_block(body: str) -> dict[str, dict[str, Any]]:
                 paren_start = after_eq + fac_m.end() - 1
                 paren_end = find_balanced(body, paren_start, "(", ")")
                 if fac_name in FACTORY_LOCKS:
+                    # The factory accepts an extra_data table that may override group/connects.
+                    # Parse `{ ..., group = "...", connects = {...} }` from the call args.
+                    extra_body = body[paren_start + 1:paren_end]
+                    override = {}
+                    gm2 = re.search(r'\bgroup\s*=\s*"([^"]+)"', extra_body)
+                    if gm2:
+                        override["group"] = gm2.group(1)
+                    cm2 = re.search(r"\bconnects\s*=\s*\{([^}]*)\}", extra_body)
+                    if cm2:
+                        override["connects"] = re.findall(r'"([^"]+)"', cm2.group(1))
                     skills[name] = {
-                        "group": FACTORY_LOCKS[fac_name]["group"],
+                        "group": override.get("group", FACTORY_LOCKS[fac_name]["group"]),
                         "tags": list(FACTORY_LOCKS[fac_name]["tags"]),
                         "root": FACTORY_LOCKS[fac_name]["root"],
-                        "connects": [],
+                        "connects": override.get("connects", []),
                         "has_lock_open": True,
                         "factory": fac_name,
                     }
@@ -361,14 +395,19 @@ def compare(char_id: str) -> tuple[int, int]:
 
     # per-skill comparisons (only for IDs present in both)
     common = lua_ids & ts_ids
+    suppressed = 0
     for sid in sorted(common):
         lua_s = lua_skills[sid]
         ts_n = ts_nodes[sid]
         diffs: list[str] = []
+        suppression = EXPECTED_DIVERGENCES.get((char_id, sid), {})
 
         # group
         if lua_s.get("group") != ts_n.get("group"):
-            diffs.append(f"group: lua={lua_s.get('group')!r} ts={ts_n.get('group')!r}")
+            if "group_diff" in suppression:
+                suppressed += 1
+            else:
+                diffs.append(f"group: lua={lua_s.get('group')!r} ts={ts_n.get('group')!r}")
 
         # root
         if bool(lua_s.get("root")) != bool(ts_n.get("root")):
@@ -404,14 +443,17 @@ def compare(char_id: str) -> tuple[int, int]:
         lua_t = set(lua_s.get("tags", []))
         ts_t = set(ts_n.get("tags", []))
         if lua_t != ts_t:
-            only_lua = lua_t - ts_t
-            only_ts = ts_t - lua_t
-            parts = []
-            if only_lua:
-                parts.append(f"missing tags: {sorted(only_lua)}")
-            if only_ts:
-                parts.append(f"extra tags: {sorted(only_ts)}")
-            diffs.append("; ".join(parts))
+            if "tag_diff" in suppression:
+                suppressed += 1
+            else:
+                only_lua = lua_t - ts_t
+                only_ts = ts_t - lua_t
+                parts = []
+                if only_lua:
+                    parts.append(f"missing tags: {sorted(only_lua)}")
+                if only_ts:
+                    parts.append(f"extra tags: {sorted(only_ts)}")
+                diffs.append("; ".join(parts))
 
         # lock_open vs lockType
         if lua_s.get("has_lock_open") != ts_n.get("has_lock_type"):
@@ -425,6 +467,9 @@ def compare(char_id: str) -> tuple[int, int]:
             print(f"  ❌ {sid}")
             for d in diffs:
                 print(f"      {d}")
+
+    if suppressed:
+        print(f"  (suppressed {suppressed} expected divergence(s) — see EXPECTED_DIVERGENCES)")
 
     return (errors, warnings)
 
