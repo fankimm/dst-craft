@@ -33,14 +33,15 @@ const osIcons: Record<string, string> = {
   iOS: "\u{1F34E}", macOS: "\u{1F34E}", Windows: "\u{1FA9F}", Android: "\u{1F916}", Linux: "\u{1F427}", ChromeOS: "\u{1F4BB}",
 };
 
-function StatCard({ icon: Icon, label, value, sub }: { icon: typeof Eye; label: string; value: number | string; sub?: string }) {
+function StatCard({ icon: Icon, label, value, sub, unfiltered }: { icon: typeof Eye; label: string; value: number | string; sub?: string; unfiltered?: boolean }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4 space-y-1">
+    <div className={cn("rounded-lg border bg-card p-4 space-y-1", unfiltered ? "border-dashed border-muted-foreground/30" : "border-border")}>
       <div className="flex items-center gap-2 text-muted-foreground">
         <Icon className="size-4" />
         <span className="text-xs font-medium">{label}</span>
+        {unfiltered && <span className="text-[10px] text-muted-foreground/60">필터 미적용</span>}
       </div>
-      <p className="text-2xl font-bold text-foreground">{typeof value === "number" ? value.toLocaleString() : value}</p>
+      <p className={cn("text-2xl font-bold", unfiltered ? "text-muted-foreground" : "text-foreground")}>{typeof value === "number" ? value.toLocaleString() : value}</p>
       {sub && <p className="text-xs text-muted-foreground">{sub}</p>}
     </div>
   );
@@ -229,9 +230,9 @@ export default function StatsPage() {
     setLoading(false);
     if (result && isAdmin && token) {
       const extra = result as any;
-      const purged = extra._purgedCount ?? 0;
+      const filtered = extra._filteredCount ?? 0;
       const ip = extra._adminIp ?? "";
-      showToast(purged > 0 ? `${ip} — ${purged}건 삭제` : `로드 완료 · ${ip}`);
+      showToast(filtered > 0 ? `${ip} — 방문자 ${filtered}건 필터됨` : `로드 완료 · ${ip}`);
       fetchFeedback(token).then(setFeedbackList);
     }
   }
@@ -304,10 +305,10 @@ export default function StatsPage() {
             {/* New Stats Row */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <StatCard icon={RotateCcw} label="재방문율" value={`${data.returnRate}%`} sub={`${data.returnVisitors}명 재방문`} />
-              <StatCard icon={Clock} label="평균 체류시간" value={formatDuration(data.avgDuration)} />
-              <StatCard icon={Search} label="검색 사용" value={data.searchCount} sub="세션" />
+              <StatCard icon={Clock} label="평균 체류시간" value={formatDuration(data.avgDuration)} unfiltered={excludeKR} />
+              <StatCard icon={Search} label="검색 사용" value={data.searchCount} sub="세션" unfiltered={excludeKR} />
               <StatCard icon={Smartphone} label="모바일 비율" value={`${mobilePct}%`} sub={`${mobileCount} 모바일 / ${desktopCount} PC`} />
-              <StatCard icon={Download} label="PWA 설치" value={data.pwaInstalls} />
+              <StatCard icon={Download} label="PWA 설치" value={data.pwaInstalls} unfiltered={excludeKR} />
               {isAdmin && (
                 <button
                   onClick={() => handleExcludeKR(!excludeKR)}

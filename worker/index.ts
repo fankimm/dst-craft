@@ -127,12 +127,28 @@ export default {
   },
 };
 
+/** Simple rate limiter: returns true if the request should be blocked */
+async function isRateLimited(env: Env, key: string, maxPerWindow: number, windowSec: number): Promise<boolean> {
+  const results = await redisPipeline(env, [["INCR", key]]) as { result: any }[];
+  const count = parseInt(results[0]?.result ?? "1", 10);
+  if (count === 1) {
+    // First request in window — set TTL
+    await redisPipeline(env, [["EXPIRE", key, `${windowSec}`]]);
+  }
+  return count > maxPerWindow;
+}
+
 async function handleRequest(request: Request, env: Env, headers: HeadersInit): Promise<Response> {
     const url = new URL(request.url);
 
     // POST /track — record a visit
     if (url.pathname === "/track" && request.method === "POST") {
       const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+      if (await isRateLimited(env, `dst:rl:track:${ip}`, 5, 60)) {
+        return new Response(JSON.stringify({ error: "Too many requests" }), {
+          status: 429, headers: { ...headers, "Content-Type": "application/json" },
+        });
+      }
       const countryCode = request.headers.get("CF-IPCountry") ?? "";
       const city = (request as any).cf?.city ?? "";
       const region = (request as any).cf?.region ?? "";
@@ -173,7 +189,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       }
 
       const referrer = (body.referrer as string)?.slice(0, 100);
-      if (referrer) {
+      if (referrer && referrer !== "direct") {
         commands.push(["HINCRBY", "dst:referrers", referrer, "1"]);
         if (countryCode) commands.push(["HINCRBY", `dst:referrers:${countryCode}`, referrer, "1"]);
       }
@@ -207,6 +223,12 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
 
     // POST /event — track generic events (search, pwa_install, duration)
     if (url.pathname === "/event" && request.method === "POST") {
+      const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+      if (await isRateLimited(env, `dst:rl:event:${ip}`, 30, 60)) {
+        return new Response(JSON.stringify({ error: "Too many requests" }), {
+          status: 429, headers: { ...headers, "Content-Type": "application/json" },
+        });
+      }
       const body = await request.json().catch(() => ({})) as Record<string, any>;
       const type = body.type as string;
 
@@ -292,8 +314,9 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       });
     }
 
-    // POST /rate — submit a star rating (1~5)
+    // POST /rate — submit a star rating (1~5), one per IP (can change)
     if (url.pathname === "/rate" && request.method === "POST") {
+      const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
       const body = await request.json().catch(() => ({})) as Record<string, any>;
       const rating = body.rating;
       if (typeof rating !== "number" || !Number.isInteger(rating) || rating < 1 || rating > 5) {
@@ -302,7 +325,22 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
           headers: { ...headers, "Content-Type": "application/json" },
         });
       }
-      await redisPipeline(env, [["HINCRBY", "dst:ratings", `${rating}`, "1"]]);
+
+      // Check if this IP already rated — if so, decrement old rating first
+      const prevRes = await redisPipeline(env, [["HGET", "dst:rating:ips", ip]]) as { result: any }[];
+      const prevRating = prevRes[0]?.result as string | null;
+      const commands: string[][] = [
+        ["HINCRBY", "dst:ratings", `${rating}`, "1"],
+        ["HSET", "dst:rating:ips", ip, `${rating}`],
+      ];
+      if (prevRating && prevRating !== `${rating}`) {
+        commands.push(["HINCRBY", "dst:ratings", prevRating, "-1"]);
+      }
+      // If same rating as before, skip duplicate increment
+      if (prevRating === `${rating}`) {
+        return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      await redisPipeline(env, commands);
       return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
     }
 
@@ -414,11 +452,12 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         }
       }
 
-      // Referrer stats
+      // Referrer stats (exclude legacy "direct" entries)
       const referrersRaw = r(12) as string[] | null;
       const referrers: Record<string, number> = {};
       if (Array.isArray(referrersRaw)) {
         for (let i = 0; i < referrersRaw.length; i += 2) {
+          if (referrersRaw[i] === "direct") continue;
           referrers[referrersRaw[i]] = parseInt(referrersRaw[i + 1], 10) || 0;
         }
       }
@@ -550,7 +589,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         os,
         referrers,
         returnVisitors: returnTotal,
-        returnRate: totalPV > 0 ? Math.round((returnTotal / totalPV) * 100) : 0,
+        returnRate: totalUV > 0 ? Math.round((returnTotal / totalUV) * 100) : 0,
         avgDuration,
         searchCount: parseInt(r(8) ?? "0", 10) || 0,
         pwaInstalls: parseInt(r(9) ?? "0", 10) || 0,
@@ -560,7 +599,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         isAdmin,
       };
 
-      // Admin-only: purge admin IP entries from visitor logs
+      // Admin-only: filter admin IP entries from response (non-destructive)
       if (isAdmin) {
         const adminIp =
           request.headers.get("CF-Connecting-IP") ||
@@ -579,25 +618,12 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
 
         data._adminIp = adminIp || "(undetected)";
         data._adminIps = [...adminIps];
-        data._purgedCount = 0;
 
+        // Filter admin IPs from response only (do NOT delete from Redis)
         if (adminIps.size > 0) {
-          const fullListRes = await redisPipeline(env, [["LRANGE", "dst:visitors", "0", "-1"]]);
-          const fullList = ((fullListRes as any)?.[0]?.result as string[]) ?? [];
-          const purgeCommands: string[][] = [];
-          for (const raw of fullList) {
-            try {
-              const parsed = JSON.parse(raw);
-              if (adminIps.has(parsed.ip)) {
-                purgeCommands.push(["LREM", "dst:visitors", "0", raw]);
-              }
-            } catch { /* skip */ }
-          }
-          if (purgeCommands.length > 0) {
-            await redisPipeline(env, purgeCommands);
-          }
+          const beforeCount = data.recentVisitors.length;
           data.recentVisitors = data.recentVisitors.filter((v: any) => !adminIps.has(v.ip));
-          data._purgedCount = purgeCommands.length;
+          data._filteredCount = beforeCount - data.recentVisitors.length;
         }
       }
 

@@ -42,18 +42,16 @@ export async function trackVisit(skipTracking?: boolean) {
   const hasVisited = !!localStorage.getItem("dst:visitor");
   localStorage.setItem("dst:visitor", "1");
 
-  // Parse referrer
-  let referrer = "direct";
+  // Parse referrer — only track external domains, skip direct/internal
+  let referrer = "";
   if (document.referrer) {
     try {
       const refUrl = new URL(document.referrer);
       if (!refUrl.hostname.endsWith("dstcraft.com")) {
         referrer = refUrl.hostname.replace(/^www\./, "");
-      } else {
-        referrer = ""; // internal navigation — skip
       }
     } catch {
-      referrer = "direct";
+      // malformed referrer — treat as direct (no referrer sent)
     }
   }
 
@@ -72,15 +70,18 @@ export async function trackVisit(skipTracking?: boolean) {
   }
 }
 
-/** Track session duration — call on visibility change / unload */
+/** Track session duration — send once when user leaves the page */
 export function initDurationTracking(skipTracking?: boolean) {
   if (!WORKER_URL || skipTracking) return;
 
   const start = Date.now();
+  let sent = false;
 
   function sendDuration() {
+    if (sent) return;
     const seconds = Math.round((Date.now() - start) / 1000);
     if (seconds < 2) return; // Ignore very short visits
+    sent = true;
     navigator.sendBeacon(
       `${WORKER_URL}/event`,
       JSON.stringify({ type: "duration", value: seconds }),
@@ -88,6 +89,7 @@ export function initDurationTracking(skipTracking?: boolean) {
   }
 
   // visibilitychange is more reliable than beforeunload on mobile Safari
+  // Send only once — the final duration from page open to first hide
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") {
       sendDuration();

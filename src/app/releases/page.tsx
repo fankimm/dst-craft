@@ -15,6 +15,31 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.9.2",
+    date: "2026-04-15",
+    dev: [
+      "fix: 체류시간 중복 기록 — visibilitychange마다 샘플 전송 → sent 플래그로 세션당 1회만",
+      "fix: 재방문율 공식 오류 — returnTotal/totalPV → returnTotal/totalUV",
+      "fix: 관리자 IP 정제를 destructive 삭제에서 응답 시점 필터링(non-destructive)으로 변경",
+      "feat: /track(5/분), /event(30/분) IP 기반 레이트 리밋 추가",
+      "feat: 별점 IP 기반 중복 제출 방지 (변경은 허용)",
+      "ui: KR 제외 시 필터 미적용 지표에 점선 테두리 + '필터 미적용' 표시",
+      "fix: 'direct' referrer를 도메인 referrer와 분리 — 저장/표시에서 제외",
+    ],
+    changes: {
+      ko: [
+        "방문자 통계 정확도 개선 — 체류시간·재방문율 계산 수정",
+        "봇 공격 방지를 위한 레이트 리밋 추가",
+        "별점 중복 제출 방지",
+      ],
+      en: [
+        "Analytics accuracy improvements — duration & return rate fixes",
+        "Rate limiting for bot protection",
+        "Prevent duplicate star rating submissions",
+      ],
+    },
+  },
+  {
     version: "0.9.1",
     date: "2026-04-15",
     dev: [
