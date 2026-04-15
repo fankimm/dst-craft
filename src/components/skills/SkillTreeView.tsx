@@ -54,38 +54,15 @@ function getGroupLabel(groupId: string, locale: Locale): string {
 
 // Rail dots removed — group card border replaces visual grouping
 
-// ── Merge indicator ──
-
-function PrereqIndicator({ parentIds, locale, color, isLearned }: { parentIds: string[]; locale: Locale; color: string; isLearned: (id: string) => boolean }) {
-  if (parentIds.length === 0) return null;
-  // Filter out lock nodes from display (they have their own indicators)
-  const skillParents = parentIds.filter((id) => {
-    const entry = skillTranslations[id];
-    return !!entry; // only show parents that have translations (= real skills, not locks)
-  });
-  if (skillParents.length === 0) return null;
-  const anySatisfied = skillParents.some((id) => isLearned(id));
+function getPrereq(parentIds: string[], locale: Locale, isLearned: (id: string) => boolean): { label: string; satisfied: boolean } | undefined {
+  if (parentIds.length === 0) return undefined;
+  const skillParents = parentIds.filter((id) => !!skillTranslations[id]);
+  if (skillParents.length === 0) return undefined;
+  const satisfied = skillParents.some((id) => isLearned(id));
   const sep = skillParents.length > 1 ? (locale === "ko" ? " 또는 " : " or ") : "";
   const parentNames = skillParents.map((id) => `"${getTitle(id, locale)}"`).join(sep);
-  const label = locale === "ko"
-    ? `${parentNames} 습득 필요`
-    : `Requires ${parentNames}`;
-  return (
-    <div className="flex items-center" style={{ minHeight: 36 }}>
-      <div className="flex-1 flex items-center gap-2 px-1">
-        <div className="flex-1 h-px bg-border" />
-        <div className={`flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full border ${
-          anySatisfied
-            ? "border-green-500/40 text-green-600 dark:text-green-400 bg-green-500/5"
-            : "border-border text-muted-foreground bg-surface"
-        }`}>
-          <span className={`inline-block size-[6px] rounded-full ${anySatisfied ? "bg-green-500" : "bg-muted-foreground/40"}`} />
-          {label}
-        </div>
-        <div className="flex-1 h-px bg-border" />
-      </div>
-    </div>
-  );
+  const label = locale === "ko" ? `${parentNames} 습득 필요` : `Requires ${parentNames}`;
+  return { label, satisfied };
 }
 
 export function SkillTreeView({
@@ -248,11 +225,9 @@ export function SkillTreeView({
 
                   // Regular skill node
                   const locked = !canLearn(item.node.id) && !isLearned(item.node.id);
+                  const prereq = getPrereq(item.parentIds, locale, isLearned);
                   return (
                     <div key={item.node.id}>
-                      {item.parentIds.length > 0 && (
-                        <PrereqIndicator parentIds={item.parentIds} locale={locale} color={group.color} isLearned={isLearned} />
-                      )}
                       <div className="flex items-center" style={{ minHeight: 52 }}>
 
                         <div className="flex-1 min-w-0 pr-2">
@@ -269,6 +244,7 @@ export function SkillTreeView({
                             onToggle={() => onToggle(item.node.id)}
                             onViewItem={onViewItem}
                             onNoPoints={handleNoPoints}
+                            prereq={prereq}
                           />
                         </div>
                       </div>

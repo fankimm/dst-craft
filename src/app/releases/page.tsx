@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.10.1",
+    date: "2026-04-15",
+    dev: [
+      "ui: 스킬트리 필요 조건(prereq) 표시를 노드 위쪽 분리 라인 → 노드 카드 내부 상단 pill로 이동",
+      "refactor: PrereqIndicator 컴포넌트 제거, getPrereq 헬퍼로 대체 — SkillNodeCard에 prereq prop 전달",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 — 필요 조건 표시가 노드 카드 안쪽으로 이동하여 더 깔끔해짐",
+      ],
+      en: [
+        "Skill tree — prerequisite labels moved inside node cards for a cleaner layout",
+      ],
+    },
+  },
+  {
     version: "0.10.0",
     date: "2026-04-15",
     dev: [

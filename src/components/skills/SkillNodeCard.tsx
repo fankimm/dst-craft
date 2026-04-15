@@ -21,6 +21,7 @@ interface Props {
   onToggle: () => void;
   onViewItem?: (itemId: string) => void;
   onNoPoints?: () => void;
+  prereq?: { label: string; satisfied: boolean };
 }
 
 export function SkillNodeCard({
@@ -36,6 +37,7 @@ export function SkillNodeCard({
   onToggle,
   onViewItem,
   onNoPoints,
+  prereq,
 }: Props) {
   const iconSrc = icon ? `/images/skill-icons/${icon}.png` : undefined;
   const relatedItemIds = getItemsBySkill(skillId);
@@ -64,6 +66,23 @@ export function SkillNodeCard({
       )}
       style={isLearned ? { backgroundColor: `${groupColor}08`, borderColor: `${groupColor}50` } : undefined}
     >
+      {/* Prereq pill */}
+      {prereq && (
+        <div className="flex">
+          <div
+            className={cn(
+              "inline-flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full border",
+              prereq.satisfied
+                ? "border-green-500/40 text-green-600 dark:text-green-400 bg-green-500/5"
+                : "border-border text-muted-foreground bg-surface",
+            )}
+          >
+            <span className={`inline-block size-[6px] rounded-full ${prereq.satisfied ? "bg-green-500" : "bg-muted-foreground/40"}`} />
+            {prereq.label}
+          </div>
+        </div>
+      )}
+
       {/* Main row: icon + title + toggle */}
       <div className="flex items-center gap-2.5">
         {/* Icon */}
