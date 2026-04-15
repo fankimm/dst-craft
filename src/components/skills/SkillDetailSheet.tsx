@@ -10,6 +10,12 @@ import { t, itemName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { allItems } from "@/data/items";
 
+interface UnlockRequirement {
+  type: "parent_skill" | "lock_gate";
+  label: string;
+  satisfied: boolean;
+}
+
 interface Props {
   node: SkillNode;
   isLearned: boolean;
@@ -17,9 +23,13 @@ interface Props {
   canUnlearn: boolean;
   groupColor: string;
   locale: Locale;
+  /** Unlock requirements (parent skills + lock gates) */
+  requirements?: UnlockRequirement[];
   onToggle: () => void;
   onViewItem?: (itemId: string) => void;
 }
+
+export type { UnlockRequirement };
 
 function getTranslation(id: string, locale: Locale) {
   const entry = skillTranslations[id];
@@ -43,6 +53,7 @@ export function SkillDetailSheet({
   canUnlearn,
   groupColor,
   locale,
+  requirements,
   onToggle,
   onViewItem,
 }: Props) {
@@ -91,6 +102,23 @@ export function SkillDetailSheet({
         <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line">
           {desc}
         </p>
+      )}
+
+      {/* Unlock requirements */}
+      {requirements && requirements.length > 0 && !isLearned && (
+        <div className="space-y-1">
+          <h4 className="text-xs font-semibold text-muted-foreground">
+            {locale === "ko" ? "해금 조건" : "Unlock Requirements"}
+          </h4>
+          {requirements.map((req, i) => (
+            <div key={i} className="flex items-center gap-2 text-xs">
+              <span className={cn("size-1.5 rounded-full shrink-0", req.satisfied ? "bg-green-500" : "bg-red-400")} />
+              <span className={req.satisfied ? "text-muted-foreground line-through" : "text-foreground"}>
+                {req.label}
+              </span>
+            </div>
+          ))}
+        </div>
       )}
 
       {/* Related crafting items */}

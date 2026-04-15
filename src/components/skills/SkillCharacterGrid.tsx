@@ -4,7 +4,7 @@ import Image from "next/image";
 import { characters } from "@/data/characters";
 import { characterName, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees";
+import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 import { Footer } from "../crafting/Footer";
 
 interface Props {

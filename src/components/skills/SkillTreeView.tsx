@@ -122,7 +122,7 @@ export function SkillTreeView({
       </div>
 
       {/* Scrollable tree */}
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain" data-scroll-container="">
         <div className="max-w-2xl mx-auto w-full pb-8">
           {groupedNodes.map(({ group, nodes }) => (
             <div key={group.id} className="mt-3 first:mt-2">
@@ -152,7 +152,7 @@ export function SkillTreeView({
                 />
 
                 {/* Node cards */}
-                <div className="flex-1 min-w-0 flex flex-col">
+                <div className="flex-1 min-w-0 max-w-md flex flex-col">
                   {nodes.map((node) => {
                     if (isLockNode(node)) {
                       if (node.lockType) {

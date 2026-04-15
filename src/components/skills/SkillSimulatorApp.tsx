@@ -8,8 +8,10 @@ import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSkillTree } from "@/hooks/use-skill-tree";
 import { t, characterName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { characters } from "@/data/characters";
-import { skillTrees, CHARACTERS_WITH_SKILLS } from "@/data/skill-trees";
+import { skillTrees, CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
+import { skillTranslations } from "@/data/skill-trees/translations";
 import type { SkillNode } from "@/data/skill-trees/types";
+import type { UnlockRequirement } from "./SkillDetailSheet";
 import { cn } from "@/lib/utils";
 import { SkillCharacterGrid } from "./SkillCharacterGrid";
 import { SkillTreeView } from "./SkillTreeView";
@@ -105,6 +107,65 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
 
   const charObj = selectedChar ? characters.find((c) => c.id === selectedChar) : null;
 
+  // Compute unlock requirements for selected node
+  const nodeRequirements = useMemo((): UnlockRequirement[] | undefined => {
+    if (!panelNode || !tree) return undefined;
+    const reqs: UnlockRequirement[] = [];
+    // Parent skill requirements (nodes whose connects include this node)
+    if (!panelNode.root) {
+      const parents = tree.nodes.filter((n: SkillNode) => n.connects?.includes(panelNode.id));
+      for (const parent of parents) {
+        const parentTitle = skillTranslations[parent.id]
+          ? (resolvedLocale === "ko" ? skillTranslations[parent.id].title.ko : skillTranslations[parent.id].title.en)
+          : parent.id;
+        reqs.push({
+          type: "parent_skill",
+          label: resolvedLocale === "ko" ? `"${parentTitle}" 습득 필요` : `Requires "${parentTitle}"`,
+          satisfied: isLearned(parent.id),
+        });
+      }
+    }
+
+    // Lock gate requirements
+    if (panelNode.locks) {
+      for (const lockId of panelNode.locks) {
+        const lockNode = tree.nodes.find((n: SkillNode) => n.id === lockId);
+        if (lockNode?.lockType) {
+          let label = "";
+          switch (lockNode.lockType.type) {
+            case "skill_count":
+              label = resolvedLocale === "ko"
+                ? `"${lockNode.lockType.tag}" 스킬 ${lockNode.lockType.count}개 습득 필요`
+                : `${lockNode.lockType.count} "${lockNode.lockType.tag}" skills required`;
+              break;
+            case "total_skills":
+              label = resolvedLocale === "ko"
+                ? `총 ${lockNode.lockType.count}개 스킬 습득 필요`
+                : `${lockNode.lockType.count} total skills required`;
+              break;
+            case "boss_kill":
+              label = resolvedLocale === "ko"
+                ? `보스 처치 필요 (${lockNode.lockType.boss})`
+                : `Boss kill required (${lockNode.lockType.boss})`;
+              break;
+            case "no_opposing_faction":
+              label = resolvedLocale === "ko"
+                ? `${lockNode.lockType.faction === "lunar" ? "그림자" : "달"} 성향 스킬 미습득 필요`
+                : `No ${lockNode.lockType.faction === "lunar" ? "Shadow" : "Lunar"} faction skills`;
+              break;
+          }
+          reqs.push({
+            type: "lock_gate",
+            label,
+            satisfied: canLearn(panelNode.id),
+          });
+        }
+      }
+    }
+
+    return reqs.length > 0 ? reqs : undefined;
+  }, [panelNode, tree, resolvedLocale, isLearned, canLearn]);
+
   // Detail panel
   const detailPanel = panelNode && (
     <DetailPanel open={panelOpen} onClose={handleClosePanel}>
@@ -113,8 +174,9 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
         isLearned={isLearned(panelNode.id)}
         canLearn={canLearn(panelNode.id)}
         canUnlearn={canUnlearn(panelNode.id)}
-        groupColor={tree?.groups.find((g) => g.id === panelNode.group)?.color ?? "#6b7280"}
+        groupColor={tree?.groups.find((g: { id: string; color: string }) => g.id === panelNode.group)?.color ?? "#6b7280"}
         locale={resolvedLocale}
+        requirements={nodeRequirements}
         onToggle={() => toggleSkill(panelNode.id)}
         onViewItem={onViewCraftingItem}
       />
@@ -126,18 +188,29 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
       {/* Breadcrumb */}
       {selectedChar && (
         <div className="border-b border-border bg-background/80 px-4 py-2.5 shrink-0">
-          <div className="flex items-center text-xs text-muted-foreground">
+          <nav className="flex items-center gap-1 min-w-0 text-sm">
             <button
               onClick={handleGoHome}
-              className="hover:text-foreground transition-colors touch-manipulation"
+              className="shrink-0 rounded-sm hover:opacity-70 transition-opacity"
+            >
+              <img
+                src={charObj ? `/images/category-icons/characters/${charObj.portrait}.png` : "/images/category-icons/tools.png"}
+                alt=""
+                className="size-5 rounded-sm"
+              />
+            </button>
+            <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
+            <button
+              onClick={handleGoHome}
+              className="text-muted-foreground hover:text-foreground transition-colors truncate"
             >
               {t(resolvedLocale, "skills_select_character" as TranslationKey)}
             </button>
-            <ChevronRight className="size-3 mx-1" />
-            <span className="text-foreground font-medium">
+            <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
+            <span className="font-semibold text-foreground truncate">
               {charObj ? characterName(charObj, resolvedLocale) : selectedChar}
             </span>
-          </div>
+          </nav>
         </div>
       )}
 
