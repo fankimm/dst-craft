@@ -267,7 +267,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
             onToggle={toggleSkill}
             manualLocks={manualLocks}
             onToggleManualLock={toggleManualLock}
-            onReset={resetAll}
+            onReset={() => { resetAll(); setManualLocks(new Set()); }}
             onViewItem={onViewCraftingItem}
           />
         ) : (

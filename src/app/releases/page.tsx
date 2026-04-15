@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.11.7",
+    date: "2026-04-16",
+    dev: [
+      "ui: 자물쇠/해금 아이콘 좌우 반전(horizontal flip) 적용",
+      "ui: 눈 아이콘 위아래 반전(vertical flip) 추가 적용",
+      "fix: 스킬트리 reset 버튼이 manualLocks를 초기화하지 않던 버그 — onReset에서 setManualLocks(new Set()) 함께 호출",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 — 초기화 버튼이 보스 처치/커스텀 과제 토글도 함께 초기화되도록 수정",
+        "자물쇠/눈 아이콘 방향 보정",
+      ],
+      en: [
+        "Skill tree — reset button now also clears manual lock toggles",
+        "Adjusted lock/eye icon orientations",
+      ],
+    },
+  },
+  {
     version: "0.11.5",
     date: "2026-04-16",
     dev: [
