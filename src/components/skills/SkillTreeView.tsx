@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Share2 } from "lucide-react";
 import type { CharacterSkillTree, SkillNode, LockCondition } from "@/data/skill-trees/types";
 import { characters } from "@/data/characters";
 import { characterName, characterTitle, t, type Locale, type TranslationKey } from "@/lib/i18n";
@@ -27,6 +27,7 @@ interface Props {
   onToggleManualLock: (id: string, onBlocked?: () => void) => void;
   onReset: () => void;
   onViewItem?: (itemId: string) => void;
+  onShare?: () => void;
 }
 
 function isLockNode(node: SkillNode): boolean {
@@ -123,6 +124,7 @@ export function SkillTreeView({
   onToggleManualLock,
   onReset,
   onViewItem,
+  onShare,
 }: Props) {
   const char = characters.find((c) => c.id === tree.characterId);
   const pointsRef = useRef<HTMLDivElement>(null);
@@ -186,13 +188,24 @@ export function SkillTreeView({
           </div>
         </div>
         {totalPoints > 0 && (
-          <button
-            onClick={onReset}
-            className="shrink-0 flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground rounded-md hover:bg-surface transition-colors touch-manipulation"
-          >
-            <RotateCcw className="size-3.5" />
-            {t(locale, "skills_reset" as TranslationKey)}
-          </button>
+          <div className="flex items-center gap-1">
+            {onShare && (
+              <button
+                onClick={onShare}
+                className="shrink-0 flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground rounded-md hover:bg-surface transition-colors touch-manipulation"
+              >
+                <Share2 className="size-3.5" />
+                {t(locale, "skills_share" as TranslationKey)}
+              </button>
+            )}
+            <button
+              onClick={onReset}
+              className="shrink-0 flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground rounded-md hover:bg-surface transition-colors touch-manipulation"
+            >
+              <RotateCcw className="size-3.5" />
+              {t(locale, "skills_reset" as TranslationKey)}
+            </button>
+          </div>
         )}
       </div>
 

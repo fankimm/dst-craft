@@ -180,6 +180,9 @@ const translations = {
     skills_gate_total_skills: "총 스킬 {count}개 필요",
     dev_menu: "개발자 메뉴",
     dev_menu_desc: "우측 하단에 개발자 도구 버튼 표시",
+    skills_share: "공유",
+    skills_share_copied: "빌드 링크가 복사되었습니다",
+    skills_build_loaded: "공유된 빌드를 불러왔습니다",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -348,6 +351,9 @@ const translations = {
     skills_gate_total_skills: "{count} total skills required",
     dev_menu: "Developer Menu",
     dev_menu_desc: "Show developer tools button at bottom right",
+    skills_share: "Share",
+    skills_share_copied: "Build link copied",
+    skills_build_loaded: "Shared build loaded",
   },
 } as const;
 

@@ -14,6 +14,7 @@ interface UseSkillTreeReturn {
   canUnlockManualLock: (lockId: string) => boolean;
   toggleSkill: (id: string) => void;
   resetAll: () => void;
+  loadBuild: (skills: Set<string>) => void;
 }
 
 /** Build a map from node ID → node for quick lookups */
@@ -321,6 +322,15 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
     setActivatedSkills(new Set());
   }, []);
 
+  const loadBuild = useCallback(
+    (skills: Set<string>) => {
+      if (!tree) return;
+      const valid = new Set([...skills].filter((id) => nodeMap.has(id)));
+      setActivatedSkills(valid);
+    },
+    [tree, nodeMap],
+  );
+
   return {
     activatedSkills,
     totalPoints: useMemo(
@@ -337,5 +347,6 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
     canUnlockManualLock,
     toggleSkill,
     resetAll,
+    loadBuild,
   };
 }

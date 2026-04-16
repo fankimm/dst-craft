@@ -25,7 +25,7 @@ const SITE_URL = "https://www.dstcraft.com";
 export const metadata: Metadata = {
   title: "Don't Craft Without Recipes — DST Crafting & Cooking Guide",
   description:
-    "Don't Starve Together crafting & cooking guide — DST craft calculator, crock pot simulator, and recipe finder. Search all crafting recipes, crock pot recipes, materials & character-specific items.",
+    "Don't Starve Together crafting & cooking guide — DST craft calculator, crock pot simulator, skill tree simulator, and recipe finder. Search all crafting recipes, crock pot recipes, materials & character-specific items.",
   keywords: [
     "Don't Starve Together",
     "DST",
@@ -57,6 +57,14 @@ export const metadata: Metadata = {
     "dont starve recipe finder",
     "dst crafting list mobile",
     "dont starve together item list",
+    "skill tree",
+    "skill tree simulator",
+    "DST skill tree",
+    "dst skill tree simulator",
+    "dont starve together skill tree",
+    "dst character skills",
+    "dst skill tree planner",
+    "dst skill tree guide",
   ],
   metadataBase: new URL(SITE_URL),
   alternates: {
@@ -75,7 +83,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "Don't Craft Without Recipes — Don't Starve Together Guide",
     description:
-      "Complete Don't Starve Together crafting & cooking guide. Search all crafting recipes, crock pot recipes, materials & character-specific items.",
+      "Complete Don't Starve Together crafting & cooking guide with skill tree simulator. Search all crafting recipes, crock pot recipes, materials & character-specific items.",
     siteName: "Don't Craft Without Recipes",
     locale: "en_US",
     alternateLocale: ["ko_KR", "ja_JP", "zh_CN", "zh_TW", "fr_FR", "de_DE", "es_ES", "ru_RU", "pt_BR", "pl_PL", "it_IT"],
@@ -92,7 +100,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Don't Craft Without Recipes — Don't Starve Together Guide",
     description:
-      "Complete Don't Starve Together crafting & cooking guide. Search all crafting recipes, crock pot recipes, and materials.",
+      "Complete Don't Starve Together crafting & cooking guide with skill tree simulator. Search all crafting recipes, crock pot recipes, and materials.",
     images: ["/og-image.png"],
   },
   manifest: "/manifest.json",
@@ -195,7 +203,7 @@ export default function RootLayout({
               alternateName: "DST Crafting & Cooking Guide",
               url: SITE_URL,
               description:
-                "Complete Don't Starve Together crafting & cooking guide. Search all crafting recipes, crock pot recipes, materials, stations, and character-specific items.",
+                "Complete Don't Starve Together crafting & cooking guide with skill tree simulator. Search all crafting recipes, crock pot recipes, skill trees, materials, stations, and character-specific items.",
               applicationCategory: "GameApplication",
               operatingSystem: "All",
               offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -226,7 +234,7 @@ export default function RootLayout({
                   name: "What is Don't Craft Without Recipes?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "Don't Craft Without Recipes is a free web app that provides a complete database of all crafting and cooking recipes in Don't Starve Together, including materials, crafting stations, crock pot recipes, and character-specific items.",
+                    text: "Don't Craft Without Recipes is a free web app that provides a complete database of all crafting and cooking recipes in Don't Starve Together, including materials, crafting stations, crock pot recipes, character skill trees, and character-specific items.",
                   },
                 },
                 {
@@ -234,7 +242,7 @@ export default function RootLayout({
                   name: "How do I search for crafting and cooking recipes in Don't Starve Together?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "Use the search bar to find any item or food by name. You can filter by category, crafting station, or character-specific recipes. The crock pot simulator lets you test ingredient combinations. The guide supports 13 languages including English, Korean, Japanese, and Chinese.",
+                    text: "Use the search bar to find any item or food by name. You can filter by category, crafting station, or character-specific recipes. The crock pot simulator lets you test ingredient combinations, and the skill tree simulator lets you plan character builds. The guide supports 13 languages including English, Korean, Japanese, and Chinese.",
                   },
                 },
               ],

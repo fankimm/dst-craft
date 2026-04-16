@@ -5,6 +5,7 @@
 
 import type { CookingRecipe } from "@/data/recipes";
 import type { Boss } from "@/data/bosses";
+import type { CharacterSkillTree } from "@/data/skill-trees/types";
 
 // ===========================
 // FOOD SEO
@@ -451,4 +452,98 @@ export function generateCharacterSeoText(
   }
 
   return { overview, perksDescription, playstyle, faq };
+}
+
+// ===========================
+// SKILL TREE SEO
+// ===========================
+
+export interface SkillTreeSeoContent {
+  overview: string;
+  branchesDescription: string;
+  howToUse: string;
+  faq: { question: string; answer: string }[];
+}
+
+export function generateSkillTreeSeoText(
+  char: {
+    name: string;
+    health: number;
+    hunger: number;
+    sanity: number;
+    difficulty: "easy" | "normal" | "hard";
+  },
+  tree: CharacterSkillTree,
+  groupNames: Record<string, string>,
+  skillCount: number,
+  unlockedItemCount: number,
+): SkillTreeSeoContent {
+  const branchNames = tree.groups.map((g) => groupNames[g.id] ?? g.id);
+  const branchList = branchNames.join(", ");
+  const hasAllegiance = tree.groups.some((g) => g.id === "allegiance");
+
+  // Overview
+  let overview = `${char.name}'s Skill Tree in Don't Starve Together contains ${skillCount} learnable skills across ${tree.groups.length} branches: ${branchList}. `;
+  overview += `Skills are earned by gaining experience points and each skill provides unique passive or active bonuses. `;
+  if (unlockedItemCount > 0) {
+    overview += `${char.name}'s skill tree also unlocks ${unlockedItemCount} exclusive craftable items that become available as specific skills are learned. `;
+  }
+  if (hasAllegiance) {
+    overview += `The tree includes an Affinity branch, allowing ${char.name} to align with either Lunar or Shadow forces for powerful late-game abilities.`;
+  }
+
+  // Branches description
+  const branchDescParts: string[] = [];
+  for (const group of tree.groups) {
+    const groupName = groupNames[group.id] ?? group.id;
+    const nodesInGroup = tree.nodes.filter(
+      (n) => n.group === group.id && n.icon,
+    );
+    branchDescParts.push(
+      `The ${groupName} branch has ${nodesInGroup.length} skills`,
+    );
+  }
+  let branchesDescription = `${char.name}'s skill tree is divided into ${tree.groups.length} distinct branches. `;
+  branchesDescription += branchDescParts.join(". ") + ". ";
+  branchesDescription += `Players can mix and match skills from different branches to create builds that complement their playstyle.`;
+
+  // How to use
+  let howToUse = `To use ${char.name}'s skill tree in Don't Starve Together, earn experience points by surviving and completing activities. `;
+  howToUse += `Spend skill points to unlock nodes in any branch. Some advanced skills require prerequisite skills to be learned first. `;
+  if (hasAllegiance) {
+    howToUse += `The Affinity branch requires defeating specific bosses (Ancient Fuelweaver or Celestial Champion) and choosing between Lunar and Shadow allegiance — you cannot have both. `;
+  }
+  howToUse += `Use the skill tree simulator on this site to plan your build before committing in-game.`;
+
+  // FAQ
+  const faq: { question: string; answer: string }[] = [
+    {
+      question: `How many skills does ${char.name} have in DST?`,
+      answer: `${char.name} has ${skillCount} learnable skills spread across ${tree.groups.length} branches: ${branchList}.`,
+    },
+    {
+      question: `What are ${char.name}'s skill tree branches?`,
+      answer: `${char.name}'s skill tree branches are: ${branchList}. Each branch focuses on different aspects of the character's abilities.`,
+    },
+    {
+      question: `How do you unlock skills for ${char.name}?`,
+      answer: `Earn experience points by surviving and completing activities in Don't Starve Together, then spend skill points on nodes in ${char.name}'s skill tree. Some nodes require prerequisite skills.`,
+    },
+  ];
+
+  if (unlockedItemCount > 0) {
+    faq.push({
+      question: `Does ${char.name}'s skill tree unlock new items?`,
+      answer: `Yes. ${char.name}'s skill tree unlocks ${unlockedItemCount} exclusive craftable items as you learn specific skills.`,
+    });
+  }
+
+  if (hasAllegiance) {
+    faq.push({
+      question: `Can ${char.name} have both Lunar and Shadow allegiance?`,
+      answer: `No. ${char.name} must choose between Lunar and Shadow allegiance. Each path requires defeating a different boss and excludes the other faction.`,
+    });
+  }
+
+  return { overview, branchesDescription, howToUse, faq };
 }

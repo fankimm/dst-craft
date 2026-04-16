@@ -1,8 +1,10 @@
 import { characters } from "@/data/characters";
+import { CHARACTERS_WITH_SKILLS, skillTrees } from "@/data/skill-trees/registry";
+import { groupTranslations, skillTranslations } from "@/data/skill-trees/translations";
+import { getItemsBySkill } from "@/data/skill-trees/skill-items";
 import { allItems } from "@/data/items";
 import { ko } from "@/data/locales/ko";
-import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
-import { generateCharacterSeoText } from "@/lib/seo-text";
+import { generateSkillTreeSeoText } from "@/lib/seo-text";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -14,7 +16,7 @@ function idToSlug(id: string) {
 }
 
 export function generateStaticParams() {
-  return characters.map((c) => ({ slug: c.id }));
+  return CHARACTERS_WITH_SKILLS.map((id) => ({ slug: id }));
 }
 
 export async function generateMetadata({
@@ -24,68 +26,88 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const char = characters.find((c) => c.id === slug);
-  if (!char) return {};
+  const tree = skillTrees[slug];
+  if (!char || !tree) return {};
 
-  const title = `${char.name} — Don't Starve Together Character Guide`;
+  const skillCount = tree.nodes.filter((n) => n.icon).length;
+  const branchNames = tree.groups.map(
+    (g) => groupTranslations[g.id]?.en ?? g.id,
+  );
 
-  const perksShort = char.perks.slice(0, 2).join(". ");
-  const description = `${char.name} guide for Don't Starve Together. Stats: ${char.health} HP, ${char.hunger} Hunger, ${char.sanity} Sanity. ${perksShort}. See perks, tips, and exclusive items.`;
+  const title = `${char.name} Skill Tree — Don't Starve Together Skill Tree Simulator`;
+  const description = `${char.name} skill tree guide for Don't Starve Together. ${skillCount} skills across ${tree.groups.length} branches: ${branchNames.join(", ")}. Plan your build with the interactive skill tree simulator.`;
 
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/character/${slug}` },
+    alternates: { canonical: `${SITE_URL}/skill-tree/${slug}` },
     openGraph: {
       title,
       description,
-      url: `${SITE_URL}/character/${slug}`,
+      url: `${SITE_URL}/skill-tree/${slug}`,
       images: [{ url: `${SITE_URL}/images/characters/${char.portrait}.png` }],
     },
   };
 }
 
-const difficultyColors: Record<string, string> = {
-  easy: "text-green-600 dark:text-green-400 bg-green-500/10 border-green-500/30",
-  normal: "text-yellow-600 dark:text-yellow-400 bg-yellow-500/10 border-yellow-500/30",
-  hard: "text-red-600 dark:text-red-400 bg-red-500/10 border-red-500/30",
-};
-
-const difficultyLabels: Record<string, string> = {
-  easy: "Easy",
-  normal: "Normal",
-  hard: "Hard",
-};
-
-export default async function CharacterPage({
+export default async function SkillTreePage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
   const char = characters.find((c) => c.id === slug);
-  if (!char) notFound();
+  const tree = skillTrees[slug];
+  if (!char || !tree) notFound();
 
-  // Exclusive items
-  const exclusiveItems = allItems.filter((i) => i.characterOnly === char.id).slice(0, 12);
+  // Compute skill stats
+  const skillNodes = tree.nodes.filter((n) => n.icon);
+  const skillCount = skillNodes.length;
+
+  // Count items unlocked by skill tree
+  const unlockedItemIds = new Set<string>();
+  for (const node of skillNodes) {
+    for (const itemId of getItemsBySkill(node.id)) {
+      unlockedItemIds.add(itemId);
+    }
+  }
+  const unlockedItems = allItems.filter((i) => unlockedItemIds.has(i.id)).slice(0, 12);
+
+  // Group name lookup
+  const groupNames: Record<string, string> = {};
+  for (const g of tree.groups) {
+    groupNames[g.id] = groupTranslations[g.id]?.en ?? g.id;
+  }
 
   // Generate SEO text
-  const seo = generateCharacterSeoText(char, exclusiveItems.length);
+  const seo = generateSkillTreeSeoText(
+    char,
+    tree,
+    groupNames,
+    skillCount,
+    unlockedItemIds.size,
+  );
 
-  const hasSkillTree = CHARACTERS_WITH_SKILLS.includes(char.id);
-
-  // Other characters for internal linking
-  const otherChars = characters
-    .filter((c) => c.id !== char.id && c.id !== "wonkey")
+  // Other characters with skill trees for internal linking
+  const otherChars = CHARACTERS_WITH_SKILLS
+    .filter((id) => id !== slug)
     .sort(() => 0.5 - Math.random())
-    .slice(0, 4);
+    .slice(0, 4)
+    .map((id) => characters.find((c) => c.id === id)!)
+    .filter(Boolean);
 
+  // JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "VideoGameCharacter",
-    name: char.name,
+    "@type": "WebPage",
+    name: `${char.name} Skill Tree — Don't Starve Together`,
     description: seo.overview,
     image: `${SITE_URL}/images/characters/${char.portrait}.png`,
-    gameTipDescription: char.perks.join(". "),
+    isPartOf: {
+      "@type": "WebApplication",
+      name: "Don't Craft Without Recipes",
+      url: SITE_URL,
+    },
   };
 
   const faqLd = {
@@ -115,12 +137,12 @@ export default async function CharacterPage({
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <Link
-            href="/characters"
+            href={`/character/${char.id}`}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            ← All Characters
+            ← {char.name}
           </Link>
-          <span className="text-xs text-muted-foreground">Character Guide</span>
+          <span className="text-xs text-muted-foreground">Skill Tree Guide</span>
         </div>
       </header>
 
@@ -136,114 +158,150 @@ export default async function CharacterPage({
           </div>
           <div className="flex-1 min-w-0 pt-1">
             <h1 className="text-2xl font-bold text-foreground leading-tight">
-              {char.name} | Don&apos;t Starve Together
+              {char.name} Skill Tree | Don&apos;t Starve Together
             </h1>
             {char.nameKo && (
               <p className="text-base text-muted-foreground mt-0.5">
-                {char.nameKo}
-                {char.titleKo && <span className="ml-2 text-sm text-foreground/60">· {char.titleKo}</span>}
+                {char.nameKo} Skill Tree
               </p>
             )}
-            {char.title && !char.nameKo && (
-              <p className="text-sm text-muted-foreground mt-0.5">{char.title}</p>
-            )}
-            {char.motto && (
-              <p className="text-sm text-foreground/60 mt-1 italic">
-                &quot;{char.motto}&quot;
-              </p>
-            )}
-            <span
-              className={`inline-block mt-2 text-xs font-semibold px-2 py-0.5 rounded-full border ${
-                difficultyColors[char.difficulty] ?? ""
-              }`}
-            >
-              {difficultyLabels[char.difficulty]} Difficulty
-            </span>
+            <div className="flex items-center gap-3 mt-2">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full border border-primary/30 bg-primary/10 text-primary">
+                {skillCount} Skills
+              </span>
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full border border-muted-foreground/30 bg-muted text-muted-foreground">
+                {tree.groups.length} Branches
+              </span>
+            </div>
           </div>
         </section>
 
         {/* Overview — SEO */}
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">
-            About {char.name}
+            About {char.name}&apos;s Skill Tree
           </h2>
           <p className="text-sm text-foreground/80 leading-relaxed">
             {seo.overview}
           </p>
         </section>
 
-        {/* Stats */}
+        {/* Branches */}
         <section>
           <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-            Base Stats
+            Skill Branches
           </h2>
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-lg border border-border bg-surface px-3 py-3 text-center">
-              <img src="/images/ui/health.png" alt="Health" className="size-5 object-contain mx-auto mb-1" />
-              <p className="text-xs text-muted-foreground">Health</p>
-              <p className="text-base font-bold text-red-600 dark:text-red-400 mt-0.5">{char.health}</p>
-            </div>
-            <div className="rounded-lg border border-border bg-surface px-3 py-3 text-center">
-              <img src="/images/ui/hunger.png" alt="Hunger" className="size-5 object-contain mx-auto mb-1" />
-              <p className="text-xs text-muted-foreground">Hunger</p>
-              <p className="text-base font-bold text-yellow-600 dark:text-yellow-400 mt-0.5">{char.hunger}</p>
-            </div>
-            <div className="rounded-lg border border-border bg-surface px-3 py-3 text-center">
-              <img src="/images/ui/sanity.png" alt="Sanity" className="size-5 object-contain mx-auto mb-1" />
-              <p className="text-xs text-muted-foreground">Sanity</p>
-              <p className="text-base font-bold text-blue-600 dark:text-blue-400 mt-0.5">{char.sanity}</p>
-            </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {tree.groups.map((group) => {
+              const nodesInGroup = tree.nodes.filter(
+                (n) => n.group === group.id && n.icon,
+              );
+              const groupNameEn = groupTranslations[group.id]?.en ?? group.id;
+              const groupNameKo = groupTranslations[group.id]?.ko;
+              return (
+                <div
+                  key={group.id}
+                  className="rounded-lg border border-border bg-surface px-3 py-3 text-center"
+                >
+                  <div
+                    className="size-3 rounded-full mx-auto mb-1.5"
+                    style={{ backgroundColor: group.color }}
+                  />
+                  <p className="text-xs font-medium text-foreground">
+                    {groupNameEn}
+                  </p>
+                  {groupNameKo && (
+                    <p className="text-[10px] text-muted-foreground">
+                      {groupNameKo}
+                    </p>
+                  )}
+                  <p className="text-sm font-bold text-foreground mt-1">
+                    {nodesInGroup.length} skills
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </section>
 
-        {/* Perks */}
+        {/* Branches Description — SEO */}
+        <section>
+          <h2 className="text-base font-semibold text-foreground mb-2">
+            Skill Branch Breakdown
+          </h2>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {seo.branchesDescription}
+          </p>
+        </section>
+
+        {/* Notable Skills */}
         <section>
           <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-            Perks &amp; Abilities
+            Notable Skills
           </h2>
-          <ul className="space-y-2">
-            {char.perks.map((perk, i) => (
-              <li key={i} className="flex gap-3 rounded-lg border border-border bg-surface px-4 py-3">
-                <span className="text-primary font-bold shrink-0">•</span>
-                <div>
-                  <p className="text-sm text-foreground">{perk}</p>
-                  {char.perksKo[i] && (
-                    <p className="text-xs text-muted-foreground mt-0.5">{char.perksKo[i]}</p>
+          <div className="space-y-2">
+            {skillNodes.slice(0, 6).map((node) => {
+              const tr = skillTranslations[node.id];
+              const group = tree.groups.find((g) => g.id === node.group);
+              return (
+                <div
+                  key={node.id}
+                  className="flex items-start gap-3 rounded-lg border border-border bg-surface px-4 py-3"
+                >
+                  {node.icon && (
+                    <img
+                      src={`/images/skill-icons/${node.icon}.png`}
+                      alt={tr?.title.en ?? node.id}
+                      className="size-10 object-contain shrink-0 rounded"
+                    />
                   )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium text-foreground leading-tight">
+                        {tr?.title.en ?? node.id}
+                      </p>
+                      {group && (
+                        <span
+                          className="size-2 rounded-full shrink-0"
+                          style={{ backgroundColor: group.color }}
+                        />
+                      )}
+                    </div>
+                    {tr?.title.ko && (
+                      <p className="text-[10px] text-muted-foreground">
+                        {tr.title.ko}
+                      </p>
+                    )}
+                    {tr?.desc.en && (
+                      <p className="text-xs text-foreground/70 mt-1 line-clamp-2">
+                        {tr.desc.en}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </li>
-            ))}
-          </ul>
+              );
+            })}
+          </div>
         </section>
 
-        {/* Perks Description — SEO */}
+        {/* How to Use — SEO */}
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">
-            {char.name}&apos;s Abilities Explained
+            How to Use {char.name}&apos;s Skill Tree
           </h2>
           <p className="text-sm text-foreground/80 leading-relaxed">
-            {seo.perksDescription}
+            {seo.howToUse}
           </p>
         </section>
 
-        {/* Playstyle — SEO */}
-        <section>
-          <h2 className="text-base font-semibold text-foreground mb-2">
-            How to Play {char.name}
-          </h2>
-          <p className="text-sm text-foreground/80 leading-relaxed">
-            {seo.playstyle}
-          </p>
-        </section>
-
-        {/* Exclusive Items */}
-        {exclusiveItems.length > 0 && (
+        {/* Unlocked Items */}
+        {unlockedItems.length > 0 && (
           <section>
             <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-              Exclusive Items ({exclusiveItems.length})
+              Skill Tree Items ({unlockedItemIds.size})
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {exclusiveItems.map((item) => {
+              {unlockedItems.map((item) => {
                 const itemNameKo = ko.items[item.id]?.name;
                 return (
                   <Link
@@ -292,16 +350,16 @@ export default async function CharacterPage({
           </div>
         </section>
 
-        {/* Other Characters — internal links */}
+        {/* Other Characters' Skill Trees — internal links */}
         <section>
           <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-            Other Characters
+            Other Skill Trees
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {otherChars.map((c) => (
               <Link
                 key={c.id}
-                href={`/character/${c.id}`}
+                href={`/skill-tree/${c.id}`}
                 className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
               >
                 <img
@@ -322,47 +380,21 @@ export default async function CharacterPage({
               </Link>
             ))}
           </div>
-          <div className="mt-3 text-center">
-            <Link
-              href="/characters"
-              className="text-xs text-primary hover:underline"
-            >
-              View all characters →
-            </Link>
-          </div>
         </section>
-
-        {/* Skill Tree Link */}
-        {hasSkillTree && (
-          <section className="rounded-xl border border-primary/20 bg-primary/5 p-5 text-center space-y-2">
-            <p className="text-sm font-medium text-foreground">
-              {char.name}&apos;s Skill Tree
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Explore {char.name}&apos;s skill branches and plan your build
-            </p>
-            <Link
-              href={`/skill-tree/${char.id}`}
-              className="inline-block mt-1 rounded-lg border border-primary bg-primary/10 text-primary text-sm font-semibold px-5 py-2 hover:bg-primary/20 transition-colors"
-            >
-              View Skill Tree →
-            </Link>
-          </section>
-        )}
 
         {/* CTA */}
         <section className="rounded-xl border border-border bg-surface p-5 text-center space-y-2">
           <p className="text-sm font-medium text-foreground">
-            Find {char.name}&apos;s crafting recipes
+            Try {char.name}&apos;s Skill Tree Simulator
           </p>
           <p className="text-xs text-muted-foreground">
-            Browse all character-specific items, crock pot recipes, and boss guides
+            Plan your skill build interactively before committing in-game
           </p>
           <Link
-            href={`/?cat=character&char=${char.id}`}
+            href={`/?tab=skills&char=${char.id}`}
             className="inline-block mt-1 rounded-lg bg-foreground text-background text-sm font-semibold px-5 py-2 hover:opacity-80 transition-opacity"
           >
-            Open Crafting Guide →
+            Open Skill Tree Simulator →
           </Link>
         </section>
       </main>

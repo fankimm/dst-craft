@@ -15,6 +15,29 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.12.2",
+    date: "2026-04-16",
+    dev: [
+      "feat: 스킬트리 빌드 공유 — 비트필드→base64url 인코딩으로 URL 공유",
+      "feat: skill-build-codec 유틸 추가 (encodeBuild/decodeBuild)",
+      "feat: useSkillTree에 loadBuild 메서드 추가",
+      "feat: 스킬트리 SEO 페이지 추가 — /skill-tree/[slug] 캐릭터별 정적 페이지",
+      "seo: layout.tsx 메타데이터에 skill tree 키워드 추가",
+      "seo: 사이트맵에 스킬트리 페이지 11개 추가",
+      "seo: 캐릭터 SEO 페이지에서 스킬트리 링크 섹션 추가",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 빌드 공유 기능 — 찍은 스킬을 URL로 공유 가능",
+        "스킬트리 SEO 페이지 추가 — 캐릭터별 스킬트리 검색 노출 개선",
+      ],
+      en: [
+        "Skill tree build sharing — share your skill build via URL",
+        "Skill tree SEO pages — individual pages for each character's skill tree",
+      ],
+    },
+  },
+  {
     version: "0.12.1",
     date: "2026-04-15",
     dev: [

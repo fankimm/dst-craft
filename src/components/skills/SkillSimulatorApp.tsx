@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { ChevronRight } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
@@ -14,6 +14,7 @@ import type { SkillNode } from "@/data/skill-trees/types";
 import { manualLockKey } from "@/lib/skill-tree-keys";
 import type { UnlockRequirement } from "./SkillDetailSheet";
 import { cn } from "@/lib/utils";
+import { encodeBuild, decodeBuild } from "@/lib/skill-build-codec";
 import { SkillCharacterGrid } from "./SkillCharacterGrid";
 import { SkillTreeView } from "./SkillTreeView";
 import { SkillDetailSheet } from "./SkillDetailSheet";
@@ -24,9 +25,9 @@ interface Props {
 }
 
 function readSkillUrlState() {
-  if (typeof window === "undefined") return { char: null as string | null };
+  if (typeof window === "undefined") return { char: null as string | null, build: null as string | null };
   const params = new URLSearchParams(window.location.search);
-  return { char: params.get("char") };
+  return { char: params.get("char"), build: params.get("b") };
 }
 
 export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
@@ -48,18 +49,37 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     canUnlockManualLock,
     toggleSkill,
     resetAll,
+    loadBuild,
   } = useSkillTree(tree, manualLocks);
 
   const slideClass = useSlideAnimation(selectedChar, (v) => v === null);
   const { panelItem: panelNode, panelOpen } = useDetailPanel(selectedNode);
 
+  const pendingBuildRef = useRef<string | null>(null);
+
   // Sync from URL on mount
   useEffect(() => {
-    const { char } = readSkillUrlState();
+    const { char, build } = readSkillUrlState();
     if (char && CHARACTERS_WITH_SKILLS.includes(char)) {
       setSelectedChar(char);
+      if (build) pendingBuildRef.current = build;
     }
   }, []);
+
+  // Apply shared build when tree is loaded
+  useEffect(() => {
+    if (!pendingBuildRef.current || !tree) return;
+    const decoded = decodeBuild(tree, pendingBuildRef.current);
+    pendingBuildRef.current = null;
+    if (decoded && decoded.size > 0) {
+      loadBuild(decoded);
+      window.dispatchEvent(
+        new CustomEvent("dst-toast", {
+          detail: t(resolvedLocale, "skills_build_loaded" as TranslationKey),
+        }),
+      );
+    }
+  }, [tree, loadBuild, resolvedLocale]);
 
   // Re-tap active tab → go home
   useEffect(() => {
@@ -100,6 +120,29 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     const url = `${window.location.pathname}?tab=skills`;
     window.history.pushState({ _appNav: true }, "", url);
   }, []);
+
+  const handleShare = useCallback(async () => {
+    if (!tree || activatedSkills.size === 0) return;
+    const encoded = encodeBuild(tree, activatedSkills);
+    const url = `${window.location.origin}/?tab=skills&char=${tree.characterId}&b=${encoded}`;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    window.dispatchEvent(
+      new CustomEvent("dst-toast", {
+        detail: t(resolvedLocale, "skills_share_copied" as TranslationKey),
+      }),
+    );
+  }, [tree, activatedSkills, resolvedLocale]);
 
   const handleNodeTap = useCallback((node: SkillNode) => {
     // Only open detail for non-lock nodes
@@ -269,6 +312,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
             onToggleManualLock={toggleManualLock}
             onReset={() => { resetAll(); setManualLocks(new Set()); }}
             onViewItem={onViewCraftingItem}
+            onShare={handleShare}
           />
         ) : (
           <div className="h-full overflow-y-auto overscroll-contain" data-scroll-container="">

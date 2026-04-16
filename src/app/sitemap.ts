@@ -3,6 +3,7 @@ import { allItems } from "@/data/items";
 import { cookingRecipes } from "@/data/recipes";
 import { bosses } from "@/data/bosses";
 import { characters } from "@/data/characters";
+import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -76,5 +77,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
-  return [...staticRoutes, ...itemRoutes, ...foodRoutes, ...bossRoutes, ...characterRoutes];
+  const skillTreeRoutes: MetadataRoute.Sitemap = CHARACTERS_WITH_SKILLS.map((id) => ({
+    url: `${SITE_URL}/skill-tree/${id}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...staticRoutes, ...itemRoutes, ...foodRoutes, ...bossRoutes, ...characterRoutes, ...skillTreeRoutes];
 }
