@@ -92,22 +92,39 @@ export default async function FoodPage({
     .filter((r) => r.foodType === recipe.foodType && r.id !== recipe.id)
     .slice(0, 4);
 
+  const ingredientList = recipe.cardIngredients
+    ? recipe.cardIngredients.map(([id, qty]) => {
+        const ing = cookpotIngredients.find((x) => x.id === id);
+        return `${ing?.name ?? id} ×${qty}`;
+      })
+    : [recipe.requirements];
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Recipe",
     name: recipe.name,
     description: `Crock pot recipe in Don't Starve Together. Requirements: ${recipe.requirements}`,
     image: `${SITE_URL}/images/game-items/${recipe.id}.png`,
+    author: {
+      "@type": "Organization",
+      name: "DST Craft",
+      url: SITE_URL,
+    },
     cookTime: `PT${Math.round(recipe.cookTime * 60)}S`,
     recipeCategory: foodTypeLabels[recipe.foodType] ?? recipe.foodType,
-    recipeIngredient: recipe.cardIngredients
-      ? recipe.cardIngredients.map(([id, qty]) => {
-          const ing = cookpotIngredients.find((x) => x.id === id);
-          return `${ing?.name ?? id} ×${qty}`;
-        })
-      : [recipe.requirements],
+    recipeIngredient: ingredientList,
+    keywords: [
+      "Don't Starve Together",
+      "DST",
+      recipe.name,
+      stationLabel,
+      foodTypeLabels[recipe.foodType] ?? recipe.foodType,
+      "crock pot recipe",
+      ...(nameKo ? [nameKo] : []),
+    ].join(", "),
     nutrition: {
       "@type": "NutritionInformation",
+      calories: `${recipe.hunger} hunger points`,
     },
   };
 
