@@ -70,8 +70,8 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "drumstick", name: "Drumstick", nameKo: "닭다리", tags: { meat: 0.5 }, category: "meats", cookable: true },
   { id: "batwing", name: "Batilisk Wing", nameKo: "바틸리스크 날개", tags: { meat: 0.5 }, category: "meats", cookable: true },
   { id: "smallmeat", name: "Morsel", nameKo: "고깃조각", tags: { meat: 0.5 }, category: "meats", dryable: true, cookable: true, cookedImage: "cookedsmallmeat.png" },
-  { id: "batnose", name: "Batnose", nameKo: "박쥐코", tags: { meat: 0.5 }, category: "meats", cookable: true, dryable: true },
-  { id: "mole", name: "Naked Mole Bat", nameKo: "벌거숭이두더박쥐", tags: { meat: 0.5 }, category: "meats" },
+  { id: "batnose", name: "Batnose", nameKo: "벌거숭이 콧구멍", tags: { meat: 0.5 }, category: "meats", cookable: true, dryable: true },
+  { id: "mole", name: "Naked Mole Bat", nameKo: "두더지렁이", tags: { meat: 0.5 }, category: "meats" },
   { id: "trunk_summer", name: "Koalefant Trunk", nameKo: "코알라판트 코", tags: { meat: 1 }, category: "meats" },
   { id: "trunk_winter", name: "Winter Koalefant Trunk", nameKo: "겨울 코알라판트 코", tags: { meat: 1 }, category: "meats" },
   { id: "trunk_cooked", name: "Cooked Koalefant Trunk", nameKo: "구운 코알라판트 코", tags: { meat: 1 }, category: "meats" },
@@ -80,15 +80,15 @@ const baseIngredients: CookpotIngredient[] = [
 
   // === Fish ===
   { id: "eel", name: "Eel", nameKo: "장어", tags: { fish: 1, meat: 0.5 }, category: "fish", cookable: true },
-  { id: "fish", name: "Fish", nameKo: "물고기", tags: { fish: 1, meat: 1 }, category: "fish", cookable: true },
-  { id: "pondeel", name: "Pond Eel", nameKo: "연못 장어", tags: { fish: 1, meat: 0.5 }, category: "fish", cookable: true },
-  { id: "pondfish", name: "Pond Fish", nameKo: "연못 물고기", tags: { fish: 0.5, meat: 0.5 }, category: "fish" },
-  { id: "fishmeat_small", name: "Small Fish Morsel", nameKo: "작은 생선살", tags: { fish: 0.5, meat: 0.5 }, category: "fish", cookable: true, dryable: true },
-  { id: "fishmeat", name: "Fish Morsel", nameKo: "생선 조각", tags: { fish: 1, meat: 1 }, category: "fish", cookable: true, dryable: true },
+  { id: "fish", name: "Fish", nameKo: "생선", tags: { fish: 1, meat: 1 }, category: "fish", cookable: true },
+  { id: "pondeel", name: "Pond Eel", nameKo: "산장어", tags: { fish: 1, meat: 0.5 }, category: "fish", cookable: true },
+  { id: "pondfish", name: "Pond Fish", nameKo: "민물고기", tags: { fish: 0.5, meat: 0.5 }, category: "fish" },
+  { id: "fishmeat_small", name: "Small Fish Morsel", nameKo: "생선 조각", tags: { fish: 0.5, meat: 0.5 }, category: "fish", cookable: true, dryable: true },
+  { id: "fishmeat", name: "Fish Morsel", nameKo: "날생선", tags: { fish: 1, meat: 1 }, category: "fish", cookable: true, dryable: true },
   { id: "wobster_sheller_land", name: "Wobster", nameKo: "왑스터", tags: { fish: 1, meat: 1 }, category: "fish" },
   { id: "barnacle", name: "Barnacle", nameKo: "거북순", tags: { fish: 0.25, meat: 0.25 }, category: "fish" },
   { id: "barnacle_cooked", name: "Cooked Barnacle", nameKo: "구운 거북순", tags: { fish: 0.25, meat: 0.25 }, category: "fish" },
-  { id: "oceanfish_small_5_inv", name: "Corn Cod", nameKo: "옥수수 대구", tags: { fish: 0.5, meat: 0.5 }, category: "fish" },
+  { id: "oceanfish_small_5_inv", name: "Corn Cod", nameKo: "강냉이복어", tags: { fish: 0.5, meat: 0.5 }, category: "fish" },
   { id: "oceanfish_medium_5_inv", name: "Corn Cod", nameKo: "옥수수대구", tags: { fish: 1, meat: 1 }, category: "fish" },
 
   // === Eggs ===
@@ -129,6 +129,38 @@ const baseIngredients: CookpotIngredient[] = [
 // Auto-generate cooked / dried variants
 // ---------------------------------------------------------------------------
 
+// Korean name overrides for auto-generated cooked/dried variants (from ko.po)
+const cookedNameKoMap: Record<string, string> = {
+  pomegranate_cooked: "가른 석류",
+  dragonfruit_cooked: "손질한 용과",
+  fig_cooked: "익힌 무화과",
+  durian_cooked: "냄새 독한 두리안",
+  ancientfruit_nightvision_cooked: "요리된 밤베리",
+  corn_cooked: "팝콘",
+  pumpkin_cooked: "익힌 호박",
+  eggplant_cooked: "튀겨 조린 가지",
+  rock_avocado_fruit_ripe_cooked: "구운 아보카돌",
+  froglegs_cooked: "개구리 뒷다리 구이",
+  drumstick_cooked: "닭다리 구이",
+  batwing_cooked: "바틸리스크 날개 구이",
+  batnose_cooked: "바싹 구운 콧구멍",
+  bird_egg_cooked: "알 부침",
+  tallbirdegg_cooked: "키다리새 알 부침",
+  fish_cooked: "생선 구이",
+  fishmeat_cooked: "생선 스테이크",
+  fishmeat_small_cooked: "구운 생선 조각",
+  kelp_cooked: "익힌 다시마 잎",
+  mandrake_cooked: "맨드레이크 구이",
+};
+
+const driedNameKoMap: Record<string, string> = {
+  meat_dried: "육포",
+  monstermeat_dried: "괴물 육포",
+  smallmeat_dried: "작은 육포",
+  fishmeat_dried: "어포",
+  fishmeat_small_dried: "작은 어포",
+};
+
 // Images that do NOT exist for cooked variants — use base image
 const missingCookedImages = new Set([
   "tomato_cooked", "pondeel_cooked", "cutlichen_cooked",
@@ -151,7 +183,7 @@ function generateVariants(bases: CookpotIngredient[]): CookpotIngredient[] {
       variants.push({
         id: cookedId,
         name: `Cooked ${base.name}`,
-        nameKo: base.nameKo ? `구운 ${base.nameKo}` : undefined,
+        nameKo: cookedNameKoMap[cookedId] ?? (base.nameKo ? `구운 ${base.nameKo}` : undefined),
         tags: { ...base.tags, precook: 1 },
         category: base.category,
         image: cookedImg,
@@ -159,10 +191,11 @@ function generateVariants(bases: CookpotIngredient[]): CookpotIngredient[] {
     }
 
     if (base.dryable) {
+      const driedId = `${base.id}_dried`;
       variants.push({
-        id: `${base.id}_dried`,
+        id: driedId,
         name: `Dried ${base.name}`,
-        nameKo: base.nameKo ? `말린 ${base.nameKo}` : undefined,
+        nameKo: driedNameKoMap[driedId] ?? (base.nameKo ? `말린 ${base.nameKo}` : undefined),
         tags: { ...base.tags, dried: 1 },
         category: base.category,
       });

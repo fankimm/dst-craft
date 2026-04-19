@@ -4213,11 +4213,11 @@
   desc_es_MX: Estatua de mármol del Varg Poseído. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 233.chesspiece_wormboss_builder
   en: Great Depths Worm Figure
-  ko: 거대 땅굴벌레 조각상
+  ko: 거대 동굴지렁이 조각상
   app: O
   source: Builder item. Spawns a Great Depths Worm chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
   desc_en: Marble statue of the Great Depths Worm. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
-  desc_ko: 거대 땅굴벌레의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ko: 거대 동굴지렁이의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
   desc_ja: グレートデプスワームの大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
   desc_zh_CN: 深渊巨虫的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
   desc_zh_TW: 深淵巨蟲的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
@@ -4303,11 +4303,11 @@
   desc_es_MX: Boceto para el torno de alfarero para fabricar una figura de Caballo Dorado.
 238.chesspiece_yots_builder
   en: Gilded Depths Worm Figure
-  ko: 금박 땅굴벌레 조각상
+  ko: 금박 동굴지렁이 조각상
   app: O
   source: Builder item. Spawns a Gilded Depths Worm chesspiece (marble) on placement. Heavy item, gym weight 3, walk speed mult 0.15. Hammerable in 1 hit.
   desc_en: Marble statue of a Gilded Depths Worm. Heavy item (walk speed ×0.15, gym weight 3). Hammerable in 1 hit.
-  desc_ko: 금박 땅굴벌레의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
+  desc_ko: 금박 동굴지렁이의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 3). 망치 1회로 파괴 가능.
   desc_ja: 金箔デプスワームの大理石像。重量アイテム（移動速度×0.15、ジム重量3）。ハンマー1回で破壊可能。
   desc_zh_CN: 镀金深渊虫的大理石雕像。重型物品（移速×0.15，锻炼重量3）。1次锤击可破坏。
   desc_zh_TW: 鍍金深淵蟲的大理石雕像。重型物品（移速×0.15，鍛鍊重量3）。1次錘擊可破壞。
@@ -4321,11 +4321,11 @@
   desc_es_MX: Estatua de mármol del Gusano de Profundidades Dorado. Objeto pesado (velocidad ×0.15, peso gym 3). Destruible en 1 martillazo.
 239.chesspiece_yots_sketch
   en: Gilded Depths Worm Figure Sketch
-  ko: 금박 땅굴벌레 조각상 도면
+  ko: 금박 동굴지렁이 조각상 도면
   app: O
   source: Sketch item. Used at Potter's Wheel to craft a Gilded Depths Worm chesspiece builder. No special stats.
   desc_en: Sketch used at the Potter's Wheel to craft a Gilded Depths Worm Figure.
-  desc_ko: 도예 물레에서 금박 땅굴벌레 조각상을 제작하는 데 사용하는 도면.
+  desc_ko: 도예 물레에서 금박 동굴지렁이 조각상을 제작하는 데 사용하는 도면.
   desc_ja: ろくろで金箔デプスワームの彫像を作るためのスケッチ。
   desc_zh_CN: 在陶轮上制作镀金深渊虫雕像的草图。
   desc_zh_TW: 在陶輪上製作鍍金深淵蟲雕像的草圖。
@@ -18881,7 +18881,7 @@
   desc_es_MX: Kit desplegable. Coloca una estructura de Poste Jubilinterna.
 1028.yots_snakeshrine
   en: Depths Worm Shrine
-  ko: 땅굴벌레 사당
+  ko: 동굴지렁이 사당
   app: O
   source: Year of the Snake event shrine; placeable event structure
   desc_en: Year of the Snake event shrine. Placeable event decoration.
