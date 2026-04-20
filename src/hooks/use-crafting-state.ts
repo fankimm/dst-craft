@@ -150,9 +150,12 @@ export function useCraftingState() {
 
   const navigateToItem = useCallback((item: CraftingItem) => {
     const category = item.category[0] || "tools";
-    const url = `${window.location.pathname}?cat=${category}&item=${item.id}`;
+    const charId = item.characterOnly ?? null;
+    const url = charId
+      ? `${window.location.pathname}?cat=${category}&char=${charId}&item=${item.id}`
+      : `${window.location.pathname}?cat=${category}&item=${item.id}`;
     window.history.pushState({ _appNav: true, _jump: true }, "", url);
-    setUrlState({ cat: category, item: item.id, char: null });
+    setUrlState({ cat: category, item: item.id, char: charId });
   }, []);
 
   const goBack = useCallback(() => {
