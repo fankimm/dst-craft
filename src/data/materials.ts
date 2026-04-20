@@ -236,6 +236,7 @@ export const materials: Material[] = [
   { id: "wintersfeastfuel", name: "Holiday Cheer", image: "wintersfeastfuel.png" },
   { id: "wormlight", name: "Glow Berry", image: "wormlight.png" },
   { id: "wortox_soul", name: "Soul", image: "wortox_soul.png" },
+  { id: "wx78module_light", name: "Illumination Circuit", image: "wx78module_light.png" },
   { id: "wx78module_maxhealth", name: "Hardy Circuit", image: "wx78module_maxhealth.png" },
   { id: "wx78module_maxhunger1", name: "Gastrogain Circuit", image: "wx78module_maxhunger1.png" },
   { id: "wx78module_maxsanity", name: "Super-Processing Circuit", image: "wx78module_maxsanity.png" },

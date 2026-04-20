@@ -1137,6 +1137,7 @@ export const ko: LocaleData = {
     "wintersfeastfuel": { name: "명절의 기운" },
     "wormlight": { name: "발광 베리" },
     "wortox_soul": { name: "영혼" },
+    "wx78module_light": { name: "발광 회로" },
     "wx78module_maxhealth": { name: "체력 증진 회로" },
     "wx78module_maxhunger1": { name: "소화기 확장 회로" },
     "wx78module_maxsanity": { name: "초연산 회로" },
