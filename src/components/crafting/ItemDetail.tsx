@@ -5,7 +5,7 @@ import { TagChip } from "@/components/ui/TagChip";
 import { MaterialSlot } from "./MaterialSlot";
 import { ItemSlot } from "@/components/ui/ItemSlot";
 import { getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { useFavorites } from "@/hooks/use-favorites";
 import { t, itemName, itemAltName, itemDesc, categoryName, characterName, stationName, skillName } from "@/lib/i18n";
@@ -35,9 +35,17 @@ interface ItemDetailProps {
 
 export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick, onBlueprintClick, onSkillClick }: ItemDetailProps) {
   const [imgError, setImgError] = useState(false);
+  const [copied, setCopied] = useState(false);
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { getClicks } = usePopularity();
+
+  const copyPrefabId = useCallback((id: string) => {
+    navigator.clipboard.writeText(id).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  }, []);
   const clicks = item ? getClicks(item.id) : 0;
 
   if (!item) {
@@ -93,6 +101,17 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             </p>
           )}
           <ViewCount clicks={clicks} />
+          <button
+            onClick={() => copyPrefabId(item.id)}
+            className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors font-mono"
+          >
+            <span className="opacity-60">$</span> {item.id}
+            {copied && (
+              <span className="text-green-500 font-sans text-[10px]">
+                {resolvedLocale === "ko" ? "복사됨" : "copied"}
+              </span>
+            )}
+          </button>
         </div>
 
         <p className="text-xs text-dim leading-relaxed line-clamp-2">
