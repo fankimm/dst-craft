@@ -3,71 +3,59 @@
 import { useState, useMemo } from "react";
 import { allItems } from "@/data/items";
 import { allLocales } from "@/data/locales";
-import type { ItemStatsV3 } from "@/data/item-stats-v3";
-import { itemStatsV3 } from "@/data/item-stats-v3";
+import type { ScrapbookStats } from "@/data/scrapbook-stats";
+import { scrapbookStats } from "@/data/scrapbook-stats";
 import { categories } from "@/data/categories";
 import { BackToHome } from "@/components/ui/BackToHome";
 import Image from "next/image";
 
 const ko = allLocales.ko;
 
-function statLabel(key: keyof ItemStatsV3): string {
+function statLabel(key: keyof ScrapbookStats): string {
   const map: Record<string, string> = {
     damage: "공격력",
-    uses: "내구도(횟수)",
-    armor_hp: "방어력(HP)",
-    absorption: "흡수율",
-    speed_mult: "이동속도",
+    weapondamage: "무기 공격력",
+    planardamage: "차원피해",
+    finiteuses: "내구도(횟수)",
+    armor: "방어력",
+    absorb_percent: "흡수율",
+    armor_planardefense: "차원방어",
     dapperness: "정신력/분",
-    insulation: "보온(겨울)",
-    summer_insulation: "방열(여름)",
-    waterproof: "방수율",
-    fuel_time: "연료시간(초)",
-    perish_time: "부패시간(초)",
-    planar_damage: "차원피해",
-    planar_def: "차원방어",
-    slots: "슬롯",
+    waterproofer: "방수율",
+    insulator: "보온/내열",
+    perishable: "부패시간(초)",
+    stacksize: "겹침 수",
   };
   return map[key] ?? key;
 }
 
-function formatStat(key: string, value: number | string): string {
+function formatStat(key: string, value: number | string | boolean): string {
+  if (typeof value === "boolean") return value ? "O" : "X";
   if (typeof value === "string") return value;
-  if (key === "absorption" || key === "waterproof")
+  if (key === "absorb_percent" || key === "waterproofer")
     return `${Math.round(value * 100)}%`;
-  if (key === "speed_mult") {
-    if (value > 1) return `+${Math.round((value - 1) * 100)}%`;
-    if (value < 1) return `${Math.round((value - 1) * 100)}%`;
-    return "0%";
-  }
   if (key === "dapperness") {
-    const perMin = Math.round(value * 60 * 10) / 10;
+    const perMin = Math.round(value * 60 * 100) / 100;
     return `${perMin > 0 ? "+" : ""}${perMin}/분`;
   }
-  if (key === "fuel_time" || key === "perish_time") {
-    const mins = Math.round(value / 60);
-    return mins >= 60 ? `${(mins / 60).toFixed(1)}시간` : `${mins}분`;
+  if (key === "perishable") {
+    const days = (value / (60 * 8)).toFixed(1);
+    return `${days}일`;
   }
-  if (key === "damage") return `${value}`;
-  return String(value);
+  return String(Math.floor(value));
 }
 
 function statColor(key: string): string {
   const map: Record<string, string> = {
-    damage: "text-red-400",
-    armor_hp: "text-yellow-400",
-    absorption: "text-yellow-400",
-    uses: "text-blue-400",
-    speed_mult: "text-green-400",
+    damage: "text-red-400", weapondamage: "text-red-400",
+    armor: "text-yellow-400", absorb_percent: "text-yellow-400",
+    finiteuses: "text-blue-400",
     dapperness: "text-purple-400",
-    insulation: "text-cyan-400",
-    summer_insulation: "text-orange-400",
-    waterproof: "text-sky-400",
-    fuel_time: "text-amber-400",
-    perish_time: "text-rose-400",
-    planar_damage: "text-violet-400",
-    planar_def: "text-violet-400",
-    slots: "text-teal-400",
+    insulator: "text-cyan-400",
+    waterproofer: "text-sky-400",
+    perishable: "text-rose-400",
+    planardamage: "text-violet-400", armor_planardefense: "text-violet-400",
+    stacksize: "text-teal-400",
   };
   return map[key] ?? "text-muted-foreground";
 }
@@ -75,38 +63,28 @@ function statColor(key: string): string {
 type FilterMode = "all" | "has-stats" | "no-stats";
 type GroupMode = "category" | "station" | "flat";
 
-const STAT_DISPLAY_ORDER: (keyof ItemStatsV3)[] = [
-  "damage",
-  "uses",
-  "armor_hp",
-  "absorption",
-  "planar_damage",
-  "planar_def",
-  "speed_mult",
-  "dapperness",
-  "insulation",
-  "summer_insulation",
-  "waterproof",
-  "fuel_time",
-  "perish_time",
-  "slots",
+const STAT_DISPLAY_ORDER: (keyof ScrapbookStats)[] = [
+  "damage", "weapondamage", "planardamage",
+  "finiteuses",
+  "armor", "absorb_percent", "armor_planardefense",
+  "dapperness", "waterproofer", "insulator",
+  "perishable", "stacksize",
 ];
 
 export default function ItemStatsPage() {
   const [filter, setFilter] = useState<FilterMode>("all");
   const [group, setGroup] = useState<GroupMode>("category");
   const [search, setSearch] = useState("");
-  const itemStats = itemStatsV3;
 
   const totalWithStats = useMemo(
-    () => allItems.filter((i) => itemStats[i.id]).length,
-    [itemStats],
+    () => allItems.filter((i) => scrapbookStats[i.id]).length,
+    [],
   );
 
   const filtered = useMemo(() => {
     let items = [...allItems];
-    if (filter === "has-stats") items = items.filter((i) => itemStats[i.id]);
-    if (filter === "no-stats") items = items.filter((i) => !itemStats[i.id]);
+    if (filter === "has-stats") items = items.filter((i) => scrapbookStats[i.id]);
+    if (filter === "no-stats") items = items.filter((i) => !scrapbookStats[i.id]);
     if (search) {
       const q = search.toLowerCase();
       items = items.filter((i) => {
@@ -119,7 +97,7 @@ export default function ItemStatsPage() {
       });
     }
     return items;
-  }, [filter, search, itemStats]);
+  }, [filter, search]);
 
   const grouped = useMemo(() => {
     if (group === "flat") return { "전체": filtered };
@@ -145,11 +123,11 @@ export default function ItemStatsPage() {
       <div className="mx-auto max-w-6xl p-4 sm:p-6 space-y-4">
         <div>
           <h1 className="text-lg font-bold">
-            제작 아이템 스탯 리뷰
+            제작 아이템 스탯 리뷰 (Scrapbook)
           </h1>
           <p className="text-xs text-muted-foreground mt-1">
             전체 {allItems.length}개 중 {totalWithStats}개 스탯 매칭 |{" "}
-            게임 소스(tuning.lua + prefabs) 자동 파싱
+            scrapbookdata.lua 자동 파싱
           </p>
         </div>
 
@@ -223,7 +201,7 @@ export default function ItemStatsPage() {
               </h2>
               <div className="space-y-0.5">
                 {items.map((item) => {
-                  const stats = itemStats[item.id];
+                  const stats = scrapbookStats[item.id];
                   const koName = ko?.items[item.id]?.name;
                   return (
                     <div
@@ -234,7 +212,6 @@ export default function ItemStatsPage() {
                           : "bg-surface/20 opacity-50"
                       }`}
                     >
-                      {/* Icon */}
                       <div className="size-8 rounded border border-border bg-surface shrink-0 flex items-center justify-center overflow-hidden">
                         <Image
                           src={`/images/game-items/${item.image}`}
@@ -246,7 +223,6 @@ export default function ItemStatsPage() {
                         />
                       </div>
 
-                      {/* Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-baseline gap-2">
                           <span className="font-medium truncate">
@@ -271,6 +247,11 @@ export default function ItemStatsPage() {
                                 </span>
                               </span>
                             ))}
+                            {stats.specialinfo_ko && (
+                              <span className="text-amber-500 truncate max-w-xs">
+                                {stats.specialinfo_ko.split("\n")[0]}
+                              </span>
+                            )}
                           </div>
                         ) : (
                           <span className="text-muted-foreground">

@@ -14,7 +14,7 @@ import { assetPath } from "@/lib/asset-path";
 import { usePopularity } from "@/hooks/use-popularity";
 import { ViewCount } from "@/components/ui/ViewCount";
 import { ShareButton } from "@/components/ui/ShareButton";
-import { itemStatsV3 } from "@/data/item-stats-v3";
+import { scrapbookStats } from "@/data/scrapbook-stats";
 import { ItemStatsPanel } from "./ItemStatsPanel";
 
 // Higher-tier stations that can also craft items of the base station
@@ -170,10 +170,10 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
         </div>
 
         {/* Stats */}
-        {itemStatsV3[item.id] && (
+        {scrapbookStats[item.id] && (
           <ItemStatsPanel
             itemId={item.id}
-            stats={itemStatsV3[item.id]}
+            stats={scrapbookStats[item.id]}
             locale={resolvedLocale}
           />
         )}

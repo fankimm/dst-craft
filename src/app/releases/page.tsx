@@ -15,6 +15,30 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.13.0",
+    date: "2026-04-20",
+    dev: [
+      "feat: 아이템 스탯 시스템을 수작업 item-stats-v3 → 인게임 scrapbookdata.lua 기반으로 전면 교체",
+      "tooling: scripts/convert-scrapbook.py — scrapbookdata.lua + strings.lua + ko.po 파싱 → scrapbook-stats.ts 자동 생성 (1541개 엔트리)",
+      "ui: ItemStatsPanel 재작성 — ScrapbookStats 기반, 인게임 렌더 순서, specialinfo 한/영 텍스트 인라인 표시",
+      "refactor: item-stats-v3.ts 삭제 (528줄), ItemDetail/dev 페이지 모두 scrapbook 기반으로 전환",
+    ],
+    changes: {
+      ko: [
+        "아이템 상세 스탯을 인게임 스크랩북 데이터로 교체 — 수치가 게임과 100% 일치",
+        "번역 품질 대폭 개선 — 인게임 공식 한국어 번역 적용 (커뮤니티 한글모드 기반)",
+        "커버리지 확대 — 기존 433개 → 817개 아이템 스탯 표시",
+        "특수 효과 설명이 인게임과 동일하게 표시 (799개 아이템)",
+      ],
+      en: [
+        "Item stats now sourced from in-game scrapbook data — 100% accurate values",
+        "Translation quality improved — using official in-game Korean translations",
+        "Coverage expanded from 433 → 817 items with stats",
+        "Special effect descriptions now match in-game text (799 items)",
+      ],
+    },
+  },
+  {
     version: "0.12.2",
     date: "2026-04-16",
     dev: [

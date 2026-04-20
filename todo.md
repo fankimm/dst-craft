@@ -49,14 +49,23 @@
 
 ---
 
+## 스크랩북 데이터 마이그레이션 [~] (2026-04-20)
+> 설계: `docs/scrapbook-migration.md`
+> 수작업 item-stats-v3 → 인게임 scrapbookdata.lua 기반으로 교체
+
+- [x] Phase 1: 파이프라인 — `scripts/convert-scrapbook.py` 작성 + `scrapbook-stats.ts` 생성 (1541개 엔트리, specialinfo ko/en 799개)
+- [x] Phase 2: 타입 + 데이터 통합 — ItemDetail에서 scrapbookStats 직접 조회, 스킬트리 역참조는 v3에 3개뿐이라 보류
+- [x] Phase 3: UI 재작성 — ItemStatsPanel을 ScrapbookStats 기반으로 재작성 (인게임 렌더 순서), Beta 뱃지 제거
+- [~] Phase 4: 정리 + 배포 — v3 삭제 (현재 dead code), 브라우저 확인 후 삭제, 테스트, 릴리즈
+
+---
+
 ## 대기 (다음 작업 후보)
 
 - [x] 누락된 보스 추가 (2026-04-14) — 8종
 - [x] 건조대/구이 등 비요리솥 음식 정보 (2026-04-14) — 구이 31종 + 건조 6종
 - [x] 요리솥 시뮬 — 최근 시도한 재료 / 선호 재료 기능 (2026-04-14)
-- [ ] v3 스탯 — battlesong/book 아이템 데이터 추가 (현재 v3에 미포함)
-- [ ] v3 스탯 — 실제 배포 후 유저 피드백 반영
-- [ ] SEO — v3 스탯 데이터를 SSG 페이지(`/item/[slug]`)에도 반영
+- [ ] SEO — 스탯 데이터를 SSG 페이지(`/item/[slug]`)에도 반영
 
 ---
 
