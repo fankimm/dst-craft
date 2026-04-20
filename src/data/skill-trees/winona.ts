@@ -3,10 +3,10 @@ import type { CharacterSkillTree } from "./types";
 export const winona: CharacterSkillTree = {
   characterId: "winona",
   groups: [
-    { id: "wagstaff", color: "#06b6d4" },
-    { id: "charlie", color: "#8b5cf6" },
-    { id: "midshelf", color: "#f59e0b" },
     { id: "lowshelf", color: "#10b981" },
+    { id: "midshelf", color: "#f59e0b" },
+    { id: "charlie", color: "#8b5cf6" },
+    { id: "wagstaff", color: "#06b6d4" },
   ],
   nodes: [
     // ── Low Shelf ──
