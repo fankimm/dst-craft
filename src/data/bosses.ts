@@ -62,6 +62,9 @@ export const bosses: Boss[] = [
     category: "seasonal",
     image: "antlion.png",
     loot: [
+      { item: "townportaltalisman", chance: 1 },
+      { item: "sandblock", chance: 1, count: 2 },
+      { item: "antliontrinket", chance: 1 },
       { item: "townportal_blueprint", chance: 1, blueprint: true },
       { item: "antlionhat_blueprint", chance: 1, blueprint: true },
       { item: "chesspiece_antlion_sketch", chance: 1 },
@@ -81,6 +84,12 @@ export const bosses: Boss[] = [
       { item: "meat", chance: 1, count: 6 },
       { item: "goldnugget", chance: 1, count: 4 },
       { item: "goldnugget", chance: 0.5, count: 4 },
+      { item: "bluegem", chance: 0.25 },
+      { item: "redgem", chance: 0.25 },
+      { item: "purplegem", chance: 0.15 },
+      { item: "orangegem", chance: 0.15 },
+      { item: "yellowgem", chance: 0.15 },
+      { item: "greengem", chance: 0.15 },
     ],
   },
   {
@@ -166,6 +175,10 @@ export const bosses: Boss[] = [
     category: "raid",
     image: "daywalker.png",
     loot: [
+      { item: "horrorfuel", chance: 1, count: 4 },
+      { item: "horrorfuel", chance: 0.5, count: 2 },
+      { item: "nightmarefuel", chance: 1, count: 4 },
+      { item: "nightmarefuel", chance: 0.5, count: 2 },
       { item: "armordreadstone_blueprint", chance: 1, blueprint: true },
       { item: "dreadstonehat_blueprint", chance: 1, blueprint: true },
       { item: "wall_dreadstone_item_blueprint", chance: 1, blueprint: true },
@@ -453,7 +466,9 @@ export const bosses: Boss[] = [
 
 /** Korean names for loot items (from ko.po) */
 export const lootNameKo: Record<string, string> = {
-  meat: "고기", monstermeat: "괴물고기", charcoal: "숯", goldnugget: "금",
+  meat: "고기", monstermeat: "괴물고기", charcoal: "숯", goldnugget: "금", horrorfuel: "순수한 공포",
+  sandblock: "모래성 블록", antliontrinket: "사막의 장신구", townportaltalisman: "게으른 도망자 부적",
+  redgem: "빨간 보석", orangegem: "주황 보석", purplegem: "보라 보석",
   silk: "거미줄", bluegem: "푸른 보석", yellowgem: "노란 보석",
   nightmarefuel: "악몽 연료", honey: "꿀", honeycomb: "벌집", stinger: "벌침",
   deerclops_eyeball: "외눈사슴의 눈알", drumstick: "닭다리",
