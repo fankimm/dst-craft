@@ -271,10 +271,10 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
           {/* Home icon */}
           {selectedChar ? (
             <button onClick={handleGoHome} className="shrink-0 rounded-sm hover:opacity-70 transition-opacity">
-              <img src="/images/skill-icons/wilson_alchemy_1.png" alt="" className="size-5 rounded-sm" />
+              <img src="/images/ui/skill_eye.png" alt="" className="size-5 rounded-sm" />
             </button>
           ) : (
-            <img src="/images/skill-icons/wilson_alchemy_1.png" alt="" className="size-5 rounded-sm" />
+            <img src="/images/ui/skill_eye.png" alt="" className="size-5 rounded-sm" />
           )}
           <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
           {selectedChar ? (
