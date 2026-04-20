@@ -84,4 +84,10 @@ export const skillNames: Record<string, { en: string; ko: string }> = {
   wurt_mosquito_craft_1: { en: "Mosquito Incognito", ko: "모기는 모르지" },
   wurt_mosquito_craft_2: { en: "Itchcraft I", ko: "모기공예 I" },
   wurt_shadow_allegiance_2: { en: "Terra Corruption", ko: "대지 오염" },
+  // WX-78
+  wx78_extrabody_1: { en: "Cold Standby I", ko: "콜드 스탠바이 I" },
+  wx78_scoutdrone_1: { en: "Field Survey I", ko: "현장 조사 I" },
+  wx78_deliverydrone_2: { en: "Transport II", ko: "운송기 II" },
+  wx78_zapdrone_1: { en: "Telemechanical Enthusiast I", ko: "원격 조종 애호가 I" },
+  wx78_allegiance_lunar: { en: "Lunar Vessel", ko: "월광의 그릇" },
 };
