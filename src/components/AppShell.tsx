@@ -183,30 +183,17 @@ export function AppShell() {
   }, []);
 
   // Lock body scroll — AppShell manages its own scroll internally
-  // Body is made 1px taller so iOS status-bar tap fires a window scroll event
   useEffect(() => {
     document.documentElement.style.overflow = "hidden";
     document.documentElement.style.height = "100dvh";
-    document.body.style.overflow = "auto";
-    document.body.style.height = "calc(100dvh + 1px)";
+    document.body.style.overflow = "hidden";
+    document.body.style.height = "100dvh";
     return () => {
       document.documentElement.style.overflow = "";
       document.documentElement.style.height = "";
       document.body.style.overflow = "";
       document.body.style.height = "";
     };
-  }, []);
-
-  // iOS status-bar tap → scroll active container to top
-  useEffect(() => {
-    const onScroll = () => {
-      if (window.scrollY === 0) {
-        const el = document.querySelector<HTMLElement>("[data-scroll-container]");
-        if (el) el.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
