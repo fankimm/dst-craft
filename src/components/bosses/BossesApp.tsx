@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
+import { scrapbookStats } from "@/data/scrapbook-stats";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
 import { useSettings } from "@/hooks/use-settings";
 import { t, type Locale, type TranslationKey } from "@/lib/i18n";
@@ -532,6 +533,77 @@ function BossCard({
 // Boss detail (bottom sheet content)
 // ---------------------------------------------------------------------------
 
+function formatSanityAura(perSec: number, locale: Locale): string {
+  const perMin = Math.round(perSec * 60);
+  return `${perMin}/${locale === "ko" ? "분" : "min"}`;
+}
+
+const BOSS_SCRAPBOOK_MAP: Record<string, string> = {
+  shadow_chess: "shadow_rook",
+  alterguardian_phase3: "alterguardian_phase1",
+};
+
+function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale }) {
+  const lookupId = BOSS_SCRAPBOOK_MAP[bossId] ?? bossId;
+  const stats = scrapbookStats[lookupId];
+  if (!stats) return null;
+
+  const health = stats.health;
+  const damage = stats.damage;
+  const planar = stats.planardamage;
+  const sanity = stats.sanityaura;
+
+  if (!health && !damage) return null;
+
+  const items: { icon: string; label: string; value: string; sub?: string; color: string }[] = [];
+
+  if (health != null) {
+    const val = typeof health === "string" ? health : health.toLocaleString();
+    items.push({
+      icon: "/images/ui/health.png",
+      label: locale === "ko" ? "체력" : "Health",
+      value: val,
+      color: "text-red-500",
+    });
+  }
+
+  if (damage != null) {
+    const val = typeof damage === "string" ? damage : String(Math.floor(damage));
+    const sub = planar ? `+${Math.floor(planar)} ${locale === "ko" ? "차원" : "planar"}` : undefined;
+    items.push({
+      icon: "/images/game-items/spear.png",
+      label: locale === "ko" ? "공격력" : "Damage",
+      value: val,
+      sub,
+      color: "text-orange-500",
+    });
+  }
+
+  if (sanity != null && sanity !== 0) {
+    items.push({
+      icon: "/images/ui/sanity.png",
+      label: locale === "ko" ? "정신력" : "Sanity",
+      value: formatSanityAura(sanity, locale),
+      color: "text-purple-400",
+    });
+  }
+
+  return (
+    <div className="flex flex-wrap gap-x-4 gap-y-1.5 px-1">
+      {items.map((item) => (
+        <div key={item.label} className="flex items-center gap-1.5 text-xs">
+          <img src={assetPath(item.icon)} alt="" className="size-4 object-contain" />
+          <span className="text-muted-foreground">{item.label}</span>
+          <span className={cn("font-semibold tabular-nums", item.color)}>
+            {item.value}
+            {item.sub && <span className="font-normal text-muted-foreground ml-1">{item.sub}</span>}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function BossDetail({
   boss,
   locale,
@@ -588,6 +660,9 @@ function BossDetail({
           </div>
         </div>
       </div>
+
+      {/* Combat Stats */}
+      <BossCombatStats bossId={boss.id} locale={locale} />
 
       {/* Loot */}
       <div className="space-y-2">

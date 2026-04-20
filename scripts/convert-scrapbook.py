@@ -190,6 +190,7 @@ NUMERIC_FIELDS = [
     "weapondamage", "weaponrange",
     "sanityaura",
     "hungervalue", "healthvalue", "sanityvalue",
+    "health",
 ]
 
 STRING_FIELDS = [
@@ -214,9 +215,11 @@ def extract_stats(entry: dict) -> dict:
         if f in entry and isinstance(entry[f], (int, float)):
             stats[f] = entry[f]
 
-    # damage can be a string range like "15-40"
+    # damage/health can be a string range like "15-40"
     if "damage" in entry and isinstance(entry["damage"], str):
         stats["damage"] = entry["damage"]
+    if "health" in entry and isinstance(entry["health"], str):
+        stats["health"] = entry["health"]
 
     for f in STRING_FIELDS:
         if f in entry and isinstance(entry[f], str):
@@ -283,6 +286,7 @@ def generate_ts(entries: dict, specialinfo_en: dict, specialinfo_ko: dict) -> st
     lines.append("  // Combat")
     lines.append("  damage?: number | string;")
     lines.append("  planardamage?: number;")
+    lines.append("  health?: number | string;")
     lines.append("  weapondamage?: number | string;")
     lines.append("  weaponrange?: number;")
     lines.append("  finiteuses?: number;")
@@ -356,7 +360,7 @@ def generate_ts(entries: dict, specialinfo_en: dict, specialinfo_ko: dict) -> st
                 props.append(f"{field}: {to_ts_value(stats[field])}")
         # Then numeric/string/bool fields in order
         field_order = [
-            "damage", "planardamage", "weapondamage", "weaponrange", "finiteuses",
+            "damage", "planardamage", "health", "weapondamage", "weaponrange", "finiteuses",
             "armor", "absorb_percent", "armor_planardefense",
             "dapperness", "waterproofer", "insulator", "insulator_type",
             "stacksize", "perishable", "sanityaura",

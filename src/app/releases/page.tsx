@@ -15,6 +15,31 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.14.0",
+    date: "2026-04-21",
+    dev: [
+      "feat: 보스탭 전투 스탯 표시 (체력/공격력/정신력) — scrapbook 데이터 활용",
+      "feat: scrapbook 별칭 56개 추가 (항해/제작대/체스말 등 ID 불일치 해소)",
+      "data: scrapbook에 health 필드 추가 — 보스 포함 giant/creature 체력 표시",
+      "fix: 스킬트리 manualLocks localStorage 영속화 (보스처치/수동잠금 유지)",
+      "style: 콘솔명을 조회수 위로 이동 + 둥근 보더 추가",
+    ],
+    changes: {
+      ko: [
+        "보스탭에 전투 스탯 추가 — 체력/공격력/정신력 표시",
+        "스크랩북 커버리지 확대 — 항해·제작대·포탑 등 12종 추가",
+        "스킬트리 보스처치/수동잠금 상태가 탭 이동 후에도 유지",
+        "아이템 상세 콘솔명 위치 변경 + 둥근 보더",
+      ],
+      en: [
+        "Boss tab now shows combat stats — Health, Damage, Sanity aura",
+        "Expanded scrapbook coverage — 12 new items (boats, forges, turrets)",
+        "Skill tree manual lock state now persists across tab switches",
+        "Console name repositioned above view count with pill border",
+      ],
+    },
+  },
+  {
     version: "0.13.2",
     date: "2026-04-21",
     dev: [
