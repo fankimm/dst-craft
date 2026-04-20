@@ -100,10 +100,9 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               {itemAltName(item, resolvedLocale)}
             </p>
           )}
-          <ViewCount clicks={clicks} />
           <button
             onClick={() => copyPrefabId(item.id)}
-            className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors font-mono"
+            className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors font-mono border border-border rounded-full px-2 py-0.5"
           >
             <span className="opacity-60">$</span> {item.id}
             {copied && (
@@ -112,6 +111,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               </span>
             )}
           </button>
+          <ViewCount clicks={clicks} />
         </div>
 
         <p className="text-xs text-dim leading-relaxed line-clamp-2">
