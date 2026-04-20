@@ -96,6 +96,7 @@ export function SkillNodeCard({
           {lockRequirements?.map((lr) => (
             <LockConditionPill
               key={lr.id}
+              lockId={lr.id}
               lockType={lr.lockType}
               isSatisfied={lr.satisfied}
               locale={locale}

@@ -3,16 +3,18 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { LockCondition } from "@/data/skill-trees/types";
+import { lockTranslations } from "@/data/skill-trees/translations";
 import { t, type Locale, type TranslationKey } from "@/lib/i18n";
 
 interface Props {
+  lockId?: string;
   lockType: LockCondition;
   isSatisfied: boolean;
   locale: Locale;
   onToggle?: () => void;
 }
 
-export function lockLabel(lock: LockCondition, locale: Locale): string {
+function genericLockLabel(lock: LockCondition, locale: Locale): string {
   switch (lock.type) {
     case "skill_count": {
       const template = t(locale, "skills_gate_skill_count" as TranslationKey);
@@ -28,8 +30,8 @@ export function lockLabel(lock: LockCondition, locale: Locale): string {
         : t(locale, "skills_gate_boss_celestialchampion" as TranslationKey);
     case "no_opposing_faction":
       return lock.faction === "lunar"
-        ? t(locale, "skills_gate_no_lunar" as TranslationKey)
-        : t(locale, "skills_gate_no_shadow" as TranslationKey);
+        ? t(locale, "skills_gate_no_shadow" as TranslationKey)
+        : t(locale, "skills_gate_no_lunar" as TranslationKey);
     case "manual":
       return locale === "ko" ? lock.desc_ko : lock.desc_en;
     case "disabled":
@@ -39,14 +41,23 @@ export function lockLabel(lock: LockCondition, locale: Locale): string {
   }
 }
 
+export function lockLabel(lock: LockCondition, locale: Locale, lockId?: string): string {
+  if (lockId) {
+    const tr = lockTranslations[lockId];
+    if (tr) return locale === "ko" ? tr.ko : tr.en;
+  }
+  return genericLockLabel(lock, locale);
+}
+
 interface PillProps {
+  lockId?: string;
   lockType: LockCondition;
   isSatisfied: boolean;
   locale: Locale;
   onToggle?: () => void;
 }
 
-export function LockConditionPill({ lockType, isSatisfied, locale, onToggle }: PillProps) {
+export function LockConditionPill({ lockId, lockType, isSatisfied, locale, onToggle }: PillProps) {
   const isManual = lockType.type === "manual" || lockType.type === "boss_kill";
   return (
     <div
@@ -67,16 +78,16 @@ export function LockConditionPill({ lockType, isSatisfied, locale, onToggle }: P
         height={14}
         className="size-3.5 shrink-0"
       />
-      {lockLabel(lockType, locale)}
+      {lockLabel(lockType, locale, lockId)}
     </div>
   );
 }
 
-export function SkillLockIndicator({ lockType, isSatisfied, locale, onToggle }: Props) {
+export function SkillLockIndicator({ lockId, lockType, isSatisfied, locale, onToggle }: Props) {
   return (
     <div className="flex items-center gap-2 px-3 py-1.5">
       <div className="flex-1 h-px bg-border" />
-      <LockConditionPill lockType={lockType} isSatisfied={isSatisfied} locale={locale} onToggle={onToggle} />
+      <LockConditionPill lockId={lockId} lockType={lockType} isSatisfied={isSatisfied} locale={locale} onToggle={onToggle} />
       <div className="flex-1 h-px bg-border" />
     </div>
   );

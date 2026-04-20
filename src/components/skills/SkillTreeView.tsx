@@ -267,6 +267,7 @@ export function SkillTreeView({
                       <div key={item.node.id} className="flex items-center mt-2" style={{ minHeight: 44 }}>
                         <div className="flex-1 min-w-0">
                           <SkillLockIndicator
+                            lockId={item.node.id}
                             lockType={lockType}
                             isSatisfied={satisfied}
                             locale={locale}
