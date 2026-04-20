@@ -416,14 +416,83 @@ def main():
         if stats:
             stats_map[item_id] = stats
 
-    # Aliases: recipe item ID → scrapbook prefab ID
+    # Aliases: recipe item ID → scrapbook prefab ID (when IDs differ)
     ALIASES = {
+        # WX-78
         "wx78_drone_delivery_item": "wx78_drone_delivery",
         "wx78_drone_zap_remote": "wx78_drone_zap",
+        "wx78_backupbody": "wx78_backupbody_inventory",
+        # Seafaring (_item → deployed)
+        "anchor_item": "anchor",
+        "boat_item": "boat",
+        "boat_grass_item": "boat_grass",
+        "mast_item": "mast",
+        "mast_malbatross_item": "mast_malbatross",
+        "mastupgrade_lamp_item": "mastupgrade_lamp",
+        "mastupgrade_lightningrod_item": "mastupgrade_lightningrod",
+        "steeringwheel_item": "steeringwheel",
+        # Seafaring (_kit → deployed)
+        "boat_cannon_kit": "boat_cannon",
+        "boat_magnet_kit": "boat_magnet",
+        "ocean_trawler_kit": "ocean_trawler",
+        # Forge / special stations (_kit → deployed)
+        "lunar_forge_kit": "lunar_forge",
+        "shadow_forge_kit": "shadow_forge",
+        "deerclopseyeball_sentryward_kit": "deerclopseyeball_sentryward",
+        "gelblob_storage_kit": "gelblob_storage",
+        # Portable items (_item → deployed)
+        "portableblender_item": "portableblender",
+        "portablecookpot_item": "portablecookpot",
+        "portablespicer_item": "portablespicer",
+        "eyeturret_item": "eyeturret",
+        "winona_teleport_pad_item": "winona_teleport_pad",
+        # Chesspieces (_builder → statue)
+        "chesspiece_anchor_builder": "chesspiece_anchor",
+        "chesspiece_antlion_builder": "chesspiece_antlion",
+        "chesspiece_bearger_builder": "chesspiece_bearger",
+        "chesspiece_bearger_mutated_builder": "chesspiece_bearger_mutated",
+        "chesspiece_beequeen_builder": "chesspiece_beequeen",
+        "chesspiece_bishop_builder": "chesspiece_bishop",
+        "chesspiece_butterfly_builder": "chesspiece_butterfly",
+        "chesspiece_crabking_builder": "chesspiece_crabking",
+        "chesspiece_daywalker_builder": "chesspiece_daywalker",
+        "chesspiece_daywalker2_builder": "chesspiece_daywalker2",
+        "chesspiece_deerclops_builder": "chesspiece_deerclops",
+        "chesspiece_deerclops_mutated_builder": "chesspiece_deerclops_mutated",
+        "chesspiece_dragonfly_builder": "chesspiece_dragonfly",
+        "chesspiece_eyeofterror_builder": "chesspiece_eyeofterror",
+        "chesspiece_formal_builder": "chesspiece_formal",
+        "chesspiece_guardianphase3_builder": "chesspiece_guardianphase3",
+        "chesspiece_hornucopia_builder": "chesspiece_hornucopia",
+        "chesspiece_klaus_builder": "chesspiece_klaus",
+        "chesspiece_knight_builder": "chesspiece_knight",
+        "chesspiece_malbatross_builder": "chesspiece_malbatross",
+        "chesspiece_minotaur_builder": "chesspiece_minotaur",
+        "chesspiece_moon_builder": "chesspiece_moon",
+        "chesspiece_moosegoose_builder": "chesspiece_moosegoose",
+        "chesspiece_muse_builder": "chesspiece_muse",
+        "chesspiece_pawn_builder": "chesspiece_pawn",
+        "chesspiece_pipe_builder": "chesspiece_pipe",
+        "chesspiece_rook_builder": "chesspiece_rook",
+        "chesspiece_sharkboi_builder": "chesspiece_sharkboi",
+        "chesspiece_stalker_builder": "chesspiece_stalker",
+        "chesspiece_toadstool_builder": "chesspiece_toadstool",
+        "chesspiece_twinsofterror_builder": "chesspiece_twinsofterror",
+        "chesspiece_wagboss_lunar_builder": "chesspiece_wagboss_lunar",
+        "chesspiece_wagboss_robot_builder": "chesspiece_wagboss_robot",
+        "chesspiece_warg_mutated_builder": "chesspiece_warg_mutated",
+        "chesspiece_wormboss_builder": "chesspiece_wormboss",
     }
     for alias, original in ALIASES.items():
-        if original in stats_map and alias not in stats_map:
+        if original not in stats_map:
+            continue
+        if alias not in stats_map:
             stats_map[alias] = stats_map[original]
+        else:
+            orig_fields = set(stats_map[original].keys()) - {"type", "subcat", "craftingprefab", "deps", "burnable"}
+            alias_fields = set(stats_map[alias].keys()) - {"type", "subcat", "craftingprefab", "deps", "burnable"}
+            if len(orig_fields) > len(alias_fields):
+                stats_map[alias] = stats_map[original]
 
     print(f"Entries with stats: {len(stats_map)}", file=sys.stderr)
 
