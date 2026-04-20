@@ -35,8 +35,32 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   const [selectedChar, setSelectedChar] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<SkillNode | null>(null);
 
-  // Manual lock state (for lockType: "manual" nodes) — must be before useSkillTree
+  // Manual lock state (for lockType: "manual" / "boss_kill" nodes) — must be before useSkillTree
   const [manualLocks, setManualLocks] = useState<Set<string>>(new Set());
+  const skipLockSaveRef = useRef(false);
+
+  // Load manualLocks from localStorage when character changes
+  useEffect(() => {
+    if (!selectedChar) return;
+    skipLockSaveRef.current = true;
+    const key = `dst:skills-locks:${selectedChar}`;
+    try {
+      const saved = localStorage.getItem(key);
+      setManualLocks(saved ? new Set(JSON.parse(saved) as string[]) : new Set());
+    } catch { setManualLocks(new Set()); }
+  }, [selectedChar]);
+
+  // Save manualLocks to localStorage
+  useEffect(() => {
+    if (!selectedChar) return;
+    if (skipLockSaveRef.current) { skipLockSaveRef.current = false; return; }
+    const key = `dst:skills-locks:${selectedChar}`;
+    if (manualLocks.size === 0) {
+      localStorage.removeItem(key);
+    } else {
+      localStorage.setItem(key, JSON.stringify([...manualLocks]));
+    }
+  }, [selectedChar, manualLocks]);
 
   const tree = selectedChar ? skillTrees[selectedChar] ?? null : null;
   const {
@@ -109,7 +133,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
 
   const handleSelectChar = useCallback((charId: string) => {
     setSelectedChar(charId);
-    setManualLocks(new Set());
+    // manualLocks will be loaded from localStorage by the persistence useEffect
     const url = `${window.location.pathname}?tab=skills&char=${charId}`;
     window.history.pushState({ _appNav: true }, "", url);
   }, []);
