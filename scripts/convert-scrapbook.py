@@ -416,6 +416,15 @@ def main():
         if stats:
             stats_map[item_id] = stats
 
+    # Aliases: recipe item ID → scrapbook prefab ID
+    ALIASES = {
+        "wx78_drone_delivery_item": "wx78_drone_delivery",
+        "wx78_drone_zap_remote": "wx78_drone_zap",
+    }
+    for alias, original in ALIASES.items():
+        if original in stats_map and alias not in stats_map:
+            stats_map[alias] = stats_map[original]
+
     print(f"Entries with stats: {len(stats_map)}", file=sys.stderr)
 
     ts_content = generate_ts(stats_map, specialinfo_en, specialinfo_ko)
