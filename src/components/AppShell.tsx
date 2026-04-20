@@ -142,9 +142,9 @@ export function AppShell() {
 
   const handleSkillClick = useCallback((skillId: string) => {
     // Extract character from skill ID (e.g., "wilson_alchemy_1" → "wilson")
-    const charPrefixes = ["wilson", "willow", "wendy", "woodie", "wathgrithr", "wormwood", "winona", "wortox", "wurt", "walter", "wolfgang"];
+    const charPrefixes = ["wilson", "willow", "wendy", "woodie", "wathgrithr", "wormwood", "winona", "wortox", "wurt", "walter", "wolfgang", "wx78"];
     // Map internal IDs to display IDs used in skill tree URL
-    const charMap: Record<string, string> = { wathgrithr: "wigfrid" };
+    const charMap: Record<string, string> = { wathgrithr: "wigfrid", wx78: "wx-78" };
     let charId = "";
     for (const prefix of charPrefixes) {
       if (skillId.startsWith(prefix + "_")) {
