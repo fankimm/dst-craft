@@ -12,6 +12,7 @@ import { winona } from "./winona";
 import { wortox } from "./wortox";
 import { wurt } from "./wurt";
 import { wolfgang } from "./wolfgang";
+import { wx78 } from "./wx-78";
 
 export const CHARACTERS_WITH_SKILLS: readonly string[] = [
   "wilson",
@@ -25,6 +26,7 @@ export const CHARACTERS_WITH_SKILLS: readonly string[] = [
   "wurt",
   "walter",
   "wolfgang",
+  "wx-78",
 ];
 
 export const skillTrees: Record<string, CharacterSkillTree> = {
@@ -39,4 +41,5 @@ export const skillTrees: Record<string, CharacterSkillTree> = {
   wurt,
   walter,
   wolfgang,
+  "wx-78": wx78,
 };

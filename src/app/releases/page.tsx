@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.13.1",
+    date: "2026-04-21",
+    dev: [
+      "feat: WX-78 스킬트리 데이터 추가 (4그룹, 27노드)",
+      "asset: WX-78 스킬 아이콘 24개 위키에서 다운로드",
+      "i18n: WX-78 스킬 한글/영문 번역 추가 (ko.po 기반)",
+      "tooling: verify-skill-trees.py에 lua GROUPS 변수 해석 + connects_diff suppression 추가",
+    ],
+    changes: {
+      ko: [
+        "WX-78 스킬트리 시뮬레이터 추가 — 회로·동체·드론·��화 4개 트리",
+      ],
+      en: [
+        "Added WX-78 skill tree simulator — Circuitry, Chassis, Drones, Allegiance",
+      ],
+    },
+  },
+  {
     version: "0.13.0",
     date: "2026-04-20",
     dev: [

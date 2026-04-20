@@ -43,10 +43,11 @@ CHAR_TO_LUA = {
     "wurt": "wurt",
     "walter": "walter",
     "wolfgang": "wolfgang",
+    "wx-78": "wx78",
 }
 
-# Map lua filename stem → TS filename stem (wigfrid uses wathgrithr.ts)
-LUA_TO_TS = {v: ("wathgrithr" if v == "wathgrithr" else v) for v in CHAR_TO_LUA.values()}
+# Map lua filename stem → TS filename stem (wigfrid uses wathgrithr.ts, wx-78 uses wx-78.ts)
+LUA_TO_TS = {v: ("wathgrithr" if v == "wathgrithr" else ("wx-78" if v == "wx78" else v)) for v in CHAR_TO_LUA.values()}
 
 # Documented intentional divergences from lua. Each entry suppresses the matching
 # diff for that character/skill. Add a `reason` so future devs understand why.
@@ -69,6 +70,9 @@ EXPECTED_DIVERGENCES: dict[tuple[str, str], dict[str, str]] = {
     ("wortox", "wortox_inclination_meter"):  {"tag_diff": "app-only `infographic` tag for decorative node"},
     ("wortox", "wortox_inclination_naughty"): {"tag_diff": "app-only `infographic` tag for decorative node"},
     ("wortox", "wortox_inclination_nice"):   {"tag_diff": "app-only `infographic` tag for decorative node"},
+    # WX-78: lua uses `locks` on skill nodes only; our app adds bidirectional `connects` on lock nodes
+    ("wx-78", "wx78_allegiance_lunar_lock_1"): {"connects_diff": "app adds connects to lock node for bidirectional graph navigation"},
+    ("wx-78", "wx78_shadow_allegiance_lock_1"): {"connects_diff": "app adds connects to lock node for bidirectional graph navigation"},
 }
 
 
@@ -110,6 +114,22 @@ def find_balanced(text: str, start: int, open_ch: str = "{", close_ch: str = "}"
     raise ValueError("unbalanced")
 
 
+def _resolve_lua_constants(lua_text: str) -> str:
+    """Resolve `local GROUPS = { KEY = "value" }` style constant tables.
+
+    Replaces `GROUPS.KEY` with `"value"` throughout the text so downstream
+    parsing (which expects string literals) works unchanged.
+    """
+    const_pat = re.compile(r'local\s+(\w+)\s*=\s*\{([^}]+)\}')
+    for m in const_pat.finditer(lua_text):
+        var_name = m.group(1)
+        body = m.group(2)
+        pairs = re.findall(r'(\w+)\s*=\s*"([^"]+)"', body)
+        for key, val in pairs:
+            lua_text = lua_text.replace(f"{var_name}.{key}", f'"{val}"')
+    return lua_text
+
+
 def parse_lua_skills(lua_text: str) -> dict[str, dict[str, Any]]:
     """Extract the `local skills = { ... }` table into a dict.
 
@@ -118,6 +138,8 @@ def parse_lua_skills(lua_text: str) -> dict[str, dict[str, Any]]:
     Some characters (wendy) use a different pattern: multiple `local <name>_skills = {...}`
     tables merged via `finalize_skill_group(<name>_skills, "<group>")`. Handle both.
     """
+    lua_text = _resolve_lua_constants(lua_text)
+
     # Pattern A: simple `local skills = { ... }` (most characters)
     m = re.search(r"local\s+skills\s*=\s*\{[^\}]", lua_text)
     if m:
@@ -417,14 +439,17 @@ def compare(char_id: str) -> tuple[int, int]:
         lua_c = set(lua_s.get("connects", []))
         ts_c = set(ts_n.get("connects", []))
         if lua_c != ts_c:
-            only_lua = lua_c - ts_c
-            only_ts = ts_c - lua_c
-            parts = []
-            if only_lua:
-                parts.append(f"missing connects: {sorted(only_lua)}")
-            if only_ts:
-                parts.append(f"extra connects: {sorted(only_ts)}")
-            diffs.append("; ".join(parts))
+            if "connects_diff" in suppression:
+                suppressed += 1
+            else:
+                only_lua = lua_c - ts_c
+                only_ts = ts_c - lua_c
+                parts = []
+                if only_lua:
+                    parts.append(f"missing connects: {sorted(only_lua)}")
+                if only_ts:
+                    parts.append(f"extra connects: {sorted(only_ts)}")
+                diffs.append("; ".join(parts))
 
         # locks (set) — AND-deps
         lua_locks = set(lua_s.get("locks", []))

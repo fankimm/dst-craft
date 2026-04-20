@@ -1348,6 +1348,107 @@ export const skillTranslations: Record<
     title: { en: "Poor Sap", ko: "불쌍한 수액기" },
     desc: { en: "Learn to craft Ipecaca Syrup to induce pooping in other creatures.", ko: "다른 생물의 배변을 촉진하는 '토근 시럽'을 제작할 수 있습니다." },
   },
+  // WX-78
+  wx78_circuitry_betterunplug: {
+    title: { en: "Right To Modify", ko: "개조할 권리" },
+    desc: { en: "Gain the ability to unplug any circuit in the bar stack, and circuits will lose half the usual amount of durability when unplugged.", ko: "회로를 자유롭게 탈거할 수 있습니다. 또한 회로 제거 시의 내구도 소모가 원래의 절반으로 줄어듭니다." },
+  },
+  wx78_circuitry_bettercharge: {
+    title: { en: "Watts Up", ko: "잦은 교류" },
+    desc: { en: "Passive charge regeneration is much faster, and lose one less charge when unplugging a charged circuit with two or more slots.", ko: "전력 자연 재생이 훨씬 빨라집니다. 또한 슬롯을 2칸 이상 차지하는 회로를 뽑을 때 잃는 전력이 1 줄어듭니다." },
+  },
+  wx78_circuitry_alphabuffs_1: {
+    title: { en: "Alpha Circuits Tinkering I", ko: "알파 회로 제조 I" },
+    desc: { en: "Processing Circuits gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "연산 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
+  },
+  wx78_circuitry_alphabuffs_2: {
+    title: { en: "Alpha Circuits Tinkering II", ko: "알파 회로 제조 II" },
+    desc: { en: "Hardy Circuits, Processing Circuits, and Beanbooster Circuit gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "체력 증진 회로, 연산 회로, 빈부스터 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
+  },
+  wx78_circuitry_betabuffs_1: {
+    title: { en: "Beta Circuits Tinkering I", ko: "베타 회로 제조 I" },
+    desc: { en: "Thermal Circuit, Refrigerant Circuit, Optoelectronic Circuit, Chorusbox Circuit, and Rangebooster Circuit gain a new effect in addition to their original effect.", ko: "발열 회로, 냉각 회로, 광전자 회로, 음악상자 회로, 범위 증폭 회로에 새로운 효과가 추가됩니다." },
+  },
+  wx78_circuitry_betabuffs_2: {
+    title: { en: "Beta Circuits Tinkering II", ko: "베타 회로 제조 II" },
+    desc: { en: "Acceleration Circuits, Electrification Circuit, and Illumination Circuits gain a new effect in addition to their original effect.", ko: "가속 회로, 전격 회로, 조명 회로에 새로운 효과가 추가됩니다." },
+  },
+  wx78_circuitry_gammabuffs_1: {
+    title: { en: "Gamma Circuits Tinkering I", ko: "감마 회로 제조 I" },
+    desc: { en: "Redigestion Circuit and Sonic-Invoker Circuit gain a new effect in addition to their original effect.", ko: "재소화 회로와 음파 발진 회로에 새로운 효과가 추가됩니다." },
+  },
+  wx78_circuitry_gammabuffs_2: {
+    title: { en: "Gamma Circuits Tinkering II", ko: "감마 회로 제조 II" },
+    desc: { en: "Blocking Circuit and Spin-Cycle Circuit gain a new effect in addition to their original effect.", ko: "방어 회로와 회전기 회로에 새로운 효과가 추가됩니다." },
+  },
+  wx78_circuitry_slot_1: {
+    title: { en: "Off By One", ko: "슬롯 오프셋" },
+    desc: { en: "Grant an additional slot to all of your circuit bars.", ko: "모든 회로 바에 슬롯이 1개 추가됩니다." },
+  },
+  wx78_extrabody_1: {
+    title: { en: "Cold Standby I", ko: "콜드 스탠바이 I" },
+    desc: { en: "Learn to craft a reliable Backup Chassis.", ko: "믿음직한 '예비 동체'를 제작할 수 있습니다." },
+  },
+  wx78_ghostrevive_1: {
+    title: { en: "Inhabited Machine I", ko: "거주하는 기계 I" },
+    desc: { en: "Haunting a Backup Chassis transfers your consciousness into it, consuming all of the chassis' charge units.", ko: "예비 동체에 빙의하면 예비 동체의 전력을 모두 소모하고 의식을 해당 예비 동체로 이전합니다." },
+  },
+  wx78_ghostrevive_2: {
+    title: { en: "Inhabited Machine II", ko: "거주하는 기계 II" },
+    desc: { en: "If you die with full charge and have not yet reached your maximum number of Backup Chassis, one is left behind.", ko: "전력이 가득 찬 상태에서 죽었을 때, 예비 동체 한도에 여유가 있으면 예비 동체를 하나 설치합니다." },
+  },
+  wx78_ghostrevive_3: {
+    title: { en: "Inhabited Machine III", ko: "거주하는 기계 III" },
+    desc: { en: "Reviving with a Backup Chassis fully restores your health.", ko: "예비 동체에서 부활 시 모든 체력을 회복합니다." },
+  },
+  wx78_extrabody_2: {
+    title: { en: "Cold Standby II", ko: "콜드 스탠바이 II" },
+    desc: { en: "Build up to two Backup Chassis.", ko: "예비 동체를 최대 2기 제작할 수 있습니다." },
+  },
+  wx78_extrabody_3: {
+    title: { en: "Cold Standby III", ko: "콜드 스탠바이 III" },
+    desc: { en: "Build up to three Backup Chassis.", ko: "예비 동체를 최대 3기 제작할 수 있습니다." },
+  },
+  wx78_remotebodyswap: {
+    title: { en: "Remote Transfer", ko: "원격 전송" },
+    desc: { en: "Remotely Transfer Consciousness to any Backup Chassis on the map.", ko: "지도상에서 예비 동체에 원격으로 의식을 이전할 수 있습니다." },
+  },
+  wx78_bodycircuits: {
+    title: { en: "Warm Standby", ko: "웜 스탠바이" },
+    desc: { en: "Backup Chassis keep their Beta Circuits active even when powered down.", ko: "예비 동체 전원이 꺼져 있어도 베타 회로가 작동합니다." },
+  },
+  wx78_scoutdrone_1: {
+    title: { en: "Field Survey I", ko: "현장 조사 I" },
+    desc: { en: "Learn to craft a Roto-Mapper to explore and map unknown areas.", ko: "미지의 영역을 탐사하고 기록할 수 있는 '회전익 탐사기'를 제작할 수 있습니다." },
+  },
+  wx78_scoutdrone_2: {
+    title: { en: "Field Survey II", ko: "현장 조사 II" },
+    desc: { en: "Increases the range you may control your Roto-Mapper.", ko: "회전익 탐사기의 조종 반경이 증가합니다." },
+  },
+  wx78_deliverydrone_1: {
+    title: { en: "Transport I", ko: "운송기 I" },
+    desc: { en: "Learn to craft a Portable Storage Unit to send items to any mapped location.", ko: "지정된 지도 위치로 물건을 배송할 수 있는 '휴대용 저장 장치'를 제작할 수 있습니다." },
+  },
+  wx78_deliverydrone_2: {
+    title: { en: "Transport II", ko: "운송기 II" },
+    desc: { en: "Learn to craft a larger Portable Storage Unit.", ko: "더 큰 '휴대용 저장 장치'를 제작할 수 있습니다." },
+  },
+  wx78_zapdrone_1: {
+    title: { en: "Telemechanical Enthusiast I", ko: "원격 조종 애호가 I" },
+    desc: { en: "Learn to craft a Zaptrocuter to zap enemies remotely.", ko: "적을 원격으로 감전시키는 '찌릿콥터'를 제작할 수 있습니다." },
+  },
+  wx78_zapdrone_2: {
+    title: { en: "Telemechanical Enthusiast II", ko: "원격 조종 애호가 II" },
+    desc: { en: "Learn to craft a Zaptrocuter with greater range and capacity.", ko: "범위와 배터리 용량이 향상된 '찌릿콥터'를 제작할 수 있습니다." },
+  },
+  wx78_allegiance_lunar: {
+    title: { en: "Lunar Vessel", ko: "월광의 그릇" },
+    desc: { en: "Using \"borrowed\" technology from the Cryptic Founder, allow Gestalts to possess your Backup Chassis and become your spectrobotic minions.", ko: "비밀스러운 창립자에게서 \"빌려온\" 기술을 이용해 게슈탈트를 예비 동체에 빙의하게 하여 심령 로봇 하수인으로 부립니다." },
+  },
+  wx78_allegiance_shadow: {
+    title: { en: "Shadow Servitor", ko: "그림자의 종" },
+    desc: { en: "Allows insertion of select shadow components into your circuitry, granting your Chassis various abilities in both inhabited and uninhabited states.", ko: "회로에 제한된 종류의 그림자 부품을 삽입하여, 동체에 의식이 있을 때와 없을 때 각각 다양한 효과를 얻습니다." },
+  },
 };
 
 /** Group/panel name translations */
@@ -1449,5 +1550,7 @@ export const lockTranslations: Record<string, { en: string; ko: string }> = {
   wortox_naughty_lock: { en: "Requires the skill below and 5 total Naughty and/or Neutral skills to unlock.", ko: "아래의 스킬 및 악행/중립 스킬 총합 5개 습득 시 해금" },
   wortox_nice_lock: { en: "Requires the skill below and 5 total Nice and/or Neutral skills to unlock.", ko: "아래의 스킬 및 선행/중립 스킬 총합 5개 습득 시 해금" },
   wurt_allegiance_lock_1: { en: "Learn 12 skills to unlock.", ko: "스킬 12개를 습득하세요." },
+  wx78_allegiance_lunar_lock_1: { en: "Find and defeat the Celestial Champion.\nHave no shadow affinity.\nBe able to craft a Backup Chassis.", ko: "천상의 대변자를 찾아 쓰러뜨리세요.\n그림자 진영 스킬을 배우지 마세요.\n예비 동체 제작법을 보유하세요." },
+  wx78_shadow_allegiance_lock_1: { en: "Temporarily disabled.", ko: "일시적으로 비활성화되었습니다." },
 };
 
