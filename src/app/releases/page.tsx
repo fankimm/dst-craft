@@ -15,6 +15,33 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.13.2",
+    date: "2026-04-21",
+    dev: [
+      "fix: 용파리 보석 드롭 확률 수정 (dragonfly.lua 원본 기준)",
+      "fix: WX-78 기존 모듈 3개 레시피 오류 수정 (발광/광전자/추출기)",
+      "feat: WX-78 모듈 7개 + 스킬트리 아이템 5개 신규 추가 (총 12개)",
+      "feat: WX-78 스킬트리 노드에 제작법 링크 연결 (builderSkill 5개)",
+      "asset: 누락 아이템 이미지 12개 위키에서 다운로드",
+      "data: 재료 2종 추가 (batnose, slurtlehat), game-items-db 12개 추가",
+      "i18n: 신규 아이템 13개 + 재료 2개 한글 번역 (ko.po 원본)",
+    ],
+    changes: {
+      ko: [
+        "WX-78 제작템 대폭 추가 — 모듈 7개 + 스킬트리 아이템 5개",
+        "WX-78 스킬트리에서 해금 제작법 확인 가능",
+        "용파리 보석 드롭 확률 수정 (인게임과 일치)",
+        "WX-78 기존 모듈 레시피 오류 수정 (발광·광전자·추출기)",
+      ],
+      en: [
+        "Added 12 WX-78 crafting items — 7 modules + 5 skill tree items",
+        "WX-78 skill tree now shows unlockable recipes",
+        "Fixed Dragonfly gem drop rates to match in-game",
+        "Fixed 3 existing WX-78 module recipe errors",
+      ],
+    },
+  },
+  {
     version: "0.13.1",
     date: "2026-04-21",
     dev: [

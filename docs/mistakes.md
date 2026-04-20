@@ -54,6 +54,11 @@
   - `wilson_alchemy_2` → ko.po: `wilson_alchemy_gem_1`, 아이콘: `wilson_alchemy_gem_1.png`
 - **교훈**: 반드시 ko.po에서 직접 검색 + 아이콘 파일 직접 확인해서 매핑할 것. 자동 매핑 신뢰 금지.
 
+### 기존 레시피 데이터를 원본과 교차 검증하지 않음
+- **문제**: WX-78 기존 아이템 3개의 레시피가 인게임 소스와 불일치 — 발광 회로(scandata 6→2), 광전자 회로(fireflies→wx78module_light), 회로 추출기(rocks→flint). 용파리 보석 드롭도 100% 확정인데 15~25%로 잘못 입력
+- **원인**: 초기 입력 시 오류가 들어간 후 검증 없이 유지됨
+- **교훈**: 새 아이템 추가나 관련 데이터 수정 시, 해당 카테고리의 기존 아이템도 함께 인게임 소스와 교차 검증할 것. 특히 recipes.lua의 Ingredient 목록과 수량을 1:1 대조.
+
 ## TEX 아틀라스 추출
 
 ### UV 좌표 V축 반전
@@ -196,6 +201,17 @@
 - **원인**: `use-skill-tree.ts`의 `isLockSatisfied`가 `manualLocks` 파라미터를 받지 않고 boss_kill=false, manual=true로 하드코딩됨. `canLearn`의 locks(AND 게이트) 체크는 이 함수를 그대로 호출해서 boss_kill이 항상 미충족으로 판정. parent(OR 게이트) 쪽에만 `manualLocks` 특수 분기가 있었음
 - **교훈**: lock 충족 판정 로직은 한 곳(`isLockSatisfied`)으로 통합하고 `manualLocks`를 인자로 받을 것. 호출부마다 분기를 추가하면 일부 경로에서 누락됨. SkillTreeView에 같은 이름의 헬퍼를 만들면서 hook 쪽의 기존 버그를 보지 못했던 것도 원인
 - **검증**: 친화 그룹이 있는 캐릭터(Wilson 등)에서 12스킬 + fuelweaver/celestialchampion 토글 후 그림자/월광 스킬이 학습 가능한지 UI 확인
+
+### 잠금 조건 라벨: 제네릭 문구 사용 + no_opposing_faction 반전
+- **문제1**: 스킬트리 잠금 조건이 "스킬 6개 필요"처럼 제네릭 템플릿으로만 표시. 인게임은 "버니 스킬 6개를 습득하세요"처럼 구체적
+- **문제2**: no_opposing_faction 라벨이 반대로 표시 (lunar↔shadow 뒤바뀜). 모든 캐릭터 공통 버그
+- **문제3**: WX-78 진영 잠금을 `manual` 하나로 합쳐서 무조건 클릭으로 열림
+- **원인**: lockTranslations에 인게임 원문이 있었는데 UI에서 사용하지 않고 제네릭 i18n 키만 사용. no_opposing_faction의 faction 의미("이 잠금이 속한 진영")를 "체크할 진영"으로 잘못 해석하여 라벨 반전
+- **교훈**: 
+  1. 인게임 원문(lockTranslations)이 있으면 반드시 우선 사용. 제네릭 템플릿은 fallback용
+  2. lua의 복합 lock_open은 개별 typed lock 노드로 분리 (자동 검증 가능한 조건은 자동으로)
+  3. 라벨/설명은 임의 작성 금지 — ko.po/strings.lua 원문 사용 필수
+- **해결**: lockLabel에 lockId 파라미터 추가 → lockTranslations 우선 참조, no_opposing_faction 반전 수정, WX-78 잠금 3개로 분리 + disabled 타입 추가
 
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
