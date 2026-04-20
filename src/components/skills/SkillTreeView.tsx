@@ -107,6 +107,8 @@ function isLockSatisfied(
       }
       return true;
     }
+    case "disabled":
+      return false;
     default:
       return true;
   }

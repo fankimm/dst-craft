@@ -1550,7 +1550,9 @@ export const lockTranslations: Record<string, { en: string; ko: string }> = {
   wortox_naughty_lock: { en: "Requires the skill below and 5 total Naughty and/or Neutral skills to unlock.", ko: "아래의 스킬 및 악행/중립 스킬 총합 5개 습득 시 해금" },
   wortox_nice_lock: { en: "Requires the skill below and 5 total Nice and/or Neutral skills to unlock.", ko: "아래의 스킬 및 선행/중립 스킬 총합 5개 습득 시 해금" },
   wurt_allegiance_lock_1: { en: "Learn 12 skills to unlock.", ko: "스킬 12개를 습득하세요." },
-  wx78_allegiance_lunar_lock_1: { en: "Find and defeat the Celestial Champion.\nHave no shadow affinity.\nBe able to craft a Backup Chassis.", ko: "천상의 대변자를 찾아 쓰러뜨리세요.\n그림자 진영 스킬을 배우지 마세요.\n예비 동체 제작법을 보유하세요." },
+  wx78_allegiance_lunar_lock_1: { en: "Be able to craft a Backup Chassis.", ko: "예비 동체 제작법을 보유하세요." },
+  wx78_allegiance_lunar_lock_2: { en: "Find and defeat the Celestial Champion.", ko: "천상의 대변자를 찾아 쓰러뜨리세요." },
+  wx78_allegiance_lunar_lock_3: { en: "Have no shadow affinity.", ko: "그림자 진영 스킬을 배우지 마세요." },
   wx78_shadow_allegiance_lock_1: { en: "Temporarily disabled.", ko: "일시적으로 비활성화되었습니다." },
 };
 

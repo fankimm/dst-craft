@@ -70,8 +70,11 @@ EXPECTED_DIVERGENCES: dict[tuple[str, str], dict[str, str]] = {
     ("wortox", "wortox_inclination_meter"):  {"tag_diff": "app-only `infographic` tag for decorative node"},
     ("wortox", "wortox_inclination_naughty"): {"tag_diff": "app-only `infographic` tag for decorative node"},
     ("wortox", "wortox_inclination_nice"):   {"tag_diff": "app-only `infographic` tag for decorative node"},
-    # WX-78: lua uses `locks` on skill nodes only; our app adds bidirectional `connects` on lock nodes
-    ("wx-78", "wx78_allegiance_lunar_lock_1"): {"connects_diff": "app adds connects to lock node for bidirectional graph navigation"},
+    # WX-78: lua has 1 complex lock_open per allegiance; our app splits into typed lock nodes
+    ("wx-78", "wx78_allegiance_lunar_lock_1"): {"connects_diff": "app splits lua lock_open into typed lock nodes"},
+    ("wx-78", "wx78_allegiance_lunar_lock_2"): {"id_diff": "app-only node: split from lua wx78_allegiance_lunar_lock_1"},
+    ("wx-78", "wx78_allegiance_lunar_lock_3"): {"id_diff": "app-only node: split from lua wx78_allegiance_lunar_lock_1"},
+    ("wx-78", "wx78_allegiance_lunar"): {"locks_diff": "app uses 3 typed locks vs lua's single lock_open"},
     ("wx-78", "wx78_shadow_allegiance_lock_1"): {"connects_diff": "app adds connects to lock node for bidirectional graph navigation"},
 }
 
@@ -410,14 +413,20 @@ def compare(char_id: str) -> tuple[int, int]:
         for s in sorted(missing_in_ts):
             print(f"      - {s}")
     if extra_in_ts:
-        warnings += len(extra_in_ts)
-        print(f"  ⚠️  EXTRA in TS ({len(extra_in_ts)}) — virtual nodes? verify:")
-        for s in sorted(extra_in_ts):
-            print(f"      - {s}")
+        unsuppressed = [s for s in extra_in_ts if "id_diff" not in EXPECTED_DIVERGENCES.get((char_id, s), {})]
+        if unsuppressed:
+            warnings += len(unsuppressed)
+            print(f"  ⚠️  EXTRA in TS ({len(unsuppressed)}) — virtual nodes? verify:")
+            for s in sorted(unsuppressed):
+                print(f"      - {s}")
 
     # per-skill comparisons (only for IDs present in both)
     common = lua_ids & ts_ids
     suppressed = 0
+    # Count extra ID suppressions
+    if extra_in_ts:
+        id_suppressed = len([s for s in extra_in_ts if "id_diff" in EXPECTED_DIVERGENCES.get((char_id, s), {})])
+        suppressed += id_suppressed
     for sid in sorted(common):
         lua_s = lua_skills[sid]
         ts_n = ts_nodes[sid]
@@ -455,14 +464,17 @@ def compare(char_id: str) -> tuple[int, int]:
         lua_locks = set(lua_s.get("locks", []))
         ts_locks = set(ts_n.get("locks", []))
         if lua_locks != ts_locks:
-            only_lua = lua_locks - ts_locks
-            only_ts = ts_locks - lua_locks
-            parts = []
-            if only_lua:
-                parts.append(f"missing locks: {sorted(only_lua)}")
-            if only_ts:
-                parts.append(f"extra locks: {sorted(only_ts)}")
-            diffs.append("; ".join(parts))
+            if "locks_diff" in suppression:
+                suppressed += 1
+            else:
+                only_lua = lua_locks - ts_locks
+                only_ts = ts_locks - lua_locks
+                parts = []
+                if only_lua:
+                    parts.append(f"missing locks: {sorted(only_lua)}")
+                if only_ts:
+                    parts.append(f"extra locks: {sorted(only_ts)}")
+                diffs.append("; ".join(parts))
 
         # tags (set)
         lua_t = set(lua_s.get("tags", []))

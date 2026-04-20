@@ -103,6 +103,8 @@ function isLockSatisfied(
       const opposingTag = node.lockType.faction === "lunar" ? "shadow_favor" : "lunar_favor";
       return countTag(opposingTag, activated, nodeMap) === 0;
     }
+    case "disabled":
+      return false;
     default:
       return true;
   }

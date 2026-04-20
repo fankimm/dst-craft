@@ -32,6 +32,8 @@ export function lockLabel(lock: LockCondition, locale: Locale): string {
         : t(locale, "skills_gate_no_shadow" as TranslationKey);
     case "manual":
       return locale === "ko" ? lock.desc_ko : lock.desc_en;
+    case "disabled":
+      return locale === "ko" ? lock.desc_ko : lock.desc_en;
     default:
       return "";
   }

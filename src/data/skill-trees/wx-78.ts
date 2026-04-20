@@ -199,18 +199,32 @@ export const wx78: CharacterSkillTree = {
       tags: ["drones"],
     },
 
-    // ── Allegiance ─────────────────────────────────────────────
+    // ── Allegiance (Lunar) ────────────────────────────────────
     {
       id: "wx78_allegiance_lunar_lock_1",
       group: "allegiance",
-      pos: [168, 192],
+      pos: [148, 210],
       root: true,
       tags: ["allegiance", "lock"],
-      lockType: {
-        type: "manual",
-        desc_en: "Find and defeat the Celestial Champion.\nHave no shadow affinity.\nBe able to craft a Backup Chassis.",
-        desc_ko: "천상의 대변자를 찾아 쓰러뜨리세요.\n그림자 진영 스킬을 배우지 마세요.\n예비 동체 제작법을 보유하세요.",
-      },
+      lockType: { type: "skill_count", tag: "wx78_maxbody", count: 1 },
+      connects: ["wx78_allegiance_lunar"],
+    },
+    {
+      id: "wx78_allegiance_lunar_lock_2",
+      group: "allegiance",
+      pos: [148, 192],
+      root: true,
+      tags: ["allegiance", "lock"],
+      lockType: { type: "boss_kill", boss: "celestialchampion" },
+      connects: ["wx78_allegiance_lunar"],
+    },
+    {
+      id: "wx78_allegiance_lunar_lock_3",
+      group: "allegiance",
+      pos: [148, 174],
+      root: true,
+      tags: ["allegiance", "lock"],
+      lockType: { type: "no_opposing_faction", faction: "lunar" },
       connects: ["wx78_allegiance_lunar"],
     },
     {
@@ -219,8 +233,14 @@ export const wx78: CharacterSkillTree = {
       pos: [127, 183],
       icon: "wx78_allegiance_lunar",
       tags: ["lunar_favor", "allegiance"],
-      locks: ["wx78_allegiance_lunar_lock_1"],
+      locks: [
+        "wx78_allegiance_lunar_lock_1",
+        "wx78_allegiance_lunar_lock_2",
+        "wx78_allegiance_lunar_lock_3",
+      ],
     },
+
+    // ── Allegiance (Shadow — disabled in-game) ────────────────
     {
       id: "wx78_shadow_allegiance_lock_1",
       group: "allegiance",
@@ -228,7 +248,7 @@ export const wx78: CharacterSkillTree = {
       root: true,
       tags: ["allegiance", "lock"],
       lockType: {
-        type: "manual",
+        type: "disabled",
         desc_en: "Temporarily disabled.",
         desc_ko: "일시적으로 비활성화되었습니다.",
       },

@@ -11,7 +11,8 @@ export type LockCondition =
   | { type: "boss_kill"; boss: "fuelweaver" | "celestialchampion"; excludes?: "lunar" | "shadow" }
   | { type: "no_opposing_faction"; faction: "lunar" | "shadow" }
   | { type: "total_skills"; count: number }
-  | { type: "manual"; desc_ko: string; desc_en: string };
+  | { type: "manual"; desc_ko: string; desc_en: string }
+  | { type: "disabled"; desc_ko: string; desc_en: string };
 
 /** A single node in a character's skill tree */
 export interface SkillNode {
