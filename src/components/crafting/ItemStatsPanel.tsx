@@ -115,7 +115,7 @@ export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
 
   // --- Waterproof ---
   if (stats.waterproofer) {
-    rows.push(<StatRow key="waterproof" label={l === "ko" ? "��수" : "Waterproof"} value={`${Math.round(stats.waterproofer * 100)}%`} />);
+    rows.push(<StatRow key="waterproof" label={l === "ko" ? "방수" : "Waterproof"} value={`${Math.round(stats.waterproofer * 100)}%`} />);
   }
 
   // --- Insulation ---
