@@ -243,7 +243,7 @@ function ItemSpawnBuilder({ locale }: { locale: Locale }) {
               const v = parseInt(e.target.value, 10);
               if (!isNaN(v) && v >= 1 && v <= 999) setQuantity(v);
             }}
-            className="w-14 h-7 rounded-md border border-input bg-background text-center text-sm font-mono focus:outline-none focus:ring-1 focus:ring-ring [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-14 h-7 rounded-md border border-input bg-background text-center text-base sm:text-sm font-mono focus:outline-none focus:ring-1 focus:ring-ring [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
           <button
             onClick={() => setQuantity((q) => Math.min(999, q + 1))}
@@ -381,7 +381,7 @@ function CommandCard({ cmd, locale }: { cmd: ConsoleCommand; locale: Locale }) {
                 key={p.key}
                 value={paramValues[p.key]}
                 onChange={(e) => setParamValues((prev) => ({ ...prev, [p.key]: e.target.value }))}
-                className="h-6 rounded border border-input bg-background px-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-ring"
+                className="h-6 rounded border border-input bg-background px-1.5 text-base sm:text-xs focus:outline-none focus:ring-1 focus:ring-ring"
               >
                 {p.options.map((o) => (
                   <option key={o.value} value={o.value}>
@@ -396,7 +396,7 @@ function CommandCard({ cmd, locale }: { cmd: ConsoleCommand; locale: Locale }) {
                 value={paramValues[p.key]}
                 onChange={(e) => setParamValues((prev) => ({ ...prev, [p.key]: e.target.value }))}
                 placeholder={p.label}
-                className="h-6 w-16 rounded border border-input bg-background px-1.5 text-xs font-mono text-center focus:outline-none focus:ring-1 focus:ring-ring"
+                className="h-6 w-16 rounded border border-input bg-background px-1.5 text-base sm:text-xs font-mono text-center focus:outline-none focus:ring-1 focus:ring-ring"
               />
             )
           )}
