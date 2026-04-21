@@ -184,22 +184,49 @@ export function AppShell() {
     return () => window.removeEventListener("dst-toast", handler);
   }, []);
 
-  // Lock body scroll — AppShell manages its own scroll internally
+  // Lock body scroll + iOS Safari keyboard viewport fix.
+  // iOS Safari doesn't properly recalculate 100dvh when the virtual keyboard
+  // opens/closes, leaving a white gap. Using visualViewport.height directly
+  // ensures the layout always matches the actual visible area.
   useEffect(() => {
-    document.documentElement.style.overflow = "hidden";
-    document.documentElement.style.height = "100dvh";
-    document.body.style.overflow = "hidden";
-    document.body.style.height = "100dvh";
+    const root = document.documentElement;
+    const body = document.body;
+    root.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+
+    const vv = window.visualViewport;
+    if (!vv) {
+      root.style.height = "100dvh";
+      body.style.height = "100dvh";
+      return () => {
+        root.style.overflow = "";
+        root.style.height = "";
+        body.style.overflow = "";
+        body.style.height = "";
+      };
+    }
+
+    let prevHeight = vv.height;
+    const syncHeight = () => {
+      const h = `${vv.height}px`;
+      root.style.height = h;
+      body.style.height = h;
+      if (vv.height > prevHeight) window.scrollTo(0, 0);
+      prevHeight = vv.height;
+    };
+    syncHeight();
+    vv.addEventListener("resize", syncHeight);
     return () => {
-      document.documentElement.style.overflow = "";
-      document.documentElement.style.height = "";
-      document.body.style.overflow = "";
-      document.body.style.height = "";
+      vv.removeEventListener("resize", syncHeight);
+      root.style.overflow = "";
+      root.style.height = "";
+      body.style.overflow = "";
+      body.style.height = "";
     };
   }, []);
 
   return (
-    <div className="flex flex-col h-dvh bg-background text-foreground overflow-hidden">
+    <div className="flex flex-col h-full bg-background text-foreground overflow-hidden">
       {/* Status bar cover — sits above overlays so status bar area never dims */}
       <div
         className="fixed top-0 inset-x-0 bg-background z-[60]"

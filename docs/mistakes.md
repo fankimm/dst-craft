@@ -228,6 +228,12 @@
 - **교훈**: 모든 input/select/textarea에 `text-base`(16px) 적용 필수. 데스크톱에서 작게 보이길 원하면 `text-base sm:text-xs` 패턴 사용. `SearchWithSuggestions`는 이미 `text-base sm:text-sm`으로 처리되어 있었음
 - **검증**: 새 input 추가 시 반드시 `text-base` 포함 여부 확인
 
+### iOS Safari 키보드 열고 닫으면 100dvh 복원 안 됨
+- **문제**: input 포커스로 키보드 열림 → 닫으면 하단에 키보드 높이만큼 흰 패널 발생 + 상단 탭바까지 스크롤 불가
+- **원인**: iOS Safari가 키보드 열릴 때 `overflow:hidden`에도 불구하고 페이지를 강제 스크롤. 키보드 닫혀도 `100dvh`가 원래 높이로 복원 안 되어 레이아웃이 깨짐
+- **해결**: CSS `100dvh` 대신 `window.visualViewport.height`를 직접 사용. viewport resize 이벤트마다 html/body 높이를 실제 뷰포트에 맞추고, 키보드 닫힐 때 `window.scrollTo(0,0)` 호출. AppShell 루트도 `h-dvh` → `h-full`로 변경하여 body 높이를 상속
+- **교훈**: iOS Safari에서 `100dvh`는 키보드 상태 변화 시 신뢰할 수 없음. `visualViewport` API가 더 정확
+
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
 - pixel_format 0=DXT1(bcn 1), 1=DXT3(bcn 2), 2=DXT5(bcn 3)
