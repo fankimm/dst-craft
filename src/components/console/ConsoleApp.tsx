@@ -28,12 +28,17 @@ interface SpawnableItem {
   image: string;
 }
 
-const spawnableItems: SpawnableItem[] = gameItems.map((item) => ({
-  id: item.id,
-  name: item.en,
-  nameKo: item.ko,
-  image: `${item.id}.png`,
-}));
+/** Prefixes that are recipe-only virtual IDs, not real spawnable prefabs */
+const VIRTUAL_PREFIXES = ["transmute_", "wanderingtradershop_"];
+
+const spawnableItems: SpawnableItem[] = gameItems
+  .filter((item) => !VIRTUAL_PREFIXES.some((p) => item.id.startsWith(p)))
+  .map((item) => ({
+    id: item.id,
+    name: item.en,
+    nameKo: item.ko,
+    image: `${item.id}.png`,
+  }));
 
 // ---------------------------------------------------------------------------
 // ConsoleApp
