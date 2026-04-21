@@ -264,9 +264,11 @@ export default async function BossPage({
                 const nameKoVal = lootDisplayName(loot.item, "ko");
                 const imgSrc = lootImage(loot.item);
                 const isBlueprint = loot.blueprint;
-                const chanceLabel = loot.chance >= 1
-                  ? "100%"
-                  : `${Math.round(loot.chance * 100)}%`;
+                const chanceLabel = loot.pool
+                  ? "Pick 1"
+                  : loot.chance >= 1
+                    ? "100%"
+                    : `${Math.round(loot.chance * 100)}%`;
                 const isCraftable = craftableIds.has(loot.item);
 
                 const inner = (
@@ -293,7 +295,7 @@ export default async function BossPage({
                         </p>
                       )}
                       <div className="flex items-center gap-1.5 mt-0.5">
-                        <span className="text-[10px] text-muted-foreground">
+                        <span className={`text-[10px] ${loot.pool ? "font-medium text-amber-600 dark:text-amber-400" : "text-muted-foreground"}`}>
                           {chanceLabel}
                         </span>
                         {isBlueprint && (

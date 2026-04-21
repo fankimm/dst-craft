@@ -3,6 +3,7 @@ export interface BossLoot {
   chance: number; // 1.0 = 100%
   count?: number;
   blueprint?: boolean;
+  pool?: string; // items with same pool value are "pick 1" group
 }
 
 export interface BossStashLoot {
@@ -272,23 +273,23 @@ export const bosses: Boss[] = [
     stashLoot: {
       label: "크고 화려한 상자",
       labelEn: "Large Ornate Chest",
-      note: "처치 후 출현하는 상자에서 획득",
-      noteEn: "Spawns after defeating the Ancient Guardian",
-      icon: "atrium_key.png",
+      note: "처치 후 출현하는 상자에서 획득 (7~9개 슬롯 랜덤 선택)",
+      noteEn: "Spawns after defeating the Ancient Guardian (7-9 slots randomly selected)",
+      icon: "treasurechest_ancient.png",
       items: [
-        // Always guaranteed
+        // Always guaranteed (placed first, outside random selection)
         { item: "atrium_key", chance: 1 },
-        // 1 from pool: armorruins / ruinshat / ruins_bat
-        { item: "armorruins", chance: 0.33 },
-        { item: "ruinshat", chance: 0.33 },
-        { item: "ruins_bat", chance: 0.33 },
-        // 1 from pool: orangestaff / yellowstaff
-        { item: "orangestaff", chance: 0.5 },
-        { item: "yellowstaff", chance: 0.5 },
-        // 1 from pool: orangeamulet / yellowamulet
-        { item: "orangeamulet", chance: 0.5 },
-        { item: "yellowamulet", chance: 0.5 },
-        // Gems & materials
+        // Pool: thulecite equipment (pick 1 from 3)
+        { item: "armorruins", chance: 1, pool: "thulecite_equip" },
+        { item: "ruinshat", chance: 1, pool: "thulecite_equip" },
+        { item: "ruins_bat", chance: 1, pool: "thulecite_equip" },
+        // Pool: staves (pick 1 from 2)
+        { item: "orangestaff", chance: 1, pool: "staff" },
+        { item: "yellowstaff", chance: 1, pool: "staff" },
+        // Pool: amulets (pick 1 from 2)
+        { item: "orangeamulet", chance: 1, pool: "amulet" },
+        { item: "yellowamulet", chance: 1, pool: "amulet" },
+        // Gems & materials (each is its own slot)
         { item: "yellowgem", chance: 1, count: 3 },
         { item: "orangegem", chance: 1, count: 3 },
         { item: "greengem", chance: 1, count: 2 },
