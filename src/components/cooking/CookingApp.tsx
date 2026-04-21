@@ -7,6 +7,7 @@ import { trackItemClick, fetchCombos } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
 import { cookpotIngredients, ingredientImage } from "@/data/cookpot-ingredients";
+import { getItemById } from "@/lib/crafting-data";
 import { useSettings } from "@/hooks/use-settings";
 import { useFavorites } from "@/hooks/use-favorites";
 import { useCookingSearch } from "@/hooks/use-cooking-search";
@@ -109,9 +110,11 @@ function getRecipeIngredientNames(recipe: CookingRecipe, locale: Locale): string
 export function CookingApp({
   pendingRecipeId,
   onClearPendingRecipe,
+  onViewCraftingItem,
 }: {
   pendingRecipeId?: string | null;
   onClearPendingRecipe?: () => void;
+  onViewCraftingItem?: (itemId: string) => void;
 }) {
   const { resolvedLocale } = useSettings();
   const { favorites, isFavorite, toggleFavorite } = useFavorites();
@@ -276,6 +279,7 @@ export function CookingApp({
         onFoodTypeClick={handleFoodTypeClick}
         onStationClick={handleStationClick}
         onEffectClick={handleEffectClick}
+        onIngredientClick={onViewCraftingItem}
         isFav={isFavorite(panelRecipe.id)}
         onToggleFav={() => toggleFavorite(panelRecipe.id)}
         clicks={getClicks(panelRecipe.id)}
@@ -602,6 +606,7 @@ function RecipeDetail({
   onFoodTypeClick,
   onStationClick,
   onEffectClick,
+  onIngredientClick,
   isFav,
   onToggleFav,
   clicks,
@@ -611,6 +616,7 @@ function RecipeDetail({
   onFoodTypeClick?: (foodType: string) => void;
   onStationClick?: (station: string, label: string) => void;
   onEffectClick?: (effect: string) => void;
+  onIngredientClick?: (itemId: string) => void;
   isFav: boolean;
   onToggleFav: () => void;
   clicks: number;
@@ -840,7 +846,7 @@ function RecipeDetail({
           </div>
 
           {/* Requirements — split into needed / excluded */}
-          {recipe.requirements && <RequirementsSections text={recipe.requirements} locale={locale} />}
+          {recipe.requirements && <RequirementsSections text={recipe.requirements} locale={locale} onIngredientClick={onIngredientClick} />}
         </>
       ) : (
         <CombosTab combos={combos} loading={combosLoading} locale={locale} />
@@ -1010,8 +1016,15 @@ function parseReqEntry(text: string): { name: string; badge?: string } {
   return { name: clean };
 }
 
+function findCraftableItemId(reqName: string): string | null {
+  const ing = ingredientByName.get(reqName);
+  if (!ing) return null;
+  const item = getItemById(ing.id);
+  return item ? item.id : null;
+}
+
 /** Split requirements into "needed" and "excluded (No ...)" sections */
-function RequirementsSections({ text, locale }: { text: string; locale: Locale }) {
+function RequirementsSections({ text, locale, onIngredientClick }: { text: string; locale: Locale; onIngredientClick?: (itemId: string) => void }) {
   const items = text.split(",").map((s) => s.trim()).filter(Boolean);
   const needed: string[] = [];
   const excluded: string[] = [];
@@ -1039,25 +1052,31 @@ function RequirementsSections({ text, locale }: { text: string; locale: Locale }
               if (parts.length > 1) {
                 return (
                   <div key={i} className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-border px-1.5 py-1">
-                    {parts.map((part, j) => (
-                      <span key={j} className="flex items-center gap-1.5">
-                        {j > 0 && <span className="text-[10px] text-muted-foreground">{t(locale, "cooking_or")}</span>}
-                        <ItemSlot
-                          icon={findReqIcon(part)}
-                          label={translateReq(part, locale)}
-                          badge={badge}
-                        />
-                      </span>
-                    ))}
+                    {parts.map((part, j) => {
+                      const craftId = onIngredientClick ? findCraftableItemId(part) : null;
+                      return (
+                        <span key={j} className="flex items-center gap-1.5">
+                          {j > 0 && <span className="text-[10px] text-muted-foreground">{t(locale, "cooking_or")}</span>}
+                          <ItemSlot
+                            icon={findReqIcon(part)}
+                            label={translateReq(part, locale)}
+                            badge={badge}
+                            onClick={craftId ? () => onIngredientClick!(craftId) : undefined}
+                          />
+                        </span>
+                      );
+                    })}
                   </div>
                 );
               }
+              const craftId = onIngredientClick ? findCraftableItemId(name) : null;
               return (
                 <ItemSlot
                   key={i}
                   icon={findReqIcon(name)}
                   label={translateReq(name, locale)}
                   badge={badge}
+                  onClick={craftId ? () => onIngredientClick!(craftId) : undefined}
                 />
               );
             })}

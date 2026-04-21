@@ -245,7 +245,7 @@ export function AppShell() {
           <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} />
         </div>
         <div className={activeTab === "cooking" ? "h-full" : "hidden"}>
-          <CookingApp pendingRecipeId={pendingRecipeId} onClearPendingRecipe={handleClearPendingRecipe} />
+          <CookingApp pendingRecipeId={pendingRecipeId} onClearPendingRecipe={handleClearPendingRecipe} onViewCraftingItem={handleViewCraftingItem} />
         </div>
         <div className={activeTab === "cookpot" ? "h-full" : "hidden"}>
           <CookpotApp onViewRecipe={handleViewRecipe} />
