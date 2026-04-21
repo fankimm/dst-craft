@@ -565,3 +565,9 @@ export const bossCategories: { id: BossCategoryId; representativeBoss: string }[
   { id: "event", representativeBoss: "eyeofterror" },
   { id: "mini", representativeBoss: "spiderqueen" },
 ];
+
+export const bossDropBlueprintItems = new Set(
+  bosses.flatMap((b) => b.loot)
+    .filter((l) => l.item.endsWith("_blueprint"))
+    .map((l) => l.item.replace(/_blueprint$/, ""))
+);

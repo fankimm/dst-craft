@@ -16,6 +16,7 @@ import { ViewCount } from "@/components/ui/ViewCount";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import { ItemStatsPanel } from "./ItemStatsPanel";
+import { bossDropBlueprintItems } from "@/data/bosses";
 
 // Higher-tier stations that can also craft items of the base station
 const stationUpgrades: Partial<Record<CraftingStation, CraftingStation[]>> = {
@@ -173,19 +174,22 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             />
           )}
           {/* Blueprint badge */}
-          {item.blueprint && !item.characterOnly && (
-            <div className="flex flex-col items-center">
-              <TagChip
-                label={t(resolvedLocale, "blueprint_required")}
-                icon="game-items/blueprint.png"
-                onClick={onBlueprintClick ? () => onBlueprintClick(item.id) : undefined}
-                className="border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
-              />
-              {onBlueprintClick && (
-                <span className="w-3/4 border-b-2 border-dotted border-[#3975ce]/60 mt-0.5" />
-              )}
-            </div>
-          )}
+          {item.blueprint && !item.characterOnly && (() => {
+            const isBossBlueprint = bossDropBlueprintItems.has(item.id);
+            return (
+              <div className="flex flex-col items-center">
+                <TagChip
+                  label={t(resolvedLocale, "blueprint_required")}
+                  icon="game-items/blueprint.png"
+                  onClick={isBossBlueprint && onBlueprintClick ? () => onBlueprintClick(item.id) : undefined}
+                  className="border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
+                />
+                {isBossBlueprint && onBlueprintClick && (
+                  <span className="w-3/4 border-b-2 border-dotted border-[#3975ce]/60 mt-0.5" />
+                )}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Stats */}
