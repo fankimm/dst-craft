@@ -100,7 +100,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_supergodmode()",
       descKo: "무적 + 스탯 무한",
       descEn: "Invincible + infinite stats",
-      icon: "game-items/thulecite.png",
+      icon: "game-items/armor_ruins_arcane.png",
     },
     {
       id: "godmode",
@@ -109,7 +109,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_godmode()",
       descKo: "무적 (피해 0)",
       descEn: "Invincible (no damage)",
-      icon: "game-items/shieldofterror.png",
+      icon: "game-items/armorruins.png",
     },
     {
       id: "revive",
@@ -118,7 +118,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_revive()",
       descKo: "유령 → 부활",
       descEn: "Ghost → revive",
-      icon: "game-items/pocketwatch_revive.png",
+      icon: "game-items/reviver.png",
     },
     {
       id: "speedmult",
