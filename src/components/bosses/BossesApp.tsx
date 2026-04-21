@@ -702,7 +702,7 @@ function PoolGroupedItems({ items, keyPrefix, locale, onViewCraftingItem }: {
         return (
           <div
             key={`pool-${group.pool}`}
-            className="inline-flex items-center gap-1 rounded-lg border border-dashed border-amber-500/50 bg-amber-500/5 px-1.5 py-1"
+            className="flex flex-wrap items-center gap-1 rounded-lg border border-dashed border-amber-500/50 bg-amber-500/5 px-1.5 py-1"
           >
             <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 mr-0.5 whitespace-nowrap">
               {poolLabel}
