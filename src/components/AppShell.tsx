@@ -8,6 +8,7 @@ import { CookpotApp } from "./cookpot/CookpotApp";
 import { BossesApp } from "./bosses/BossesApp";
 import { SettingsPage } from "./settings/SettingsPage";
 import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
+import { ConsoleApp } from "./console/ConsoleApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { SkillsTourPopover } from "./SkillsTourPopover";
 import { useSettings } from "@/hooks/use-settings";
@@ -16,7 +17,7 @@ import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "skills" | "settings";
+type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "skills" | "console" | "settings";
 
 const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?: boolean }[] = [
   { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.png" },
@@ -24,6 +25,7 @@ const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?
   { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
   { id: "bosses", labelKey: "tab_bosses", image: "/images/game-items/deerclops_eyeball.png" },
   { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.png" },
+  { id: "console", labelKey: "tab_console", image: "/images/game-items/papyrus.png" },
   { id: "settings", labelKey: "tab_settings", image: "/images/game-items/gears.png" },
 ];
 
@@ -31,7 +33,7 @@ const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?
 function readTabFromUrl(): TabId {
   if (typeof window === "undefined") return "crafting";
   const tab = new URLSearchParams(window.location.search).get("tab");
-  if (tab === "cooking" || tab === "cookpot" || tab === "bosses" || tab === "skills" || tab === "settings") return tab;
+  if (tab === "cooking" || tab === "cookpot" || tab === "bosses" || tab === "skills" || tab === "console" || tab === "settings") return tab;
   return "crafting";
 }
 
@@ -255,6 +257,9 @@ export function AppShell() {
         </div>
         <div className={activeTab === "skills" ? "h-full" : "hidden"}>
           <SkillSimulatorApp onViewCraftingItem={handleViewCraftingItem} />
+        </div>
+        <div className={activeTab === "console" ? "h-full" : "hidden"}>
+          <ConsoleApp />
         </div>
         <div className={activeTab === "settings" ? "h-full" : "hidden"}>
           <SettingsPage />

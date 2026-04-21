@@ -15,6 +15,32 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.15.0",
+    date: "2026-04-21",
+    dev: [
+      "feat: 콘솔 명령어 탭 신규 추가 (ConsoleApp)",
+      "feat: 아이템 소환 빌더 — 아이템 검색+선택+갯수 → c_give/c_spawn 명령어 자동 생성",
+      "feat: 카테고리별 명령어 카드 — 캐릭터 상태/월드 제어/서버 관리/디버그",
+      "feat: 파라미터 있는 명령어 인라인 편집 (시즌, 시간, 속도 등)",
+      "data: console-commands.ts 명령어 데이터 정의",
+      "i18n: 콘솔 탭 번역 키 ko/en 추가",
+    ],
+    changes: {
+      ko: [
+        "콘솔 명령어 탭 추가 — 자주 쓰는 DST 콘솔 명령어를 한곳에서 확인하고 복사",
+        "아이템 소환 빌더 — 아이템 검색 후 갯수 지정하면 c_give/c_spawn 명령어 자동 생성",
+        "캐릭터 상태/월드 제어/서버 관리/디버그 카테고리별 명령어 카드",
+        "시즌 변경, 시간 설정 등 파라미터가 있는 명령어는 드롭다운으로 간편 선택",
+      ],
+      en: [
+        "New Console Commands tab — browse and copy frequently used DST console commands",
+        "Item Spawn Builder — search items, set quantity, auto-generate c_give/c_spawn commands",
+        "Commands organized by category: Player Status, World Control, Server Admin, Debug",
+        "Parameterized commands (season, time, speed) with inline dropdowns",
+      ],
+    },
+  },
+  {
     version: "0.14.2",
     date: "2026-04-21",
     dev: [

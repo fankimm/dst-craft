@@ -50,6 +50,7 @@
 - `src/components/crafting/ItemStatsPanel.tsx` — v3 스펙 렌더링 컴포넌트 (4그룹: 전투/방어/유틸리티/특수)
 - `src/components/crafting/` — 메인 앱 컴포넌트
 - `src/components/cooking/` — 요리 탭 컴포넌트
+- `src/components/console/` — 콘솔 명령어 탭 컴포넌트
 - `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지
 - `src/data/skill-trees/` — 스킬트리 데이터 (11캐릭터, 번역, 타입)
