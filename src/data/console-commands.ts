@@ -192,7 +192,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       id: "revealmap",
       nameKo: "지도 공개",
       nameEn: "Reveal Map",
-      command: "minimap = TheSim:FindFirstEntityWithTag(\"minimap\") minimap.MiniMap:ShowArea(0,0,0,10000)",
+      command: "for x=-1600,1600,35 do for y=-1600,1600,35 do ThePlayer.player_classified.MapExplorer:RevealArea(x,0,y) end end",
     },
   ],
 
