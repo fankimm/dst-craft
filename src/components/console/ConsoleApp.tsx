@@ -7,7 +7,7 @@ import { useSettings } from "@/hooks/use-settings";
 import { t, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
-import { gameItems } from "@/data/game-items-db";
+import { spawnablePrefabs } from "@/data/spawnable-prefabs";
 import { allItems } from "@/data/items";
 import { materials } from "@/data/materials";
 import {
@@ -39,34 +39,12 @@ for (const mat of materials) {
   if (mat.image) imageOverrides.set(mat.id, mat.image);
 }
 
-const VIRTUAL_PREFIXES = ["transmute_", "wanderingtradershop_"];
-
-/** IDs that exist in our app (allItems + materials) — these have verified images */
-const appItemIds = new Set([
-  ...allItems.map((i) => i.id),
-  ...materials.map((m) => m.id),
-]);
-
-const spawnableItems: SpawnableItem[] = (() => {
-  // Sort: app items first (have images), then the rest
-  const sorted = [...gameItems]
-    .filter((g) => !VIRTUAL_PREFIXES.some((p) => g.id.startsWith(p)))
-    .sort((a, b) => (appItemIds.has(b.id) ? 1 : 0) - (appItemIds.has(a.id) ? 1 : 0));
-
-  const seenNames = new Set<string>();
-  return sorted
-    .filter((g) => {
-      if (seenNames.has(g.ko)) return false;
-      seenNames.add(g.ko);
-      return true;
-    })
-    .map((g) => ({
-      id: g.id,
-      name: g.en,
-      nameKo: g.ko,
-      image: imageOverrides.get(g.id) ?? `${g.id}.png`,
-    }));
-})();
+const spawnableItems: SpawnableItem[] = spawnablePrefabs.map((p) => ({
+  id: p.id,
+  name: p.en,
+  nameKo: p.ko,
+  image: imageOverrides.get(p.id) ?? `${p.id}.png`,
+}));
 
 // ---------------------------------------------------------------------------
 // ConsoleApp
