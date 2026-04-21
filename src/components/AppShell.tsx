@@ -25,7 +25,7 @@ const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?
   { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
   { id: "bosses", labelKey: "tab_bosses", image: "/images/game-items/deerclops_eyeball.png" },
   { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.png" },
-  { id: "console", labelKey: "tab_console", image: "/images/game-items/papyrus.png" },
+  { id: "console", labelKey: "tab_console", image: "/images/game-items/papyrus.png", adminOnly: true },
   { id: "settings", labelKey: "tab_settings", image: "/images/game-items/gears.png" },
 ];
 
