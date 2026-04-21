@@ -222,6 +222,14 @@
   3. 라벨/설명은 임의 작성 금지 — ko.po/strings.lua 원문 사용 필수
 - **해결**: lockLabel에 lockId 파라미터 추가 → lockTranslations 우선 참조, no_opposing_faction 반전 수정, WX-78 잠금 3개로 분리 + disabled 타입 추가
 
+### 게임 데이터 소스 선택: 파생 데이터 → 원본으로 3회 회귀
+- **문제**: 콘솔 소환용 아이템 목록을 game-items-db(recipes.lua 기반, 1028개) → Prefab() grep(1130개) → ko.po STRINGS.NAMES(2796개)로 3번 교체
+- **원인**: "가장 완전하고 신뢰할 수 있는 소스는 무엇인가"를 먼저 따지지 않고, 가까이 있는 기존 데이터부터 가져다 씀
+  1. `game-items-db`: recipes.lua 기반 → 제작 아이템만 있고 자연채집/보스드랍 누락
+  2. `Prefab()` grep: 팩토리 패턴(MakeHat, MakeArmor 등)으로 생성되는 프리팹 누락
+  3. `ko.po STRINGS.NAMES`: 게임에서 이름이 있는 모든 엔티티 = 소환 가능한 모든 것
+- **교훈**: 새 데이터 소스가 필요할 때, "이 데이터의 완전한 원본(single source of truth)은 어디인가"를 먼저 파악할 것. DST에서 "이름이 있는 모든 엔티티" = ko.po STRINGS.NAMES. 파생 데이터(recipes.lua, Prefab() 정의)는 항상 부분집합.
+
 ### iOS Safari input 자동 확대 (font-size < 16px)
 - **문제**: 숫자 input 포커스 시 iOS가 자동 확대 → 축소 후 하단에 흰 가림막 발생
 - **원인**: iOS Safari는 `font-size < 16px`인 input/select/textarea에 포커스하면 자동 확대. 확대→축소 사이클에서 `100dvh` 레이아웃이 제대로 복원 안 됨
