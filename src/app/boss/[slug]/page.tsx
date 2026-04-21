@@ -251,6 +251,74 @@ export default async function BossPage({
           </div>
         </section>
 
+        {/* Stash Loot (e.g., Klaus Loot Stash) */}
+        {boss.stashLoot && (
+          <section>
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+              {boss.stashLoot.labelEn}
+            </h2>
+            <p className="text-xs text-muted-foreground mb-3">{boss.stashLoot.noteEn}</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {boss.stashLoot.items.map((loot, i) => {
+                const nameEn = lootDisplayName(loot.item, "en");
+                const nameKoVal = lootDisplayName(loot.item, "ko");
+                const imgSrc = lootImage(loot.item);
+                const isBlueprint = loot.blueprint;
+                const chanceLabel = loot.chance >= 1
+                  ? "100%"
+                  : `${Math.round(loot.chance * 100)}%`;
+                const isCraftable = craftableIds.has(loot.item);
+
+                const inner = (
+                  <>
+                    <div className="relative shrink-0">
+                      <img
+                        src={imgSrc}
+                        alt={nameEn}
+                        className="size-10 object-contain"
+                      />
+                      {loot.count && loot.count > 1 && (
+                        <span className="absolute -bottom-1 -right-1 bg-foreground text-background text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center leading-none">
+                          {loot.count}
+                        </span>
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-medium text-foreground leading-tight truncate">
+                        {nameEn}
+                      </p>
+                      {nameKoVal !== nameEn && (
+                        <p className="text-[10px] text-muted-foreground truncate">
+                          {nameKoVal}
+                        </p>
+                      )}
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <span className="text-[10px] text-muted-foreground">
+                          {chanceLabel}
+                        </span>
+                        {isBlueprint && (
+                          <span className="text-[10px] font-medium text-amber-600 dark:text-amber-400">
+                            Blueprint
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                );
+
+                const cls = "flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2";
+                return isCraftable ? (
+                  <Link key={`stash-${loot.item}-${i}`} href={`/item/${idToSlug(loot.item)}`} className={`${cls} hover:border-ring transition-colors`}>
+                    {inner}
+                  </Link>
+                ) : (
+                  <div key={`stash-${loot.item}-${i}`} className={cls}>{inner}</div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* Loot Description — SEO text */}
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">

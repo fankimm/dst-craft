@@ -57,7 +57,8 @@ const allLootItems = (() => {
   const seen = new Set<string>();
   const items: { id: string; baseId: string; nameKo: string; nameEn: string; image: string; blueprint: boolean }[] = [];
   for (const boss of bosses) {
-    for (const loot of boss.loot) {
+    const allLoot = [...boss.loot, ...(boss.stashLoot?.items ?? [])];
+    for (const loot of allLoot) {
       if (seen.has(loot.item)) continue;
       seen.add(loot.item);
       const baseId = loot.item.replace(/_blueprint$/, "");
@@ -165,9 +166,10 @@ export function BossesApp({
   const lootSearchResults = useMemo(() => {
     if (lootTags.length === 0) return null;
     const tagItemIds = new Set(lootTags.map((t) => t.itemId));
-    return bosses.filter((boss) =>
-      boss.loot.some((loot) => tagItemIds.has(loot.item))
-    );
+    return bosses.filter((boss) => {
+      const allLoot = [...boss.loot, ...(boss.stashLoot?.items ?? [])];
+      return allLoot.some((loot) => tagItemIds.has(loot.item));
+    });
   }, [lootTags]);
 
   const slideClass = useSlideAnimation(selectedCategory, (v) => v === null);
@@ -722,6 +724,70 @@ function BossDetail({
           })}
         </div>
       </div>
+
+      {/* Stash Loot (e.g., Klaus Loot Stash) */}
+      {boss.stashLoot && (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <h4 className="text-sm font-semibold text-muted-foreground">
+              {locale === "ko" ? boss.stashLoot.label : boss.stashLoot.labelEn}
+            </h4>
+            <img
+              src={assetPath(`/images/game-items/${boss.stashLoot.icon}`)}
+              alt=""
+              className="size-4 object-contain"
+            />
+          </div>
+          <p className="text-xs text-muted-foreground/80">
+            {locale === "ko" ? boss.stashLoot.note : boss.stashLoot.noteEn}
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {boss.stashLoot.items.map((loot, i) => {
+              const displayName = lootDisplayName(loot.item, locale);
+              const hasCount = (loot.count ?? 0) > 1;
+              const chanceText = loot.chance < 1 ? ` ${Math.round(loot.chance * 100)}%` : "";
+              const craftingId = loot.blueprint ? loot.item.replace(/_blueprint$/, "") : null;
+              const isClickable = !!(craftingId && onViewCraftingItem);
+              const pill = (
+                <span
+                  className={cn(
+                    "relative inline-flex items-center gap-1 rounded-full border pl-1.5 pr-2.5 py-1 text-xs font-medium h-7",
+                    loot.blueprint
+                      ? "border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
+                      : "border-border bg-surface text-foreground/80",
+                  )}
+                >
+                  <img
+                    src={assetPath(loot.blueprint ? "/images/game-items/blueprint.png" : lootImage(loot.item))}
+                    alt=""
+                    className="size-4 object-contain shrink-0"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                  />
+                  {displayName}
+                  {chanceText && <span className="text-amber-500">{chanceText}</span>}
+                  {hasCount && (
+                    <span className="absolute -bottom-1.5 -right-1.5 flex items-center justify-center min-w-4 h-4 px-0.5 rounded-full text-[10px] font-bold bg-surface-hover border border-ring text-foreground/80">
+                      {loot.count}
+                    </span>
+                  )}
+                </span>
+              );
+              return isClickable ? (
+                <button
+                  key={`stash-${i}`}
+                  onClick={() => onViewCraftingItem!(craftingId!)}
+                  className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+                >
+                  {pill}
+                  <span className="w-3/4 border-b-2 border-dotted border-[#3975ce]/60 mt-0.5" />
+                </button>
+              ) : (
+                <span key={`stash-${i}`}>{pill}</span>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

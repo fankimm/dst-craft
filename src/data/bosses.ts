@@ -5,6 +5,15 @@ export interface BossLoot {
   blueprint?: boolean;
 }
 
+export interface BossStashLoot {
+  label: string;      // Korean label
+  labelEn: string;    // English label
+  note: string;       // Korean mechanic description
+  noteEn: string;     // English mechanic description
+  icon: string;       // image filename in /images/game-items/
+  items: BossLoot[];
+}
+
 export type BossCategoryId = "seasonal" | "raid" | "ocean" | "dungeon" | "event" | "mini" | "all";
 
 export interface Boss {
@@ -14,6 +23,7 @@ export interface Boss {
   category: BossCategoryId;
   image: string | string[]; // filename(s) in /images/bosses/
   loot: BossLoot[];
+  stashLoot?: BossStashLoot; // secondary loot from a stash/chest mechanic (e.g., Klaus Loot Stash)
 }
 
 export const bosses: Boss[] = [
@@ -126,7 +136,49 @@ export const bosses: Boss[] = [
       { item: "charcoal", chance: 1 },
       { item: "chesspiece_klaus_sketch", chance: 1 },
       { item: "winter_food3", chance: 1, count: 2 },
+      { item: "klaussackkey", chance: 1 },
     ],
+    stashLoot: {
+      label: "전리품 보따리",
+      labelEn: "Loot Stash",
+      note: "수사슴의 뿔로 보따리를 열면 4개의 번들 획득",
+      noteEn: "Open the Loot Stash with the Stag Antler to receive 4 bundles",
+      icon: "klaussackkey.png",
+      items: [
+        // Bundle 1: guaranteed
+        { item: "amulet", chance: 1 },
+        // Bundle 2: 50% chance
+        { item: "amulet", chance: 0.5 },
+        // Bundle 3: 10% jackpot
+        { item: "krampus_sack", chance: 0.1 },
+        // Bundle 4 - giant_loot1 pool (1 from 5)
+        { item: "deerclops_eyeball", chance: 0.2 },
+        { item: "dragon_scales", chance: 0.2 },
+        { item: "hivehat", chance: 0.2 },
+        { item: "shroom_skin", chance: 0.2 },
+        { item: "mandrake", chance: 0.2 },
+        // Bundle 4 - giant_loot2 blueprints (50% for 1 from 9)
+        { item: "bundlewrap_blueprint", chance: 0.056, blueprint: true },
+        { item: "dragonflyfurnace_blueprint", chance: 0.056, blueprint: true },
+        { item: "townportal_blueprint", chance: 0.056, blueprint: true },
+        { item: "trident_blueprint", chance: 0.056, blueprint: true },
+        { item: "red_mushroomhat_blueprint", chance: 0.056, blueprint: true },
+        { item: "green_mushroomhat_blueprint", chance: 0.056, blueprint: true },
+        { item: "blue_mushroomhat_blueprint", chance: 0.056, blueprint: true },
+        { item: "mushroom_light_blueprint", chance: 0.056, blueprint: true },
+        { item: "mushroom_light2_blueprint", chance: 0.056, blueprint: true },
+        // Bundle 4 - giant_loot3 pool (2 from 9, ~22% each)
+        { item: "bearger_fur", chance: 0.22 },
+        { item: "royal_jelly", chance: 0.22 },
+        { item: "goose_feather", chance: 0.22 },
+        { item: "lavae_egg", chance: 0.22 },
+        { item: "spiderhat", chance: 0.22 },
+        { item: "steelwool", chance: 0.22 },
+        { item: "townportaltalisman", chance: 0.22 },
+        { item: "malbatross_beak", chance: 0.22 },
+        { item: "tallbirdegg", chance: 0.22 },
+      ],
+    },
   },
   {
     id: "toadstool",
@@ -212,12 +264,39 @@ export const bosses: Boss[] = [
     category: "dungeon",
     image: "minotaur.png",
     loot: [
-      { item: "armorruins", chance: 1 },
-      { item: "ruinshat", chance: 1 },
-      { item: "ruins_bat", chance: 1 },
+      { item: "meat", chance: 1, count: 8 },
+      { item: "minotaurhorn", chance: 1 },
       { item: "support_pillar_scaffold_blueprint", chance: 1, blueprint: true },
       { item: "chesspiece_minotaur_sketch", chance: 1 },
     ],
+    stashLoot: {
+      label: "크고 화려한 상자",
+      labelEn: "Large Ornate Chest",
+      note: "처치 후 출현하는 상자에서 획득",
+      noteEn: "Spawns after defeating the Ancient Guardian",
+      icon: "atrium_key.png",
+      items: [
+        // Always guaranteed
+        { item: "atrium_key", chance: 1 },
+        // 1 from pool: armorruins / ruinshat / ruins_bat
+        { item: "armorruins", chance: 0.33 },
+        { item: "ruinshat", chance: 0.33 },
+        { item: "ruins_bat", chance: 0.33 },
+        // 1 from pool: orangestaff / yellowstaff
+        { item: "orangestaff", chance: 0.5 },
+        { item: "yellowstaff", chance: 0.5 },
+        // 1 from pool: orangeamulet / yellowamulet
+        { item: "orangeamulet", chance: 0.5 },
+        { item: "yellowamulet", chance: 0.5 },
+        // Gems & materials
+        { item: "yellowgem", chance: 1, count: 3 },
+        { item: "orangegem", chance: 1, count: 3 },
+        { item: "greengem", chance: 1, count: 2 },
+        { item: "thulecite", chance: 1, count: 11 },
+        { item: "thulecite_pieces", chance: 1, count: 24 },
+        { item: "gears", chance: 1, count: 4 },
+      ],
+    },
   },
   {
     id: "eyeofterror",
@@ -485,11 +564,18 @@ export const lootNameKo: Record<string, string> = {
   malbatross_beak: "꽉새치 부리",
   shieldofterror: "공포의 방패", milkywhites: "흰자위", eyemaskhat: "눈알 가면",
   gears: "톱니바퀴", transistor: "전기 장치", greengem: "초록 보석", trinket_6: "낡아빠진 전선",
+  minotaurhorn: "수호자의 뿔", atrium_key: "고대의 열쇠",
+  orangestaff: "게으른 탐험가", yellowstaff: "별부름 지팡이",
+  orangeamulet: "게으른 약탈자", yellowamulet: "마광",
+  thulecite: "툴레사이트", thulecite_pieces: "툴레사이트 파편",
   chesspiece_eyeofterror_sketch: "공포의 눈 조각상 스케치",
   armorruins: "툴레사이트 갑옷", ruinshat: "툴레사이트 왕관", ruins_bat: "툴레사이트 몽둥이",
   spidereggsack: "거미 알", spiderhat: "거미 모자",
   dragonflyfurnace: "용비늘 화로", bundlewrap: "포장지",
   trident: "시끄러운 삼지창", townportal: "게으른 도망자", antlionhat: "땅엎기 투구",
+  klaussackkey: "수사슴의 뿔", amulet: "생명의 부적", krampus_sack: "크람푸스 보따리",
+  mandrake: "맨드레이크", steelwool: "강철 털",
+  tallbirdegg: "키다리새 알",
   armordreadstone: "공포석 갑옷", dreadstonehat: "공포석 투구",
   wall_dreadstone_item: "공포석 벽",
   support_pillar_dreadstone_scaffold: "공포석 기둥 비계",

@@ -15,6 +15,31 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.14.1",
+    date: "2026-04-21",
+    dev: [
+      "feat: 보스 2차 보상(stashLoot) 시스템 추가 — Boss 인터페이스에 stashLoot 필드",
+      "data: 클라우스 보따리 보상 추가 (klaussackloot.lua 기반 정확한 확률)",
+      "data: 클라우스 직접 드랍에 수사슴의 뿔(klaussackkey) 추가",
+      "data: 고대의 수호자 직접 드랍 수정 — 수호자의 뿔/기둥비계도면 추가, 상자 아이템을 stashLoot로 분리",
+      "data: 고대의 수호자 화려한 상자 보상 추가 (고대열쇠, 툴레장비, 지팡이, 목걸이, 보석 등)",
+      "fix: 전리품 검색에 stashLoot 아이템 반영",
+      "data: lootNameKo에 신규 아이템 번역 추가 (ko.po 기반)",
+    ],
+    changes: {
+      ko: [
+        "클라우스 보따리 보상 표시 — 크람푸스 보따리(10%), 보스 재료, 도면 등 상세 확률 확인 가능",
+        "고대의 수호자 보상 정정 — 수호자의 뿔 추가, 화려한 상자 보상(고대 열쇠, 툴레 장비 등) 별도 표시",
+        "보따리/상자 아이템도 전리품 검색에 반영",
+      ],
+      en: [
+        "Klaus Loot Stash rewards displayed — Krampus Sack (10%), boss materials, blueprints with exact drop rates",
+        "Ancient Guardian loot corrected — Guardian's Horn added, Ornate Chest rewards shown separately",
+        "Stash/chest items now included in loot search",
+      ],
+    },
+  },
+  {
     version: "0.14.0",
     date: "2026-04-21",
     dev: [
@@ -77,7 +102,7 @@ const releases: Release[] = [
     ],
     changes: {
       ko: [
-        "WX-78 스킬트리 시뮬레이터 추가 — 회로·동체·드론·��화 4개 트리",
+        "WX-78 스킬트리 시뮬레이터 추가 — 회로·동체·드론·진화 4개 트리",
       ],
       en: [
         "Added WX-78 skill tree simulator — Circuitry, Chassis, Drones, Allegiance",
