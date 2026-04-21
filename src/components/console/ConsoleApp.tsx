@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Copy, Check, ChevronRight } from "lucide-react";
+import { Copy, Check, Terminal } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
 import { t, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -31,14 +31,24 @@ interface SpawnableItem {
 /** Prefixes that are recipe-only virtual IDs, not real spawnable prefabs */
 const VIRTUAL_PREFIXES = ["transmute_", "wanderingtradershop_"];
 
-const spawnableItems: SpawnableItem[] = gameItems
-  .filter((item) => !VIRTUAL_PREFIXES.some((p) => item.id.startsWith(p)))
-  .map((item) => ({
-    id: item.id,
-    name: item.en,
-    nameKo: item.ko,
-    image: `${item.id}.png`,
-  }));
+const spawnableItems: SpawnableItem[] = (() => {
+  const seen = new Set<string>();
+  return gameItems
+    .filter((item) => !VIRTUAL_PREFIXES.some((p) => item.id.startsWith(p)))
+    .filter((item) => {
+      // Deduplicate by ko name — keep the first occurrence
+      const key = item.ko;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .map((item) => ({
+      id: item.id,
+      name: item.en,
+      nameKo: item.ko,
+      image: `${item.id}.png`,
+    }));
+})();
 
 // ---------------------------------------------------------------------------
 // ConsoleApp
@@ -93,6 +103,31 @@ export function ConsoleApp() {
 // Item Spawn Builder
 // ---------------------------------------------------------------------------
 
+/** Game item image with fallback to Terminal icon */
+function ItemImage({ image, size }: { image: string; size: number }) {
+  const [error, setError] = useState(false);
+  if (!image || error) {
+    return (
+      <span
+        className="shrink-0 flex items-center justify-center rounded bg-muted/50"
+        style={{ width: size, height: size }}
+      >
+        <Terminal className="size-4 text-muted-foreground" />
+      </span>
+    );
+  }
+  return (
+    <img
+      src={assetPath(`/images/game-items/${image}`)}
+      alt=""
+      width={size}
+      height={size}
+      className="shrink-0 object-contain"
+      onError={() => setError(true)}
+    />
+  );
+}
+
 type SpawnMode = "give" | "spawn";
 
 function ItemSpawnBuilder({ locale }: { locale: Locale }) {
@@ -121,6 +156,20 @@ function ItemSpawnBuilder({ locale }: { locale: Locale }) {
 
   const handleSelect = useCallback((s: SearchSuggestion) => {
     setSelectedItem(s.data as SpawnableItem);
+    setSearch("");
+  }, []);
+
+  // Direct prefab ID input — user types a raw ID and presses Enter
+  const handleSubmit = useCallback((value: string) => {
+    const id = value.trim();
+    if (!id) return;
+    // Check if it matches a known item first
+    const known = spawnableItems.find((item) => item.id === id);
+    if (known) {
+      setSelectedItem(known);
+    } else {
+      setSelectedItem({ id, name: id, nameKo: id, image: "" });
+    }
     setSearch("");
   }, []);
 
@@ -179,22 +228,19 @@ function ItemSpawnBuilder({ locale }: { locale: Locale }) {
         onChange={setSearch}
         suggestions={suggestions}
         onSelect={handleSelect}
+        onSubmit={handleSubmit}
         placeholder={t(locale, "console_search_items")}
       />
 
       {/* Selected item display */}
       {selectedItem && (
         <div className="flex items-center gap-2 p-2 rounded-md bg-muted/30 border border-border/50">
-          <Image
-            src={assetPath(`/images/game-items/${selectedItem.image}`)}
-            alt=""
-            width={32}
-            height={32}
-            className="shrink-0"
-          />
+          <ItemImage image={selectedItem.image} size={32} />
           <div className="min-w-0 flex-1">
             <div className="text-sm font-medium truncate">
-              {locale === "en" ? selectedItem.name : selectedItem.nameKo}
+              {selectedItem.name === selectedItem.id
+                ? selectedItem.id
+                : locale === "en" ? selectedItem.name : selectedItem.nameKo}
             </div>
             <div className="text-[11px] text-muted-foreground font-mono">{selectedItem.id}</div>
           </div>

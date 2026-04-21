@@ -174,6 +174,7 @@ export function SearchWithSuggestions({
                   src={assetPath(`/images/${s.image}`)}
                   alt=""
                   className="size-5 object-contain shrink-0"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                 />
               ) : s.dotClass ? (
                 <span className={cn("size-2 rounded-full shrink-0 mx-1.5", s.dotClass)} />
