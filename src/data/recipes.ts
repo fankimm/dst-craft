@@ -1195,7 +1195,6 @@ export const cookingRecipes: CookingRecipe[] = [
     cookTime: 2,
     priority: 100,
     station: "cookpot",
-    specialEffect: "dust_moth_food",
     cardIngredients: [["refined_dust", 1], ["twigs", 3]],
   },
   {
