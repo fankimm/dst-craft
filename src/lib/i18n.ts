@@ -404,6 +404,11 @@ export function materialName(mat: Pick<Material, "id" | "name">, locale: string)
   return locales[locale]?.materials[mat.id]?.name ?? mat.name;
 }
 
+export function lookupName(id: string, locale: string): string {
+  const loc = locales[locale];
+  return loc?.items[id]?.name ?? loc?.materials[id]?.name ?? id.replace(/_/g, " ");
+}
+
 export function categoryName(cat: Pick<Category, "id" | "name">, locale: string): string {
   return locales[locale]?.categories[cat.id]?.name ?? cat.name;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ScrapbookStats } from "@/data/scrapbook-stats";
-import { itemName, materialName } from "@/lib/i18n";
+import { itemName, materialName, lookupName } from "@/lib/i18n";
 import { getItemById, getMaterialById } from "@/lib/crafting-data";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
@@ -11,7 +11,7 @@ function resolveItemName(id: string, locale: string): string {
   if (item) return itemName(item, locale);
   const mat = getMaterialById(id);
   if (mat) return materialName(mat, locale);
-  return id.replace(/_/g, " ");
+  return lookupName(id, locale);
 }
 
 function formatDapperness(value: number, l: string): string {
