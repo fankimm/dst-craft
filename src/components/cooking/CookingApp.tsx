@@ -299,7 +299,7 @@ export function CookingApp({
   // -----------------------------------------------------------------------
   // Category grid view (home)
   // -----------------------------------------------------------------------
-  if (showCategoryGrid) {
+  if (showCategoryGrid && !isSearching) {
     return (
       <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
         {/* Header */}
@@ -384,16 +384,18 @@ export function CookingApp({
         <div className="flex items-center gap-2 min-w-0">
           <CookingBreadcrumb
             locale={resolvedLocale}
-            categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : selectedCategory === "recent" ? t(resolvedLocale, "recent") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
+            categoryLabel={isSearching && !selectedCategory ? t(resolvedLocale, "searchResults") : selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : selectedCategory === "recent" ? t(resolvedLocale, "recent") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
             onHomeClick={handleGoHome}
           />
-          <div className="ml-auto shrink-0">
-            <SortDropdown
-              value={sortByPopular ? "popular" : "default"}
-              onChange={(v) => setSortByPopular(v === "popular")}
-              locale={resolvedLocale}
-            />
-          </div>
+          {!isSearching && (
+            <div className="ml-auto shrink-0">
+              <SortDropdown
+                value={sortByPopular ? "popular" : "default"}
+                onChange={(v) => setSortByPopular(v === "popular")}
+                locale={resolvedLocale}
+              />
+            </div>
+          )}
         </div>
         {searchBar}
       </div>
