@@ -1,14 +1,16 @@
 "use client";
 
 import type { ScrapbookStats } from "@/data/scrapbook-stats";
-import { itemName } from "@/lib/i18n";
-import { getItemById } from "@/lib/crafting-data";
+import { itemName, materialName } from "@/lib/i18n";
+import { getItemById, getMaterialById } from "@/lib/crafting-data";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 
 function resolveItemName(id: string, locale: string): string {
   const item = getItemById(id);
   if (item) return itemName(item, locale);
+  const mat = getMaterialById(id);
+  if (mat) return materialName(mat, locale);
   return id.replace(/_/g, " ");
 }
 
