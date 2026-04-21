@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
@@ -818,6 +818,8 @@ function BossDetail({
         </h4>
         <div className="flex flex-wrap gap-1.5">
           {boss.loot.map((loot, i) => {
+            const prevLabel = i > 0 ? boss.loot[i - 1].label : undefined;
+            const showLabel = !!loot.label && loot.label !== prevLabel;
             const displayName = lootDisplayName(loot.item, locale);
             const hasCount = (loot.count ?? 0) > 1;
             const chanceText = loot.chance < 1 ? ` ${Math.round(loot.chance * 100)}%` : "";
@@ -847,17 +849,25 @@ function BossDetail({
                 )}
               </span>
             );
-            return isClickable ? (
-              <button
-                key={i}
-                onClick={() => onViewCraftingItem!(craftingId!)}
-                className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
-              >
-                {pill}
-                <span className="w-3/4 border-b-2 border-dotted border-[#3975ce]/60 mt-0.5" />
-              </button>
-            ) : (
-              <span key={i}>{pill}</span>
+            return (
+              <React.Fragment key={i}>
+                {showLabel && (
+                  <span className="basis-full text-[11px] text-muted-foreground font-medium mt-1 first:mt-0">
+                    {loot.label}
+                  </span>
+                )}
+                {isClickable ? (
+                  <button
+                    onClick={() => onViewCraftingItem!(craftingId!)}
+                    className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+                  >
+                    {pill}
+                    <span className="w-3/4 border-b-2 border-dotted border-[#3975ce]/60 mt-0.5" />
+                  </button>
+                ) : (
+                  <span>{pill}</span>
+                )}
+              </React.Fragment>
             );
           })}
         </div>

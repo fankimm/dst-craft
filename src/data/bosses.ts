@@ -3,27 +3,28 @@ export interface BossLoot {
   chance: number; // 1.0 = 100%
   count?: number;
   blueprint?: boolean;
-  pool?: string; // items with same pool value are a random-pick group
-  poolCount?: number; // how many items picked from this pool (default 1)
-  poolChance?: number; // overall activation chance for the pool (default 1)
+  label?: string;
+  pool?: string;
+  poolCount?: number;
+  poolChance?: number;
 }
 
 export interface StashBundle {
-  label: string;      // e.g., "번들 1"
-  labelEn: string;    // e.g., "Bundle 1"
+  label: string;
+  labelEn: string;
   items: BossLoot[];
-  filler?: string;    // e.g., "금, 숯"
-  fillerEn?: string;  // e.g., "Gold, Charcoal"
+  filler?: string;
+  fillerEn?: string;
 }
 
 export interface BossStashLoot {
-  label: string;      // Korean label
-  labelEn: string;    // English label
-  note: string;       // Korean mechanic description
-  noteEn: string;     // English mechanic description
-  icon: string;       // image filename in /images/game-items/
-  items?: BossLoot[];           // flat list (e.g., Ancient Guardian chest)
-  bundles?: StashBundle[];      // bundled list (e.g., Klaus Loot Stash)
+  label: string;
+  labelEn: string;
+  note: string;
+  noteEn: string;
+  icon: string;
+  items?: BossLoot[];
+  bundles?: StashBundle[];
 }
 
 export type BossCategoryId = "seasonal" | "raid" | "ocean" | "dungeon" | "event" | "mini" | "all";
@@ -84,12 +85,14 @@ export const bosses: Boss[] = [
     category: "seasonal",
     image: "antlion.png",
     loot: [
-      { item: "townportaltalisman", chance: 1 },
-      { item: "sandblock", chance: 1, count: 2 },
-      { item: "antliontrinket", chance: 1 },
       { item: "townportal_blueprint", chance: 1, blueprint: true },
       { item: "antlionhat_blueprint", chance: 1, blueprint: true },
       { item: "chesspiece_antlion_sketch", chance: 1 },
+      { item: "townportaltalisman", chance: 1, count: 6 },
+      { item: "townportaltalisman", chance: 0.5, count: 2 },
+      { item: "meat", chance: 1, count: 4 },
+      { item: "rocks", chance: 1, count: 2 },
+      { item: "rocks", chance: 0.5, count: 2 },
     ],
   },
   {
@@ -147,15 +150,13 @@ export const bosses: Boss[] = [
       { item: "monstermeat", chance: 1 },
       { item: "charcoal", chance: 1 },
       { item: "chesspiece_klaus_sketch", chance: 1 },
-      { item: "winter_food3", chance: 1, count: 2 },
-      { item: "klaussackkey", chance: 1 },
     ],
     stashLoot: {
       label: "전리품 보따리",
       labelEn: "Loot Stash",
       note: "수사슴의 뿔로 보따리를 열면 4개의 번들 획득",
       noteEn: "Open the Loot Stash with the Stag Antler to receive 4 bundles",
-      icon: "bundle_large.png",
+      icon: "klaus_sack.png",
       bundles: [
         {
           label: "번들 1", labelEn: "Bundle 1",
@@ -248,6 +249,23 @@ export const bosses: Boss[] = [
     loot: [
       { item: "trident_blueprint", chance: 1, blueprint: true },
       { item: "chesspiece_crabking_sketch", chance: 1 },
+      { item: "boat_bumper_crabking_kit", chance: 1 },
+      { item: "barnacle", chance: 1, count: 2 },
+      { item: "barnacle", chance: 0.25, count: 2 },
+      { item: "meat", chance: 1, count: 5 },
+      { item: "meat", chance: 0.5 },
+      { item: "messagebottle", chance: 1, count: 2 },
+      { item: "messagebottle", chance: 0.5 },
+      { item: "messagebottle", chance: 0.25 },
+      { item: "singingshell_octave3", chance: 1 },
+      { item: "singingshell_octave3", chance: 0.5 },
+      { item: "singingshell_octave3", chance: 0.25 },
+      { item: "singingshell_octave4", chance: 1, count: 2 },
+      { item: "singingshell_octave4", chance: 0.5 },
+      { item: "singingshell_octave4", chance: 0.25 },
+      { item: "singingshell_octave5", chance: 1, count: 3 },
+      { item: "singingshell_octave5", chance: 0.5 },
+      { item: "singingshell_octave5", chance: 0.25 },
     ],
   },
   {
@@ -298,8 +316,8 @@ export const bosses: Boss[] = [
     stashLoot: {
       label: "크고 화려한 상자",
       labelEn: "Large Ornate Chest",
-      note: "처치 후 출현하는 상자에서 획득 (7~9개 슬롯 랜덤 선택)",
-      noteEn: "Spawns after defeating the Ancient Guardian (7-9 slots randomly selected)",
+      note: "처치 후 출현하는 상자에서 획득",
+      noteEn: "Spawns after defeating the Ancient Guardian",
       icon: "treasurechest_ancient.png",
       items: [
         // Always guaranteed (placed first, outside random selection)
@@ -348,24 +366,24 @@ export const bosses: Boss[] = [
     loot: [
       { item: "chesspiece_twinsofterror_sketch", chance: 1 },
       { item: "shieldofterror", chance: 1 },
-      { item: "yellowgem", chance: 1 },
-      { item: "gears", chance: 1, count: 3 },
-      { item: "gears", chance: 0.5, count: 2 },
-      { item: "transistor", chance: 1, count: 2 },
-      { item: "transistor", chance: 0.75 },
-      { item: "nightmarefuel", chance: 1, count: 2 },
-      { item: "nightmarefuel", chance: 0.5, count: 2 },
-      { item: "trinket_6", chance: 1 },
-      { item: "trinket_6", chance: 0.5 },
-      { item: "greengem", chance: 1 },
-      { item: "gears", chance: 1, count: 3 },
-      { item: "gears", chance: 0.5, count: 2 },
-      { item: "transistor", chance: 1, count: 2 },
-      { item: "transistor", chance: 0.75 },
-      { item: "nightmarefuel", chance: 1, count: 2 },
-      { item: "nightmarefuel", chance: 0.5, count: 2 },
-      { item: "trinket_6", chance: 1 },
-      { item: "trinket_6", chance: 0.5 },
+      { item: "yellowgem", chance: 1, label: "레티나이저" },
+      { item: "gears", chance: 1, count: 3, label: "레티나이저" },
+      { item: "gears", chance: 0.5, count: 2, label: "레티나이저" },
+      { item: "transistor", chance: 1, count: 2, label: "레티나이저" },
+      { item: "transistor", chance: 0.75, label: "레티나이저" },
+      { item: "nightmarefuel", chance: 1, count: 2, label: "레티나이저" },
+      { item: "nightmarefuel", chance: 0.5, count: 2, label: "레티나이저" },
+      { item: "trinket_6", chance: 1, label: "레티나이저" },
+      { item: "trinket_6", chance: 0.5, label: "레티나이저" },
+      { item: "greengem", chance: 1, label: "스파즈마티즘" },
+      { item: "gears", chance: 1, count: 3, label: "스파즈마티즘" },
+      { item: "gears", chance: 0.5, count: 2, label: "스파즈마티즘" },
+      { item: "transistor", chance: 1, count: 2, label: "스파즈마티즘" },
+      { item: "transistor", chance: 0.75, label: "스파즈마티즘" },
+      { item: "nightmarefuel", chance: 1, count: 2, label: "스파즈마티즘" },
+      { item: "nightmarefuel", chance: 0.5, count: 2, label: "스파즈마티즘" },
+      { item: "trinket_6", chance: 1, label: "스파즈마티즘" },
+      { item: "trinket_6", chance: 0.5, label: "스파즈마티즘" },
     ],
   },
   {
@@ -636,6 +654,8 @@ export const lootNameKo: Record<string, string> = {
   chesspiece_deerclops_mutated_sketch: "수정 외눈사슴 조각상 도면",
   chesspiece_bearger_mutated_sketch: "무장 곰소리 조각상 도면",
   chesspiece_wagboss_robot_sketch: "W.A.R.B.O.T. 조각상 도면",
+  rocks: "돌", boat_bumper_crabking_kit: "대게왕 범퍼 키트", barnacle: "거북순", messagebottle: "편지가 든 병",
+  singingshell_octave3: "바리톤 소리고둥", singingshell_octave4: "알토 소리고둥", singingshell_octave5: "소프라노 소리고둥",
   ice: "얼음", lunar_seed: "천상의 보석",
 };
 
