@@ -23,11 +23,13 @@ const SSR_DEFAULT = { cat: null as CategoryId | null, item: null as string | nul
 
 export function useCraftingState() {
   const [urlState, setUrlState] = useState(SSR_DEFAULT);
+  const [itemHistory, setItemHistory] = useState<string[]>([]);
 
   const showCategoryGrid = !urlState.cat;
   const selectedCategory: CategoryId = urlState.cat || "tools";
   const selectedItem = urlState.item ? (getItemById(urlState.item) ?? null) : null;
   const selectedCharacter = urlState.char;
+  const previousItem = itemHistory.length > 0 ? (getItemById(itemHistory[itemHistory.length - 1]) ?? null) : null;
 
   // Sync from URL after mount (hydration-safe)
   useEffect(() => {
@@ -79,6 +81,7 @@ export function useCraftingState() {
 
   const setItem = useCallback((item: CraftingItem | null) => {
     if (item === null) {
+      setItemHistory([]);
       const params = getParams();
       if (params.has("item")) {
         if (window.history.state?._jump) {
@@ -149,6 +152,10 @@ export function useCraftingState() {
   }, []);
 
   const navigateToItem = useCallback((item: CraftingItem) => {
+    const currentItemId = getParams().get("item");
+    if (currentItemId) {
+      setItemHistory(prev => [...prev, currentItemId]);
+    }
     const category = item.category[0] || "tools";
     const charId = item.characterOnly ?? null;
     const url = charId
@@ -177,7 +184,14 @@ export function useCraftingState() {
     setUrlState(readUrlState());
   }, []);
 
+  const goBackToItem = useCallback(() => {
+    if (itemHistory.length === 0) return;
+    setItemHistory(prev => prev.slice(0, -1));
+    window.history.back();
+  }, [itemHistory.length]);
+
   const goHome = useCallback(() => {
+    setItemHistory([]);
     const url = window.location.pathname;
     window.history.replaceState({ _appNav: true }, "", url);
     setUrlState({ cat: null, item: null, char: null });
@@ -200,10 +214,12 @@ export function useCraftingState() {
     selectedItem,
     selectedCharacter,
     showCategoryGrid,
+    previousItem,
     setCategory,
     setItem,
     setCharacter,
     goBack,
+    goBackToItem,
     goHome,
     goToCategory,
     navigateToItem,

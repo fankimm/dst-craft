@@ -9,7 +9,7 @@ import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import { useFavorites } from "@/hooks/use-favorites";
-import { t, categoryName } from "@/lib/i18n";
+import { t, categoryName, itemName } from "@/lib/i18n";
 import type { CategoryId } from "@/lib/types";
 import { CategoryGrid } from "./CategoryGrid";
 import { CategoryHeader } from "./CategoryHeader";
@@ -45,12 +45,14 @@ export function CraftingApp({
     selectedItem,
     selectedCharacter,
     showCategoryGrid,
+    previousItem,
     setCategory,
     setItem,
     setCharacter,
     goHome,
     goToCategory,
     navigateToItem,
+    goBackToItem,
     jumpToCharacter,
   } = useCraftingState();
 
@@ -188,7 +190,12 @@ export function CraftingApp({
   const displayItems = isSearching ? searchResults : sortedCategoryItems;
 
   const detailPanel = panelItem && (
-    <DetailPanel open={panelOpen} onClose={() => setItem(null)}>
+    <DetailPanel
+      open={panelOpen}
+      onClose={() => setItem(null)}
+      onBack={previousItem ? goBackToItem : undefined}
+      backLabel={previousItem ? itemName(previousItem, resolvedLocale) : undefined}
+    >
       <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} onSkillClick={onSkillClick} />
     </DetailPanel>
   );

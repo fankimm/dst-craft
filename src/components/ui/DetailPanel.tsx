@@ -1,13 +1,15 @@
 "use client";
 
 import { type ReactNode, useEffect } from "react";
-import { X } from "lucide-react";
+import { X, ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SupportPill } from "./SupportPill";
 
 interface DetailPanelProps {
   open: boolean;
   onClose: () => void;
+  onBack?: () => void;
+  backLabel?: string;
   children: ReactNode;
 }
 
@@ -15,7 +17,7 @@ interface DetailPanelProps {
  * Reusable bottom-sheet detail panel with overlay, close button, and SupportPill.
  * Pair with `useDetailPanel` hook for animation state management.
  */
-export function DetailPanel({ open, onClose, children }: DetailPanelProps) {
+export function DetailPanel({ open, onClose, onBack, backLabel, children }: DetailPanelProps) {
   // Lock background scroll when panel is open
   useEffect(() => {
     if (!open) return;
@@ -45,6 +47,15 @@ export function DetailPanel({ open, onClose, children }: DetailPanelProps) {
           open ? "translate-y-0" : "translate-y-full",
         )}
       >
+        {onBack && backLabel && (
+          <button
+            onClick={onBack}
+            className="absolute top-2.5 left-2 z-10 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+          >
+            <ChevronLeft className="size-3.5" />
+            <span className="max-w-[120px] truncate">{backLabel}</span>
+          </button>
+        )}
         <button
           onClick={onClose}
           className="absolute top-2 right-2 z-10 p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
