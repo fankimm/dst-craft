@@ -133,6 +133,10 @@ export function CraftingApp({
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, [handleGoHome]);
 
+  useEffect(() => {
+    document.querySelector("[data-scroll-container]")?.scrollTo(0, 0);
+  }, [selectedCategory, selectedCharacter]);
+
   const handleStationClick = useCallback((stationLabel: string, station?: string) => {
     const image = station ? (stationImages[station as keyof typeof stationImages] ?? undefined) : undefined;
     addSearchTag({ text: stationLabel, type: "station", image });

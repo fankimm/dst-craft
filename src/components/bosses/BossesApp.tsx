@@ -202,6 +202,10 @@ export function BossesApp({
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, [handleGoHome]);
 
+  useEffect(() => {
+    document.querySelector("[data-scroll-container]")?.scrollTo(0, 0);
+  }, [selectedCategory]);
+
   const handleSelectCategory = useCallback((id: BossCategoryId) => {
     setSelectedCategory(id);
   }, []);
