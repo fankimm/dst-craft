@@ -4,11 +4,10 @@ import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Copy, Check, ChevronRight } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
-import { t, itemName, lookupName, type Locale } from "@/lib/i18n";
+import { t, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
-import { allItems } from "@/data/items";
-import { materials } from "@/data/materials";
+import { gameItems } from "@/data/game-items-db";
 import {
   commandCategories,
   consoleCommands,
@@ -25,34 +24,16 @@ import { Footer } from "../crafting/Footer";
 interface SpawnableItem {
   id: string;
   name: string;
+  nameKo: string;
   image: string;
 }
 
-const spawnableItems: SpawnableItem[] = (() => {
-  const seen = new Set<string>();
-  const result: SpawnableItem[] = [];
-  for (const item of allItems) {
-    if (!seen.has(item.id)) {
-      seen.add(item.id);
-      result.push({
-        id: item.id,
-        name: item.name,
-        image: item.image ?? `${item.id}.png`,
-      });
-    }
-  }
-  for (const mat of materials) {
-    if (!seen.has(mat.id)) {
-      seen.add(mat.id);
-      result.push({
-        id: mat.id,
-        name: mat.name,
-        image: mat.image ?? `${mat.id}.png`,
-      });
-    }
-  }
-  return result;
-})();
+const spawnableItems: SpawnableItem[] = gameItems.map((item) => ({
+  id: item.id,
+  name: item.en,
+  nameKo: item.ko,
+  image: `${item.id}.png`,
+}));
 
 // ---------------------------------------------------------------------------
 // ConsoleApp
@@ -119,18 +100,15 @@ function ItemSpawnBuilder({ locale }: { locale: Locale }) {
     const q = search.toLowerCase().trim();
     if (!q) return [];
     return spawnableItems
-      .filter((item) => {
-        const localizedName = lookupName(item.id, locale).toLowerCase();
-        return (
-          item.id.includes(q) ||
-          item.name.toLowerCase().includes(q) ||
-          localizedName.includes(q)
-        );
-      })
+      .filter((item) =>
+        item.id.includes(q) ||
+        item.name.toLowerCase().includes(q) ||
+        item.nameKo.includes(q)
+      )
       .slice(0, 20)
       .map((item) => ({
         key: item.id,
-        text: locale === "en" ? item.name : `${lookupName(item.id, locale)} (${item.name})`,
+        text: locale === "en" ? item.name : `${item.nameKo} (${item.name})`,
         image: `game-items/${item.image}`,
         data: item,
       }));
@@ -211,7 +189,7 @@ function ItemSpawnBuilder({ locale }: { locale: Locale }) {
           />
           <div className="min-w-0 flex-1">
             <div className="text-sm font-medium truncate">
-              {locale === "en" ? selectedItem.name : lookupName(selectedItem.id, locale)}
+              {locale === "en" ? selectedItem.name : selectedItem.nameKo}
             </div>
             <div className="text-[11px] text-muted-foreground font-mono">{selectedItem.id}</div>
           </div>
