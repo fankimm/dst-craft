@@ -551,7 +551,7 @@ export const bosses: Boss[] = [
 /** Korean names for loot items (from ko.po) */
 export const lootNameKo: Record<string, string> = {
   meat: "고기", monstermeat: "괴물고기", charcoal: "숯", goldnugget: "금", horrorfuel: "순수한 공포",
-  sandblock: "모래성 블록", antliontrinket: "사막의 장신구", townportaltalisman: "게으른 도망자 부적",
+  sandblock: "모래성 블록", antliontrinket: "사막의 장신구", townportaltalisman: "사막석",
   redgem: "빨간 보석", orangegem: "주황 보석", purplegem: "보라 보석",
   silk: "거미줄", bluegem: "푸른 보석", yellowgem: "노란 보석",
   nightmarefuel: "악몽 연료", honey: "꿀", honeycomb: "벌집", stinger: "벌침",
