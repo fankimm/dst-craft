@@ -20,6 +20,8 @@ export interface ConsoleCommand {
   command: string;
   descKo?: string;
   descEn?: string;
+  /** Image path relative to /images/ (e.g. "game-items/reviver.png" or "ui/health.png") */
+  icon?: string;
   /** Parameter definitions for editable commands */
   params?: CommandParam[];
 }
@@ -68,24 +70,28 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "체력 최대",
       nameEn: "Max Health",
       command: "c_sethealth(1)",
+      icon: "ui/health.png",
     },
     {
       id: "sethunger",
       nameKo: "허기 최대",
       nameEn: "Max Hunger",
       command: "c_sethunger(1)",
+      icon: "ui/hunger.png",
     },
     {
       id: "setsanity",
       nameKo: "정신력 최대",
       nameEn: "Max Sanity",
       command: "c_setsanity(1)",
+      icon: "ui/sanity.png",
     },
     {
       id: "setmoisture",
       nameKo: "젖음 제거",
       nameEn: "Remove Wetness",
       command: "c_setmoisture(0)",
+      icon: "game-items/umbrella.png",
     },
     {
       id: "supergodmode",
@@ -94,6 +100,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_supergodmode()",
       descKo: "무적 + 스탯 무한",
       descEn: "Invincible + infinite stats",
+      icon: "game-items/thulecite.png",
     },
     {
       id: "godmode",
@@ -102,6 +109,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_godmode()",
       descKo: "무적 (피해 0)",
       descEn: "Invincible (no damage)",
+      icon: "game-items/shieldofterror.png",
     },
     {
       id: "revive",
@@ -110,12 +118,14 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_revive()",
       descKo: "유령 → 부활",
       descEn: "Ghost → revive",
+      icon: "game-items/pocketwatch_revive.png",
     },
     {
       id: "speedmult",
       nameKo: "이동속도",
       nameEn: "Speed",
       command: "c_speedmult({speed})",
+      icon: "game-items/cane.png",
       params: [{ key: "speed", label: "배율", defaultValue: "4" }],
     },
     {
@@ -125,6 +135,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_freecrafting()",
       descKo: "재료 없이 모든 아이템 제작",
       descEn: "Craft anything without materials",
+      icon: "game-items/blueprint.png",
     },
     {
       id: "reset",
@@ -133,6 +144,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_reset()",
       descKo: "캐릭터 선택으로 돌아감",
       descEn: "Return to character select",
+      icon: "game-items/townportal.png",
     },
   ],
 
@@ -142,12 +154,14 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "다음 날",
       nameEn: "Next Day",
       command: 'TheWorld:PushEvent("ms_nextcycle")',
+      icon: "game-items/nightmare_timepiece.png",
     },
     {
       id: "skip",
       nameKo: "N일 건너뛰기",
       nameEn: "Skip N Days",
       command: "c_skip({days})",
+      icon: "game-items/pocketwatch_portal.png",
       params: [{ key: "days", label: "일수", defaultValue: "1" }],
     },
     {
@@ -155,6 +169,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "시즌 변경",
       nameEn: "Change Season",
       command: 'TheWorld:PushEvent("ms_setseason", "{season}")',
+      icon: "game-items/winterometer.png",
       params: [
         {
           key: "season",
@@ -169,6 +184,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "시간 변경",
       nameEn: "Set Time",
       command: "c_settime({time})",
+      icon: "game-items/moondial.png",
       params: [
         {
           key: "time",
@@ -183,24 +199,28 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "비/눈 내리기",
       nameEn: "Force Rain/Snow",
       command: 'TheWorld:PushEvent("ms_forceprecipitation")',
+      icon: "game-items/book_rain.png",
     },
     {
       id: "stopprecipitation",
       nameKo: "비/눈 멈추기",
       nameEn: "Stop Rain/Snow",
       command: 'TheWorld:PushEvent("ms_forceprecipitation", false)',
+      icon: "game-items/raincoat.png",
     },
     {
       id: "lightning",
       nameKo: "번개 소환",
       nameEn: "Lightning Strike",
       command: 'TheWorld:PushEvent("ms_sendlightningstrike", ThePlayer:GetPosition())',
+      icon: "game-items/lightning_rod.png",
     },
     {
       id: "revealmap",
       nameKo: "지도 공개",
       nameEn: "Reveal Map",
       command: "for x=-1600,1600,35 do for y=-1600,1600,35 do ThePlayer.player_classified.MapExplorer:RevealArea(x,0,y) end end",
+      icon: "game-items/mapscroll.png",
     },
   ],
 
@@ -210,12 +230,14 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "월드 저장",
       nameEn: "Save World",
       command: "c_save()",
+      icon: "game-items/cookbook.png",
     },
     {
       id: "rollback",
       nameKo: "롤백",
       nameEn: "Rollback",
       command: "c_rollback({count})",
+      icon: "game-items/nightmare_timepiece_warn.png",
       params: [{ key: "count", label: "횟수", defaultValue: "1" }],
     },
     {
@@ -225,12 +247,14 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_shutdown(true)",
       descKo: "저장 후 종료",
       descEn: "Save & shutdown",
+      icon: "game-items/gears.png",
     },
     {
       id: "announce",
       nameKo: "서버 공지",
       nameEn: "Announce",
       command: 'c_announce("{msg}")',
+      icon: "game-items/horn.png",
       params: [{ key: "msg", label: "메시지", defaultValue: "Hello!" }],
     },
     {
@@ -238,6 +262,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "플레이어 목록",
       nameEn: "List Players",
       command: "c_listallplayers()",
+      icon: "game-items/compass.png",
     },
     {
       id: "regenerateworld",
@@ -246,6 +271,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_regenerateworld()",
       descKo: "주의: 월드 초기화",
       descEn: "Warning: resets world",
+      icon: "game-items/moon_altar_idol.png",
     },
   ],
 
@@ -255,6 +281,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "엔티티로 텔포",
       nameEn: "Teleport to Entity",
       command: 'c_gonext("{prefab}")',
+      icon: "game-items/telestaff.png",
       params: [{ key: "prefab", label: "프리팹 ID", defaultValue: "pigking" }],
     },
     {
@@ -262,6 +289,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "엔티티 수 세기",
       nameEn: "Count Entities",
       command: 'c_countprefabs("{prefab}")',
+      icon: "game-items/stash_map.png",
       params: [{ key: "prefab", label: "프리팹 ID", defaultValue: "beefalo" }],
     },
     {
@@ -269,6 +297,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "엔티티 모두 제거",
       nameEn: "Remove All",
       command: 'c_removeall("{prefab}")',
+      icon: "game-items/skull_wilson.png",
       params: [{ key: "prefab", label: "프리팹 ID", defaultValue: "hound" }],
       descKo: "주의: 되돌릴 수 없음",
       descEn: "Warning: irreversible",
@@ -280,6 +309,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_select()",
       descKo: "콘솔에서 TheInput:GetWorldEntityUnderMouse() 대체",
       descEn: "Selects entity under mouse",
+      icon: "game-items/compass.png",
     },
     {
       id: "maintainall",
@@ -288,6 +318,7 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       command: "c_maintainall()",
       descKo: "인벤토리 전체 내구도 100%",
       descEn: "Repair all inventory items",
+      icon: "game-items/sewing_kit.png",
     },
   ],
 };

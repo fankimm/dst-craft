@@ -27,41 +27,31 @@ const categoryColors: Record<CommandCategoryId, {
   accent: string;
   bg: string;
   badge: string;
-  cardBorder: string;
   copyBtn: string;
-  codeBorder: string;
 }> = {
   player: {
     accent: "text-red-600 dark:text-red-400",
     bg: "bg-red-500/10 dark:bg-red-500/8",
     badge: "bg-red-500/15 text-red-600 dark:text-red-400",
-    cardBorder: "border-l-red-400/70 dark:border-l-red-400/60",
     copyBtn: "bg-red-500/15 text-red-600 dark:text-red-300 hover:bg-red-500/25",
-    codeBorder: "border-l-red-400/50",
   },
   world: {
     accent: "text-emerald-600 dark:text-emerald-400",
     bg: "bg-emerald-500/10 dark:bg-emerald-500/8",
     badge: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
-    cardBorder: "border-l-emerald-400/70 dark:border-l-emerald-400/60",
     copyBtn: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25",
-    codeBorder: "border-l-emerald-400/50",
   },
   server: {
     accent: "text-blue-600 dark:text-blue-400",
     bg: "bg-blue-500/10 dark:bg-blue-500/8",
     badge: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
-    cardBorder: "border-l-blue-400/70 dark:border-l-blue-400/60",
     copyBtn: "bg-blue-500/15 text-blue-600 dark:text-blue-300 hover:bg-blue-500/25",
-    codeBorder: "border-l-blue-400/50",
   },
   debug: {
     accent: "text-amber-600 dark:text-amber-400",
     bg: "bg-amber-500/10 dark:bg-amber-500/8",
     badge: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
-    cardBorder: "border-l-amber-400/70 dark:border-l-amber-400/60",
     copyBtn: "bg-amber-500/15 text-amber-600 dark:text-amber-300 hover:bg-amber-500/25",
-    codeBorder: "border-l-amber-400/50",
   },
 };
 
@@ -394,7 +384,7 @@ function ItemSpawnBuilder({ locale }: { locale: Locale }) {
               </button>
             </div>
             {showCommand && (
-              <div className="p-2.5 rounded-lg bg-muted/50 dark:bg-black/20 border border-border/40 border-l-[3px] border-l-violet-400/50">
+              <div className="p-2.5 rounded-lg bg-muted/50 dark:bg-black/20 border border-border/40">
                 <code className="text-xs font-mono break-all text-foreground/80">{command}</code>
               </div>
             )}
@@ -503,14 +493,42 @@ function CommandCard({
   }, [resolvedCommand, locale]);
 
   return (
-    <div className={cn(
-      "rounded-xl border border-border/70 bg-surface p-3 space-y-2 border-l-[3px]",
-      colors.cardBorder,
-    )}>
-      {/* Name + description */}
-      <div>
-        <div className="text-sm font-semibold">{name}</div>
-        {desc && <div className="text-xs text-muted-foreground mt-0.5">{desc}</div>}
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={(e) => {
+        // params 내부 input/select 클릭 시 복사 방지
+        if ((e.target as HTMLElement).closest("input, select, button")) return;
+        handleCopy();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleCopy(); }
+      }}
+      className={cn(
+        "rounded-xl border border-border/70 bg-surface p-3 space-y-2 cursor-pointer hover:bg-surface-hover active:scale-[0.98] transition-all select-none",
+        copied && "ring-1 ring-green-400/50",
+      )}
+    >
+      {/* Icon + Name + description + copy indicator */}
+      <div className="flex items-start gap-2.5">
+        {cmd.icon && (
+          <img
+            src={assetPath(`/images/${cmd.icon}`)}
+            alt=""
+            width={28}
+            height={28}
+            className="shrink-0 object-contain mt-0.5"
+          />
+        )}
+        <div className="min-w-0 flex-1">
+          <div className="text-sm font-semibold">{name}</div>
+          {desc && <div className="text-xs text-muted-foreground mt-0.5">{desc}</div>}
+        </div>
+        {copied ? (
+          <Check className="size-4 shrink-0 text-green-500 mt-0.5" />
+        ) : (
+          <Copy className="size-3.5 shrink-0 text-muted-foreground/50 mt-0.5" />
+        )}
       </div>
 
       {/* Inline params */}
@@ -544,50 +562,17 @@ function CommandCard({
         </div>
       )}
 
-      {/* Action buttons: copy + show code */}
-      <div className="flex items-center gap-1.5">
-        <button
-          onClick={handleCopy}
-          className={cn(
-            "flex-1 flex items-center justify-center gap-1.5 h-8 rounded-lg text-xs font-medium transition-all active:scale-[0.98]",
-            copied
-              ? "bg-green-500/20 text-green-300"
-              : colors.copyBtn,
-          )}
-        >
-          {copied ? (
-            <>
-              <Check className="size-3.5" />
-              {t(locale, "console_copied")}
-            </>
-          ) : (
-            <>
-              <Copy className="size-3.5" />
-              {t(locale, "console_copy_command")}
-            </>
-          )}
-        </button>
-        <button
-          onClick={() => setShowCode((v) => !v)}
-          className={cn(
-            "h-8 px-2.5 rounded-lg border border-border/60 text-muted-foreground hover:text-foreground transition-colors",
-            showCode && "bg-muted/30 text-foreground",
-          )}
-          title={t(locale, "console_show_command")}
-        >
-          <Code className="size-3.5" />
-        </button>
-      </div>
-
-      {/* Revealed command */}
-      {showCode && (
-        <div className={cn(
-          "p-2 rounded-lg bg-muted/50 dark:bg-black/20 border border-border/40 border-l-[3px]",
-          colors.codeBorder,
-        )}>
-          <code className="text-[11px] font-mono break-all text-foreground/80">{resolvedCommand}</code>
-        </div>
-      )}
+      {/* Show code toggle */}
+      <button
+        onClick={(e) => { e.stopPropagation(); setShowCode((v) => !v); }}
+        className={cn(
+          "flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors",
+          showCode && "text-foreground",
+        )}
+      >
+        <Code className="size-3" />
+        {showCode ? resolvedCommand : t(locale, "console_show_command")}
+      </button>
     </div>
   );
 }
