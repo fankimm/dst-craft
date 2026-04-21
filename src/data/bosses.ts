@@ -160,18 +160,30 @@ export const bosses: Boss[] = [
       bundles: [
         {
           label: "번들 1", labelEn: "Bundle 1",
-          filler: "금, 숯", fillerEn: "Gold, Charcoal",
-          items: [{ item: "amulet", chance: 1 }],
+          items: [
+            { item: "amulet", chance: 1 },
+            { item: "goldnugget", chance: 1 },
+            { item: "charcoal", chance: 1 },
+            { item: "charcoal", chance: 0.5 },
+          ],
         },
         {
           label: "번들 2", labelEn: "Bundle 2",
-          filler: "금, 숯", fillerEn: "Gold, Charcoal",
-          items: [{ item: "amulet", chance: 0.5 }],
+          items: [
+            { item: "amulet", chance: 0.5 },
+            { item: "goldnugget", chance: 1 },
+            { item: "charcoal", chance: 1, count: 2 },
+            { item: "charcoal", chance: 0.5 },
+          ],
         },
         {
           label: "번들 3", labelEn: "Bundle 3",
-          filler: "금, 숯", fillerEn: "Gold, Charcoal",
-          items: [{ item: "krampus_sack", chance: 0.1 }],
+          items: [
+            { item: "krampus_sack", chance: 0.1 },
+            { item: "goldnugget", chance: 1 },
+            { item: "charcoal", chance: 1, count: 2 },
+            { item: "charcoal", chance: 0.5 },
+          ],
         },
         {
           label: "번들 4", labelEn: "Bundle 4",

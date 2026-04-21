@@ -734,16 +734,9 @@ function StashBundleLoot({ bundles, locale, onViewCraftingItem }: {
     <div className="space-y-2">
       {bundles.map((bundle, bi) => (
         <div key={bi} className="rounded-lg border border-border/60 bg-surface/50 px-3 py-2 space-y-1.5">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-foreground/70">
-              {locale === "ko" ? bundle.label : bundle.labelEn}
-            </span>
-            {bundle.filler && (
-              <span className="text-[10px] text-muted-foreground">
-                + {locale === "ko" ? bundle.filler : bundle.fillerEn}
-              </span>
-            )}
-          </div>
+          <span className="text-xs font-semibold text-foreground/70">
+            {locale === "ko" ? bundle.label : bundle.labelEn}
+          </span>
           <PoolGroupedItems items={bundle.items} keyPrefix={`bundle-${bi}`} locale={locale} onViewCraftingItem={onViewCraftingItem} />
         </div>
       ))}
