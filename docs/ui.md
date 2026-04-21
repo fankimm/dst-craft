@@ -85,6 +85,11 @@
 - **사용처**: CraftingApp, CookingApp
 - **Props**: `value`, `onChange`, `locale`
 
+### PrefabIdButton (`src/components/ui/PrefabIdButton.tsx`)
+- **용도**: 콘솔명(프리팹 ID) 표시 + 클릭 시 클립보드 복사
+- **사용처**: ItemDetail, RecipeDetail(CookingApp), BossDetail(BossesApp)
+- **Props**: `id`, `locale?`
+
 ### ViewCount (`src/components/ui/ViewCount.tsx`)
 - **용도**: 조회수 표시 (겨울거인 눈알 아이콘 + 숫자)
 - **사용처**: ItemDetail, RecipeDetail, BossDetail

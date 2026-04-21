@@ -5,7 +5,7 @@ import { TagChip } from "@/components/ui/TagChip";
 import { MaterialSlot } from "./MaterialSlot";
 import { ItemSlot } from "@/components/ui/ItemSlot";
 import { getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { useFavorites } from "@/hooks/use-favorites";
 import { t, itemName, itemAltName, itemDesc, categoryName, characterName, stationName, skillName } from "@/lib/i18n";
@@ -14,6 +14,7 @@ import { assetPath } from "@/lib/asset-path";
 import { usePopularity } from "@/hooks/use-popularity";
 import { ViewCount } from "@/components/ui/ViewCount";
 import { ShareButton } from "@/components/ui/ShareButton";
+import { PrefabIdButton } from "@/components/ui/PrefabIdButton";
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import { ItemStatsPanel } from "./ItemStatsPanel";
 import { bossDropBlueprintItems } from "@/data/bosses";
@@ -36,17 +37,9 @@ interface ItemDetailProps {
 
 export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick, onBlueprintClick, onSkillClick }: ItemDetailProps) {
   const [imgError, setImgError] = useState(false);
-  const [copied, setCopied] = useState(false);
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { getClicks } = usePopularity();
-
-  const copyPrefabId = useCallback((id: string) => {
-    navigator.clipboard.writeText(id).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    });
-  }, []);
   const clicks = item ? getClicks(item.id) : 0;
 
   if (!item) {
@@ -101,17 +94,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               {itemAltName(item, resolvedLocale)}
             </p>
           )}
-          <button
-            onClick={() => copyPrefabId(item.id)}
-            className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors font-mono border border-border rounded-full px-2 py-0.5"
-          >
-            <span className="opacity-60">$</span> {item.id}
-            {copied && (
-              <span className="text-green-500 font-sans text-[10px]">
-                {resolvedLocale === "ko" ? "복사됨" : "copied"}
-              </span>
-            )}
-          </button>
+          <PrefabIdButton id={item.id} locale={resolvedLocale} />
           <ViewCount clicks={clicks} />
         </div>
 

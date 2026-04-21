@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.14.2",
+    date: "2026-04-21",
+    dev: [
+      "feat: 요리/보스 탭 상세에 콘솔명(프리팹 ID) 표시 + 클릭 복사",
+      "refactor: 콘솔명 버튼을 PrefabIdButton 공유 컴포넌트로 추출 (제작/요리/보스 3곳 공통화)",
+    ],
+    changes: {
+      ko: [
+        "요리/보스 탭에서도 콘솔명(프리팹 ID) 확인 및 복사 가능",
+      ],
+      en: [
+        "Console name (prefab ID) now shown in cooking and boss tabs with copy support",
+      ],
+    },
+  },
+  {
     version: "0.14.1",
     date: "2026-04-21",
     dev: [

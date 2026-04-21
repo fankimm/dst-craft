@@ -17,6 +17,7 @@ import { usePopularity } from "@/hooks/use-popularity";
 import { useAuth } from "@/hooks/use-auth";
 import { useFavorites } from "@/hooks/use-favorites";
 import { ViewCount } from "@/components/ui/ViewCount";
+import { PrefabIdButton } from "@/components/ui/PrefabIdButton";
 import { useRecent } from "@/hooks/use-recent";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
@@ -791,7 +792,10 @@ function BossDetail({
           {showAltName && (
             <p className="text-sm text-muted-foreground">{boss.name}</p>
           )}
-          <ViewCount clicks={clicks} />
+          <div className="flex items-center gap-1.5">
+            <PrefabIdButton id={boss.id} locale={locale} />
+            <ViewCount clicks={clicks} />
+          </div>
           <div className="mt-1">
             <TagChip
               label={categoryLabel(boss.category, locale)}

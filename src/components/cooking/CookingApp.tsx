@@ -23,6 +23,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { ViewCount } from "@/components/ui/ViewCount";
 import { useRecent } from "@/hooks/use-recent";
 import { ShareButton } from "../ui/ShareButton";
+import { PrefabIdButton } from "../ui/PrefabIdButton";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { getAffinityCharacters } from "@/data/food-affinity";
@@ -676,7 +677,10 @@ function RecipeDetail({
           {showAltName && (
             <p className="text-sm text-muted-foreground">{recipe.name}</p>
           )}
-          <ViewCount clicks={clicks} className="mt-0.5" />
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <PrefabIdButton id={recipe.id} locale={locale} />
+            <ViewCount clicks={clicks} />
+          </div>
           <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
             <TagChip
               label={foodTypeLabelKeys[recipe.foodType] ? t(locale, foodTypeLabelKeys[recipe.foodType]) : recipe.foodType}
