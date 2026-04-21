@@ -15,6 +15,30 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.15.1",
+    date: "2026-04-21",
+    dev: [
+      "refactor: 콘솔 탭 UI 리디자인 — 카테고리별 컬러 액센트, 카드 가시성 개선",
+      "feat: 명령어 텍스트 기본 숨김 + '명령어 보기' 토글로 필요시 확인",
+      "feat: '명령어 복사' 버튼 — 명령어를 보지 않고도 바로 복사 가능",
+      "feat: 카테고리 접기/펼치기 (collapsible sections)",
+      "style: 라이트/다크 테마 모두 대응하는 컬러 시스템",
+      "i18n: console_copy_command, console_show_command 번역 키 추가",
+    ],
+    changes: {
+      ko: [
+        "콘솔 탭 UI 리디자인 — 카테고리별 컬러 구분으로 가시성 개선",
+        "명령어 코드를 숨기고 '복사' 버튼으로 간편하게 사용, 필요시 펼쳐보기 가능",
+        "카테고리 접기/펼치기 지원",
+      ],
+      en: [
+        "Console tab UI redesign — color-coded categories for better visibility",
+        "Command code hidden by default with copy button, expandable on demand",
+        "Collapsible category sections",
+      ],
+    },
+  },
+  {
     version: "0.15.0",
     date: "2026-04-21",
     dev: [
