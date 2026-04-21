@@ -222,6 +222,12 @@
   3. 라벨/설명은 임의 작성 금지 — ko.po/strings.lua 원문 사용 필수
 - **해결**: lockLabel에 lockId 파라미터 추가 → lockTranslations 우선 참조, no_opposing_faction 반전 수정, WX-78 잠금 3개로 분리 + disabled 타입 추가
 
+### iOS Safari input 자동 확대 (font-size < 16px)
+- **문제**: 숫자 input 포커스 시 iOS가 자동 확대 → 축소 후 하단에 흰 가림막 발생
+- **원인**: iOS Safari는 `font-size < 16px`인 input/select/textarea에 포커스하면 자동 확대. 확대→축소 사이클에서 `100dvh` 레이아웃이 제대로 복원 안 됨
+- **교훈**: 모든 input/select/textarea에 `text-base`(16px) 적용 필수. 데스크톱에서 작게 보이길 원하면 `text-base sm:text-xs` 패턴 사용. `SearchWithSuggestions`는 이미 `text-base sm:text-sm`으로 처리되어 있었음
+- **검증**: 새 input 추가 시 반드시 `text-base` 포함 여부 확인
+
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
 - pixel_format 0=DXT1(bcn 1), 1=DXT3(bcn 2), 2=DXT5(bcn 3)
