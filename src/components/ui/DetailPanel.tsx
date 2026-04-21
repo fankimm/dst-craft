@@ -47,21 +47,23 @@ export function DetailPanel({ open, onClose, onBack, backLabel, children }: Deta
           open ? "translate-y-0" : "translate-y-full",
         )}
       >
-        {onBack && backLabel && (
-          <button
-            onClick={onBack}
-            className="absolute top-2.5 left-2 z-10 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-          >
-            <ChevronLeft className="size-3.5" />
-            <span className="max-w-[120px] truncate">{backLabel}</span>
-          </button>
-        )}
         <button
           onClick={onClose}
           className="absolute top-2 right-2 z-10 p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <X className="size-4" />
         </button>
+        {onBack && backLabel && (
+          <div className="flex items-center border-b border-border px-2 py-1.5">
+            <button
+              onClick={onBack}
+              className="flex items-center gap-0.5 px-1 py-0.5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+            >
+              <ChevronLeft className="size-3.5" />
+              <span className="max-w-[160px] truncate">{backLabel}</span>
+            </button>
+          </div>
+        )}
         {children}
         <SupportPill />
       </div>
