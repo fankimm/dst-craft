@@ -613,13 +613,63 @@ function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale })
   );
 }
 
-/** Renders stash loot items with pool grouping (택1) */
-function StashLootItems({ items, locale, onViewCraftingItem }: {
+/** Shared loot pill renderer */
+function renderLootPill(
+  loot: import("@/data/bosses").BossLoot,
+  key: string,
+  locale: Locale,
+  onViewCraftingItem?: (itemId: string) => void,
+) {
+  const displayName = lootDisplayName(loot.item, locale);
+  const hasCount = (loot.count ?? 0) > 1;
+  const chanceText = !loot.pool && loot.chance < 1 ? ` ${Math.round(loot.chance * 100)}%` : "";
+  const craftingId = loot.blueprint ? loot.item.replace(/_blueprint$/, "") : null;
+  const isClickable = !!(craftingId && onViewCraftingItem);
+  const pill = (
+    <span
+      className={cn(
+        "relative inline-flex items-center gap-1 rounded-full border pl-1.5 pr-2.5 py-1 text-xs font-medium h-7 whitespace-nowrap",
+        loot.blueprint
+          ? "border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
+          : "border-border bg-surface text-foreground/80",
+      )}
+    >
+      <img
+        src={assetPath(loot.blueprint ? "/images/game-items/blueprint.png" : lootImage(loot.item))}
+        alt=""
+        className="size-4 object-contain shrink-0"
+        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+      />
+      {displayName}
+      {chanceText && <span className="text-amber-500">{chanceText}</span>}
+      {hasCount && (
+        <span className="absolute -bottom-1.5 -right-1.5 flex items-center justify-center min-w-4 h-4 px-0.5 rounded-full text-[10px] font-bold bg-surface-hover border border-ring text-foreground/80">
+          {loot.count}
+        </span>
+      )}
+    </span>
+  );
+  return isClickable ? (
+    <button
+      key={key}
+      onClick={() => onViewCraftingItem!(craftingId!)}
+      className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+    >
+      {pill}
+      <span className="w-3/4 border-b-2 border-dotted border-[#3975ce]/60 mt-0.5" />
+    </button>
+  ) : (
+    <span key={key}>{pill}</span>
+  );
+}
+
+/** Groups items into pool/non-pool groups and renders them */
+function PoolGroupedItems({ items, keyPrefix, locale, onViewCraftingItem }: {
   items: import("@/data/bosses").BossLoot[];
+  keyPrefix: string;
   locale: Locale;
   onViewCraftingItem?: (itemId: string) => void;
 }) {
-  // Group items: non-pool items are standalone, pool items are grouped
   const groups: { pool: string | null; items: import("@/data/bosses").BossLoot[] }[] = [];
   const poolMap = new Map<string, import("@/data/bosses").BossLoot[]>();
 
@@ -635,69 +685,68 @@ function StashLootItems({ items, locale, onViewCraftingItem }: {
     }
   }
 
-  const renderPill = (loot: import("@/data/bosses").BossLoot, key: string) => {
-    const displayName = lootDisplayName(loot.item, locale);
-    const hasCount = (loot.count ?? 0) > 1;
-    const chanceText = !loot.pool && loot.chance < 1 ? ` ${Math.round(loot.chance * 100)}%` : "";
-    const craftingId = loot.blueprint ? loot.item.replace(/_blueprint$/, "") : null;
-    const isClickable = !!(craftingId && onViewCraftingItem);
-    const pill = (
-      <span
-        className={cn(
-          "relative inline-flex items-center gap-1 rounded-full border pl-1.5 pr-2.5 py-1 text-xs font-medium h-7",
-          loot.blueprint
-            ? "border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
-            : "border-border bg-surface text-foreground/80",
-        )}
-      >
-        <img
-          src={assetPath(loot.blueprint ? "/images/game-items/blueprint.png" : lootImage(loot.item))}
-          alt=""
-          className="size-4 object-contain shrink-0"
-          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-        />
-        {displayName}
-        {chanceText && <span className="text-amber-500">{chanceText}</span>}
-        {hasCount && (
-          <span className="absolute -bottom-1.5 -right-1.5 flex items-center justify-center min-w-4 h-4 px-0.5 rounded-full text-[10px] font-bold bg-surface-hover border border-ring text-foreground/80">
-            {loot.count}
-          </span>
-        )}
-      </span>
-    );
-    return isClickable ? (
-      <button
-        key={key}
-        onClick={() => onViewCraftingItem!(craftingId!)}
-        className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
-      >
-        {pill}
-        <span className="w-3/4 border-b-2 border-dotted border-[#3975ce]/60 mt-0.5" />
-      </button>
-    ) : (
-      <span key={key}>{pill}</span>
-    );
-  };
-
   return (
     <div className="flex flex-wrap gap-1.5 items-start">
       {groups.map((group, gi) => {
         if (!group.pool) {
-          return renderPill(group.items[0], `stash-${gi}`);
+          return renderLootPill(group.items[0], `${keyPrefix}-${gi}`, locale, onViewCraftingItem);
         }
-        // Pool group: wrap in a bordered container with "택1" label
+        // Pool metadata from first item that has it
+        const poolCount = group.items.find(i => i.poolCount)?.poolCount ?? 1;
+        const poolChance = group.items.find(i => i.poolChance)?.poolChance ?? 1;
+        const chancePart = poolChance < 1 ? `${Math.round(poolChance * 100)}% ` : "";
+        const countWord = locale === "ko" ? `${poolCount}개` : `×${poolCount}`;
+        const poolLabel = locale === "ko"
+          ? `${chancePart}랜덤 ${countWord}`
+          : `${chancePart}random ${countWord}`;
         return (
           <div
             key={`pool-${group.pool}`}
             className="inline-flex items-center gap-1 rounded-lg border border-dashed border-amber-500/50 bg-amber-500/5 px-1.5 py-1"
           >
-            <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 mr-0.5">
-              {locale === "ko" ? "택1" : "×1"}
+            <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 mr-0.5 whitespace-nowrap">
+              {poolLabel}
             </span>
-            {group.items.map((loot, li) => renderPill(loot, `stash-${gi}-${li}`))}
+            {group.items.map((loot, li) => renderLootPill(loot, `${keyPrefix}-${gi}-${li}`, locale, onViewCraftingItem))}
           </div>
         );
       })}
+    </div>
+  );
+}
+
+/** Renders flat stash loot items with pool grouping */
+function StashLootItems({ items, locale, onViewCraftingItem }: {
+  items: import("@/data/bosses").BossLoot[];
+  locale: Locale;
+  onViewCraftingItem?: (itemId: string) => void;
+}) {
+  return <PoolGroupedItems items={items} keyPrefix="stash" locale={locale} onViewCraftingItem={onViewCraftingItem} />;
+}
+
+/** Renders bundled stash loot (e.g., Klaus Loot Stash) */
+function StashBundleLoot({ bundles, locale, onViewCraftingItem }: {
+  bundles: import("@/data/bosses").StashBundle[];
+  locale: Locale;
+  onViewCraftingItem?: (itemId: string) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      {bundles.map((bundle, bi) => (
+        <div key={bi} className="rounded-lg border border-border/60 bg-surface/50 px-3 py-2 space-y-1.5">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-foreground/70">
+              {locale === "ko" ? bundle.label : bundle.labelEn}
+            </span>
+            {bundle.filler && (
+              <span className="text-[10px] text-muted-foreground">
+                + {locale === "ko" ? bundle.filler : bundle.fillerEn}
+              </span>
+            )}
+          </div>
+          <PoolGroupedItems items={bundle.items} keyPrefix={`bundle-${bi}`} locale={locale} onViewCraftingItem={onViewCraftingItem} />
+        </div>
+      ))}
     </div>
   );
 }
@@ -777,7 +826,7 @@ function BossDetail({
             const pill = (
               <span
                 className={cn(
-                  "relative inline-flex items-center gap-1 rounded-full border pl-1.5 pr-2.5 py-1 text-xs font-medium h-7",
+                  "relative inline-flex items-center gap-1 rounded-full border pl-1.5 pr-2.5 py-1 text-xs font-medium h-7 whitespace-nowrap",
                   loot.blueprint
                     ? "border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
                     : "border-border bg-surface text-foreground/80",
@@ -830,7 +879,10 @@ function BossDetail({
           <p className="text-xs text-muted-foreground/80">
             {locale === "ko" ? boss.stashLoot.note : boss.stashLoot.noteEn}
           </p>
-          <StashLootItems items={boss.stashLoot.items} locale={locale} onViewCraftingItem={onViewCraftingItem} />
+          {boss.stashLoot.bundles
+            ? <StashBundleLoot bundles={boss.stashLoot.bundles} locale={locale} onViewCraftingItem={onViewCraftingItem} />
+            : boss.stashLoot.items && <StashLootItems items={boss.stashLoot.items} locale={locale} onViewCraftingItem={onViewCraftingItem} />
+          }
         </div>
       )}
     </div>

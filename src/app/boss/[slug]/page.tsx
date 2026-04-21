@@ -259,7 +259,7 @@ export default async function BossPage({
             </h2>
             <p className="text-xs text-muted-foreground mb-3">{boss.stashLoot.noteEn}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {boss.stashLoot.items.map((loot, i) => {
+              {(boss.stashLoot.items ?? boss.stashLoot.bundles?.flatMap(b => b.items) ?? []).map((loot, i) => {
                 const nameEn = lootDisplayName(loot.item, "en");
                 const nameKoVal = lootDisplayName(loot.item, "ko");
                 const imgSrc = lootImage(loot.item);

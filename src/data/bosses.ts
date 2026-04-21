@@ -3,7 +3,17 @@ export interface BossLoot {
   chance: number; // 1.0 = 100%
   count?: number;
   blueprint?: boolean;
-  pool?: string; // items with same pool value are "pick 1" group
+  pool?: string; // items with same pool value are a random-pick group
+  poolCount?: number; // how many items picked from this pool (default 1)
+  poolChance?: number; // overall activation chance for the pool (default 1)
+}
+
+export interface StashBundle {
+  label: string;      // e.g., "번들 1"
+  labelEn: string;    // e.g., "Bundle 1"
+  items: BossLoot[];
+  filler?: string;    // e.g., "금, 숯"
+  fillerEn?: string;  // e.g., "Gold, Charcoal"
 }
 
 export interface BossStashLoot {
@@ -12,7 +22,8 @@ export interface BossStashLoot {
   note: string;       // Korean mechanic description
   noteEn: string;     // English mechanic description
   icon: string;       // image filename in /images/game-items/
-  items: BossLoot[];
+  items?: BossLoot[];           // flat list (e.g., Ancient Guardian chest)
+  bundles?: StashBundle[];      // bundled list (e.g., Klaus Loot Stash)
 }
 
 export type BossCategoryId = "seasonal" | "raid" | "ocean" | "dungeon" | "event" | "mini" | "all";
@@ -144,40 +155,54 @@ export const bosses: Boss[] = [
       labelEn: "Loot Stash",
       note: "수사슴의 뿔로 보따리를 열면 4개의 번들 획득",
       noteEn: "Open the Loot Stash with the Stag Antler to receive 4 bundles",
-      icon: "klaussackkey.png",
-      items: [
-        // Bundle 1: guaranteed
-        { item: "amulet", chance: 1 },
-        // Bundle 2: 50% chance
-        { item: "amulet", chance: 0.5 },
-        // Bundle 3: 10% jackpot
-        { item: "krampus_sack", chance: 0.1 },
-        // Bundle 4 - giant_loot1 pool (1 from 5)
-        { item: "deerclops_eyeball", chance: 0.2 },
-        { item: "dragon_scales", chance: 0.2 },
-        { item: "hivehat", chance: 0.2 },
-        { item: "shroom_skin", chance: 0.2 },
-        { item: "mandrake", chance: 0.2 },
-        // Bundle 4 - giant_loot2 blueprints (50% for 1 from 9)
-        { item: "bundlewrap_blueprint", chance: 0.056, blueprint: true },
-        { item: "dragonflyfurnace_blueprint", chance: 0.056, blueprint: true },
-        { item: "townportal_blueprint", chance: 0.056, blueprint: true },
-        { item: "trident_blueprint", chance: 0.056, blueprint: true },
-        { item: "red_mushroomhat_blueprint", chance: 0.056, blueprint: true },
-        { item: "green_mushroomhat_blueprint", chance: 0.056, blueprint: true },
-        { item: "blue_mushroomhat_blueprint", chance: 0.056, blueprint: true },
-        { item: "mushroom_light_blueprint", chance: 0.056, blueprint: true },
-        { item: "mushroom_light2_blueprint", chance: 0.056, blueprint: true },
-        // Bundle 4 - giant_loot3 pool (2 from 9, ~22% each)
-        { item: "bearger_fur", chance: 0.22 },
-        { item: "royal_jelly", chance: 0.22 },
-        { item: "goose_feather", chance: 0.22 },
-        { item: "lavae_egg", chance: 0.22 },
-        { item: "spiderhat", chance: 0.22 },
-        { item: "steelwool", chance: 0.22 },
-        { item: "townportaltalisman", chance: 0.22 },
-        { item: "malbatross_beak", chance: 0.22 },
-        { item: "tallbirdegg", chance: 0.22 },
+      icon: "bundle_large.png",
+      bundles: [
+        {
+          label: "번들 1", labelEn: "Bundle 1",
+          filler: "금, 숯", fillerEn: "Gold, Charcoal",
+          items: [{ item: "amulet", chance: 1 }],
+        },
+        {
+          label: "번들 2", labelEn: "Bundle 2",
+          filler: "금, 숯", fillerEn: "Gold, Charcoal",
+          items: [{ item: "amulet", chance: 0.5 }],
+        },
+        {
+          label: "번들 3", labelEn: "Bundle 3",
+          filler: "금, 숯", fillerEn: "Gold, Charcoal",
+          items: [{ item: "krampus_sack", chance: 0.1 }],
+        },
+        {
+          label: "번들 4", labelEn: "Bundle 4",
+          items: [
+            // giant_loot1: pick 1 from 5
+            { item: "deerclops_eyeball", chance: 1, pool: "giant1" },
+            { item: "dragon_scales", chance: 1, pool: "giant1" },
+            { item: "hivehat", chance: 1, pool: "giant1" },
+            { item: "shroom_skin", chance: 1, pool: "giant1" },
+            { item: "mandrake", chance: 1, pool: "giant1" },
+            // giant_loot2: 50% chance, pick 1 from 9
+            { item: "dragonflyfurnace_blueprint", chance: 1, pool: "giant2", poolChance: 0.5, blueprint: true },
+            { item: "red_mushroomhat_blueprint", chance: 1, pool: "giant2", blueprint: true },
+            { item: "green_mushroomhat_blueprint", chance: 1, pool: "giant2", blueprint: true },
+            { item: "blue_mushroomhat_blueprint", chance: 1, pool: "giant2", blueprint: true },
+            { item: "mushroom_light2_blueprint", chance: 1, pool: "giant2", blueprint: true },
+            { item: "mushroom_light_blueprint", chance: 1, pool: "giant2", blueprint: true },
+            { item: "townportal_blueprint", chance: 1, pool: "giant2", blueprint: true },
+            { item: "bundlewrap_blueprint", chance: 1, pool: "giant2", blueprint: true },
+            { item: "trident_blueprint", chance: 1, pool: "giant2", blueprint: true },
+            // giant_loot3: pick 2 from 9
+            { item: "bearger_fur", chance: 1, pool: "giant3", poolCount: 2 },
+            { item: "royal_jelly", chance: 1, pool: "giant3" },
+            { item: "goose_feather", chance: 1, pool: "giant3" },
+            { item: "lavae_egg", chance: 1, pool: "giant3" },
+            { item: "spiderhat", chance: 1, pool: "giant3" },
+            { item: "steelwool", chance: 1, pool: "giant3" },
+            { item: "townportaltalisman", chance: 1, pool: "giant3" },
+            { item: "malbatross_beak", chance: 1, pool: "giant3" },
+            { item: "tallbirdegg", chance: 1, pool: "giant3" },
+          ],
+        },
       ],
     },
   },
