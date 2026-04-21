@@ -119,6 +119,14 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       params: [{ key: "speed", label: "배율", defaultValue: "4" }],
     },
     {
+      id: "freecrafting",
+      nameKo: "무료 제작",
+      nameEn: "Free Crafting",
+      command: "c_freecrafting()",
+      descKo: "재료 없이 모든 아이템 제작",
+      descEn: "Craft anything without materials",
+    },
+    {
       id: "reset",
       nameKo: "캐릭터 리셋",
       nameEn: "Reset Character",
