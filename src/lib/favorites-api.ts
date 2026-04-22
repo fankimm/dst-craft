@@ -37,3 +37,36 @@ export async function updateFavorite(token: string, itemId: string, action: "add
     body: JSON.stringify({ itemId, action }),
   });
 }
+
+// ---------------------------------------------------------------------------
+// Skill tree sync
+// ---------------------------------------------------------------------------
+
+export interface SkillsData {
+  skills: Record<string, string[]>;
+  locks: Record<string, string[]>;
+}
+
+export async function fetchAllSkills(token: string): Promise<SkillsData> {
+  const res = await fetch(`${WORKER_URL}/skills`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) return { skills: {}, locks: {} };
+  return res.json();
+}
+
+export async function saveCharacterSkills(
+  token: string,
+  characterId: string,
+  skills: string[],
+  locks: string[],
+): Promise<void> {
+  await fetch(`${WORKER_URL}/skills`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ characterId, skills, locks }),
+  });
+}

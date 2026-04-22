@@ -691,6 +691,72 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       );
     }
 
+    // GET /skills — fetch all saved skill builds for the user
+    if (url.pathname === "/skills" && request.method === "GET") {
+      const sub = await extractSub(request, env);
+      if (!sub) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const results = await redisPipeline(env, [
+        ["HGETALL", `dst:skills:${sub}`],
+        ["HGETALL", `dst:skills-locks:${sub}`],
+      ]) as { result: any }[];
+
+      const skillsRaw = results[0]?.result as string[] | null;
+      const locksRaw = results[1]?.result as string[] | null;
+
+      const skills: Record<string, string[]> = {};
+      if (Array.isArray(skillsRaw)) {
+        for (let i = 0; i < skillsRaw.length; i += 2) {
+          try { skills[skillsRaw[i]] = JSON.parse(skillsRaw[i + 1]); } catch {}
+        }
+      }
+
+      const locks: Record<string, string[]> = {};
+      if (Array.isArray(locksRaw)) {
+        for (let i = 0; i < locksRaw.length; i += 2) {
+          try { locks[locksRaw[i]] = JSON.parse(locksRaw[i + 1]); } catch {}
+        }
+      }
+
+      return new Response(JSON.stringify({ skills, locks }), {
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
+
+    // POST /skills — save skill build for one character
+    if (url.pathname === "/skills" && request.method === "POST") {
+      const sub = await extractSub(request, env);
+      if (!sub) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const characterId = body.characterId as string;
+      const skills = body.skills as string[];
+      const locks = body.locks as string[];
+
+      if (!characterId || !Array.isArray(skills) || !Array.isArray(locks)) {
+        return new Response(JSON.stringify({ error: "Invalid request" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const commands: string[][] = [];
+      if (skills.length > 0) {
+        commands.push(["HSET", `dst:skills:${sub}`, characterId, JSON.stringify(skills)]);
+      } else {
+        commands.push(["HDEL", `dst:skills:${sub}`, characterId]);
+      }
+      if (locks.length > 0) {
+        commands.push(["HSET", `dst:skills-locks:${sub}`, characterId, JSON.stringify(locks)]);
+      } else {
+        commands.push(["HDEL", `dst:skills-locks:${sub}`, characterId]);
+      }
+
+      await redisPipeline(env, commands);
+      return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
+    }
+
     // GET /favorites — fetch user favorites
     if (url.pathname === "/favorites" && request.method === "GET") {
       const sub = await extractSub(request, env);

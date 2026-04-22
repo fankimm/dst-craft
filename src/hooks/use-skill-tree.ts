@@ -115,7 +115,7 @@ function isLockNode(node: SkillNode): boolean {
   return !node.icon && (!!node.lockType || !!node.tags?.includes("lock"));
 }
 
-export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<string>): UseSkillTreeReturn {
+export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<string>, refreshKey?: number): UseSkillTreeReturn {
   const [activatedSkills, setActivatedSkills] = useState<Set<string>>(new Set());
 
   const nodeMap = useMemo(() => tree ? buildNodeMap(tree) : new Map<string, SkillNode>(), [tree]);
@@ -143,7 +143,8 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
       }
     } catch { /* ignore */ }
     setActivatedSkills(new Set());
-  }, [tree, nodeMap]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tree, nodeMap, refreshKey]);
 
   // Save to localStorage when activated skills change
   useEffect(() => {

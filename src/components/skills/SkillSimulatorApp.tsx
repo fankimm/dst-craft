@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { ChevronRight } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
+import { useAuth } from "@/hooks/use-auth";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSkillTree } from "@/hooks/use-skill-tree";
@@ -12,6 +13,7 @@ import { skillTrees, CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry"
 import { skillTranslations } from "@/data/skill-trees/translations";
 import type { SkillNode } from "@/data/skill-trees/types";
 import { manualLockKey } from "@/lib/skill-tree-keys";
+import { fetchAllSkills, saveCharacterSkills } from "@/lib/favorites-api";
 import type { UnlockRequirement } from "./SkillDetailSheet";
 import { cn } from "@/lib/utils";
 import { encodeBuild, decodeBuild } from "@/lib/skill-build-codec";
@@ -32,8 +34,10 @@ function readSkillUrlState() {
 
 export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   const { resolvedLocale } = useSettings();
+  const { token } = useAuth();
   const [selectedChar, setSelectedChar] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<SkillNode | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   // Manual lock state (for lockType: "manual" / "boss_kill" nodes) — must be before useSkillTree
   const [manualLocks, setManualLocks] = useState<Set<string>>(new Set());
@@ -62,6 +66,56 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     }
   }, [selectedChar, manualLocks]);
 
+  // --- Server sync: on login, fetch all skills → localStorage ---
+  useEffect(() => {
+    if (!token) return;
+    let cancelled = false;
+
+    fetchAllSkills(token).then(({ skills, locks }) => {
+      if (cancelled) return;
+      const hasServerData = Object.keys(skills).length > 0 || Object.keys(locks).length > 0;
+
+      if (hasServerData) {
+        // Server → localStorage
+        for (const [charId, skillIds] of Object.entries(skills)) {
+          if (skillIds.length > 0) {
+            localStorage.setItem(`dst:skills:${charId}`, JSON.stringify(skillIds));
+          } else {
+            localStorage.removeItem(`dst:skills:${charId}`);
+          }
+        }
+        for (const [charId, lockKeys] of Object.entries(locks)) {
+          if (lockKeys.length > 0) {
+            localStorage.setItem(`dst:skills-locks:${charId}`, JSON.stringify(lockKeys));
+          } else {
+            localStorage.removeItem(`dst:skills-locks:${charId}`);
+          }
+        }
+        // Reload current character's manualLocks if selected
+        if (selectedChar && locks[selectedChar]) {
+          skipLockSaveRef.current = true;
+          setManualLocks(new Set(locks[selectedChar]));
+        }
+        // Force use-skill-tree to re-read from localStorage
+        setRefreshKey((k) => k + 1);
+      } else {
+        // First login migration: localStorage → server
+        for (const charId of CHARACTERS_WITH_SKILLS) {
+          const skillsRaw = localStorage.getItem(`dst:skills:${charId}`);
+          const locksRaw = localStorage.getItem(`dst:skills-locks:${charId}`);
+          if (skillsRaw || locksRaw) {
+            const s = skillsRaw ? JSON.parse(skillsRaw) as string[] : [];
+            const l = locksRaw ? JSON.parse(locksRaw) as string[] : [];
+            saveCharacterSkills(token, charId, s, l).catch(() => {});
+          }
+        }
+      }
+    }).catch(() => {});
+
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
+
   const tree = selectedChar ? skillTrees[selectedChar] ?? null : null;
   const {
     activatedSkills,
@@ -74,7 +128,18 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     toggleSkill,
     resetAll,
     loadBuild,
-  } = useSkillTree(tree, manualLocks);
+  } = useSkillTree(tree, manualLocks, refreshKey);
+
+  // --- Debounced save to server on skill/lock change ---
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => {
+    if (!token || !selectedChar) return;
+    clearTimeout(saveTimeoutRef.current);
+    saveTimeoutRef.current = setTimeout(() => {
+      saveCharacterSkills(token, selectedChar, [...activatedSkills], [...manualLocks]).catch(() => {});
+    }, 1000);
+    return () => clearTimeout(saveTimeoutRef.current);
+  }, [token, selectedChar, activatedSkills, manualLocks]);
 
   const slideClass = useSlideAnimation(selectedChar, (v) => v === null);
   const { panelItem: panelNode, panelOpen } = useDetailPanel(selectedNode);
