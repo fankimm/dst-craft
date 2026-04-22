@@ -158,8 +158,8 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
     },
     {
       id: "skip",
-      nameKo: "N일 건너뛰기",
-      nameEn: "Skip N Days",
+      nameKo: "날짜 건너뛰기",
+      nameEn: "Skip Days",
       command: "c_skip({days})",
       icon: "game-items/pocketwatch_portal.png",
       params: [{ key: "days", label: "일수", defaultValue: "1" }],

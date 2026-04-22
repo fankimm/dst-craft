@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.15.2",
+    date: "2026-04-22",
+    dev: [
+      "feat: 콘솔 탭 일반 공개 — adminOnly 플래그 제거",
+      "rename: 'N일 건너뛰기' → '날짜 건너뛰기'",
+    ],
+    changes: {
+      ko: [
+        "콘솔 탭 일반 공개 — 이제 모든 유저가 이용 가능",
+        "'N일 건너뛰기' → '날짜 건너뛰기'로 명칭 변경",
+      ],
+      en: [
+        "Console tab now available to all users",
+        "Renamed 'Skip N Days' → 'Skip Days'",
+      ],
+    },
+  },
+  {
     version: "0.15.1",
     date: "2026-04-21",
     dev: [
