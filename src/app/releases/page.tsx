@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.15.3",
+    date: "2026-04-22",
+    dev: [
+      "feat: 스킬트리 빌드 서버 동기화 — Worker GET/POST /skills 엔드포인트, Redis Hash 저장",
+      "feat: 로그인 시 서버→localStorage 동기화, 비로그인 시 localStorage fallback 유지",
+      "feat: 첫 로그인 시 localStorage→서버 자동 마이그레이션",
+      "feat: 변경 시 1초 debounce 후 fire-and-forget 서버 저장",
+      "refactor: use-skill-tree에 refreshKey 파라미터 추가 (서버 동기화 후 재로드용)",
+    ],
+    changes: {
+      ko: [
+        "로그인 시 스킬트리 빌드가 서버에 저장되어 기기 간 동기화 지원",
+      ],
+      en: [
+        "Skill tree builds now sync to server when logged in, enabling cross-device sync",
+      ],
+    },
+  },
+  {
     version: "0.15.2",
     date: "2026-04-22",
     dev: [
