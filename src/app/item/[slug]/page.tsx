@@ -76,6 +76,7 @@ const stationLabels: Record<string, string> = {
   shadow_forge: "Shadow Forge",
   carpentry_station: "Carpentry Station",
   turfcraftingstation: "Turf Crafting Station",
+  wagpunk_workstation: "Notional Fabricator",
   critter_lab: "Rock Den",
   character: "Character Specific",
 };

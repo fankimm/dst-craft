@@ -16,6 +16,7 @@ export type CraftingStation =
   | "shadow_forge"
   | "carpentry_station"
   | "turfcraftingstation"
+  | "wagpunk_workstation"
   | "critter_lab"
   | "character";
 
@@ -61,6 +62,8 @@ export interface CraftingItem {
   nounlock?: boolean;
   blueprint?: boolean;
   builderSkill?: string;
+  /** Number of items produced per craft (default 1). */
+  numtogive?: number;
   sortOrder: number;
 }
 

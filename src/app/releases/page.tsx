@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.15.4",
+    date: "2026-04-27",
+    dev: [
+      "fix: 와그펑크 작업장 레시피 8종의 station을 'none' → 'wagpunk_workstation'으로 정정 (인게임 recipes.lua TECH.WAGPUNK_WORKSTATION_TWO 기준)",
+      "feat: CraftingStation 타입에 'wagpunk_workstation' 추가 + i18n 라벨(ko: 관념 조립기 / en: Notional Fabricator)",
+      "feat: CraftingItem.numtogive 필드 추가, wagpunk_floor_kit(기질 추론기)에 numtogive: 4 반영",
+    ],
+    changes: {
+      ko: [
+        "와그펑크 작업장 레시피(기질 추론기, 게슈탈트 포획기, W.A.R.B.O.T. 키트 등) 제작대 정보 정정 — 이제 '관념 조립기' 근처에서만 제작 가능으로 표시",
+      ],
+      en: [
+        "Fixed crafting station info for Wagpunk Workstation recipes (Substrate Extrapolator, Gestalt Cage, W.A.R.B.O.T. kits, etc.) — now correctly shown as Notional Fabricator-only",
+      ],
+    },
+  },
+  {
     version: "0.15.3",
     date: "2026-04-22",
     dev: [

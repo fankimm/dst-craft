@@ -9676,7 +9676,7 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "blueprint_rare.png",
     category: ["structures"],
-    station: "none",
+    station: "wagpunk_workstation",
     materials: [
       { materialId: "papyrus", quantity: 1 },
     ],
@@ -9689,7 +9689,7 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "blueprint_rare.png",
     category: ["structures"],
-    station: "none",
+    station: "wagpunk_workstation",
     materials: [
       { materialId: "papyrus", quantity: 1 },
     ],
@@ -9702,12 +9702,13 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "wagpunk_floor_kit.png",
     category: ["seafaring", "structures", "decorations"],
-    station: "none",
+    station: "wagpunk_workstation",
     materials: [
       { materialId: "cutstone", quantity: 1 },
       { materialId: "wagpunk_bits", quantity: 1 },
     ],
     nounlock: true,
+    numtogive: 4,
     sortOrder: 28,
   },
   {
@@ -9716,7 +9717,7 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "gestalt_cage.png",
     category: ["tools"],
-    station: "none",
+    station: "wagpunk_workstation",
     materials: [
       { materialId: "thulecitebugnet", quantity: 1 },
       { materialId: "wagpunk_bits", quantity: 2 },
@@ -9730,7 +9731,7 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "wagboss_robot_constructionsite_kit.png",
     category: ["structures"],
-    station: "none",
+    station: "wagpunk_workstation",
     materials: [
       { materialId: "cutstone", quantity: 2 },
       { materialId: "boards", quantity: 2 },
@@ -9745,7 +9746,7 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "wagboss_robot_creation_parts.png",
     category: ["structures"],
-    station: "none",
+    station: "wagpunk_workstation",
     materials: [
       { materialId: "cutstone", quantity: 1 },
       { materialId: "wagpunk_bits", quantity: 2 },
@@ -9759,7 +9760,7 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "moonstorm_static_catcher.png",
     category: ["structures"],
-    station: "none",
+    station: "wagpunk_workstation",
     materials: [
       { materialId: "moonglass", quantity: 2 },
       { materialId: "wagpunk_bits", quantity: 1 },
@@ -9773,7 +9774,7 @@ export const allItems: CraftingItem[] = [
     description: "",
     image: "security_pulse_cage.png",
     category: ["structures"],
-    station: "none",
+    station: "wagpunk_workstation",
     materials: [
       { materialId: "thulecite", quantity: 2 },
       { materialId: "moonstorm_static_item", quantity: 1 },

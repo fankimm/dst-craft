@@ -2,6 +2,13 @@
 
 ## 게임 데이터
 
+### station 정보를 인게임 recipes.lua 검증 없이 작성
+- **문제**: 와그펑크 작업장(`TECH.WAGPUNK_WORKSTATION_TWO`) 레시피 8종이 모두 `station: "none"`으로 등록됨 (기질 추론기, 게슈탈트 포획기, W.A.R.B.O.T. 키트 2종, 청사진 2종, 정전기 억제기, 방전 방주). 인게임에서는 와그펑크 작업장(관념 조립기) 근처에서만 제작 가능하나 우리 앱은 "맨손 제작"으로 표시
+- **원인**: 레시피 데이터 작성 시 `recipes.lua`의 `Recipe2(...)` 세 번째 인자(TECH 레벨)를 확인하지 않음
+- **교훈**: 모든 station 값은 `recipes.lua`의 TECH 인자에서 도출해야 함. `TECH.NONE` → "none", `TECH.SCIENCE_ONE` → "science_1", `TECH.WAGPUNK_WORKSTATION_TWO` → "wagpunk_workstation" 식으로 1:1 매핑. 다른 잘 알려지지 않은 작업장(SHELLWEAVER, MASHTURFCRAFTING 등)도 검증 필요할 수 있음
+- **검증**: `grep '^Recipe2("<id>"' recipes.lua` → TECH 인자 확인 → constants.lua:1229의 `TECH = {...}` 정의에서 어느 작업장 tier인지 역인덱스
+- **부수 발견**: `numtogive=N` 옵션도 함께 누락되는 경우 많음 (슬링샷 탄, 향신료, 벽 등 30+ 레시피). 데이터 정확도가 필요한 부분
+
 ### lua 원본의 오타를 "고치지" 말 것
 - **문제**: wurt 스킬 데이터에서 `swampmaser` 태그(`t` 빠진 오타)가 lua 원본에 그대로 있는데, 우리 TS 데이터에서 "오타니까 정리"해서 모두 제거함
 - **원인**: 검증 스크립트가 "missing tags: ['swampmaster']"라고 출력 → 후에 다시 검증 시 이번엔 "missing tags: ['swampmaser']" → 처음엔 "swampmaster"가 정답이라 오해

@@ -46,6 +46,7 @@ export const stationImages: Record<CraftingStation, string | null> = {
   shadow_forge: "category-icons/shadow_forge.png",
   carpentry_station: "game-items/carpentry_station.png",
   turfcraftingstation: "game-items/turfcraftingstation.png",
+  wagpunk_workstation: null,
   critter_lab: "category-icons/critter_lab.png",
   character: null,
 };
