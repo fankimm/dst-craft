@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.16.2",
+    date: "2026-04-28",
+    dev: [
+      "perf(worker): Cache-Control 일괄 조정 — /supporters·/rating no-store(즉시 반영), /popular·/combos·/top-countries 60s, /stats(공개) 60s 유지",
+      "근거: Upstash 월 commands 110k/500k(22%), Workers 일 2k/100k(2%) — 모든 한도 충분히 여유, 캐시로 절약할 비용 없음",
+    ],
+    changes: {
+      ko: [
+        "후원자 닉네임·평점 변경이 즉시 반영됩니다 (이전 5분 캐시 → 즉시)",
+      ],
+      en: [
+        "Supporter names and ratings now reflect instantly (previously cached for 5 min)",
+      ],
+    },
+  },
+  {
     version: "0.16.1",
     date: "2026-04-28",
     dev: [

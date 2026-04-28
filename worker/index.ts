@@ -276,7 +276,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         items.push({ id: raw[i], clicks: Number(raw[i + 1]) });
       }
       return new Response(JSON.stringify({ items }), {
-        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" },
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=60" },
       });
     }
 
@@ -315,7 +315,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         combos.push({ ingredients: raw[i].split(","), count: Number(raw[i + 1]) });
       }
       return new Response(JSON.stringify({ combos }), {
-        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=120" },
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=60" },
       });
     }
 
@@ -362,7 +362,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       countries.sort((a, b) => b.count - a.count);
       const top5 = countries.slice(0, 5);
       return new Response(JSON.stringify(top5), {
-        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=600" },
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=60" },
       });
     }
 
@@ -388,7 +388,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         }
       }
       return new Response(JSON.stringify({ avg, total, ratings }), {
-        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" },
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "no-store" },
       });
     }
 
@@ -1018,7 +1018,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       ]) as { result: any }[];
       const names = (result[0]?.result as string[]) ?? [];
       return new Response(JSON.stringify({ supporters: names.map((name) => ({ name })) }), {
-        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" },
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "no-store" },
       });
     }
 
