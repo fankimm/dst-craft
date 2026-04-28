@@ -3,8 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Heart } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
 import { t } from "@/lib/i18n";
+import { fetchSupporters } from "@/lib/analytics";
+
+const ANON_TOKEN = "__anon__";
+const TICK_MS = 3000;
 
 /**
  * Floating ko-fi pill that lives at the bottom-center of the viewport when
@@ -19,13 +24,37 @@ export function FloatingSupportPill() {
   const [mounted, setMounted] = useState(false);
   const [docking, setDocking] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [supporters, setSupporters] = useState<{ name: string }[]>([]);
+  const [, setTick] = useState(0);
   const floatRef = useRef<HTMLAnchorElement>(null);
   const dockTimeout = useRef<number | null>(null);
   const undockTimeout = useRef<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
+    fetchSupporters().then(setSupporters);
   }, []);
+
+  // Build rotating slots: base label + supporter names
+  const baseLabel = t(resolvedLocale, "support_kofi");
+  const slots: string[] = [
+    baseLabel,
+    ...supporters.map((s) =>
+      s.name === ANON_TOKEN
+        ? `${t(resolvedLocale, "support_thanks")} ${t(resolvedLocale, "support_anonymous")}`
+        : `${t(resolvedLocale, "support_thanks")} ${s.name}${resolvedLocale === "ko" ? "님" : ""}`,
+    ),
+  ];
+
+  // Time-derived index — advances every TICK_MS regardless of mount timing
+  const index = slots.length > 0 ? Math.floor(Date.now() / TICK_MS) % slots.length : 0;
+  const prevIndex = slots.length > 0 ? (index - 1 + slots.length) % slots.length : -1;
+
+  useEffect(() => {
+    if (slots.length <= 1) return;
+    const i = setInterval(() => setTick((n) => n + 1), TICK_MS);
+    return () => clearInterval(i);
+  }, [slots.length]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -114,8 +143,30 @@ export function FloatingSupportPill() {
         className="pointer-events-auto flex items-center gap-1.5 rounded-full border border-border/70 bg-surface/95 px-3.5 py-1.5 text-xs font-medium text-muted-foreground shadow-lg shadow-black/20 backdrop-blur-sm hover:text-foreground hover:border-border hover:shadow-xl transition-[color,border-color,box-shadow]"
         style={{ willChange: "transform, opacity" }}
       >
-        <Heart className="size-3 fill-rose-400/90 text-rose-400/90" />
-        <span>{t(resolvedLocale, "support_kofi")}</span>
+        <Heart className="size-3 fill-rose-400/90 text-rose-400/90 shrink-0" />
+        <span className="relative inline-block h-4 overflow-hidden align-middle leading-4">
+          {/* width-setter (longest slot, invisible) */}
+          <span aria-hidden className="invisible whitespace-nowrap">
+            {slots.reduce((a, b) => (b.length > a.length ? b : a), "")}
+          </span>
+          {slots.map((label, i) => {
+            const isCurrent = i === index;
+            const isLeaving = i === prevIndex && slots.length > 1;
+            return (
+              <span
+                key={`${i}-${label}`}
+                className={cn(
+                  "absolute inset-0 flex items-center justify-center whitespace-nowrap transition-all duration-500 ease-in-out",
+                  isCurrent && "translate-y-0 opacity-100",
+                  isLeaving && "-translate-y-full opacity-0",
+                  !isCurrent && !isLeaving && "translate-y-full opacity-0",
+                )}
+              >
+                {label}
+              </span>
+            );
+          })}
+        </span>
       </a>
     </div>,
     document.body,
