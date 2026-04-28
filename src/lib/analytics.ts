@@ -237,6 +237,20 @@ export async function updateFeedbackStatus(token: string, id: string, status: Fe
   }
 }
 
+/** Delete feedback (admin only) */
+export async function deleteFeedback(token: string, id: string): Promise<boolean> {
+  if (!WORKER_URL) return false;
+  try {
+    const res = await fetch(`${WORKER_URL}/feedback?id=${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 /** Track a generic event */
 export function trackEvent(type: "search" | "pwa_install" | "share" | "github_star_click", skipTracking?: boolean) {
   if (!WORKER_URL || skipTracking) return;

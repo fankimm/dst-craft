@@ -15,6 +15,16 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.18.1",
+    date: "2026-04-28",
+    dev: [
+      "feat(admin/feedback): DELETE /feedback?id=<id> 엔드포인트 추가 — 어드민 권한 체크 후 dst:feedback 리스트에서 LREM + dst:feedback:status 해시에서 HDEL",
+      "feat(AdminFeedbackSection): DetailPanel에 삭제 버튼 추가 — 2단계 확인(첫 클릭 시 '정말 삭제? (다시 클릭)' 표시 후 재클릭 시 실행), 삭제 성공 시 패널 닫고 목록에서 제거",
+      "feat(analytics): deleteFeedback(token, id) 클라이언트 함수 추가",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.18.0",
     date: "2026-04-28",
     dev: [

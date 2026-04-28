@@ -950,6 +950,47 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       });
     }
 
+    // DELETE /feedback?id=<id> — delete feedback (admin only)
+    if (url.pathname === "/feedback" && request.method === "DELETE") {
+      const auth = request.headers.get("Authorization") ?? "";
+      if (!auth.startsWith("Bearer ")) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const jwtPayload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+      if (!jwtPayload || jwtPayload.role !== "admin") {
+        return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const id = url.searchParams.get("id") ?? "";
+      if (!id) {
+        return new Response(JSON.stringify({ error: "Invalid request" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      // Find the matching entry string in the list (entries are stored as JSON)
+      const listRes = await redisPipeline(env, [["LRANGE", "dst:feedback", "0", "-1"]]) as { result: any }[];
+      const raw = (listRes[0]?.result as string[]) ?? [];
+      const target = raw.find((r: string) => {
+        try { return JSON.parse(r)?.id === id; } catch { return false; }
+      });
+      if (!target) {
+        // Already gone — clean up status anyway
+        await redisPipeline(env, [["HDEL", "dst:feedback:status", id]]);
+        return new Response(JSON.stringify({ ok: true, removed: 0 }), {
+          headers: { ...headers, "Content-Type": "application/json" },
+        });
+      }
+
+      const ops = await redisPipeline(env, [
+        ["LREM", "dst:feedback", "1", target],
+        ["HDEL", "dst:feedback:status", id],
+      ]) as { result: any }[];
+      const removed = Number(ops[0]?.result ?? 0);
+
+      return new Response(JSON.stringify({ ok: true, removed }), {
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
+
     // POST /kofi-webhook — receive ko-fi donation/subscription/shop events
     // ko-fi sends: Content-Type: application/x-www-form-urlencoded, body = data=<JSON>
     if (url.pathname === "/kofi-webhook" && request.method === "POST") {

@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { MessageSquare, Copy, Check } from "lucide-react";
+import { MessageSquare, Copy, Check, Trash2 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import {
   fetchFeedback,
   updateFeedbackStatus,
+  deleteFeedback,
   type FeedbackItem,
   type FeedbackStatus,
 } from "@/lib/analytics";
@@ -80,6 +81,8 @@ export function AdminFeedbackSection() {
   const selected = selectedId ? items.find((x) => x.id === selectedId) ?? null : null;
   const { panelItem, panelOpen } = useDetailPanel(selected);
   const [copied, setCopied] = useState<"msg" | "ip" | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!isAdmin || !token) return;
@@ -88,6 +91,10 @@ export function AdminFeedbackSection() {
       .then(setItems)
       .finally(() => setLoading(false));
   }, [isAdmin, token]);
+
+  useEffect(() => {
+    setConfirmDeleteId(null);
+  }, [selectedId]);
 
   const handleStatusChange = useCallback(
     async (id: string, next: FeedbackStatus) => {
@@ -98,6 +105,25 @@ export function AdminFeedbackSection() {
       if (!ok) setItems(prev);
     },
     [token, items],
+  );
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      if (!token) return;
+      if (confirmDeleteId !== id) {
+        setConfirmDeleteId(id);
+        return;
+      }
+      setDeleting(true);
+      const ok = await deleteFeedback(token, id);
+      setDeleting(false);
+      if (ok) {
+        setItems((cur) => cur.filter((fb) => fb.id !== id));
+        setSelectedId(null);
+        setConfirmDeleteId(null);
+      }
+    },
+    [token, confirmDeleteId],
   );
 
   const handleCopy = useCallback(async (text: string, kind: "msg" | "ip") => {
@@ -275,6 +301,29 @@ export function AdminFeedbackSection() {
                 </>
               )}
             </button>
+
+            {/* Delete (2-step confirm) */}
+            {panelItem.id && (
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => handleDelete(panelItem.id)}
+                className={cn(
+                  "w-full flex items-center justify-center gap-1.5 rounded-md border px-3 py-2 text-xs transition-colors",
+                  confirmDeleteId === panelItem.id
+                    ? "border-red-500 bg-red-500 text-white hover:bg-red-600"
+                    : "border-border text-muted-foreground hover:bg-surface-hover hover:text-red-500",
+                  deleting && "opacity-50 cursor-wait",
+                )}
+              >
+                <Trash2 className="size-3.5" />
+                {deleting
+                  ? "삭제 중..."
+                  : confirmDeleteId === panelItem.id
+                  ? "정말 삭제? (다시 클릭)"
+                  : "삭제"}
+              </button>
+            )}
           </div>
         )}
       </DetailPanel>
