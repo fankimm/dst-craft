@@ -5,6 +5,8 @@ import { bosses } from "@/data/bosses";
 import { characters } from "@/data/characters";
 import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 
+export const dynamic = "force-static";
+
 const SITE_URL = "https://www.dstcraft.com";
 
 function idToSlug(id: string) {
