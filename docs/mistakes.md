@@ -252,3 +252,14 @@
 ### DXT5 디코딩
 - Pillow 내장: `Image.frybytes('RGBA', (w,h), data, 'bcn', (3,))`
 - pixel_format 0=DXT1(bcn 1), 1=DXT3(bcn 2), 2=DXT5(bcn 3)
+
+## Worker / 외부 연동
+
+### production Worker에 검증용 payload를 직접 POST
+- **문제**: ko-fi webhook 구현 후 verification 토큰 동작 확인을 위해 production worker에 `from_name=__SELFTEST__` payload를 직접 POST → 그 닉네임이 `dst:supporters` sorted set에 저장되어 공개 `/supporters` TOP 5에 노출됨. 정리하려고 admin DELETE 엔드포인트 추가 + 재배포 + CORS DELETE 허용 추가 + 사용자에게 브라우저 콘솔 fetch 안내까지 후폭풍 발생
+- **원인**: 저장 경로에 dry-run 또는 테스트 식별 옵션이 없는 상태에서 production 검증을 강행
+- **교훈**: 새 external webhook/event 핸들러를 production에서 검증하기 전에 다음 중 하나는 반드시 갖출 것:
+  1. `wrangler dev`로 로컬에서 검증
+  2. Worker가 dry-run 헤더(예: `X-Dry-Run: 1`)를 인식해 저장 스킵
+  3. transaction id 패턴(예: `selftest-`)을 인식해 저장 스킵
+- **검증**: 외부 연동 코드 작성 시 위 3가지 중 하나가 코드에 들어 있는지 PR 자체 점검 항목으로 확인

@@ -14,7 +14,7 @@ function corsHeaders(origin: string, allowed: string): HeadersInit {
   const isAllowed = origin.startsWith(allowed) || origin === "https://dst-craft.vercel.app" || origin.startsWith("http://localhost:");
   return {
     "Access-Control-Allow-Origin": isAllowed ? origin : "",
-    "Access-Control-Allow-Methods": "GET, POST, PATCH, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
 }
@@ -1040,6 +1040,24 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       }
       await redisPipeline(env, [["ZINCRBY", "dst:supporters", `${cents}`, name]]);
       return new Response(JSON.stringify({ ok: true, name, cents }), { headers: { ...headers, "Content-Type": "application/json" } });
+    }
+
+    // DELETE /supporters?name=... — admin only: remove a supporter entry
+    if (url.pathname === "/supporters" && request.method === "DELETE") {
+      const auth = request.headers.get("Authorization") ?? "";
+      if (!auth.startsWith("Bearer ")) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const jwtPayload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+      if (!jwtPayload || jwtPayload.role !== "admin") {
+        return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const name = url.searchParams.get("name") ?? "";
+      if (!name) {
+        return new Response(JSON.stringify({ error: "name required" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const res = await redisPipeline(env, [["ZREM", "dst:supporters", name]]) as { result: any }[];
+      return new Response(JSON.stringify({ ok: true, removed: res[0]?.result ?? 0 }), { headers: { ...headers, "Content-Type": "application/json" } });
     }
 
     // GET /config?key=... — read a global config value (public)
