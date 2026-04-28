@@ -149,6 +149,9 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
           disabled={allFilled}
         />
       </div>
+
+      {/* Footer pinned to bottom — stays visible at all times */}
+      <Footer />
     </div>
   );
 }
