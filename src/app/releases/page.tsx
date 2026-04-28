@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.18.0",
+    date: "2026-04-28",
+    dev: [
+      "feat(seo): /ko/... prefix 라우트로 한국어 SEO 페이지 추가 — food/boss/item/character/skill-tree dynamic 5종 + browse/cookpot/characters static 3종",
+      "feat(seo-text): 한글 SEO 텍스트 생성기 5종 추가 (generateFoodSeoTextKo, generateBossSeoTextKo, generateItemSeoTextKo, generateCharacterSeoTextKo, generateSkillTreeSeoTextKo) — 한글 조사 자동 처리(받침 기반 은/는, 이/가, 을/를)",
+      "refactor: 기존 영어 SEO 페이지 본문을 src/components/seo/*Content.tsx 공유 컴포넌트로 추출 후 lang prop으로 분기 — 영어/한국어 양쪽이 동일 구조 사용, 라벨/SEO 텍스트만 분기",
+      "feat(metadata): 모든 SEO 페이지에 hreflang alternates(en/ko/x-default) + locale별 OG locale 자동 설정",
+      "feat(sitemap): /ko/... 모든 라우트를 sitemap.xml에 자동 등록",
+      "근거: 영어 SEO 페이지만 있어 한국어 검색 트래픽을 놓치고 있음. ko.po 기반 정식 한국어 번역 활용",
+    ],
+    changes: {
+      ko: [
+        "한국어 SEO 페이지 추가 — `/ko/food/...`, `/ko/item/...`, `/ko/boss/...`, `/ko/character/...`, `/ko/skill-tree/...`, `/ko/cookpot`, `/ko/browse`, `/ko/characters` 모든 한국어 게임 가이드 페이지 신설",
+        "구글 검색에서 한국어 키워드(아이템명/요리명/보스명 등)로 검색 시 정확한 한국어 페이지가 노출됩니다",
+      ],
+      en: [
+        "Korean SEO pages added under /ko/... — full Korean guides for all foods, items, bosses, characters, and skill trees",
+      ],
+    },
+  },
+  {
     version: "0.17.0",
     date: "2026-04-28",
     dev: [

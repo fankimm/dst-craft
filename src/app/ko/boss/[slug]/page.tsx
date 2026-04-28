@@ -12,14 +12,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return buildBossMetadata(slug, "en");
+  return buildBossMetadata(slug, "ko");
 }
 
-export default async function BossPage({
+export default async function BossPageKo({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <BossPageContent slug={slug} lang="en" />;
+  return <BossPageContent slug={slug} lang="ko" />;
 }

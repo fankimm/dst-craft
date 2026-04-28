@@ -1,5 +1,5 @@
-import { allItems } from "@/data/items";
-import { ItemPageContent, buildItemMetadata } from "@/components/seo/ItemPageContent";
+import { cookingRecipes } from "@/data/recipes";
+import { FoodPageContent, buildFoodMetadata } from "@/components/seo/FoodPageContent";
 import type { Metadata } from "next";
 
 function idToSlug(id: string) {
@@ -7,7 +7,7 @@ function idToSlug(id: string) {
 }
 
 export function generateStaticParams() {
-  return allItems.map((item) => ({ slug: idToSlug(item.id) }));
+  return cookingRecipes.map((r) => ({ slug: idToSlug(r.id) }));
 }
 
 export async function generateMetadata({
@@ -16,14 +16,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return buildItemMetadata(slug, "en");
+  return buildFoodMetadata(slug, "ko");
 }
 
-export default async function ItemPage({
+export default async function FoodPageKo({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <ItemPageContent slug={slug} lang="en" />;
+  return <FoodPageContent slug={slug} lang="ko" />;
 }

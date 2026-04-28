@@ -16,14 +16,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return buildItemMetadata(slug, "en");
+  return buildItemMetadata(slug, "ko");
 }
 
-export default async function ItemPage({
+export default async function ItemPageKo({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <ItemPageContent slug={slug} lang="en" />;
+  return <ItemPageContent slug={slug} lang="ko" />;
 }

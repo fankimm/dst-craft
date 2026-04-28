@@ -12,14 +12,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return buildSkillTreeMetadata(slug, "en");
+  return buildSkillTreeMetadata(slug, "ko");
 }
 
-export default async function SkillTreePage({
+export default async function SkillTreePageKo({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <SkillTreePageContent slug={slug} lang="en" />;
+  return <SkillTreePageContent slug={slug} lang="ko" />;
 }

@@ -12,14 +12,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  return buildCharacterMetadata(slug, "en");
+  return buildCharacterMetadata(slug, "ko");
 }
 
-export default async function CharacterPage({
+export default async function CharacterPageKo({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <CharacterPageContent slug={slug} lang="en" />;
+  return <CharacterPageContent slug={slug} lang="ko" />;
 }

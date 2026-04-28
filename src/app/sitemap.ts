@@ -14,7 +14,7 @@ function idToSlug(id: string) {
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const staticRoutes: MetadataRoute.Sitemap = [
+  const homeRoutes: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
       lastModified: now,
@@ -27,62 +27,48 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.5,
     },
-    {
-      url: `${SITE_URL}/browse`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${SITE_URL}/cookpot`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
   ];
 
-  const itemRoutes: MetadataRoute.Sitemap = allItems.map((item) => ({
-    url: `${SITE_URL}/item/${idToSlug(item.id)}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
-  const foodRoutes: MetadataRoute.Sitemap = cookingRecipes.map((recipe) => ({
-    url: `${SITE_URL}/food/${idToSlug(recipe.id)}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
-  const bossRoutes: MetadataRoute.Sitemap = bosses.map((boss) => ({
-    url: `${SITE_URL}/boss/${boss.id}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
-  const characterRoutes: MetadataRoute.Sitemap = [
+  const staticPaths = ["/browse", "/cookpot", "/characters"];
+  const staticRoutes: MetadataRoute.Sitemap = staticPaths.flatMap((p) => [
     {
-      url: `${SITE_URL}/characters`,
+      url: `${SITE_URL}${p}`,
       lastModified: now,
-      changeFrequency: "monthly",
+      changeFrequency: "weekly" as const,
       priority: 0.9,
     },
-    ...characters.map((char) => ({
-      url: `${SITE_URL}/character/${char.id}`,
+    {
+      url: `${SITE_URL}/ko${p}`,
       lastModified: now,
-      changeFrequency: "monthly" as const,
+      changeFrequency: "weekly" as const,
       priority: 0.8,
-    })),
+    },
+  ]);
+
+  const dynamicEntries: { path: string; ids: string[] }[] = [
+    { path: "/item", ids: allItems.map((i) => idToSlug(i.id)) },
+    { path: "/food", ids: cookingRecipes.map((r) => idToSlug(r.id)) },
+    { path: "/boss", ids: bosses.map((b) => b.id) },
+    { path: "/character", ids: characters.map((c) => c.id) },
+    { path: "/skill-tree", ids: [...CHARACTERS_WITH_SKILLS] },
   ];
 
-  const skillTreeRoutes: MetadataRoute.Sitemap = CHARACTERS_WITH_SKILLS.map((id) => ({
-    url: `${SITE_URL}/skill-tree/${id}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
+  const dynamicRoutes: MetadataRoute.Sitemap = dynamicEntries.flatMap(({ path, ids }) =>
+    ids.flatMap((id) => [
+      {
+        url: `${SITE_URL}${path}/${id}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      },
+      {
+        url: `${SITE_URL}/ko${path}/${id}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      },
+    ]),
+  );
 
-  return [...staticRoutes, ...itemRoutes, ...foodRoutes, ...bossRoutes, ...characterRoutes, ...skillTreeRoutes];
+  return [...homeRoutes, ...staticRoutes, ...dynamicRoutes];
 }
