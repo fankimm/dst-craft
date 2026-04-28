@@ -18,7 +18,6 @@ import {
 } from "@/data/console-commands";
 import { SearchWithSuggestions, type SearchSuggestion } from "../ui/SearchWithSuggestions";
 import { Footer } from "../crafting/Footer";
-import { SupporterStrip } from "@/components/ui/SupporterStrip";
 
 // ---------------------------------------------------------------------------
 // Category color config
@@ -99,9 +98,7 @@ export function ConsoleApp() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col">
-      <SupporterStrip />
-      <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-y-contain">
+    <div ref={scrollRef} className="h-full overflow-y-auto overscroll-y-contain">
       <div className="max-w-2xl mx-auto w-full px-3 sm:px-4 py-3 sm:py-4 space-y-6">
         {/* Header */}
         <div className="flex items-center gap-2.5">
@@ -129,7 +126,6 @@ export function ConsoleApp() {
         ))}
 
         <Footer />
-      </div>
       </div>
     </div>
   );

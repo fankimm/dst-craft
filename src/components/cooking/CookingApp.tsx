@@ -31,7 +31,6 @@ import { characters } from "@/data/characters";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { SortDropdown } from "@/components/ui/SortDropdown";
 import { FavClickBadge } from "@/components/ui/FavClickBadge";
-import { SupporterStrip } from "@/components/ui/SupporterStrip";
 import { statColor, formatStat } from "@/lib/stat-utils";
 
 // ---------------------------------------------------------------------------
@@ -313,7 +312,6 @@ export function CookingApp({
           <CookingBreadcrumb locale={resolvedLocale} onHomeClick={handleGoHome} />
           {searchBar}
         </div>
-        <SupporterStrip />
 
         {/* Category grid */}
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
@@ -409,7 +407,6 @@ export function CookingApp({
         </div>
         {searchBar}
       </div>
-      <SupporterStrip />
 
       {/* Recipe grid */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">

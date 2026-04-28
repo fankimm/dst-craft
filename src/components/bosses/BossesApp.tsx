@@ -24,7 +24,6 @@ import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { SortDropdown } from "@/components/ui/SortDropdown";
 import { FavClickBadge } from "@/components/ui/FavClickBadge";
-import { SupporterStrip } from "@/components/ui/SupporterStrip";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -288,7 +287,6 @@ export function BossesApp({
         </div>
 
         {lootSearchBar}
-        <SupporterStrip />
 
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
           <div className="flex flex-col min-h-full">
@@ -330,7 +328,6 @@ export function BossesApp({
         </div>
 
         {lootSearchBar}
-        <SupporterStrip />
 
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
           <div className="flex flex-col min-h-full">

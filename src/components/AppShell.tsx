@@ -10,6 +10,7 @@ import { SettingsPage } from "./settings/SettingsPage";
 import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
 import { ConsoleApp } from "./console/ConsoleApp";
 import { ReviewPrompt } from "./ReviewPrompt";
+import { FloatingSupportPill } from "./ui/FloatingSupportPill";
 import { SkillsTourPopover } from "./SkillsTourPopover";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
@@ -304,6 +305,9 @@ export function AppShell() {
 
       {/* Review Prompt */}
       <ReviewPrompt open={showReview} onClose={handleReviewClose} locale={resolvedLocale} />
+
+      {/* Floating ko-fi pill — docks into Footer when Footer is in view */}
+      <FloatingSupportPill />
 
       {/* Dev menu */}
       {showDevMenu && (
