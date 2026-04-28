@@ -42,7 +42,7 @@ export function SeoFooterLinks() {
   for (const c of categories) catNames[c.id] = c.name;
 
   return (
-    <footer className="border-t border-border bg-muted/30 px-4 py-8 text-xs text-muted-foreground">
+    <footer className="sr-only">
       <div className="max-w-5xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-foreground/70">

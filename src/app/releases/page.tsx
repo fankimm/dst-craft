@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.16.1",
+    date: "2026-04-28",
+    dev: [
+      "fix(SeoFooterLinks): 푸터를 sr-only 처리 — 시각적으로 숨기되 크롤러/스크린리더에는 노출되어 SEO 내부 링크는 유지",
+    ],
+    changes: {
+      ko: [
+        "첫 화면 하단에 노출되던 SEO용 링크 목록을 시각적으로 숨김 (검색 엔진용 링크는 유지)",
+      ],
+      en: [
+        "Hid the SEO link list that was visible at the bottom of the home page (still exposed to crawlers)",
+      ],
+    },
+  },
+  {
     version: "0.16.0",
     date: "2026-04-28",
     dev: [
