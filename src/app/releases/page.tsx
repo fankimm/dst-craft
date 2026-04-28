@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.16.3",
+    date: "2026-04-28",
+    dev: [
+      "fix(Footer): 메인 푸터의 ko-fi 버튼이 SupportPill 컴포넌트를 사용하도록 교체 — v0.16.0의 ticker 적용 누락 수정",
+      "원인: SupportPill 컴포넌트만 ticker화했으나 Footer.tsx에 동일 디자인 ko-fi 버튼이 별도 하드코딩되어 있어 적용 안 됨",
+    ],
+    changes: {
+      ko: [
+        "후원자 닉네임 ticker가 메인 화면 푸터에도 정상 표시됩니다",
+      ],
+      en: [
+        "Supporter ticker now correctly displays on the main page footer",
+      ],
+    },
+  },
+  {
     version: "0.16.2",
     date: "2026-04-28",
     dev: [

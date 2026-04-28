@@ -263,3 +263,14 @@
   2. Worker가 dry-run 헤더(예: `X-Dry-Run: 1`)를 인식해 저장 스킵
   3. transaction id 패턴(예: `selftest-`)을 인식해 저장 스킵
 - **검증**: 외부 연동 코드 작성 시 위 3가지 중 하나가 코드에 들어 있는지 PR 자체 점검 항목으로 확인
+
+## 컴포넌트 / 리팩터링
+
+### "공통 컴포넌트만 고치면 다 적용된다" 가정으로 사용처 확인 누락
+- **문제**: ko-fi 후원자 ticker를 `SupportPill` 컴포넌트에 구현했는데, 사용자가 "푸터의 서포트 버튼"이라고 명시한 메인 푸터(`Footer.tsx`)는 `SupportPill`을 쓰지 않고 동일 디자인의 ko-fi 버튼을 별도 하드코딩하고 있었음 → ticker가 메인 푸터에 적용 안 됨, 사용자가 빈 ticker 보고 보고 후 발견
+- **원인**:
+  1. `grep "SupportPill"` 만 돌리고 `grep "ko-fi.com"` / `grep "Support this project"` (실제 동작/텍스트)로는 안 찾음
+  2. 컴포넌트 이름과 실제 푸터 버튼이 1:1 매핑된다고 자동 가정 (이름 유사성)
+  3. CLAUDE.md "중복 코드 자동 공통화" 룰을 사전에 적용했어야 하는데 무시 — 동일 패턴 ko-fi 버튼이 5곳(Footer/SupportPill/ReviewPrompt/SettingsPage/DetailPanel)에 산재
+- **교훈**: 사용자가 UI 위치를 지목하면 **컴포넌트 이름이 아니라 실제 동작/텍스트/링크/className으로 grep**해서 모든 사용처 파악 후 작업
+- **검증**: 새 기능 작업 시작 전 `grep -rn "<관련 텍스트나 URL>"` 으로 사용처 후보 모두 나열 → 중복이면 먼저 공통화 후 본 작업 진행
