@@ -70,7 +70,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "drumstick", name: "Drumstick", nameKo: "닭다리", tags: { meat: 0.5 }, category: "meats", cookable: true },
   { id: "batwing", name: "Batilisk Wing", nameKo: "바틸리스크 날개", tags: { meat: 0.5 }, category: "meats", cookable: true },
   { id: "smallmeat", name: "Morsel", nameKo: "고깃조각", tags: { meat: 0.5 }, category: "meats", dryable: true, cookable: true, cookedImage: "cookedsmallmeat.png" },
-  { id: "batnose", name: "Batnose", nameKo: "벌거숭이 콧구멍", tags: { meat: 0.5 }, category: "meats", cookable: true, dryable: true },
+  { id: "batnose", name: "Batnose", nameKo: "벌거숭이 콧구멍", tags: { meat: 0.5 }, category: "meats", cookable: true },
   { id: "mole", name: "Naked Mole Bat", nameKo: "두더지렁이", tags: { meat: 0.5 }, category: "meats" },
   { id: "trunk_summer", name: "Koalefant Trunk", nameKo: "코알라판트 코", tags: { meat: 1 }, category: "meats" },
   { id: "trunk_winter", name: "Winter Koalefant Trunk", nameKo: "겨울 코알라판트 코", tags: { meat: 1 }, category: "meats" },

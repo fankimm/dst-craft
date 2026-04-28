@@ -192,6 +192,12 @@
 - **원인**: Lua→TypeScript 포팅 시 `names.xxx`를 일괄적으로 `n.xxx + n.xxx_cooked >= 1`로 변환한 것이 주원인. 게임에서 raw만 체크하는 경우가 많음
 - **교훈**: Lua `names.xxx` → `!!n.xxx`, Lua `(names.xxx or 0) + (names.xxx_cooked or 0) >= N` → `n.xxx + n.xxx_cooked >= N`. 각 레시피마다 cooked 포함 여부를 개별 확인. `==` vs `>=` 구분도 주의
 
+### cooking.lua의 `_dried`/`_cooked` 가상 재료를 실제 아이템으로 착각
+- **문제**: `batnose`에 `dryable: true`를 주어 `batnose_dried` 변형을 자동 생성 → `batnose_dried.png`가 없어 크록팟 시뮬레이터에서 이미지 깨짐
+- **원인**: `cooking.lua`의 `AddIngredientValues({"batnose"}, ..., true, true)`만 보고 `batnose_dried` 아이템이 실재한다고 가정. 실제로는 `prefabs/meats.lua`의 `BATNOSE_DRYABLE_DATA.product = "smallmeat_dried"` — 박쥐 콧구멍을 건조대에 올리면 별도 prefab이 아니라 작은 육포(`smallmeat_dried`)가 생성됨. cooking.lua의 `_dried` 등록은 단지 태그 lookup용 내부 엔트리이지 실재 아이템이 아님
+- **교훈**: 크록팟 재료에 `dryable`/`cookable`을 표시하기 전에 반드시 `prefabs/<id>.lua`의 `*_DRYABLE_DATA.product` / `*_COOKABLE_DATA.product`로 실제 산출물을 확인. cooking.lua는 "이 ID로 들어오면 어떤 태그를 부여하는가"의 룩업 테이블이고, 실제 산출 prefab은 prefab 파일에서만 결정됨
+- **검증**: `unzip -p scripts.zip scripts/prefabs/meats.lua | grep -B1 -A5 "<NAME>_DRYABLE_DATA\|<NAME>_COOKABLE_DATA"` → product 필드 확인
+
 ### preparednonfoods.lua 존재를 간과
 - **문제**: Amberosia(dustmeringue)가 `preparedfoods.lua`에 없어서 게임에 없는 것으로 착각
 - **실제**: `preparednonfoods.lua`에 비음식 요리솥 레시피로 별도 정의되어 있음

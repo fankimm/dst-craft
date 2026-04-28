@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.18.2",
+    date: "2026-04-28",
+    dev: [
+      "fix(cookpot-ingredients): batnose의 dryable 플래그 제거 — 인게임 prefabs/meats.lua의 BATNOSE_DRYABLE_DATA.product='smallmeat_dried'라 박쥐 콧구멍을 말리면 작은 육포가 나옴(별도 prefab 없음). 존재하지 않는 batnose_dried.png 참조로 이미지 깨졌던 문제 해결",
+      "docs(mistakes): cooking.lua의 _dried/_cooked 가상 재료를 실제 prefab으로 착각한 패턴 오답노트 추가",
+    ],
+    changes: {
+      ko: [
+        "크록팟 시뮬레이터에서 '말린 벌거숭이 콧구멍' 이미지가 깨지던 문제 수정 — 원래 인게임에서도 박쥐 콧구멍을 말리면 '작은 육포'가 되므로 중복 항목 제거",
+      ],
+      en: [
+        "Crock Pot simulator: removed the broken 'dried batnose' entry — drying a batnose actually produces small jerky in-game, so the duplicate ingredient is gone",
+      ],
+    },
+  },
+  {
     version: "0.18.1",
     date: "2026-04-28",
     dev: [
