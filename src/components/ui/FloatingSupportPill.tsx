@@ -31,58 +31,69 @@ export function FloatingSupportPill() {
     if (!mounted) return;
 
     let observer: IntersectionObserver | null = null;
-    let anchor: Element | null = null;
+    // AppShell mounts every tab at once (display:none toggle), so multiple
+    // [data-support-pill-anchor] elements exist. Track each one's intersection
+    // state so we can dock when ANY anchor is visible.
+    const intersectingMap = new WeakMap<Element, boolean>();
 
-    // Anchor may mount slightly after this component (Footer is below).
-    // Poll briefly until found, then attach observer.
+    const handleEntries = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((e) => intersectingMap.set(e.target, e.isIntersecting));
+
+      // Find any currently-visible anchor (active tab's Footer pill in view)
+      const anchors = document.querySelectorAll("[data-support-pill-anchor]");
+      let visibleAnchor: HTMLElement | null = null;
+      for (const a of anchors) {
+        if (intersectingMap.get(a)) {
+          visibleAnchor = a as HTMLElement;
+          break;
+        }
+      }
+
+      const float = floatRef.current;
+      if (!float) return;
+
+      if (visibleAnchor) {
+        // Dock floating pill into the visible anchor
+        const fr = float.getBoundingClientRect();
+        const tr = visibleAnchor.getBoundingClientRect();
+        const dx = (tr.left + tr.width / 2) - (fr.left + fr.width / 2);
+        const dy = (tr.top + tr.height / 2) - (fr.top + fr.height / 2);
+        const sx = Math.max(0.4, tr.width / fr.width);
+        float.style.transition = "transform 480ms cubic-bezier(.55,.05,.25,1.2), opacity 360ms ease-out";
+        float.style.transform = `translate(${dx}px, ${dy}px) scale(${sx * 0.85}) rotate(-6deg)`;
+        float.style.opacity = "0";
+        setDocking(true);
+        if (dockTimeout.current) window.clearTimeout(dockTimeout.current);
+        dockTimeout.current = window.setTimeout(() => setHidden(true), 500);
+      } else {
+        // No anchor visible → undock and bring floating back
+        if (dockTimeout.current) window.clearTimeout(dockTimeout.current);
+        setHidden(false);
+        requestAnimationFrame(() => {
+          if (!float) return;
+          float.style.transition = "none";
+          float.style.transform = "translateY(20px) scale(0.92)";
+          float.style.opacity = "0";
+          requestAnimationFrame(() => {
+            float.style.transition = "transform 360ms cubic-bezier(.2,.8,.3,1.1), opacity 280ms ease-out";
+            float.style.transform = "";
+            float.style.opacity = "";
+            setDocking(false);
+          });
+        });
+      }
+    };
+
+    // Anchors may mount slightly after this component. Poll briefly until at
+    // least one shows up, then observe ALL of them.
     const tryAttach = () => {
-      anchor = document.querySelector("[data-support-pill-anchor]");
-      if (!anchor) {
+      const anchors = document.querySelectorAll("[data-support-pill-anchor]");
+      if (anchors.length === 0) {
         setTimeout(tryAttach, 100);
         return;
       }
-
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            // Footer pill is on screen → dock the floating pill into it
-            const float = floatRef.current;
-            const target = entry.target as HTMLElement;
-            if (!float) return;
-            const fr = float.getBoundingClientRect();
-            const tr = target.getBoundingClientRect();
-            const dx = (tr.left + tr.width / 2) - (fr.left + fr.width / 2);
-            const dy = (tr.top + tr.height / 2) - (fr.top + fr.height / 2);
-            const sx = Math.max(0.4, tr.width / fr.width);
-            float.style.transition = "transform 480ms cubic-bezier(.55,.05,.25,1.2), opacity 360ms ease-out";
-            float.style.transform = `translate(${dx}px, ${dy}px) scale(${sx * 0.85}) rotate(-6deg)`;
-            float.style.opacity = "0";
-            setDocking(true);
-            if (dockTimeout.current) window.clearTimeout(dockTimeout.current);
-            dockTimeout.current = window.setTimeout(() => setHidden(true), 500);
-          } else {
-            // Footer pill scrolled away → bring floating back
-            if (dockTimeout.current) window.clearTimeout(dockTimeout.current);
-            setHidden(false);
-            // wait one frame, then animate back to resting position
-            requestAnimationFrame(() => {
-              const float = floatRef.current;
-              if (!float) return;
-              float.style.transition = "none";
-              float.style.transform = "translateY(20px) scale(0.92)";
-              float.style.opacity = "0";
-              requestAnimationFrame(() => {
-                float.style.transition = "transform 360ms cubic-bezier(.2,.8,.3,1.1), opacity 280ms ease-out";
-                float.style.transform = "";
-                float.style.opacity = "";
-                setDocking(false);
-              });
-            });
-          }
-        },
-        { threshold: 0.6 },
-      );
-      observer.observe(anchor);
+      observer = new IntersectionObserver(handleEntries, { threshold: 0.6 });
+      anchors.forEach((a) => observer!.observe(a));
     };
 
     tryAttach();
