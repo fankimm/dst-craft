@@ -7,6 +7,7 @@ interface Env {
   ADMIN_EMAILS: string;
   TELEGRAM_BOT_TOKEN: string;
   TELEGRAM_CHAT_ID: string;
+  KOFI_VERIFICATION_TOKEN: string;
 }
 
 function corsHeaders(origin: string, allowed: string): HeadersInit {
@@ -947,6 +948,98 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       return new Response(JSON.stringify({ ok: true }), {
         headers: { ...headers, "Content-Type": "application/json" },
       });
+    }
+
+    // POST /kofi-webhook — receive ko-fi donation/subscription/shop events
+    // ko-fi sends: Content-Type: application/x-www-form-urlencoded, body = data=<JSON>
+    if (url.pathname === "/kofi-webhook" && request.method === "POST") {
+      const form = await request.formData().catch(() => null);
+      const dataStr = form?.get("data");
+      if (typeof dataStr !== "string") {
+        return new Response(JSON.stringify({ error: "Missing data" }), {
+          status: 400, headers: { ...headers, "Content-Type": "application/json" },
+        });
+      }
+      let payload: Record<string, any>;
+      try { payload = JSON.parse(dataStr); }
+      catch { return new Response(JSON.stringify({ error: "Invalid JSON" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } }); }
+
+      if (payload.verification_token !== env.KOFI_VERIFICATION_TOKEN) {
+        return new Response(JSON.stringify({ error: "Invalid token" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      const isPublic = payload.is_public === true;
+      const fromName = (typeof payload.from_name === "string" ? payload.from_name.trim() : "").slice(0, 60);
+      // Anonymize: store under __anon__ token when not public, blank, or literal "Anonymous"
+      const displayName = (!isPublic || !fromName || /^anonymous$/i.test(fromName)) ? "__anon__" : fromName;
+
+      // Parse amount → cents (ko-fi sends amount as string e.g. "5.00")
+      const amount = parseFloat(String(payload.amount ?? "0"));
+      const cents = Number.isFinite(amount) && amount > 0 ? Math.round(amount * 100) : 0;
+      if (cents <= 0) {
+        // Still ack so ko-fi doesn't retry
+        return new Response(JSON.stringify({ ok: true, skipped: "no amount" }), { headers: { ...headers, "Content-Type": "application/json" } });
+      }
+
+      // De-dupe by transaction id (ko-fi may retry)
+      const txId = typeof payload.kofi_transaction_id === "string" ? payload.kofi_transaction_id : "";
+      if (txId) {
+        const dupRes = await redisPipeline(env, [["SADD", "dst:kofi:tx", txId]]) as { result: any }[];
+        if (dupRes[0]?.result === 0) {
+          return new Response(JSON.stringify({ ok: true, skipped: "duplicate" }), { headers: { ...headers, "Content-Type": "application/json" } });
+        }
+      }
+
+      await redisPipeline(env, [
+        ["ZINCRBY", "dst:supporters", `${cents}`, displayName],
+        ["INCR", "dst:supporters:count"],
+      ]);
+
+      // Telegram notification (fire-and-forget)
+      if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
+        const currency = (payload.currency as string) ?? "USD";
+        const message = (payload.message as string) ?? "";
+        const text = `☕ 새 ko-fi 후원!\n\n${displayName === "__anon__" ? "(익명)" : displayName} · ${amount} ${currency}\n${message ? `\n💬 ${message}` : ""}`;
+        fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text }),
+        }).catch(() => {});
+      }
+
+      return new Response(JSON.stringify({ ok: true }), { headers: { ...headers, "Content-Type": "application/json" } });
+    }
+
+    // GET /supporters — public top supporters by cumulative amount (amounts not exposed)
+    if (url.pathname === "/supporters" && request.method === "GET") {
+      const limit = Math.min(Number(url.searchParams.get("limit") ?? "5"), 20);
+      const result = await redisPipeline(env, [
+        ["ZREVRANGE", "dst:supporters", "0", `${limit - 1}`],
+      ]) as { result: any }[];
+      const names = (result[0]?.result as string[]) ?? [];
+      return new Response(JSON.stringify({ supporters: names.map((name) => ({ name })) }), {
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" },
+      });
+    }
+
+    // POST /supporters — admin only: manually add/backfill a supporter
+    if (url.pathname === "/supporters" && request.method === "POST") {
+      const auth = request.headers.get("Authorization") ?? "";
+      if (!auth.startsWith("Bearer ")) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const jwtPayload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+      if (!jwtPayload || jwtPayload.role !== "admin") {
+        return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      const body = await request.json().catch(() => ({})) as Record<string, any>;
+      const name = typeof body.name === "string" ? body.name.trim().slice(0, 60) : "";
+      const cents = Number.isInteger(body.cents) ? body.cents : 0;
+      if (!name || cents <= 0) {
+        return new Response(JSON.stringify({ error: "name + cents required" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
+      }
+      await redisPipeline(env, [["ZINCRBY", "dst:supporters", `${cents}`, name]]);
+      return new Response(JSON.stringify({ ok: true, name, cents }), { headers: { ...headers, "Content-Type": "application/json" } });
     }
 
     // GET /config?key=... — read a global config value (public)

@@ -136,6 +136,19 @@ export async function fetchTopCountries(): Promise<{ code: string; count: number
   }
 }
 
+/** Fetch top supporters (public, cached). Names only — amounts are not exposed. */
+export async function fetchSupporters(): Promise<{ name: string }[]> {
+  if (!WORKER_URL) return [];
+  try {
+    const res = await fetch(`${WORKER_URL}/supporters`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data?.supporters) ? data.supporters : [];
+  } catch {
+    return [];
+  }
+}
+
 /** Track an item click for popularity ranking */
 export function trackItemClick(itemId: string) {
   if (!WORKER_URL) return;

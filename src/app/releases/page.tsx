@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.16.0",
+    date: "2026-04-28",
+    dev: [
+      "feat(worker): POST /kofi-webhook — ko-fi 후원 이벤트 수신 (verification_token 검증, kofi_transaction_id 기반 중복 제거, 텔레그램 알림)",
+      "feat(worker): GET /supporters — 누적 금액순 TOP 5 닉네임 (금액 비공개)",
+      "feat(worker): POST /supporters — admin 전용 수동 backfill",
+      "feat(SupportPill): CountryTicker 패턴으로 회전 ticker 개조 — 기본 라벨 + 후원자 닉네임 회전 (3초)",
+      "feat: 익명 후원자(__anon__ 토큰)는 i18n로 'Anonymous'/'익명 후원자' 표시",
+    ],
+    changes: {
+      ko: [
+        "후원자 닉네임 표시 — Footer 후원 버튼이 후원해주신 분들의 닉네임을 회전하며 보여줍니다 ☕💖",
+      ],
+      en: [
+        "Supporter names display — the Footer support button now rotates through ko-fi supporter names ☕💖",
+      ],
+    },
+  },
+  {
     version: "0.15.6",
     date: "2026-04-28",
     dev: [
