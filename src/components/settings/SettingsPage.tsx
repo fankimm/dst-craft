@@ -12,6 +12,7 @@ import { APP_VERSION } from "@/lib/version";
 import { Footer } from "../crafting/Footer";
 import { fetchPublicRating, submitRating, fetchTopCountries, submitFeedback } from "@/lib/analytics";
 import { Globe } from "lucide-react";
+import { AdminFeedbackSection } from "./AdminFeedbackSection";
 
 /** ISO 3166-1 alpha-2 → flag emoji */
 function countryFlag(code: string): string {
@@ -478,6 +479,9 @@ export function SettingsPage() {
               </div>
             </div>
           </div>
+
+          {/* Admin: 사용자 피드백 관리 */}
+          <AdminFeedbackSection />
 
           {/* Insight */}
           <a

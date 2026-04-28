@@ -101,9 +101,15 @@
 
 ### DetailPanel (`src/components/ui/DetailPanel.tsx`)
 - **용도**: 바텀시트 상세 패널 (오버레이 + 슬라이드업 + 닫기 버튼 + SupportPill)
-- **사용처**: CraftingApp, CookingApp, BossesApp
+- **사용처**: CraftingApp, CookingApp, BossesApp, AdminFeedbackSection (설정 탭)
 - **짝 훅**: `useDetailPanel` — 패널 open/close 애니메이션 상태 관리
 - **Props**: `open`, `onClose`, `children`
+
+### AdminFeedbackSection (`src/components/settings/AdminFeedbackSection.tsx`)
+- **용도**: 어드민 전용 사용자 피드백 관리 (설정 탭에 임베드)
+- **구조**: 상태 필터 칩 + 한 줄 리스트(상태점/메시지 truncate/상대시간) → 탭 시 DetailPanel(전체 메시지/메타/상태 변경/복사)
+- **모바일 최적화**: 좌우 스크롤 없음, 한 줄당 최소 정보만 노출
+- **권한**: `useAuth().isAdmin === false`면 자동 숨김
 
 ### SortDropdown (`src/components/ui/SortDropdown.tsx`)
 - **용도**: 기본/인기순 정렬 드롭다운

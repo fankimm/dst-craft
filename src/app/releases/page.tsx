@@ -15,6 +15,16 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.15.6",
+    date: "2026-04-28",
+    dev: [
+      "refactor: 어드민 사용자 피드백 관리 화면을 /stats → 설정 탭으로 이동",
+      "feat: AdminFeedbackSection — 모바일 최적화 한 줄 리스트(상태점/메시지 truncate/상대시간) + DetailPanel(전체 메시지/메타/상태 변경/IP·메시지 복사)",
+      "ui: 좌우 스크롤 제거, 상태 변경 select → 4-grid 버튼, 필터칩에 카운트 인라인",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.15.5",
     date: "2026-04-28",
     dev: [
