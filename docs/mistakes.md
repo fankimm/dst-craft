@@ -266,6 +266,15 @@
 
 ## 컴포넌트 / 리팩터링
 
+### querySelector로 anchor 잡을 때 AppShell 다중 탭 마운트 함정
+- **문제**: FloatingSupportPill이 푸터로 docking되는 동작이 Crafting 탭에서만 작동, 다른 탭(Cooking/Boss/Skills 등)에선 floating이 계속 떠있고 푸터가 보여도 안 빨려들어감
+- **원인**: AppShell은 모든 탭을 동시에 마운트하고 `display: none`만 토글하는 구조. 각 탭의 Footer 안에 `<SupportPill data-support-pill-anchor />`가 들어있으니 anchor 마커가 **6개 동시 존재**. 기존 코드는 `document.querySelector("[data-support-pill-anchor]")`로 첫 번째(=Crafting의 anchor)만 잡고 그것만 IntersectionObserver로 관찰 → Crafting 탭에 있을 땐 visible이라 정상 동작, 다른 탭에선 그 anchor가 `display:none`이라 IntersectionObserver가 항상 `isIntersecting=false` 반환 → docking 영원히 안 일어남
+- **해결**: `querySelectorAll`로 모든 anchor를 observe + WeakMap으로 각 anchor의 intersection 상태 누적 추적 → 어느 하나라도 visible이면 dock. callback의 `entries`는 변경분만 오므로 단순히 그것만 검사하면 다른 탭의 anchor가 이미 visible이어도 false로 판단할 수 있음
+- **교훈**:
+  1. AppShell이 다중 탭을 한꺼번에 마운트하는 구조에서 `data-*` 마커는 항상 **여러 개 존재**한다고 가정. `querySelector` 대신 `querySelectorAll` 기본
+  2. IntersectionObserver의 `entries`는 변화된 것만 오므로, 다중 타깃 관찰 시 누적 상태(WeakMap/ref)로 따로 보관 필요
+- **검증**: 단일 인스턴스가 보장되는 마커가 아니면 `querySelectorAll(...).length`를 dev 모드에서 한번 출력해 다중 마운트 여부 확인
+
 ### "공통 컴포넌트만 고치면 다 적용된다" 가정으로 사용처 확인 누락
 - **문제**: ko-fi 후원자 ticker를 `SupportPill` 컴포넌트에 구현했는데, 사용자가 "푸터의 서포트 버튼"이라고 명시한 메인 푸터(`Footer.tsx`)는 `SupportPill`을 쓰지 않고 동일 디자인의 ko-fi 버튼을 별도 하드코딩하고 있었음 → ticker가 메인 푸터에 적용 안 됨, 사용자가 빈 ticker 보고 보고 후 발견
 - **원인**:
