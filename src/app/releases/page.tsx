@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.15.5",
+    date: "2026-04-28",
+    dev: [
+      "fix(worker): returnRate 분모를 totalPV로 변경 — 기존 PFCOUNT(totalUV) 분모는 단위 불일치로 100% 초과 가능했음",
+      "fix(worker): excludeCountry 필터의 UV 차감을 PFCOUNT 산술 빼기 → PFMERGE 방식으로 교체 (HyperLogLog 차집합 부정확 문제)",
+      "fix(worker): isRateLimited race condition — INCR + EXPIRE NX 한 pipeline으로 묶어 TTL 누락 시 영구 차단되는 코너케이스 제거",
+      "perf(worker): /track rate limit 5/min → 30/min — NAT/공유 IP 환경에서 방문자 누락 감소",
+      "ui(stats): 재방문율 sub 텍스트 'N명 재방문' → 'N회 재방문' (방문 횟수 단위로 정정)",
+    ],
+    changes: {
+      ko: [
+        "통계 페이지 정확도 개선 — 재방문율 계산식 정정, 국가 제외 필터 정확도 향상",
+        "공유 IP(사무실/학교/모바일 캐리어) 환경에서 방문자 누락 감소",
+      ],
+      en: [
+        "Stats page accuracy improvements — fixed return rate formula and country exclusion filter",
+        "Reduced visitor undercount on shared IP networks (offices, schools, mobile carriers)",
+      ],
+    },
+  },
+  {
     version: "0.15.4",
     date: "2026-04-27",
     dev: [

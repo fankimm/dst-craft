@@ -304,7 +304,7 @@ export default function StatsPage() {
 
             {/* New Stats Row */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <StatCard icon={RotateCcw} label="재방문율" value={`${data.returnRate}%`} sub={`${data.returnVisitors}명 재방문`} />
+              <StatCard icon={RotateCcw} label="재방문율" value={`${data.returnRate}%`} sub={`${data.returnVisitors}회 재방문`} />
               <StatCard icon={Clock} label="평균 체류시간" value={formatDuration(data.avgDuration)} unfiltered={excludeKR} />
               <StatCard icon={Search} label="검색 사용" value={data.searchCount} sub="세션" unfiltered={excludeKR} />
               <StatCard icon={Smartphone} label="모바일 비율" value={`${mobilePct}%`} sub={`${mobileCount} 모바일 / ${desktopCount} PC`} />

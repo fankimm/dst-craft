@@ -129,12 +129,14 @@ export default {
 
 /** Simple rate limiter: returns true if the request should be blocked */
 async function isRateLimited(env: Env, key: string, maxPerWindow: number, windowSec: number): Promise<boolean> {
-  const results = await redisPipeline(env, [["INCR", key]]) as { result: any }[];
+  // INCR + EXPIRE NX in one pipeline — TTL is set only on first request in the
+  // window, avoiding the race where a second request lands between INCR and EXPIRE
+  // and the key ends up without a TTL (which would block the IP forever).
+  const results = await redisPipeline(env, [
+    ["INCR", key],
+    ["EXPIRE", key, `${windowSec}`, "NX"],
+  ]) as { result: any }[];
   const count = parseInt(results[0]?.result ?? "1", 10);
-  if (count === 1) {
-    // First request in window — set TTL
-    await redisPipeline(env, [["EXPIRE", key, `${windowSec}`]]);
-  }
   return count > maxPerWindow;
 }
 
@@ -144,7 +146,9 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
     // POST /track — record a visit
     if (url.pathname === "/track" && request.method === "POST") {
       const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-      if (await isRateLimited(env, `dst:rl:track:${ip}`, 5, 60)) {
+      // 30/min — generous enough to avoid losing visitors behind shared NAT
+      // (offices, schools, mobile carriers) while still blocking real abuse.
+      if (await isRateLimited(env, `dst:rl:track:${ip}`, 30, 60)) {
         return new Response(JSON.stringify({ error: "Too many requests" }), {
           status: 429, headers: { ...headers, "Content-Type": "application/json" },
         });
@@ -510,31 +514,66 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       // Country exclusion filter
       const excludeCountry = url.searchParams.get("excludeCountry") ?? "";
       if (excludeCountry) {
+        // INCR-backed counters (PV, device, os, return, referrer) can be
+        // subtracted arithmetically. UV cannot — HyperLogLog estimates don't
+        // support set difference, so we PFMERGE the *other* countries' UV
+        // sets and PFCOUNT the result.
         const exCommands: string[][] = [
           ["GET", `dst:pv:total:${excludeCountry}`],           // 0
-          ["PFCOUNT", `dst:uv:total:${excludeCountry}`],       // 1
-          ["GET", `dst:pv:${date}:${excludeCountry}`],         // 2
-          ["PFCOUNT", `dst:uv:${date}:${excludeCountry}`],     // 3
-          ["HGETALL", `dst:device:${excludeCountry}`],         // 4
-          ["HGETALL", `dst:os:${excludeCountry}`],             // 5
-          ["GET", `dst:return:total:${excludeCountry}`],       // 6
-          ["HGETALL", `dst:referrers:${excludeCountry}`],      // 7
+          ["GET", `dst:pv:${date}:${excludeCountry}`],         // 1
+          ["HGETALL", `dst:device:${excludeCountry}`],         // 2
+          ["HGETALL", `dst:os:${excludeCountry}`],             // 3
+          ["GET", `dst:return:total:${excludeCountry}`],       // 4
+          ["HGETALL", `dst:referrers:${excludeCountry}`],      // 5
         ];
         for (const d of dates) {
-          exCommands.push(["GET", `dst:pv:${d}:${excludeCountry}`]);      // 8 + i*2
-          exCommands.push(["PFCOUNT", `dst:uv:${d}:${excludeCountry}`]);  // 9 + i*2
+          exCommands.push(["GET", `dst:pv:${d}:${excludeCountry}`]); // 6 + i
         }
 
-        const exResults = await redisPipeline(env, exCommands) as { result: any }[];
+        // Build PFMERGE pipeline for accurate UV difference.
+        const otherCountries = Object.keys(countries).filter((c) => c !== excludeCountry);
+        const tmpPrefix = `dst:uv:tmp:${excludeCountry}:${Date.now()}:${Math.random().toString(36).slice(2, 8)}`;
+        const uvCommands: string[][] = [];
+        if (otherCountries.length > 0) {
+          // Total UV across all other countries
+          uvCommands.push(["PFMERGE", `${tmpPrefix}:total`, ...otherCountries.map((c) => `dst:uv:total:${c}`)]); // 0
+          uvCommands.push(["PFCOUNT", `${tmpPrefix}:total`]);                                                    // 1
+          uvCommands.push(["DEL", `${tmpPrefix}:total`]);                                                        // 2
+          // Per-day UV for the trend
+          for (const d of dates) {
+            uvCommands.push(["PFMERGE", `${tmpPrefix}:${d}`, ...otherCountries.map((c) => `dst:uv:${d}:${c}`)]);
+            uvCommands.push(["PFCOUNT", `${tmpPrefix}:${d}`]);
+            uvCommands.push(["DEL", `${tmpPrefix}:${d}`]);
+          }
+        }
+
+        const [exResults, uvResults] = await Promise.all([
+          redisPipeline(env, exCommands) as Promise<{ result: any }[]>,
+          uvCommands.length > 0
+            ? (redisPipeline(env, uvCommands) as Promise<{ result: any }[]>)
+            : Promise.resolve([] as { result: any }[]),
+        ]);
         const ex = (i: number) => exResults[i]?.result;
 
         totalPV = Math.max(0, totalPV - (parseInt(ex(0) ?? "0", 10) || 0));
-        totalUV = Math.max(0, totalUV - (parseInt(ex(1) ?? "0", 10) || 0));
-        todayPV = Math.max(0, todayPV - (parseInt(ex(2) ?? "0", 10) || 0));
-        todayUV = Math.max(0, todayUV - (parseInt(ex(3) ?? "0", 10) || 0));
+        todayPV = Math.max(0, todayPV - (parseInt(ex(1) ?? "0", 10) || 0));
+
+        if (otherCountries.length > 0) {
+          totalUV = parseInt(uvResults[1]?.result ?? "0", 10) || 0;
+          // dates[0] is today (loop pushes today first), so daily UV[0] is today's UV
+          dailyTrend = dailyTrend.map((day, i) => ({
+            ...day,
+            uv: parseInt(uvResults[4 + i * 3]?.result ?? "0", 10) || 0,
+          }));
+          todayUV = dailyTrend[0]?.uv ?? 0;
+        } else {
+          totalUV = 0;
+          todayUV = 0;
+          dailyTrend = dailyTrend.map((day) => ({ ...day, uv: 0 }));
+        }
 
         // Subtract device counts
-        const exDeviceRaw = ex(4) as string[] | null;
+        const exDeviceRaw = ex(2) as string[] | null;
         if (Array.isArray(exDeviceRaw)) {
           for (let i = 0; i < exDeviceRaw.length; i += 2) {
             if (device[exDeviceRaw[i]] !== undefined) {
@@ -544,7 +583,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         }
 
         // Subtract OS counts
-        const exOsRaw = ex(5) as string[] | null;
+        const exOsRaw = ex(3) as string[] | null;
         if (Array.isArray(exOsRaw)) {
           for (let i = 0; i < exOsRaw.length; i += 2) {
             if (os[exOsRaw[i]] !== undefined) {
@@ -553,10 +592,10 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
           }
         }
 
-        returnTotal = Math.max(0, returnTotal - (parseInt(ex(6) ?? "0", 10) || 0));
+        returnTotal = Math.max(0, returnTotal - (parseInt(ex(4) ?? "0", 10) || 0));
 
         // Subtract referrer counts
-        const exRefRaw = ex(7) as string[] | null;
+        const exRefRaw = ex(5) as string[] | null;
         if (Array.isArray(exRefRaw)) {
           for (let i = 0; i < exRefRaw.length; i += 2) {
             if (referrers[exRefRaw[i]] !== undefined) {
@@ -565,11 +604,10 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
           }
         }
 
-        // Subtract daily trend
+        // Subtract daily PV (UV is already replaced via PFMERGE above)
         dailyTrend = dailyTrend.map((day, i) => ({
           ...day,
-          pv: Math.max(0, day.pv - (parseInt(ex(8 + i * 2) ?? "0", 10) || 0)),
-          uv: Math.max(0, day.uv - (parseInt(ex(8 + i * 2 + 1) ?? "0", 10) || 0)),
+          pv: Math.max(0, day.pv - (parseInt(ex(6 + i) ?? "0", 10) || 0)),
         }));
 
         // Filter countries & recent visitors
@@ -589,7 +627,11 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         os,
         referrers,
         returnVisitors: returnTotal,
-        returnRate: totalUV > 0 ? Math.round((returnTotal / totalUV) * 100) : 0,
+        // Both numerator and denominator are visit counters (INCR), so the
+        // ratio is "% of sessions that were repeat visits". Mixing INCR with
+        // PFCOUNT (totalUV) here would make the rate exceed 100% when a user
+        // returns multiple times.
+        returnRate: totalPV > 0 ? Math.round((returnTotal / totalPV) * 100) : 0,
         avgDuration,
         searchCount: parseInt(r(8) ?? "0", 10) || 0,
         pwaInstalls: parseInt(r(9) ?? "0", 10) || 0,
