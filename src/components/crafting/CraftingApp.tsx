@@ -19,6 +19,7 @@ import { ItemGrid } from "./ItemGrid";
 import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
 import { Footer } from "./Footer";
+import { SupporterStrip } from "@/components/ui/SupporterStrip";
 import { trackVisit, initDurationTracking, trackEvent, trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { useRecent } from "@/hooks/use-recent";
@@ -238,6 +239,7 @@ export function CraftingApp({
           </div>
           {searchBar}
         </div>
+        <SupporterStrip />
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
           <div className="flex flex-col min-h-full">
             {isSearching ? (
@@ -286,6 +288,7 @@ export function CraftingApp({
           />
         ) : undefined}
       />
+      <SupporterStrip />
 
       {/* Scrollable content area */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">

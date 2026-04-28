@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.17.0",
+    date: "2026-04-28",
+    dev: [
+      "feat(SupporterStrip): 검색바 직후 위치에 후원자 닉네임 회전 strip 신설 — 모든 메인 탭(Crafting/Cooking/Crock Pot/Bosses/Skills/Console)에 일관 적용",
+      "refactor(SupportPill): 푸터/DetailPanel용으로 정적 라벨('개발자 후원하기')로 복원 — ticker는 SupporterStrip로 분리",
+      "i18n: support_thanks 키 추가 ('후원해주신' / 'Thanks to')",
+      "변경 이유: v0.16.3에서 푸터 ticker는 모바일 스크롤 끝에서만 보이고 컨텍스트가 모호하다는 피드백 — 첫 화면 상단에 컨텍스트(\"후원해주신 ○○○님\") 명확화",
+    ],
+    changes: {
+      ko: [
+        "후원자 닉네임이 모든 탭의 검색바 바로 아래 얇은 줄에 표시됩니다 — 첫 화면에서 바로 확인 가능",
+        "푸터의 후원 버튼은 다시 '개발자 후원하기' 정적 라벨로",
+      ],
+      en: [
+        "Supporter names now appear in a thin strip just below the search bar on every tab — visible from first view",
+        "Footer support button reverted to a static 'Support the developer' label",
+      ],
+    },
+  },
+  {
     version: "0.16.3",
     date: "2026-04-28",
     dev: [

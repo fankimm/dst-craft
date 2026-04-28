@@ -21,6 +21,7 @@ import { SkillCharacterGrid } from "./SkillCharacterGrid";
 import { SkillTreeView } from "./SkillTreeView";
 import { SkillDetailSheet } from "./SkillDetailSheet";
 import { DetailPanel } from "@/components/ui/DetailPanel";
+import { SupporterStrip } from "@/components/ui/SupporterStrip";
 
 interface Props {
   onViewCraftingItem?: (itemId: string) => void;
@@ -383,6 +384,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
           )}
         </nav>
       </div>
+      <SupporterStrip />
 
       {/* Content */}
       <div className={cn("flex-1 min-h-0 overflow-hidden", slideClass)}>

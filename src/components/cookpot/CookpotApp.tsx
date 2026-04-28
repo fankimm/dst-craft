@@ -13,6 +13,7 @@ import { simulate } from "@/lib/cookpot-engine";
 import type { CookingRecipe } from "@/data/recipes";
 import { IngredientPicker } from "./IngredientPicker";
 import { Footer } from "../crafting/Footer";
+import { SupporterStrip } from "@/components/ui/SupporterStrip";
 import { trackItemClick, trackCombo } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 
@@ -108,6 +109,7 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
           />
         </div>
       </div>
+      <SupporterStrip />
 
       {/* Result + Slots area — fixed, not scrollable */}
       <div className="shrink-0 px-3 pt-4 pb-2 max-w-4xl mx-auto w-full">
