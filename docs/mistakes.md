@@ -304,3 +304,9 @@
 - **교훈**: SEO용 URL slug는 **사용자가 검색할 영문명**(`name` 필드)에서 파생해야 함. `nameToSlug(name)`으로 lower-case + 비영숫자→하이픈 → 토큰 분리. 단 ID-기반 옛 slug로 이미 색인된 페이지가 있으면 양쪽 다 살려두고 새 slug에 canonical을 두어 점진 이전(static export라 301 redirect 못 씀)
 - **검증**: 빌드 후 `out/sitemap.xml`에 새 slug만 있는지 + `out/<path>/<old-slug>.html`의 `<link rel="canonical">`이 새 slug를 가리키는지 확인. 외부에서 옛 URL로 들어와도 200 + canonical 정상이어야 함
 - **부수 발견**: 이름이 같은 아이템이 있을 수 있어 slug 빌드 시 중복 검출 → ID 접미사로 fallback (`<base>-<id>`) 처리 필요
+
+### Redis 일별 키에 TTL을 걸어 통계 데이터 영구 손실
+- **문제**: `dst:pv:{날짜}`, `dst:uv:{날짜}` 키에 90일 EXPIRE를 설정 → 90일 이전의 일별 PV/UV 데이터가 자동 삭제되어 복구 불가. 전체 누적(dst:pv:total 등)은 살아있으나 일별 트렌드 그래프에 빈 구간 발생
+- **원인**: Upstash 무료 티어 용량 걱정으로 TTL 설정. 실제로 일별 키는 키당 수 바이트라 수년 분량도 무료 티어 한도(10K commands/day)에 영향 없음
+- **교훈**: 통계/분석 데이터는 일종의 자산이므로 TTL을 걸지 말 것. 특히 INCR/PFADD 기반 집계 데이터는 한번 삭제되면 원본(개별 요청)이 없어 복구 불가. 용량 절감이 필요하면 원본을 삭제하는 게 아니라 월별 롤업 등 요약 계층을 추가할 것
+- **해결**: TTL 제거 + 월별 롤업 키(`dst:pv:m:YYYY-MM`, `dst:uv:m:YYYY-MM`) 추가하여 장기 트렌드는 월 단위로 영구 보존
