@@ -212,13 +212,13 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       commands.push(
         ["LPUSH", "dst:visitors", logEntry],
         ["LTRIM", "dst:visitors", "0", "199"],
-        ["EXPIRE", `dst:pv:${date}`, `${90 * 86400}`],
-        ["EXPIRE", `dst:uv:${date}`, `${90 * 86400}`],
+        ["EXPIRE", `dst:pv:${date}`, `${365 * 86400}`],
+        ["EXPIRE", `dst:uv:${date}`, `${365 * 86400}`],
       );
       if (countryCode) {
         commands.push(
-          ["EXPIRE", `dst:pv:${date}:${countryCode}`, `${90 * 86400}`],
-          ["EXPIRE", `dst:uv:${date}:${countryCode}`, `${90 * 86400}`],
+          ["EXPIRE", `dst:pv:${date}:${countryCode}`, `${365 * 86400}`],
+          ["EXPIRE", `dst:uv:${date}:${countryCode}`, `${365 * 86400}`],
         );
       }
 
@@ -402,7 +402,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       }
 
       const date = today();
-      const daysParam = Math.min(Math.max(parseInt(url.searchParams.get("days") ?? "7", 10) || 7, 1), 90);
+      const daysParam = Math.min(Math.max(parseInt(url.searchParams.get("days") ?? "7", 10) || 7, 1), 365);
       const dates: string[] = [];
       for (let i = 0; i < daysParam; i++) {
         const d = new Date();

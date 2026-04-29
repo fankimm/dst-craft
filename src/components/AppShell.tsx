@@ -407,7 +407,7 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
         try {
           const url = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
           if (!url) { alert("ANALYTICS_WORKER_URL 미설정"); return; }
-          const res = await fetch(`${url}/stats?days=90`, {
+          const res = await fetch(`${url}/stats?days=365`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           });
           const data = await res.json();
