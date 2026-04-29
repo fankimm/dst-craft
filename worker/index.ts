@@ -209,16 +209,18 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         device,
         os,
       });
+      const month = date.slice(0, 7); // "2026-04"
       commands.push(
         ["LPUSH", "dst:visitors", logEntry],
         ["LTRIM", "dst:visitors", "0", "199"],
-        ["EXPIRE", `dst:pv:${date}`, `${365 * 86400}`],
-        ["EXPIRE", `dst:uv:${date}`, `${365 * 86400}`],
+        // Monthly rollup (permanent)
+        ["INCR", `dst:pv:m:${month}`],
+        ["PFADD", `dst:uv:m:${month}`, ip],
       );
       if (countryCode) {
         commands.push(
-          ["EXPIRE", `dst:pv:${date}:${countryCode}`, `${365 * 86400}`],
-          ["EXPIRE", `dst:uv:${date}:${countryCode}`, `${365 * 86400}`],
+          ["INCR", `dst:pv:m:${month}:${countryCode}`],
+          ["PFADD", `dst:uv:m:${month}:${countryCode}`, ip],
         );
       }
 
@@ -432,6 +434,19 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         commands.push(["PFCOUNT", `dst:uv:${d}`]); // 15 + i*2
       }
 
+      // Monthly rollup keys (last 24 months)
+      const months: string[] = [];
+      for (let i = 0; i < 24; i++) {
+        const d = new Date();
+        d.setMonth(d.getMonth() - i);
+        months.push(d.toISOString().slice(0, 7));
+      }
+      const monthBaseIdx = 14 + dates.length * 2;
+      for (const m of months) {
+        commands.push(["GET", `dst:pv:m:${m}`]);
+        commands.push(["PFCOUNT", `dst:uv:m:${m}`]);
+      }
+
       const results = await redisPipeline(env, commands) as { result: any }[];
       const r = (i: number) => results[i]?.result;
 
@@ -511,6 +526,12 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         pv: parseInt(r(14 + i * 2) ?? "0", 10) || 0,
         uv: parseInt(r(14 + i * 2 + 1) ?? "0", 10) || 0,
       }));
+
+      const monthlyTrend = months.map((m, i) => ({
+        month: m,
+        pv: parseInt(r(monthBaseIdx + i * 2) ?? "0", 10) || 0,
+        uv: parseInt(r(monthBaseIdx + i * 2 + 1) ?? "0", 10) || 0,
+      })).filter((m) => m.pv > 0 || m.uv > 0);
 
       // Country exclusion filter
       const excludeCountry = url.searchParams.get("excludeCountry") ?? "";
@@ -621,7 +642,8 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         totalUniqueVisitors: totalUV,
         todayPageViews: todayPV,
         todayUniqueVisitors: todayUV,
-        dailyTrend,
+        dailyTrend: dailyTrend.filter((d) => d.pv > 0 || d.uv > 0),
+        monthlyTrend,
         countries,
         recentVisitors: isAdmin ? recentVisitors : [],
         device,
