@@ -401,6 +401,23 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
     { label: "아이템 스탯 리뷰", action: () => window.open("/item-stats", "_blank") },
     { label: "게임 아이템 DB (1028)", action: () => window.open("/dev/item-database", "_blank") },
     { label: "인기 조합 패널 비교", action: () => window.open("/dev/combo-panel", "_blank") },
+    {
+      label: "통계 전체 → 클립보드",
+      action: async () => {
+        try {
+          const url = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
+          if (!url) { alert("ANALYTICS_WORKER_URL 미설정"); return; }
+          const res = await fetch(`${url}/stats?days=90`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          });
+          const data = await res.json();
+          await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+          alert("클립보드에 복사됨 ✓");
+        } catch (e: any) {
+          alert(`실패: ${e.message}`);
+        }
+      },
+    },
   ];
 
   return (
