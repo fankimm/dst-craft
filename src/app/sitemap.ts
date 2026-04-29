@@ -1,17 +1,11 @@
 import type { MetadataRoute } from "next";
-import { allItems } from "@/data/items";
-import { cookingRecipes } from "@/data/recipes";
-import { bosses } from "@/data/bosses";
+import { bossSlugs, foodSlugs, itemSlugs } from "@/lib/slug";
 import { characters } from "@/data/characters";
 import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 
 export const dynamic = "force-static";
 
 const SITE_URL = "https://www.dstcraft.com";
-
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -47,24 +41,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]);
 
-  const dynamicEntries: { path: string; ids: string[] }[] = [
-    { path: "/item", ids: allItems.map((i) => idToSlug(i.id)) },
-    { path: "/food", ids: cookingRecipes.map((r) => idToSlug(r.id)) },
-    { path: "/boss", ids: bosses.map((b) => b.id) },
-    { path: "/character", ids: characters.map((c) => c.id) },
-    { path: "/skill-tree", ids: [...CHARACTERS_WITH_SKILLS] },
+  const dynamicEntries: { path: string; slugs: string[] }[] = [
+    { path: "/item", slugs: Array.from(itemSlugs.idToSlug.values()) },
+    { path: "/food", slugs: Array.from(foodSlugs.idToSlug.values()) },
+    { path: "/boss", slugs: Array.from(bossSlugs.idToSlug.values()) },
+    { path: "/character", slugs: characters.map((c) => c.id) },
+    { path: "/skill-tree", slugs: [...CHARACTERS_WITH_SKILLS] },
   ];
 
-  const dynamicRoutes: MetadataRoute.Sitemap = dynamicEntries.flatMap(({ path, ids }) =>
-    ids.flatMap((id) => [
+  const dynamicRoutes: MetadataRoute.Sitemap = dynamicEntries.flatMap(({ path, slugs }) =>
+    slugs.flatMap((slug) => [
       {
-        url: `${SITE_URL}${path}/${id}`,
+        url: `${SITE_URL}${path}/${slug}`,
         lastModified: now,
         changeFrequency: "monthly" as const,
         priority: 0.8,
       },
       {
-        url: `${SITE_URL}/ko${path}/${id}`,
+        url: `${SITE_URL}/ko${path}/${slug}`,
         lastModified: now,
         changeFrequency: "monthly" as const,
         priority: 0.7,

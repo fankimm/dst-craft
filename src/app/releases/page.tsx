@@ -15,6 +15,29 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.19.0",
+    date: "2026-04-29",
+    dev: [
+      "fix(seo/layout): src/app/layout.tsx의 글로벌 FAQPage JSON-LD 제거 — 모든 상세 페이지(character/item/boss/food/skill-tree)가 자체 FAQPage를 출력하는데 layout 쪽까지 포함돼 페이지당 FAQPage 2개로 검출. Google Search Console에서 'FAQPage 입력란이 중복' 에러로 32개 색인 페이지가 'URL이 Google에 등록되어 있지만 문제가 있음' 표시되며 리치 결과 노출 차단됐음. 글로벌 FAQ는 홈(src/app/page.tsx)으로 이동",
+      "feat(slug): 새 SEO slug 체계 도입 (src/lib/slug.ts) — 아이템/음식/보스의 URL slug를 게임 내부 prefab ID에서 영문 name 기반으로 변환 (hambat→ham-bat, nightsword→dark-sword, beequeen→bee-queen, lighter→willows-lighter 등). nameToSlug 유틸 + 양방향 인덱스(idToSlug, slugToId, legacySlugToId) + 중복 시 ID 접미사 fallback",
+      "refactor(seo): ItemPageContent / FoodPageContent / BossPageContent의 로컬 slugToId/idToSlug 제거하고 resolveItemSlug / canonicalForItem 등 신규 유틸 사용. canonical URL은 항상 새 slug 기준으로 생성 (legacy 페이지에서도 새 slug를 가리킴)",
+      "feat(routes): item/food/boss [slug] dynamic route(en + ko = 6개)의 generateStaticParams가 itemSlugs.allSlugs로 새 slug + 레거시 slug 양쪽 다 정적 생성 — 외부 링크가 옛 URL로 들어와도 200 응답 유지",
+      "refactor(sitemap): src/app/sitemap.ts가 itemSlugs/foodSlugs/bossSlugs.idToSlug.values()로 새 slug만 노출 — 레거시 slug는 sitemap에서 제외해 Google이 새 slug로 색인 우선",
+      "refactor(internal-links): SeoFooterLinks / BrowseContent / CookpotContent / SkillTreePageContent / CharacterPageContent의 모든 /item/* /food/* /boss/* 링크를 canonicalForItem/Food/Boss로 새 slug 사용",
+      "근거: GSC URL 검사로 캐릭터 페이지(wilson 등) 'FAQPage 중복' 에러 직접 확인 + 1,050개 미색인 페이지 진단 과정에서 검색어와 slug 토큰 분리 안 되는 SEO 약점 발견. Static export(GitHub Pages)라 next.config.ts redirects 사용 불가 → 양쪽 slug 정적 생성 + canonical로 점진 이전",
+    ],
+    changes: {
+      ko: [
+        "검색엔진 노출 개선: 모든 상세 페이지에 FAQ 구조화 데이터(FAQPage)가 중복 출력되던 버그 수정 — Google이 '리치 결과 표시 거부' 처리하던 32개 페이지가 정상화 진행 예정",
+        "URL 가독성 개선: 아이템·보스·음식 페이지 주소가 게임 내부 ID(hambat, nightsword)에서 검색에 친숙한 영문 표기(ham-bat, dark-sword, bee-queen)로 변경. 옛 주소로 들어와도 그대로 작동하므로 기존 공유 링크는 깨지지 않음",
+      ],
+      en: [
+        "Search engine fix: removed duplicate FAQPage structured data on all detail pages — 32 pages that Google flagged as 'rich result blocked' should recover",
+        "Friendlier URLs: item/boss/food pages now use English-name slugs (ham-bat, dark-sword, bee-queen) instead of internal game IDs (hambat, nightsword, beequeen). Old links still work, so previously shared URLs don't break",
+      ],
+    },
+  },
+  {
     version: "0.18.3",
     date: "2026-04-29",
     dev: [

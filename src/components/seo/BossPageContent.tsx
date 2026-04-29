@@ -1,15 +1,12 @@
 import { bosses, lootImage, lootDisplayName } from "@/data/bosses";
 import { allItems } from "@/data/items";
 import { generateBossSeoText, generateBossSeoTextKo } from "@/lib/seo-text";
+import { canonicalForBoss, canonicalForItem, resolveBossSlug } from "@/lib/slug";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 
 const SITE_URL = "https://www.dstcraft.com";
-
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
 
 const craftableIds = new Set(allItems.map((i) => i.id));
 
@@ -32,7 +29,8 @@ const categoryColors: Record<string, string> = {
 };
 
 export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang }) {
-  const boss = bosses.find((b) => b.id === slug);
+  const id = resolveBossSlug(slug);
+  const boss = id ? bosses.find((b) => b.id === id) : undefined;
   if (!boss) notFound();
 
   const displayName = lang === "ko" ? boss.nameKo : boss.name;
@@ -189,7 +187,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               return isCraftable ? (
                 <Link
                   key={`${loot.item}-${i}`}
-                  href={`${routePrefix}/item/${idToSlug(loot.item)}`}
+                  href={`${routePrefix}/item/${canonicalForItem(loot.item)}`}
                   className={`${cls} hover:border-ring transition-colors`}
                 >
                   {inner}
@@ -258,7 +256,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 return isCraftable ? (
                   <Link
                     key={`stash-${loot.item}-${i}`}
-                    href={`${routePrefix}/item/${idToSlug(loot.item)}`}
+                    href={`${routePrefix}/item/${canonicalForItem(loot.item)}`}
                     className={`${cls} hover:border-ring transition-colors`}
                   >
                     {inner}
@@ -312,7 +310,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 return (
                   <Link
                     key={b.id}
-                    href={`${routePrefix}/boss/${b.id}`}
+                    href={`${routePrefix}/boss/${canonicalForBoss(b.id)}`}
                     className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
                   >
                     <img src={`/images/bosses/${img}`} alt={rDisplay} className="size-10 object-contain" />
@@ -343,8 +341,10 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
 }
 
 export function buildBossMetadata(slug: string, lang: SeoLang) {
-  const boss = bosses.find((b) => b.id === slug);
+  const id = resolveBossSlug(slug);
+  const boss = id ? bosses.find((b) => b.id === id) : undefined;
   if (!boss) return {};
+  const canonicalSlug = canonicalForBoss(boss.id) ?? slug;
 
   const displayName = lang === "ko" ? boss.nameKo : boss.name;
   const lootList = [
@@ -361,8 +361,8 @@ export function buildBossMetadata(slug: string, lang: SeoLang) {
     : `How to defeat ${displayName} in Don't Starve Together. ${categoryLabel} — drops: ${lootList}. Strategy, loot table, and tips.`;
 
   const image = Array.isArray(boss.image) ? boss.image[0] : boss.image;
-  const enUrl = `${SITE_URL}/boss/${slug}`;
-  const koUrl = `${SITE_URL}/ko/boss/${slug}`;
+  const enUrl = `${SITE_URL}/boss/${canonicalSlug}`;
+  const koUrl = `${SITE_URL}/ko/boss/${canonicalSlug}`;
   const canonical = lang === "ko" ? koUrl : enUrl;
 
   return {

@@ -1,13 +1,9 @@
-import { allItems } from "@/data/items";
+import { itemSlugs } from "@/lib/slug";
 import { ItemPageContent, buildItemMetadata } from "@/components/seo/ItemPageContent";
 import type { Metadata } from "next";
 
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
-
 export function generateStaticParams() {
-  return allItems.map((item) => ({ slug: idToSlug(item.id) }));
+  return itemSlugs.allSlugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({

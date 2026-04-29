@@ -5,10 +5,7 @@ import { bosses } from "@/data/bosses";
 import { characters } from "@/data/characters";
 import { categories } from "@/data/categories";
 import { ko } from "@/data/locales/ko";
-
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
+import { canonicalForBoss, canonicalForFood, canonicalForItem } from "@/lib/slug";
 
 /** Pick representative items from each category for a balanced link set */
 function pickRepresentativeItems(count: number) {
@@ -85,7 +82,7 @@ export function SeoFooterLinks() {
             {bosses.map((b) => (
               <Link
                 key={b.id}
-                href={`/boss/${b.id}`}
+                href={`/boss/${canonicalForBoss(b.id)}`}
                 className="hover:text-foreground hover:underline"
               >
                 {b.name}
@@ -105,7 +102,7 @@ export function SeoFooterLinks() {
             {featuredRecipes.map((r) => (
               <Link
                 key={r.id}
-                href={`/food/${idToSlug(r.id)}`}
+                href={`/food/${canonicalForFood(r.id)}`}
                 className="hover:text-foreground hover:underline"
               >
                 {r.name}
@@ -129,7 +126,7 @@ export function SeoFooterLinks() {
             {featuredItems.map((item) => (
               <Link
                 key={item.id}
-                href={`/item/${idToSlug(item.id)}`}
+                href={`/item/${canonicalForItem(item.id)}`}
                 className="hover:text-foreground hover:underline"
               >
                 {item.name}

@@ -2,18 +2,12 @@ import { cookingRecipes } from "@/data/recipes";
 import { cookpotIngredients } from "@/data/cookpot-ingredients";
 import { ko } from "@/data/locales/ko";
 import { generateFoodSeoText, generateFoodSeoTextKo } from "@/lib/seo-text";
+import { canonicalForFood, resolveFoodSlug } from "@/lib/slug";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 
 const SITE_URL = "https://www.dstcraft.com";
-
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
-function slugToId(slug: string) {
-  return slug.replaceAll("-", "_");
-}
 
 const foodTypeKey = {
   meat: "ftMeat",
@@ -34,7 +28,8 @@ const foodTypeColors: Record<string, string> = {
 };
 
 export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang }) {
-  const recipe = cookingRecipes.find((r) => r.id === slugToId(slug));
+  const id = resolveFoodSlug(slug);
+  const recipe = id ? cookingRecipes.find((r) => r.id === id) : undefined;
   if (!recipe) notFound();
 
   const nameKo = ko.foods?.[recipe.id]?.name;
@@ -67,7 +62,8 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
     : [recipe.requirements];
 
   const routePrefix = lang === "ko" ? "/ko" : "";
-  const pageUrl = `${SITE_URL}${routePrefix}/food/${idToSlug(recipe.id)}`;
+  const canonicalSlug = canonicalForFood(recipe.id) ?? slug;
+  const pageUrl = `${SITE_URL}${routePrefix}/food/${canonicalSlug}`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -315,7 +311,7 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 return (
                   <Link
                     key={r.id}
-                    href={`${routePrefix}/food/${idToSlug(r.id)}`}
+                    href={`${routePrefix}/food/${canonicalForFood(r.id)}`}
                     className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
                   >
                     <img
@@ -380,8 +376,10 @@ function StatCard({
 }
 
 export function buildFoodMetadata(slug: string, lang: SeoLang) {
-  const recipe = cookingRecipes.find((r) => r.id === slugToId(slug));
+  const id = resolveFoodSlug(slug);
+  const recipe = id ? cookingRecipes.find((r) => r.id === id) : undefined;
   if (!recipe) return {};
+  const canonicalSlug = canonicalForFood(recipe.id) ?? slug;
   const nameKo = ko.foods?.[recipe.id]?.name;
   const displayName = lang === "ko" ? (nameKo ?? recipe.name) : recipe.name;
   const stationLabel = recipe.station === "portablecookpot"
@@ -396,8 +394,8 @@ export function buildFoodMetadata(slug: string, lang: SeoLang) {
     ? `Don't Starve Together에서 ${displayName} 만드는 법. ${stationLabel} 레시피 — 체력: ${recipe.health > 0 ? "+" : ""}${recipe.health}, 허기: +${recipe.hunger}, 정신력: ${recipe.sanity > 0 ? "+" : ""}${recipe.sanity}. 재료, 스탯, 팁을 확인하세요.`
     : `Learn how to cook ${displayName} in Don't Starve Together. ${stationLabel} recipe — Health: ${recipe.health > 0 ? "+" : ""}${recipe.health}, Hunger: +${recipe.hunger}, Sanity: ${recipe.sanity > 0 ? "+" : ""}${recipe.sanity}. See ingredients, stats, and tips.`;
 
-  const enUrl = `${SITE_URL}/food/${slug}`;
-  const koUrl = `${SITE_URL}/ko/food/${slug}`;
+  const enUrl = `${SITE_URL}/food/${canonicalSlug}`;
+  const koUrl = `${SITE_URL}/ko/food/${canonicalSlug}`;
   const canonical = lang === "ko" ? koUrl : enUrl;
 
   return {

@@ -289,3 +289,18 @@
   3. CLAUDE.md "중복 코드 자동 공통화" 룰을 사전에 적용했어야 하는데 무시 — 동일 패턴 ko-fi 버튼이 5곳(Footer/SupportPill/ReviewPrompt/SettingsPage/DetailPanel)에 산재
 - **교훈**: 사용자가 UI 위치를 지목하면 **컴포넌트 이름이 아니라 실제 동작/텍스트/링크/className으로 grep**해서 모든 사용처 파악 후 작업
 - **검증**: 새 기능 작업 시작 전 `grep -rn "<관련 텍스트나 URL>"` 으로 사용처 후보 모두 나열 → 중복이면 먼저 공통화 후 본 작업 진행
+
+## SEO
+
+### 글로벌 layout에 페이지 단위 schema(FAQPage 등)를 넣어 모든 페이지에서 중복
+- **문제**: `src/app/layout.tsx`에 FAQPage JSON-LD를 박아둔 상태에서, 캐릭터/아이템/보스/음식/스킬트리 Content 컴포넌트도 자체 FAQPage를 출력 → 모든 상세 페이지에 FAQPage 2개. Google Search Console "잦은 문의 사항" 리포트에서 `'FAQPage' 입력란이 중복되었습니다` 에러 32개 페이지 전부에 검출, "URL이 Google에 등록되어 있지만 문제가 있음" 표시 + 리치 결과 노출 거부
+- **원인**: 처음 글로벌 FAQ를 layout에 넣을 때 "사이트 전체 FAQ"로 의도했으나, 이후 페이지별 FAQPage를 추가하면서 layout 쪽을 정리하지 않음. 스키마는 페이지 단위로 1개씩이어야 한다는 제약을 잊음
+- **교훈**: `app/layout.tsx`에는 사이트 전체에 항상 동일하게 적용되는 schema(WebApplication, Organization 등)만 두기. 페이지마다 내용이 달라지는 schema(FAQPage, HowTo, Recipe, Article 등)는 절대 layout에 두지 말 것
+- **검증**: 빌드 후 `grep -oE '"@type":"FAQPage"' out/<path>.html | wc -l`로 페이지당 1개인지 확인. 글로벌 FAQ가 필요하면 홈(`src/app/page.tsx`)에만 두는 게 안전
+
+### 게임 내부 ID를 그대로 URL slug로 쓰면 검색어 매칭이 안 됨
+- **문제**: 아이템·보스·음식 데이터에서 인게임 prefab ID(`hambat`, `nightsword`, `beequeen`)를 idToSlug(_→-만 치환)로 그대로 URL에 노출 → 사람들이 검색하는 키워드 "ham bat", "dark sword", "bee queen"과 토큰 분리가 안 돼 SEO 매칭 약화. 특히 `nightsword`는 게임 내부 ID라 사람이 절대 검색하지 않는 문자열
+- **원인**: 초기 sitemap/라우트 설계 시 "ID == slug"가 가장 단순해서 그렇게 시작 → 데이터 양 늘어난 뒤로는 변경 비용 부담으로 방치
+- **교훈**: SEO용 URL slug는 **사용자가 검색할 영문명**(`name` 필드)에서 파생해야 함. `nameToSlug(name)`으로 lower-case + 비영숫자→하이픈 → 토큰 분리. 단 ID-기반 옛 slug로 이미 색인된 페이지가 있으면 양쪽 다 살려두고 새 slug에 canonical을 두어 점진 이전(static export라 301 redirect 못 씀)
+- **검증**: 빌드 후 `out/sitemap.xml`에 새 slug만 있는지 + `out/<path>/<old-slug>.html`의 `<link rel="canonical">`이 새 slug를 가리키는지 확인. 외부에서 옛 URL로 들어와도 200 + canonical 정상이어야 함
+- **부수 발견**: 이름이 같은 아이템이 있을 수 있어 slug 빌드 시 중복 검출 → ID 접미사로 fallback (`<base>-<id>`) 처리 필요

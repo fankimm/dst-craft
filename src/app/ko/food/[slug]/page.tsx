@@ -1,13 +1,9 @@
-import { cookingRecipes } from "@/data/recipes";
+import { foodSlugs } from "@/lib/slug";
 import { FoodPageContent, buildFoodMetadata } from "@/components/seo/FoodPageContent";
 import type { Metadata } from "next";
 
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
-
 export function generateStaticParams() {
-  return cookingRecipes.map((r) => ({ slug: idToSlug(r.id) }));
+  return foodSlugs.allSlugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({

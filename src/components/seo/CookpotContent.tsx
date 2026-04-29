@@ -1,14 +1,11 @@
 import { cookingRecipes } from "@/data/recipes";
 import { cookpotIngredients } from "@/data/cookpot-ingredients";
 import { ko } from "@/data/locales/ko";
+import { canonicalForFood } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 
 const SITE_URL = "https://www.dstcraft.com";
-
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
 
 const SHOWCASE_IDS = [
   "baconeggs",
@@ -138,7 +135,7 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
               return (
                 <Link
                   key={r.id}
-                  href={`${routePrefix}/food/${idToSlug(r.id)}`}
+                  href={`${routePrefix}/food/${canonicalForFood(r.id)}`}
                   className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2 hover:border-ring transition-colors"
                 >
                   <img src={`/images/game-items/${r.id}.png`} alt={primary} className="size-10 object-contain shrink-0" />
@@ -187,7 +184,7 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
                     return (
                       <li key={r.id} className="mb-1 break-inside-avoid">
                         <Link
-                          href={`${routePrefix}/food/${idToSlug(r.id)}`}
+                          href={`${routePrefix}/food/${canonicalForFood(r.id)}`}
                           className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
                         >
                           {primary}

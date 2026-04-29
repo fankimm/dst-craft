@@ -1,9 +1,9 @@
-import { bosses } from "@/data/bosses";
+import { bossSlugs } from "@/lib/slug";
 import { BossPageContent, buildBossMetadata } from "@/components/seo/BossPageContent";
 import type { Metadata } from "next";
 
 export function generateStaticParams() {
-  return bosses.map((b) => ({ slug: b.id }));
+  return bossSlugs.allSlugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({

@@ -4,14 +4,11 @@ import { bosses } from "@/data/bosses";
 import { characters } from "@/data/characters";
 import { categories } from "@/data/categories";
 import { ko } from "@/data/locales/ko";
+import { canonicalForBoss, canonicalForFood, canonicalForItem } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 
 const SITE_URL = "https://www.dstcraft.com";
-
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
 
 function groupByCategory(items: typeof allItems) {
   const groups: Record<string, typeof allItems> = {};
@@ -62,7 +59,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
                     return (
                       <li key={item.id} className="mb-1 break-inside-avoid">
                         <Link
-                          href={`${routePrefix}/item/${idToSlug(item.id)}`}
+                          href={`${routePrefix}/item/${canonicalForItem(item.id)}`}
                           className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
                         >
                           {primary}
@@ -90,7 +87,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
               return (
                 <li key={r.id} className="mb-1 break-inside-avoid">
                   <Link
-                    href={`${routePrefix}/food/${idToSlug(r.id)}`}
+                    href={`${routePrefix}/food/${canonicalForFood(r.id)}`}
                     className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
                   >
                     {primary}
@@ -115,7 +112,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
               return (
                 <li key={b.id} className="mb-1 break-inside-avoid">
                   <Link
-                    href={`${routePrefix}/boss/${b.id}`}
+                    href={`${routePrefix}/boss/${canonicalForBoss(b.id)}`}
                     className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
                   >
                     {primary}

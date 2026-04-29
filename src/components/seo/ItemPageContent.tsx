@@ -6,19 +6,13 @@ import { ko } from "@/data/locales/ko";
 import { stationImages } from "@/lib/crafting-data";
 import { stationName } from "@/lib/i18n";
 import { generateItemSeoText, generateItemSeoTextKo } from "@/lib/seo-text";
+import { canonicalForItem, resolveItemSlug } from "@/lib/slug";
 import type { CraftingStation } from "@/lib/types";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 
 const SITE_URL = "https://www.dstcraft.com";
-
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
-function slugToId(slug: string) {
-  return slug.replaceAll("-", "_");
-}
 
 const stationLabelsEn: Record<string, string> = {
   none: "Hand Craft",
@@ -51,7 +45,8 @@ function stationLabelFor(station: string, lang: SeoLang): string {
 }
 
 export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang }) {
-  const item = allItems.find((i) => i.id === slugToId(slug));
+  const id = resolveItemSlug(slug);
+  const item = id ? allItems.find((i) => i.id === id) : undefined;
   if (!item) notFound();
 
   const nameKo = ko.items[item.id]?.name;
@@ -87,7 +82,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
     return {
       name: mat?.name ?? m.materialId,
       quantity: m.quantity,
-      slug: allItems.find((x) => x.id === m.materialId) ? idToSlug(m.materialId) : undefined,
+      slug: allItems.find((x) => x.id === m.materialId) ? canonicalForItem(m.materialId) : undefined,
     };
   });
   const seoMaterialsKo = item.materials.map((m) => {
@@ -307,7 +302,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               return m.item ? (
                 <Link
                   key={m.materialId}
-                  href={`${routePrefix}/item/${idToSlug(m.materialId)}`}
+                  href={`${routePrefix}/item/${canonicalForItem(m.materialId)}`}
                   className={`${cls} hover:border-ring transition-colors`}
                 >
                   {inner}
@@ -361,7 +356,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 return (
                   <Link
                     key={other.id}
-                    href={`${routePrefix}/item/${idToSlug(other.id)}`}
+                    href={`${routePrefix}/item/${canonicalForItem(other.id)}`}
                     className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2 hover:border-ring transition-colors"
                   >
                     <img
@@ -412,8 +407,10 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
 }
 
 export function buildItemMetadata(slug: string, lang: SeoLang) {
-  const item = allItems.find((i) => i.id === slugToId(slug));
+  const id = resolveItemSlug(slug);
+  const item = id ? allItems.find((i) => i.id === id) : undefined;
   if (!item) return {};
+  const canonicalSlug = canonicalForItem(item.id) ?? slug;
   const nameKo = ko.items[item.id]?.name;
   const descKo = ko.items[item.id]?.desc;
   const displayName = lang === "ko" ? (nameKo ?? item.name) : item.name;
@@ -436,8 +433,8 @@ export function buildItemMetadata(slug: string, lang: SeoLang) {
     ? `Don't Starve Together에서 ${displayName} 만드는 법. ${description} 재료: ${matList}. 제작대, 용도, 팁을 확인하세요.`
     : `How to craft ${displayName} in Don't Starve Together. ${description} Materials: ${matList}. See crafting station, uses, and tips.`;
 
-  const enUrl = `${SITE_URL}/item/${slug}`;
-  const koUrl = `${SITE_URL}/ko/item/${slug}`;
+  const enUrl = `${SITE_URL}/item/${canonicalSlug}`;
+  const koUrl = `${SITE_URL}/ko/item/${canonicalSlug}`;
   const canonical = lang === "ko" ? koUrl : enUrl;
 
   return {

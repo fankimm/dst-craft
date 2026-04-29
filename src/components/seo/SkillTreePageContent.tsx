@@ -5,15 +5,12 @@ import { getItemsBySkill } from "@/data/skill-trees/skill-items";
 import { allItems } from "@/data/items";
 import { ko } from "@/data/locales/ko";
 import { generateSkillTreeSeoText, generateSkillTreeSeoTextKo } from "@/lib/seo-text";
+import { canonicalForItem } from "@/lib/slug";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 
 const SITE_URL = "https://www.dstcraft.com";
-
-function idToSlug(id: string) {
-  return id.replaceAll("_", "-");
-}
 
 export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLang }) {
   const char = characters.find((c) => c.id === slug);
@@ -230,7 +227,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
                 return (
                   <Link
                     key={item.id}
-                    href={`${routePrefix}/item/${idToSlug(item.id)}`}
+                    href={`${routePrefix}/item/${canonicalForItem(item.id)}`}
                     className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2 hover:border-ring transition-colors"
                   >
                     <img src={`/images/game-items/${item.image}`} alt={primary} className="size-10 object-contain shrink-0" />
