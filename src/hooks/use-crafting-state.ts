@@ -22,7 +22,12 @@ function readUrlState() {
 const SSR_DEFAULT = { cat: null as CategoryId | null, item: null as string | null, char: null as string | null };
 
 export function useCraftingState() {
-  const [urlState, setUrlState] = useState(SSR_DEFAULT);
+  // Lazy init: read URL synchronously on first client render so deep-links
+  // (e.g. /?cat=structures or /?item=foo) land on the right view immediately
+  // after hydration instead of flashing the category grid until useEffect fires.
+  const [urlState, setUrlState] = useState(() =>
+    typeof window === "undefined" ? SSR_DEFAULT : readUrlState(),
+  );
   const [itemHistory, setItemHistory] = useState<string[]>([]);
 
   const showCategoryGrid = !urlState.cat;
@@ -30,11 +35,6 @@ export function useCraftingState() {
   const selectedItem = urlState.item ? (getItemById(urlState.item) ?? null) : null;
   const selectedCharacter = urlState.char;
   const previousItem = itemHistory.length > 0 ? (getItemById(itemHistory[itemHistory.length - 1]) ?? null) : null;
-
-  // Sync from URL after mount (hydration-safe)
-  useEffect(() => {
-    setUrlState(readUrlState());
-  }, []);
 
   // Listen to popstate (browser back/forward)
   useEffect(() => {

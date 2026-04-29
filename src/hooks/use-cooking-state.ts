@@ -42,16 +42,16 @@ const SSR_DEFAULT = { cat: null as CookingCategoryId | null, recipe: null as str
 // ---------------------------------------------------------------------------
 
 export function useCookingState() {
-  const [urlState, setUrlState] = useState(SSR_DEFAULT);
+  // Lazy init: read URL synchronously on first client render so deep-links
+  // land on the right view immediately after hydration instead of flashing
+  // the category grid until useEffect fires.
+  const [urlState, setUrlState] = useState(() =>
+    typeof window === "undefined" ? SSR_DEFAULT : readUrlState(),
+  );
 
   const showCategoryGrid = !urlState.cat;
   const selectedCategory = urlState.cat;
   const selectedRecipeId = urlState.recipe;
-
-  // Sync from URL after mount (hydration-safe)
-  useEffect(() => {
-    setUrlState(readUrlState());
-  }, []);
 
   // Listen to popstate (browser back/forward)
   useEffect(() => {

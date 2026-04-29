@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.18.3",
+    date: "2026-04-29",
+    dev: [
+      "fix(use-crafting-state, use-cooking-state): SSR_DEFAULT 초기 state + mount-time useEffect URL 동기화 패턴을 useState lazy initializer로 교체 — 클라이언트 첫 렌더 시 즉시 window.location.search를 파싱하여 urlState 구성. 결과적으로 hydration 직후 한 번 더 리렌더가 일어나는 step이 사라져 deep-link(/?cat=structures, /?item=foo 등) 첫 진입 시 home(카테고리 그리드)이 잠깐 떴다가 detail로 바뀌는 플리커 제거. popstate/pageshow/dst-tab-switch 리스너는 그대로 유지.",
+      "근거: 첫 붙여넣기에서 home 화면만 보이고 새로고침해야 detail이 뜨는 사용자 보고. JS 번들 캐시되지 않은 cold-load에서 useEffect 실행 지연 → home view가 길게 노출되어 사용자가 '동작 안 함'으로 인식. 정적 HTML의 첫 페인트 자체는 SSR/dynamic 렌더링 없이는 변경 불가하므로 hydration 이후 단계만 단축.",
+      "chore(skill): /push 슬래시 스킬 추가 (.claude/skills/push/SKILL.md) — 커밋+main 푸시 워크플로우 자동화. 변경 분류 → 버전 bump → 릴리즈노트 갱신 → 오답노트 점검 → 명시적 git add → push 절차 명문화.",
+    ],
+    changes: {
+      ko: [
+        "공유 링크(예: 카테고리/아이템 딥링크)를 처음 붙여넣고 열 때 홈 화면이 잠깐 보였다가 상세 패널로 넘어가던 문제 수정 — 이제 첫 진입과 새로고침 동작이 동일",
+      ],
+      en: [
+        "Fixed deep-link URLs (category/item shares) flashing the home view before opening the detail panel on first paste — first-paste and refresh now behave identically",
+      ],
+    },
+  },
+  {
     version: "0.18.2",
     date: "2026-04-28",
     dev: [
