@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.19.1",
+    date: "2026-04-30",
+    dev: [
+      "feat(seo/ko): /ko 한국어 전용 홈페이지 생성 (src/app/ko/page.tsx) — 한국어 title/description/keywords + FAQPage 구조화 데이터 (한국어 Q&A 2개)",
+      "feat(seo): layout.tsx keywords에 한국어 키워드 12개 추가 — '굶지마 제작', '굶지마 제작법', '굶지마 투게더', '굶지마 요리솥', 'DST 제작', '돈스타브 제작' 등",
+      "fix(seo): hreflang ko가 '/' (영문 홈)을 가리키던 것을 '/ko'로 수정",
+      "feat(sitemap): /ko 홈페이지를 sitemap에 priority 0.9로 추가",
+    ],
+    changes: {
+      ko: [
+        "한국어 검색 노출 강화: '굶지마 제작', '굶지마 제작법' 등 한국어 검색어로 구글 노출을 위한 전용 홈페이지(/ko) 추가",
+      ],
+      en: [
+        "Korean SEO: added dedicated Korean homepage (/ko) with localized metadata and keywords for better Google visibility",
+      ],
+    },
+  },
+  {
     version: "0.19.0",
     date: "2026-04-29",
     dev: [
