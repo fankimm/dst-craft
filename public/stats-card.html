@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DST Craft Stats</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    display: flex; justify-content: center; padding: 16px;
+    color: #fafafa;
+  }
+  .card {
+    width: 100%; max-width: 390px;
+    background: linear-gradient(145deg, #18181b 0%, #0f0f12 100%);
+    border-radius: 24px;
+    border: 1px solid #27272a;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .header {
+    padding: 28px 24px 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 70% 20%, rgba(99,102,241,0.15) 0%, transparent 60%);
+  }
+  .header * { position: relative; z-index: 1; }
+  .app-icon { width: 48px; height: 48px; border-radius: 12px; margin-bottom: 8px; }
+  .app-name { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #a5b4fc; }
+  .period { font-size: 11px; color: #64748b; margin-top: 4px; }
+
+  .big-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: #27272a; margin: 0;
+  }
+  .big-stat {
+    background: #18181b; padding: 20px 16px; text-align: center;
+  }
+  .big-stat .value { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; }
+  .big-stat .label { font-size: 11px; color: #71717a; margin-top: 4px; letter-spacing: 0.05em; }
+  .accent-blue { color: #60a5fa; }
+  .accent-green { color: #34d399; }
+  .accent-amber { color: #fbbf24; }
+  .accent-purple { color: #a78bfa; }
+
+  .section { padding: 20px 24px; }
+  .section-title {
+    font-size: 11px; font-weight: 700; color: #52525b;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .chart { display: flex; align-items: flex-end; gap: 4px; height: 100px; }
+  .chart-bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .chart-bars { display: flex; gap: 1px; align-items: flex-end; width: 100%; height: 80px; }
+  .chart-bar {
+    flex: 1; border-radius: 3px 3px 0 0;
+    min-height: 2px; transition: height 0.3s;
+  }
+  .bar-pv { background: linear-gradient(to top, #3b82f6, #60a5fa); }
+  .bar-uv { background: linear-gradient(to top, #10b981, #34d399); }
+  .chart-label { font-size: 8px; color: #52525b; margin-top: 2px; }
+  .chart-peak { position: relative; }
+  .chart-peak::after {
+    content: '284'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    font-size: 9px; font-weight: 700; color: #fbbf24;
+  }
+  .chart-legend {
+    display: flex; gap: 16px; justify-content: center; margin-top: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #71717a; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+  .legend-pv { background: #3b82f6; }
+  .legend-uv { background: #10b981; }
+
+  .metrics {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+  }
+  .metric {
+    background: #1e1e22; border-radius: 12px; padding: 14px 10px;
+    text-align: center;
+  }
+  .metric .val { font-size: 20px; font-weight: 800; }
+  .metric .lbl { font-size: 9px; color: #71717a; margin-top: 3px; }
+
+  .countries {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .country {
+    display: flex; align-items: center; gap: 5px;
+    background: #1e1e22; border-radius: 20px;
+    padding: 6px 12px 6px 8px; font-size: 12px;
+  }
+  .country-flag { font-size: 16px; }
+  .country-pct { font-weight: 700; }
+  .country-name { color: #71717a; font-size: 10px; }
+
+  .device-bar {
+    display: flex; border-radius: 8px; overflow: hidden; height: 28px;
+  }
+  .device-seg {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+  }
+  .device-mobile { background: #3b82f6; }
+  .device-desktop { background: #6366f1; }
+  .device-labels {
+    display: flex; justify-content: space-between; margin-top: 6px;
+    font-size: 10px; color: #71717a;
+  }
+
+  .referrers { display: flex; flex-direction: column; gap: 6px; }
+  .ref-row { display: flex; align-items: center; gap: 8px; }
+  .ref-bar-bg {
+    flex: 1; height: 22px; background: #1e1e22; border-radius: 6px;
+    overflow: hidden; position: relative;
+  }
+  .ref-bar-fill {
+    height: 100%; border-radius: 6px;
+    background: linear-gradient(90deg, #6366f1, #818cf8);
+  }
+  .ref-name {
+    position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+    font-size: 10px; font-weight: 600; z-index: 1;
+  }
+  .ref-count { font-size: 11px; font-weight: 700; color: #a1a1aa; width: 32px; text-align: right; }
+
+  .rating-row {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 20px 24px;
+    border-top: 1px solid #27272a;
+  }
+  .stars { font-size: 18px; letter-spacing: 2px; }
+  .rating-num { font-size: 28px; font-weight: 800; color: #fbbf24; }
+  .rating-count { font-size: 11px; color: #52525b; }
+
+  .footer {
+    text-align: center; padding: 12px 24px 20px;
+    font-size: 10px; color: #3f3f46;
+  }
+  .footer a { color: #52525b; text-decoration: none; }
+
+  .divider { height: 1px; background: #27272a; margin: 0; }
+
+  .growth-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(34,197,94,0.1); color: #22c55e;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 12px; font-weight: 700;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <!-- Header -->
+  <div class="header">
+    <img src="/icons/icon-192.png" alt="" class="app-icon">
+    <div class="app-name">DON'T CRAFT WITHOUT RECIPES</div>
+    <div class="period">Apr 15 — Apr 29, 2026 (15 days)</div>
+    <div class="growth-badge">&#9650; 전주 대비 +74%</div>
+  </div>
+
+  <!-- Big Stats -->
+  <div class="big-stats">
+    <div class="big-stat">
+      <div class="value accent-blue">2,376</div>
+      <div class="label">PAGE VIEWS</div>
+    </div>
+    <div class="big-stat">
+      <div class="value accent-green">1,617</div>
+      <div class="label">UNIQUE VISITORS</div>
+    </div>
+    <div class="big-stat">
+      <div class="value accent-amber">158</div>
+      <div class="label">AVG DAILY PV</div>
+    </div>
+    <div class="big-stat">
+      <div class="value accent-purple">108</div>
+      <div class="label">AVG DAILY UV</div>
+    </div>
+  </div>
+
+  <!-- Daily Chart -->
+  <div class="section">
+    <div class="section-title">Daily Trend</div>
+    <div class="chart">
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:53%"></div>
+          <div class="chart-bar bar-uv" style="height:48%"></div>
+        </div>
+        <div class="chart-label">15</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:40%"></div>
+          <div class="chart-bar bar-uv" style="height:49%"></div>
+        </div>
+        <div class="chart-label">16</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:33%"></div>
+          <div class="chart-bar bar-uv" style="height:47%"></div>
+        </div>
+        <div class="chart-label">17</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:55%"></div>
+          <div class="chart-bar bar-uv" style="height:62%"></div>
+        </div>
+        <div class="chart-label">18</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:33%"></div>
+          <div class="chart-bar bar-uv" style="height:37%"></div>
+        </div>
+        <div class="chart-label">19</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:35%"></div>
+          <div class="chart-bar bar-uv" style="height:35%"></div>
+        </div>
+        <div class="chart-label">20</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:55%"></div>
+          <div class="chart-bar bar-uv" style="height:56%"></div>
+        </div>
+        <div class="chart-label">21</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:62%"></div>
+          <div class="chart-bar bar-uv" style="height:74%"></div>
+        </div>
+        <div class="chart-label">22</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:51%"></div>
+          <div class="chart-bar bar-uv" style="height:62%"></div>
+        </div>
+        <div class="chart-label">23</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:51%"></div>
+          <div class="chart-bar bar-uv" style="height:62%"></div>
+        </div>
+        <div class="chart-label">24</div>
+      </div>
+      <div class="chart-bar-group chart-peak">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:100%"></div>
+          <div class="chart-bar bar-uv" style="height:100%"></div>
+        </div>
+        <div class="chart-label">25</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:69%"></div>
+          <div class="chart-bar bar-uv" style="height:75%"></div>
+        </div>
+        <div class="chart-label">26</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:67%"></div>
+          <div class="chart-bar bar-uv" style="height:75%"></div>
+        </div>
+        <div class="chart-label">27</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:71%"></div>
+          <div class="chart-bar bar-uv" style="height:72%"></div>
+        </div>
+        <div class="chart-label">28</div>
+      </div>
+      <div class="chart-bar-group">
+        <div class="chart-bars">
+          <div class="chart-bar bar-pv" style="height:60%"></div>
+          <div class="chart-bar bar-uv" style="height:69%"></div>
+        </div>
+        <div class="chart-label">29</div>
+      </div>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-dot legend-pv"></div>Page Views</div>
+      <div class="legend-item"><div class="legend-dot legend-uv"></div>Unique Visitors</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Metrics -->
+  <div class="section">
+    <div class="section-title">Key Metrics</div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="val accent-green">54%</div>
+        <div class="lbl">RETURN RATE</div>
+      </div>
+      <div class="metric">
+        <div class="val accent-blue">2:58</div>
+        <div class="lbl">AVG SESSION</div>
+      </div>
+      <div class="metric">
+        <div class="val accent-purple">119</div>
+        <div class="lbl">PWA INSTALLS</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Countries -->
+  <div class="section">
+    <div class="section-title">Top Countries</div>
+    <div class="countries">
+      <div class="country">
+        <span class="country-flag">&#127472;&#127479;</span>
+        <span class="country-pct">49%</span>
+        <span class="country-name">Korea</span>
+      </div>
+      <div class="country">
+        <span class="country-flag">&#127482;&#127480;</span>
+        <span class="country-pct">20%</span>
+        <span class="country-name">USA</span>
+      </div>
+      <div class="country">
+        <span class="country-flag">&#127463;&#127479;</span>
+        <span class="country-pct">3%</span>
+        <span class="country-name">Brazil</span>
+      </div>
+      <div class="country">
+        <span class="country-flag">&#127464;&#127462;</span>
+        <span class="country-pct">3%</span>
+        <span class="country-name">Canada</span>
+      </div>
+      <div class="country">
+        <span class="country-flag">&#127468;&#127463;</span>
+        <span class="country-pct">1.5%</span>
+        <span class="country-name">UK</span>
+      </div>
+      <div class="country">
+        <span class="country-flag">&#127465;&#127466;</span>
+        <span class="country-pct">1.2%</span>
+        <span class="country-name">Germany</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Referrers -->
+  <div class="section">
+    <div class="section-title">Traffic Sources</div>
+    <div class="referrers">
+      <div class="ref-row">
+        <div class="ref-bar-bg">
+          <div class="ref-bar-fill" style="width:100%"></div>
+          <div class="ref-name">DCinside</div>
+        </div>
+        <div class="ref-count">503</div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-bar-bg">
+          <div class="ref-bar-fill" style="width:62%"></div>
+          <div class="ref-name">Reddit</div>
+        </div>
+        <div class="ref-count">312</div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-bar-bg">
+          <div class="ref-bar-fill" style="width:23%"></div>
+          <div class="ref-name">Google Search</div>
+        </div>
+        <div class="ref-count">115</div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-bar-bg">
+          <div class="ref-bar-fill" style="width:7%"></div>
+          <div class="ref-name">Bing / DuckDuckGo</div>
+        </div>
+        <div class="ref-count">37</div>
+      </div>
+      <div class="ref-row">
+        <div class="ref-bar-bg">
+          <div class="ref-bar-fill" style="width:5%"></div>
+          <div class="ref-name">Facebook / Instagram</div>
+        </div>
+        <div class="ref-count">24</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Device -->
+  <div class="section">
+    <div class="section-title">Devices</div>
+    <div class="device-bar">
+      <div class="device-seg device-mobile" style="width:65%">Mobile 65%</div>
+      <div class="device-seg device-desktop" style="width:35%">Desktop 35%</div>
+    </div>
+    <div class="device-labels">
+      <span>iOS 35% · Android 30%</span>
+      <span>Windows 27% · Mac 3%</span>
+    </div>
+  </div>
+
+  <!-- Rating -->
+  <div class="rating-row">
+    <div class="stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div>
+    <div class="rating-num">4.7</div>
+    <div class="rating-count">/ 202 ratings</div>
+  </div>
+
+  <div class="footer">
+    <a href="https://www.dstcraft.com">www.dstcraft.com</a> &middot; Don't Starve Together Crafting Guide
+  </div>
+</div>
+</body>
+</html>
