@@ -1,9 +1,10 @@
-const CACHE_NAME = "dst-crafting-__BUILD_HASH__";
+const APP_CACHE = "dst-app-__BUILD_HASH__";
+const IMG_CACHE = "dst-images-v1";
 const BASE = new URL(self.location.href).pathname.replace(/\/sw\.js$/, "");
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) =>
+    caches.open(APP_CACHE).then((cache) =>
       cache.addAll([BASE + "/", BASE + "/manifest.json"])
     )
   );
@@ -15,7 +16,7 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys
-          .filter((key) => key !== CACHE_NAME)
+          .filter((key) => key !== APP_CACHE && key !== IMG_CACHE)
           .map((key) => caches.delete(key))
       )
     )
@@ -28,15 +29,15 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(event.request.url);
 
-  // Images: cache-first, never re-fetch once cached
-  if (url.pathname.startsWith(BASE + "/images/")) {
+  // Images + icons: persistent cache-first (survives app updates)
+  if (url.pathname.startsWith(BASE + "/images/") || url.pathname.startsWith(BASE + "/icons/")) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         if (cached) return cached;
         return fetch(event.request).then((response) => {
           if (response.ok) {
             const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+            caches.open(IMG_CACHE).then((cache) => cache.put(event.request, clone));
           }
           return response;
         });
@@ -53,7 +54,7 @@ self.addEventListener("fetch", (event) => {
         return fetch(event.request).then((response) => {
           if (response.ok) {
             const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+            caches.open(APP_CACHE).then((cache) => cache.put(event.request, clone));
           }
           return response;
         });
@@ -72,7 +73,7 @@ self.addEventListener("fetch", (event) => {
         .then((response) => {
           if (response.ok) {
             const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+            caches.open(APP_CACHE).then((cache) => cache.put(event.request, clone));
           }
           return response;
         })

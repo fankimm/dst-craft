@@ -15,4 +15,4 @@ const hash =
 const output = template.replace("__BUILD_HASH__", hash);
 
 fs.writeFileSync(path.join(__dirname, "../public/sw.js"), output);
-console.log(`[generate-sw] CACHE_NAME = dst-crafting-${hash}`);
+console.log(`[generate-sw] APP_CACHE = dst-app-${hash}, IMG_CACHE = dst-images-v1`);

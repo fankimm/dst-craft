@@ -5,7 +5,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 const manifest = {
   name: "Don't Craft Without Recipes",
-  short_name: "DST Craft",
+  short_name: "dstcraft.com",
   description: "Don't Starve Together 크래프팅·쿠킹 레시피 가이드",
   start_url: basePath + "/",
   scope: basePath + "/",
