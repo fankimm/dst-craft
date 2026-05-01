@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.19.3",
+    date: "2026-05-01",
+    dev: [
+      "fix(cookpot): 모바일에서 마지막 재료 터치 시 결과 카드의 '상세보기'가 자동 클릭되는 ghost-click 버그 수정 — ResultCard 마운트 후 350ms 동안 pointer interaction 비활성화",
+    ],
+    changes: {
+      ko: [
+        "요리솥 시뮬레이터: 모바일에서 마지막 재료 선택 시 요리 상세보기가 자동으로 열리던 버그 수정",
+      ],
+      en: [
+        "Cooking simulator: fixed a mobile bug where selecting the last ingredient would automatically open recipe details",
+      ],
+    },
+  },
+  {
     version: "0.19.2",
     date: "2026-05-01",
     dev: [

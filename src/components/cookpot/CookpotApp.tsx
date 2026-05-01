@@ -329,10 +329,19 @@ function ResultCard({
   onViewRecipe?: (recipeId: string) => void;
   simCount: number;
 }) {
+  // Prevent ghost-click on mobile: delay interactivity after mount
+  // so a delayed touch event from the ingredient picker doesn't
+  // trigger navigation on the newly-appeared result card.
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 350);
+    return () => clearTimeout(timer);
+  }, []);
+
   const localName = foodName(recipe, locale);
   const showAltName = locale !== "en" && localName !== recipe.name;
   const cookSeconds = recipe.cookTime * COOK_TIME_BASE;
-  const canNavigate = !isWetGoop && !!onViewRecipe;
+  const canNavigate = !isWetGoop && !!onViewRecipe && ready;
 
   return (
     <div
