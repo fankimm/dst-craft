@@ -166,7 +166,7 @@ const themeScript = `
       localStorage.setItem('dst-version', CV);
       if (PV && 'caches' in window) {
         caches.keys().then(function(keys) {
-          keys.forEach(function(k) { caches.delete(k); });
+          keys.forEach(function(k) { if (k.indexOf('dst-images') === -1) caches.delete(k); });
         });
         if (navigator.serviceWorker) {
           navigator.serviceWorker.getRegistrations().then(function(regs) {
