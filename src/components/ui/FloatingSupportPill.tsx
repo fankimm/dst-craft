@@ -84,22 +84,45 @@ export function FloatingSupportPill() {
       }
     };
 
-    // Anchors may mount slightly after this component. Poll briefly until at
-    // least one shows up, then observe ALL of them.
-    const tryAttach = () => {
-      const anchors = document.querySelectorAll("[data-support-pill-anchor]");
-      if (anchors.length === 0) {
-        setTimeout(tryAttach, 100);
-        return;
+    const observedAnchors = new Set<Element>();
+
+    const syncAnchors = () => {
+      if (!observer) {
+        observer = new IntersectionObserver(handleEntries, { threshold: 0.6 });
       }
-      observer = new IntersectionObserver(handleEntries, { threshold: 0.6 });
-      anchors.forEach((a) => observer!.observe(a));
+      const anchors = document.querySelectorAll("[data-support-pill-anchor]");
+      for (const a of anchors) {
+        if (!observedAnchors.has(a)) {
+          observer.observe(a);
+          observedAnchors.add(a);
+        }
+      }
+      // Unobserve removed anchors
+      for (const a of observedAnchors) {
+        if (!a.isConnected) {
+          observer.unobserve(a);
+          observedAnchors.delete(a);
+          intersectingMap.delete(a);
+        }
+      }
     };
 
+    // Initial attach + poll until at least one anchor exists
+    const tryAttach = () => {
+      syncAnchors();
+      if (observedAnchors.size === 0) {
+        setTimeout(tryAttach, 100);
+      }
+    };
     tryAttach();
+
+    // Watch for dynamically added/removed anchors (e.g. skill tab navigation)
+    const mutObs = new MutationObserver(() => syncAnchors());
+    mutObs.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       observer?.disconnect();
+      mutObs.disconnect();
       if (dockTimeout.current) window.clearTimeout(dockTimeout.current);
       if (undockTimeout.current) window.clearTimeout(undockTimeout.current);
     };
