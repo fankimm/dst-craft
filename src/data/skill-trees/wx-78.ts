@@ -240,18 +240,32 @@ export const wx78: CharacterSkillTree = {
       ],
     },
 
-    // ── Allegiance (Shadow — disabled in-game) ────────────────
+    // ── Allegiance (Shadow) ─────────────────────────────────────
     {
       id: "wx78_shadow_allegiance_lock_1",
       group: "allegiance",
       pos: [187, 165],
       root: true,
       tags: ["allegiance", "lock"],
-      lockType: {
-        type: "disabled",
-        desc_en: "Temporarily disabled.",
-        desc_ko: "일시적으로 비활성화되었습니다.",
-      },
+      lockType: { type: "skill_count", tag: "wx78_maxbody", count: 1 },
+      connects: ["wx78_allegiance_shadow"],
+    },
+    {
+      id: "wx78_shadow_allegiance_lock_2",
+      group: "allegiance",
+      pos: [187, 147],
+      root: true,
+      tags: ["allegiance", "lock"],
+      lockType: { type: "boss_kill", boss: "fuelweaver" },
+      connects: ["wx78_allegiance_shadow"],
+    },
+    {
+      id: "wx78_shadow_allegiance_lock_3",
+      group: "allegiance",
+      pos: [187, 129],
+      root: true,
+      tags: ["allegiance", "lock"],
+      lockType: { type: "no_opposing_faction", faction: "shadow" },
       connects: ["wx78_allegiance_shadow"],
     },
     {
@@ -260,7 +274,11 @@ export const wx78: CharacterSkillTree = {
       pos: [230, 180],
       icon: "wx78_allegiance_shadow",
       tags: ["shadow_favor", "allegiance"],
-      locks: ["wx78_shadow_allegiance_lock_1"],
+      locks: [
+        "wx78_shadow_allegiance_lock_1",
+        "wx78_shadow_allegiance_lock_2",
+        "wx78_shadow_allegiance_lock_3",
+      ],
     },
   ],
 };

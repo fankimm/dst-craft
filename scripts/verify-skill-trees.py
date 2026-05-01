@@ -75,7 +75,10 @@ EXPECTED_DIVERGENCES: dict[tuple[str, str], dict[str, str]] = {
     ("wx-78", "wx78_allegiance_lunar_lock_2"): {"id_diff": "app-only node: split from lua wx78_allegiance_lunar_lock_1"},
     ("wx-78", "wx78_allegiance_lunar_lock_3"): {"id_diff": "app-only node: split from lua wx78_allegiance_lunar_lock_1"},
     ("wx-78", "wx78_allegiance_lunar"): {"locks_diff": "app uses 3 typed locks vs lua's single lock_open"},
-    ("wx-78", "wx78_shadow_allegiance_lock_1"): {"connects_diff": "app adds connects to lock node for bidirectional graph navigation"},
+    ("wx-78", "wx78_shadow_allegiance_lock_1"): {"connects_diff": "app splits lua lock_open into typed lock nodes"},
+    ("wx-78", "wx78_shadow_allegiance_lock_2"): {"id_diff": "app-only node: split from lua wx78_shadow_allegiance_lock_1"},
+    ("wx-78", "wx78_shadow_allegiance_lock_3"): {"id_diff": "app-only node: split from lua wx78_shadow_allegiance_lock_1"},
+    ("wx-78", "wx78_allegiance_shadow"): {"locks_diff": "app uses 3 typed locks vs lua's single lock_open"},
 }
 
 

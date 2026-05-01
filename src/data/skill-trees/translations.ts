@@ -1418,7 +1418,7 @@ export const skillTranslations: Record<
     desc: { en: "Backup Chassis keep their Beta Circuits active even when powered down.", ko: "예비 동체 전원이 꺼져 있어도 베타 회로가 작동합니다." },
   },
   wx78_scoutdrone_1: {
-    title: { en: "Field Survey I", ko: "현장 조사 I" },
+    title: { en: "Field Survey", ko: "현장 조사" },
     desc: { en: "Learn to craft a Roto-Mapper to explore and map unknown areas.", ko: "미지의 영역을 탐사하고 기록할 수 있는 '회전익 탐사기'를 제작할 수 있습니다." },
   },
   wx78_extradronerange: {
@@ -1565,6 +1565,8 @@ export const lockTranslations: Record<string, { en: string; ko: string }> = {
   wx78_allegiance_lunar_lock_1: { en: "Be able to craft a Backup Chassis.", ko: "예비 동체 제작법을 보유하세요." },
   wx78_allegiance_lunar_lock_2: { en: "Find and defeat the Celestial Champion.", ko: "천상의 대변자를 찾아 쓰러뜨리세요." },
   wx78_allegiance_lunar_lock_3: { en: "Have no shadow affinity.", ko: "그림자 진영 스킬을 배우지 마세요." },
-  wx78_shadow_allegiance_lock_1: { en: "Temporarily disabled.", ko: "일시적으로 비활성화되었습니다." },
+  wx78_shadow_allegiance_lock_1: { en: "Be able to craft a Backup Chassis.", ko: "예비 동체 제작법을 보유하세요." },
+  wx78_shadow_allegiance_lock_2: { en: "Find and defeat the Ancient Fuelweaver.", ko: "고대의 연료직공을 찾아 쓰러뜨리세요." },
+  wx78_shadow_allegiance_lock_3: { en: "Have no lunar affinity.", ko: "달 진영 스킬을 배우지 마세요." },
 };
 
