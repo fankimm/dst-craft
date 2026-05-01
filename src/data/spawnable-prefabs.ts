@@ -2706,6 +2706,7 @@ export const spawnablePrefabs: SpawnablePrefab[] = [
   { id: "wx78_scanner_item", en: "Bio Scanalyzer", ko: "\uc0dd\uccb4 \uc2a4\uce94 \ubd84\uc11d\uae30" },
   { id: "wx78_scanner_succeeded", en: "Bio Scanalyzer", ko: "\uc0dd\uccb4 \uc2a4\uce94 \ubd84\uc11d\uae30" },
   { id: "wx78module_bee", en: "Beanbooster Circuit", ko: "\ube48\ubd80\uc2a4\ud130 \ubaa8\ub4c8" },
+  { id: "wx78module_chess", en: "Chessmaster Circuit", ko: "Chessmaster Circuit" },
   { id: "wx78module_cold", en: "Refrigerant Circuit", ko: "\ub0c9\uac01 \ud68c\ub85c" },
   { id: "wx78module_digestion", en: "Redigestion Circuit", ko: "\uc7ac\uc18c\ud654 \ud68c\ub85c" },
   { id: "wx78module_heat", en: "Thermal Circuit", ko: "\ubc1c\uc5f4 \ud68c\ub85c" },
