@@ -202,23 +202,6 @@ export function SettingsPage() {
     <div className="flex flex-col h-full bg-background text-foreground overflow-y-auto overscroll-contain">
       <div className="flex flex-col min-h-full">
         <div className="flex-1 p-4 space-y-6 max-w-md mx-auto w-full">
-          {/* Branding */}
-          <div className="flex flex-col items-center gap-2 py-4">
-            <Image
-              src="/icons/icon-192.png"
-              alt=""
-              width={48}
-              height={48}
-              className="size-12 rounded-lg"
-            />
-            <div className="text-center">
-              <h1 className="text-sm tracking-wide">
-                <span className="font-bold">DON&apos;T CRAFT</span>{" "}
-                <span className="text-muted-foreground">WITHOUT RECIPES</span>
-              </h1>
-            </div>
-          </div>
-
           {/* Account */}
           <div className="space-y-2">
             <h2 className="text-sm font-semibold">{t(resolvedLocale, "account")}</h2>
