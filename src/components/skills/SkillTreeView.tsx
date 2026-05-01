@@ -389,8 +389,9 @@ export function SkillTreeView({
             </div>
             );
           })}
-          <div className="h-4" />
-          <Footer />
+          <div className="pt-6">
+            <Footer />
+          </div>
         </div>
       </div>
     </div>
