@@ -10,7 +10,7 @@ import { skillTranslations, groupTranslations } from "@/data/skill-trees/transla
 import { linearizeGroup, type LinearNode } from "@/lib/skill-tree-layout";
 import { manualLockKey } from "@/lib/skill-tree-keys";
 import { SkillNodeCard, type LockRequirement } from "./SkillNodeCard";
-import { SkillLockIndicator } from "./SkillLockIndicator";
+import { SkillLockIndicator, LockConditionPill } from "./SkillLockIndicator";
 import { Footer } from "../crafting/Footer";
 
 interface Props {
@@ -85,18 +85,8 @@ function isLockSatisfied(
     }
     case "total_skills":
       return activatedSkills.size >= lockType.count;
-    case "boss_kill": {
-      const bossOk = manualLocks.has(manualLockKey(lockType, lockId));
-      if (!bossOk) return false;
-      if (lockType.excludes) {
-        const opposingTag = lockType.excludes === "lunar" ? "lunar_favor" : "shadow_favor";
-        for (const id of activatedSkills) {
-          const n = nodeMap.get(id);
-          if (n?.tags?.includes(opposingTag)) return false;
-        }
-      }
-      return true;
-    }
+    case "boss_kill":
+      return manualLocks.has(manualLockKey(lockType, lockId));
     case "manual":
       return manualLocks.has(manualLockKey(lockType, lockId));
     case "no_opposing_faction": {
@@ -233,6 +223,28 @@ export function SkillTreeView({
               if (count === 1) consumedLocks.add(lockId);
             }
 
+            // Group shared locks that serve the same set of skill nodes
+            const lockDependents = new Map<string, string[]>();
+            for (const item of items) {
+              if (item.isLock || !item.node.locks) continue;
+              for (const lockId of item.node.locks) {
+                if (consumedLocks.has(lockId)) continue;
+                const deps = lockDependents.get(lockId) ?? [];
+                deps.push(item.node.id);
+                lockDependents.set(lockId, deps);
+              }
+            }
+            const lockGroupMap = new Map<string, string[]>();
+            const lockToGroupKey = new Map<string, string>();
+            for (const [lockId, deps] of lockDependents) {
+              const key = [...deps].sort().join(",");
+              const grp = lockGroupMap.get(key) ?? [];
+              grp.push(lockId);
+              lockGroupMap.set(key, grp);
+              lockToGroupKey.set(lockId, key);
+            }
+            const renderedLockGroups = new Set<string>();
+
             return (
             <div key={group.id} className="mt-3 first:mt-2">
               {/* Group card */}
@@ -257,22 +269,58 @@ export function SkillTreeView({
                 {items.map((item) => {
 
                   if (item.isLock && item.node.lockType) {
-                    // Skip locks that are moved inside a skill card
                     if (consumedLocks.has(item.node.id)) return null;
-                    const lockType = item.node.lockType;
-                    const satisfied = isLockSatisfied(lockType, item.node.id, activatedSkills, manualLocks, nodeMap);
-                    const isManual = lockType.type === "manual" || lockType.type === "boss_kill";
+                    const groupKey = lockToGroupKey.get(item.node.id);
+                    if (groupKey && renderedLockGroups.has(groupKey)) return null;
+                    if (groupKey) renderedLockGroups.add(groupKey);
 
+                    const groupLockIds = groupKey ? (lockGroupMap.get(groupKey) ?? [item.node.id]) : [item.node.id];
+
+                    if (groupLockIds.length === 1) {
+                      const lockType = item.node.lockType;
+                      const satisfied = isLockSatisfied(lockType, item.node.id, activatedSkills, manualLocks, nodeMap);
+                      const isManual = lockType.type === "manual" || lockType.type === "boss_kill";
+                      return (
+                        <div key={item.node.id} className="flex items-center mt-2" style={{ minHeight: 44 }}>
+                          <div className="flex-1 min-w-0">
+                            <SkillLockIndicator
+                              lockId={item.node.id}
+                              lockType={lockType}
+                              isSatisfied={satisfied}
+                              locale={locale}
+                              onToggle={isManual ? () => onToggleManualLock(item.node.id, handleNoPoints) : undefined}
+                            />
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    // Grouped locks — render multiple pills in one row
                     return (
                       <div key={item.node.id} className="flex items-center mt-2" style={{ minHeight: 44 }}>
                         <div className="flex-1 min-w-0">
-                          <SkillLockIndicator
-                            lockId={item.node.id}
-                            lockType={lockType}
-                            isSatisfied={satisfied}
-                            locale={locale}
-                            onToggle={isManual ? () => onToggleManualLock(item.node.id, handleNoPoints) : undefined}
-                          />
+                          <div className="flex items-center gap-2 px-3 py-1.5">
+                            <div className="flex-1 h-px bg-border" />
+                            <div className="flex flex-wrap gap-1.5">
+                              {groupLockIds.map((lockId) => {
+                                const lockNode = nodeMap.get(lockId)!;
+                                const lockType = lockNode.lockType!;
+                                const satisfied = isLockSatisfied(lockType, lockId, activatedSkills, manualLocks, nodeMap);
+                                const isManual = lockType.type === "manual" || lockType.type === "boss_kill";
+                                return (
+                                  <LockConditionPill
+                                    key={lockId}
+                                    lockId={lockId}
+                                    lockType={lockType}
+                                    isSatisfied={satisfied}
+                                    locale={locale}
+                                    onToggle={isManual ? () => onToggleManualLock(lockId, handleNoPoints) : undefined}
+                                  />
+                                );
+                              })}
+                            </div>
+                            <div className="flex-1 h-px bg-border" />
+                          </div>
                         </div>
                       </div>
                     );

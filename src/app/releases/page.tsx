@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.19.2",
+    date: "2026-05-01",
+    dev: [
+      "feat(skill-tree/wx78): 게임 업데이트 반영 — wx78_scoutdrone_2(현장 조사 II) 삭제, wx78_extradronerange(Signal Booster) 신규 스킬 추가. scoutdrone_1의 connects 제거. 아이콘은 임시(scoutdrone_2 재사용), ko.po 번역 미반영 상태(한글모드 업데이트 대기)",
+      "refactor(skill-tree): boss_kill + excludes 복합 잠금을 boss_kill + no_opposing_faction 개별 노드로 분리 (willow, walter). LockCondition 타입에서 excludes 필드 제거",
+      "feat(skill-tree/ui): 같은 스킬 노드에 걸린 잠금 조건을 그룹화하여 한 줄에 표시 (LockConditionPill 컴포넌트). 단일 잠금은 기존 SkillLockIndicator 유지",
+      "fix(skill-tree): isLockSatisfied에서 boss_kill 타입의 excludes 체크 제거 — 별도 no_opposing_faction 노드가 담당",
+    ],
+    changes: {
+      ko: [
+        "WX-78 스킬트리 게임 업데이트 반영 — Signal Booster 신규 스킬 추가",
+        "스킬트리 잠금 조건 UI 개선 — 여러 잠금이 한 줄에 깔끔하게 표시",
+      ],
+      en: [
+        "WX-78 skill tree updated — new Signal Booster skill added",
+        "Skill tree lock UI improved — multiple lock conditions grouped in one row",
+      ],
+    },
+  },
+  {
     version: "0.19.1",
     date: "2026-04-30",
     dev: [

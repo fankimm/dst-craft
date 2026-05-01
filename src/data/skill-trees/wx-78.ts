@@ -157,13 +157,13 @@ export const wx78: CharacterSkillTree = {
       root: true,
       icon: "wx78_scoutdrone_1",
       tags: ["drones"],
-      connects: ["wx78_scoutdrone_2"],
     },
     {
-      id: "wx78_scoutdrone_2",
+      id: "wx78_extradronerange",
       group: "drones",
-      pos: [100, 7],
-      icon: "wx78_scoutdrone_2",
+      pos: [221, 105],
+      root: true,
+      icon: "wx78_extradronerange",
       tags: ["drones"],
     },
     {

@@ -40,7 +40,15 @@ export const walter: CharacterSkillTree = {
       pos: [-209.1, 132.5],
       root: true,
       tags: ["slingshotammo", "lock"],
-      lockType: { type: "boss_kill", boss: "fuelweaver", excludes: "lunar" },
+      lockType: { type: "boss_kill", boss: "fuelweaver" },
+    },
+    {
+      id: "walter_ammo_shadow_lock_b",
+      group: "slingshotammo",
+      pos: [-209.1, 132.5],
+      root: true,
+      tags: ["slingshotammo", "lock"],
+      lockType: { type: "no_opposing_faction", faction: "shadow" },
     },
     {
       id: "walter_ammo_lunar_lock",
@@ -48,7 +56,15 @@ export const walter: CharacterSkillTree = {
       pos: [-150.2, 132.5],
       root: true,
       tags: ["slingshotammo", "lock"],
-      lockType: { type: "boss_kill", boss: "celestialchampion", excludes: "shadow" },
+      lockType: { type: "boss_kill", boss: "celestialchampion" },
+    },
+    {
+      id: "walter_ammo_lunar_lock_b",
+      group: "slingshotammo",
+      pos: [-150.2, 132.5],
+      root: true,
+      tags: ["slingshotammo", "lock"],
+      lockType: { type: "no_opposing_faction", faction: "lunar" },
     },
     {
       id: "walter_ammo_shadow",
@@ -56,7 +72,7 @@ export const walter: CharacterSkillTree = {
       pos: [-209.1, 93.5],
       icon: "walter_ammo_shadow",
       tags: ["slingshotammo_crafting", "shadow", "shadow_favor", "slingshotammo"],
-      locks: ["walter_ammo_shadow_lock"],
+      locks: ["walter_ammo_shadow_lock", "walter_ammo_shadow_lock_b"],
     },
     {
       id: "walter_ammo_lunar",
@@ -64,7 +80,7 @@ export const walter: CharacterSkillTree = {
       pos: [-150.2, 93.5],
       icon: "walter_ammo_lunar",
       tags: ["slingshotammo_crafting", "lunar", "lunar_favor", "slingshotammo"],
-      locks: ["walter_ammo_lunar_lock"],
+      locks: ["walter_ammo_lunar_lock", "walter_ammo_lunar_lock_b"],
     },
     {
       id: "walter_ammo_lock",
@@ -256,7 +272,15 @@ export const walter: CharacterSkillTree = {
       pos: [176, 54.5],
       root: true,
       tags: ["woby", "lock"],
-      lockType: { type: "boss_kill", boss: "fuelweaver", excludes: "lunar" },
+      lockType: { type: "boss_kill", boss: "fuelweaver" },
+    },
+    {
+      id: "walter_woby_shadow_lock_b",
+      group: "woby",
+      pos: [176, 54.5],
+      root: true,
+      tags: ["woby", "lock"],
+      lockType: { type: "no_opposing_faction", faction: "shadow" },
     },
     {
       id: "walter_woby_shadow",
@@ -264,7 +288,7 @@ export const walter: CharacterSkillTree = {
       pos: [176, 13.5],
       icon: "walter_woby_shadow",
       tags: ["shadow", "shadow_favor", "woby"],
-      locks: ["walter_woby_lock", "walter_woby_shadow_lock"],
+      locks: ["walter_woby_lock", "walter_woby_shadow_lock", "walter_woby_shadow_lock_b"],
     },
     {
       id: "walter_woby_lunar_lock",
@@ -272,7 +296,15 @@ export const walter: CharacterSkillTree = {
       pos: [220.8, 54.5],
       root: true,
       tags: ["woby", "lock"],
-      lockType: { type: "boss_kill", boss: "celestialchampion", excludes: "shadow" },
+      lockType: { type: "boss_kill", boss: "celestialchampion" },
+    },
+    {
+      id: "walter_woby_lunar_lock_b",
+      group: "woby",
+      pos: [220.8, 54.5],
+      root: true,
+      tags: ["woby", "lock"],
+      lockType: { type: "no_opposing_faction", faction: "lunar" },
     },
     {
       id: "walter_woby_lunar",
@@ -280,7 +312,7 @@ export const walter: CharacterSkillTree = {
       pos: [220.8, 13.5],
       icon: "walter_woby_lunar",
       tags: ["lunar", "lunar_favor", "woby"],
-      locks: ["walter_woby_lock", "walter_woby_lunar_lock"],
+      locks: ["walter_woby_lock", "walter_woby_lunar_lock", "walter_woby_lunar_lock_b"],
     },
   ],
 };
