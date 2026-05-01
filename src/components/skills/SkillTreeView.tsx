@@ -181,32 +181,32 @@ export function SkillTreeView({
             <span className="opacity-60">· {locale === "ko" ? `습득 ${totalPoints}` : `learned ${totalPoints}`}</span>
           </div>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5 shrink-0">
           {onImport && (
             <button
               onClick={onImport}
-              className="shrink-0 flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground rounded-md hover:bg-surface transition-colors touch-manipulation"
+              title={t(locale, "skills_import" as TranslationKey)}
+              className="size-8 flex items-center justify-center text-muted-foreground hover:text-foreground rounded-md hover:bg-surface transition-colors touch-manipulation"
             >
-              <ClipboardPaste className="size-3.5" />
-              {t(locale, "skills_import" as TranslationKey)}
+              <ClipboardPaste className="size-4" />
             </button>
           )}
           {totalPoints > 0 && onShare && (
             <button
               onClick={onShare}
-              className="shrink-0 flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground rounded-md hover:bg-surface transition-colors touch-manipulation"
+              title={t(locale, "skills_share" as TranslationKey)}
+              className="size-8 flex items-center justify-center text-muted-foreground hover:text-foreground rounded-md hover:bg-surface transition-colors touch-manipulation"
             >
-              <Share2 className="size-3.5" />
-              {t(locale, "skills_share" as TranslationKey)}
+              <Share2 className="size-4" />
             </button>
           )}
           {totalPoints > 0 && (
             <button
               onClick={onReset}
-              className="shrink-0 flex items-center gap-1 px-2 py-1 text-xs text-muted-foreground hover:text-foreground rounded-md hover:bg-surface transition-colors touch-manipulation"
+              title={t(locale, "skills_reset" as TranslationKey)}
+              className="size-8 flex items-center justify-center text-muted-foreground hover:text-foreground rounded-md hover:bg-surface transition-colors touch-manipulation"
             >
-              <RotateCcw className="size-3.5" />
-              {t(locale, "skills_reset" as TranslationKey)}
+              <RotateCcw className="size-4" />
             </button>
           )}
         </div>
