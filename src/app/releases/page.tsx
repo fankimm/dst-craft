@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.19.4",
+    date: "2026-05-01",
+    dev: [
+      "fix(skill-tree): 공유 링크(?b=...)로 진입 시 localStorage 데이터가 우선 로드되어 공유된 빌드가 무시되는 버그 수정 — useSkillTree에 initialSkills 파라미터 추가, URL 빌드가 localStorage보다 우선 적용되도록 경쟁 상태 제거",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 공유 링크 버그 수정: 공유 링크로 접속 시 상대방의 빌드 대신 내 로컬 데이터가 표시되던 문제 해결",
+      ],
+      en: [
+        "Skill tree share link fix: shared builds now display correctly instead of showing the viewer's local data",
+      ],
+    },
+  },
+  {
     version: "0.19.3",
     date: "2026-05-01",
     dev: [

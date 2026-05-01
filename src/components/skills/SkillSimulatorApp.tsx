@@ -117,6 +117,17 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   }, [token]);
 
   const tree = selectedChar ? skillTrees[selectedChar] ?? null : null;
+
+  // Decode URL-shared build when tree is available (one-time, consumed via ref)
+  const urlBuildRef = useRef<string | null>(null);
+  const urlBuildConsumedRef = useRef(false);
+  const initialSkills = useMemo(() => {
+    if (!tree || !urlBuildRef.current || urlBuildConsumedRef.current) return null;
+    urlBuildConsumedRef.current = true;
+    const decoded = decodeBuild(tree, urlBuildRef.current);
+    return decoded && decoded.size > 0 ? decoded : null;
+  }, [tree]);
+
   const {
     activatedSkills,
     totalPoints,
@@ -128,7 +139,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     toggleSkill,
     resetAll,
     loadBuild,
-  } = useSkillTree(tree, manualLocks, refreshKey);
+  } = useSkillTree(tree, manualLocks, refreshKey, initialSkills);
 
   // --- Debounced save to server on skill/lock change ---
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -144,31 +155,27 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   const slideClass = useSlideAnimation(selectedChar, (v) => v === null);
   const { panelItem: panelNode, panelOpen } = useDetailPanel(selectedNode);
 
-  const pendingBuildRef = useRef<string | null>(null);
-
   // Sync from URL on mount
   useEffect(() => {
     const { char, build } = readSkillUrlState();
     if (char && CHARACTERS_WITH_SKILLS.includes(char)) {
       setSelectedChar(char);
-      if (build) pendingBuildRef.current = build;
+      if (build) urlBuildRef.current = build;
     }
   }, []);
 
-  // Apply shared build when tree is loaded
+  // Show toast when shared build is applied
+  const toastShownRef = useRef(false);
   useEffect(() => {
-    if (!pendingBuildRef.current || !tree) return;
-    const decoded = decodeBuild(tree, pendingBuildRef.current);
-    pendingBuildRef.current = null;
-    if (decoded && decoded.size > 0) {
-      loadBuild(decoded);
+    if (initialSkills && initialSkills.size > 0 && !toastShownRef.current) {
+      toastShownRef.current = true;
       window.dispatchEvent(
         new CustomEvent("dst-toast", {
           detail: t(resolvedLocale, "skills_build_loaded" as TranslationKey),
         }),
       );
     }
-  }, [tree, loadBuild, resolvedLocale]);
+  }, [initialSkills, resolvedLocale]);
 
   // Re-tap active tab → go home
   useEffect(() => {

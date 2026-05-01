@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import type { CharacterSkillTree, SkillNode } from "@/data/skill-trees/types";
 import { manualLockKey } from "@/lib/skill-tree-keys";
 
@@ -107,8 +107,14 @@ function isLockNode(node: SkillNode): boolean {
   return !node.icon && (!!node.lockType || !!node.tags?.includes("lock"));
 }
 
-export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<string>, refreshKey?: number): UseSkillTreeReturn {
+export function useSkillTree(
+  tree: CharacterSkillTree | null,
+  manualLocks?: Set<string>,
+  refreshKey?: number,
+  initialSkills?: Set<string> | null,
+): UseSkillTreeReturn {
   const [activatedSkills, setActivatedSkills] = useState<Set<string>>(new Set());
+  const initialAppliedRef = useRef(false);
 
   const nodeMap = useMemo(() => tree ? buildNodeMap(tree) : new Map<string, SkillNode>(), [tree]);
   const parentMap = useMemo(() => tree ? buildParentMap(tree) : new Map<string, string[]>(), [tree]);
@@ -120,15 +126,23 @@ export function useSkillTree(tree: CharacterSkillTree | null, manualLocks?: Set<
     return tree.nodes.filter((n) => !isLockNode(n) && !n.tags?.includes("infographic")).length;
   }, [tree]);
 
-  // Load from localStorage when tree changes
+  // Load from initialSkills (URL share) or localStorage when tree changes
   useEffect(() => {
-    if (!tree) { setActivatedSkills(new Set()); return; }
+    if (!tree) { setActivatedSkills(new Set()); initialAppliedRef.current = false; return; }
+
+    // URL-shared build takes priority over localStorage (one-time)
+    if (initialSkills && initialSkills.size > 0 && !initialAppliedRef.current) {
+      initialAppliedRef.current = true;
+      const valid = new Set([...initialSkills].filter(id => nodeMap.has(id)));
+      setActivatedSkills(valid);
+      return;
+    }
+
     const key = `dst:skills:${tree.characterId}`;
     try {
       const saved = localStorage.getItem(key);
       if (saved) {
         const ids = JSON.parse(saved) as string[];
-        // Validate: only keep IDs that still exist in the tree
         const valid = ids.filter((id) => nodeMap.has(id));
         setActivatedSkills(new Set(valid));
         return;
