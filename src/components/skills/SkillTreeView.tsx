@@ -389,7 +389,7 @@ export function SkillTreeView({
             </div>
             );
           })}
-          <div className="mt-4" />
+          <div className="h-4" />
           <Footer />
         </div>
       </div>
