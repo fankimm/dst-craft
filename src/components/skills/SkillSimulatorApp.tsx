@@ -240,6 +240,38 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     );
   }, [tree, activatedSkills, resolvedLocale]);
 
+  const handleImport = useCallback(async () => {
+    const toast = (key: string) =>
+      window.dispatchEvent(new CustomEvent("dst-toast", { detail: t(resolvedLocale, key as TranslationKey) }));
+    try {
+      const text = await navigator.clipboard.readText();
+      const url = new URL(text);
+      const build = url.searchParams.get("b");
+      const char = url.searchParams.get("char");
+      if (!build || !char || !CHARACTERS_WITH_SKILLS.includes(char)) {
+        toast("skills_import_invalid");
+        return;
+      }
+      const targetTree = skillTrees[char] ?? null;
+      if (!targetTree) { toast("skills_import_invalid"); return; }
+      const decoded = decodeBuild(targetTree, build);
+      if (!decoded || decoded.size === 0) {
+        toast("skills_import_invalid");
+        return;
+      }
+      if (char !== selectedChar) {
+        setSelectedChar(char);
+        urlBuildRef.current = build;
+        urlBuildConsumedRef.current = false;
+      } else {
+        loadBuild(decoded);
+      }
+      toast("skills_build_loaded");
+    } catch {
+      toast("skills_import_failed");
+    }
+  }, [selectedChar, resolvedLocale, loadBuild]);
+
   const handleNodeTap = useCallback((node: SkillNode) => {
     // Only open detail for non-lock nodes
     if (node.icon) {
@@ -408,6 +440,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
             onReset={() => { resetAll(); setManualLocks(new Set()); }}
             onViewItem={onViewCraftingItem}
             onShare={handleShare}
+            onImport={handleImport}
           />
         ) : (
           <div className="h-full overflow-y-auto overscroll-contain" data-scroll-container="">

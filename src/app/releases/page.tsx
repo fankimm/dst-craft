@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.19.5",
+    date: "2026-05-01",
+    dev: [
+      "feat(skill-tree): '불러오기' 버튼 추가 — 클립보드에서 공유 링크를 읽어 빌드 적용. 다른 캐릭터 빌드면 자동 전환",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 '불러오기' 버튼 추가: 복사한 공유 링크를 클립보드에서 바로 불러올 수 있습니다",
+      ],
+      en: [
+        "Skill tree 'Import' button: paste a shared build link from clipboard to load it instantly",
+      ],
+    },
+  },
+  {
     version: "0.19.4",
     date: "2026-05-01",
     dev: [

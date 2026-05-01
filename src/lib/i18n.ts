@@ -202,6 +202,9 @@ const translations = {
     skills_share: "공유",
     skills_share_copied: "빌드 링크가 복사되었습니다",
     skills_build_loaded: "공유된 빌드를 불러왔습니다",
+    skills_import: "불러오기",
+    skills_import_invalid: "유효한 빌드 링크가 아닙니다",
+    skills_import_failed: "클립보드를 읽을 수 없습니다",
   },
   en: {
     craftingGuide: "Crafting Guide",
@@ -392,6 +395,9 @@ const translations = {
     skills_share: "Share",
     skills_share_copied: "Build link copied",
     skills_build_loaded: "Shared build loaded",
+    skills_import: "Import",
+    skills_import_invalid: "Not a valid build link",
+    skills_import_failed: "Cannot read clipboard",
   },
 } as const;
 
