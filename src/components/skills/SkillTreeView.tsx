@@ -11,7 +11,6 @@ import { linearizeGroup, type LinearNode } from "@/lib/skill-tree-layout";
 import { manualLockKey } from "@/lib/skill-tree-keys";
 import { SkillNodeCard, type LockRequirement } from "./SkillNodeCard";
 import { SkillLockIndicator, LockConditionPill } from "./SkillLockIndicator";
-import { Footer } from "../crafting/Footer";
 
 interface Props {
   tree: CharacterSkillTree;
@@ -389,7 +388,6 @@ export function SkillTreeView({
             </div>
             );
           })}
-          <Footer />
         </div>
       </div>
     </div>
