@@ -7381,6 +7381,20 @@ export const allItems: CraftingItem[] = [
     sortOrder: 243,
   },
   {
+    id: "wx78module_chess",
+    name: "Chessmaster Circuit",
+    description: "Only a pair of each chess piece? Rules are for fleshlings.",
+    image: "wx78module_chess.png",
+    category: ["character"],
+    station: "character",
+    materials: [
+      { materialId: "scandata", quantity: 3 },
+      { materialId: "gears", quantity: 1 },
+    ],
+    characterOnly: "wx-78",
+    sortOrder: 244,
+  },
+  {
     id: "wx78_backupbody",
     name: "Backup Chassis",
     description: "It never hurts to have spare hardware. Although data transfer is always a pain.",

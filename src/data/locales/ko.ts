@@ -528,6 +528,7 @@ export const ko: LocaleData = {
     "wx78module_screech": { name: "음파 발진 회로", desc: "" },
     "wx78module_shielding": { name: "방어 회로", desc: "스스로를 지키세요!" },
     "wx78module_spin": { name: "회전기 회로", desc: "" },
+    "wx78module_chess": { name: "Chessmaster Circuit", desc: "" },
     "wx78_backupbody": { name: "예비 동체", desc: "" },
     "wx78_drone_scout": { name: "회전익 탐사기", desc: "" },
     "wx78_drone_delivery_item": { name: "휴대용 저장 장치", desc: "배송비 전액 무료." },
