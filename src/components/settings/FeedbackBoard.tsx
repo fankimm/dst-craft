@@ -261,7 +261,7 @@ export function FeedbackBoard({ locale, newItem }: Props) {
                 <p className="text-xs text-muted-foreground">답변 (사용자에게 표시)</p>
                 <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} maxLength={500} rows={2}
                   placeholder="답변을 입력하세요..."
-                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring" />
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-base resize-none focus:outline-none focus:ring-1 focus:ring-ring" />
               </div>
 
               <div className="space-y-1.5">
