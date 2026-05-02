@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import type { CharacterSkillTree, SkillNode } from "@/data/skill-trees/types";
+import { decodeBuild } from "@/lib/skill-build-codec";
 import { manualLockKey } from "@/lib/skill-tree-keys";
 
 interface UseSkillTreeReturn {
@@ -111,10 +112,10 @@ export function useSkillTree(
   tree: CharacterSkillTree | null,
   manualLocks?: Set<string>,
   refreshKey?: number,
-  initialSkills?: Set<string> | null,
+  sharedBuild?: string | null,
 ): UseSkillTreeReturn {
   const [activatedSkills, setActivatedSkills] = useState<Set<string>>(new Set());
-  const initialAppliedRef = useRef(false);
+  const appliedBuildForChar = useRef<string | null>(null);
 
   const nodeMap = useMemo(() => tree ? buildNodeMap(tree) : new Map<string, SkillNode>(), [tree]);
   const parentMap = useMemo(() => tree ? buildParentMap(tree) : new Map<string, string[]>(), [tree]);
@@ -126,18 +127,25 @@ export function useSkillTree(
     return tree.nodes.filter((n) => !isLockNode(n) && !n.tags?.includes("infographic")).length;
   }, [tree]);
 
-  // Load from initialSkills (URL share) or localStorage when tree changes
+  // Load from shared build (URL/import) or localStorage when tree changes
   useEffect(() => {
-    if (!tree) { setActivatedSkills(new Set()); initialAppliedRef.current = false; return; }
+    if (!tree) { setActivatedSkills(new Set()); appliedBuildForChar.current = null; return; }
 
-    // URL-shared build takes priority over localStorage (one-time)
-    if (initialSkills && initialSkills.size > 0 && !initialAppliedRef.current) {
-      initialAppliedRef.current = true;
-      const valid = new Set([...initialSkills].filter(id => nodeMap.has(id)));
-      setActivatedSkills(valid);
-      return;
+    // Shared build takes priority over localStorage (one-time per character)
+    if (sharedBuild && appliedBuildForChar.current !== tree.characterId) {
+      const decoded = decodeBuild(tree, sharedBuild);
+      if (decoded && decoded.size > 0) {
+        appliedBuildForChar.current = tree.characterId;
+        setActivatedSkills(new Set([...decoded].filter(id => nodeMap.has(id))));
+        return;
+      }
     }
 
+    // Skip localStorage reload while shared build is still active for this character
+    // (prevents server sync refreshKey from overwriting)
+    if (sharedBuild && appliedBuildForChar.current === tree.characterId) return;
+
+    appliedBuildForChar.current = null;
     const key = `dst:skills:${tree.characterId}`;
     try {
       const saved = localStorage.getItem(key);

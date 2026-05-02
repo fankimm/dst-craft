@@ -118,15 +118,12 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
 
   const tree = selectedChar ? skillTrees[selectedChar] ?? null : null;
 
-  // Decode URL-shared build when tree is available (one-time, consumed via ref)
-  const urlBuildRef = useRef<string | null>(null);
-  const urlBuildConsumedRef = useRef(false);
-  const initialSkills = useMemo(() => {
-    if (!tree || !urlBuildRef.current || urlBuildConsumedRef.current) return null;
-    urlBuildConsumedRef.current = true;
-    const decoded = decodeBuild(tree, urlBuildRef.current);
-    return decoded && decoded.size > 0 ? decoded : null;
-  }, [tree]);
+  // Shared build string: read synchronously from URL (ref doesn't affect hydration)
+  const sharedBuildRef = useRef<string | null>(
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("b")
+      : null,
+  );
 
   const {
     activatedSkills,
@@ -139,7 +136,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     toggleSkill,
     resetAll,
     loadBuild,
-  } = useSkillTree(tree, manualLocks, refreshKey, initialSkills);
+  } = useSkillTree(tree, manualLocks, refreshKey, sharedBuildRef.current);
 
   // --- Debounced save to server on skill/lock change ---
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -155,19 +152,20 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   const slideClass = useSlideAnimation(selectedChar, (v) => v === null);
   const { panelItem: panelNode, panelOpen } = useDetailPanel(selectedNode);
 
-  // Sync from URL on mount
+  // Sync character from URL on mount
   useEffect(() => {
-    const { char, build } = readSkillUrlState();
+    const { char } = readSkillUrlState();
     if (char && CHARACTERS_WITH_SKILLS.includes(char)) {
       setSelectedChar(char);
-      if (build) urlBuildRef.current = build;
     }
   }, []);
 
   // Show toast when shared build is applied
   const toastShownRef = useRef(false);
   useEffect(() => {
-    if (initialSkills && initialSkills.size > 0 && !toastShownRef.current) {
+    if (!tree || !sharedBuildRef.current || toastShownRef.current) return;
+    const decoded = decodeBuild(tree, sharedBuildRef.current);
+    if (decoded && decoded.size > 0) {
       toastShownRef.current = true;
       window.dispatchEvent(
         new CustomEvent("dst-toast", {
@@ -175,7 +173,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
         }),
       );
     }
-  }, [initialSkills, resolvedLocale]);
+  }, [tree, resolvedLocale]);
 
   // Re-tap active tab → go home
   useEffect(() => {
@@ -204,8 +202,8 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   }, [tree, manualLocks, canUnlockManualLock]);
 
   const handleSelectChar = useCallback((charId: string) => {
+    sharedBuildRef.current = null;
     setSelectedChar(charId);
-    // manualLocks will be loaded from localStorage by the persistence useEffect
     const url = `${window.location.pathname}?tab=skills&char=${charId}`;
     window.history.pushState({ _appNav: true }, "", url);
   }, []);
@@ -260,9 +258,8 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
         return;
       }
       if (char !== selectedChar) {
+        sharedBuildRef.current = build;
         setSelectedChar(char);
-        urlBuildRef.current = build;
-        urlBuildConsumedRef.current = false;
       } else {
         loadBuild(decoded);
       }
