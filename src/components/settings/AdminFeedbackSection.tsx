@@ -80,7 +80,7 @@ export function AdminFeedbackSection() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = selectedId ? items.find((x) => x.id === selectedId) ?? null : null;
   const { panelItem, panelOpen } = useDetailPanel(selected);
-  const [copied, setCopied] = useState<"msg" | "ip" | null>(null);
+  const [copied, setCopied] = useState<"msg" | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -126,7 +126,7 @@ export function AdminFeedbackSection() {
     [token, confirmDeleteId],
   );
 
-  const handleCopy = useCallback(async (text: string, kind: "msg" | "ip") => {
+  const handleCopy = useCallback(async (text: string, kind: "msg") => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(kind);
@@ -242,20 +242,28 @@ export function AdminFeedbackSection() {
             {panelItem.ip && (
               <div className="flex items-center justify-between gap-2 text-xs">
                 <span className="text-muted-foreground">IP</span>
-                <button
-                  type="button"
-                  onClick={() => handleCopy(panelItem.ip, "ip")}
-                  className="flex items-center gap-1.5 font-mono text-foreground hover:text-muted-foreground transition-colors"
-                >
-                  {panelItem.ip}
-                  {copied === "ip" ? (
-                    <Check className="size-3.5 text-green-500" />
-                  ) : (
-                    <Copy className="size-3.5 text-muted-foreground" />
-                  )}
-                </button>
+                <span className="font-mono text-foreground">{panelItem.ip}</span>
               </div>
             )}
+
+            {/* Copy message */}
+            <button
+              type="button"
+              onClick={() => handleCopy(panelItem.message, "msg")}
+              className="w-full flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs text-muted-foreground hover:bg-surface-hover transition-colors"
+            >
+              {copied === "msg" ? (
+                <>
+                  <Check className="size-3.5 text-green-500" />
+                  복사됨
+                </>
+              ) : (
+                <>
+                  <Copy className="size-3.5" />
+                  내용 복사
+                </>
+              )}
+            </button>
 
             {/* Status change */}
             <div className="space-y-1.5">
@@ -282,25 +290,6 @@ export function AdminFeedbackSection() {
                 })}
               </div>
             </div>
-
-            {/* Copy message */}
-            <button
-              type="button"
-              onClick={() => handleCopy(panelItem.message, "msg")}
-              className="w-full flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs text-muted-foreground hover:bg-surface-hover transition-colors"
-            >
-              {copied === "msg" ? (
-                <>
-                  <Check className="size-3.5 text-green-500" />
-                  복사됨
-                </>
-              ) : (
-                <>
-                  <Copy className="size-3.5" />
-                  메시지 복사
-                </>
-              )}
-            </button>
 
             {/* Delete (2-step confirm) */}
             {panelItem.id && (
