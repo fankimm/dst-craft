@@ -12,7 +12,7 @@ import { characters } from "@/data/characters";
 import { skillTrees, CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 import { skillTranslations } from "@/data/skill-trees/translations";
 import type { SkillNode } from "@/data/skill-trees/types";
-import { manualLockKey } from "@/lib/skill-tree-keys";
+import { manualLockKey, manualLockKeyForNode } from "@/lib/skill-tree-keys";
 import { fetchAllSkills, saveCharacterSkills } from "@/lib/favorites-api";
 import type { UnlockRequirement } from "./SkillDetailSheet";
 import { cn } from "@/lib/utils";
@@ -160,13 +160,31 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     }
   }, []);
 
-  // Show toast when shared build is applied
+  // When shared build is applied: infer manual locks + show toast
   const toastShownRef = useRef(false);
   useEffect(() => {
     if (!tree || !sharedBuildRef.current || toastShownRef.current) return;
     const decoded = decodeBuild(tree, sharedBuildRef.current);
     if (decoded && decoded.size > 0) {
       toastShownRef.current = true;
+
+      // Infer required manual locks (boss kills etc.) from activated skills
+      const requiredLocks = new Set<string>();
+      for (const skillId of decoded) {
+        const node = tree.nodes.find(n => n.id === skillId);
+        if (!node?.locks) continue;
+        for (const lockId of node.locks) {
+          const lockNode = tree.nodes.find(n => n.id === lockId);
+          if (!lockNode) continue;
+          const key = manualLockKeyForNode(lockNode);
+          if (key) requiredLocks.add(key);
+        }
+      }
+      if (requiredLocks.size > 0) {
+        skipLockSaveRef.current = true;
+        setManualLocks(requiredLocks);
+      }
+
       window.dispatchEvent(
         new CustomEvent("dst-toast", {
           detail: t(resolvedLocale, "skills_build_loaded" as TranslationKey),
