@@ -910,46 +910,42 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
       });
     }
 
-    // GET /feedback/mine — fetch own feedback by IDs (public, no auth)
-    if (url.pathname === "/feedback/mine" && request.method === "GET") {
-      const idsParam = url.searchParams.get("ids") ?? "";
-      const ids = idsParam.split(",").filter(Boolean).slice(0, 20);
-      if (ids.length === 0) {
-        return new Response(JSON.stringify({ items: [] }), {
-          headers: { ...headers, "Content-Type": "application/json" },
-        });
-      }
-
-      const statusOps: any[][] = [["HMGET", "dst:feedback:status", ...ids]];
-      const replyOps: any[][] = [["HMGET", "dst:feedback:reply", ...ids]];
-      const listRes = await redisPipeline(env, [
-        ["LRANGE", "dst:feedback", "0", "-1"],
-        ...statusOps,
-        ...replyOps,
+    // GET /feedback/public — public feedback board (no auth, hides IP/country, filters hidden)
+    if (url.pathname === "/feedback/public" && request.method === "GET") {
+      const results = await redisPipeline(env, [
+        ["LRANGE", "dst:feedback", "0", "99"],
+        ["HGETALL", "dst:feedback:status"],
+        ["HGETALL", "dst:feedback:reply"],
+        ["SMEMBERS", "dst:feedback:hidden"],
       ]) as { result: any }[];
 
-      const raw = (listRes[0]?.result as string[]) ?? [];
-      const statuses = (listRes[1]?.result as (string | null)[]) ?? [];
-      const replies = (listRes[2]?.result as (string | null)[]) ?? [];
+      const raw = (results[0]?.result as string[]) ?? [];
+      const statusRaw = results[1]?.result as string[] | null;
+      const replyRaw = results[2]?.result as string[] | null;
+      const hiddenSet = new Set((results[3]?.result as string[]) ?? []);
 
-      const idSet = new Set(ids);
-      const entries = raw
+      const statusMap: Record<string, string> = {};
+      const replyMap: Record<string, string> = {};
+      if (Array.isArray(statusRaw)) {
+        for (let i = 0; i < statusRaw.length; i += 2) statusMap[statusRaw[i]] = statusRaw[i + 1];
+      }
+      if (Array.isArray(replyRaw)) {
+        for (let i = 0; i < replyRaw.length; i += 2) replyMap[replyRaw[i]] = replyRaw[i + 1];
+      }
+
+      const items = raw
         .map((r: string) => { try { return JSON.parse(r); } catch { return null; } })
-        .filter((e: any) => e && idSet.has(e.id));
-
-      const items = entries.map((e: any) => {
-        const idx = ids.indexOf(e.id);
-        return {
+        .filter((e: any) => e && !hiddenSet.has(e.id))
+        .map((e: any) => ({
           id: e.id,
           message: e.message,
           time: e.time,
-          status: (idx >= 0 ? statuses[idx] : null) ?? "new",
-          reply: (idx >= 0 ? replies[idx] : null) ?? null,
-        };
-      });
+          status: statusMap[e.id] ?? "new",
+          reply: replyMap[e.id] ?? null,
+        }));
 
       return new Response(JSON.stringify({ items }), {
-        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "no-store" },
+        headers: { ...headers, "Content-Type": "application/json", "Cache-Control": "public, max-age=60" },
       });
     }
 
@@ -969,10 +965,12 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         ["LRANGE", "dst:feedback", "0", `${limit - 1}`],
         ["HGETALL", "dst:feedback:status"],
         ["HGETALL", "dst:feedback:reply"],
+        ["SMEMBERS", "dst:feedback:hidden"],
       ]) as { result: any }[];
       const raw = (results[0]?.result as string[]) ?? [];
       const statusRaw = results[1]?.result as string[] | null;
       const replyRaw = results[2]?.result as string[] | null;
+      const hiddenSet = new Set((results[3]?.result as string[]) ?? []);
       const statusMap: Record<string, string> = {};
       const replyMap: Record<string, string> = {};
       if (Array.isArray(statusRaw)) {
@@ -990,6 +988,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
           const parsed = JSON.parse(r);
           parsed.status = statusMap[parsed.id] ?? "new";
           parsed.reply = replyMap[parsed.id] ?? null;
+          parsed.hidden = hiddenSet.has(parsed.id);
           return parsed;
         } catch { return null; }
       }).filter(Boolean);
@@ -1012,18 +1011,20 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
 
       const body = await request.json().catch(() => ({})) as Record<string, any>;
       const id = body.id as string;
-      const status = body.status as string;
+      const status = body.status as string | undefined;
       const reply = ((body.reply as string) ?? "").trim().slice(0, 500);
+      const hidden = body.hidden as boolean | undefined;
       const validStatuses = ["new", "done", "hold", "rejected"];
-      if (!id || !validStatuses.includes(status)) {
+      if (!id || (status !== undefined && !validStatuses.includes(status))) {
         return new Response(JSON.stringify({ error: "Invalid request" }), { status: 400, headers: { ...headers, "Content-Type": "application/json" } });
       }
 
-      const ops: any[][] = [["HSET", "dst:feedback:status", id, status]];
-      if (reply) {
-        ops.push(["HSET", "dst:feedback:reply", id, reply]);
-      }
-      await redisPipeline(env, ops);
+      const ops: any[][] = [];
+      if (status) ops.push(["HSET", "dst:feedback:status", id, status]);
+      if (reply) ops.push(["HSET", "dst:feedback:reply", id, reply]);
+      if (hidden === true) ops.push(["SADD", "dst:feedback:hidden", id]);
+      if (hidden === false) ops.push(["SREM", "dst:feedback:hidden", id]);
+      if (ops.length > 0) await redisPipeline(env, ops);
       return new Response(JSON.stringify({ ok: true }), {
         headers: { ...headers, "Content-Type": "application/json" },
       });
@@ -1052,7 +1053,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         try { return JSON.parse(r)?.id === id; } catch { return false; }
       });
       if (!target) {
-        await redisPipeline(env, [["HDEL", "dst:feedback:status", id], ["HDEL", "dst:feedback:reply", id]]);
+        await redisPipeline(env, [["HDEL", "dst:feedback:status", id], ["HDEL", "dst:feedback:reply", id], ["SREM", "dst:feedback:hidden", id]]);
         return new Response(JSON.stringify({ ok: true, removed: 0 }), {
           headers: { ...headers, "Content-Type": "application/json" },
         });
@@ -1062,6 +1063,7 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
         ["LREM", "dst:feedback", "1", target],
         ["HDEL", "dst:feedback:status", id],
         ["HDEL", "dst:feedback:reply", id],
+        ["SREM", "dst:feedback:hidden", id],
       ]) as { result: any }[];
       const removed = Number(ops[0]?.result ?? 0);
 

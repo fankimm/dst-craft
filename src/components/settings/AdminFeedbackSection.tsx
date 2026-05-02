@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { MessageSquare, Copy, Check, Trash2 } from "lucide-react";
+import { MessageSquare, Copy, Check, Trash2, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { DetailPanel } from "@/components/ui/DetailPanel";
@@ -9,6 +9,7 @@ import {
   fetchFeedback,
   updateFeedbackStatus,
   deleteFeedback,
+  toggleFeedbackHidden,
   type FeedbackItem,
   type FeedbackStatus,
 } from "@/lib/analytics";
@@ -130,6 +131,19 @@ export function AdminFeedbackSection() {
     [token, confirmDeleteId],
   );
 
+  const handleToggleHidden = useCallback(
+    async (id: string) => {
+      if (!token) return;
+      const item = items.find((fb) => fb.id === id);
+      if (!item) return;
+      const nextHidden = !item.hidden;
+      setItems((cur) => cur.map((fb) => (fb.id === id ? { ...fb, hidden: nextHidden } : fb)));
+      const ok = await toggleFeedbackHidden(token, id, nextHidden);
+      if (!ok) setItems((cur) => cur.map((fb) => (fb.id === id ? { ...fb, hidden: !nextHidden } : fb)));
+    },
+    [token, items],
+  );
+
   const handleCopy = useCallback(async (text: string, kind: "msg") => {
     try {
       await navigator.clipboard.writeText(text);
@@ -203,7 +217,8 @@ export function AdminFeedbackSection() {
                       className={cn("size-2 rounded-full shrink-0", STATUS_DOT[status])}
                       aria-label={STATUS_LABEL[status]}
                     />
-                    <span className="flex-1 min-w-0 text-sm truncate">{fb.message}</span>
+                    <span className={cn("flex-1 min-w-0 text-sm truncate", fb.hidden && "opacity-40")}>{fb.message}</span>
+                    {fb.hidden && <EyeOff className="size-3 text-muted-foreground shrink-0" />}
                     <span className="text-[11px] text-muted-foreground tabular-nums shrink-0">
                       {formatRelative(fb.time)}
                     </span>
@@ -251,23 +266,38 @@ export function AdminFeedbackSection() {
             )}
 
             {/* Copy message */}
-            <button
-              type="button"
-              onClick={() => handleCopy(panelItem.message, "msg")}
-              className="w-full flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs text-muted-foreground hover:bg-surface-hover transition-colors"
-            >
-              {copied === "msg" ? (
-                <>
-                  <Check className="size-3.5 text-green-500" />
-                  복사됨
-                </>
-              ) : (
-                <>
-                  <Copy className="size-3.5" />
-                  내용 복사
-                </>
-              )}
-            </button>
+            <div className="flex gap-1.5">
+              <button
+                type="button"
+                onClick={() => handleCopy(panelItem.message, "msg")}
+                className="flex-1 flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs text-muted-foreground hover:bg-surface-hover transition-colors"
+              >
+                {copied === "msg" ? (
+                  <>
+                    <Check className="size-3.5 text-green-500" />
+                    복사됨
+                  </>
+                ) : (
+                  <>
+                    <Copy className="size-3.5" />
+                    내용 복사
+                  </>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => panelItem.id && handleToggleHidden(panelItem.id)}
+                className={cn(
+                  "flex items-center justify-center gap-1.5 rounded-md border px-3 py-2 text-xs transition-colors",
+                  panelItem.hidden
+                    ? "border-yellow-500/30 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400"
+                    : "border-border text-muted-foreground hover:bg-surface-hover",
+                )}
+              >
+                {panelItem.hidden ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
+                {panelItem.hidden ? "숨김" : "공개"}
+              </button>
+            </div>
 
             {/* Admin reply */}
             <div className="space-y-1.5">

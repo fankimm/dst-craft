@@ -207,6 +207,7 @@ export interface FeedbackItem {
   ip: string;
   status: FeedbackStatus;
   reply?: string | null;
+  hidden?: boolean;
 }
 
 /** Fetch feedback list (admin only) */
@@ -239,8 +240,8 @@ export async function updateFeedbackStatus(token: string, id: string, status: Fe
   }
 }
 
-/** Fetch own feedback by IDs (public, no auth) */
-export interface MyFeedbackItem {
+/** Public feedback item (no IP/country) */
+export interface PublicFeedbackItem {
   id: string;
   message: string;
   time: string;
@@ -248,15 +249,31 @@ export interface MyFeedbackItem {
   reply: string | null;
 }
 
-export async function fetchMyFeedback(ids: string[]): Promise<MyFeedbackItem[]> {
-  if (!WORKER_URL || ids.length === 0) return [];
+/** Fetch public feedback board */
+export async function fetchPublicFeedback(): Promise<PublicFeedbackItem[]> {
+  if (!WORKER_URL) return [];
   try {
-    const res = await fetch(`${WORKER_URL}/feedback/mine?ids=${ids.join(",")}`);
+    const res = await fetch(`${WORKER_URL}/feedback/public`);
     if (!res.ok) return [];
-    const data = await res.json() as { items: MyFeedbackItem[] };
+    const data = await res.json() as { items: PublicFeedbackItem[] };
     return data.items ?? [];
   } catch {
     return [];
+  }
+}
+
+/** Toggle feedback hidden status (admin only) */
+export async function toggleFeedbackHidden(token: string, id: string, hidden: boolean): Promise<boolean> {
+  if (!WORKER_URL) return false;
+  try {
+    const res = await fetch(`${WORKER_URL}/feedback`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ id, hidden }),
+    });
+    return res.ok;
+  } catch {
+    return false;
   }
 }
 
