@@ -180,19 +180,20 @@ export async function fetchCombos(recipeId: string): Promise<{ ingredients: stri
   }
 }
 
-/** Submit anonymous feedback */
-export async function submitFeedback(message: string): Promise<boolean> {
-  if (!WORKER_URL) return false;
+/** Submit anonymous feedback — returns feedback ID on success, null on failure */
+export async function submitFeedback(message: string): Promise<string | null> {
+  if (!WORKER_URL) return null;
   try {
     const res = await fetch(`${WORKER_URL}/feedback`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message }),
     });
-    if (res.status === 429) return false;
-    return res.ok;
+    if (!res.ok) return null;
+    const data = await res.json() as { ok: boolean; id?: string };
+    return data.id ?? null;
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -205,6 +206,7 @@ export interface FeedbackItem {
   country: string;
   ip: string;
   status: FeedbackStatus;
+  reply?: string | null;
 }
 
 /** Fetch feedback list (admin only) */
@@ -222,18 +224,39 @@ export async function fetchFeedback(token: string): Promise<FeedbackItem[]> {
   }
 }
 
-/** Update feedback status (admin only) */
-export async function updateFeedbackStatus(token: string, id: string, status: FeedbackStatus): Promise<boolean> {
+/** Update feedback status + optional reply (admin only) */
+export async function updateFeedbackStatus(token: string, id: string, status: FeedbackStatus, reply?: string): Promise<boolean> {
   if (!WORKER_URL) return false;
   try {
     const res = await fetch(`${WORKER_URL}/feedback`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ id, status }),
+      body: JSON.stringify({ id, status, ...(reply ? { reply } : {}) }),
     });
     return res.ok;
   } catch {
     return false;
+  }
+}
+
+/** Fetch own feedback by IDs (public, no auth) */
+export interface MyFeedbackItem {
+  id: string;
+  message: string;
+  time: string;
+  status: FeedbackStatus;
+  reply: string | null;
+}
+
+export async function fetchMyFeedback(ids: string[]): Promise<MyFeedbackItem[]> {
+  if (!WORKER_URL || ids.length === 0) return [];
+  try {
+    const res = await fetch(`${WORKER_URL}/feedback/mine?ids=${ids.join(",")}`);
+    if (!res.ok) return [];
+    const data = await res.json() as { items: MyFeedbackItem[] };
+    return data.items ?? [];
+  } catch {
+    return [];
   }
 }
 

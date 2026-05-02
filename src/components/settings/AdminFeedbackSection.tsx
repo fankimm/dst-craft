@@ -81,6 +81,7 @@ export function AdminFeedbackSection() {
   const selected = selectedId ? items.find((x) => x.id === selectedId) ?? null : null;
   const { panelItem, panelOpen } = useDetailPanel(selected);
   const [copied, setCopied] = useState<"msg" | null>(null);
+  const [replyText, setReplyText] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -94,17 +95,20 @@ export function AdminFeedbackSection() {
 
   useEffect(() => {
     setConfirmDeleteId(null);
-  }, [selectedId]);
+    const sel = selectedId ? items.find((x) => x.id === selectedId) : null;
+    setReplyText(sel?.reply ?? "");
+  }, [selectedId, items]);
 
   const handleStatusChange = useCallback(
     async (id: string, next: FeedbackStatus) => {
       if (!token) return;
+      const reply = replyText.trim() || undefined;
       const prev = items;
-      setItems((cur) => cur.map((fb) => (fb.id === id ? { ...fb, status: next } : fb)));
-      const ok = await updateFeedbackStatus(token, id, next);
+      setItems((cur) => cur.map((fb) => (fb.id === id ? { ...fb, status: next, reply: reply ?? fb.reply } : fb)));
+      const ok = await updateFeedbackStatus(token, id, next, reply);
       if (!ok) setItems(prev);
     },
-    [token, items],
+    [token, items, replyText],
   );
 
   const handleDelete = useCallback(
@@ -265,9 +269,22 @@ export function AdminFeedbackSection() {
               )}
             </button>
 
+            {/* Admin reply */}
+            <div className="space-y-1.5">
+              <p className="text-xs text-muted-foreground">답변 (사용자에게 표시)</p>
+              <textarea
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                maxLength={500}
+                rows={2}
+                placeholder="답변을 입력하세요..."
+                className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring"
+              />
+            </div>
+
             {/* Status change */}
             <div className="space-y-1.5">
-              <p className="text-xs text-muted-foreground">상태 변경</p>
+              <p className="text-xs text-muted-foreground">상태 변경 (답변과 함께 저장)</p>
               <div className="grid grid-cols-4 gap-1.5">
                 {(Object.keys(STATUS_LABEL) as FeedbackStatus[]).map((s) => {
                   const active = (panelItem.status ?? "new") === s;

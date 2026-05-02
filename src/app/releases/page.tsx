@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.20.0",
+    date: "2026-05-02",
+    dev: [
+      "feat(feedback): 관리자 답변 기능 — PATCH /feedback에 reply 필드 추가, GET에 reply 포함, dst:feedback:reply Redis 해시 사용",
+      "feat(feedback): GET /feedback/mine 공개 엔드포인트 — localStorage에 저장된 피드백 ID로 자신의 피드백 상태/답변 조회",
+      "feat(feedback): POST /feedback에서 ID 반환 → 클라이언트가 localStorage에 저장",
+      "feat(settings): '내 피드백' 섹션 — 제출한 피드백의 상태(확인 중/반영됨/보류/미반영)와 개발자 답변 표시",
+      "fix(feedback): 복사 버튼을 IP 복사에서 내용 복사로 변경, 위치 이동",
+    ],
+    changes: {
+      ko: [
+        "피드백 답변 기능 추가: 보내신 피드백에 개발자 답변이 달리면 설정 페이지에서 확인할 수 있습니다",
+      ],
+      en: [
+        "Feedback reply feature: developer replies to your feedback are now visible in the settings page",
+      ],
+    },
+  },
+  {
     version: "0.19.5",
     date: "2026-05-01",
     dev: [

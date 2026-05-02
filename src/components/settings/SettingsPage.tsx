@@ -10,7 +10,7 @@ import { t, supportedLocales, localeLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { APP_VERSION } from "@/lib/version";
 import { Footer } from "../crafting/Footer";
-import { fetchPublicRating, submitRating, fetchTopCountries, submitFeedback } from "@/lib/analytics";
+import { fetchPublicRating, submitRating, fetchTopCountries, submitFeedback, fetchMyFeedback, type MyFeedbackItem } from "@/lib/analytics";
 import { Globe } from "lucide-react";
 import { AdminFeedbackSection } from "./AdminFeedbackSection";
 
@@ -132,6 +132,16 @@ export function SettingsPage() {
   // Feedback state
   const [feedbackMsg, setFeedbackMsg] = useState("");
   const [feedbackSending, setFeedbackSending] = useState(false);
+  const [myFeedback, setMyFeedback] = useState<MyFeedbackItem[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("dst:my-feedback") ?? "[]") as string[];
+      if (stored.length > 0) {
+        fetchMyFeedback(stored).then(setMyFeedback);
+      }
+    } catch { /* ignore */ }
+  }, []);
 
   const handleFeedback = useCallback(async () => {
     const msg = feedbackMsg.trim();
@@ -141,10 +151,17 @@ export function SettingsPage() {
       return;
     }
     setFeedbackSending(true);
-    const ok = await submitFeedback(msg);
+    const id = await submitFeedback(msg);
     setFeedbackSending(false);
-    if (ok) {
+    if (id) {
       setFeedbackMsg("");
+      // Store feedback ID in localStorage for later retrieval
+      try {
+        const stored = JSON.parse(localStorage.getItem("dst:my-feedback") ?? "[]") as string[];
+        stored.unshift(id);
+        localStorage.setItem("dst:my-feedback", JSON.stringify(stored.slice(0, 20)));
+      } catch { /* ignore */ }
+      setMyFeedback((prev) => [{ id, message: msg, time: new Date().toISOString(), status: "new", reply: null }, ...prev]);
       setToast(t(resolvedLocale, "feedback_thanks"));
     } else {
       setToast(t(resolvedLocale, "feedback_too_many"));
@@ -462,6 +479,44 @@ export function SettingsPage() {
               </div>
             </div>
           </div>
+
+          {/* My feedback history */}
+          {myFeedback.length > 0 && (
+            <div className="space-y-2">
+              <h3 className="text-xs font-semibold text-muted-foreground">
+                {resolvedLocale === "ko" ? "내 피드백" : "My Feedback"}
+              </h3>
+              <div className="space-y-2">
+                {myFeedback.map((fb) => (
+                  <div key={fb.id} className="rounded-lg border border-border p-3 space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-sm text-foreground whitespace-pre-wrap break-words flex-1">{fb.message}</p>
+                      <span className={cn(
+                        "shrink-0 px-1.5 py-0.5 rounded text-[10px] font-medium",
+                        fb.status === "new" && "bg-blue-500/15 text-blue-600 dark:text-blue-400",
+                        fb.status === "done" && "bg-green-500/15 text-green-600 dark:text-green-400",
+                        fb.status === "hold" && "bg-yellow-500/15 text-yellow-600 dark:text-yellow-400",
+                        fb.status === "rejected" && "bg-red-500/15 text-red-600 dark:text-red-400",
+                      )}>
+                        {fb.status === "new" ? (resolvedLocale === "ko" ? "확인 중" : "Pending")
+                          : fb.status === "done" ? (resolvedLocale === "ko" ? "반영됨" : "Done")
+                          : fb.status === "hold" ? (resolvedLocale === "ko" ? "보류" : "Hold")
+                          : (resolvedLocale === "ko" ? "미반영" : "Rejected")}
+                      </span>
+                    </div>
+                    {fb.reply && (
+                      <div className="rounded-md bg-surface border border-border/50 px-3 py-2 text-sm">
+                        <span className="text-[10px] font-semibold text-muted-foreground block mb-0.5">
+                          {resolvedLocale === "ko" ? "개발자 답변" : "Developer Reply"}
+                        </span>
+                        <p className="text-foreground whitespace-pre-wrap">{fb.reply}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Admin: 사용자 피드백 관리 */}
           <AdminFeedbackSection />
