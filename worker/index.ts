@@ -146,15 +146,15 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
 
     // POST /track — record a visit
     if (url.pathname === "/track" && request.method === "POST") {
-      const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
-      // 30/min — generous enough to avoid losing visitors behind shared NAT
-      // (offices, schools, mobile carriers) while still blocking real abuse.
+      // Support Vercel proxy: x-forwarded-for → real client IP, x-vercel-ip-country → country
+      const xff = request.headers.get("x-forwarded-for");
+      const ip = (xff ? xff.split(",")[0].trim() : null) || request.headers.get("CF-Connecting-IP") || "unknown";
       if (await isRateLimited(env, `dst:rl:track:${ip}`, 30, 60)) {
         return new Response(JSON.stringify({ error: "Too many requests" }), {
           status: 429, headers: { ...headers, "Content-Type": "application/json" },
         });
       }
-      const countryCode = request.headers.get("CF-IPCountry") ?? "";
+      const countryCode = request.headers.get("x-vercel-ip-country") || request.headers.get("CF-IPCountry") || "";
       const city = (request as any).cf?.city ?? "";
       const region = (request as any).cf?.region ?? "";
 
@@ -230,7 +230,8 @@ async function handleRequest(request: Request, env: Env, headers: HeadersInit): 
 
     // POST /event — track generic events (search, pwa_install, duration)
     if (url.pathname === "/event" && request.method === "POST") {
-      const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
+      const xffE = request.headers.get("x-forwarded-for");
+      const ip = (xffE ? xffE.split(",")[0].trim() : null) || request.headers.get("CF-Connecting-IP") || "unknown";
       if (await isRateLimited(env, `dst:rl:event:${ip}`, 30, 60)) {
         return new Response(JSON.stringify({ error: "Too many requests" }), {
           status: 429, headers: { ...headers, "Content-Type": "application/json" },

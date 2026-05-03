@@ -1,5 +1,12 @@
 const WORKER_URL = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
 
+function analyticsUrl(path: string): string | null {
+  if (typeof window !== "undefined" && window.location.hostname.endsWith("dstcraft.com")) {
+    return `/api${path}`;
+  }
+  return WORKER_URL ? `${WORKER_URL}${path}` : null;
+}
+
 export interface AnalyticsData {
   totalPageViews: number;
   totalUniqueVisitors: number;
@@ -32,17 +39,15 @@ export interface AnalyticsData {
 
 /** Track a page visit — call once on app load */
 export async function trackVisit(skipTracking?: boolean) {
-  if (!WORKER_URL || skipTracking) return;
+  const url = analyticsUrl("/track");
+  if (!url || skipTracking) return;
 
-  // Prevent duplicate tracking in the same session
   if (sessionStorage.getItem("dst:tracked")) return;
   sessionStorage.setItem("dst:tracked", "1");
 
-  // Return visitor detection
   const hasVisited = !!localStorage.getItem("dst:visitor");
   localStorage.setItem("dst:visitor", "1");
 
-  // Parse referrer — only track external domains, skip direct/internal
   let referrer = "";
   if (document.referrer) {
     try {
@@ -50,13 +55,11 @@ export async function trackVisit(skipTracking?: boolean) {
       if (!refUrl.hostname.endsWith("dstcraft.com")) {
         referrer = refUrl.hostname.replace(/^www\./, "");
       }
-    } catch {
-      // malformed referrer — treat as direct (no referrer sent)
-    }
+    } catch { /* malformed referrer */ }
   }
 
   try {
-    await fetch(`${WORKER_URL}/track`, {
+    await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -66,13 +69,13 @@ export async function trackVisit(skipTracking?: boolean) {
       }),
     });
   } catch {
-    // Silently fail
   }
 }
 
 /** Track session duration — send once when user leaves the page */
 export function initDurationTracking(skipTracking?: boolean) {
-  if (!WORKER_URL || skipTracking) return;
+  const eventUrl = analyticsUrl("/event");
+  if (!eventUrl || skipTracking) return;
 
   const start = Date.now();
   let sent = false;
@@ -80,12 +83,9 @@ export function initDurationTracking(skipTracking?: boolean) {
   function sendDuration() {
     if (sent) return;
     const seconds = Math.round((Date.now() - start) / 1000);
-    if (seconds < 2) return; // Ignore very short visits
+    if (seconds < 2) return;
     sent = true;
-    navigator.sendBeacon(
-      `${WORKER_URL}/event`,
-      JSON.stringify({ type: "duration", value: seconds }),
-    );
+    navigator.sendBeacon(eventUrl!, JSON.stringify({ type: "duration", value: seconds }));
   }
 
   // visibilitychange is more reliable than beforeunload on mobile Safari
@@ -151,11 +151,9 @@ export async function fetchSupporters(): Promise<{ name: string }[]> {
 
 /** Track an item click for popularity ranking */
 export function trackItemClick(itemId: string) {
-  if (!WORKER_URL) return;
-  navigator.sendBeacon(
-    `${WORKER_URL}/event`,
-    JSON.stringify({ type: "item_click", itemId }),
-  );
+  const url = analyticsUrl("/event");
+  if (!url) return;
+  navigator.sendBeacon(url, JSON.stringify({ type: "item_click", itemId }));
 }
 
 /** Track a simulation combo (recipeId + 4 ingredients) */
@@ -293,12 +291,9 @@ export async function deleteFeedback(token: string, id: string): Promise<boolean
 
 /** Track a generic event */
 export function trackEvent(type: "search" | "pwa_install" | "share" | "github_star_click", skipTracking?: boolean) {
-  if (!WORKER_URL || skipTracking) return;
-  // Use sendBeacon to avoid blocking
-  navigator.sendBeacon(
-    `${WORKER_URL}/event`,
-    JSON.stringify({ type }),
-  );
+  const url = analyticsUrl("/event");
+  if (!url || skipTracking) return;
+  navigator.sendBeacon(url, JSON.stringify({ type }));
 }
 
 /** Fetch analytics data for the stats page (public; admin token enables extra details) */
