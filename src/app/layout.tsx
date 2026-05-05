@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SettingsProvider } from "@/hooks/use-settings";
 import { AuthProvider } from "@/hooks/use-auth";
 import { FavoritesProvider } from "@/hooks/use-favorites";
-
+import { Analytics } from "@vercel/analytics/react";
 import { APP_VERSION } from "@/lib/version";
 import "./globals.css";
 
@@ -193,6 +193,42 @@ ${process.env.NODE_ENV === "production" ? `if ('serviceWorker' in navigator) {
 }`}
 `;
 
+const ANALYTICS_WORKER = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
+const trackingScript = `
+(function(){
+  try {
+    var h = location.hostname;
+    var url = h.indexOf('dstcraft.com') !== -1 ? '/api/track' : ${JSON.stringify(ANALYTICS_WORKER ? ANALYTICS_WORKER + "/track" : "")};
+    var eUrl = h.indexOf('dstcraft.com') !== -1 ? '/api/event' : ${JSON.stringify(ANALYTICS_WORKER ? ANALYTICS_WORKER + "/event" : "")};
+    if (!url) return;
+    if (sessionStorage.getItem('dst:tracked')) return;
+    sessionStorage.setItem('dst:tracked', '1');
+    var isReturn = !!localStorage.getItem('dst:visitor');
+    localStorage.setItem('dst:visitor', '1');
+    var ref = '';
+    if (document.referrer) {
+      try {
+        var r = new URL(document.referrer);
+        if (r.hostname.indexOf('dstcraft.com') === -1) ref = r.hostname.replace(/^www\\./, '');
+      } catch(e) {}
+    }
+    var body = { ua: navigator.userAgent.slice(0, 120), isReturn: isReturn };
+    if (ref) body.referrer = ref;
+    fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).catch(function(){});
+    var start = Date.now();
+    var sent = false;
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'hidden' && !sent) {
+        var sec = Math.round((Date.now() - start) / 1000);
+        if (sec < 2) return;
+        sent = true;
+        navigator.sendBeacon(eUrl, JSON.stringify({ type: 'duration', value: sec }));
+      }
+    });
+  } catch(e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -202,6 +238,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: trackingScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -287,6 +324,7 @@ export default function RootLayout({
           <AuthProvider>
             <FavoritesProvider>
               <TooltipProvider>{children}</TooltipProvider>
+              <Analytics />
             </FavoritesProvider>
           </AuthProvider>
         </SettingsProvider>

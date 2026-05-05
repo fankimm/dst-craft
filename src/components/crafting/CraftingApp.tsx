@@ -19,7 +19,7 @@ import { ItemGrid } from "./ItemGrid";
 import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
 import { Footer } from "./Footer";
-import { trackVisit, initDurationTracking, trackEvent, trackItemClick } from "@/lib/analytics";
+import { trackEvent, trackItemClick } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { useRecent } from "@/hooks/use-recent";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
@@ -110,11 +110,7 @@ export function CraftingApp({
     if (characterId && characterId !== "all") trackItemClick(`char:${characterId}`);
   }, [setCharacter]);
 
-  // Track visit + duration + PWA install on first load
   useEffect(() => {
-    trackVisit(isAdmin);
-    initDurationTracking(isAdmin);
-
     const handlePWA = () => trackEvent("pwa_install", isAdmin);
     window.addEventListener("appinstalled", handlePWA);
     return () => window.removeEventListener("appinstalled", handlePWA);
