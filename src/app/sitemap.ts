@@ -10,18 +10,24 @@ const SITE_URL = "https://www.dstcraft.com";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
+  const alt = (p: string) => ({
+    languages: { en: `${SITE_URL}${p}`, ko: `${SITE_URL}/ko${p}` },
+  });
+
   const homeRoutes: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 1.0,
+      alternates: alt(""),
     },
     {
       url: `${SITE_URL}/ko`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
+      alternates: alt(""),
     },
     {
       url: `${SITE_URL}/releases`,
@@ -38,12 +44,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.9,
+      alternates: alt(p),
     },
     {
       url: `${SITE_URL}/ko${p}`,
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.8,
+      alternates: alt(p),
     },
   ]);
 
@@ -56,20 +64,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const dynamicRoutes: MetadataRoute.Sitemap = dynamicEntries.flatMap(({ path, slugs }) =>
-    slugs.flatMap((slug) => [
-      {
-        url: `${SITE_URL}${path}/${slug}`,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.8,
-      },
-      {
-        url: `${SITE_URL}/ko${path}/${slug}`,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      },
-    ]),
+    slugs.flatMap((slug) => {
+      const p = `${path}/${slug}`;
+      return [
+        {
+          url: `${SITE_URL}${p}`,
+          lastModified: now,
+          changeFrequency: "monthly" as const,
+          priority: 0.8,
+          alternates: alt(p),
+        },
+        {
+          url: `${SITE_URL}/ko${p}`,
+          lastModified: now,
+          changeFrequency: "monthly" as const,
+          priority: 0.7,
+          alternates: alt(p),
+        },
+      ];
+    }),
   );
 
   return [...homeRoutes, ...staticRoutes, ...dynamicRoutes];

@@ -2,5 +2,15 @@
   "rewrites": [
     { "source": "/api/track", "destination": "https://dst-analytics.fankimm.workers.dev/track" },
     { "source": "/api/event", "destination": "https://dst-analytics.fankimm.workers.dev/event" }
+  ],
+  "headers": [
+    {
+      "source": "/ko",
+      "headers": [{ "key": "Content-Language", "value": "ko" }]
+    },
+    {
+      "source": "/ko/(.*)",
+      "headers": [{ "key": "Content-Language", "value": "ko" }]
+    }
   ]
 }
