@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.20.1",
+    date: "2026-05-06",
+    dev: [
+      "fix(seo/ItemPageContent): /item/[slug] 페이지의 '제작 가이드 열기' CTA 링크 수정 — 기존 href=`/?item=${id}`가 cat 파라미터 누락으로 useCraftingState에서 showCategoryGrid=true로 떨어져 홈(카테고리 그리드) 위에 detail panel이 뜨던 형태였음. 이제 `?cat=${item.category[0]||'tools'}&item=${id}` (캐릭터 전용은 char까지 포함)로 보내 해당 카테고리 아이템 리스트 뷰 + 상세 패널이 함께 열리도록 수정. 한국어 라우트(/ko)에도 routePrefix 적용",
+      "docs(README): dstcraft.com 라이브 링크 추가",
+    ],
+    changes: {
+      ko: [
+        "검색 결과로 들어온 아이템 SEO 페이지(예: /item/wx78module-nightvision)에서 '제작 가이드 열기' 버튼이 홈으로만 이동하던 문제 수정 — 이제 해당 아이템이 속한 카테고리 화면에서 상세 패널이 함께 열림",
+      ],
+      en: [
+        "Fixed the 'Open Crafting Guide' button on item SEO pages (e.g. /item/wx78module-nightvision) landing on the home grid — it now opens the item's detail panel inside the matching category view",
+      ],
+    },
+  },
+  {
     version: "0.20.0",
     date: "2026-05-02",
     dev: [

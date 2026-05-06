@@ -2,6 +2,8 @@
 
 Don't Starve Together 크래프팅 레시피 가이드 웹앱.
 
+🔗 **Live**: [dstcraft.com](https://www.dstcraft.com)
+
 ## Features
 
 - **카테고리 드릴다운 네비게이션**: 카테고리 그리드 → 아이템 목록 → 아이템 상세. URL 쿼리 파라미터 기반으로 브라우저 뒤로가기/앞으로가기 지원 (Safari 스와이프 제스처 포함)

@@ -125,6 +125,12 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
 
   const routePrefix = lang === "ko" ? "/ko" : "";
 
+  const appLinkCategory = item.category[0] || "tools";
+  const appLinkParams = item.characterOnly
+    ? `cat=${appLinkCategory}&char=${item.characterOnly}&item=${item.id}`
+    : `cat=${appLinkCategory}&item=${item.id}`;
+  const appLink = `${routePrefix}/?${appLinkParams}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -194,7 +200,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <Link
-            href={`/?item=${item.id}`}
+            href={`${routePrefix}/`}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             {L.backHome[lang]}
@@ -395,7 +401,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
           <p className="text-sm font-medium text-foreground">{L.findMoreCrafting[lang]}</p>
           <p className="text-xs text-muted-foreground">{L.ctaSearchAll[lang]}</p>
           <Link
-            href={`/?item=${item.id}`}
+            href={appLink}
             className="inline-block mt-1 rounded-lg bg-foreground text-background text-sm font-semibold px-5 py-2 hover:opacity-80 transition-opacity"
           >
             {L.openCraftingGuide[lang]}
