@@ -13,15 +13,28 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
+    (async () => {
+      const keys = await caches.keys();
+      // 옛 dst-app-* 캐시가 있으면 update, 없으면 fresh install
+      const oldAppCaches = keys.filter(
+        (k) => k !== APP_CACHE && k !== IMG_CACHE && k.startsWith("dst-app-")
+      );
+      const isUpdate = oldAppCaches.length > 0;
+
+      await Promise.all(
         keys
-          .filter((key) => key !== APP_CACHE && key !== IMG_CACHE)
-          .map((key) => caches.delete(key))
-      )
-    )
+          .filter((k) => k !== APP_CACHE && k !== IMG_CACHE)
+          .map((k) => caches.delete(k))
+      );
+      await self.clients.claim();
+
+      if (isUpdate) {
+        // 활성 탭에 새 빌드 도착 알림 → 페이지가 reload (PWA 사용자가 변경 즉시 반영)
+        const clients = await self.clients.matchAll({ type: "window" });
+        clients.forEach((c) => c.postMessage({ type: "SW_UPDATED" }));
+      }
+    })()
   );
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
