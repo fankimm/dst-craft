@@ -15,6 +15,7 @@ import { manualLockKey, manualLockKeyForNode } from "@/lib/skill-tree-keys";
 import { fetchAllSkills, saveCharacterSkills } from "@/lib/favorites-api";
 import { cn } from "@/lib/utils";
 import { encodeBuild, decodeBuild } from "@/lib/skill-build-codec";
+import { useWx78Circuits, encodeCircuits, decodeCircuits } from "@/hooks/use-wx78-circuits";
 import { SkillCharacterGrid } from "./SkillCharacterGrid";
 import { SkillTreeView } from "./SkillTreeView";
 
@@ -133,6 +134,33 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     loadBuild,
   } = useSkillTree(tree, manualLocks, refreshKey, sharedBuildRef.current);
 
+  // WX-78 circuits — lifted up from SkillTreeView so we can include them in share URLs
+  const {
+    counts: circuitCounts,
+    equip: circuitEquip,
+    unequip: circuitUnequip,
+    reset: circuitReset,
+    loadCounts: circuitLoad,
+  } = useWx78Circuits();
+
+  // Apply shared circuits from URL once (alongside shared build)
+  const sharedCircuitsRef = useRef<string | null>(
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("c")
+      : null,
+  );
+  const circuitsAppliedRef = useRef(false);
+  useEffect(() => {
+    if (!tree || tree.characterId !== "wx-78") return;
+    if (circuitsAppliedRef.current) return;
+    if (!sharedCircuitsRef.current) return;
+    const decoded = decodeCircuits(sharedCircuitsRef.current);
+    if (decoded) {
+      circuitsAppliedRef.current = true;
+      circuitLoad(decoded);
+    }
+  }, [tree, circuitLoad]);
+
   // --- Debounced save to server on skill/lock change ---
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   useEffect(() => {
@@ -226,9 +254,15 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   }, []);
 
   const handleShare = useCallback(async () => {
-    if (!tree || activatedSkills.size === 0) return;
-    const encoded = encodeBuild(tree, activatedSkills);
-    const url = `${window.location.origin}/?tab=skills&char=${tree.characterId}&b=${encoded}`;
+    if (!tree) return;
+    const hasSkills = activatedSkills.size > 0;
+    const hasCircuits = tree.characterId === "wx-78"
+      && Object.values(circuitCounts).some((n) => n > 0);
+    if (!hasSkills && !hasCircuits) return;
+    const params = new URLSearchParams({ tab: "skills", char: tree.characterId });
+    if (hasSkills) params.set("b", encodeBuild(tree, activatedSkills));
+    if (hasCircuits) params.set("c", encodeCircuits(circuitCounts));
+    const url = `${window.location.origin}/?${params.toString()}`;
     try {
       await navigator.clipboard.writeText(url);
     } catch {
@@ -246,7 +280,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
         detail: t(resolvedLocale, "skills_share_copied" as TranslationKey),
       }),
     );
-  }, [tree, activatedSkills, resolvedLocale]);
+  }, [tree, activatedSkills, circuitCounts, resolvedLocale]);
 
   const handleImport = useCallback(async () => {
     const toast = (key: string) =>
@@ -255,29 +289,35 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
       const text = await navigator.clipboard.readText();
       const url = new URL(text);
       const build = url.searchParams.get("b");
+      const circuits = url.searchParams.get("c");
       const char = url.searchParams.get("char");
-      if (!build || !char || !CHARACTERS_WITH_SKILLS.includes(char)) {
+      if (!char || !CHARACTERS_WITH_SKILLS.includes(char)) {
         toast("skills_import_invalid");
         return;
       }
       const targetTree = skillTrees[char] ?? null;
       if (!targetTree) { toast("skills_import_invalid"); return; }
-      const decoded = decodeBuild(targetTree, build);
-      if (!decoded || decoded.size === 0) {
+      const decoded = build ? decodeBuild(targetTree, build) : new Set<string>();
+      const decodedCircuits = circuits ? decodeCircuits(circuits) : null;
+      const hasAnything = (decoded && decoded.size > 0) || (decodedCircuits && Object.keys(decodedCircuits).length > 0);
+      if (!hasAnything) {
         toast("skills_import_invalid");
         return;
       }
       if (char !== selectedChar) {
         sharedBuildRef.current = build;
+        sharedCircuitsRef.current = circuits;
+        circuitsAppliedRef.current = false;
         setSelectedChar(char);
       } else {
-        loadBuild(decoded);
+        if (decoded) loadBuild(decoded);
+        if (char === "wx-78" && decodedCircuits) circuitLoad(decodedCircuits);
       }
       toast("skills_build_loaded");
     } catch {
       toast("skills_import_failed");
     }
-  }, [selectedChar, resolvedLocale, loadBuild]);
+  }, [selectedChar, resolvedLocale, loadBuild, circuitLoad]);
 
   // Listen to popstate for browser back
   useEffect(() => {
@@ -345,6 +385,10 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
             onViewItem={onViewCraftingItem}
             onShare={handleShare}
             onImport={handleImport}
+            circuitCounts={circuitCounts}
+            onCircuitEquip={circuitEquip}
+            onCircuitUnequip={circuitUnequip}
+            onCircuitReset={circuitReset}
           />
         ) : (
           <div className="h-full overflow-y-auto overscroll-contain" data-scroll-container="">

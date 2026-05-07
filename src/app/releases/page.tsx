@@ -15,6 +15,39 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.7",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): 스킬 공유 URL에 회로 장착 상태 포함 — encodeCircuits/decodeCircuits, 'c' 파라미터로 base64url JSON",
+      "refactor(skills): useWx78Circuits hook을 SkillSimulatorApp으로 lift up — share/import에서 회로 접근 가능",
+      "feat(skills): 회로 상세 패널에 '제작탭에서 자세히 보기' 버튼 추가 — onViewItem prop으로 ItemDetail 점프",
+      "feat(skills): 현황판 메인 능력치(체력/허기/정신력)를 요리 StatBox 스타일로 — '+' 기호 제거 (최대 스탯 인지 명확)",
+      "feat(skills): 현황판에 '장착 회로 효과' 섹션 추가 — 각 회로별 ScrapbookEffects 카드, 학습 스킬 반영",
+      "fix(skills): 회로판 상세의 +/− 버튼을 고정폭 stepper로 변경 — 슬롯 부족 텍스트로 위치가 흔들리던 문제 해결, 연속 탭 가능",
+      "fix(BetaBadge): 사선 띠 박스/글자 더 크게 (140×140, 13px font-black, tracking-[0.22em])",
+      "fix(skills): 회로판/현황 컨테이너 max-width를 max-w-2xl로 통일 (스킬트리와 일치)",
+      "revert(SupportPill): 패딩/사이즈 원래대로 복원",
+    ],
+    changes: {
+      ko: [
+        "WX-78 빌드 공유 시 장착 회로도 함께 공유됨 (URL ?c= 파라미터)",
+        "회로 상세에서 '제작탭에서 자세히 보기' 버튼으로 한 번에 이동",
+        "현황판 체력/허기/정신력 표시를 요리 상세 스타일로 통일 — 회로로 늘어나는 최대치를 한눈에",
+        "현황판에 장착 회로별 상세 효과(스크랩북) 표시 — 학습한 스킬에 따라 강화 효과 진하게",
+        "회로 상세의 +/− 버튼이 슬롯 상태 따라 위치 흔들리던 문제 수정",
+        "베타 사선 띠 더 크고 진하게",
+      ],
+      en: [
+        "Sharing a WX-78 build now includes equipped circuits (?c= URL param)",
+        "Circuit details now have a 'View in Crafting Tab' jump button",
+        "Status panel HP/Hunger/Sanity display now matches cooking-detail StatBox style — clearer view of max stat increase",
+        "Status panel now lists per-circuit scrapbook effects, dimming buffs whose skill isn't learned",
+        "Fixed circuit +/− buttons shifting position when slots are full",
+        "Beta corner ribbon enlarged and bolder",
+      ],
+    },
+  },
+  {
     version: "0.21.6",
     date: "2026-05-08",
     dev: [

@@ -9,7 +9,7 @@ import { characterName, characterTitle, t, type Locale, type TranslationKey } fr
 import { skillTranslations, groupTranslations } from "@/data/skill-trees/translations";
 import { linearizeGroup, type LinearNode } from "@/lib/skill-tree-layout";
 import { manualLockKey } from "@/lib/skill-tree-keys";
-import { useWx78Circuits } from "@/hooks/use-wx78-circuits";
+import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
 import { SkillNodeCard, type LockRequirement } from "./SkillNodeCard";
 import { SkillLockIndicator, LockConditionPill } from "./SkillLockIndicator";
 import { Wx78CircuitBoard } from "./Wx78CircuitBoard";
@@ -35,6 +35,11 @@ interface Props {
   onViewItem?: (itemId: string) => void;
   onShare?: () => void;
   onImport?: () => void;
+  // WX-78 circuits (lifted up from this component to SkillSimulatorApp)
+  circuitCounts?: CircuitCounts;
+  onCircuitEquip?: (id: string) => void;
+  onCircuitUnequip?: (id: string) => void;
+  onCircuitReset?: () => void;
 }
 
 function isLockNode(node: SkillNode): boolean {
@@ -131,13 +136,20 @@ export function SkillTreeView({
   onViewItem,
   onShare,
   onImport,
+  circuitCounts,
+  onCircuitEquip,
+  onCircuitUnequip,
+  onCircuitReset,
 }: Props) {
   const char = characters.find((c) => c.id === tree.characterId);
   const pointsRef = useRef<HTMLDivElement>(null);
   const nodeMap = useMemo(() => new Map(tree.nodes.map((n) => [n.id, n])), [tree.nodes]);
   const isWx78 = tree.characterId === "wx-78";
   const [wx78SubTab, setWx78SubTab] = useState<Wx78SubTab>("skills");
-  const { counts: circuitCounts, equip, unequip, reset: resetCircuits } = useWx78Circuits();
+  const counts = circuitCounts ?? {};
+  const equip = onCircuitEquip ?? (() => {});
+  const unequip = onCircuitUnequip ?? (() => {});
+  const resetCircuits = onCircuitReset ?? (() => {});
 
   const handleNoPoints = useCallback(() => {
     const el = pointsRef.current;
@@ -257,16 +269,17 @@ export function SkillTreeView({
         <Wx78CircuitBoard
           locale={locale}
           activatedSkills={activatedSkills}
-          counts={circuitCounts}
+          counts={counts}
           onEquip={equip}
           onUnequip={unequip}
           onReset={resetCircuits}
+          onViewItem={onViewItem}
         />
       ) : isWx78 && wx78SubTab === "status" ? (
         <Wx78StatusPanel
           locale={locale}
           activatedSkills={activatedSkills}
-          counts={circuitCounts}
+          counts={counts}
         />
       ) : (
       /* Scrollable tree */

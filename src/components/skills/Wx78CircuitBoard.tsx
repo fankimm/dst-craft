@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { Plus, Minus, RotateCcw } from "lucide-react";
+import { Plus, Minus, RotateCcw, ExternalLink } from "lucide-react";
 import {
   WX78_CIRCUITS,
   WX78_CIRCUITS_BY_ID,
@@ -27,6 +27,7 @@ interface Props {
   onEquip: (id: string) => void;
   onUnequip: (id: string) => void;
   onReset: () => void;
+  onViewItem?: (itemId: string) => void;
 }
 
 const TYPES: CircuitType[] = ["alpha", "beta", "gamma"];
@@ -59,6 +60,7 @@ export function Wx78CircuitBoard({
   onEquip,
   onUnequip,
   onReset,
+  onViewItem,
 }: Props) {
   const maxSlots = getMaxSlots(activatedSkills);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -112,10 +114,7 @@ export function Wx78CircuitBoard({
 
       {/* Grid catalog — scrollable */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-        <div
-          className="max-w-3xl mx-auto w-full px-3"
-          style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 5rem)" }}
-        >
+        <div className="max-w-2xl mx-auto w-full pb-2">
           {TYPES.map((type) => (
             <Section
               key={type}
@@ -145,6 +144,7 @@ export function Wx78CircuitBoard({
             activatedSkills={activatedSkills}
             onEquip={() => onEquip(selected.id)}
             onUnequip={() => onUnequip(selected.id)}
+            onViewItem={onViewItem ? () => { onViewItem(selected.id); setSelectedId(null); } : undefined}
           />
         )}
       </DetailPanel>
@@ -354,6 +354,7 @@ function CircuitDetail({
   activatedSkills,
   onEquip,
   onUnequip,
+  onViewItem,
 }: {
   module: CircuitModule;
   locale: Locale;
@@ -363,6 +364,7 @@ function CircuitDetail({
   activatedSkills: Set<string>;
   onEquip: () => void;
   onUnequip: () => void;
+  onViewItem?: () => void;
 }) {
   const color = TYPE_COLORS[m.type];
   const canAdd = m.slots <= maxSlots - usedInBar;
@@ -403,6 +405,19 @@ function CircuitDetail({
         </div>
       </div>
 
+      {/* Jump to crafting tab */}
+      {onViewItem && (
+        <div className="mt-3">
+          <button
+            onClick={onViewItem}
+            className="w-full flex items-center justify-center gap-1.5 py-2 rounded-md text-xs font-semibold border border-border bg-surface/60 hover:bg-surface text-foreground transition-colors"
+          >
+            <ExternalLink className="size-3.5" />
+            {locale === "ko" ? "제작탭에서 자세히 보기" : "View in Crafting Tab"}
+          </button>
+        </div>
+      )}
+
       {/* Effects (parsed from in-game scrapbook) */}
       <ScrapbookEffects moduleId={m.id} locale={locale} activatedSkills={activatedSkills} />
 
@@ -427,51 +442,50 @@ function CircuitDetail({
         </div>
       ) : null}
 
-      {/* Equip controls */}
+      {/* Equip controls — fixed-width −/[count]/+ stepper to prevent layout shift on rapid taps */}
       <div className="mt-4 sticky bottom-0 -mx-4 px-4 py-3 bg-card border-t border-border">
         <div className="flex items-center justify-between gap-3">
-          <div className="text-xs text-muted-foreground">
-            {locale === "ko" ? "현재" : "Current"}
-            <span className="ml-1 font-bold text-foreground tabular-nums">{count}</span>
-            <span className="mx-1 opacity-50">·</span>
+          <div className="text-xs text-muted-foreground min-w-0 truncate">
             <span style={{ color }}>
               {locale === "ko" ? TYPE_LABEL[m.type].ko : TYPE_LABEL[m.type].en}
             </span>
             <span className="opacity-60"> {usedInBar}/{maxSlots}</span>
+            {!canAdd && count === 0 && (
+              <span className="ml-2 text-[11px] text-muted-foreground/80">
+                {locale === "ko" ? "슬롯 부족" : "Not enough slots"}
+              </span>
+            )}
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1 shrink-0 rounded-md bg-surface/60 p-0.5">
             <button
               onClick={onUnequip}
               disabled={count === 0}
               className={cn(
-                "size-9 flex items-center justify-center rounded-md transition-colors",
+                "size-9 flex items-center justify-center rounded-sm transition-colors",
                 count === 0
-                  ? "bg-surface/40 text-muted-foreground/40 cursor-not-allowed"
-                  : "bg-surface hover:bg-surface/70 text-foreground",
+                  ? "text-muted-foreground/40 cursor-not-allowed"
+                  : "hover:bg-surface text-foreground",
               )}
               aria-label="unequip"
             >
               <Minus className="size-4" />
             </button>
+            <span className="min-w-7 text-center text-sm font-bold tabular-nums">
+              {count}
+            </span>
             <button
               onClick={onEquip}
               disabled={!canAdd}
               className={cn(
-                "h-9 px-4 flex items-center gap-1.5 rounded-md text-sm font-semibold transition-colors",
+                "size-9 flex items-center justify-center rounded-sm transition-colors",
                 canAdd
                   ? "text-white"
-                  : "bg-surface/40 text-muted-foreground/50 cursor-not-allowed",
+                  : "text-muted-foreground/40 cursor-not-allowed",
               )}
               style={canAdd ? { backgroundColor: color } : undefined}
+              aria-label="equip"
             >
               <Plus className="size-4" />
-              {locale === "ko"
-                ? canAdd
-                  ? "장착"
-                  : "슬롯 부족"
-                : canAdd
-                  ? "Equip"
-                  : "Not enough slots"}
             </button>
           </div>
         </div>
@@ -505,7 +519,7 @@ function detectSkillId(para: string, locale: Locale): { skillId: string; label: 
   };
 }
 
-function ScrapbookEffects({
+export function ScrapbookEffects({
   moduleId,
   locale,
   activatedSkills,

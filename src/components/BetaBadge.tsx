@@ -23,20 +23,21 @@ export function BetaBadge() {
     <div
       aria-hidden="true"
       className="pointer-events-none fixed top-0 left-0 z-50 overflow-hidden"
-      style={{ width: 110, height: 110 }}
+      style={{ width: 140, height: 140 }}
     >
       <div
-        className="absolute bg-amber-500/85 text-white text-[11px] font-bold uppercase tracking-[0.18em] shadow-md ring-1 ring-amber-700/30"
+        className="absolute bg-amber-500 text-white text-[13px] font-black uppercase tracking-[0.22em] shadow-xl ring-1 ring-amber-700/50"
         style={{
-          width: 170,
-          padding: "3px 0",
+          width: 200,
+          padding: "6px 0",
           textAlign: "center",
           transform: "rotate(-45deg)",
-          left: -50,
-          top: 22,
+          left: -55,
+          top: 32,
+          textShadow: "0 1px 2px rgba(0,0,0,0.45)",
         }}
       >
-        Beta
+        BETA
       </div>
     </div>
   );

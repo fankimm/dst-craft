@@ -1,15 +1,27 @@
 "use client";
 
 import { useMemo } from "react";
+import Image from "next/image";
 import {
   WX78_CIRCUITS_BY_ID,
   WX78_TUNING,
   type StatKind,
   type Capability,
+  type CircuitType,
+  type CircuitModule,
 } from "@/data/wx78-circuits";
 import type { Locale } from "@/lib/i18n";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
 import { Footer } from "../crafting/Footer";
+import { ScrapbookEffects } from "./Wx78CircuitBoard";
+import { assetPath } from "@/lib/asset-path";
+import { cn } from "@/lib/utils";
+
+const TYPE_COLORS: Record<CircuitType, string> = {
+  alpha: "#ef4444",
+  beta: "#3b82f6",
+  gamma: "#eab308",
+};
 
 interface Props {
   locale: Locale;
@@ -150,25 +162,54 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
   const utilityRows = buildUtilityRows(data, locale);
   const combatRows = buildCombatRows(data, locale);
 
+  // Build equipped circuits list (in order: alpha → beta → gamma)
+  const equippedList: { module: CircuitModule; count: number }[] = [];
+  for (const type of ["alpha", "beta", "gamma"] as CircuitType[]) {
+    for (const [id, count] of Object.entries(counts)) {
+      if (!count) continue;
+      const m = WX78_CIRCUITS_BY_ID[id];
+      if (m && m.type === type) equippedList.push({ module: m, count });
+    }
+  }
+
   return (
     <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-      <div
-        className="max-w-2xl mx-auto w-full px-3"
-        style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 5rem)" }}
-      >
-        <Section title={locale === "ko" ? "기본 능력치" : "Stats"} rows={survivalRows} />
+      <div className="max-w-2xl mx-auto w-full pb-2 px-3">
+        {/* Vital stats — same row layout as cooking detail StatBox */}
+        {(data.totals.maxHealth || data.totals.maxSanity || data.totals.maxHunger) ? (
+          <div className="mt-3 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
+            <VitalStat
+              iconSrc={assetPath("/images/ui/health.png")}
+              label={locale === "ko" ? "최대 체력" : "Max Health"}
+              value={data.totals.maxHealth ?? 0}
+            />
+            <VitalStat
+              iconSrc={assetPath("/images/ui/hunger.png")}
+              label={locale === "ko" ? "최대 허기" : "Max Hunger"}
+              value={data.totals.maxHunger ?? 0}
+              divider
+            />
+            <VitalStat
+              iconSrc={assetPath("/images/ui/sanity.png")}
+              label={locale === "ko" ? "최대 정신력" : "Max Sanity"}
+              value={data.totals.maxSanity ?? 0}
+              divider
+            />
+          </div>
+        ) : null}
+        <Section title={locale === "ko" ? "추가 능력치" : "Other Stats"} rows={survivalRows} />
         <Section title={locale === "ko" ? "이동" : "Movement"} rows={movementRows} />
         <Section title={locale === "ko" ? "온도 · 저항" : "Temperature · Resistance"} rows={tempRows} />
         <Section title={locale === "ko" ? "유틸리티" : "Utility"} rows={utilityRows} />
         <Section title={locale === "ko" ? "전투" : "Combat"} rows={combatRows} />
 
-        {(data.caps.length > 0 || skillCaps.length > 0) && (
+        {skillCaps.length > 0 && (
           <div className="mt-4">
             <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2 px-1">
-              {locale === "ko" ? "특수 효과" : "Special Effects"}
+              {locale === "ko" ? "회로 시스템 강화" : "Circuitry Skills"}
             </div>
             <ul className="space-y-1.5">
-              {[...skillCaps, ...data.caps].map((cap) => (
+              {skillCaps.map((cap) => (
                 <li
                   key={cap.id}
                   className="text-sm text-foreground/90 px-3 py-2 rounded-md bg-surface/60"
@@ -179,6 +220,55 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
             </ul>
           </div>
         )}
+
+        {equippedList.length > 0 && (
+          <div className="mt-4">
+            <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2 px-1">
+              {locale === "ko" ? "장착 회로 효과" : "Equipped Circuit Effects"}
+            </div>
+            <div className="space-y-3">
+              {equippedList.map(({ module: m, count }) => {
+                const color = TYPE_COLORS[m.type];
+                return (
+                  <div
+                    key={m.id}
+                    className="rounded-lg border border-border bg-background overflow-hidden"
+                    style={{ borderLeftWidth: 3, borderLeftColor: color }}
+                  >
+                    <div className="flex items-center gap-2 px-3 py-2 bg-surface/40">
+                      <Image
+                        src={`/images/game-items/${m.id}.png`}
+                        alt=""
+                        width={32}
+                        height={32}
+                        className="size-8 object-contain shrink-0"
+                      />
+                      <span className="text-sm font-semibold text-foreground truncate">
+                        {locale === "ko" ? m.nameI18n.ko : m.nameI18n.en}
+                      </span>
+                      {count > 1 && (
+                        <span
+                          className="text-[10px] font-bold px-1.5 py-px rounded-sm"
+                          style={{ backgroundColor: `${color}25`, color }}
+                        >
+                          ×{count}
+                        </span>
+                      )}
+                    </div>
+                    <div className="px-3 pb-2">
+                      <ScrapbookEffects
+                        moduleId={m.id}
+                        locale={locale}
+                        activatedSkills={activatedSkills}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <div className="pt-6">
           <Footer />
         </div>
@@ -224,24 +314,7 @@ function Section({ title, rows }: { title: string; rows: Row[] }) {
 function buildSurvivalRows(data: StatusData, locale: Locale): Row[] {
   const rows: Row[] = [];
   const t = data.totals;
-  if (t.maxHealth) {
-    rows.push({
-      label: locale === "ko" ? "최대 체력" : "Max Health",
-      value: `+${formatNumber(t.maxHealth)}`,
-    });
-  }
-  if (t.maxSanity) {
-    rows.push({
-      label: locale === "ko" ? "최대 정신력" : "Max Sanity",
-      value: `+${formatNumber(t.maxSanity)}`,
-    });
-  }
-  if (t.maxHunger) {
-    rows.push({
-      label: locale === "ko" ? "최대 허기" : "Max Hunger",
-      value: `+${formatNumber(t.maxHunger)}`,
-    });
-  }
+  // maxHealth/maxSanity/maxHunger are rendered separately as StatBoxes
   if (data.hungerSlowMin !== undefined) {
     const reduction = (1 - data.hungerSlowMin) * 100;
     rows.push({
@@ -389,4 +462,29 @@ function buildCombatRows(data: StatusData, locale: Locale): Row[] {
     });
   }
   return rows;
+}
+
+// ── Vital stat box (matches cooking StatBox, sans + sign for clarity) ──
+function VitalStat({
+  iconSrc,
+  label,
+  value,
+  divider,
+}: {
+  iconSrc: string;
+  label: string;
+  value: number;
+  divider?: boolean;
+}) {
+  return (
+    <div className={cn("flex items-center gap-1.5", divider && "border-l border-border pl-4")}>
+      <img src={iconSrc} alt="" className="size-5 object-contain" />
+      <div>
+        <div className="text-sm font-semibold tabular-nums leading-tight text-foreground">
+          {value > 0 ? value : "—"}
+        </div>
+        <div className="text-[10px] text-muted-foreground leading-tight">{label}</div>
+      </div>
+    </div>
+  );
 }
