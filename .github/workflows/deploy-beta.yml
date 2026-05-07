@@ -1,0 +1,150 @@
+name: deploy-beta (Mac mini)
+
+# main 푸시 → self-hosted runner가 ~/works/dst-craft 동기화 + 변경 경로별 작업
+#   frontend(src/, public/, scripts/generate-*, package*.json, next.config* 등) → deploy-beta.sh
+#   bun-api/                                                                    → plist sync + launchctl 재시작
+# Telegram secrets(TELEGRAM_BOT_TOKEN/CHAT_ID) 등록 시 결과 알림.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      force_frontend:
+        description: "frontend 강제 재빌드"
+        type: boolean
+        default: false
+      force_bun_api:
+        description: "bun-api 강제 재시작"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-beta
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, macOS]
+    timeout-minutes: 20
+    env:
+      WORKS_REPO: /Users/fankimm/works/dst-craft
+
+    steps:
+      - name: Sync ~/works/dst-craft
+        id: sync
+        run: |
+          set -euo pipefail
+          cd "$WORKS_REPO"
+          git fetch --quiet origin main
+
+          BEFORE=$(git rev-parse HEAD)
+          AFTER=$(git rev-parse origin/main)
+          echo "before=$BEFORE" >> "$GITHUB_OUTPUT"
+          echo "after=$AFTER" >> "$GITHUB_OUTPUT"
+
+          if [ "$BEFORE" = "$AFTER" ]; then
+            echo "no_change=true" >> "$GITHUB_OUTPUT"
+            echo "no changes (already at ${AFTER:0:7})"
+            exit 0
+          fi
+
+          # 로컬 변경(tracked + untracked, gitignored 제외)을 stash 보존 후 pull.
+          # 사용자 WIP 손실 방지. 충돌 시 수동 git stash pop 필요.
+          if [ -n "$(git status --porcelain)" ]; then
+            stash_msg="actions-pre-pull-$(date -u +%Y%m%dT%H%M%SZ)-${BEFORE:0:7}"
+            git stash push -u -m "$stash_msg" >/dev/null
+            echo "stashed local changes as: $stash_msg"
+          fi
+
+          git pull --ff-only --quiet origin main
+          echo "pulled ${BEFORE:0:7} → ${AFTER:0:7}"
+
+          changed=$(git diff --name-only "$BEFORE" "$AFTER")
+          echo "$changed"
+
+          # 프론트엔드 영향 경로 (deploy-beta.sh 트리거)
+          if echo "$changed" | grep -qE '^(src/|public/|scripts/generate-|package\.json|package-lock\.json|next\.config|tsconfig|tailwind|postcss|vercel\.json)'; then
+            echo "frontend=true" >> "$GITHUB_OUTPUT"
+          fi
+          # bun-api 영향 (launchctl kickstart)
+          if echo "$changed" | grep -qE '^bun-api/'; then
+            echo "bun_api=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Frontend rebuild (deploy-beta.sh)
+        if: |
+          steps.sync.outputs.no_change != 'true' &&
+          (steps.sync.outputs.frontend == 'true' || inputs.force_frontend == true)
+        run: |
+          set -euo pipefail
+          ~/dstcraft/bin/deploy-beta.sh
+
+      - name: bun-api restart
+        if: |
+          steps.sync.outputs.no_change != 'true' &&
+          (steps.sync.outputs.bun_api == 'true' || inputs.force_bun_api == true)
+        run: |
+          set -euo pipefail
+          cp "$WORKS_REPO"/bun-api/infra/com.dstcraft.api.plist ~/Library/LaunchAgents/com.dstcraft.api.plist
+          launchctl bootout "gui/$(id -u)/com.dstcraft.api" 2>/dev/null || true
+          sleep 1
+          launchctl bootstrap "gui/$(id -u)" ~/Library/LaunchAgents/com.dstcraft.api.plist
+          # health check (최대 10초)
+          ok=0
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            sleep 1
+            if curl -fsS --max-time 2 http://localhost:3001/_debug/health >/dev/null; then
+              ok=1
+              echo "bun-api healthy (after ${i}s)"
+              break
+            fi
+          done
+          if [ "$ok" -ne 1 ]; then
+            echo "bun-api health check failed" >&2
+            tail -50 ~/dstcraft/logs/bun-api.err.log >&2 || true
+            tail -50 ~/dstcraft/logs/bun-api.out.log >&2 || true
+            exit 1
+          fi
+
+      - name: Telegram notify
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          STATUS: ${{ job.status }}
+          SHA: ${{ github.sha }}
+          MSG: ${{ github.event.head_commit.message || format('manual dispatch by {0}', github.actor) }}
+          TRIGGER: ${{ github.event_name }}
+          ACTOR: ${{ github.actor }}
+          BEFORE: ${{ steps.sync.outputs.before }}
+          AFTER: ${{ steps.sync.outputs.after }}
+          NO_CHANGE: ${{ steps.sync.outputs.no_change }}
+          FRONTEND: ${{ steps.sync.outputs.frontend }}
+          BUN_API: ${{ steps.sync.outputs.bun_api }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "no telegram secrets configured, skipping notify"
+            exit 0
+          fi
+          icon="✅"
+          [ "$STATUS" = "failure" ] && icon="❌"
+          [ "$STATUS" = "cancelled" ] && icon="⚠️"
+
+          short_sha="${AFTER:0:7}"
+          first_line=$(printf '%s' "$MSG" | head -1 | cut -c1-200)
+
+          parts=""
+          [ "$NO_CHANGE" = "true" ] && parts="${parts}no-op"
+          [ "$FRONTEND" = "true" ] && parts="${parts:+$parts · }frontend"
+          [ "$BUN_API" = "true" ] && parts="${parts:+$parts · }bun-api"
+          [ -z "$parts" ] && parts="(no targeted steps)"
+
+          text="$icon deploy-beta · $STATUS"$'\n'"sha: $short_sha · trigger: $TRIGGER · actor: $ACTOR"$'\n'"steps: $parts"$'\n\n'"$first_line"
+
+          curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="$TELEGRAM_CHAT_ID" \
+            --data-urlencode "text=$text" >/dev/null
