@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useCallback } from "react";
+import { useMemo, useRef, useCallback, useState } from "react";
 import Image from "next/image";
 import { ClipboardPaste, RotateCcw, Share2 } from "lucide-react";
 import type { CharacterSkillTree, SkillNode, LockCondition } from "@/data/skill-trees/types";
@@ -9,9 +9,15 @@ import { characterName, characterTitle, t, type Locale, type TranslationKey } fr
 import { skillTranslations, groupTranslations } from "@/data/skill-trees/translations";
 import { linearizeGroup, type LinearNode } from "@/lib/skill-tree-layout";
 import { manualLockKey } from "@/lib/skill-tree-keys";
+import { useWx78Circuits } from "@/hooks/use-wx78-circuits";
 import { SkillNodeCard, type LockRequirement } from "./SkillNodeCard";
 import { SkillLockIndicator, LockConditionPill } from "./SkillLockIndicator";
+import { Wx78CircuitBoard } from "./Wx78CircuitBoard";
+import { Wx78StatusPanel } from "./Wx78StatusPanel";
 import { Footer } from "../crafting/Footer";
+import { cn } from "@/lib/utils";
+
+type Wx78SubTab = "skills" | "circuits" | "status";
 
 interface Props {
   tree: CharacterSkillTree;
@@ -129,6 +135,9 @@ export function SkillTreeView({
   const char = characters.find((c) => c.id === tree.characterId);
   const pointsRef = useRef<HTMLDivElement>(null);
   const nodeMap = useMemo(() => new Map(tree.nodes.map((n) => [n.id, n])), [tree.nodes]);
+  const isWx78 = tree.characterId === "wx-78";
+  const [wx78SubTab, setWx78SubTab] = useState<Wx78SubTab>("skills");
+  const { counts: circuitCounts, equip, unequip, reset: resetCircuits } = useWx78Circuits();
 
   const handleNoPoints = useCallback(() => {
     const el = pointsRef.current;
@@ -218,7 +227,48 @@ export function SkillTreeView({
         </div>
       </div>
 
-      {/* Scrollable tree */}
+      {/* WX-78 sub-tabs */}
+      {isWx78 && (
+        <div className="shrink-0 flex border-b border-border bg-background/80">
+          {([
+            { id: "skills" as const, ko: "스킬트리", en: "Skill Tree" },
+            { id: "circuits" as const, ko: "회로판", en: "Circuit Board" },
+            { id: "status" as const, ko: "현황", en: "Status" },
+          ]).map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setWx78SubTab(t.id)}
+              className={cn(
+                "flex-1 py-2 text-xs font-semibold transition-colors border-b-2",
+                wx78SubTab === t.id
+                  ? "text-foreground border-foreground"
+                  : "text-muted-foreground hover:text-foreground border-transparent",
+              )}
+            >
+              {locale === "ko" ? t.ko : t.en}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Body — switch by sub-tab for WX-78 */}
+      {isWx78 && wx78SubTab === "circuits" ? (
+        <Wx78CircuitBoard
+          locale={locale}
+          activatedSkills={activatedSkills}
+          counts={circuitCounts}
+          onEquip={equip}
+          onUnequip={unequip}
+          onReset={resetCircuits}
+        />
+      ) : isWx78 && wx78SubTab === "status" ? (
+        <Wx78StatusPanel
+          locale={locale}
+          activatedSkills={activatedSkills}
+          counts={circuitCounts}
+        />
+      ) : (
+      /* Scrollable tree */
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain" data-scroll-container="">
         <div className="max-w-2xl mx-auto w-full pb-2">
           {groupedLinear.map(({ group, items }) => {
@@ -412,6 +462,7 @@ export function SkillTreeView({
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }

@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.0",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 스킬트리에 서브탭 3개 추가 — 스킬트리 / 회로판 / 현황",
+      "feat(data): src/data/wx78-circuits.ts — 23개 회로 모듈 정의 (인게임 wx78_moduledefs.lua + tuning.lua 기반, 알파/베타/감마 분류, slots/effects/buffs 구조화)",
+      "feat(skills): Wx78CircuitBoard 컴포넌트 — 슬롯 바(6/7) + 모듈 카탈로그(타입별 그룹) + 장착/해제 (+/−) + slot_1 스킬 학습 시 슬롯 +1 자동 반영",
+      "feat(skills): Wx78StatusPanel 컴포넌트 — 장착 회로와 학습 스킬을 합산해 체력/정신력/허기/이동/온도/유틸/전투 카테고리별 누적 효과 표시. 빈 카테고리는 숨김",
+      "feat(hooks): useWx78Circuits — 회로 장착 상태 관리, localStorage 'dst:wx78-circuits' 영속화 (다중 장착 지원)",
+    ],
+    changes: {
+      ko: [
+        "WX-78 스킬트리에 회로판/현황 서브탭 추가 — 회로(모듈) 23종을 슬롯 6칸(슬롯 확장 스킬 시 7칸)에 직접 장착·해제하고, 스킬과 합산된 능력치 변화를 한눈에 확인할 수 있습니다",
+      ],
+      en: [
+        "Added Circuit Board and Status sub-tabs to WX-78 skill tree — equip up to 23 circuits in 6 slots (7 with slot upgrade skill), see combined skill+circuit effects at a glance",
+      ],
+    },
+  },
+  {
     version: "0.20.4",
     date: "2026-05-08",
     dev: [
