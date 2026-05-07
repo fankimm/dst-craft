@@ -10,6 +10,9 @@ import {
   getUsedSlotsByType,
   SCAN_PREFAB_KO,
   SCAN_PREFAB_EN,
+  TYPE_COLORS,
+  TYPE_LABEL,
+  typeLabel,
   type CircuitModule,
   type CircuitType,
 } from "@/data/wx78-circuits";
@@ -31,19 +34,6 @@ interface Props {
 }
 
 const TYPES: CircuitType[] = ["alpha", "beta", "gamma"];
-
-// 인게임 회로판 바 색상에 맞춤: 알파=빨강, 베타=파랑, 감마=노랑
-const TYPE_COLORS: Record<CircuitType, string> = {
-  alpha: "#ef4444",
-  beta: "#3b82f6",
-  gamma: "#eab308",
-};
-
-const TYPE_LABEL: Record<CircuitType, { ko: string; en: string }> = {
-  alpha: { ko: "알파", en: "Alpha" },
-  beta: { ko: "베타", en: "Beta" },
-  gamma: { ko: "감마", en: "Gamma" },
-};
 
 function moduleName(m: CircuitModule, locale: Locale) {
   return locale === "ko" ? m.nameI18n.ko : m.nameI18n.en;

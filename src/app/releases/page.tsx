@@ -15,6 +15,14 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.12",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 회로 타입 라벨 일관성 — TYPE_COLORS/TYPE_LABEL/typeLabel을 wx78-circuits.ts로 이동, 두 컴포넌트 공유. 현황 DetailPanel에서 raw 'alpha'/'ALPHA'로 보이던 부분도 typeLabel(locale)로 통일 (한글: 알파, 영문: Alpha)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.11",
     date: "2026-05-08",
     dev: [

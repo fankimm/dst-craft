@@ -507,6 +507,24 @@ export const WX78_CIRCUITS: CircuitModule[] = [
 export const WX78_CIRCUITS_BY_ID: Record<string, CircuitModule> =
   Object.fromEntries(WX78_CIRCUITS.map((c) => [c.id, c]));
 
+// 회로 타입 색상 (인게임 회로판 바 색상과 매칭)
+export const TYPE_COLORS: Record<CircuitType, string> = {
+  alpha: "#ef4444",
+  beta: "#3b82f6",
+  gamma: "#eab308",
+};
+
+// 회로 타입 라벨 — 표시 시 항상 이 함수 사용
+export const TYPE_LABEL: Record<CircuitType, { ko: string; en: string }> = {
+  alpha: { ko: "알파", en: "Alpha" },
+  beta: { ko: "베타", en: "Beta" },
+  gamma: { ko: "감마", en: "Gamma" },
+};
+
+export function typeLabel(type: CircuitType, locale: string): string {
+  return locale === "ko" ? TYPE_LABEL[type].ko : TYPE_LABEL[type].en;
+}
+
 // 스캔 대상 prefab → 한글명 (ko.po STRINGS.NAMES.<UPPER> 기준)
 export const SCAN_PREFAB_KO: Record<string, string> = {
   spider: "거미",

@@ -5,6 +5,8 @@ import Image from "next/image";
 import {
   WX78_CIRCUITS,
   WX78_CIRCUITS_BY_ID,
+  TYPE_COLORS,
+  typeLabel,
   type CircuitType,
   type CircuitModule,
 } from "@/data/wx78-circuits";
@@ -16,12 +18,6 @@ import { Footer } from "../crafting/Footer";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { assetPath } from "@/lib/asset-path";
 import { cn } from "@/lib/utils";
-
-const TYPE_COLORS: Record<CircuitType, string> = {
-  alpha: "#ef4444",
-  beta: "#3b82f6",
-  gamma: "#eab308",
-};
 
 interface Props {
   locale: Locale;
@@ -463,10 +459,10 @@ function Detail({
                   </span>
                 )}
                 <span
-                  className="text-[10px] font-bold uppercase px-1 rounded-sm"
+                  className="text-[10px] font-bold px-1 rounded-sm"
                   style={{ backgroundColor: `${color}25`, color }}
                 >
-                  {r.module.type}
+                  {typeLabel(r.module.type, locale)}
                 </span>
               </div>
               {r.skillId && (
