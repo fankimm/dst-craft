@@ -8,7 +8,6 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 import { Analytics } from "@vercel/analytics/react";
 import { APP_VERSION } from "@/lib/version";
-import { BetaBadge } from "@/components/BetaBadge";
 import "./globals.css";
 
 const inter = Inter({
@@ -179,6 +178,13 @@ const themeScript = `
   } catch(e) {}
 })();
 ${process.env.NODE_ENV === "production" ? `if ('serviceWorker' in navigator) {
+  // 새 SW가 활성화되어 'SW_UPDATED' 메시지를 보내면 자동 reload
+  // (최초 설치 시에는 message가 안 옴 — 옛 cache가 없으므로 sw.template.js에서 가드함)
+  navigator.serviceWorker.addEventListener('message', function(ev) {
+    if (ev.data && ev.data.type === 'SW_UPDATED') {
+      window.location.reload();
+    }
+  });
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('/sw.js');
   });
@@ -321,7 +327,6 @@ export default function RootLayout({
           })();
         `}} />
         <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
-        <BetaBadge />
         <SettingsProvider>
           <AuthProvider>
             <FavoritesProvider>
