@@ -1,7 +1,7 @@
 name: deploy (Mac mini)
 
-# main 푸시 → ~/works/dst-craft 동기화 + 변경 경로별 작업 (legacy: main → ~/dstcraft/beta symlink)
-#   frontend(src/, public/, scripts/generate-*, package*.json, next.config* 등) → deploy-beta.sh
+# main 푸시 → ~/works/dst-craft 동기화 + 변경 경로별 작업
+#   frontend(src/, public/, scripts/generate-*, package*.json, next.config* 등) → deploy-frontend.sh main → ~/dstcraft/prod
 #   bun-api/                                                                    → plist sync + launchctl 재시작
 # beta 푸시 → ~/dstcraft/source-beta 갱신 + 정적 리빌드 → ~/dstcraft/beta symlink swap
 #   bun-api는 main에서만 관리 (단일 인스턴스 + 단일 SQLite). beta 브랜치의 bun-api 변경은 무시됨.
@@ -105,11 +105,11 @@ jobs:
             echo "bun_api=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Frontend rebuild — main → ~/dstcraft/beta (legacy)
+      - name: Frontend rebuild — main → ~/dstcraft/prod
         if: steps.br.outputs.branch == 'main' && (steps.sync.outputs.frontend == 'true' || inputs.force_frontend == true)
         run: |
           set -euo pipefail
-          ~/dstcraft/bin/deploy-beta.sh
+          ~/works/dst-craft/scripts/deploy-frontend.sh main
 
       - name: bun-api restart (main only)
         if: steps.br.outputs.branch == 'main' && (steps.sync.outputs.bun_api == 'true' || inputs.force_bun_api == true)
