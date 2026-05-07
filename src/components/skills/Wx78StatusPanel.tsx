@@ -18,6 +18,7 @@ import { Footer } from "../crafting/Footer";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { assetPath } from "@/lib/asset-path";
 import { cn } from "@/lib/utils";
+import { EffectCard } from "./Wx78CircuitBoard";
 
 interface Props {
   locale: Locale;
@@ -105,6 +106,79 @@ function buildEffectRows(
     }
   }
   return rows;
+}
+
+// ── Vital aggregation ────────────────────────────────────────
+// 같은 vital(체/허/정) stat을 여러 회로가 올리면 카드 하나로 합쳐 표시.
+// 인게임 텍스트 원문 형식("최대 N이 V 증가한다.") 그대로 쓰되 V만 합산값으로 치환.
+type VitalKind = "maxHealth" | "maxSanity" | "maxHunger";
+
+const VITAL_FROM_KO_LABEL: Record<string, VitalKind> = {
+  "체력": "maxHealth",
+  "정신력": "maxSanity",
+  "허기": "maxHunger",
+};
+
+const VITAL_LABEL_KO: Record<VitalKind, string> = {
+  maxHealth: "체력",
+  maxSanity: "정신력",
+  maxHunger: "허기",
+};
+
+const VITAL_LABEL_EN: Record<VitalKind, string> = {
+  maxHealth: "Health",
+  maxSanity: "Sanity",
+  maxHunger: "Hunger",
+};
+
+function vitalText(kind: VitalKind, total: number, locale: Locale): string {
+  if (locale === "ko") {
+    const label = VITAL_LABEL_KO[kind];
+    const particle = label === "허기" ? "가" : "이";
+    return `최대 ${label}${particle} ${total} 증가한다.`;
+  }
+  return `Maximum ${VITAL_LABEL_EN[kind]} +${total}.`;
+}
+
+// 행 텍스트에서 vital 부분만 추출(합산용) + 나머지 텍스트 분리.
+// 표준화 케이스:
+//   1) standalone:  "최대 X(이|가) N 증가한다."
+//   2) 앞에 붙은 compound:  "최대 X(이|가) N 증가하고[, ] ..."
+//   3) 끝에 붙은 compound:  "..., 최대 X(이|가) N 증가한다."
+function extractVitalKo(text: string): { kind: VitalKind; perModule: number; rest: string } | null {
+  let m = text.match(/^최대 (체력|정신력|허기)(?:이|가) (\d+) 증가한다\.?\s*$/);
+  if (m) return { kind: VITAL_FROM_KO_LABEL[m[1]], perModule: parseInt(m[2], 10), rest: "" };
+  m = text.match(/^최대 (체력|정신력|허기)(?:이|가) (\d+) 증가하고[,\s]+(.+)$/);
+  if (m) return { kind: VITAL_FROM_KO_LABEL[m[1]], perModule: parseInt(m[2], 10), rest: m[3].trim() };
+  m = text.match(/^(.+),\s*최대 (체력|정신력|허기)(?:이|가) (\d+) 증가한다\.?\s*$/);
+  if (m) {
+    const rest = m[1].trim();
+    return { kind: VITAL_FROM_KO_LABEL[m[2]], perModule: parseInt(m[3], 10), rest: rest.endsWith(".") ? rest : `${rest}.` };
+  }
+  return null;
+}
+
+// baseRows에서 vital 부분 추출 → 합산 카드용 데이터 + vital이 분리된 나머지 row.
+function aggregateVitalRows(
+  rows: EffectRow[],
+  locale: Locale,
+): { vitals: { kind: VitalKind; total: number }[]; remaining: EffectRow[] } {
+  if (locale !== "ko") return { vitals: [], remaining: rows };
+  const sums: Record<VitalKind, number> = { maxHealth: 0, maxSanity: 0, maxHunger: 0 };
+  const remaining: EffectRow[] = [];
+  for (const row of rows) {
+    if (row.skillId) { remaining.push(row); continue; }
+    const ex = extractVitalKo(row.text);
+    if (!ex) { remaining.push(row); continue; }
+    sums[ex.kind] += ex.perModule * row.count;
+    if (ex.rest) remaining.push({ ...row, text: ex.rest });
+    // standalone 행은 drop (vital만 있던 행 → 합산 카드로 대체)
+  }
+  const vitals: { kind: VitalKind; total: number }[] = [];
+  for (const k of ["maxHealth", "maxSanity", "maxHunger"] as VitalKind[]) {
+    if (sums[k] > 0) vitals.push({ kind: k, total: sums[k] });
+  }
+  return { vitals, remaining };
 }
 
 // WX-78 baseline — what the user sees as default max stats (회로/스킬 0 기준)
@@ -210,9 +284,13 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
   }, [counts, devShowAll]);
 
   const vitals = useMemo(() => aggregateVitals(effectiveCounts), [effectiveCounts]);
-  const effectRows = useMemo(
+  const rawEffectRows = useMemo(
     () => buildEffectRows(effectiveCounts, effectiveSkills, locale),
     [effectiveCounts, effectiveSkills, locale],
+  );
+  const { vitals: vitalCards, remaining: effectRows } = useMemo(
+    () => aggregateVitalRows(rawEffectRows, locale),
+    [rawEffectRows, locale],
   );
   const skillRows = useMemo(
     () => getGlobalSkillRows(effectiveSkills, locale),
@@ -240,10 +318,6 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
       </div>
     );
   }
-
-  // Split effect rows into base / skill-buffed for visual grouping
-  const baseRows = effectRows.filter((r) => !r.skillId);
-  const buffRows = effectRows.filter((r) => r.skillId);
 
   return (
     <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
@@ -278,44 +352,43 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
           />
         </div>
 
-        {baseRows.length > 0 && (
-          <RowSection title={locale === "ko" ? "활성 효과" : "Active Effects"}>
-            {baseRows.map((r) => (
-              <EffectRowItem
+        {(vitalCards.length > 0 || effectRows.length > 0 || skillRows.length > 0) && (
+          <div className="mt-3 space-y-1.5">
+            {vitalCards.map((v) => {
+              const statKind = v.kind;
+              const total =
+                statKind === "maxHealth" ? vitals.health :
+                statKind === "maxHunger" ? vitals.hunger : vitals.sanity;
+              return (
+                <EffectCard
+                  key={`vital-${statKind}`}
+                  text={vitalText(statKind, v.total, locale)}
+                  locale={locale}
+                  onClick={() => setSelected({ kind: "vital", statKind, total })}
+                />
+              );
+            })}
+            {effectRows.map((r) => (
+              <EffectCard
                 key={r.key}
-                row={r}
+                text={r.text}
+                skillLabel={r.skillLabel}
+                learned={r.skillId ? true : undefined}
                 locale={locale}
                 onClick={() => setSelected({ kind: "effect", row: r })}
               />
             ))}
-          </RowSection>
-        )}
-
-        {buffRows.length > 0 && (
-          <RowSection title={locale === "ko" ? "스킬 강화 효과" : "Skill-Buffed Effects"}>
-            {buffRows.map((r) => (
-              <EffectRowItem
-                key={r.key}
-                row={r}
-                locale={locale}
-                onClick={() => setSelected({ kind: "effect", row: r })}
-              />
-            ))}
-          </RowSection>
-        )}
-
-        {skillRows.length > 0 && (
-          <RowSection title={locale === "ko" ? "회로 시스템 강화" : "Circuitry Skills"}>
             {skillRows.map((s) => (
-              <button
+              <EffectCard
                 key={s.skill}
+                text={s.text}
+                skillLabel={skillLabel(s.skill, locale)}
+                learned
+                locale={locale}
                 onClick={() => setSelected({ kind: "skill", skill: s.skill, text: s.text })}
-                className="w-full flex items-baseline justify-between px-3 py-2 border-b border-border last:border-b-0 hover:bg-surface/40 transition-colors text-left touch-manipulation"
-              >
-                <span className="text-sm text-foreground/95 leading-relaxed">{s.text}</span>
-              </button>
+              />
             ))}
-          </RowSection>
+          </div>
         )}
         </div>
 
@@ -334,56 +407,6 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
 }
 
 // ── UI ──────────────────────────────────────────────────────
-function RowSection({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="mt-4 first:mt-3">
-      <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5 px-1">
-        {title}
-      </div>
-      <div className="rounded-lg border border-border bg-background overflow-hidden">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function EffectRowItem({
-  row,
-  locale,
-  onClick,
-}: {
-  row: EffectRow;
-  locale: Locale;
-  onClick: () => void;
-}) {
-  const color = TYPE_COLORS[row.module.type];
-  return (
-    <button
-      onClick={onClick}
-      className="w-full flex items-center gap-2 px-3 py-2 border-b border-border last:border-b-0 hover:bg-surface/40 transition-colors text-left touch-manipulation"
-    >
-      <Image
-        src={`/images/game-items/${row.module.id}.png`}
-        alt=""
-        width={28}
-        height={28}
-        className="size-7 object-contain shrink-0"
-      />
-      <span className="flex-1 min-w-0 text-sm text-foreground/95 leading-relaxed">
-        {row.text}
-      </span>
-      {row.count > 1 && (
-        <span
-          className="shrink-0 text-[10px] font-bold px-1.5 py-px rounded-sm tabular-nums"
-          style={{ backgroundColor: `${color}30`, color }}
-        >
-          ×{row.count}
-        </span>
-      )}
-    </button>
-  );
-}
-
 function VitalStat({
   iconSrc,
   label,

@@ -15,6 +15,16 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.15",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 현황 패널 UI 회로판 상세와 통일 — RowSection(활성 효과/스킬 강화 효과/회로 시스템 강화 구분) 제거, 모든 효과 카드를 회로판 상세 ScrapbookEffects와 동일한 패러그래프 카드 스타일로",
+      "feat(skills): EffectCard 공용 컴포넌트로 추출 — Wx78CircuitBoard.ScrapbookEffects + Wx78StatusPanel 양쪽에서 재사용. 스킬 학습 헤더(점 인디케이터 + 학습됨/미학습) 동일",
+      "feat(skills): 현황 패널 vital(체/허/정) 카드 합산 — 같은 vital을 올리는 회로 여러 개면 '최대 N이 V 증가한다.' 1장으로 합쳐 표시 (예: maxsanity1 +40 + maxsanity +100 → '최대 정신력이 140 증가한다.'). compound 패러그래프(maxhunger의 '최대 허기 +100 + 허기 소모 -20%', bee의 '+100 정신력 + 회복' 등)는 vital 부분만 분리하여 합산하고 나머지는 그대로",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.14",
     date: "2026-05-08",
     dev: [

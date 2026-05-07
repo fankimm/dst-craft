@@ -531,49 +531,81 @@ export function ScrapbookEffects({
         const skill = detectSkillId(para, locale);
         if (skill) {
           const learned = activatedSkills.has(skill.skillId);
-          // Body = paragraph minus the leading "<skill name>의 효과로" / "<skill name> "
           const bodyKo = para.replace(/^.+?의 효과로\s*/, "");
           const bodyEn = para.replace(EN_SKILL_RE, "").replace(/^\s+/, "");
           const body = locale === "ko" ? bodyKo : bodyEn;
           return (
-            <div
+            <EffectCard
               key={i}
-              className={cn(
-                "text-sm px-3 py-2 rounded-md transition-opacity",
-                learned ? "bg-surface/70 text-foreground/95" : "bg-surface/30 text-muted-foreground opacity-60",
-              )}
-            >
-              <div className="flex items-center gap-1.5 mb-1">
-                <span
-                  className={cn(
-                    "inline-block size-1.5 rounded-full",
-                    learned ? "bg-emerald-500" : "bg-muted-foreground/40",
-                  )}
-                />
-                <span className="text-[11px] font-semibold">{skill.label}</span>
-                <span className="text-[10px] opacity-70">
-                  {learned
-                    ? locale === "ko" ? "학습됨" : "learned"
-                    : locale === "ko" ? "미학습" : "not learned"}
-                </span>
-              </div>
-              <p className="leading-relaxed">{body}</p>
-            </div>
+              text={body}
+              skillLabel={skill.label}
+              learned={learned}
+              locale={locale}
+            />
           );
         }
-
-        // Default paragraph — strip socket prefix
         const cleaned = stripSocket(para).trim();
         if (!cleaned) return null;
-        return (
-          <p
-            key={i}
-            className="text-sm leading-relaxed px-3 py-2 rounded-md bg-surface/60 text-foreground/95"
-          >
-            {cleaned}
-          </p>
-        );
+        return <EffectCard key={i} text={cleaned} locale={locale} />;
       })}
     </div>
   );
+}
+
+// Shared card UI for circuit effect paragraphs — used by ScrapbookEffects (per-module
+// detail) and Wx78StatusPanel (aggregated active effects). When `onClick` is provided
+// the card behaves as a button; otherwise it's a static div.
+export function EffectCard({
+  text,
+  skillLabel,
+  learned,
+  locale,
+  onClick,
+}: {
+  text: string;
+  skillLabel?: string;
+  learned?: boolean;
+  locale: Locale;
+  onClick?: () => void;
+}) {
+  const hasSkill = !!skillLabel;
+  const learnedActual = learned ?? true;
+  const className = cn(
+    "block w-full text-left text-sm px-3 py-2 rounded-md transition-opacity",
+    hasSkill
+      ? learnedActual
+        ? "bg-surface/70 text-foreground/95"
+        : "bg-surface/30 text-muted-foreground opacity-60"
+      : "bg-surface/60 text-foreground/95 leading-relaxed",
+    onClick && "hover:bg-surface/90 transition-colors touch-manipulation",
+  );
+  const inner = hasSkill ? (
+    <>
+      <div className="flex items-center gap-1.5 mb-1">
+        <span
+          className={cn(
+            "inline-block size-1.5 rounded-full",
+            learnedActual ? "bg-emerald-500" : "bg-muted-foreground/40",
+          )}
+        />
+        <span className="text-[11px] font-semibold">{skillLabel}</span>
+        <span className="text-[10px] opacity-70">
+          {learnedActual
+            ? locale === "ko" ? "학습됨" : "learned"
+            : locale === "ko" ? "미학습" : "not learned"}
+        </span>
+      </div>
+      <p className="leading-relaxed">{text}</p>
+    </>
+  ) : (
+    text
+  );
+  if (onClick) {
+    return (
+      <button onClick={onClick} className={className}>
+        {inner}
+      </button>
+    );
+  }
+  return <div className={className}>{inner}</div>;
 }
