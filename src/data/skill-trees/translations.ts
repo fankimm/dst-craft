@@ -1369,48 +1369,48 @@ export const skillTranslations: Record<
     title: { en: "Alpha Circuits Tinkering I", ko: "알파 회로 제조 I" },
     desc: { en: "Processing Circuits gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "연산 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
     details: {
-      en: "Processing: nearby sanity drain -20%\nSuper-Processing: nearby sanity drain -50%\nGastrogain: hunger rate -5%\nSuper-Gastrogain: hunger rate -25%",
-      ko: "연산 회로: 주변 정신력 감소 20% 경감\n초연산 회로: 주변 정신력 감소 50% 경감\n소화기 확장 회로: 허기 감소 속도 -5%\n소화기 초확장 회로: 허기 감소 속도 -25%",
+      en: "Processing: nearby sanity drain -20% (per circuit)\nSuper-Processing: nearby sanity drain -50% (per circuit)\nBeanbooster: nearby sanity drain -50%\nGastrogain: hunger rate -5% (per circuit)\nSuper-Gastrogain: hunger rate -25% (per circuit)",
+      ko: "연산 회로: 주변 정신력 감소 오라 20% 상쇄 (회로당)\n초연산 회로: 주변 정신력 감소 오라 50% 상쇄 (회로당)\n빈부스터 모듈: 주변 정신력 감소 오라 50% 상쇄\n소화기 확장 회로: 허기 감소 속도 -5% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -25% (회로당)",
     },
   },
   wx78_circuitry_alphabuffs_2: {
     title: { en: "Alpha Circuits Tinkering II", ko: "알파 회로 제조 II" },
     desc: { en: "Hardy Circuits, Processing Circuits, and Beanbooster Circuit gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "체력 증진 회로, 연산 회로, 빈부스터 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
     details: {
-      en: "Hardy: -2.5% physical damage\nSuper-Hardy: -5% physical damage\nProcessing: +10% equipment sanity regen\nSuper-Processing: +30% equipment sanity regen\nBeanbooster: +25% equipment sanity regen, shield at full HP (0.25/s regen)\nGastrogain: hunger rate -10%\nSuper-Gastrogain: hunger rate -30%",
-      ko: "체력 증진 회로: 물리 피해 2.5% 감소\n체력 초증진 회로: 물리 피해 5% 감소\n연산 회로: 장비 정신력 회복 +10%\n초연산 회로: 장비 정신력 회복 +30%\n빈부스터 모듈: 장비 정신력 회복 +25%, 체력 최대 시 보호막 (초당 0.25 재생)\n소화기 확장 회로: 허기 감소 속도 -10%\n소화기 초확장 회로: 허기 감소 속도 -30%",
+      en: "Hardy: combat damage -2.5% (per circuit)\nSuper-Hardy: combat damage -5% (per circuit)\nProcessing: equipment sanity regen +10% (per circuit)\nSuper-Processing: equipment sanity regen +30% (per circuit)\nBeanbooster: shield = 20% max HP × circuits, regen 0.25/s; equipment sanity regen +25%\nGastrogain: hunger rate -10% (per circuit)\nSuper-Gastrogain: hunger rate -30% (per circuit)",
+      ko: "체력 증진 회로: 전투 피해 2.5% 감소 (회로당)\n체력 초증진 회로: 전투 피해 5% 감소 (회로당)\n연산 회로: 의류 정신력 회복 +10% (회로당)\n초연산 회로: 의류 정신력 회복 +30% (회로당)\n빈부스터 모듈: 보호막 = 최대 체력 20% × 회로 수, 초당 0.25 재생, 의류 정신력 회복 +25%\n소화기 확장 회로: 허기 감소 속도 -10% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -30% (회로당)",
     },
   },
   wx78_circuitry_betabuffs_1: {
     title: { en: "Beta Circuits Tinkering I", ko: "베타 회로 제조 I" },
     desc: { en: "Thermal Circuit, Refrigerant Circuit, Optoelectronic Circuit, Chorusbox Circuit, and Rangebooster Circuit gain a new effect in addition to their original effect.", ko: "발열 회로, 냉각 회로, 광전자 회로, 음악상자 회로, 범위 증폭 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Thermal: freeze damage -50% (immune with 2)\nRefrigerant: overheat/burn damage -50%\nOptoelectronic: green night vision filter removed\nChorusbox: recruits nearby neutral mobs, tends crops\nRangebooster: increases scanner & drone ranges",
-      ko: "발열 회로: 빙결 피해 50% 감소 (2개면 면역)\n냉각 회로: 과열·화상 피해 50% 감소\n광전자 회로: 야간 투시 초록 필터 제거\n음악상자 회로: 주변 중립 생물 추종, 농작물 관리\n시야 확장 회로: 스캐너·드론 범위 증가",
+      en: "Thermal: freeze resistance +50% per circuit (immune with 2)\nRefrigerant: fire/overheat resistance +50% per circuit (immune with 2)\nOptoelectronic: removes mole vision tint from night vision\nChorusbox: pigs/bunnymen auto-recruit, follower limit +10 per circuit (max 20)\nRangebooster: Zaptrocuter +5 range, Roto-Mapper +100 range, Bio Scanalyzer +0.5 (+0.75 while scanning)",
+      ko: "발열 회로: 빙결 저항 +50% (2개면 면역)\n냉각 회로: 화염·과열 저항 +50% (2개면 면역)\n광전자 회로: 야간 투시 두더지 비전 효과 삭제\n음악상자 회로: 돼지·버니맨 자동 동료화, 추종자 한도 +10/회로 (최대 20마리)\n시야 확장 회로: 찌릿콥터 +5칸, 회전익 탐사기 +100칸, 생체 스캔 분석기 +0.5칸 (스캔 중 +0.75칸)",
     },
   },
   wx78_circuitry_betabuffs_2: {
     title: { en: "Beta Circuits Tinkering II", ko: "베타 회로 제조 II" },
     desc: { en: "Acceleration Circuits, Electrification Circuit, and Illumination Circuits gain a new effect in addition to their original effect.", ko: "가속 회로, 전격 회로, 조명 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Electrification: electric charge builds on consecutive hits, discharges as AoE (50 dmg per circuit)\nIllumination: directional light beam in facing direction\nAcceleration: heavy item/webbing/sticky trail slow -25% (2: -50%, 3: -75%)",
-      ko: "전격 회로: 연속 피격 시 전기 축적, 가득 차면 주변 전기 폭발 (장착당 50 피해)\n발광 회로: 바라보는 방향으로 추가 광선\n가속 회로: 무거운 물건·거미줄·여왕벌 끈적이 감속 25% 경감 (2개 50%, 3개 75%)",
+      en: "Acceleration / Super-Acceleration: slow penalty -25% per circuit (max -75%)\nElectrification: 16/14/12 hits to charge → AoE blast (+50 electric damage per circuit)\nIllumination / Super-Illumination: cone-shaped flashlight in facing direction (cone widens per circuit)",
+      ko: "가속 회로 / 초가속 회로: 이동속도 감소 패널티 25% 상쇄 (회로당, 합연산 최대 75%)\n전격 회로: 1/2/3개 장착 시 16/14/12회 피격마다 충전, 가득 차면 주변 광역 전기 폭발 (회로당 +50 피해)\n발광 회로 / 초발광 회로: 바라보는 방향으로 원뿔형 손전등 (회로당 시야각 확장)",
     },
   },
   wx78_circuitry_gammabuffs_1: {
     title: { en: "Gamma Circuits Tinkering I", ko: "감마 회로 제조 I" },
     desc: { en: "Redigestion Circuit and Sonic-Invoker Circuit gain a new effect in addition to their original effect.", ko: "재소화 회로와 음파 발진 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Redigestion: can reprocess all spoiled food\nSonic-Invoker: clockworks won't attack unprovoked",
-      ko: "재소화 회로: 모든 상한 음식 재가공 가능\n음파 발진 회로: 시계태엽 피조물이 먼저 공격하지 않음",
+      en: "Redigestion: even nearly-spoiled food counts toward Nutribrick\nSonic-Invoker: emits sonic wave continuously until cancelled\nChessmaster: clockworks become neutral, can be recruited without electric stun",
+      ko: "재소화 회로: 상하기 직전의 음식도 영양 블록 카운트에 포함\n음파 발진 회로: 입력으로 멈출 때까지 음파 무한 방출\n체스 마스터 회로: 시계태엽 몬스터 중립화, 전기로 그로기 시키지 않아도 동료화 가능",
     },
   },
   wx78_circuitry_gammabuffs_2: {
     title: { en: "Gamma Circuits Tinkering II", ko: "감마 회로 제조 II" },
     desc: { en: "Blocking Circuit and Spin-Cycle Circuit gain a new effect in addition to their original effect.", ko: "방어 회로와 회전기 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Blocking: enhanced shield defense",
-      ko: "방어 회로: 방어 능력 강화",
+      en: "Blocking: knockback immunity while shielding\nSpin-Cycle: spin speed 2.5/s → 3/s",
+      ko: "방어 회로: 방어 중 밀쳐내기 효과 면역\n회전기 회로: 회전 속도 초당 2.5회전 → 3회전",
     },
   },
   wx78_circuitry_slot_1: {
