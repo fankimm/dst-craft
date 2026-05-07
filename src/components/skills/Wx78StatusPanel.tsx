@@ -181,6 +181,78 @@ function aggregateVitalRows(
   return { vitals, remaining };
 }
 
+// ── MoveSpeed aggregation ────────────────────────────────────
+// 게임 메커닉: TUNING.MOVESPEED_CHIPBOOSTS = [0, 0.25, 0.4, 0.5] (chip count → 보너스율).
+// movespeed + movespeed2 chip 수를 합쳐서 인덱스 lookup. 각 모듈 본문은 lookup table을
+// 그대로 박아둔 텍스트("1개 장착 시 25%, 2개 40%, ...")라 사용자에겐 혼란 → 현재 장착 수에
+// 해당하는 단일 값으로 압축 표시.
+const MOVESPEED_CHIPBOOSTS = [0, 0.25, 0.4, 0.5];
+
+function totalMoveSpeedChips(counts: CircuitCounts): number {
+  let chips = 0;
+  for (const [id, count] of Object.entries(counts)) {
+    if (!count) continue;
+    const m = WX78_CIRCUITS_BY_ID[id];
+    if (!m) continue;
+    for (const s of m.stats ?? []) {
+      if (s.kind === "moveSpeed") chips += s.value * count;
+    }
+  }
+  return chips;
+}
+
+function moveSpeedPct(chips: number): number {
+  const idx = Math.min(chips, MOVESPEED_CHIPBOOSTS.length - 1);
+  return MOVESPEED_CHIPBOOSTS[idx];
+}
+
+function moveSpeedText(pct: number, locale: Locale): string {
+  const p = Math.round(pct * 100);
+  return locale === "ko" ? `이동 속도가 ${p}% 증가한다.` : `Movement speed +${p}%.`;
+}
+
+// movespeed/movespeed2의 baseRow는 합산 카드로 대체 → 원본 row drop.
+function isMoveSpeedRow(row: EffectRow): boolean {
+  if (row.skillId) return false;
+  const id = row.module.id;
+  if (id !== "wx78module_movespeed" && id !== "wx78module_movespeed2") return false;
+  return /이동\s*속도/.test(row.text) || /movement\s*speed/i.test(row.text);
+}
+
+// ── ArmorPct aggregation (alpha-buff-2 학습 시 발생하는 buff) ──
+// MAXHEALTH_ARMOR_ALPHABUFF_2 = 0.025 (per maxhealth), * 2 = 0.05 (per maxhealth2).
+// 둘 다 끼고 Tinkering II 학습 시 additive 합산 (별개 sourcemodifierlist 항목).
+// buffRows에서 "방어력이 N% 증가한다." 패턴 감지 → 합산 단일 카드.
+function extractArmorBuffPct(text: string): number | null {
+  const ko = text.match(/^방어력이 (\d+(?:\.\d+)?)% 증가한다\.?\s*$/);
+  if (ko) return parseFloat(ko[1]);
+  const en = text.match(/^Increases armor by (\d+(?:\.\d+)?)%\.?\s*$/);
+  if (en) return parseFloat(en[1]);
+  return null;
+}
+
+function armorBuffText(pct: number, locale: Locale): string {
+  const formatted = Number.isInteger(pct) ? pct.toString() : pct.toFixed(1).replace(/\.0$/, "");
+  return locale === "ko" ? `방어력이 ${formatted}% 증가한다.` : `Increases armor by ${formatted}%.`;
+}
+
+// buffRows에서 armor pct 합산. 같은 skill(alpha-buff-2)에 묶임.
+function aggregateArmorBuffs(
+  rows: EffectRow[],
+): { remaining: EffectRow[]; armor: { skillId: string; total: number } | null } {
+  let total = 0;
+  let skillId: string | undefined;
+  const remaining: EffectRow[] = [];
+  for (const row of rows) {
+    if (!row.skillId) { remaining.push(row); continue; }
+    const pct = extractArmorBuffPct(row.text);
+    if (pct == null) { remaining.push(row); continue; }
+    total += pct * row.count;
+    skillId = row.skillId;
+  }
+  return { remaining, armor: total > 0 && skillId ? { skillId, total } : null };
+}
+
 // WX-78 baseline — what the user sees as default max stats (회로/스킬 0 기준)
 const WX78_BASE_VITAL = { health: 100, hunger: 100, sanity: 100 };
 
@@ -288,9 +360,22 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     () => buildEffectRows(effectiveCounts, effectiveSkills, locale),
     [effectiveCounts, effectiveSkills, locale],
   );
-  const { vitals: vitalCards, remaining: effectRows } = useMemo(
+  // 1차 패스: vital 합산 (체/허/정)
+  const { vitals: vitalCards, remaining: afterVital } = useMemo(
     () => aggregateVitalRows(rawEffectRows, locale),
     [rawEffectRows, locale],
+  );
+  // 2차 패스: moveSpeed 합산 — base row에서 movespeed/movespeed2 텍스트 drop, chip 합으로 카드 1장
+  const moveSpeedChips = useMemo(() => totalMoveSpeedChips(effectiveCounts), [effectiveCounts]);
+  const moveSpeedAggregated = moveSpeedChips > 0 ? moveSpeedPct(moveSpeedChips) : 0;
+  const afterMoveSpeed = useMemo(
+    () => afterVital.filter((r) => !isMoveSpeedRow(r)),
+    [afterVital],
+  );
+  // 3차 패스: armor buff (alpha-buff-2) 합산
+  const { remaining: effectRows, armor: armorBuff } = useMemo(
+    () => aggregateArmorBuffs(afterMoveSpeed),
+    [afterMoveSpeed],
   );
   const skillRows = useMemo(
     () => getGlobalSkillRows(effectiveSkills, locale),
@@ -352,7 +437,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
           />
         </div>
 
-        {(vitalCards.length > 0 || effectRows.length > 0 || skillRows.length > 0) && (
+        {(vitalCards.length > 0 || moveSpeedAggregated > 0 || armorBuff || effectRows.length > 0 || skillRows.length > 0) && (
           <div className="mt-3 space-y-1.5">
             {vitalCards.map((v) => {
               const statKind = v.kind;
@@ -368,12 +453,36 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
                 />
               );
             })}
-            {effectRows.map((r) => (
+            {moveSpeedAggregated > 0 && (
+              <EffectCard
+                key="movespeed-agg"
+                text={moveSpeedText(moveSpeedAggregated, locale)}
+                locale={locale}
+              />
+            )}
+            {effectRows.filter((r) => !r.skillId).map((r) => (
+              <EffectCard
+                key={r.key}
+                text={r.text}
+                locale={locale}
+                onClick={() => setSelected({ kind: "effect", row: r })}
+              />
+            ))}
+            {armorBuff && (
+              <EffectCard
+                key="armor-agg"
+                text={armorBuffText(armorBuff.total, locale)}
+                skillLabel={skillLabel(armorBuff.skillId, locale)}
+                learned
+                locale={locale}
+              />
+            )}
+            {effectRows.filter((r) => r.skillId).map((r) => (
               <EffectCard
                 key={r.key}
                 text={r.text}
                 skillLabel={r.skillLabel}
-                learned={r.skillId ? true : undefined}
+                learned
                 locale={locale}
                 onClick={() => setSelected({ kind: "effect", row: r })}
               />

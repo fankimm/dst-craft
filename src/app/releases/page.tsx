@@ -15,6 +15,16 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.16",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 현황 패널 — 이동속도 합산 카드. movespeed/movespeed2 모듈 본문(\"1개=25%, 2개=40%, 3개=50%\" lookup table)을 현재 chip 합계에 해당하는 단일 값으로 압축 표시 (예: 1 chip → \"이동 속도가 25% 증가한다.\"). TUNING.MOVESPEED_CHIPBOOSTS=[0,0.25,0.4,0.5] 인덱스 lookup",
+      "feat(skills): WX-78 현황 패널 — 방어력 buff 합산. maxhealth(2.5%) + maxhealth2(5%) + Tinkering II 학습 시 7.5% 합산 카드 1장으로. additive sourcemodifierlist 메커닉 기준",
+      "note: 정신력 감소 오라 영향(maxsanity1 -20%, maxsanity -50%, bee -50%)은 multiplicative 스택 메커닉(SourceModifierList product)이라 단순 합산 못함 → 이번엔 per-module 표시 유지. 추후 product 합산 카드로 전환 검토",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.15",
     date: "2026-05-08",
     dev: [
