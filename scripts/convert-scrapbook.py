@@ -143,6 +143,14 @@ def parse_specialinfo_en(path: Path) -> dict:
     return result
 
 
+# 인게임 한글 ko.po의 명백한 번역 버그 보정. (영문/실제 코드 기준이 정답)
+# key: SPECIALINFO key, value: list of (find_pattern, replacement) 튜플
+KO_TRANSLATION_FIXES = {
+    # 연산 회로: 영문은 "+40", 한글 ko.po는 "+100"으로 잘못 번역되어 있음
+    "WX78MODULE_MAXSANITY1": [("최대 정신력이 100 증가한다", "최대 정신력이 40 증가한다")],
+}
+
+
 def parse_specialinfo_ko(path: Path) -> dict:
     """Parse STRINGS.SCRAPBOOK.SPECIALINFO.* translations from ko.po."""
     content = path.read_text(encoding="utf-8")
@@ -174,6 +182,12 @@ def parse_specialinfo_ko(path: Path) -> dict:
 
         translation = "".join(msgstr_parts).replace("\\n", "\n").replace('\\"', '"')
         if translation:
+            # 인게임 번역 버그 보정 (KO_TRANSLATION_FIXES 참조)
+            for find, repl in KO_TRANSLATION_FIXES.get(key, []):
+                if find in translation:
+                    translation = translation.replace(find, repl)
+                else:
+                    print(f"[warn] KO_TRANSLATION_FIXES: '{find}' not found in {key} — ko.po가 패치됐을 수 있음, fix 항목 재검토 필요", file=__import__("sys").stderr)
             result[key] = translation
 
     return result

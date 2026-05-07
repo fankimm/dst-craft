@@ -31,6 +31,13 @@
 - **교훈**: 한글명은 반드시 ko.po 파일에서 `STRINGS.NAMES.<ID>` → `msgstr` 값을 확인한 후 작성할 것. 절대 추측 금지.
 - **검증**: `grep -A 2 'STRINGS.NAMES.<ID>' ko.po | grep msgstr`로 원본 확인
 
+### ko.po 한글 번역 자체에 게임 메커닉과 어긋나는 수치 버그가 박혀있는 경우
+- **문제**: `wx78module_maxsanity1`(연산 회로) 한글 스크랩북: "최대 정신력이 100 증가한다". 영문 스크랩북·tuning.lua 모두 +40. 한글 표기를 따라 wx78-circuits.ts에 value: 100 박았다가(0.21.13) 잘못된 값임을 확인하고 +40으로 되돌림(0.21.14). 제작탭(ItemStatsPanel)에 표시되는 한글 specialinfo_ko도 동일한 버그
+- **원인**: ko.po 번역 자체가 게임 동작과 어긋남(인게임 번역팀 측 실수). "사용자가 인게임에서 보는 한글 표기와 일치시키자" 원칙이 평소엔 옳지만, 한글 번역이 게임 코드와 모순될 때는 코드/영문이 정답
+- **교훈**: ko.po의 한글 번역에 "수치"가 들어있는 경우(체력 +N, 데미지 +N% 등), 영문 원문 또는 tuning.lua/prefabs/*.lua의 실제 상수와 한 번 더 대조할 것. 일치하면 한글 그대로, 어긋나면 코드/영문이 우선. 명백한 번역 버그는 변환 파이프라인에서 보정(`scripts/convert-scrapbook.py`의 `KO_TRANSLATION_FIXES` 같은 dict)
+- **검증**: `grep -A1 'STRINGS.SCRAPBOOK.SPECIALINFO.<ID_UPPER>' ko.po | grep msgstr` ↔ `grep '<ID_UPPER>' tuning.lua` ↔ 영문 specialinfo (`grep -A5 'SCRAPBOOK_SPECIALINFO' strings.lua`). 셋이 같은 수치를 가리키는지 교차 확인
+- **부수**: 비슷한 번역 버그가 다른 회로/캐릭터/아이템에도 있을 수 있음. 시뮬레이터/스탯 시스템에서 한글 스크랩북 텍스트의 수치를 직접 파싱해 사용하지 말 것 — 별도 정형 필드(value: number)로 코드 기준 값을 두고, 텍스트는 표시용으로만 사용
+
 ### 함수명만 보고 동작을 추측
 - **문제**: `MakeForgeRepairable` 함수명만 보고 "대장간에서 수리 가능"이라고 작성 → 실제로는 전용 수리 키트로 수리하는 구조
 - **원인**: 함수 내부 구현(standardcomponents.lua)과 관련 컴포넌트(forgerepair.lua, forgerepairable.lua)를 읽지 않고 함수명에서 의미를 추측

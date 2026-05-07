@@ -15,12 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.14",
+    date: "2026-05-08",
+    dev: [
+      "fix(data): 연산 회로(maxsanity1) 정신력 +100 → +40 재보정 — 한글 ko.po의 '+100' 표기는 인게임 번역 버그였음. 영문/실제 코드(tuning.lua, scrapbook 영문) 모두 +40. 0.21.13에서 한글 표기 따라간 것을 영문/코드 기준으로 되돌림. 스킬트리 회로판/현황의 maxSanity 기여도 + 제작탭(ItemStatsPanel)의 specialinfo_ko 표시 모두 +40으로 일치",
+      "feat(scrapbook): convert-scrapbook.py에 KO_TRANSLATION_FIXES dict 추가 — ko.po의 알려진 번역 버그를 변환 단계에서 자동 보정 (현재 maxsanity1 한 항목)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.13",
     date: "2026-05-08",
     dev: [
       "feat(DetailPanel): hideClose prop 추가 — WX-78 상세 패널에선 X 닫기 아이콘 숨김 (오버레이 클릭으로 닫음)",
       "fix(skills): vital DetailPanel 'WX' 텍스트 박스 → wx78 캐릭터 portrait 아이콘으로 변경",
-      "fix(data): 연산 회로(maxsanity1) 정신력 +40 → +100으로 보정 — 한글 인게임 스크랩북·제작탭 표기와 일치 (영문은 +40으로 mod 번역 차이)",
+      "fix(data): 연산 회로(maxsanity1) 정신력 +40 → +100으로 보정 — 한글 인게임 스크랩북·제작탭 표기와 일치 (영문은 +40으로 mod 번역 차이) [0.21.14에서 되돌림 — 한글이 버그]",
     ],
     changes: { ko: [], en: [] },
   },
