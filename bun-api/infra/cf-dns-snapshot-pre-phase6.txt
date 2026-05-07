@@ -1,0 +1,16 @@
+CF DNS snapshot — Phase 6 swap 전 상태 (2026-05-07 08:40 UTC)
+========================================================
+롤백용 reference. 각 record를 아래 값으로 되돌리면 prod 트래픽이 Vercel로.
+
+  dstcraft.com.        CNAME  cname.vercel-dns.com.                    (proxied)
+  www.dstcraft.com.    CNAME  a7e19d2baff1e170.vercel-dns-017.com.     (proxied)
+  beta.dstcraft.com.   CNAME  946d743a-d5bb-498b-be8f-c81d1ca3935b.cfargotunnel.com.  (proxied — Phase 1 tunnel, 변경 없음)
+
+기타 (변경 안 함):
+  NS     casey.ns.cloudflare.com / kia.ns.cloudflare.com
+  TXT    google-site-verification=Uf-YzP2KK6FBrfzRLKSOX86eohbFHmTQbbSyb6SnVnc
+
+Phase 6 후 dstcraft.com / www CNAME은 tunnel(946d743a-d5bb-...)로 바뀜.
+긴급 rollback:
+  CF Dashboard → DNS → dstcraft.com / www 행 Edit → Content를 위 표 값으로 변경 → Save
+  TTL 5분 → 사용자 트래픽 5분 이내 Vercel로 복귀.
