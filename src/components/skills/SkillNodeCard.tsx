@@ -22,6 +22,7 @@ interface Props {
   icon?: string;
   title: string;
   description?: string;
+  details?: string;
   isLearned: boolean;
   isLocked: boolean;
   canLearn: boolean;
@@ -39,6 +40,7 @@ export function SkillNodeCard({
   icon,
   title,
   description,
+  details,
   isLearned,
   isLocked,
   canLearn,
@@ -158,6 +160,15 @@ export function SkillNodeCard({
           )}
         </button>
       </div>
+
+      {/* Detailed stats */}
+      {details && (
+        <div className="rounded-md bg-muted/50 px-2.5 py-1.5 ml-[50px]">
+          <p className="text-[11px] text-muted-foreground leading-relaxed whitespace-pre-line font-mono">
+            {details}
+          </p>
+        </div>
+      )}
 
       {/* Related items (inline) */}
       {relatedItems.length > 0 && (

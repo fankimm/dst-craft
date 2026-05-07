@@ -47,6 +47,12 @@ function getDesc(id: string, locale: Locale): string {
   return locale === "ko" ? entry.desc.ko : entry.desc.en;
 }
 
+function getDetails(id: string, locale: Locale): string {
+  const entry = skillTranslations[id];
+  if (!entry?.details) return "";
+  return locale === "ko" ? entry.details.ko : entry.details.en;
+}
+
 function getGroupLabel(groupId: string, locale: Locale): string {
   const entry = groupTranslations[groupId];
   if (!entry) return groupId;
@@ -379,6 +385,7 @@ export function SkillTreeView({
                             icon={item.node.icon}
                             title={getTitle(item.node.id, locale)}
                             description={getDesc(item.node.id, locale)}
+                            details={getDetails(item.node.id, locale)}
                             isLearned={isLearned(item.node.id)}
                             isLocked={locked}
                             canLearn={canLearn(item.node.id)}
