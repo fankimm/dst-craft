@@ -384,14 +384,17 @@ sqlite3 ~/dstcraft/data/app.db "SELECT COUNT(*) FROM users; SELECT COUNT(*) FROM
 
 ### 4. bun-api 재시작 (이제 SQLite로 동작)
 ```bash
-# launchd plist에 DB_PATH 환경변수 추가 필요. 기존 plist의 EnvironmentVariables 확인:
-plutil -p ~/Library/LaunchAgents/com.dstcraft.api.plist
+# repo 안 plist에 DB_PATH가 박혀있음 → ~/Library/LaunchAgents/ 와 동기화 후 재시작
+cp ~/works/dst-craft/bun-api/infra/com.dstcraft.api.plist ~/Library/LaunchAgents/com.dstcraft.api.plist
+# (.env 파일에 UPSTASH/JWT/GOOGLE 등 비밀값이 있다면 그대로 유지됨 — bun이 자동 로드)
 
-# DB_PATH=~/dstcraft/data/app.db 가 없으면 plist 편집 후
 launchctl kickstart -k gui/$(id -u)/com.dstcraft.api
 sleep 2
 tail ~/dstcraft/logs/bun-api.out.log
 # "[bun-api] listening on :3001" 확인
+
+# DB_PATH 적용 확인
+launchctl print gui/$(id -u)/com.dstcraft.api | grep DB_PATH
 ```
 
 ### 5. 베타 검증

@@ -38,6 +38,8 @@
   <dict>
     <key>PATH</key>
     <string>/Users/fankimm/.bun/bin:/usr/local/bin:/usr/bin:/bin</string>
+    <key>DB_PATH</key>
+    <string>/Users/fankimm/dstcraft/data/app.db</string>
   </dict>
 </dict>
 </plist>
