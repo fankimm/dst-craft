@@ -508,17 +508,21 @@ export const WX78_CIRCUITS_BY_ID: Record<string, CircuitModule> =
   Object.fromEntries(WX78_CIRCUITS.map((c) => [c.id, c]));
 
 // ── 헬퍼 ──────────────────────────────────────────────────────
+// 인게임은 알파/베타/감마 각각 별도의 슬롯 바를 가지며, 각 바마다 6칸(스킬 학습 시 7칸)
 export function getMaxSlots(activatedSkills: Set<string>): number {
   return activatedSkills.has("wx78_circuitry_slot_1")
     ? WX78_TUNING.MAXSLOTS_WITH_SKILL
     : WX78_TUNING.INITIAL_MAXSLOTS;
 }
 
-export function getUsedSlots(equippedCounts: Record<string, number>): number {
+export function getUsedSlotsByType(
+  equippedCounts: Record<string, number>,
+  type: CircuitType,
+): number {
   let total = 0;
   for (const [id, count] of Object.entries(equippedCounts)) {
     const m = WX78_CIRCUITS_BY_ID[id];
-    if (m) total += m.slots * count;
+    if (m && m.type === type) total += m.slots * count;
   }
   return total;
 }

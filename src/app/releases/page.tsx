@@ -15,6 +15,28 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.1",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): WX-78 회로판 슬롯 시스템을 인게임에 맞게 수정 — 알파/베타/감마 각각 6슬롯(스킬 시 7) 별도 운용 (기존: 통합 6슬롯)",
+      "feat(skills): 회로판 레이아웃 그리드 + DetailPanel(bottom sheet)로 재설계 — 카드 클릭 시 효과/스킬강화/스캔출처/장착컨트롤 표시. 한 줄 한 카드 → 4열 그리드",
+      "feat(skills): 슬롯 바를 알파/베타/감마 3개로 분리 표시 — 각 바마다 색상 구분(노랑/파랑/보라), 사용/총 슬롯 별도",
+      "fix(skills): 회로판/현황 탭 하단 클리핑 수정 — flex-1 min-h-0 적용",
+    ],
+    changes: {
+      ko: [
+        "WX-78 회로판 인게임 동작에 맞게 수정 — 알파/베타/감마 회로가 각각 별도 6슬롯(스킬 시 7)을 사용",
+        "회로판을 그리드 레이아웃 + 상세 패널 방식으로 변경 — 카드 누르면 효과·스킬 강화·스캔 출처를 자세히 보고 그 자리에서 장착",
+        "회로판/현황 탭 하단이 잘리던 문제 수정",
+      ],
+      en: [
+        "WX-78 Circuit Board fixed to match in-game: Alpha/Beta/Gamma each have 6 slots (7 with slot upgrade) — separate, not shared",
+        "Circuit Board redesigned as grid layout + detail bottom sheet — tap a card to see effects, skill buffs, scan source, and equip in place",
+        "Fixed bottom clipping on Circuit Board / Status tabs",
+      ],
+    },
+  },
+  {
     version: "0.21.0",
     date: "2026-05-08",
     dev: [
@@ -26,10 +48,10 @@ const releases: Release[] = [
     ],
     changes: {
       ko: [
-        "WX-78 스킬트리에 회로판/현황 서브탭 추가 — 회로(모듈) 23종을 슬롯 6칸(슬롯 확장 스킬 시 7칸)에 직접 장착·해제하고, 스킬과 합산된 능력치 변화를 한눈에 확인할 수 있습니다",
+        "WX-78 스킬트리에 회로판/현황 서브탭 추가 — 회로(모듈) 23종을 슬롯에 직접 장착·해제하고, 스킬과 합산된 능력치 변화를 한눈에 확인할 수 있습니다",
       ],
       en: [
-        "Added Circuit Board and Status sub-tabs to WX-78 skill tree — equip up to 23 circuits in 6 slots (7 with slot upgrade skill), see combined skill+circuit effects at a glance",
+        "Added Circuit Board and Status sub-tabs to WX-78 skill tree — equip 23 circuits in slots, see combined skill+circuit effects at a glance",
       ],
     },
   },
