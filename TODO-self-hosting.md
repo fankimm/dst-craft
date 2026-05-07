@@ -10,8 +10,11 @@
 > - ✅ 운영 정비 일부 — macOS 자동 업데이트/재부팅 차단
 > - ✅ Phase 3 완료 — Worker → Bun API (Hono) 이식, 25 엔드포인트, nginx /api/ 프록시, launchd 자동 시작/재시작
 > - ✅ Phase 4 완료 (2026-05-07) — bun-api 데이터 레이어 SQLite로 교체. 마이그레이션 14.8s, DB 1.3MB(600K + 716K WAL). 베타 라이브 검증: rating/top-countries/popular/stats/supporters 모두 SQLite 기반 응답. 일일 백업 launchd 동작(132K gzip). UV는 PFCOUNT가 IP 추출 불가라 의도적으로 fresh start.
-> - ✅ Phase 5 완료 (2026-05-07) — `.github/workflows/deploy-beta.yml` + self-hosted runner(macOS x64, mac-mini) 등록. main 푸시 시 자동: ~/works/dst-craft 동기화(stash로 WIP 보존) → 변경 경로별 frontend deploy-beta.sh / bun-api launchctl 재시작 / Telegram 알림(secrets 미설정 시 skip).
-> - ⏭ 다음: Phase 6 (prod 컷오버) → Phase 7 (운영 정비)
+> - ✅ Phase 5 완료 (2026-05-07) — `.github/workflows/deploy-beta.yml` + self-hosted runner(macOS x64, mac-mini) 등록. main 푸시 시 자동: ~/works/dst-craft 동기화(stash로 WIP 보존) → 변경 경로별 frontend deploy-beta.sh / bun-api launchctl 재시작 / Telegram 알림.
+> - ✅ Phase 5.5 완료 (2026-05-07) — `vercel.json` catch-all `/api/*` → `https://beta.dstcraft.com/api/$1` proxy. NEXT_PUBLIC_ANALYTICS_WORKER_URL = `/api`. **prod도 Mac mini SQLite 사용**. Vercel은 정적 호스팅 + edge proxy만. 라이브 검증: 외부 모바일 사용자 트래픽이 SQLite로 흐름.
+> - ✅ Phase 6 완료 (2026-05-07) — nginx에 `dstcraft.com` / `www.dstcraft.com` server block 추가 (snippets/dstcraft-common.conf로 beta+prod 룰 공유), CF Tunnel에 두 호스트 Published Application 추가, CF DNS CNAME swap (Vercel → Tunnel `946d743a-...`). 정적 트래픽도 Mac mini가 직접 서빙. Vercel은 폴백으로 idle 유지.
+> - ✅ Phase 6.5 완료 (2026-05-07) — `.github/workflows/watchdog.yml` cron */5분, prod /api 헬스체크. 1/3 실패 무시, 2/3 Telegram 경고, 3/3 + WATCHDOG_FAILOVER=1 시 CF API로 DNS 자동 rollback. 라이브 풀 검증: bun-api 다운 → 워치독 감지 → DNS 자동 swap (Vercel) → Telegram 알림 → 수동 복구. 함정 기록: GH Vars/Secrets paste trailing newline (mistakes.md).
+> - ⏭ 다음: 24h 안정 모니터 → **Phase 7 (Worker + Upstash 제거)**
 
 ---
 
@@ -450,33 +453,143 @@ cat ~/dstcraft/logs/backup.out.log
 
 ---
 
-# Phase 6 — 메인 도메인 컷오버
+# Phase 6 — 메인 도메인 컷오버 ✅
 
-> 목표: `dstcraft.com` 트래픽을 Mac mini로 전환. Vercel은 폴백.
+**완료 (2026-05-07).** 실제 실행 산출물:
+- `bun-api/infra/nginx-dstcraft.conf` + `nginx-dstcraft-common.conf` — beta + prod server block, snippet 분리해서 `include`
+- 라이브 nginx (`/usr/local/etc/nginx/servers/dstcraft.conf` + `snippets/dstcraft-common.conf`) 동기화 + reload
+- CF Tunnel에 dstcraft.com / www.dstcraft.com Published Application 추가 (서비스 HTTP localhost:8080, 동일 tunnel `946d743a-d5bb-498b-be8f-c81d1ca3935b`)
+- CF DNS swap: dstcraft.com / www CNAME → tunnel target. **CF Tunnel UI의 자동 DNS 갱신은 conflict로 실패 → 수동 PATCH로 swap 완료**
+- `bun-api/infra/cf-dns-snapshot-pre-phase6.txt` — 롤백용 DNS 백업 reference
 
-- nginx에 `dstcraft.com` server block 활성화 + `/srv/dstcraft/prod` 채우기
-- CF Tunnel에 `dstcraft.com` Public Hostname 추가
-- Vercel 도메인 연결은 1개월 유지 (롤백 안전망)
-- 트래픽 모니터, 24h 안정 확인
-- **롤백**: CF Tunnel ingress에서 dstcraft.com 제거 → CF DNS가 Vercel로 자동 폴백 (5분 이내)
+**현재 라이브 상태** (확인됨):
+- dstcraft.com / www / beta 모두 CNAME → `946d743a-...cfargotunnel.com`
+- 정적 + /api 모두 Mac mini SQLite. Vercel은 idle (custom domain 유지 — 폴백)
+
+**롤백** (긴급 시 5분 이내):
+CF Dashboard → DNS → 각 record를 `cf-dns-snapshot-pre-phase6.txt`의 값으로 Edit
+- dstcraft.com → `cname.vercel-dns.com`
+- www.dstcraft.com → `a7e19d2baff1e170.vercel-dns-017.com`
 
 ---
 
-# Phase 7 — 운영 정비
+# Phase 6.5 — Watchdog (자동 DNS auto-failover) ✅
 
-- macOS 자동 업데이트/재시작 끄기 (`sudo softwareupdate --schedule off`)
-- 자체 헬스체커: launchd 5분 주기로 `curl localhost:80` → 실패 시 텔레그램 알림
-- Mac mini 자체 다운 감지 백업: 무료 UptimeRobot 1회선 (외부 5분 ping)
-- nginx access log 로테이션 (`newsyslog.conf`)
-- SQLite 일일 백업 (`~/Backups/dstcraft/`)
-- 6개월 비교 측정 메트릭: LCP/TTFB, CF Cache Hit Ratio, 일일 origin 요청 수, 다운타임 비율, 운영 비용
+**완료 (2026-05-07).** 산출물:
+- `.github/workflows/watchdog.yml` — cron */5분 + workflow_dispatch
+- runs-on: ubuntu-latest (외부, Mac mini 다운에도 살아있음)
+- probe: `curl https://www.dstcraft.com/api/_debug/health?cb=$(date +%s%N)` × 3회
+- 1/3 fail: 무시 (네트워크 jitter)
+- 2/3 fail: Telegram 경고
+- 3/3 fail: workflow 실패 + Telegram 긴급 + (vars.WATCHDOG_FAILOVER=1 시) CF API로 dstcraft.com / www CNAME → `cname.vercel-dns.com`(Vercel) auto-swap
+- GH Secrets: `CF_API_TOKEN`, `CF_ZONE_ID`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`
+- GH Variables: `WATCHDOG_FAILOVER=1`, `WATCHDOG_VERCEL_CNAME=cname.vercel-dns.com`
+
+**라이브 풀 검증 완료**: bun-api 강제 다운 → run #9 watchdog 감지 → DNS auto-swap (Vercel) → Telegram 두 번 알림 → 수동 복구 확인.
+
+**함정 기록** (mistakes.md):
+- GH UI에서 paste한 변수 값에 trailing newline이 묻어 CF API 9207 (Request body invalid) → workflow에서 `tr -d '[:space:]'`로 trim
+- curl `-fsS`는 4xx body swallow. 디버그 시 `-sS -w "\nHTTP:%{http_code}"`로 body+status 같이
+
+**리커버리 정책**: auto-failover 트리거 후 Mac mini 복구 시 DNS는 자동 복귀 안 됨. 사용자가 수동으로 다시 tunnel로 swap 필요 (CF UI 또는 watchdog 워크플로 수정).
+
+⚠️ **TODO 보안**: 디버깅 중 사용자가 채팅에 노출한 CF API token (`cfut_YVtj0...`) 폐기 + 새 토큰 발급 후 GH Secret 갱신.
+
+---
+
+# Phase 7 — Worker + Upstash 제거 (다음 세션 시작점)
+
+> 목표: 마지막 외부 의존성 제거. prod에서 24h 안정 모니터 후 진행.
+
+## 사전 조건
+- 24h 무중단 + Telegram alert 0건 (또는 알려진 transient만)
+- nginx access log에서 prod 트래픽이 정상 흐르는지 확인 (`/api/track`, `/api/event` 200, /api/* 호출들 200)
+- Vercel idle 상태 (Vercel logs에서 inbound traffic이 없거나 매우 적은지)
+
+## 실행 절차
+
+### 1. 사전 점검
+```bash
+# bun-api .env에서 UPSTASH 변수 사용처 확인 (런타임은 안 쓰지만 migrate-upstash.ts가 사용)
+cd ~/works/dst-craft/bun-api
+grep -r 'UPSTASH' src/ scripts/
+# src/는 import 0건이어야 함. scripts/migrate-upstash.ts는 일회성이라 OK.
+
+# 24h 모니터 결과 확인
+ls -lt ~/Backups/dstcraft/  # 백업 정상 도는지
+sqlite3 ~/dstcraft/data/app.db 'SELECT scope, count FROM analytics_counters WHERE scope="pv_total" AND country=""'  # 누적 PV 증가 확인
+tail -50 ~/actions-runner/_diag/*.log | grep watchdog  # 알림 0건 또는 transient만
+```
+
+### 2. Cloudflare Worker 폐기
+```bash
+cd ~/works/dst-craft/worker
+npx wrangler delete
+# 또는 dashboard https://dash.cloudflare.com → Workers → dst-analytics → Delete
+```
+
+### 3. Upstash Redis 제거
+- https://console.upstash.com → DB 선택 → Settings → Delete Database
+- (백업: 필요 시 마지막 export로 redis-cli dump 받아 git ignored 디렉터리에 보관)
+
+### 4. 코드 정리
+```bash
+# bun-api/.env 에서 UPSTASH_REDIS_REST_URL/TOKEN 제거 (런타임 미사용)
+# bun-api/src/lib/env.ts 에서도 optional 선언 제거 가능
+# bun-api/scripts/migrate-upstash.ts 와 fillin-userdata.ts 는 보존 추천 (재사용 X지만 archive 가치)
+
+# repo의 worker/ 디렉터리 — 두 옵션:
+#   A) 삭제 (rm -rf worker/)
+#   B) 보존하되 README.md 추가하여 "deprecated, 참고용" 명시
+# 보통 A 권장. git history에 남으니 복구 가능.
+
+# vercel.json의 catch-all rewrite 더 이상 worker로 안 가니 그대로 둬도 OK.
+```
+
+### 5. 환경변수 정리
+- bun-api .env: UPSTASH_* 줄 삭제
+- bun-api/infra/com.dstcraft.api.plist: 변경 없음 (UPSTASH_*는 plist에 없음, .env에만 있었음)
+- Vercel project env: `NEXT_PUBLIC_ANALYTICS_WORKER_URL=/api` 그대로 유지
+
+### 6. 검증
+```bash
+launchctl kickstart -k gui/$(id -u)/com.dstcraft.api
+sleep 2
+curl -fsS http://localhost:3001/_debug/health
+curl -fsS https://www.dstcraft.com/api/rating  # Mac mini 응답
+```
+
+### 7. 미결: Vercel 자체 제거 결정
+- Phase 6 폴백으로 Vercel을 idle 유지 중. 1개월 안정 후:
+  - 옵션 A: Vercel 그대로 유지 (free tier, 비용 0). watchdog auto-failover 동작 위해 필요
+  - 옵션 B: Vercel custom domain 해제 + project 삭제 (auto-failover 폐기)
+- A 권장 — 비용 0이고 진정한 안전망
+
+---
+
+# Phase 8 — 운영 정비 (장기)
+
+- [x] macOS 자동 업데이트/재시작 끄기 (Phase 1에 완료됨)
+- [x] SQLite 일일 백업 (Phase 4 launchd, 14일 보관)
+- [ ] nginx access log 로테이션 (`newsyslog.conf`)
+- [ ] 6개월 비교 측정 메트릭: LCP/TTFB, CF Cache Hit Ratio, 일일 origin 요청 수, 다운타임 비율, 운영 비용
+- [ ] CLAUDE.md 갱신: 셀프호스팅 → 표준 운영 가이드로 통합
 
 ---
 
 ## 다음 세션에서 시작할 위치
 
-**Mac mini Claude 세션에서 Phase 4 §실행 절차 1~6** 단계 진행 (코드는 이미 push됨).
-검증 완료되면 Phase 5 (self-hosted runner)로.
+**24h 안정 모니터링 후 Phase 7 진행.**
+
+지금 (Phase 6 완료 시점)부터 24h 동안:
+- watchdog Telegram 알림 거의 없어야 정상 (1/3 fail은 무시되니 알림 안 옴)
+- nginx access log에 prod traffic 꾸준히 흐르는지
+- SQLite analytics_counters 누적 증가 확인
+
+문제 없으면 다음 세션에서:
+1. CF API 토큰 rotate (보안)
+2. Phase 7 §실행 절차 1~7 진행
+3. 1주일 후 Phase 8 (Vercel 자체 제거 여부 결정)
 
 ## 미결정 / 진행 중 결정 필요
 
