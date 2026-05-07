@@ -382,23 +382,9 @@ app.get("/stats", async (c) => {
     isAdmin,
   };
 
-  if (isAdmin) {
-    const adminIp = extractIp(c);
-    if (adminIp && adminIp !== "unknown") {
-      db.query(`INSERT OR IGNORE INTO admin_ips(ip, created_at) VALUES (?, ?)`).run(adminIp, nowSec());
-    }
-    const adminIps = new Set(
-      db.query<{ ip: string }, []>(`SELECT ip FROM admin_ips`).all().map((r) => r.ip),
-    );
-    data._adminIp = adminIp || "(undetected)";
-    data._adminIps = [...adminIps];
-
-    if (adminIps.size > 0) {
-      const beforeCount = (data.recentVisitors as any[]).length;
-      data.recentVisitors = (data.recentVisitors as any[]).filter((v: any) => !adminIps.has(v.ip));
-      data._filteredCount = beforeCount - data.recentVisitors.length;
-    }
-  }
+  // 어드민 자기 방문 필터는 제거됨 (이전: admin_ips에 자동 등록 + recentVisitors에서 제외).
+  // 어드민 본인의 통계도 그대로 노출되어야 한다는 요구. admin_ips 테이블 자체는 /auth/google에서 로그인 시
+  // 트래킹은 유지되며 다른 용도로 쓸 수 있게 둠.
 
   // 'private': CF 엣지가 캐시 안 함. 브라우저만 캐시.
   // 이전 'public, max-age=60' → CF가 Authorization 무시하고 캐시 → admin이 옛 public 응답(빈 recentVisitors) 받는 회귀

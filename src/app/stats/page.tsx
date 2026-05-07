@@ -294,10 +294,7 @@ export default function StatsPage() {
     setData(result);
     setLoading(false);
     if (result && isAdmin && token) {
-      const extra = result as any;
-      const filtered = extra._filteredCount ?? 0;
-      const ip = extra._adminIp ?? "";
-      showToast(filtered > 0 ? `${ip} — 방문자 ${filtered}건 필터됨` : `로드 완료 · ${ip}`);
+      showToast("로드 완료");
     }
   }
 
