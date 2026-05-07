@@ -15,6 +15,33 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.6",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 서브탭 아이콘 교체 — 스킬트리(skill_eye), 회로판(wx78_moduleremover, 회로 추출기), 현황(scandata)",
+      "feat(skills): 스크랩북 텍스트 가공 표시 — 첫 단락(회로판 호환·스캔) 제거, 둘째 단락에서 '소켓 N개 필요' 제거. 스킬 강화 단락은 학습 여부에 따라 정상/딤 처리 + indicator",
+      "fix(skills): 회로 카드 카운트 뱃지 잘림 수정 — 이미지 박스 overflow-hidden 제거 + z-index",
+      "fix(BetaBadge): 사선 띠를 더 진하게 (amber-500/85, ring 추가)",
+      "fix(Footer): 푸터 압축 — SupportPill 패딩 축소 (py-1.5 → py-0.5, pt-1 → pt-0.5)",
+    ],
+    changes: {
+      ko: [
+        "WX-78 서브탭 아이콘 정정 (스킬트리/회로 추출기/생체 데이터)",
+        "회로 상세 효과 표시 정리 — 중복되는 회로판 호환·소켓 정보 제거. 스킬 강화 효과는 학습 여부에 따라 진하게/흐리게 표시",
+        "회로 카드 우하단 카운트 뱃지가 잘리던 문제 수정",
+        "베타 사선 띠를 더 잘 보이게 진하게 변경",
+        "푸터 두께 축소",
+      ],
+      en: [
+        "Corrected WX-78 sub-tab icons (skill, module remover, scandata)",
+        "Cleaned up circuit effect display — removed redundant board/socket info. Skill-buffed effects now dim when the buff skill isn't learned",
+        "Fixed clipped count badge on circuit cards",
+        "Made beta corner ribbon more visible",
+        "Tightened footer padding",
+      ],
+    },
+  },
+  {
     version: "0.21.5",
     date: "2026-05-08",
     dev: [

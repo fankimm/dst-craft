@@ -142,6 +142,7 @@ export function Wx78CircuitBoard({
             count={counts[selected.id] ?? 0}
             usedInBar={getUsedSlotsByType(counts, selected.type)}
             maxSlots={maxSlots}
+            activatedSkills={activatedSkills}
             onEquip={() => onEquip(selected.id)}
             onUnequip={() => onUnequip(selected.id)}
           />
@@ -308,7 +309,7 @@ function CircuitTile({
       style={{ borderColor: count > 0 ? color : `${color}30` }}
     >
       <div
-        className="relative size-12 rounded-md overflow-hidden flex items-center justify-center"
+        className="relative size-12 rounded-md flex items-center justify-center"
         style={{ backgroundColor: `${color}15` }}
       >
         <Image
@@ -320,7 +321,7 @@ function CircuitTile({
         />
         {count > 0 && (
           <span
-            className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80"
+            className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80 z-10"
           >
             {count}
           </span>
@@ -350,6 +351,7 @@ function CircuitDetail({
   count,
   usedInBar,
   maxSlots,
+  activatedSkills,
   onEquip,
   onUnequip,
 }: {
@@ -358,6 +360,7 @@ function CircuitDetail({
   count: number;
   usedInBar: number;
   maxSlots: number;
+  activatedSkills: Set<string>;
   onEquip: () => void;
   onUnequip: () => void;
 }) {
@@ -400,22 +403,8 @@ function CircuitDetail({
         </div>
       </div>
 
-      {/* In-game scrapbook description */}
-      {(() => {
-        const sb = scrapbookStats[m.id];
-        const text = sb && (locale === "ko" ? sb.specialinfo_ko : sb.specialinfo_en);
-        if (!text) return null;
-        return (
-          <div className="mt-3">
-            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
-              {locale === "ko" ? "스크랩북 정보" : "Scrapbook"}
-            </div>
-            <p className="text-sm text-foreground/90 px-3 py-2 rounded-md bg-surface/60 whitespace-pre-line leading-relaxed">
-              {text}
-            </p>
-          </div>
-        );
-      })()}
+      {/* Effects (parsed from in-game scrapbook) */}
+      <ScrapbookEffects moduleId={m.id} locale={locale} activatedSkills={activatedSkills} />
 
       {/* Scan source */}
       {m.scanFrom?.length ? (
@@ -491,3 +480,102 @@ function CircuitDetail({
   );
 }
 
+// ── Scrapbook effects ──────────────────────────────────────────
+// Parses in-game scrapbook text and renders as structured rows:
+// - Skips first paragraph (board compatibility + scan info — already shown)
+// - Strips "소켓 N개 필요. " / "Requires N socket(s) and " prefix
+// - Detects skill-conditional paragraphs and dims them when skill is unlearned
+const KO_SKILL_RE = /^(알파|베타|감마) 회로 제조 (I{1,2})/;
+const EN_SKILL_RE = /^(Alpha|Beta|Gamma) Circuit Tinkering (I{1,2})/;
+const KO_SOCKET_RE = /^소켓 \d+개 필요\.\s*/;
+const EN_SOCKET_RE = /^Requires \d+ sockets? and\s*/i;
+
+function detectSkillId(para: string, locale: Locale): { skillId: string; label: string } | null {
+  const re = locale === "ko" ? KO_SKILL_RE : EN_SKILL_RE;
+  const m = para.match(re);
+  if (!m) return null;
+  const groupKo = m[1];
+  const level = m[2] === "II" ? 2 : 1;
+  const groupKey =
+    groupKo === "알파" || groupKo === "Alpha" ? "alpha" :
+    groupKo === "베타" || groupKo === "Beta" ? "beta" : "gamma";
+  return {
+    skillId: `wx78_circuitry_${groupKey}buffs_${level}`,
+    label: m[0],
+  };
+}
+
+function ScrapbookEffects({
+  moduleId,
+  locale,
+  activatedSkills,
+}: {
+  moduleId: string;
+  locale: Locale;
+  activatedSkills: Set<string>;
+}) {
+  const sb = scrapbookStats[moduleId];
+  const text = sb && (locale === "ko" ? sb.specialinfo_ko : sb.specialinfo_en);
+  if (!text) return null;
+
+  const paragraphs = text.split(/\n\n+/).slice(1); // skip first (compatibility + scan)
+  if (paragraphs.length === 0) return null;
+
+  const stripSocket = (s: string) =>
+    s.replace(locale === "ko" ? KO_SOCKET_RE : EN_SOCKET_RE, "");
+
+  return (
+    <div className="mt-3 space-y-1.5">
+      <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">
+        {locale === "ko" ? "효과" : "Effects"}
+      </div>
+      {paragraphs.map((para, i) => {
+        const skill = detectSkillId(para, locale);
+        if (skill) {
+          const learned = activatedSkills.has(skill.skillId);
+          // Body = paragraph minus the leading "<skill name>의 효과로" / "<skill name> "
+          const bodyKo = para.replace(/^.+?의 효과로\s*/, "");
+          const bodyEn = para.replace(EN_SKILL_RE, "").replace(/^\s+/, "");
+          const body = locale === "ko" ? bodyKo : bodyEn;
+          return (
+            <div
+              key={i}
+              className={cn(
+                "text-sm px-3 py-2 rounded-md transition-opacity",
+                learned ? "bg-surface/70 text-foreground/95" : "bg-surface/30 text-muted-foreground opacity-60",
+              )}
+            >
+              <div className="flex items-center gap-1.5 mb-1">
+                <span
+                  className={cn(
+                    "inline-block size-1.5 rounded-full",
+                    learned ? "bg-emerald-500" : "bg-muted-foreground/40",
+                  )}
+                />
+                <span className="text-[11px] font-semibold">{skill.label}</span>
+                <span className="text-[10px] opacity-70">
+                  {learned
+                    ? locale === "ko" ? "학습됨" : "learned"
+                    : locale === "ko" ? "미학습" : "not learned"}
+                </span>
+              </div>
+              <p className="leading-relaxed">{body}</p>
+            </div>
+          );
+        }
+
+        // Default paragraph — strip socket prefix
+        const cleaned = stripSocket(para).trim();
+        if (!cleaned) return null;
+        return (
+          <p
+            key={i}
+            className="text-sm leading-relaxed px-3 py-2 rounded-md bg-surface/60 text-foreground/95"
+          >
+            {cleaned}
+          </p>
+        );
+      })}
+    </div>
+  );
+}

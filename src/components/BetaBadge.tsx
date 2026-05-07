@@ -26,7 +26,7 @@ export function BetaBadge() {
       style={{ width: 110, height: 110 }}
     >
       <div
-        className="absolute bg-amber-500/40 text-white/90 text-[10px] font-bold uppercase tracking-[0.18em] shadow-sm backdrop-blur-[1px]"
+        className="absolute bg-amber-500/85 text-white text-[11px] font-bold uppercase tracking-[0.18em] shadow-md ring-1 ring-amber-700/30"
         style={{
           width: 170,
           padding: "3px 0",

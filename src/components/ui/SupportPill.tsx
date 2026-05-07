@@ -8,16 +8,16 @@ export function SupportPill() {
   const { slots, index, prevIndex } = useSupporterTicker();
 
   return (
-    <div className="flex justify-center pt-1" style={{ paddingBottom: "max(4px, calc(env(safe-area-inset-bottom, 4px) * 0.5))" }}>
+    <div className="flex justify-center" style={{ paddingTop: 2, paddingBottom: "max(2px, calc(env(safe-area-inset-bottom, 2px) * 0.4))" }}>
       <a
         href="https://ko-fi.com/fankim"
         target="_blank"
         rel="noopener noreferrer"
         data-support-pill-anchor
-        className="flex items-center gap-1.5 rounded-full border border-border/60 bg-surface px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+        className="flex items-center gap-1.5 rounded-full border border-border/60 bg-surface px-3 py-0.5 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:border-border transition-colors"
       >
         <Heart className="size-3 fill-rose-400/80 text-rose-400/80 shrink-0" />
-        <span className="relative inline-block h-4 overflow-hidden align-middle leading-4">
+        <span className="relative inline-block h-3.5 overflow-hidden align-middle leading-[14px]">
           <span aria-hidden className="invisible whitespace-nowrap">
             {slots.reduce((a, b) => (b.length > a.length ? b : a), "")}
           </span>
