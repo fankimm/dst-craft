@@ -9,8 +9,8 @@
 > - ✅ Phase 2 완료 — `scripts/deploy-beta.sh` 자동 배포 스크립트
 > - ✅ 운영 정비 일부 — macOS 자동 업데이트/재부팅 차단
 > - ✅ Phase 3 완료 — Worker → Bun API (Hono) 이식, 25 엔드포인트, nginx /api/ 프록시, launchd 자동 시작/재시작
-> - ✅ Phase 4 코드 완료 (워크스테이션) — bun-api 데이터 레이어 SQLite로 교체 + 마이그레이션 스크립트 + 백업 plist. **Mac mini에서 1회성 실행 필요** (아래 §4.실행 절차 참조)
-> - ⏭ 다음: Mac mini에서 Phase 4 실행 → Phase 5 (self-hosted runner)
+> - ✅ Phase 4 완료 (2026-05-07) — bun-api 데이터 레이어 SQLite로 교체. 마이그레이션 14.8s, DB 1.3MB(600K + 716K WAL). 베타 라이브 검증: rating/top-countries/popular/stats/supporters 모두 SQLite 기반 응답. 일일 백업 launchd 동작(132K gzip). UV는 PFCOUNT가 IP 추출 불가라 의도적으로 fresh start.
+> - ⏭ 다음: Phase 5 (self-hosted runner) → Phase 6 (prod 컷오버)
 
 ---
 
@@ -430,11 +430,11 @@ cat ~/dstcraft/logs/backup.out.log
 - 그 전까진 worker가 prod 트래픽으로 계속 사용 중
 
 ## 완료 기준
-- [ ] `~/dstcraft/data/app.db` 존재 + 마이그레이션 stats 출력 정상
-- [ ] bun-api SQLite 모드로 재시작 + 25 엔드포인트 응답 확인
-- [ ] 베타 즐겨찾기/스킬트리 신규 추가 → SQLite에 row 추가 확인
-- [ ] launchd backup 1회 정상 실행 + `~/Backups/dstcraft/app-*.db.gz` 생성
-- [ ] 24h 후 안정성 (curl + sqlite3 .schema 확인)
+- [x] `~/dstcraft/data/app.db` 존재 + 마이그레이션 stats 출력 정상 (1806 counters, 1077 clicks, 1462 combos, 47 users 등)
+- [x] bun-api SQLite 모드로 재시작 + 25 엔드포인트 응답 확인 (pid 24032 → 45589, DB_PATH 주입 확인)
+- [x] launchd backup 1회 정상 실행 + `~/Backups/dstcraft/app-20260507-151857.db.gz` 생성 (132K)
+- [ ] 24h 후 안정성 (curl + sqlite3 .schema 확인) — 다음 세션에서 spot-check
+- [ ] 베타 즐겨찾기/스킬트리 신규 추가 → SQLite에 row 추가 확인 — 사용자 테스트 시 발생
 
 ---
 
