@@ -1,0 +1,137 @@
+name: watchdog (prod /api health)
+
+# 외부 GH-hosted runner에서 cron */2분 헬스체크.
+# Mac mini 다운 시 self-hosted runner도 같이 죽으므로 외부 runner 필수.
+#
+# 흐름: curl https://www.dstcraft.com/api/_debug/health × 3회
+#   - 1~2회 실패 → workflow 성공 + Telegram 경고 (degraded)
+#   - 3회 모두 실패 → workflow 실패(빨간 X) + Telegram 긴급
+#
+# Phase 6 (CF DNS swap) 활성 시: vars.WATCHDOG_FAILOVER=1 + secrets.CF_API_TOKEN/CF_ZONE_ID 등록
+#   → 3/3 실패 시 dstcraft.com / www CNAME을 Vercel 대상으로 자동 rollback (Phase 6 후속).
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # GH Actions 최소 5분 — 더 빠른 cadence는 plan 필요
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: watchdog
+  cancel-in-progress: false
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - name: Probe https://www.dstcraft.com/api/_debug/health
+        id: check
+        run: |
+          set +e
+          fails=0
+          last_status=""
+          last_err=""
+          for i in 1 2 3; do
+            body=$(curl -fsS -m 5 -w "\n[HTTPCODE]%{http_code} [TIME]%{time_total}s" \
+              "https://www.dstcraft.com/api/_debug/health" 2>&1)
+            rc=$?
+            if [ "$rc" -eq 0 ]; then
+              echo "[try #$i] ok"
+            else
+              fails=$((fails + 1))
+              last_status=$(printf '%s' "$body" | grep -oE '\[HTTPCODE\][0-9]+' | head -1 | sed 's/\[HTTPCODE\]//')
+              last_err=$(printf '%s' "$body" | head -c 200 | tr '\n' ' ')
+              echo "[try #$i] FAIL rc=$rc status=$last_status err=$last_err"
+            fi
+            [ "$i" -lt 3 ] && sleep 2
+          done
+
+          {
+            echo "fails=$fails"
+            echo "last_status=$last_status"
+            echo "last_err=$last_err"
+          } >> "$GITHUB_OUTPUT"
+
+          if [ "$fails" -ge 3 ]; then
+            echo "::error::Mac mini API 3/3 down. status=$last_status err=$last_err"
+            exit 1
+          fi
+
+      - name: Telegram alert (degraded or down)
+        if: always() && steps.check.outputs.fails != '0'
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FAILS: ${{ steps.check.outputs.fails }}
+          STATUS: ${{ steps.check.outputs.last_status }}
+          LAST_ERR: ${{ steps.check.outputs.last_err }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "$TG_TOKEN" ] || [ -z "$TG_CHAT" ]; then
+            echo "no telegram secrets, skipping alert"
+            exit 0
+          fi
+          icon="⚠️"
+          [ "$FAILS" = "3" ] && icon="🔥"
+          text="$icon dstcraft.com /api 헬스 ${FAILS}/3 실패"$'\n'"http: ${STATUS:-?} · err: ${LAST_ERR:-?}"$'\n'"run: ${RUN_URL}"
+          curl -sS -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="$TG_CHAT" \
+            --data-urlencode "text=$text" >/dev/null
+
+      # Phase 6 활성 시 (vars.WATCHDOG_FAILOVER=1) 3/3 실패면 CF DNS를 Vercel로 자동 rollback.
+      # 현재는 DNS가 이미 Vercel(or Mac mini Tunnel) 어느 쪽이든 vars 미설정이면 skip.
+      - name: Auto DNS rollback to Vercel (Phase 6+)
+        if: |
+          failure() &&
+          steps.check.outputs.fails == '3' &&
+          vars.WATCHDOG_FAILOVER == '1'
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          VERCEL_TARGET: ${{ vars.WATCHDOG_VERCEL_CNAME }}
+        run: |
+          if [ -z "$CF_API_TOKEN" ] || [ -z "$CF_ZONE_ID" ] || [ -z "$VERCEL_TARGET" ]; then
+            echo "::error::WATCHDOG_FAILOVER=1이지만 CF_API_TOKEN / CF_ZONE_ID / WATCHDOG_VERCEL_CNAME 미설정"
+            exit 1
+          fi
+
+          for HOST in dstcraft.com www.dstcraft.com; do
+            REC=$(curl -fsS \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records?name=$HOST&type=CNAME")
+            ID=$(printf '%s' "$REC" | grep -oE '"id":"[^"]+"' | head -1 | cut -d'"' -f4)
+            CURRENT=$(printf '%s' "$REC" | grep -oE '"content":"[^"]+"' | head -1 | cut -d'"' -f4)
+            if [ -z "$ID" ]; then
+              echo "$HOST: no CNAME record found, skip"
+              continue
+            fi
+            if [ "$CURRENT" = "$VERCEL_TARGET" ]; then
+              echo "$HOST: already pointing to Vercel ($CURRENT), no swap needed"
+              continue
+            fi
+            echo "$HOST: swap $CURRENT → $VERCEL_TARGET"
+            curl -fsS -X PATCH \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "{\"content\":\"$VERCEL_TARGET\",\"proxied\":true}" \
+              "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records/$ID" \
+              | grep -oE '"success":(true|false)' || true
+          done
+
+      - name: Telegram alert (DNS swap done)
+        if: |
+          failure() &&
+          steps.check.outputs.fails == '3' &&
+          vars.WATCHDOG_FAILOVER == '1'
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          [ -z "$TG_TOKEN" ] || [ -z "$TG_CHAT" ] && exit 0
+          text="🚨 watchdog: DNS auto-failover 실행됨 — dstcraft.com / www → Vercel"
+          curl -sS -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="$TG_CHAT" --data-urlencode "text=$text" >/dev/null
