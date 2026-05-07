@@ -324,7 +324,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
         </div>
       </div>
 
-      <DetailPanel open={!!selected} onClose={() => setSelected(null)}>
+      <DetailPanel open={!!selected} onClose={() => setSelected(null)} hideClose>
         {selected && (
           <Detail selected={selected} locale={locale} effectiveCounts={effectiveCounts} />
         )}
@@ -527,9 +527,13 @@ function Detail({
         </div>
         <ul className="space-y-1.5">
           <li className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
-            <div className="size-7 rounded-md bg-surface flex items-center justify-center shrink-0">
-              <span className="text-[10px] font-bold text-muted-foreground">WX</span>
-            </div>
+            <Image
+              src="/images/category-icons/characters/wx78.png"
+              alt=""
+              width={28}
+              height={28}
+              className="size-7 object-contain shrink-0 rounded-full"
+            />
             <div className="flex-1 min-w-0">
               <div className="text-sm font-semibold text-foreground">
                 {locale === "ko" ? "WX-78 기본" : "WX-78 base"}

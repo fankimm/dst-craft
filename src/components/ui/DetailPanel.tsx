@@ -10,6 +10,8 @@ interface DetailPanelProps {
   onClose: () => void;
   onBack?: () => void;
   backLabel?: string;
+  /** Hide the top-right close icon (overlay click and swipe still close) */
+  hideClose?: boolean;
   children: ReactNode;
 }
 
@@ -17,7 +19,7 @@ interface DetailPanelProps {
  * Reusable bottom-sheet detail panel with overlay, close button, and SupportPill.
  * Pair with `useDetailPanel` hook for animation state management.
  */
-export function DetailPanel({ open, onClose, onBack, backLabel, children }: DetailPanelProps) {
+export function DetailPanel({ open, onClose, onBack, backLabel, hideClose, children }: DetailPanelProps) {
   // Lock background scroll when panel is open
   useEffect(() => {
     if (!open) return;
@@ -57,14 +59,14 @@ export function DetailPanel({ open, onClose, onBack, backLabel, children }: Deta
               <span className="max-w-[160px] truncate">{backLabel}</span>
             </button>
           </div>
-        ) : (
+        ) : !hideClose ? (
           <button
             onClick={onClose}
             className="absolute top-2 right-2 z-10 p-1 rounded-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <X className="size-4" />
           </button>
-        )}
+        ) : null}
         {children}
         <SupportPill />
       </div>

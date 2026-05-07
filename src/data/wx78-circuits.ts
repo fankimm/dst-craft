@@ -156,7 +156,8 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     nameI18n: { ko: "연산 회로", en: "Processing Circuit" },
     desc: { ko: "연산 능력을 조금만 늘려도 기계 정신이 안정화됩니다.", en: "A little extra processing power helps to ease the mechanical mind." },
     scanFrom: ["butterfly", "moonbutterfly"],
-    stats: [{ kind: "maxSanity", value: 40 }],
+    // 한국 인게임 표기(+100) 기준. (영문 스크랩북은 +40으로 다름 — mod 번역 차이)
+    stats: [{ kind: "maxSanity", value: 100 }],
     buffs: [
       {
         skill: "wx78_circuitry_alphabuffs_2",

@@ -125,7 +125,7 @@ export function Wx78CircuitBoard({
       </div>
 
       {/* Detail panel (bottom sheet) */}
-      <DetailPanel open={!!selected} onClose={() => setSelectedId(null)}>
+      <DetailPanel open={!!selected} onClose={() => setSelectedId(null)} hideClose>
         {selected && (
           <CircuitDetail
             module={selected}

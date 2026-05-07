@@ -15,6 +15,16 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.13",
+    date: "2026-05-08",
+    dev: [
+      "feat(DetailPanel): hideClose prop 추가 — WX-78 상세 패널에선 X 닫기 아이콘 숨김 (오버레이 클릭으로 닫음)",
+      "fix(skills): vital DetailPanel 'WX' 텍스트 박스 → wx78 캐릭터 portrait 아이콘으로 변경",
+      "fix(data): 연산 회로(maxsanity1) 정신력 +40 → +100으로 보정 — 한글 인게임 스크랩북·제작탭 표기와 일치 (영문은 +40으로 mod 번역 차이)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.12",
     date: "2026-05-08",
     dev: [
