@@ -421,6 +421,25 @@
   ```
 - **검증**: Network 탭에서 `/api/<endpoint>` 요청 initiator 확인. `sw.js:<line>` 이 보이면 SW가 가로채는 것 — bypass 추가 필요
 
+### CF 엣지가 origin Cache-Control max-age=60을 무시하고 stale HTML 서빙 → 옛 chunk hash 가리키며 origin 404 → 클라이언트 사이드 예외
+- **문제**: PWA에서 "Application error: a client-side exception has occurred while loading www.dstcraft.com" 화면. 라이브 `/` 응답 헤더가 `cf-cache-status: HIT, age=775s` (max-age=60인데 13분째 stale). 그 옛 HTML은 `/_next/static/chunks/c6aa1d91165b1e34.js`를 참조하지만 신규 배포(`~/dstcraft/prod/`)에서 hash가 바뀌어서 origin에 그 파일 없음 → 404 → Next 클라이언트 catch boundary 발동
+- **원인**: 대시보드의 "Cache Everything" Page Rule(또는 default Cache TTL)이 origin Cache-Control을 override. `Cache-Control: public, max-age=60, must-revalidate`을 nginx에서 명시했는데도 CF 엣지가 안 지킴. 그동안의 fix들(d867c3b HTML 캐시 5분→1분, 6b4c9ab Cache-Control 명시, 9f333f8 베타 캐시 비활성)은 origin 쪽만 손봐서 무력화됨
+- **교훈**: CF Free 플랜 + Page Rule 설정에 따라 origin `Cache-Control`이 무시될 수 있음. 새 빌드 배포 시 **CF 엣지 캐시도 함께 purge**해야 안전. nginx만 고쳐서는 부족. 보조 방어책으로 `deploy-frontend.sh`가 이전 release의 `_next/static/`을 새 release로 carry-over해서 옛 chunk hash 요청도 받아주지만 — release pruning(KEEP=5)에 밀려 사라지면 동일 회귀
+- **해결**:
+  1. 인시던트 즉시: CF API `purge_cache`로 전체 purge
+  2. 영구: `scripts/deploy-frontend.sh` 끝에 hostname 단위 purge 자동 호출 (main → dstcraft.com, www.dstcraft.com / beta → beta.dstcraft.com). 토큰은 `~/dstcraft/.cf-env` (chmod 600, repo 밖)
+  3. 영구(추가): CF 대시보드 Page Rules 점검 — HTML/`/`엔 "Bypass cache" 또는 "Respect origin"으로 설정
+- **검증**:
+  ```bash
+  # 새 배포 직후
+  curl -sI https://www.dstcraft.com/ | grep -iE 'cf-cache-status|age|last-modified'
+  # cf-cache-status: MISS 또는 EXPIRED 가 정상. HIT + age > origin max-age면 룰 override 의심
+  for c in $(curl -sS https://www.dstcraft.com/ | grep -oE '/_next/static/chunks/[a-f0-9]+\.js' | sort -u); do
+    echo "$(curl -sSo /dev/null -w "%{http_code}" "https://www.dstcraft.com$c") $c"
+  done | grep -v ^200  # 비어 있어야 정상
+  ```
+- **부수 발견**: SW 캐시도 같은 함정 — 새 SW(ea7a4ec)가 activate에서 `clients.navigate()`로 강제 reload하지만, 사용자 PWA가 한 번도 새 SW를 받기 전이면 이 안전망 미작동. CF 엣지 fresh + SW activate hook 둘 다 있어야 1차/2차 보호 완성
+
 ## 분석 / 통계
 
 ### Redis 일별 키에 TTL을 걸어 통계 데이터 영구 손실

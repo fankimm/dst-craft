@@ -62,6 +62,10 @@
 
 ## 대기 (다음 작업 후보)
 
+- [x] **CF "static cache" rule 좁히기 — All requests → 정적 자산만** (2026-05-07 완료)
+  - expression: `true` → 정적 자산만 (/_next/static/, /images/, /icons/, 확장자 매칭)
+  - edge_ttl: `override_origin 1d` → `respect_origin`
+  - CF API로 적용, HTML `cache-control: public, max-age=60` origin 헤더 살아있음 확인
 - [ ] **Vercel → Mac mini 셀프호스팅 이주** (2026-05-07, 우선순위 높음) — Vercel Hobby edge req 한도 임박. Phase 1: `beta.dstcraft.com` 정적 셀프호스팅. 상세: `TODO-self-hosting.md`. **Mac mini SSH 세션에서 진행할 것**.
 - [ ] **git 히스토리 이메일 재작성** (2026-04-27, 우선순위 높음) — 회사 계정(kolon.com) 314커밋이 GitHub에 노출됨. 다른 머신(macOS 권장)에서 진행. 상세 계획: `TODO-rewrite-email-history.md`
 - [x] 누락된 보스 추가 (2026-04-14) — 8종

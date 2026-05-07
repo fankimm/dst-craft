@@ -198,6 +198,25 @@ ${process.env.NODE_ENV === "production" ? `if ('serviceWorker' in navigator) {
     });
   }
 }`}
+(function(){
+  var KEY = 'dst:chunk-retry';
+  function check(msg) {
+    if (msg && (msg.indexOf('ChunkLoadError') !== -1 || msg.indexOf('Failed to load') !== -1)) {
+      if (!sessionStorage.getItem(KEY)) {
+        sessionStorage.setItem(KEY, '1');
+        window.location.reload();
+      }
+    }
+  }
+  window.addEventListener('error', function(e) {
+    check(e.message || (e.error && e.error.message) || '');
+  });
+  window.addEventListener('unhandledrejection', function(e) {
+    var r = e.reason;
+    check(r && (r.message || String(r)) || '');
+  });
+  window.addEventListener('load', function() { sessionStorage.removeItem(KEY); });
+})();
 `;
 
 const ANALYTICS_WORKER = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
