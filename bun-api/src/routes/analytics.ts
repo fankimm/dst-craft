@@ -400,7 +400,9 @@ app.get("/stats", async (c) => {
     }
   }
 
-  c.header("Cache-Control", isAdmin ? "no-store" : "public, max-age=60");
+  // 'private': CF 엣지가 캐시 안 함. 브라우저만 캐시.
+  // 이전 'public, max-age=60' → CF가 Authorization 무시하고 캐시 → admin이 옛 public 응답(빈 recentVisitors) 받는 회귀
+  c.header("Cache-Control", isAdmin ? "private, no-store" : "private, max-age=60");
   return c.json(data);
 });
 
