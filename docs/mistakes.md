@@ -342,6 +342,14 @@
   ```
 - **부수 발견**: 같은 이유로 module-level 카운터/플래그/싱글톤 등도 chunk 분할 환경에서 공유가 깨질 수 있음. 진짜 전역 상태가 필요하면 `globalThis` 또는 React Context를 써야 함
 
+### 같은 monorepo에 Bun 런타임 패키지(`bun-api/`)를 추가했더니 Vercel(Next.js) 빌드가 typecheck로 줄줄이 실패
+- **문제**: Phase 4에서 `bun-api/`를 main에 추가한 직후부터 Vercel 빌드 10회 연속 실패. `Type error: Cannot find module 'bun:sqlite'` — Next.js가 `tsc --noEmit` 단계에서 bun-api 코드까지 같이 컴파일하다 죽음. 사용자에게 매 push마다 Vercel 실패 메일 발송. 그 사이 prod는 마지막 성공 빌드(옛 worker URL이 inline된 클라이언트 JS)로 계속 동작 — 환경변수 변경(NEXT_PUBLIC_*)도 새 빌드 성공해야 반영
+- **원인**: `tsconfig.json`의 `include`가 `**/*.ts` 와일드카드 + `exclude`에 `worker`만 있고 `bun-api`는 없음. Next.js는 root tsconfig를 기준으로 전체 타입체크. bun-api는 자체 `bun-api/tsconfig.json` + Bun 런타임 전용 모듈(`bun:sqlite`, `bun.lock` 등) 사용해서 Node 환경에선 해결 불가
+- **교훈**: 동일 repo에 다중 런타임 패키지(Next.js + Bun + Cloudflare Worker 등)를 둘 때 root tsconfig의 `exclude`에 모든 비-Next 디렉터리 추가 필수. 새 패키지 디렉터리 만들 때마다 점검. 또한 NEXT_PUBLIC_* 환경변수 변경은 **새 빌드가 성공해야** 반영됨 — 빌드가 실패 중이면 옛 값이 inline된 채로 영구 박힘
+- **해결**: `tsconfig.json` `exclude` 에 `bun-api` 추가 (이미 worker는 있었음)
+- **검증**: Vercel 대시보드 Deployments 빨간 X 행렬 + 로컬 `npm run build` 재현. 수정 후 typecheck 통과 + prod env 변경 반영 확인
+- **부수 발견**: `next build`는 typecheck 실패 시 즉시 종료. 이걸 알아채려면 Vercel deployments 페이지를 주기적으로 확인하거나 알림 hook을 거는 게 안전 (이메일은 소음에 묻히기 쉬움). Phase 6.5 watchdog과 별개로, 빌드 실패 알림도 Telegram으로 받는 게 좋음
+
 ### self-hosted runner workflow가 "로컬 HEAD"로 변경 감지하면 같은 머신에서 commit한 push를 no_change로 오판
 - **문제**: deploy-beta.yml 첫 버전이 `BEFORE=$(git rev-parse HEAD)` / `AFTER=$(git rev-parse origin/main)` 비교로 변경 감지. SSH로 들어와 Mac mini에서 직접 commit + push 하면 ~/works/dst-craft의 HEAD가 이미 origin/main과 같아 BEFORE==AFTER → no_change=true → 모든 step skip. bun-api 변경이 있어도 재시작 안 됨
 - **원인**: 로컬 작업트리 HEAD vs 원격 HEAD 비교는 **다른 머신에서 push했을 때만** 의미가 있음. push가 같은 머신에서 발생하면 둘이 항상 동일. self-hosted runner의 작업 트리가 사용자가 commit하는 트리와 같을 수 있음을 간과
