@@ -3,6 +3,10 @@
 > 결정일: 2026-05-07
 > 작성: 메인 세션에서 합의된 결정사항을 Mac mini SSH 세션에서 이어받기 위한 계획서
 > 우선순위: **Phase 1 먼저** (prod 라인은 Vercel 그대로 두고 `beta.dstcraft.com`만 Mac mini로 띄움)
+>
+> **진행 상황 (2026-05-07)**
+> - ✅ Phase 1 완료 — `https://beta.dstcraft.com` 라이브 (CF Tunnel → Mac mini nginx :8080 → 정적 빌드)
+> - ⏭ 다음: Phase 2 (수동 배포 스크립트) → Phase 3 (Worker → Bun API)
 
 ---
 
@@ -108,51 +112,73 @@ brew install oven-sh/bun/bun
 
 ## 1.3 디렉터리 구조
 
+> **결정**: `/srv/dstcraft` 대신 `~/dstcraft` 사용 (sudo 불필요, macOS 표준 외 위치 회피).
+
 ```bash
-sudo mkdir -p /srv/dstcraft/{prod,beta,data,api,releases}
-sudo chown -R $(whoami):staff /srv/dstcraft
-ls -la /srv/dstcraft
+mkdir -p ~/dstcraft/{prod,beta,data,api,releases}
+ls -la ~/dstcraft
 ```
 
-- `prod/`, `beta/`: 정적 사이트 출력 (Phase 1에선 beta만 채움)
+- `prod/`, `beta/`: 정적 사이트 출력 (Phase 1에선 beta만 채움) — 이후 symlink로 교체
 - `data/`: SQLite (Phase 4)
 - `api/`: Bun API 소스 (Phase 3)
 - `releases/`: 타임스탬프별 빌드 보관소(원자적 스왑용)
+- `source/`: fresh git clone (빌드 전용 워크트리 — 작업머신의 dst-craft과 분리)
 
 ## 1.4 첫 빌드 + 배포 (수동)
 
+> **주의**: `.env.local`이 작업머신/소스에 없음. Vercel 대시보드에서만 주입되는 변수 두 개를 직접 작성해야 함.
+> - `NEXT_PUBLIC_GOOGLE_CLIENT_ID` — `worker/wrangler.toml`의 `[vars] GOOGLE_CLIENT_ID` 그대로
+> - `NEXT_PUBLIC_ANALYTICS_WORKER_URL` — `https://dst-analytics.fankimm.workers.dev` (prod HTML에서 추출하거나 wrangler dashboard에서 확인)
+
 ```bash
-cd ~/work  # 또는 적당한 작업 디렉터리
-git clone https://github.com/<user>/dst-craft.git
-cd dst-craft
+# fresh clone (작업머신의 ~/works/dst-craft 와 분리)
+cd ~/dstcraft
+git clone git@github.com:fankimm/dst-craft.git source
+cd source
+
+# .env.local 작성 (Vercel 대시보드 환경변수와 동일)
+cat > .env.local <<'EOF'
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=<wrangler.toml에서 복사>
+NEXT_PUBLIC_ANALYTICS_WORKER_URL=https://dst-analytics.fankimm.workers.dev
+EOF
+
 npm ci
 npm run build
-# Next.js export 결과는 ./out
+# Next.js export 결과는 ./out (~685MB)
 
-# 타임스탬프 폴더에 쌓고 심볼릭 링크 교체 (다운타임 0)
+# out 디렉터리를 통째로 releases로 이동 (cp 대신 mv = 즉시 + 다운타임 0)
 TS=$(date +%Y%m%d-%H%M%S)
-mkdir -p /srv/dstcraft/releases/$TS
-cp -R out/. /srv/dstcraft/releases/$TS/
-ln -sfn /srv/dstcraft/releases/$TS /srv/dstcraft/beta
-ls -la /srv/dstcraft/beta
+rmdir ~/dstcraft/beta 2>/dev/null  # 빈 디렉터리이면 제거 (symlink 만들기 위함)
+mv out ~/dstcraft/releases/$TS
+ln -sfn ~/dstcraft/releases/$TS ~/dstcraft/beta
+ls -la ~/dstcraft/beta
 ```
+
+> Phase 2에서 deploy 스크립트로 묶을 때는 mv 대신 rsync로 source/out을 보존하는 편이 재빌드에 유리할 수 있음.
 
 ## 1.5 nginx 설정
 
+> **결정**: 포트 80 대신 **8080** 사용 (brew nginx 기본값, sudo 불필요).
+> CF Tunnel이 어차피 localhost로 붙어 외부에서 차이 없음.
+>
+> **경로 (Intel Mac, brew --prefix=/usr/local)**:
+> - 설정 디렉터리: `/usr/local/etc/nginx/`
+> - vhost include: `/usr/local/etc/nginx/servers/*` (nginx.conf line 114)
+> - servers/ 디렉터리는 brew install 시 자동 생성 안 됨 → 직접 생성 (sudo 불필요)
+
 ```bash
-# 위치는 brew --prefix 기반
-NGINX_CONF_DIR=$(brew --prefix)/etc/nginx
-sudo mkdir -p $NGINX_CONF_DIR/servers
+mkdir -p /usr/local/etc/nginx/servers
 ```
 
-`$NGINX_CONF_DIR/servers/dstcraft.conf` 작성 (sudo 필요):
+`/usr/local/etc/nginx/servers/dstcraft.conf` 작성:
 
 ```nginx
 # beta
 server {
-  listen 80;
+  listen 8080;
   server_name beta.dstcraft.com;
-  root /srv/dstcraft/beta;
+  root /Users/fankimm/dstcraft/beta;
   index index.html;
 
   # Next.js export는 trailingSlash 기본. 디렉터리 fallback.
@@ -176,36 +202,47 @@ server {
 
 # prod (Phase 6 컷오버 전까진 비활성. 같은 conf 안에 미리 적어두고 주석 처리해도 OK)
 # server {
-#   listen 80;
-#   server_name dstcraft.com;
-#   root /srv/dstcraft/prod;
+#   listen 8080;
+#   server_name dstcraft.com www.dstcraft.com;
+#   root /Users/fankimm/dstcraft/prod;
 #   ...
 # }
 ```
 
 ```bash
+/usr/local/opt/nginx/bin/nginx -t   # syntax check (sudo 불필요)
 brew services start nginx
-nginx -t  # syntax check
-sudo nginx -s reload
-curl -H "Host: beta.dstcraft.com" http://localhost/  # HTML 응답 확인
+curl -H "Host: beta.dstcraft.com" http://localhost:8080/  # HTML 응답 확인
 ```
 
 ## 1.6 Cloudflare Tunnel 생성
 
-CF Zero Trust 대시보드 (one.dash.cloudflare.com → Networks → Tunnels):
+CF Zero Trust 대시보드. **2026년 기준 정확한 경로**:
+`Zero Trust → Networks → Connectors → Cloudflare Tunnels`
+(이전엔 `Networks → Tunnels`였음. CF가 Connectors 카테고리로 묶음)
 
-1. **Create a tunnel** → 이름 `dstcraft-tunnel` → cloudflared 선택
-2. macOS 설치 명령 복사 (긴 토큰 포함)
-3. Mac mini에서 실행:
+1. **Create a tunnel** → Connector type: **Cloudflared** → 이름 `dstcraft-tunnel` → Save tunnel
+2. **Install and run a connector** 단계 — OS 선택 (Mac/Windows/Debian/...) → Mac 선택 후 `sudo cloudflared service install eyJ...` 명령어 표시됨. 토큰(eyJ로 시작하는 base64)만 추출.
+3. Mac mini에서 실행 (sudo 비밀번호 필요 → 새 SSH 셸에서 직접 입력 권장):
    ```bash
    sudo cloudflared service install <긴_토큰>
    sudo launchctl list | grep cloudflared  # 서비스 등록 확인
    ```
-4. 대시보드 **Public Hostname** 탭:
+4. 마법사 다음 단계 **Route Tunnel** (= Public Hostname):
    - Subdomain: `beta`
    - Domain: `dstcraft.com`
-   - Service: `HTTP` `localhost:80`
+   - Path: **(비움)**
+   - Type: `HTTP`
+   - URL: `localhost:8080`
+   - Save hostname
 5. CF DNS에 `beta` CNAME이 자동 생성됨 (proxied=ON 확인)
+
+> **함정 1**: 터널을 한 번 지웠다가 다시 만들면 첫 번째 터널이 자동 생성한 `beta` CNAME 레코드가 남아있어서
+> Public Hostname Save 시 `An A, AAAA, or CNAME record with that host already exists` 에러.
+> 해결: dash.cloudflare.com → dstcraft.com → DNS → Records → `beta` 수동 삭제 → 다시 Save.
+>
+> **함정 2**: 첫 번째 마법사에서 install command 단계 건너뛰면 토큰을 다시 보기 까다로움.
+> 다시 보려면 만든 터널 클릭 → Edit/Configure 또는 Connectors 탭에서 재표시 가능. 못 찾으면 그냥 터널 삭제 후 재생성이 빠름.
 
 ## 1.7 접속 검증
 
@@ -216,11 +253,23 @@ curl -I https://beta.dstcraft.com
 ```
 
 브라우저에서 `https://beta.dstcraft.com` 직접 열어보고:
-- [ ] 메인 페이지 렌더링
-- [ ] 카테고리/아이템 페이지 라우팅
-- [ ] 검색
-- [ ] analytics 호출 (DevTools → Network → `/track`이 기존 CF Worker 도메인으로 정상 200)
+- [x] 메인 페이지 렌더링
+- [x] 카테고리/아이템 페이지 라우팅
+- [x] 검색
+- [ ] analytics 호출 — **Worker CORS 추가 작업 필요** (아래 함정 참조)
+- [ ] Google 로그인 — **OAuth Authorized JavaScript origins 추가 작업 필요** (아래 함정 참조)
 - [ ] og-image, sitemap.xml, robots.txt 200
+
+> **함정 3 (Worker CORS)**: `worker/index.ts`의 `corsHeaders()`가 `origin.startsWith(allowed)` 체크.
+> `wrangler.toml [vars] ALLOWED_ORIGIN = "https://www.dstcraft.com"` 라서 `beta.dstcraft.com` 거부.
+> 해결: `corsHeaders()`에 `origin === "https://beta.dstcraft.com"` 명시적 허용 추가 후 `cd worker && npx wrangler deploy`.
+> (Phase 3에서 worker 자체가 폐기되므로 임시 패치)
+>
+> **함정 4 (Google OAuth)**: GIS가 hostname 검증함. Google Cloud Console에서 등록 필요.
+> 1. https://console.cloud.google.com → APIs & Services → Credentials
+> 2. OAuth 2.0 Client ID (`117734247342-...`) 클릭
+> 3. **Authorized JavaScript origins** 에 `https://beta.dstcraft.com` 추가 → Save
+> 4. 변경 반영에 5분~수 시간 (시크릿 모드로 즉시 테스트 가능한 경우 많음)
 
 ## 1.8 Phase 1 완료 기준
 
@@ -308,7 +357,16 @@ curl -I https://beta.dstcraft.com
 
 ## 미결정 / 진행 중 결정 필요
 
-- [ ] Mac mini Tailscale hostname (본 머신 터미널에서 ssh 진입 시 사용)
-- [ ] GitHub repo URL (Mac mini에서 clone 시 사용)
-- [ ] Mac mini에 Claude Code 설치 여부 — 미설치면 먼저 설치
-- [ ] §1.5 nginx 경로 — Intel Mac은 `/usr/local/...`, Apple Silicon은 `/opt/homebrew/...`. 이 Mac mini는 Intel i7이라 `/usr/local`로 추정되지만 §1.1의 `brew --prefix`로 확정.
+- [x] GitHub repo URL → `git@github.com:fankimm/dst-craft.git` (SSH, 이미 키 등록됨)
+- [x] Mac mini에 Claude Code 설치 여부 → 이미 설치되어 동작 중
+- [x] nginx 경로 → `/usr/local` 확정 (Intel Mac, brew --prefix 결과)
+- [x] 디렉터리 위치 → `~/dstcraft` (sudo 회피)
+- [x] nginx 포트 → `8080` (sudo 회피, brew 기본)
+- [x] CF Tunnel 설치 → `cloudflared service install` 로 launchd 등록 완료
+
+## Phase 1 마무리 작업 (Phase 2 시작 전 끝낼 것)
+
+- [ ] Worker CORS 패치 git commit + push (`worker/index.ts` 한 줄 추가)
+- [ ] Google OAuth Authorized origins에 beta 추가 (Cloud Console 작업)
+- [ ] beta.dstcraft.com 시크릿 모드 재검증: 로그인 + analytics 호출 200
+- [ ] 24시간 후 안정성 확인 (curl -I 또는 수동)
