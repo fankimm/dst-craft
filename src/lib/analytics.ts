@@ -137,16 +137,26 @@ export async function fetchTopCountries(): Promise<{ code: string; count: number
 }
 
 /** Fetch top supporters (public, cached). Names only — amounts are not exposed. */
+let _supportersCache: { promise: Promise<{ name: string }[]>; at: number } | null = null;
+const SUPPORTERS_TTL_MS = 60_000;
+
 export async function fetchSupporters(): Promise<{ name: string }[]> {
   if (!WORKER_URL) return [];
-  try {
-    const res = await fetch(`${WORKER_URL}/supporters`);
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data?.supporters) ? data.supporters : [];
-  } catch {
-    return [];
+  if (_supportersCache && Date.now() - _supportersCache.at < SUPPORTERS_TTL_MS) {
+    return _supportersCache.promise;
   }
+  const promise = (async () => {
+    try {
+      const res = await fetch(`${WORKER_URL}/supporters`);
+      if (!res.ok) return [];
+      const data = await res.json();
+      return Array.isArray(data?.supporters) ? data.supporters : [];
+    } catch {
+      return [];
+    }
+  })();
+  _supportersCache = { promise, at: Date.now() };
+  return promise;
 }
 
 /** Track an item click for popularity ranking */

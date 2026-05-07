@@ -6,9 +6,10 @@
 >
 > **진행 상황 (2026-05-07)**
 > - ✅ Phase 1 완료 — `https://beta.dstcraft.com` 라이브 (CF Tunnel → Mac mini nginx :8080 → 정적 빌드)
-> - ✅ Phase 2 완료 — `scripts/deploy-beta.sh` 자동 배포 스크립트 (git pull → build → atomic symlink swap → release prune)
-> - ✅ 운영 정비 일부 — macOS 자동 업데이트/재부팅 차단 (`scripts/disable-macos-auto-update.sh`)
-> - ⏭ 다음: Phase 3 (Worker → Bun API)
+> - ✅ Phase 2 완료 — `scripts/deploy-beta.sh` 자동 배포 스크립트
+> - ✅ 운영 정비 일부 — macOS 자동 업데이트/재부팅 차단
+> - ✅ Phase 3 완료 — Worker → Bun API (Hono) 이식, 25 엔드포인트, nginx /api/ 프록시, launchd 자동 시작/재시작
+> - ⏭ 다음: Phase 4 (Upstash Redis → SQLite) 또는 Phase 5 (self-hosted runner)
 
 ---
 
@@ -302,16 +303,23 @@ curl -I https://beta.dstcraft.com
 
 ---
 
-# Phase 3 — Worker → Bun API 이식
+# Phase 3 — Worker → Bun API 이식 ✅
 
-> 목표: 기존 `worker/index.ts` (1222줄, 25개 엔드포인트)를 Mac mini의 Bun 서버로 이식.
+> 목표: 기존 `worker/index.ts` (1226줄, 25개 엔드포인트)를 Mac mini의 Bun 서버로 이식.
 
-- Bun + Hono로 포팅 (CF Worker API와 거의 동형)
-- 25개 엔드포인트: analytics(track/event/popular/combo/rate/top-countries/rating/stats) + auth(google) + skills + favorites + feedback + ko-fi-webhook + supporters + config
-- 데이터 액세스는 임시로 Upstash 그대로 사용 (Phase 4에서 SQLite로 교체)
-- launchd plist로 자동 시작 + 재시작
-- nginx에 `/api/*` → `127.0.0.1:3001` 프록시 추가
-- 프론트엔드 `NEXT_PUBLIC_ANALYTICS_WORKER_URL` → `/api`로 변경 (same-origin)
+**완료 (2026-05-07)**
+
+- 코드: `bun-api/` (Bun 1.3 + Hono 4.12, 모듈 분할: lib/{env,redis,jwt,util} + routes/{analytics,auth,skills,favorites,feedback,kofi-supporters,config,debug})
+- 25 엔드포인트 1:1 포팅, JWT/CORS/rate-limit 동작 동일
+- 프로세스: launchd `~/Library/LaunchAgents/com.dstcraft.api.plist` (RunAtLoad + KeepAlive on Crashed)
+  - 백업: `bun-api/infra/com.dstcraft.api.plist`
+  - 로그: `~/dstcraft/logs/bun-api.{out,err}.log`
+- nginx: `/usr/local/etc/nginx/servers/dstcraft.conf` 에 `location /api/` 프록시 (CF-IPCountry 등 헤더 명시 forward)
+  - 백업: `bun-api/infra/nginx-dstcraft.conf`
+- JWT_SECRET 새로 발급 + worker/bun 양쪽 동기화 (전체 사용자 1회 재로그인 — 데이터 영구 키는 Google sub라 무손실)
+- 프론트엔드: `~/dstcraft/source/.env.local`의 `NEXT_PUBLIC_ANALYTICS_WORKER_URL=/api` 로 변경 (same-origin, CORS 우회)
+  - prod/Vercel은 그대로 (Phase 6 컷오버까지 worker 사용)
+- 검증: 외부 `curl https://beta.dstcraft.com/api/_debug/headers` → CF-IPCountry: KR 자동 주입 확인, `/api/top-countries`/`/api/rating` 실데이터 응답
 
 ---
 
