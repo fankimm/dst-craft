@@ -11,7 +11,6 @@ import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
 import { ConsoleApp } from "./console/ConsoleApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { FloatingSupportPill } from "./ui/FloatingSupportPill";
-import { BetaBadge } from "./BetaBadge";
 import { SkillsTourPopover } from "./SkillsTourPopover";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
@@ -239,6 +238,7 @@ export function AppShell() {
         className="flex items-center justify-between gap-4 border-b border-border bg-background shrink-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-3"
         style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
+        <BetaTabIndicator />
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -310,9 +310,6 @@ export function AppShell() {
       {/* Floating ko-fi pill — docks into Footer when Footer is in view */}
       <FloatingSupportPill />
 
-      {/* Beta corner ribbon (only on beta.* hostnames) */}
-      <BetaBadge />
-
       {/* Dev menu */}
       {showDevMenu && (
         <DevMenu onOpenReview={() => setShowReview(true)} token={token} />
@@ -333,6 +330,29 @@ export function AppShell() {
 // ---------------------------------------------------------------------------
 // Dev-only floating menu (stripped from production builds)
 // ---------------------------------------------------------------------------
+
+/**
+ * Inline BETA pill rendered as the first element in the tab bar (left of "제작").
+ * Pure label — not interactive. Sticks to the left during horizontal scroll
+ * via `sticky left-0` so it remains visible regardless of tab bar scroll.
+ */
+function BetaTabIndicator() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hostname.startsWith("beta.")) setShow(true);
+  }, []);
+  if (!show) return null;
+  return (
+    <span
+      className="sticky left-0 z-10 shrink-0 inline-flex items-center px-2 py-0.5 rounded-md bg-amber-500 text-white text-[10px] font-extrabold uppercase tracking-widest shadow-sm"
+      style={{ textShadow: "0 1px 1px rgba(0,0,0,0.3)" }}
+      aria-label="Beta site"
+    >
+      BETA
+    </span>
+  );
+}
 
 function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: string | null }) {
   const [open, setOpen] = useState(false);

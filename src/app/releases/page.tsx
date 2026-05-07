@@ -15,6 +15,20 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.9",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 현황 패널 대대적 리팩터 — 회로별 카드 섹션 폐기, 모든 stat/cap을 row로 통일. 각 row 클릭 시 DetailPanel에 기여 회로·스킬 표시",
+      "fix(BetaBadge): 좌상단 사선 띠 폐기, 탭바 첫 자리(제작 왼쪽)에 sticky-left BETA 인디케이터 추가",
+      "fix(skills): 회로 상세의 '제작탭에서 자세히 보기' 버튼을 한 줄 → 헤더 우측 ExternalLink 아이콘만",
+      "fix(skills): 회로판 카드 컨테이너에 px-3 추가 (제작탭 패턴)",
+    ],
+    changes: {
+      ko: [],
+      en: [],
+    },
+  },
+  {
     version: "0.21.8",
     date: "2026-05-08",
     dev: [

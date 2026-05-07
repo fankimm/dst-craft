@@ -114,7 +114,7 @@ export function Wx78CircuitBoard({
 
       {/* Grid catalog — scrollable */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-        <div className="max-w-2xl mx-auto w-full pb-2">
+        <div className="max-w-2xl mx-auto w-full pb-2 px-3">
           {TYPES.map((type) => (
             <Section
               key={type}
@@ -380,7 +380,18 @@ function CircuitDetail({
           />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-base font-bold text-foreground">{moduleName(m, locale)}</h3>
+          <div className="flex items-start gap-1.5">
+            <h3 className="text-base font-bold text-foreground flex-1 min-w-0">{moduleName(m, locale)}</h3>
+            {onViewItem && (
+              <button
+                onClick={onViewItem}
+                title={locale === "ko" ? "제작탭에서 자세히 보기" : "View in Crafting Tab"}
+                className="shrink-0 size-7 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-surface transition-colors"
+              >
+                <ExternalLink className="size-4" />
+              </button>
+            )}
+          </div>
           <div className="mt-1 flex items-center gap-1.5 flex-wrap">
             <span
               className="text-[10px] font-bold uppercase px-1.5 py-px rounded-sm"
@@ -398,19 +409,6 @@ function CircuitDetail({
           <p className="mt-1.5 text-xs text-muted-foreground">{moduleDesc(m, locale)}</p>
         </div>
       </div>
-
-      {/* Jump to crafting tab */}
-      {onViewItem && (
-        <div className="mt-3">
-          <button
-            onClick={onViewItem}
-            className="w-full flex items-center justify-center gap-1.5 py-2 rounded-md text-xs font-semibold border border-border bg-surface/60 hover:bg-surface text-foreground transition-colors"
-          >
-            <ExternalLink className="size-3.5" />
-            {locale === "ko" ? "제작탭에서 자세히 보기" : "View in Crafting Tab"}
-          </button>
-        </div>
-      )}
 
       {/* Effects (parsed from in-game scrapbook) */}
       <ScrapbookEffects moduleId={m.id} locale={locale} activatedSkills={activatedSkills} />
