@@ -120,16 +120,22 @@ jobs:
               continue
             fi
             echo "  swap $CURRENT → $VERCEL_TARGET"
-            PATCH_RES=$(curl -fsS -X PATCH \
+            # body로 보낼 JSON을 변수로 빼서 정확히 무엇 보내는지 출력
+            BODY=$(printf '{"content":"%s","proxied":true}' "$VERCEL_TARGET")
+            echo "  body: $BODY"
+            # -f 빼고 항상 body 캡처 (4xx도 응답 보임), -w로 status code 함께
+            PATCH_RES=$(curl -sS -X PATCH \
               -H "Authorization: Bearer $CF_API_TOKEN" \
               -H "Content-Type: application/json" \
-              -d "{\"content\":\"$VERCEL_TARGET\",\"proxied\":true}" \
+              -d "$BODY" \
+              -w "\nHTTP:%{http_code}" \
               "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records/$ID")
-            echo "  PATCH response: $(printf '%s' "$PATCH_RES" | head -c 300)"
+            echo "  full response:"
+            printf '%s\n' "$PATCH_RES" | sed 's/^/    /'
             if printf '%s' "$PATCH_RES" | grep -q '"success":true'; then
               echo "  ✓ swap success"
             else
-              echo "::error::PATCH failed for $HOST: $PATCH_RES"
+              echo "::error::PATCH failed for $HOST"
               echo "::endgroup::"
               exit 1
             fi
