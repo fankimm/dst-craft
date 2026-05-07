@@ -310,7 +310,7 @@ function CircuitTile({
     >
       <div
         className="relative size-12 rounded-md flex items-center justify-center"
-        style={{ backgroundColor: `${color}15` }}
+        style={{ backgroundColor: `${color}33` }}
       >
         <Image
           src={`/images/game-items/${m.id}.png`}
@@ -375,7 +375,7 @@ function CircuitDetail({
       <div className="flex items-start gap-3">
         <div
           className="shrink-0 size-16 rounded-lg flex items-center justify-center overflow-hidden"
-          style={{ backgroundColor: `${color}20` }}
+          style={{ backgroundColor: `${color}33` }}
         >
           <Image
             src={`/images/game-items/${m.id}.png`}
