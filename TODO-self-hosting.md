@@ -56,16 +56,43 @@ Mac mini에 떠 있는 프로세스는 **nginx + cloudflared + bun-api + github-
 > 이 시점엔 API/DB 이식 X. 정적 사이트만. analytics는 기존 CF Worker 그대로 호출.
 > 완료 기준: `https://beta.dstcraft.com` 접속 시 prod와 동일 렌더링 + analytics 정상 트래킹.
 
-## 1.1 Mac mini SSH 접속 후 사전 확인
+## 실행 환경 — 어디서 무엇을 도는가
+
+**모든 작업은 Mac mini 안에서 실행되는 Claude 세션이 수행한다.** 본 머신(이 계획서를 작성한 머신)의 Claude는 계획서 작성/수정만 담당.
+
+### 작업 흐름
+1. **본 머신 터미널**에서 Tailscale로 Mac mini에 SSH 진입
+   ```bash
+   ssh <macmini-tailscale-name>
+   ```
+2. **Mac mini 셸**에서 Claude Code 실행 (없으면 먼저 설치: `npm i -g @anthropic-ai/claude-code` 또는 공식 설치 가이드 참조)
+   ```bash
+   cd ~/work && [ -d dst-craft ] || git clone <repo>
+   cd dst-craft && git pull
+   claude
+   ```
+3. **Mac mini Claude 세션**에서 이 파일을 열고 §1.1부터 진행
+   ```
+   /todo  또는  cat TODO-self-hosting.md
+   ```
+
+이유 (왜 SSH 후 Mac mini에서 Claude를 실행하는가):
+- Claude Code의 Read/Edit/Write는 같은 머신 파일시스템을 직접 다룸. SSH 너머 파일은 비효율
+- nginx 재시작·cloudflared 설치 등에 sudo 프롬프트가 끼어 비대화형 SSH로는 까다로움
+- 빌드 산출물(`out/`)이 결국 Mac mini에 있어야 하니 빌드도 그곳에서 돌리는 게 자연스러움
+
+---
+
+## 1.1 사전 확인 (Mac mini Claude 세션 내)
 
 ```bash
-# Tailscale로 SSH (호스트네임은 실제 환경 맞게)
-ssh <macmini-tailscale-name>
-
 # 도구 존재 확인
 brew --version
 node --version || echo "node 없음 → brew install node"
 git --version
+
+# Homebrew 경로 확인 (이후 nginx 경로에 사용)
+brew --prefix
 
 # 디스크 여유 확인 (1GB 이상이면 충분)
 df -h ~
@@ -277,17 +304,11 @@ curl -I https://beta.dstcraft.com
 
 ## 다음 세션에서 시작할 위치
 
-**Mac mini SSH 접속 직후 이 파일을 열고 §1.1부터 순서대로.**
-
-```bash
-ssh <macmini>
-cd ~/work && [ -d dst-craft ] || git clone <repo>
-cd dst-craft && git pull
-cat TODO-self-hosting.md  # 여기 §1.1 부터
-```
+위 **"실행 환경 — 어디서 무엇을 도는가"** 섹션의 작업 흐름 1→2→3 그대로. Mac mini Claude 세션 진입 후 §1.1부터.
 
 ## 미결정 / 진행 중 결정 필요
 
-- [ ] Mac mini Tailscale hostname (실제 호스트네임 §1.1에 채워넣기)
-- [ ] GitHub repo URL (clone 시 사용)
-- [ ] §1.5 nginx 경로가 Intel Mac 기준 `/usr/local/...`인지 Apple Silicon 기준 `/opt/homebrew/...`인지 — Mac mini Intel i7이라 `/usr/local`로 추정. SSH 후 `brew --prefix`로 확정.
+- [ ] Mac mini Tailscale hostname (본 머신 터미널에서 ssh 진입 시 사용)
+- [ ] GitHub repo URL (Mac mini에서 clone 시 사용)
+- [ ] Mac mini에 Claude Code 설치 여부 — 미설치면 먼저 설치
+- [ ] §1.5 nginx 경로 — Intel Mac은 `/usr/local/...`, Apple Silicon은 `/opt/homebrew/...`. 이 Mac mini는 Intel i7이라 `/usr/local`로 추정되지만 §1.1의 `brew --prefix`로 확정.
