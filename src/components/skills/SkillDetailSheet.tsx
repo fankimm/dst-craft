@@ -33,10 +33,11 @@ export type { UnlockRequirement };
 
 function getTranslation(id: string, locale: Locale) {
   const entry = skillTranslations[id];
-  if (!entry) return { title: id, desc: "" };
+  if (!entry) return { title: id, desc: "", details: "" };
   return {
     title: locale === "ko" ? entry.title.ko : entry.title.en,
     desc: locale === "ko" ? entry.desc.ko : entry.desc.en,
+    details: entry.details ? (locale === "ko" ? entry.details.ko : entry.details.en) : "",
   };
 }
 
@@ -57,7 +58,7 @@ export function SkillDetailSheet({
   onToggle,
   onViewItem,
 }: Props) {
-  const { title, desc } = getTranslation(node.id, locale);
+  const { title, desc, details } = getTranslation(node.id, locale);
   const altTitle = locale !== "en" ? getTranslation(node.id, "en").title : "";
   const relatedItemIds = getItemsBySkill(node.id);
   const relatedItems = relatedItemIds
@@ -102,6 +103,15 @@ export function SkillDetailSheet({
         <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line">
           {desc}
         </p>
+      )}
+
+      {/* Detailed stats */}
+      {details && (
+        <div className="rounded-md bg-muted/50 px-3 py-2">
+          <p className="text-xs text-muted-foreground leading-relaxed whitespace-pre-line font-mono">
+            {details}
+          </p>
+        </div>
       )}
 
       {/* Unlock requirements */}

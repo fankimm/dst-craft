@@ -3,7 +3,7 @@
 /** Skill title + description translations */
 export const skillTranslations: Record<
   string,
-  { title: { en: string; ko: string }; desc: { en: string; ko: string } }
+  { title: { en: string; ko: string }; desc: { en: string; ko: string }; details?: { en: string; ko: string } }
 > = {
   // WILSON
   wilson_alchemy_1: {
@@ -1352,42 +1352,82 @@ export const skillTranslations: Record<
   wx78_circuitry_betterunplug: {
     title: { en: "Right To Modify", ko: "개조할 권리" },
     desc: { en: "Gain the ability to unplug any circuit in the bar stack, and circuits will lose half the usual amount of durability when unplugged.", ko: "회로를 자유롭게 탈거할 수 있습니다. 또한 회로 제거 시의 내구도 소모가 원래의 절반으로 줄어듭니다." },
+    details: {
+      en: "Durability consumption on unplug: 1 → 0.5",
+      ko: "탈거 시 내구도 소모: 1 → 0.5",
+    },
   },
   wx78_circuitry_bettercharge: {
     title: { en: "Watts Up", ko: "잦은 교류" },
     desc: { en: "Passive charge regeneration is much faster, and lose one less charge when unplugging a charged circuit with two or more slots.", ko: "전력 자연 재생이 훨씬 빨라집니다. 또한 슬롯을 2칸 이상 차지하는 회로를 뽑을 때 잃는 전력이 1 줄어듭니다." },
+    details: {
+      en: "Charge regen speed: ×2.5 (90s → 36s per tick)\nCharge saved on unplug: +1 (min cost remains 1)",
+      ko: "전력 재생 속도: ×2.5 (90초 → 36초/틱)\n탈거 시 전력 절약: +1 (최소 비용은 1 유지)",
+    },
   },
   wx78_circuitry_alphabuffs_1: {
     title: { en: "Alpha Circuits Tinkering I", ko: "알파 회로 제조 I" },
     desc: { en: "Processing Circuits gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "연산 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
+    details: {
+      en: "Processing (Sanity): -20% negative sanity aura, +10% positive dapperness/module\nGastrogain (Hunger): -5% hunger drain (small), -25% hunger drain (large)",
+      ko: "연산 (정신력): 부정적 정신력 오라 -20%, 긍정적 정신력 회복 +10%/모듈\n소화기 확장 (허기): 허기 소모 -5% (소형), -25% (대형)",
+    },
   },
   wx78_circuitry_alphabuffs_2: {
     title: { en: "Alpha Circuits Tinkering II", ko: "알파 회로 제조 II" },
     desc: { en: "Hardy Circuits, Processing Circuits, and Beanbooster Circuit gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "체력 증진 회로, 연산 회로, 빈부스터 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
+    details: {
+      en: "Hardy (Health): +2.5% armor/module (large: +5%)\nProcessing (Sanity): +30% positive dapperness/module (large)\nBeanbooster (Bee): shield = 20% max HP/module, regen 0.25/s per module\nGastrogain (Hunger): -10% drain (small), -30% drain (large)",
+      ko: "체력 증진: 방어력 +2.5%/모듈 (대형: +5%)\n연산 (정신력): 긍정적 정신력 회복 +30%/모듈 (대형)\n빈부스터 (꿀벌): 보호막 = 최대 체력의 20%/모듈, 재생 0.25/초\n소화기 확장 (허기): 소모 -10% (소형), -30% (대형)",
+    },
   },
   wx78_circuitry_betabuffs_1: {
     title: { en: "Beta Circuits Tinkering I", ko: "베타 회로 제조 I" },
     desc: { en: "Thermal Circuit, Refrigerant Circuit, Optoelectronic Circuit, Chorusbox Circuit, and Rangebooster Circuit gain a new effect in addition to their original effect.", ko: "발열 회로, 냉각 회로, 광전자 회로, 음악상자 회로, 범위 증폭 회로에 새로운 효과가 추가됩니다." },
+    details: {
+      en: "Thermal: freeze resistance ×2 (1 module), immune (2+ modules)\nRefrigerant: fire damage -50%/module\nOptoelectronic: green night vision filter removed\nChorusbox: max 10 followers/module, tends farm plants\nRangebooster: extends scanner/drone ranges per module",
+      ko: "발열: 빙결 저항 ×2 (1모듈), 면역 (2모듈 이상)\n냉각: 화염 피해 -50%/모듈\n광전자: 야간 투시 초록 필터 제거\n음악상자: 추종자 최대 10/모듈, 농작물 관리\n범위 증폭: 스캐너/드론 범위 확장 (모듈당)",
+    },
   },
   wx78_circuitry_betabuffs_2: {
     title: { en: "Beta Circuits Tinkering II", ko: "베타 회로 제조 II" },
     desc: { en: "Acceleration Circuits, Electrification Circuit, and Illumination Circuits gain a new effect in addition to their original effect.", ko: "가속 회로, 전격 회로, 조명 회로에 새로운 효과가 추가됩니다." },
+    details: {
+      en: "Electrification (Taser): charge buildup on hit → electric blast at 100 (50 dmg/module, radius 2+1/module)\nIllumination: directional light beam added\nAcceleration: slow debuffs partially reclaimed (3 modules: 40% slow → ~25%)",
+      ko: "전격: 피격 시 충전 축적 → 100 도달 시 전기 폭발 (50 피해/모듈, 반경 2+1/모듈)\n조명: 방향성 광선 추가\n가속: 감속 디버프 부분 경감 (3모듈: 40% 감속 → ~25%)",
+    },
   },
   wx78_circuitry_gammabuffs_1: {
     title: { en: "Gamma Circuits Tinkering I", ko: "감마 회로 제조 I" },
     desc: { en: "Redigestion Circuit and Sonic-Invoker Circuit gain a new effect in addition to their original effect.", ko: "재소화 회로와 음파 발진 회로에 새로운 효과가 추가됩니다." },
+    details: {
+      en: "Redigestion: can process ALL types of spoiled food (not just wet goop)\nSonic-Invoker (Chess): chess pieces become friendly allies",
+      ko: "재소화: 모든 종류의 상한 음식 처리 가능 (젖은 덩어리뿐 아니라)\n음파 발진 (체스): 체스 말 조각이 아군이 됨",
+    },
   },
   wx78_circuitry_gammabuffs_2: {
     title: { en: "Gamma Circuits Tinkering II", ko: "감마 회로 제조 II" },
     desc: { en: "Blocking Circuit and Spin-Cycle Circuit gain a new effect in addition to their original effect.", ko: "방어 회로와 회전기 회로에 새로운 효과가 추가됩니다." },
+    details: {
+      en: "Blocking (Shield): 80% damage reduction, 100 total damage absorbed, cooldown 20s (min 5s)",
+      ko: "방어 (보호막): 피해 80% 감소, 총 100 피해 흡수, 쿨다운 20초 (최소 5초)",
+    },
   },
   wx78_circuitry_slot_1: {
     title: { en: "Off By One", ko: "슬롯 오프셋" },
     desc: { en: "Grant an additional slot to all of your circuit bars.", ko: "모든 회로 바에 슬롯이 1개 추가됩니다." },
+    details: {
+      en: "Max charge capacity: 6 → 7",
+      ko: "최대 전력 용량: 6 → 7",
+    },
   },
   wx78_extrabody_1: {
     title: { en: "Cold Standby I", ko: "콜드 스탠바이 I" },
     desc: { en: "Learn to craft a reliable Backup Chassis.", ko: "믿음직한 '예비 동체'를 제작할 수 있습니다." },
+    details: {
+      en: "Max backup chassis: 1\nDeath transfers inventory & circuits to chassis",
+      ko: "예비 동체 최대: 1기\n사망 시 인벤토리와 회로가 동체로 이전",
+    },
   },
   wx78_ghostrevive_1: {
     title: { en: "Inhabited Machine I", ko: "거주하는 기계 I" },
@@ -1400,6 +1440,10 @@ export const skillTranslations: Record<
   wx78_ghostrevive_3: {
     title: { en: "Inhabited Machine III", ko: "거주하는 기계 III" },
     desc: { en: "Reviving with a Backup Chassis fully restores your health.", ko: "예비 동체에서 부활 시 모든 체력을 회복합니다." },
+    details: {
+      en: "Revival health: 100% (normally partial)",
+      ko: "부활 시 체력: 100% (일반적으로는 부분 회복)",
+    },
   },
   wx78_extrabody_2: {
     title: { en: "Cold Standby II", ko: "콜드 스탠바이 II" },
@@ -1420,34 +1464,66 @@ export const skillTranslations: Record<
   wx78_scoutdrone_1: {
     title: { en: "Field Survey", ko: "현장 조사" },
     desc: { en: "Learn to craft a Roto-Mapper to explore and map unknown areas.", ko: "미지의 영역을 탐사하고 기록할 수 있는 '회전익 탐사기'를 제작할 수 있습니다." },
+    details: {
+      en: "Max scout drones: 2\nRange: 200",
+      ko: "탐사 드론 최대: 2대\n범위: 200",
+    },
   },
   wx78_extradronerange: {
     title: { en: "Signal Booster", ko: "Signal Booster" },
     desc: { en: "Expands the Bio Scanalyzer's scan radius, and extends the range of the Roto-Mapper, Zaptrocuter, Auto-Grabber, and Exploiterator.", ko: "생체 분석기의 스캔 반경을 넓히고, 회전익 탐사기, 전격 구축기, 자동 수집기, 착취기의 범위를 확장합니다." },
+    details: {
+      en: "Scout drone range: +300 (200 → 500)\nZap drone range: 15 → 30\nScanner: +3 radar booster equivalent",
+      ko: "탐사 드론 범위: +300 (200 → 500)\n전격 드론 범위: 15 → 30\n스캐너: 범위 증폭 3개 장착 효과",
+    },
   },
   wx78_deliverydrone_1: {
     title: { en: "Transport I", ko: "운송기 I" },
     desc: { en: "Learn to craft a Portable Storage Unit to send items to any mapped location.", ko: "지정된 지도 위치로 물건을 배송할 수 있는 '휴대용 저장 장치'를 제작할 수 있습니다." },
+    details: {
+      en: "Storage: 3 slots (3×1)\nDelivery speed: 30",
+      ko: "저장 공간: 3칸 (3×1)\n배송 속도: 30",
+    },
   },
   wx78_deliverydrone_2: {
     title: { en: "Transport II", ko: "운송기 II" },
     desc: { en: "Learn to craft a larger Portable Storage Unit.", ko: "더 큰 '휴대용 저장 장치'를 제작할 수 있습니다." },
+    details: {
+      en: "Storage: 6 slots (3×2)",
+      ko: "저장 공간: 6칸 (3×2)",
+    },
   },
   wx78_zapdrone_1: {
     title: { en: "Telemechanical Enthusiast I", ko: "원격 조종 애호가 I" },
     desc: { en: "Learn to craft a Zaptrocuter to zap enemies remotely.", ko: "적을 원격으로 감전시키는 '찌릿콥터'를 제작할 수 있습니다." },
+    details: {
+      en: "Damage: 30 (electric)\nRange: 15, Uses: 100 (2 per attack)\nInsulated targets: ×0.5 damage",
+      ko: "피해: 30 (전기)\n범위: 15, 사용 횟수: 100 (공격당 2 소모)\n절연 대상: ×0.5 피해",
+    },
   },
   wx78_zapdrone_2: {
     title: { en: "Telemechanical Enthusiast II", ko: "원격 조종 애호가 II" },
     desc: { en: "Learn to craft a Zaptrocuter with greater range and capacity.", ko: "범위와 배터리 용량이 향상된 '찌릿콥터'를 제작할 수 있습니다." },
+    details: {
+      en: "Uses per attack: 2 → 1 (doubled effective capacity)",
+      ko: "공격당 소모: 2 → 1 (실질 용량 2배)",
+    },
   },
   wx78_allegiance_lunar: {
     title: { en: "Lunar Vessel", ko: "월광의 그릇" },
     desc: { en: "Using \"borrowed\" technology from the Cryptic Founder, allow Gestalts to possess your Backup Chassis and become your spectrobotic minions.", ko: "비밀스러운 창립자에게서 \"빌려온\" 기술을 이용해 게슈탈트를 예비 동체에 빙의하게 하여 심령 로봇 하수인으로 부립니다." },
+    details: {
+      en: "Lunar damage resistance: 10%\nBonus vs Shadow enemies: +10%",
+      ko: "달 피해 저항: 10%\n그림자 적 추가 피해: +10%",
+    },
   },
   wx78_allegiance_shadow: {
     title: { en: "Shadow Servitor", ko: "그림자의 종" },
     desc: { en: "Allows insertion of select shadow components into your circuitry, granting your Chassis various abilities in both inhabited and uninhabited states.", ko: "회로에 제한된 종류의 그림자 부품을 삽입하여, 동체에 의식이 있을 때와 없을 때 각각 다양한 효과를 얻습니다." },
+    details: {
+      en: "Shadow damage resistance: 10%\nBonus vs Lunar enemies: +10%\nShadow drones: harvesters (max 2), debuffers (max 3, +6% dmg/drone)",
+      ko: "그림자 피해 저항: 10%\n달 적 추가 피해: +10%\n그림자 드론: 수확기 (최대 2), 디버퍼 (최대 3, +6% 피해/드론)",
+    },
   },
 };
 
