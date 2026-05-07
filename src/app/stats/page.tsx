@@ -9,7 +9,7 @@ import {
   RotateCcw, TrendingUp, ExternalLink, Star,
 } from "lucide-react";
 import { BackToHome } from "@/components/ui/BackToHome";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { DetailPanel } from "@/components/ui/DetailPanel";
 import { cn } from "@/lib/utils";
 
 /** Convert ISO 3166-1 alpha-2 country code to flag emoji */
@@ -80,7 +80,7 @@ function CollapsibleList({
   total,
   renderItem,
   emptyText = "아직 데이터 없음",
-  topN = 10,
+  topN,
 }: {
   title: string;
   icon?: React.ReactNode;
@@ -91,7 +91,8 @@ function CollapsibleList({
   topN?: number;
 }) {
   const [open, setOpen] = useState(false);
-  const visible = sortedItems.length > topN ? sortedItems.slice(0, topN) : sortedItems;
+  const N = topN ?? 5;
+  const visible = sortedItems.length > N ? sortedItems.slice(0, N) : sortedItems;
   const hidden = sortedItems.length - visible.length;
 
   return (
@@ -118,16 +119,17 @@ function CollapsibleList({
           )}
         </>
       )}
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle>{title} · 전체 {sortedItems.length}개</SheetTitle>
-          </SheetHeader>
-          <div className="space-y-2 px-4 pb-6">
+      <DetailPanel open={open} onClose={() => setOpen(false)}>
+        <div className="px-4 pt-3 pb-6 space-y-3">
+          <h3 className="text-sm font-semibold pr-8 flex items-center gap-2">
+            {icon}
+            {title} <span className="text-xs font-normal text-muted-foreground">· 전체 {sortedItems.length}개</span>
+          </h3>
+          <div className="space-y-2">
             {sortedItems.map((it) => renderItem(it, total))}
           </div>
-        </SheetContent>
-      </Sheet>
+        </div>
+      </DetailPanel>
     </div>
   );
 }
