@@ -27,10 +27,11 @@ interface Props {
 
 const TYPES: CircuitType[] = ["alpha", "beta", "gamma"];
 
+// 인게임 회로판 바 색상에 맞춤: 알파=빨강, 베타=파랑, 감마=노랑
 const TYPE_COLORS: Record<CircuitType, string> = {
-  alpha: "#eab308",
+  alpha: "#ef4444",
   beta: "#3b82f6",
-  gamma: "#a855f7",
+  gamma: "#eab308",
 };
 
 const TYPE_LABEL: Record<CircuitType, { ko: string; en: string }> = {
@@ -107,7 +108,10 @@ export function Wx78CircuitBoard({
 
       {/* Grid catalog — scrollable */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-        <div className="max-w-3xl mx-auto w-full px-3 pb-6">
+        <div
+          className="max-w-3xl mx-auto w-full px-3"
+          style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 5rem)" }}
+        >
           {TYPES.map((type) => (
             <Section
               key={type}

@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.3",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): WX-78 회로판 바 색상을 인게임에 맞춤 — 알파=빨강, 베타=파랑, 감마=노랑 (기존: 노랑/파랑/보라)",
+      "fix(skills): 회로판/현황 탭 하단 클리핑 추가 수정 — safe-area-inset-bottom + 5rem 패딩으로 SupportPill·홈 인디케이터에 가려지지 않도록",
+    ],
+    changes: {
+      ko: [
+        "WX-78 회로판 바 색상을 인게임과 일치시킴 — 알파(빨강) / 베타(파랑) / 감마(노랑)",
+        "핸드폰에서 회로판 하단의 마지막 카드가 가려지던 문제 수정",
+      ],
+      en: [
+        "Match in-game colors for WX-78 circuit bars — Alpha (red) / Beta (blue) / Gamma (yellow)",
+        "Fixed last card being clipped at the bottom on mobile",
+      ],
+    },
+  },
+  {
     version: "0.21.2",
     date: "2026-05-08",
     dev: [

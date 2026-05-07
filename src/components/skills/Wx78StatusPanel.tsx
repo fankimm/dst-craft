@@ -148,7 +148,10 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
 
   return (
     <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-      <div className="max-w-2xl mx-auto w-full pb-4 px-3">
+      <div
+        className="max-w-2xl mx-auto w-full px-3"
+        style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 5rem)" }}
+      >
         <Section title={locale === "ko" ? "기본 능력치" : "Stats"} rows={survivalRows} />
         <Section title={locale === "ko" ? "이동" : "Movement"} rows={movementRows} />
         <Section title={locale === "ko" ? "온도 · 저항" : "Temperature · Resistance"} rows={tempRows} />
