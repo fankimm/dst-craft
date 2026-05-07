@@ -10,7 +10,8 @@
 > - ✅ 운영 정비 일부 — macOS 자동 업데이트/재부팅 차단
 > - ✅ Phase 3 완료 — Worker → Bun API (Hono) 이식, 25 엔드포인트, nginx /api/ 프록시, launchd 자동 시작/재시작
 > - ✅ Phase 4 완료 (2026-05-07) — bun-api 데이터 레이어 SQLite로 교체. 마이그레이션 14.8s, DB 1.3MB(600K + 716K WAL). 베타 라이브 검증: rating/top-countries/popular/stats/supporters 모두 SQLite 기반 응답. 일일 백업 launchd 동작(132K gzip). UV는 PFCOUNT가 IP 추출 불가라 의도적으로 fresh start.
-> - ⏭ 다음: Phase 5 (self-hosted runner) → Phase 6 (prod 컷오버)
+> - ✅ Phase 5 완료 (2026-05-07) — `.github/workflows/deploy-beta.yml` + self-hosted runner(macOS x64, mac-mini) 등록. main 푸시 시 자동: ~/works/dst-craft 동기화(stash로 WIP 보존) → 변경 경로별 frontend deploy-beta.sh / bun-api launchctl 재시작 / Telegram 알림(secrets 미설정 시 skip).
+> - ⏭ 다음: Phase 6 (prod 컷오버) → Phase 7 (운영 정비)
 
 ---
 
