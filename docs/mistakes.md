@@ -342,6 +342,28 @@
   ```
 - **부수 발견**: 같은 이유로 module-level 카운터/플래그/싱글톤 등도 chunk 분할 환경에서 공유가 깨질 수 있음. 진짜 전역 상태가 필요하면 `globalThis` 또는 React Context를 써야 함
 
+### self-hosted runner workflow가 "로컬 HEAD"로 변경 감지하면 같은 머신에서 commit한 push를 no_change로 오판
+- **문제**: deploy-beta.yml 첫 버전이 `BEFORE=$(git rev-parse HEAD)` / `AFTER=$(git rev-parse origin/main)` 비교로 변경 감지. SSH로 들어와 Mac mini에서 직접 commit + push 하면 ~/works/dst-craft의 HEAD가 이미 origin/main과 같아 BEFORE==AFTER → no_change=true → 모든 step skip. bun-api 변경이 있어도 재시작 안 됨
+- **원인**: 로컬 작업트리 HEAD vs 원격 HEAD 비교는 **다른 머신에서 push했을 때만** 의미가 있음. push가 같은 머신에서 발생하면 둘이 항상 동일. self-hosted runner의 작업 트리가 사용자가 commit하는 트리와 같을 수 있음을 간과
+- **교훈**: GitHub Actions에서 푸시 이벤트의 변경 범위는 항상 `${{ github.event.before }}..${{ github.sha }}` 사용. 로컬 작업트리 상태는 사용처(stash, reset)에만 쓰고 변경 감지에는 절대 쓰지 말 것. workflow_dispatch는 force 입력 또는 명시 SHA 받기.
+- **해결**:
+  ```yaml
+  env:
+    BEFORE_SHA: ${{ github.event.before }}
+    AFTER_SHA: ${{ github.sha }}
+  ```
+  ```bash
+  ZERO=0000000000000000000000000000000000000000
+  if [ "$EVENT" = "push" ] && [ "$BEFORE_SHA" != "$ZERO" ]; then
+    if git cat-file -e "$BEFORE_SHA" 2>/dev/null; then
+      changed=$(git diff --name-only "$BEFORE_SHA" "$AFTER_SHA")
+    else
+      changed="src/ bun-api/"  # force-push 안전망
+    fi
+  fi
+  ```
+- **검증**: 같은 머신에서 commit → push → workflow_run 로그 확인. "Processing step: 'bun-api restart'" 라인 뒤에 "Skipping step" 없는지
+
 ### SQLite UPSERT에서 INSERT 측 `MAX(0, ?)` 클램프가 `excluded.count`까지 0으로 만들어 음수 누적이 깨짐
 - **문제**: `bumpCounter`에서 음수 bump(rating 재투표 시 이전 별점 -1) 클램프 위해 다음 SQL 작성:
   ```sql
