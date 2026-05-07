@@ -113,4 +113,31 @@ ls -1dt "$RELEASES"/*-"$TARGET" 2>/dev/null | tail -n "+$((KEEP+1))" | while rea
   fi
 done
 
+# CF cache purge — origin Cache-Control이 무시되는 경우(엣지가 stale HTML 들고 옛 chunk hash 가리키면 404 → 클라 예외)
+# 회피용. ~/dstcraft/.cf-env 에 CF_API_TOKEN + CF_ZONE_ID 있을 때만 실행, 실패해도 deploy는 성공 처리.
+CF_ENV="$ROOT/.cf-env"
+if [ -f "$CF_ENV" ]; then
+  set -a; . "$CF_ENV"; set +a
+  if [ -n "${CF_API_TOKEN:-}" ] && [ -n "${CF_ZONE_ID:-}" ]; then
+    case "$TARGET" in
+      main) HOSTS='["dstcraft.com","www.dstcraft.com"]' ;;
+      beta) HOSTS='["beta.dstcraft.com"]' ;;
+    esac
+    log "CF purge: hosts=$HOSTS"
+    PURGE=$(curl -sS -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+      -H "Authorization: Bearer $CF_API_TOKEN" \
+      -H "Content-Type: application/json" \
+      --data "{\"hosts\":$HOSTS}" || echo '{"success":false,"errors":[{"message":"curl failed"}]}')
+    if echo "$PURGE" | grep -q '"success":true'; then
+      log "  OK"
+    else
+      err "CF purge failed (deploy 성공 처리 — 수동 purge 필요): $PURGE"
+    fi
+  else
+    log "CF purge skipped (CF_API_TOKEN/CF_ZONE_ID empty in $CF_ENV)"
+  fi
+else
+  log "CF purge skipped ($CF_ENV not found)"
+fi
+
 log "Done. Verify: curl -I https://${LINK##*/}.dstcraft.com  (beta) | https://www.dstcraft.com (main)"
