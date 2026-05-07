@@ -372,7 +372,17 @@ curl -I https://beta.dstcraft.com
 
 ## 다음 세션에서 시작할 위치
 
-위 **"실행 환경 — 어디서 무엇을 도는가"** 섹션의 작업 흐름 1→2→3 그대로. Mac mini Claude 세션 진입 후 §1.1부터.
+**Phase 4 (Upstash Redis → SQLite 이전)** 부터. Mac mini Claude 세션에서:
+```
+TODO-self-hosting.md Phase 4 진행
+```
+또는 `/todo` 스킬로 진행 상황 자동 파악 후 이어가기.
+
+Phase 4 첫 단계 합의 필요:
+- 5개 테이블 스키마 (favorites, feedback, supporters, skills_builds, analytics_counters) 설계 검토
+- `bun-api/data/app.db` 위치 확정 (또는 `~/dstcraft/data/app.db`)
+- 마이그레이션 시점 — 베타에서만 SQLite로 갈지, 또는 Bun API 전체를 SQLite로 갈고 prod도 동시 영향받게 할지
+  - 권장: 베타만 새 DB로, prod는 worker+Upstash 그대로 유지 (Phase 6에서 동시 컷오버)
 
 ## 미결정 / 진행 중 결정 필요
 
