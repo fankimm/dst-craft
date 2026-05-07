@@ -62,24 +62,10 @@
 
 ## 대기 (다음 작업 후보)
 
-- [ ] **CF "static cache" rule 좁히기 — All requests → 정적 자산만** (2026-05-07, 우선순위 높음)
-  - 현재 룰이 모든 요청을 잡고 Edge TTL을 "Ignore cache-control header, 1 day"로 강제함 → HTML도 1일 캐시 → 신규 배포 후 옛 chunk hash 가리키며 origin 404 → PWA 클라 예외 (방금 인시던트)
-  - 임시 방어: deploy-frontend.sh가 자동 CF purge (commit bab9a02). 5분 내 재배포 시는 여전히 stale 가능.
-  - **수동 작업 (CF 대시보드 → Caching → Cache Rules → "static cache" → Edit)**:
-    1. "If incoming requests match…" → "Custom filter expression" 으로 변경
-    2. expression:
-       ```
-       (starts_with(http.request.uri.path, "/_next/static/")) or (starts_with(http.request.uri.path, "/images/")) or (starts_with(http.request.uri.path, "/icons/")) or (ends_with(http.request.uri.path, ".png")) or (ends_with(http.request.uri.path, ".jpg")) or (ends_with(http.request.uri.path, ".jpeg")) or (ends_with(http.request.uri.path, ".webp")) or (ends_with(http.request.uri.path, ".svg")) or (ends_with(http.request.uri.path, ".woff")) or (ends_with(http.request.uri.path, ".woff2")) or (ends_with(http.request.uri.path, ".ico"))
-       ```
-    3. Edge TTL → "Use cache-control header if present, cache request with Cloudflare's default TTL for the response status if not"
-    4. Save
-  - 검증:
-    ```
-    curl -sI https://www.dstcraft.com/ | grep -iE 'cache-control|cf-cache'
-    # cache-control: public, max-age=60, must-revalidate (origin 그대로 살아있어야 함)
-    curl -sI https://www.dstcraft.com/_next/static/chunks/<hash>.js
-    # cache-control: public, max-age=31536000, immutable, cf-cache-status: HIT
-    ```
+- [x] **CF "static cache" rule 좁히기 — All requests → 정적 자산만** (2026-05-07 완료)
+  - expression: `true` → 정적 자산만 (/_next/static/, /images/, /icons/, 확장자 매칭)
+  - edge_ttl: `override_origin 1d` → `respect_origin`
+  - CF API로 적용, HTML `cache-control: public, max-age=60` origin 헤더 살아있음 확인
 - [ ] **Vercel → Mac mini 셀프호스팅 이주** (2026-05-07, 우선순위 높음) — Vercel Hobby edge req 한도 임박. Phase 1: `beta.dstcraft.com` 정적 셀프호스팅. 상세: `TODO-self-hosting.md`. **Mac mini SSH 세션에서 진행할 것**.
 - [ ] **git 히스토리 이메일 재작성** (2026-04-27, 우선순위 높음) — 회사 계정(kolon.com) 314커밋이 GitHub에 노출됨. 다른 머신(macOS 권장)에서 진행. 상세 계획: `TODO-rewrite-email-history.md`
 - [x] 누락된 보스 추가 (2026-04-14) — 8종
