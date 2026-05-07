@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.2",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): WX-78 슬롯 바 시각화 — 같은 모듈에 속한 슬롯을 한 묶음으로 표시 (1칸짜리 2개 vs 2칸짜리 1개 구분). 모듈 묶음은 한 둥근 사각형 + 내부 분할선으로 N칸을 구분",
+    ],
+    changes: {
+      ko: [
+        "WX-78 회로판 슬롯 바에서 1칸 회로 2개와 2칸 회로 1개가 구분되지 않던 문제 수정 — 같은 회로의 슬롯은 한 덩어리로 묶이고, 칸 수는 안쪽 분할선으로 표시",
+      ],
+      en: [
+        "Fixed WX-78 slot bar visualization — slots belonging to the same module are now grouped as one block with internal dividers, distinguishing two 1-slot circuits from one 2-slot circuit",
+      ],
+    },
+  },
+  {
     version: "0.21.1",
     date: "2026-05-08",
     dev: [

@@ -154,22 +154,27 @@ function SlotBar({
   locale: Locale;
 }) {
   const used = getUsedSlotsByType(counts, type);
-  const cells: boolean[] = Array(maxSlots).fill(false);
-  let cursor = 0;
+  const color = TYPE_COLORS[type];
+
+  // Build segments: each filled segment = one module instance (knows its slot span)
+  // so 2-slot module renders as ONE wider block (with internal divider) — distinct
+  // from two 1-slot modules side by side
+  type Segment = { kind: "filled"; span: number; key: string } | { kind: "empty"; span: 1; key: string };
+  const segments: Segment[] = [];
+  let used_ = 0;
+  let segIdx = 0;
   for (const [id, n] of Object.entries(counts)) {
     const m = WX78_CIRCUITS_BY_ID[id];
     if (!m || m.type !== type) continue;
     for (let i = 0; i < n; i++) {
-      for (let j = 0; j < m.slots; j++) {
-        if (cursor + j >= maxSlots) break;
-        cells[cursor + j] = true;
-      }
-      cursor += m.slots;
-      if (cursor >= maxSlots) break;
+      if (used_ + m.slots > maxSlots) break;
+      segments.push({ kind: "filled", span: m.slots, key: `f${segIdx++}` });
+      used_ += m.slots;
     }
-    if (cursor >= maxSlots) break;
   }
-  const color = TYPE_COLORS[type];
+  for (let i = used_; i < maxSlots; i++) {
+    segments.push({ kind: "empty", span: 1, key: `e${i}` });
+  }
 
   return (
     <div className="flex flex-col gap-1">
@@ -186,16 +191,32 @@ function SlotBar({
         </span>
       </div>
       <div className="flex items-center gap-1">
-        {cells.map((filled, i) => (
-          <div
-            key={i}
-            className={cn(
-              "h-5 flex-1 rounded-sm border transition-colors",
-              filled ? "border-transparent" : "border-border/60 bg-surface/40",
-            )}
-            style={filled ? { backgroundColor: color, opacity: 0.85 } : undefined}
-          />
-        ))}
+        {segments.map((seg) =>
+          seg.kind === "empty" ? (
+            <div
+              key={seg.key}
+              className="h-5 rounded-sm border border-border/60 bg-surface/40"
+              style={{ flex: 1 }}
+            />
+          ) : (
+            <div
+              key={seg.key}
+              className="h-5 rounded-sm flex items-stretch overflow-hidden ring-1 ring-black/10"
+              style={{
+                flex: seg.span,
+                backgroundColor: color,
+                opacity: 0.9,
+              }}
+              title={`${seg.span} ${locale === "ko" ? "칸 회로" : "slot module"}`}
+            >
+              {Array.from({ length: seg.span }).map((_, i) => (
+                <div key={i} className="flex-1 flex items-center">
+                  {i > 0 && <div className="w-px h-3 bg-black/35 -ml-px" />}
+                </div>
+              ))}
+            </div>
+          ),
+        )}
       </div>
     </div>
   );
