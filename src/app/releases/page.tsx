@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.5",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 회로 상세 패널을 인게임 스크랩북 텍스트(specialinfo_ko/en)로 대체 — 우리가 다듬던 caps/buffs.caps 자리에 인게임 원문 통째 표시",
+      "feat(BetaBadge): 베타 뱃지를 화면 좌상단 사선 띠로 변경 — 반투명 + pointer-events:none (터치 방해 X). Footer의 작은 뱃지 제거",
+      "refactor(BetaBadge): AppShell에 1회 마운트하도록 위치 이동",
+    ],
+    changes: {
+      ko: [
+        "WX-78 회로 상세 패널의 효과 설명을 인게임 스크랩북 한국어 텍스트로 교체 — 인게임과 100% 일치",
+        "베타 사이트 표시를 좌상단 사선 띠로 변경 (반투명 — 터치 방해 없음)",
+      ],
+      en: [
+        "Replaced WX-78 circuit detail descriptions with in-game scrapbook text — matches the game exactly",
+        "Beta site indicator is now a translucent diagonal corner ribbon (no touch interference)",
+      ],
+    },
+  },
+  {
     version: "0.21.4",
     date: "2026-05-08",
     dev: [

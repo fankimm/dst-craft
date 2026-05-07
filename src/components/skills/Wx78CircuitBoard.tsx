@@ -13,6 +13,7 @@ import {
   type CircuitModule,
   type CircuitType,
 } from "@/data/wx78-circuits";
+import { scrapbookStats } from "@/data/scrapbook-stats";
 import type { Locale } from "@/lib/i18n";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
 import { DetailPanel } from "@/components/ui/DetailPanel";
@@ -141,7 +142,6 @@ export function Wx78CircuitBoard({
             count={counts[selected.id] ?? 0}
             usedInBar={getUsedSlotsByType(counts, selected.type)}
             maxSlots={maxSlots}
-            activatedSkills={activatedSkills}
             onEquip={() => onEquip(selected.id)}
             onUnequip={() => onUnequip(selected.id)}
           />
@@ -350,7 +350,6 @@ function CircuitDetail({
   count,
   usedInBar,
   maxSlots,
-  activatedSkills,
   onEquip,
   onUnequip,
 }: {
@@ -359,7 +358,6 @@ function CircuitDetail({
   count: number;
   usedInBar: number;
   maxSlots: number;
-  activatedSkills: Set<string>;
   onEquip: () => void;
   onUnequip: () => void;
 }) {
@@ -402,80 +400,22 @@ function CircuitDetail({
         </div>
       </div>
 
-      {/* Effects */}
-      {(m.stats?.length || m.caps?.length) ? (
-        <div className="mt-3">
-          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
-            {locale === "ko" ? "효과" : "Effects"}
+      {/* In-game scrapbook description */}
+      {(() => {
+        const sb = scrapbookStats[m.id];
+        const text = sb && (locale === "ko" ? sb.specialinfo_ko : sb.specialinfo_en);
+        if (!text) return null;
+        return (
+          <div className="mt-3">
+            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
+              {locale === "ko" ? "스크랩북 정보" : "Scrapbook"}
+            </div>
+            <p className="text-sm text-foreground/90 px-3 py-2 rounded-md bg-surface/60 whitespace-pre-line leading-relaxed">
+              {text}
+            </p>
           </div>
-          <ul className="space-y-1">
-            {m.stats?.map((s, i) => (
-              <li key={`s${i}`} className="text-sm text-foreground/90 px-2 py-1.5 rounded-md bg-surface/60">
-                • {formatStat(s.kind, s.value, locale)}
-              </li>
-            ))}
-            {m.caps?.map((c) => (
-              <li key={c.id} className="text-sm text-foreground/90 px-2 py-1.5 rounded-md bg-surface/60">
-                • {locale === "ko" ? c.ko : c.en}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-
-      {/* Buffs (skill conditional) */}
-      {m.buffs?.length ? (
-        <div className="mt-3">
-          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
-            {locale === "ko" ? "스킬 강화" : "Skill Buffs"}
-          </div>
-          <ul className="space-y-1.5">
-            {m.buffs.map((b) => {
-              const active = activatedSkills.has(b.skill);
-              return (
-                <li
-                  key={b.skill}
-                  className={cn(
-                    "text-xs px-2 py-1.5 rounded-md border",
-                    active
-                      ? "bg-foreground/5 border-foreground/30 text-foreground"
-                      : "bg-surface/30 border-border text-muted-foreground",
-                  )}
-                >
-                  <div className="flex items-center gap-1.5 mb-0.5">
-                    <span
-                      className={cn(
-                        "inline-block size-1.5 rounded-full",
-                        active ? "bg-emerald-500" : "bg-muted-foreground/40",
-                      )}
-                    />
-                    <span className="font-semibold">
-                      {skillLabel(b.skill, locale)}
-                    </span>
-                    <span className="opacity-60">
-                      {active
-                        ? locale === "ko"
-                          ? "(학습됨)"
-                          : "(learned)"
-                        : locale === "ko"
-                          ? "(미학습)"
-                          : "(not learned)"}
-                    </span>
-                  </div>
-                  <ul className="ml-3 space-y-0.5">
-                    {b.stats?.map((s, i) => (
-                      <li key={`bs${i}`}>· {formatStat(s.kind, s.value, locale)}</li>
-                    ))}
-                    {b.caps?.map((c) => (
-                      <li key={c.id}>· {locale === "ko" ? c.ko : c.en}</li>
-                    ))}
-                  </ul>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ) : null}
+        );
+      })()}
 
       {/* Scan source */}
       {m.scanFrom?.length ? (
@@ -551,45 +491,3 @@ function CircuitDetail({
   );
 }
 
-// ── Stat formatters ────────────────────────────────────────────
-function formatStat(kind: string, value: number, locale: Locale): string {
-  const ko = locale === "ko";
-  const v = (n: number, d = 0) => n.toFixed(d);
-  switch (kind) {
-    case "maxHealth": return ko ? `최대 체력 +${v(value)}` : `Max HP +${v(value)}`;
-    case "maxSanity": return ko ? `최대 정신력 +${v(value)}` : `Max Sanity +${v(value)}`;
-    case "maxHunger": return ko ? `최대 허기 +${v(value)}` : `Max Hunger +${v(value)}`;
-    case "moveSpeed": return ko ? `이동속도 (누적, 최대 +50%)` : `Move speed (stacking, max +50%)`;
-    case "lightRadius": return ko ? `빛 반경 +${v(value, 2)}m` : `Light radius +${v(value, 2)}m`;
-    case "minTempUp": return ko ? `추위 저항 +${v(value)}°C` : `Cold resist +${v(value)}°C`;
-    case "maxTempDown": return ko ? `더위 저항 +${v(value)}°C` : `Heat resist +${v(value)}°C`;
-    case "dryRate": return ko ? `건조 속도 +${v(value, 2)}/s` : `Dry rate +${v(value, 2)}/s`;
-    case "viewDistance": return ko ? `시야 거리 +${v(value)}` : `View distance +${v(value)}`;
-    case "regenPerTick": return ko ? `30초마다 +${v(value)} HP (피해 시)` : `+${v(value)} HP / 30s (when hurt)`;
-    case "sanityAuraPerSec": return ko ? `정신력 오라 +${v(value * 60, 1)}/min` : `Sanity aura +${v(value * 60, 1)}/min`;
-    case "dapperness": return ko ? `정신력 회복 +${v(value * 60, 1)}/min` : `Sanity regen +${v(value * 60, 1)}/min`;
-    case "tendRange": return ko ? `농작물 돌봄 범위 ${v(value)}m` : `Farm tend range ${v(value)}m`;
-    case "armorPct": return ko ? `데미지 감소 ${v(value * 100, 1)}%` : `Damage reduction ${v(value * 100, 1)}%`;
-    case "shieldPctOfHP": return ko ? `보호막 = 최대체력의 ${v(value * 100, 0)}%` : `Shield = ${v(value * 100, 0)}% of Max HP`;
-    case "shieldRegenPerSec": return ko ? `보호막 재생 ${v(value, 2)}/s` : `Shield regen ${v(value, 2)}/s`;
-    case "hungerSlowMult": return ko ? `허기 소모율 ×${v(value, 2)} (${v((1 - value) * 100)}% 감소)` : `Hunger drain ×${v(value, 2)} (${v((1 - value) * 100)}% slower)`;
-    case "freezeResistMult": return ko ? `얼리기 저항 ×${v(value)}` : `Freeze resist ×${v(value)}`;
-    case "fireDmgScaleMult": return ko ? `화염 데미지 ${value < 0 ? "−" : "+"}${v(Math.abs(value * 100))}%` : `Fire damage ${value < 0 ? "−" : "+"}${v(Math.abs(value * 100))}%`;
-    case "follower": return ko ? `최대 추종자 +${v(value)}` : `Max followers +${v(value)}`;
-    case "extraInventorySlot": return ko ? `확장 인벤토리 +${v(value)} 슬롯` : `Extra inventory +${v(value)} slot`;
-    default: return `${kind}: ${v(value, 2)}`;
-  }
-}
-
-function skillLabel(skillId: string, locale: Locale): string {
-  const ko = locale === "ko";
-  switch (skillId) {
-    case "wx78_circuitry_alphabuffs_1": return ko ? "알파 회로 제조 I" : "Alpha Tinkering I";
-    case "wx78_circuitry_alphabuffs_2": return ko ? "알파 회로 제조 II" : "Alpha Tinkering II";
-    case "wx78_circuitry_betabuffs_1": return ko ? "베타 회로 제조 I" : "Beta Tinkering I";
-    case "wx78_circuitry_betabuffs_2": return ko ? "베타 회로 제조 II" : "Beta Tinkering II";
-    case "wx78_circuitry_gammabuffs_1": return ko ? "감마 회로 제조 I" : "Gamma Tinkering I";
-    case "wx78_circuitry_gammabuffs_2": return ko ? "감마 회로 제조 II" : "Gamma Tinkering II";
-    default: return skillId;
-  }
-}

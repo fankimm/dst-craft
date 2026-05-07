@@ -11,6 +11,7 @@ import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
 import { ConsoleApp } from "./console/ConsoleApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { FloatingSupportPill } from "./ui/FloatingSupportPill";
+import { BetaBadge } from "./BetaBadge";
 import { SkillsTourPopover } from "./SkillsTourPopover";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
@@ -308,6 +309,9 @@ export function AppShell() {
 
       {/* Floating ko-fi pill — docks into Footer when Footer is in view */}
       <FloatingSupportPill />
+
+      {/* Beta corner ribbon (only on beta.* hostnames) */}
+      <BetaBadge />
 
       {/* Dev menu */}
       {showDevMenu && (
