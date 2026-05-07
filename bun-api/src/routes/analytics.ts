@@ -298,7 +298,7 @@ app.get("/stats", async (c) => {
     .query<
       { ip: string; country: string; ua: string; device: string; os: string; time: string },
       []
-    >(`SELECT ip, country, ua, device, os, time FROM analytics_visitors ORDER BY id DESC LIMIT 50`)
+    >(`SELECT ip, country, ua, device, os, time FROM analytics_visitors ORDER BY id DESC LIMIT 200`)
     .all()
     .map((v) => ({ ...v, city: "", region: "" }));
 
