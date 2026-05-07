@@ -6,7 +6,9 @@
 >
 > **진행 상황 (2026-05-07)**
 > - ✅ Phase 1 완료 — `https://beta.dstcraft.com` 라이브 (CF Tunnel → Mac mini nginx :8080 → 정적 빌드)
-> - ⏭ 다음: Phase 2 (수동 배포 스크립트) → Phase 3 (Worker → Bun API)
+> - ✅ Phase 2 완료 — `scripts/deploy-beta.sh` 자동 배포 스크립트 (git pull → build → atomic symlink swap → release prune)
+> - ✅ 운영 정비 일부 — macOS 자동 업데이트/재부팅 차단 (`scripts/disable-macos-auto-update.sh`)
+> - ⏭ 다음: Phase 3 (Worker → Bun API)
 
 ---
 
@@ -280,14 +282,23 @@ curl -I https://beta.dstcraft.com
 
 ---
 
-# Phase 2 — 정적 빌드 자동 배포 (단순 버전)
+# Phase 2 — 정적 빌드 자동 배포 (단순 버전) ✅
 
 > 목표: 로컬에서 푸시하지 않고 Mac mini에서 한 줄로 베타 갱신.
 > CI는 Phase 5에서 도입. Phase 2는 수동 + 스크립트 단순화.
 
-- `~/bin/dstcraft-deploy-beta.sh` 작성: `git pull && npm ci && npm run build && releases/<ts> 에 복사 + symlink 교체`
-- 오래된 releases 정리 (최근 5개만 유지)
-- 빌드 실패 시 symlink 교체 안 함 (롤백 안전)
+**완료 (2026-05-07)**
+
+- 위치: `scripts/deploy-beta.sh` (repo 안, 버전 관리됨) + `~/dstcraft/bin/deploy-beta.sh` symlink (편의 실행)
+- 사용: `~/dstcraft/bin/deploy-beta.sh` 또는 `~/dstcraft/bin/deploy-beta.sh --force`
+- 동작:
+  - `git restore .` + `git clean -fd`로 source 워크트리 청소 (빌드 산출물 폐기)
+  - `git fetch` 후 변경 없으면 no-op (`--force`로 강제 재빌드)
+  - `git pull --ff-only` → `npm ci` → `npm run build`
+  - `out/`을 `~/dstcraft/releases/<TS>`로 mv (atomic) → `~/dstcraft/beta` symlink 교체
+  - 최근 5개 release만 유지, 그 외 prune (현재 active는 보호)
+  - 빌드 실패 시 symlink 안 바꿈 (자동 롤백)
+- 검증: 첫 빌드 `7714c9f → 5f03e45`, 3908 페이지 정적 생성, 재실행 no-op, 라이브 200
 
 ---
 
