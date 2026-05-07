@@ -37,7 +37,8 @@ jobs:
           last_err=""
           for i in 1 2 3; do
             body=$(curl -fsS -m 5 -w "\n[HTTPCODE]%{http_code} [TIME]%{time_total}s" \
-              "https://www.dstcraft.com/api/_debug/health" 2>&1)
+              -H "Cache-Control: no-cache" \
+              "https://www.dstcraft.com/api/_debug/health?cb=$(date +%s%N)" 2>&1)
             rc=$?
             if [ "$rc" -eq 0 ]; then
               echo "[try #$i] ok"
