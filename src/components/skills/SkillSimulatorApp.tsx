@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useCallback, useEffect, useMemo, useRef } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { ChevronRight } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
-import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSkillTree } from "@/hooks/use-skill-tree";
 import { t, characterName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { characters } from "@/data/characters";
@@ -14,13 +13,10 @@ import { skillTranslations } from "@/data/skill-trees/translations";
 import type { SkillNode } from "@/data/skill-trees/types";
 import { manualLockKey, manualLockKeyForNode } from "@/lib/skill-tree-keys";
 import { fetchAllSkills, saveCharacterSkills } from "@/lib/favorites-api";
-import type { UnlockRequirement } from "./SkillDetailSheet";
 import { cn } from "@/lib/utils";
 import { encodeBuild, decodeBuild } from "@/lib/skill-build-codec";
 import { SkillCharacterGrid } from "./SkillCharacterGrid";
 import { SkillTreeView } from "./SkillTreeView";
-import { SkillDetailSheet } from "./SkillDetailSheet";
-import { DetailPanel } from "@/components/ui/DetailPanel";
 
 interface Props {
   onViewCraftingItem?: (itemId: string) => void;
@@ -36,7 +32,6 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   const { resolvedLocale } = useSettings();
   const { token } = useAuth();
   const [selectedChar, setSelectedChar] = useState<string | null>(null);
-  const [selectedNode, setSelectedNode] = useState<SkillNode | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Manual lock state (for lockType: "manual" / "boss_kill" nodes) — must be before useSkillTree
@@ -150,7 +145,6 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   }, [token, selectedChar, activatedSkills, manualLocks]);
 
   const slideClass = useSlideAnimation(selectedChar, (v) => v === null);
-  const { panelItem: panelNode, panelOpen } = useDetailPanel(selectedNode);
 
   // Sync character from URL on mount
   useEffect(() => {
@@ -196,7 +190,6 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   // Re-tap active tab → go home
   useEffect(() => {
     const handler = () => {
-      setSelectedNode(null);
       setSelectedChar(null);
     };
     window.addEventListener("dst-tab-go-home", handler);
@@ -227,7 +220,6 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   }, []);
 
   const handleGoHome = useCallback(() => {
-    setSelectedNode(null);
     setSelectedChar(null);
     const url = `${window.location.pathname}?tab=skills`;
     window.history.pushState({ _appNav: true }, "", url);
@@ -287,17 +279,6 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     }
   }, [selectedChar, resolvedLocale, loadBuild]);
 
-  const handleNodeTap = useCallback((node: SkillNode) => {
-    // Only open detail for non-lock nodes
-    if (node.icon) {
-      setSelectedNode(node);
-    }
-  }, []);
-
-  const handleClosePanel = useCallback(() => {
-    setSelectedNode(null);
-  }, []);
-
   // Listen to popstate for browser back
   useEffect(() => {
     const onPop = () => {
@@ -307,104 +288,12 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
       } else {
         setSelectedChar(null);
       }
-      setSelectedNode(null);
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
   const charObj = selectedChar ? characters.find((c) => c.id === selectedChar) : null;
-
-  // Compute unlock requirements for selected node
-  const nodeRequirements = useMemo((): UnlockRequirement[] | undefined => {
-    if (!panelNode || !tree) return undefined;
-    const reqs: UnlockRequirement[] = [];
-    // Parent skill requirements (nodes whose connects include this node)
-    if (!panelNode.root) {
-      const parents = tree.nodes.filter((n: SkillNode) => n.connects?.includes(panelNode.id));
-      for (const parent of parents) {
-        // If parent is a lock node, show its condition description
-        const isLock = !parent.icon && (!!parent.lockType || parent.tags?.includes("lock"));
-        if (isLock) {
-          if (parent.lockType?.type === "manual") {
-            reqs.push({
-              type: "lock_gate",
-              label: resolvedLocale === "ko" ? parent.lockType.desc_ko : parent.lockType.desc_en,
-              satisfied: manualLocks.has(manualLockKey(parent.lockType, parent.id)),
-            });
-          } else if (parent.lockType) {
-            // Other lock types — skip (handled by lock gate section)
-            continue;
-          }
-          continue;
-        }
-        const parentTitle = skillTranslations[parent.id]
-          ? (resolvedLocale === "ko" ? skillTranslations[parent.id].title.ko : skillTranslations[parent.id].title.en)
-          : parent.id;
-        reqs.push({
-          type: "parent_skill",
-          label: resolvedLocale === "ko" ? `"${parentTitle}" 습득 필요` : `Requires "${parentTitle}"`,
-          satisfied: isLearned(parent.id),
-        });
-      }
-    }
-
-    // Lock gate requirements
-    if (panelNode.locks) {
-      for (const lockId of panelNode.locks) {
-        const lockNode = tree.nodes.find((n: SkillNode) => n.id === lockId);
-        if (lockNode?.lockType) {
-          let label = "";
-          switch (lockNode.lockType.type) {
-            case "skill_count":
-              label = resolvedLocale === "ko"
-                ? `"${lockNode.lockType.tag}" 스킬 ${lockNode.lockType.count}개 습득 필요`
-                : `${lockNode.lockType.count} "${lockNode.lockType.tag}" skills required`;
-              break;
-            case "total_skills":
-              label = resolvedLocale === "ko"
-                ? `총 ${lockNode.lockType.count}개 스킬 습득 필요`
-                : `${lockNode.lockType.count} total skills required`;
-              break;
-            case "boss_kill":
-              label = resolvedLocale === "ko"
-                ? `보스 처치 필요 (${lockNode.lockType.boss})`
-                : `Boss kill required (${lockNode.lockType.boss})`;
-              break;
-            case "no_opposing_faction":
-              label = resolvedLocale === "ko"
-                ? `${lockNode.lockType.faction === "lunar" ? "그림자" : "달"} 성향 스킬 미습득 필요`
-                : `No ${lockNode.lockType.faction === "lunar" ? "Shadow" : "Lunar"} faction skills`;
-              break;
-          }
-          reqs.push({
-            type: "lock_gate",
-            label,
-            satisfied: canLearn(panelNode.id),
-          });
-        }
-      }
-    }
-
-    return reqs.length > 0 ? reqs : undefined;
-  }, [panelNode, tree, resolvedLocale, isLearned, canLearn]);
-
-  // Detail panel
-  const detailPanel = panelNode && (
-    <DetailPanel open={panelOpen} onClose={handleClosePanel}>
-      <SkillDetailSheet
-        node={panelNode}
-        isLearned={isLearned(panelNode.id)}
-        canLearn={canLearn(panelNode.id)}
-        canUnlearn={canUnlearn(panelNode.id)}
-        groupColor={tree?.groups.find((g: { id: string; color: string }) => g.id === panelNode.group)?.color ?? "#6b7280"}
-        locale={resolvedLocale}
-        requirements={nodeRequirements}
-        onToggle={() => toggleSkill(panelNode.id)}
-        onViewItem={onViewCraftingItem}
-      />
-    </DetailPanel>
-  );
 
   return (
     <div className="flex flex-col h-full bg-background text-foreground overflow-hidden">
@@ -466,8 +355,6 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
           </div>
         )}
       </div>
-
-      {detailPanel}
     </div>
   );
 }
