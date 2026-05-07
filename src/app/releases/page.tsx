@@ -15,6 +15,16 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.8",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 회로 카드/상세의 타입 색상 배경 제거 (사용자 요청)",
+      "feat(devmenu): '현황: 모든 문구 표시' 토글 추가 — 모든 회로 +1 + 모든 회로 스킬 학습 가정. 콘텐츠 검토용",
+      "feat(skills): 현황판이 dev 모드 시 amber 배너 + 모든 항목·캡션 강제 표시",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.7",
     date: "2026-05-08",
     dev: [

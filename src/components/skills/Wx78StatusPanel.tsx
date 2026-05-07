@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import {
+  WX78_CIRCUITS,
   WX78_CIRCUITS_BY_ID,
   WX78_TUNING,
   type StatKind,
@@ -125,19 +126,53 @@ function formatNumber(n: number, decimals = 0): string {
 }
 
 // ── Component ────────────────────────────────────────────────
+const ALL_CIRCUIT_SKILLS = [
+  "wx78_circuitry_alphabuffs_1",
+  "wx78_circuitry_alphabuffs_2",
+  "wx78_circuitry_betabuffs_1",
+  "wx78_circuitry_betabuffs_2",
+  "wx78_circuitry_gammabuffs_1",
+  "wx78_circuitry_gammabuffs_2",
+  "wx78_circuitry_betterunplug",
+  "wx78_circuitry_bettercharge",
+  "wx78_circuitry_slot_1",
+];
+
 export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
+  // Dev toggle: "show all circuit effects" — pretends every circuit is equipped
+  // and every circuit-related skill is learned, for content-review purposes.
+  const [devShowAll, setDevShowAll] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setDevShowAll(localStorage.getItem("dst:dev-show-all-circuit-effects") === "1");
+  }, []);
+
+  const effectiveSkills = useMemo(() => {
+    if (!devShowAll) return activatedSkills;
+    const next = new Set(activatedSkills);
+    for (const s of ALL_CIRCUIT_SKILLS) next.add(s);
+    return next;
+  }, [activatedSkills, devShowAll]);
+
+  const effectiveCounts = useMemo(() => {
+    if (!devShowAll) return counts;
+    const next: typeof counts = { ...counts };
+    for (const c of WX78_CIRCUITS) if (!next[c.id]) next[c.id] = 1;
+    return next;
+  }, [counts, devShowAll]);
+
   const data = useMemo(
-    () => aggregate(activatedSkills, counts),
-    [activatedSkills, counts],
+    () => aggregate(effectiveSkills, effectiveCounts),
+    [effectiveSkills, effectiveCounts],
   );
   const skillCaps = useMemo(
-    () => getGlobalSkillCaps(activatedSkills),
-    [activatedSkills],
+    () => getGlobalSkillCaps(effectiveSkills),
+    [effectiveSkills],
   );
 
   const equippedTotal = useMemo(
-    () => Object.values(counts).reduce((a, b) => a + b, 0),
-    [counts],
+    () => Object.values(effectiveCounts).reduce((a, b) => a + b, 0),
+    [effectiveCounts],
   );
 
   if (equippedTotal === 0 && skillCaps.length === 0) {
@@ -165,7 +200,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
   // Build equipped circuits list (in order: alpha → beta → gamma)
   const equippedList: { module: CircuitModule; count: number }[] = [];
   for (const type of ["alpha", "beta", "gamma"] as CircuitType[]) {
-    for (const [id, count] of Object.entries(counts)) {
+    for (const [id, count] of Object.entries(effectiveCounts)) {
       if (!count) continue;
       const m = WX78_CIRCUITS_BY_ID[id];
       if (m && m.type === type) equippedList.push({ module: m, count });
@@ -175,6 +210,11 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
   return (
     <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
       <div className="max-w-2xl mx-auto w-full pb-2 px-3">
+        {devShowAll && (
+          <div className="mt-3 px-3 py-2 rounded-md bg-amber-500/15 border border-amber-500/40 text-[11px] text-amber-700 dark:text-amber-400">
+            DEV: 모든 회로 +1 + 모든 회로 관련 스킬 학습 가정 — 데브 메뉴에서 OFF
+          </div>
+        )}
         {/* Vital stats — same row layout as cooking detail StatBox */}
         {(data.totals.maxHealth || data.totals.maxSanity || data.totals.maxHunger) ? (
           <div className="mt-3 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
@@ -259,7 +299,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
                       <ScrapbookEffects
                         moduleId={m.id}
                         locale={locale}
-                        activatedSkills={activatedSkills}
+                        activatedSkills={effectiveSkills}
                       />
                     </div>
                   </div>

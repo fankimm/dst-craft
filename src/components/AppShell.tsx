@@ -406,6 +406,17 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
     { label: "게임 아이템 DB (1028)", action: () => window.open("/dev/item-database", "_blank") },
     { label: "인기 조합 패널 비교", action: () => window.open("/dev/combo-panel", "_blank") },
     {
+      label: (typeof window !== "undefined" && localStorage.getItem("dst:dev-show-all-circuit-effects") === "1")
+        ? "현황: 모든 문구 표시 OFF (토글)"
+        : "현황: 모든 문구 표시 ON (토글)",
+      action: () => {
+        const cur = localStorage.getItem("dst:dev-show-all-circuit-effects") === "1";
+        if (cur) localStorage.removeItem("dst:dev-show-all-circuit-effects");
+        else localStorage.setItem("dst:dev-show-all-circuit-effects", "1");
+        location.reload();
+      },
+    },
+    {
       label: "통계 전체 → 클립보드",
       action: async () => {
         try {
