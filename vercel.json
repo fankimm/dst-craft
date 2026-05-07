@@ -1,7 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/track", "destination": "https://dst-analytics.fankimm.workers.dev/track" },
-    { "source": "/api/event", "destination": "https://dst-analytics.fankimm.workers.dev/event" }
+    { "source": "/api/(.*)", "destination": "https://beta.dstcraft.com/api/$1" }
   ],
   "headers": [
     {
