@@ -9,6 +9,7 @@ import type { LocaleSetting } from "@/lib/i18n";
 import { t, supportedLocales, localeLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { APP_VERSION } from "@/lib/version";
+import { DST_GAME_VERSION } from "@/data/game-version";
 import { Footer } from "../crafting/Footer";
 import { fetchPublicRating, submitRating, fetchTopCountries, submitFeedback, type PublicFeedbackItem } from "@/lib/analytics";
 import { Globe } from "lucide-react";
@@ -558,7 +559,10 @@ export function SettingsPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-muted-foreground/50 py-2">v{APP_VERSION}</p>
+        <div className="text-center text-xs text-muted-foreground/50 py-2 space-y-0.5">
+          <p>v{APP_VERSION}</p>
+          <p>{t(resolvedLocale, "game_data_version")}: {t(resolvedLocale, "game_data_release")} {DST_GAME_VERSION.release} ({DST_GAME_VERSION.dataUpdatedAt})</p>
+        </div>
         <Footer />
       </div>
 

@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.20.3",
+    date: "2026-05-07",
+    dev: [
+      "feat(settings): 게임 데이터 기준 버전 표시 — DST Release 번호 + 데이터 갱신일을 설정 페이지 하단에 표시",
+      "feat(data): src/data/game-version.ts 추가 — Steam 바이너리에서 추출한 릴리즈 번호/빌드ID/갱신일 관리",
+    ],
+    changes: {
+      ko: [
+        "설정 페이지에 게임 데이터 기준 버전(Release 번호) 표시 추가",
+      ],
+      en: [
+        "Added game data source version (Release number) display on settings page",
+      ],
+    },
+  },
+  {
     version: "0.20.2",
     date: "2026-05-07",
     dev: [

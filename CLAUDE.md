@@ -22,21 +22,29 @@
 ## Project
 - Don't Starve Together 크래프팅 레시피 가이드 웹앱
 - Next.js 16 (App Router, Static Export) + TypeScript + Tailwind CSS v4 + shadcn/ui
-- Vercel 배포, PWA 지원
+- Mac Mini 셀프호스팅 (Nginx + Cloudflare Tunnel), PWA 지원
 
 ## Branch & Deploy Strategy
-- **`main` 브랜치**: Vercel Production 배포 (push 시 자동)
+- **`main` 브랜치**: push → GitHub Actions (self-hosted runner on Mac Mini) → prod 자동 배포 (www.dstcraft.com)
+- **`beta` 브랜치**: push → 동일 runner → beta 자동 배포 (beta.dstcraft.com)
 - **`커푸` (커밋+푸시) 요청 시**: `main` 브랜치에 push
-- Vercel Preview(staging) 배포는 유료 플랜 필요 — 현재 미사용
+- Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환)
 
 ## Architecture
-- **프론트엔드**: `src/` — Next.js App Router, Vercel 자동 배포 (main 브랜치 push)
-- **백엔드 Worker**: `worker/` — 같은 레포 내 Cloudflare Worker (analytics + 인증 + 즐겨찾기 API)
-  - 배포: `cd worker && npx wrangler deploy`
-  - 시크릿: `JWT_SECRET` (wrangler secret), `UPSTASH_REDIS_REST_URL/TOKEN` (wrangler secret)
-  - 환경변수: `ALLOWED_ORIGIN`, `GOOGLE_CLIENT_ID` (wrangler.toml)
-- **데이터 저장**: Upstash Redis (유저 정보, 즐겨찾기, 애널리틱스)
+- **프론트엔드**: `src/` — Next.js Static Export → Nginx serving (Cloudflare Tunnel 뒤)
+  - 빌드: `npm run build` → `out/` (정적 파일)
+  - 배포: `scripts/deploy-frontend.sh main|beta` (timestamped release + atomic symlink swap)
+  - 캐시: prod HTML 1분, beta HTML no-store, 정적 자산 1년 immutable
+- **백엔드 API**: `bun-api/` — Bun + Hono (localhost:3001, Nginx reverse proxy → `/api/*`)
+  - DB: SQLite (`~/dstcraft/data/app.db`, WAL mode)
+  - 관리: macOS launchd (`com.dstcraft.api.plist`) — 크래시 시 자동 재시작
+  - 라우트: analytics, auth, skills, favorites, feedback, kofi-supporters, config
+  - 헬스체크: `/_debug/health`
+- **레거시 Worker**: `worker/` — Cloudflare Worker (코드 잔존, 트래픽은 bun-api로 전환 완료)
+- **데이터 저장**: SQLite (Upstash Redis → SQLite 마이그레이션 완료, `bun-api/scripts/migrate-upstash.ts`)
+- **백업**: 매일 04:00 UTC, `~/Backups/dstcraft/app-$TS.db.gz` (14일 보관)
 - **인증**: Google Identity Services (GIS) — 클라이언트 측 renderButton 방식
+- **모니터링**: GitHub Actions watchdog (5분 주기) → 장애 시 Telegram 알림 + Vercel 자동 failover
 
 ## TODO Management
 - `todo.md` — 프로젝트 전체 TODO (진행중/대기/완료)
@@ -57,12 +65,22 @@
 - `src/hooks/` — 커스텀 훅 (use-crafting-state, use-settings, use-search, use-auth, use-favorites, use-skill-tree)
 - `src/lib/` — 유틸리티 (types, i18n, crafting-data, utils, favorites-api)
 - `src/lib/version.ts` — 앱 버전 (`APP_VERSION`)
+- `src/data/game-version.ts` — DST 게임 데이터 기준 버전 (릴리즈 번호, Steam buildid, 갱신일)
 - `src/app/releases/page.tsx` — 릴리즈 노트 페이지
 - `src/lib/seo-text.ts` — SEO 텍스트 자동 생성 (food/boss/item/character)
 - `src/app/character/[slug]/page.tsx` — 캐릭터 개별 SEO 페이지
 - `src/app/characters/page.tsx` — 캐릭터 목록 페이지
-- `worker/index.ts` — Cloudflare Worker (API 엔드포인트)
-- `worker/wrangler.toml` — Worker 설정
+- `bun-api/src/index.ts` — Bun API 서버 엔트리포인트
+- `bun-api/infra/nginx-dstcraft.conf` — Nginx 설정 (prod/beta 서버 블록)
+- `bun-api/infra/nginx-dstcraft-common.conf` — Nginx 공통 룰 (캐시, 프록시, 정규화)
+- `bun-api/infra/com.dstcraft.api.plist` — API 서버 launchd 에이전트
+- `bun-api/infra/com.dstcraft.backup.plist` — DB 백업 launchd 에이전트
+- `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta)
+- `.github/workflows/deploy-beta.yml` — GitHub Actions 배포 워크플로우 (self-hosted runner, main+beta)
+- `.github/workflows/deploy.yml` — GitHub Pages 배포 (레거시, 미사용)
+- `.github/workflows/watchdog.yml` — 헬스 모니터링 (5분 주기, Telegram + failover)
+- `worker/index.ts` — Cloudflare Worker (레거시, 일부 analytics)
+- `worker/wrangler.toml` — Worker 설정 (레거시)
 - `docs/terminology.md` — UI 용어집
 - `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
 - `docs/stats/` — 인게임 소스 기반 아이템 스펙 md (파이프라인 산출물)
@@ -71,12 +89,13 @@
 
 ## Deploy Checklist
 배포 전 반드시 확인:
-1. **Vercel 환경변수**: `.env.local`에 새 `NEXT_PUBLIC_*` 변수가 추가됐으면 Vercel 대시보드에도 동일하게 설정할 것
-   - 현재 필요: `NEXT_PUBLIC_GOOGLE_CLIENT_ID`, `NEXT_PUBLIC_ANALYTICS_WORKER_URL`
-2. **Worker 배포**: `worker/index.ts` 변경 시 `cd worker && npx wrangler deploy` 별도 실행
-3. **Worker 시크릿**: 새 시크릿 추가 시 `npx wrangler secret put <KEY>` 실행 안내
-4. **Google Cloud Console**: 새 도메인 추가 시 승인된 JavaScript 원본에 등록 확인
-5. **릴리즈 노트 + 버전**: 아래 Release Notes Rules 참고
+1. **프론트엔드**: `main`/`beta` push → GitHub Actions가 자동 빌드+배포 (수동: `scripts/deploy-frontend.sh main|beta`)
+2. **bun-api**: `bun-api/` 변경 시 push하면 GitHub Actions가 자동 재시작 (main만, beta는 무시)
+3. **Nginx 설정**: `bun-api/infra/nginx-*.conf` 변경 시 Mac Mini에서 수동 `nginx -s reload` 필요
+4. **환경변수**: `.env.local`에 새 `NEXT_PUBLIC_*` 변수 추가 시 Mac Mini의 빌드 환경에도 반영 확인
+5. **Cloudflare 캐시**: 배포 스크립트가 자동 purge (`~/.cf-env` 필요). 수동 purge 필요 시 CF 대시보드
+6. **Google Cloud Console**: 새 도메인 추가 시 승인된 JavaScript 원본에 등록 확인
+7. **릴리즈 노트 + 버전**: 아래 Release Notes Rules 참고
 
 ## Game & Mod Paths (per machine)
 ```
