@@ -251,7 +251,8 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
 
   return (
     <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-      <div className="max-w-2xl mx-auto w-full pb-2 px-3">
+      <div className="max-w-2xl mx-auto w-full pb-2 px-3 min-h-full flex flex-col">
+        <div className="flex-1">
         {devShowAll && (
           <div className="mt-3 px-3 py-2 rounded-md bg-amber-500/15 border border-amber-500/40 text-[11px] text-amber-700 dark:text-amber-400">
             DEV: 모든 회로 +1 + 모든 회로 관련 스킬 학습 가정 — 데브 메뉴에서 OFF
@@ -320,8 +321,9 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
             ))}
           </RowSection>
         )}
+        </div>
 
-        <div className="pt-6">
+        <div className="mt-auto pt-6">
           <Footer />
         </div>
       </div>

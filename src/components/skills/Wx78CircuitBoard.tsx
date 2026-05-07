@@ -114,19 +114,21 @@ export function Wx78CircuitBoard({
 
       {/* Grid catalog — scrollable */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-        <div className="max-w-2xl mx-auto w-full pb-2 px-3">
-          {TYPES.map((type) => (
-            <Section
-              key={type}
-              type={type}
-              modules={grouped[type]}
-              counts={counts}
-              maxSlots={maxSlots}
-              locale={locale}
-              onSelect={setSelectedId}
-            />
-          ))}
-          <div className="pt-6">
+        <div className="max-w-2xl mx-auto w-full pb-2 px-3 min-h-full flex flex-col">
+          <div className="flex-1">
+            {TYPES.map((type) => (
+              <Section
+                key={type}
+                type={type}
+                modules={grouped[type]}
+                counts={counts}
+                maxSlots={maxSlots}
+                locale={locale}
+                onSelect={setSelectedId}
+              />
+            ))}
+          </div>
+          <div className="mt-auto pt-6">
             <Footer />
           </div>
         </div>

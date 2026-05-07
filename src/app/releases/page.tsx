@@ -15,6 +15,14 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.11",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 회로판/현황 푸터 위치 — 컨텐츠가 짧을 때 푸터가 화면 중간에 뜨던 문제. 컨테이너에 min-h-full + flex flex-col, 푸터에 mt-auto 적용해 항상 화면 하단",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.10",
     date: "2026-05-08",
     dev: [
