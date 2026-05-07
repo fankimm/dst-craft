@@ -342,6 +342,12 @@
   ```
 - **부수 발견**: 같은 이유로 module-level 카운터/플래그/싱글톤 등도 chunk 분할 환경에서 공유가 깨질 수 있음. 진짜 전역 상태가 필요하면 `globalThis` 또는 React Context를 써야 함
 
+### Vercel build cache가 NEXT_PUBLIC_* 환경변수 변경을 부분 무시 — 일부 chunks만 새 값, 일부는 옛 값으로 inline
+- **문제**: 대시보드에서 NEXT_PUBLIC_ANALYTICS_WORKER_URL을 worker URL → `/api`로 변경 후 redeploy. HTML과 일부 chunks(homepage용 a582fde, 3798a76)는 새 값(`let t="/api"`)으로 inline됐지만, AppShell이 lazy-load하는 다른 chunks(31704072, 160be81a, 269b99d6)에는 옛 값(`let t="https://dst-analytics.fankimm.workers.dev"`)이 그대로 박혀 있음 → 사용자가 페이지 들어가면 일부 fetch는 Mac mini로, 일부는 worker로 분기. 캐시 청소·SW 재등록·incognito·신규 브라우저 모두 시도해도 동일 (서버가 그 chunks를 그대로 서빙)
+- **원인**: Vercel "Redeploy with existing Build Cache" 옵션이 default ON. NEXT_PUBLIC_* 변경 시 cache invalidation이 부분적으로만 동작. Next.js Turbopack/SWC가 module별로 cached output을 재사용하는데, env가 inline된 chunks도 cache hit으로 간주되는 케이스 존재
+- **교훈**: 환경변수(특히 NEXT_PUBLIC_*) 값을 바꿨으면 **반드시 build cache 끄고 redeploy**. Vercel 대시보드 Deployment ⋯ 메뉴 → Redeploy → "Use existing Build Cache" 체크 해제. 또는 package-lock.json/package.json 수정해서 cache key 강제 무효화. 부분 적용된 빌드는 진단이 어렵다(homepage는 멀쩡한데 sub-component만 옛 동작) — chunks 전수조사로만 발견됨
+- **검증**: `curl https://www.dstcraft.com/_next/static/chunks/<hash>.js | grep workers.dev` 같은 명령으로 chunks 다 훑어서 옛 URL이 박혀있는지 확인. clean build이면 0건이어야 함
+
 ### 같은 monorepo에 Bun 런타임 패키지(`bun-api/`)를 추가했더니 Vercel(Next.js) 빌드가 typecheck로 줄줄이 실패
 - **문제**: Phase 4에서 `bun-api/`를 main에 추가한 직후부터 Vercel 빌드 10회 연속 실패. `Type error: Cannot find module 'bun:sqlite'` — Next.js가 `tsc --noEmit` 단계에서 bun-api 코드까지 같이 컴파일하다 죽음. 사용자에게 매 push마다 Vercel 실패 메일 발송. 그 사이 prod는 마지막 성공 빌드(옛 worker URL이 inline된 클라이언트 JS)로 계속 동작 — 환경변수 변경(NEXT_PUBLIC_*)도 새 빌드 성공해야 반영
 - **원인**: `tsconfig.json`의 `include`가 `**/*.ts` 와일드카드 + `exclude`에 `worker`만 있고 `bun-api`는 없음. Next.js는 root tsconfig를 기준으로 전체 타입체크. bun-api는 자체 `bun-api/tsconfig.json` + Bun 런타임 전용 모듈(`bun:sqlite`, `bun.lock` 등) 사용해서 Node 환경에선 해결 불가
