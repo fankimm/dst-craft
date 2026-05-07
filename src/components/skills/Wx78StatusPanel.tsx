@@ -1,16 +1,15 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import {
   WX78_CIRCUITS,
   WX78_CIRCUITS_BY_ID,
-  WX78_TUNING,
-  type StatKind,
-  type Capability,
   type CircuitType,
   type CircuitModule,
 } from "@/data/wx78-circuits";
+import { scrapbookStats } from "@/data/scrapbook-stats";
+import { skillTranslations } from "@/data/skill-trees/translations";
 import type { Locale } from "@/lib/i18n";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
 import { Footer } from "../crafting/Footer";
@@ -30,242 +29,130 @@ interface Props {
   counts: CircuitCounts;
 }
 
-// ── Contributors ──────────────────────────────────────────────
-// Each row tracks the circuits/skills that produced its value.
-type Contributor =
-  | { type: "circuit"; moduleId: string; count: number; valueStr?: string }
-  | { type: "buff"; moduleId: string; count: number; skill: string; valueStr?: string }
-  | { type: "skill"; skill: string; valueStr?: string };
+// ── Paragraph parsing (mirrors Wx78CircuitBoard.ScrapbookEffects) ──
+const KO_SKILL_RE = /^(알파|베타|감마) 회로 제조 (I{1,2})/;
+const EN_SKILL_RE = /^(Alpha|Beta|Gamma) Circuit Tinkering (I{1,2})/;
+const KO_SOCKET_RE = /^소켓 \d+개 필요\.\s*/;
+const EN_SOCKET_RE = /^Requires \d+ sockets? and\s*/i;
 
-interface AggRow {
-  kind: string;          // e.g. "maxHealth", "moveSpeed", or capability id
-  category: "vital" | "movement" | "temp" | "utility" | "combat" | "special" | "skill";
-  label: { ko: string; en: string };
-  value: string;
-  hint?: { ko: string; en: string };
-  contributors: Contributor[];
+function detectSkillId(para: string, locale: Locale): { skillId: string; label: string } | null {
+  const re = locale === "ko" ? KO_SKILL_RE : EN_SKILL_RE;
+  const m = para.match(re);
+  if (!m) return null;
+  const groupKo = m[1];
+  const level = m[2] === "II" ? 2 : 1;
+  const groupKey =
+    groupKo === "알파" || groupKo === "Alpha" ? "alpha" :
+    groupKo === "베타" || groupKo === "Beta" ? "beta" : "gamma";
+  return {
+    skillId: `wx78_circuitry_${groupKey}buffs_${level}`,
+    label: m[0],
+  };
 }
 
-// ── Aggregator ────────────────────────────────────────────────
-function buildRows(
-  activatedSkills: Set<string>,
+interface EffectRow {
+  // unique key (moduleId + paragraph index)
+  key: string;
+  text: string;          // paragraph text (cleaned)
+  rawText: string;       // full original paragraph (for DetailPanel)
+  module: CircuitModule;
+  count: number;         // module count
+  skillId?: string;      // skill that activates this paragraph (only for buff)
+  skillLabel?: string;
+}
+
+function buildEffectRows(
   counts: CircuitCounts,
+  activatedSkills: Set<string>,
   locale: Locale,
-): AggRow[] {
-  const rows: AggRow[] = [];
-
-  // Bucket per stat kind
-  const stats: Partial<Record<StatKind, { total: number; contribs: Contributor[] }>> = {};
-  // Move speed: count chips
-  let moveSpeedChips = 0;
-  const moveSpeedContribs: Contributor[] = [];
-  // Hunger slow: track minimum mult
-  let hungerSlowMin: number | undefined;
-  const hungerSlowContribs: Contributor[] = [];
-  // Capabilities
-  const caps: { cap: Capability; contribs: Contributor[] }[] = [];
-  const capsByIdIdx = new Map<string, number>();
-  const addCap = (cap: Capability, contrib: Contributor) => {
-    let idx = capsByIdIdx.get(cap.id);
-    if (idx === undefined) {
-      idx = caps.length;
-      capsByIdIdx.set(cap.id, idx);
-      caps.push({ cap, contribs: [] });
+): EffectRow[] {
+  const rows: EffectRow[] = [];
+  for (const type of ["alpha", "beta", "gamma"] as CircuitType[]) {
+    for (const [id, count] of Object.entries(counts)) {
+      if (!count) continue;
+      const m = WX78_CIRCUITS_BY_ID[id];
+      if (!m || m.type !== type) continue;
+      const sb = scrapbookStats[id];
+      const text = sb && (locale === "ko" ? sb.specialinfo_ko : sb.specialinfo_en);
+      if (!text) continue;
+      const paras = text.split(/\n\n+/).slice(1); // skip first (compatibility)
+      paras.forEach((para, i) => {
+        const skill = detectSkillId(para, locale);
+        if (skill) {
+          if (!activatedSkills.has(skill.skillId)) return; // not learned → skip
+          // Body without skill prefix
+          const body = locale === "ko"
+            ? para.replace(/^.+?의 효과로\s*/, "")
+            : para.replace(EN_SKILL_RE, "").replace(/^\s+/, "");
+          rows.push({
+            key: `${id}:${i}`,
+            text: body,
+            rawText: para,
+            module: m,
+            count,
+            skillId: skill.skillId,
+            skillLabel: skill.label,
+          });
+        } else {
+          // Default paragraph — strip socket prefix
+          const cleaned = (locale === "ko" ? para.replace(KO_SOCKET_RE, "") : para.replace(EN_SOCKET_RE, "")).trim();
+          if (!cleaned) return;
+          rows.push({
+            key: `${id}:${i}`,
+            text: cleaned,
+            rawText: para,
+            module: m,
+            count,
+          });
+        }
+      });
     }
-    caps[idx].contribs.push(contrib);
-  };
-  const addStat = (kind: StatKind, value: number, contrib: Contributor) => {
-    if (!stats[kind]) stats[kind] = { total: 0, contribs: [] };
-    stats[kind].total += value;
-    stats[kind].contribs.push(contrib);
-  };
+  }
+  return rows;
+}
 
-  // Walk equipped circuits
+// WX-78 baseline — what the user sees as default max stats (회로/스킬 0 기준)
+const WX78_BASE_VITAL = { health: 100, hunger: 100, sanity: 100 };
+
+// ── Aggregate vital stats (HP/Hunger/Sanity) for the StatBox header ──
+function aggregateVitals(counts: CircuitCounts): { health: number; hunger: number; sanity: number } {
+  let health = WX78_BASE_VITAL.health;
+  let hunger = WX78_BASE_VITAL.hunger;
+  let sanity = WX78_BASE_VITAL.sanity;
   for (const [id, count] of Object.entries(counts)) {
     if (!count) continue;
     const m = WX78_CIRCUITS_BY_ID[id];
     if (!m) continue;
-
-    for (const eff of m.stats ?? []) {
-      if (eff.kind === "moveSpeed") {
-        moveSpeedChips += count;
-        moveSpeedContribs.push({ type: "circuit", moduleId: id, count });
-      } else if (eff.kind === "hungerSlowMult") {
-        hungerSlowContribs.push({
-          type: "circuit",
-          moduleId: id,
-          count,
-          valueStr: `×${eff.value.toFixed(2)}`,
-        });
-        if (hungerSlowMin === undefined || eff.value < hungerSlowMin) hungerSlowMin = eff.value;
-      } else {
-        addStat(eff.kind, eff.value * count, {
-          type: "circuit",
-          moduleId: id,
-          count,
-          valueStr: formatStatValue(eff.kind, eff.value * count, locale),
-        });
-      }
-    }
-    for (const cap of m.caps ?? []) addCap(cap, { type: "circuit", moduleId: id, count });
-
-    for (const buff of m.buffs ?? []) {
-      if (!activatedSkills.has(buff.skill)) continue;
-      for (const eff of buff.stats ?? []) {
-        if (eff.kind === "hungerSlowMult") {
-          hungerSlowContribs.push({
-            type: "buff",
-            moduleId: id,
-            count,
-            skill: buff.skill,
-            valueStr: `×${eff.value.toFixed(2)}`,
-          });
-          if (hungerSlowMin === undefined || eff.value < hungerSlowMin) hungerSlowMin = eff.value;
-        } else {
-          addStat(eff.kind, eff.value * count, {
-            type: "buff",
-            moduleId: id,
-            count,
-            skill: buff.skill,
-            valueStr: formatStatValue(eff.kind, eff.value * count, locale),
-          });
-        }
-      }
-      for (const cap of buff.caps ?? []) addCap(cap, { type: "buff", moduleId: id, count, skill: buff.skill });
+    for (const s of m.stats ?? []) {
+      if (s.kind === "maxHealth") health += s.value * count;
+      else if (s.kind === "maxHunger") hunger += s.value * count;
+      else if (s.kind === "maxSanity") sanity += s.value * count;
     }
   }
-
-  // Emit stat rows
-  const stat = (kind: StatKind, label: { ko: string; en: string }, formatter: (v: number) => string, hint?: { ko: string; en: string }, category: AggRow["category"] = "vital") => {
-    const b = stats[kind];
-    if (!b || b.total === 0) return;
-    rows.push({
-      kind,
-      category,
-      label,
-      value: formatter(b.total),
-      hint,
-      contributors: b.contribs,
-    });
-  };
-
-  // Vital
-  stat("maxHealth", { ko: "최대 체력 증가", en: "Max HP +" }, (v) => formatNum(v));
-  stat("maxSanity", { ko: "최대 정신력 증가", en: "Max Sanity +" }, (v) => formatNum(v));
-  stat("maxHunger", { ko: "최대 허기 증가", en: "Max Hunger +" }, (v) => formatNum(v));
-  stat("dapperness", { ko: "정신력 회복", en: "Sanity Regen" }, (v) => `+${(v * 60).toFixed(1)}/min`);
-  stat("regenPerTick", { ko: "체력 자가회복 (피해 시)", en: "HP Regen (when hurt)" }, (v) => `+${formatNum(v)} HP / 30s`);
-
-  // Hunger slow
-  if (hungerSlowMin !== undefined) {
-    rows.push({
-      kind: "hungerSlowMult",
-      category: "vital",
-      label: { ko: "허기 줄어드는 속도", en: "Hunger Drain" },
-      value: `−${((1 - hungerSlowMin) * 100).toFixed(0)}%`,
-      hint: { ko: "(낮을수록 좋음)", en: "(lower is better)" },
-      contributors: hungerSlowContribs,
-    });
-  }
-
-  // Movement
-  if (moveSpeedChips > 0) {
-    const idx = Math.min(moveSpeedChips, WX78_TUNING.MOVESPEED_CHIPBOOSTS.length - 1);
-    rows.push({
-      kind: "moveSpeed",
-      category: "movement",
-      label: { ko: "이동 속도", en: "Move Speed" },
-      value: `+${(WX78_TUNING.MOVESPEED_CHIPBOOSTS[idx] * 100).toFixed(0)}%`,
-      hint: idx < moveSpeedChips
-        ? { ko: `(가속 회로 ${moveSpeedChips}개, 3개 이상은 효과 없음)`, en: `(${moveSpeedChips} circuits, 3+ caps)` }
-        : { ko: `(가속 회로 ${moveSpeedChips}개)`, en: `(${moveSpeedChips} circuits)` },
-      contributors: moveSpeedContribs,
-    });
-  }
-
-  // Temp / Resistance
-  stat("minTempUp", { ko: "추위 저항 (최저 체온 +)", en: "Cold Resist (min temp ↑)" }, (v) => `+${formatNum(v)}°C`, undefined, "temp");
-  stat("maxTempDown", { ko: "더위 저항 (최고 체온 −)", en: "Heat Resist (max temp ↓)" }, (v) => `−${formatNum(v)}°C`, undefined, "temp");
-  stat("dryRate", { ko: "건조 속도", en: "Dry Rate" }, (v) => `+${v.toFixed(2)}/s`, undefined, "temp");
-  stat("freezeResistMult", { ko: "얼리기 저항", en: "Freeze Resistance" }, (v) => `×${formatNum(v)}`, { ko: "(베타 버프 1)", en: "(Beta Buff 1)" }, "temp");
-  stat("fireDmgScaleMult", { ko: "화염 데미지", en: "Fire Damage" }, (v) => `${v < 0 ? "−" : "+"}${Math.abs(v * 100).toFixed(0)}%`, { ko: "(베타 버프 1)", en: "(Beta Buff 1)" }, "temp");
-
-  // Utility
-  stat("lightRadius", { ko: "빛 반경", en: "Light Radius" }, (v) => `+${v.toFixed(2)}m`, undefined, "utility");
-  stat("viewDistance", { ko: "시야 거리", en: "View Distance" }, (v) => `+${formatNum(v)}`, undefined, "utility");
-  stat("tendRange", { ko: "농작물 돌봄 범위", en: "Farm Tend Range" }, (v) => `${formatNum(v)}m`, undefined, "utility");
-  stat("sanityAuraPerSec", { ko: "정신력 오라", en: "Sanity Aura" }, (v) => `+${(v * 60).toFixed(1)}/min`, undefined, "utility");
-  stat("follower", { ko: "최대 추종자", en: "Max Followers" }, (v) => `+${formatNum(v)}`, undefined, "utility");
-  stat("extraInventorySlot", { ko: "확장 인벤토리", en: "Extra Inventory" }, (v) => `+${formatNum(v)} slot`, undefined, "utility");
-
-  // Combat
-  stat("armorPct", { ko: "데미지 감소", en: "Damage Reduction" }, (v) => `${(v * 100).toFixed(1)}%`, { ko: "(알파 버프 2)", en: "(Alpha Buff 2)" }, "combat");
-  stat("shieldPctOfHP", { ko: "보호막 (최대체력 %)", en: "Shield (% of Max HP)" }, (v) => `${(v * 100).toFixed(0)}%`, { ko: "(알파 버프 2)", en: "(Alpha Buff 2)" }, "combat");
-  stat("shieldRegenPerSec", { ko: "보호막 재생", en: "Shield Regen" }, (v) => `${v.toFixed(2)}/s`, undefined, "combat");
-
-  // Capabilities
-  for (const { cap, contribs } of caps) {
-    rows.push({
-      kind: `cap:${cap.id}`,
-      category: "special",
-      label: { ko: cap.ko, en: cap.en },
-      value: "✓",
-      contributors: contribs,
-    });
-  }
-
-  // Global circuit skills
-  const globalSkills: { skill: string; ko: string; en: string }[] = [
-    { skill: "wx78_circuitry_betterunplug", ko: "회로 분리 시 충전 −50% 소모", en: "Module unplug −50% charge" },
-    { skill: "wx78_circuitry_bettercharge", ko: `회로 충전 속도 ×${WX78_TUNING.FASTER_CHARGE_MULTIPLIER}`, en: `Module recharge ×${WX78_TUNING.FASTER_CHARGE_MULTIPLIER}` },
-    { skill: "wx78_circuitry_slot_1", ko: "각 회로 바 슬롯 +1 (총 7)", en: "+1 slot per circuit bar (total 7)" },
-  ];
-  for (const g of globalSkills) {
-    if (!activatedSkills.has(g.skill)) continue;
-    rows.push({
-      kind: `skill:${g.skill}`,
-      category: "skill",
-      label: { ko: g.ko, en: g.en },
-      value: "✓",
-      contributors: [{ type: "skill", skill: g.skill }],
-    });
-  }
-
-  return rows;
+  return { health, hunger, sanity };
 }
 
-function formatNum(n: number): string {
-  return Math.abs(n - Math.round(n)) < 0.01 ? n.toFixed(0) : n.toFixed(1);
-}
+// ── Global circuit skills (active effect lines) ───────────────
+// Text comes from the skill tree's own desc (ko.po-based) so it stays consistent
+// with the Skill Tree tab.
+const GLOBAL_CIRCUIT_SKILL_IDS = [
+  "wx78_circuitry_betterunplug",
+  "wx78_circuitry_bettercharge",
+  "wx78_circuitry_slot_1",
+];
 
-function formatStatValue(kind: StatKind, value: number, locale: Locale): string {
-  const ko = locale === "ko";
-  switch (kind) {
-    case "maxHealth": return ko ? `+${formatNum(value)} 체력` : `+${formatNum(value)} HP`;
-    case "maxSanity": return ko ? `+${formatNum(value)} 정신력` : `+${formatNum(value)} sanity`;
-    case "maxHunger": return ko ? `+${formatNum(value)} 허기` : `+${formatNum(value)} hunger`;
-    case "minTempUp": return `+${formatNum(value)}°C`;
-    case "maxTempDown": return `−${formatNum(value)}°C`;
-    case "dryRate": return `+${value.toFixed(2)}/s`;
-    case "lightRadius": return `+${value.toFixed(2)}m`;
-    case "viewDistance": return `+${formatNum(value)}`;
-    case "tendRange": return `${formatNum(value)}m`;
-    case "sanityAuraPerSec": return `+${(value * 60).toFixed(1)}/min`;
-    case "dapperness": return `+${(value * 60).toFixed(1)}/min`;
-    case "regenPerTick": return ko ? `+${formatNum(value)} HP / 30초` : `+${formatNum(value)} HP / 30s`;
-    case "armorPct": return `${(value * 100).toFixed(1)}%`;
-    case "shieldPctOfHP": return `${(value * 100).toFixed(0)}%`;
-    case "shieldRegenPerSec": return `${value.toFixed(2)}/s`;
-    case "freezeResistMult": return `×${formatNum(value)}`;
-    case "fireDmgScaleMult": return `${value < 0 ? "−" : "+"}${Math.abs(value * 100).toFixed(0)}%`;
-    case "follower": return `+${formatNum(value)}`;
-    case "extraInventorySlot": return ko ? `+${formatNum(value)} 슬롯` : `+${formatNum(value)} slot`;
-    case "moveSpeed": return ko ? "1 chip" : "1 chip";
-    default: return formatNum(value);
+function getGlobalSkillRows(activatedSkills: Set<string>, locale: Locale): { skill: string; text: string }[] {
+  const out: { skill: string; text: string }[] = [];
+  for (const id of GLOBAL_CIRCUIT_SKILL_IDS) {
+    if (!activatedSkills.has(id)) continue;
+    const entry = skillTranslations[id];
+    if (!entry) continue;
+    const text = locale === "ko" ? entry.desc.ko : entry.desc.en;
+    out.push({ skill: id, text });
   }
+  return out;
 }
 
-// ── Skill labels (for buff source) ────────────────────────────
 function skillLabel(skillId: string, locale: Locale): string {
   const ko = locale === "ko";
   switch (skillId) {
@@ -295,12 +182,22 @@ const ALL_CIRCUIT_SKILLS = [
   "wx78_circuitry_slot_1",
 ];
 
+type SelectedDetail =
+  | { kind: "effect"; row: EffectRow }
+  | { kind: "skill"; skill: string; text: string }
+  | { kind: "vital"; statKind: "maxHealth" | "maxHunger" | "maxSanity"; total: number };
+
+function readDevShowAll(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return localStorage.getItem("dst:dev-show-all-circuit-effects") === "1";
+  } catch {
+    return false;
+  }
+}
+
 export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
-  const [devShowAll, setDevShowAll] = useState(false);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setDevShowAll(localStorage.getItem("dst:dev-show-all-circuit-effects") === "1");
-  }, []);
+  const [devShowAll] = useState(readDevShowAll);
 
   const effectiveSkills = useMemo(() => {
     if (!devShowAll) return activatedSkills;
@@ -316,9 +213,14 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     return next;
   }, [counts, devShowAll]);
 
-  const rows = useMemo(
-    () => buildRows(effectiveSkills, effectiveCounts, locale),
-    [effectiveSkills, effectiveCounts, locale],
+  const vitals = useMemo(() => aggregateVitals(effectiveCounts), [effectiveCounts]);
+  const effectRows = useMemo(
+    () => buildEffectRows(effectiveCounts, effectiveSkills, locale),
+    [effectiveCounts, effectiveSkills, locale],
+  );
+  const skillRows = useMemo(
+    () => getGlobalSkillRows(effectiveSkills, locale),
+    [effectiveSkills, locale],
   );
 
   const equippedTotal = useMemo(
@@ -326,9 +228,9 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     [effectiveCounts],
   );
 
-  const [selectedRow, setSelectedRow] = useState<AggRow | null>(null);
+  const [selected, setSelected] = useState<SelectedDetail | null>(null);
 
-  if (equippedTotal === 0 && rows.length === 0) {
+  if (equippedTotal === 0 && skillRows.length === 0) {
     return (
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col" data-scroll-container="">
         <div className="flex-1 flex items-center justify-center px-6 text-center">
@@ -343,29 +245,9 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     );
   }
 
-  // Group rows into Vital StatBox + sectioned rows
-  const totals = aggregateMaxStats(rows);
-  const otherRows = rows.filter((r) => !["maxHealth", "maxSanity", "maxHunger"].includes(r.kind));
-  const byCategory: Record<string, AggRow[]> = {};
-  for (const r of otherRows) {
-    if (!byCategory[r.category]) byCategory[r.category] = [];
-    byCategory[r.category].push(r);
-  }
-
-  const sectionTitles: Record<string, { ko: string; en: string }> = {
-    vital: { ko: "기본 능력치", en: "Vital" },
-    movement: { ko: "이동", en: "Movement" },
-    temp: { ko: "온도 · 저항", en: "Temperature · Resistance" },
-    utility: { ko: "유틸리티", en: "Utility" },
-    combat: { ko: "전투", en: "Combat" },
-    special: { ko: "특수 효과", en: "Special Effects" },
-    skill: { ko: "회로 시스템 강화", en: "Circuitry Skills" },
-  };
-
-  // Find rows for max HP/Sanity/Hunger to enable click on StatBox
-  const maxHealthRow = rows.find((r) => r.kind === "maxHealth");
-  const maxSanityRow = rows.find((r) => r.kind === "maxSanity");
-  const maxHungerRow = rows.find((r) => r.kind === "maxHunger");
+  // Split effect rows into base / skill-buffed for visual grouping
+  const baseRows = effectRows.filter((r) => !r.skillId);
+  const buffRows = effectRows.filter((r) => r.skillId);
 
   return (
     <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
@@ -375,116 +257,135 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
             DEV: 모든 회로 +1 + 모든 회로 관련 스킬 학습 가정 — 데브 메뉴에서 OFF
           </div>
         )}
-        {/* Vital stats */}
-        {(totals.maxHealth || totals.maxSanity || totals.maxHunger) ? (
-          <div className="mt-3 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
-            <VitalStat
-              iconSrc={assetPath("/images/ui/health.png")}
-              label={locale === "ko" ? "최대 체력" : "Max Health"}
-              value={totals.maxHealth}
-              onClick={maxHealthRow ? () => setSelectedRow(maxHealthRow) : undefined}
-            />
-            <VitalStat
-              iconSrc={assetPath("/images/ui/hunger.png")}
-              label={locale === "ko" ? "최대 허기" : "Max Hunger"}
-              value={totals.maxHunger}
-              divider
-              onClick={maxHungerRow ? () => setSelectedRow(maxHungerRow) : undefined}
-            />
-            <VitalStat
-              iconSrc={assetPath("/images/ui/sanity.png")}
-              label={locale === "ko" ? "최대 정신력" : "Max Sanity"}
-              value={totals.maxSanity}
-              divider
-              onClick={maxSanityRow ? () => setSelectedRow(maxSanityRow) : undefined}
-            />
-          </div>
-        ) : null}
-
-        {Object.entries(byCategory).map(([cat, catRows]) => (
-          <RowSection
-            key={cat}
-            title={locale === "ko" ? sectionTitles[cat]?.ko ?? cat : sectionTitles[cat]?.en ?? cat}
-            rows={catRows}
-            locale={locale}
-            onSelect={setSelectedRow}
+        {/* Vital stats — always show (base 100 + circuits) */}
+        <div className="mt-3 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
+          <VitalStat
+            iconSrc={assetPath("/images/ui/health.png")}
+            label={locale === "ko" ? "최대 체력" : "Max Health"}
+            value={vitals.health}
+            onClick={() => setSelected({ kind: "vital", statKind: "maxHealth", total: vitals.health })}
           />
-        ))}
+          <VitalStat
+            iconSrc={assetPath("/images/ui/hunger.png")}
+            label={locale === "ko" ? "최대 허기" : "Max Hunger"}
+            value={vitals.hunger}
+            divider
+            onClick={() => setSelected({ kind: "vital", statKind: "maxHunger", total: vitals.hunger })}
+          />
+          <VitalStat
+            iconSrc={assetPath("/images/ui/sanity.png")}
+            label={locale === "ko" ? "최대 정신력" : "Max Sanity"}
+            value={vitals.sanity}
+            divider
+            onClick={() => setSelected({ kind: "vital", statKind: "maxSanity", total: vitals.sanity })}
+          />
+        </div>
+
+        {baseRows.length > 0 && (
+          <RowSection title={locale === "ko" ? "활성 효과" : "Active Effects"}>
+            {baseRows.map((r) => (
+              <EffectRowItem
+                key={r.key}
+                row={r}
+                locale={locale}
+                onClick={() => setSelected({ kind: "effect", row: r })}
+              />
+            ))}
+          </RowSection>
+        )}
+
+        {buffRows.length > 0 && (
+          <RowSection title={locale === "ko" ? "스킬 강화 효과" : "Skill-Buffed Effects"}>
+            {buffRows.map((r) => (
+              <EffectRowItem
+                key={r.key}
+                row={r}
+                locale={locale}
+                onClick={() => setSelected({ kind: "effect", row: r })}
+              />
+            ))}
+          </RowSection>
+        )}
+
+        {skillRows.length > 0 && (
+          <RowSection title={locale === "ko" ? "회로 시스템 강화" : "Circuitry Skills"}>
+            {skillRows.map((s) => (
+              <button
+                key={s.skill}
+                onClick={() => setSelected({ kind: "skill", skill: s.skill, text: s.text })}
+                className="w-full flex items-baseline justify-between px-3 py-2 border-b border-border last:border-b-0 hover:bg-surface/40 transition-colors text-left touch-manipulation"
+              >
+                <span className="text-sm text-foreground/95 leading-relaxed">{s.text}</span>
+              </button>
+            ))}
+          </RowSection>
+        )}
 
         <div className="pt-6">
           <Footer />
         </div>
       </div>
 
-      <DetailPanel open={!!selectedRow} onClose={() => setSelectedRow(null)}>
-        {selectedRow && (
-          <RowDetail row={selectedRow} locale={locale} />
+      <DetailPanel open={!!selected} onClose={() => setSelected(null)}>
+        {selected && (
+          <Detail selected={selected} locale={locale} effectiveCounts={effectiveCounts} />
         )}
       </DetailPanel>
     </div>
   );
 }
 
-function aggregateMaxStats(rows: AggRow[]): { maxHealth: number; maxSanity: number; maxHunger: number } {
-  const find = (kind: string) => rows.find((r) => r.kind === kind);
-  const sum = (r: AggRow | undefined) =>
-    r ? r.contributors.reduce((acc, c) => acc + parseValueNum(c.valueStr ?? "0"), 0) : 0;
-  return {
-    maxHealth: sum(find("maxHealth")),
-    maxSanity: sum(find("maxSanity")),
-    maxHunger: sum(find("maxHunger")),
-  };
-}
-
-function parseValueNum(s: string): number {
-  const m = s.match(/[+-]?\d+(?:\.\d+)?/);
-  return m ? Number(m[0]) : 0;
-}
-
-// ── Section ───────────────────────────────────────────────────
-function RowSection({
-  title,
-  rows,
-  locale,
-  onSelect,
-}: {
-  title: string;
-  rows: AggRow[];
-  locale: Locale;
-  onSelect: (r: AggRow) => void;
-}) {
-  if (rows.length === 0) return null;
+// ── UI ──────────────────────────────────────────────────────
+function RowSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="mt-4 first:mt-3">
       <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1.5 px-1">
         {title}
       </div>
       <div className="rounded-lg border border-border bg-background overflow-hidden">
-        {rows.map((r, i) => (
-          <button
-            key={i}
-            onClick={() => onSelect(r)}
-            className="w-full flex items-baseline justify-between px-3 py-2 border-b border-border last:border-b-0 hover:bg-surface/40 transition-colors text-left touch-manipulation"
-          >
-            <div className="text-sm text-foreground flex-1 min-w-0 pr-2">
-              <span className="truncate">{locale === "ko" ? r.label.ko : r.label.en}</span>
-              {r.hint && (
-                <span className="ml-1.5 text-[11px] text-muted-foreground">
-                  {locale === "ko" ? r.hint.ko : r.hint.en}
-                </span>
-              )}
-            </div>
-            <div className="text-sm font-semibold tabular-nums text-foreground shrink-0">
-              {r.value}
-            </div>
-          </button>
-        ))}
+        {children}
       </div>
     </div>
   );
 }
 
-// ── Vital StatBox (clickable) ─────────────────────────────────
+function EffectRowItem({
+  row,
+  locale,
+  onClick,
+}: {
+  row: EffectRow;
+  locale: Locale;
+  onClick: () => void;
+}) {
+  const color = TYPE_COLORS[row.module.type];
+  return (
+    <button
+      onClick={onClick}
+      className="w-full flex items-center gap-2 px-3 py-2 border-b border-border last:border-b-0 hover:bg-surface/40 transition-colors text-left touch-manipulation"
+    >
+      <Image
+        src={`/images/game-items/${row.module.id}.png`}
+        alt=""
+        width={28}
+        height={28}
+        className="size-7 object-contain shrink-0"
+      />
+      <span className="flex-1 min-w-0 text-sm text-foreground/95 leading-relaxed">
+        {row.text}
+      </span>
+      {row.count > 1 && (
+        <span
+          className="shrink-0 text-[10px] font-bold px-1.5 py-px rounded-sm tabular-nums"
+          style={{ backgroundColor: `${color}30`, color }}
+        >
+          ×{row.count}
+        </span>
+      )}
+    </button>
+  );
+}
+
 function VitalStat({
   iconSrc,
   label,
@@ -519,85 +420,159 @@ function VitalStat({
   );
 }
 
-// ── DetailPanel content for a row ─────────────────────────────
-function RowDetail({ row, locale }: { row: AggRow; locale: Locale }) {
+// ── DetailPanel content ──────────────────────────────────────
+function Detail({
+  selected,
+  locale,
+  effectiveCounts,
+}: {
+  selected: SelectedDetail;
+  locale: Locale;
+  effectiveCounts: CircuitCounts;
+}) {
+  if (selected.kind === "effect") {
+    const r = selected.row;
+    const color = TYPE_COLORS[r.module.type];
+    return (
+      <div className="px-4 pt-4 pb-2">
+        <p className="text-base font-semibold text-foreground leading-relaxed">{r.text}</p>
+
+        <div className="mt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "출처" : "Source"}
+          </div>
+          <div className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
+            <Image
+              src={`/images/game-items/${r.module.id}.png`}
+              alt=""
+              width={36}
+              height={36}
+              className="size-9 object-contain shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
+                {locale === "ko" ? r.module.nameI18n.ko : r.module.nameI18n.en}
+                {r.count > 1 && (
+                  <span
+                    className="text-[10px] font-bold px-1 rounded-sm tabular-nums"
+                    style={{ backgroundColor: `${color}30`, color }}
+                  >
+                    ×{r.count}
+                  </span>
+                )}
+                <span
+                  className="text-[10px] font-bold uppercase px-1 rounded-sm"
+                  style={{ backgroundColor: `${color}25`, color }}
+                >
+                  {r.module.type}
+                </span>
+              </div>
+              {r.skillId && (
+                <div className="text-[11px] text-muted-foreground mt-0.5">
+                  {locale === "ko" ? "+ 스킬 강화: " : "+ Skill buff: "}
+                  <span className="font-semibold">{skillLabel(r.skillId, locale)}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (selected.kind === "skill") {
+    return (
+      <div className="px-4 pt-4 pb-2">
+        <p className="text-base font-semibold text-foreground leading-relaxed">{selected.text}</p>
+
+        <div className="mt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "출처" : "Source"}
+          </div>
+          <div className="px-3 py-2 rounded-md bg-surface/60 text-sm font-semibold text-foreground">
+            {skillLabel(selected.skill, locale)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Vital stat detail — show all circuits contributing to this max stat
+  const statKind = selected.statKind;
+  const baseValue =
+    statKind === "maxHealth" ? WX78_BASE_VITAL.health :
+    statKind === "maxHunger" ? WX78_BASE_VITAL.hunger : WX78_BASE_VITAL.sanity;
+  const contributors: { module: CircuitModule; count: number; value: number }[] = [];
+  for (const [id, count] of Object.entries(effectiveCounts)) {
+    if (!count) continue;
+    const m = WX78_CIRCUITS_BY_ID[id];
+    if (!m) continue;
+    for (const s of m.stats ?? []) {
+      if (s.kind === statKind) {
+        contributors.push({ module: m, count, value: s.value * count });
+      }
+    }
+  }
+  const label =
+    statKind === "maxHealth" ? (locale === "ko" ? "최대 체력" : "Max Health") :
+    statKind === "maxHunger" ? (locale === "ko" ? "최대 허기" : "Max Hunger") :
+    (locale === "ko" ? "최대 정신력" : "Max Sanity");
   return (
     <div className="px-4 pt-4 pb-2">
-      <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-base font-bold text-foreground flex-1 min-w-0">
-          {locale === "ko" ? row.label.ko : row.label.en}
-        </h3>
-        <span className="text-base font-bold tabular-nums text-foreground shrink-0">{row.value}</span>
+      <div className="flex items-baseline justify-between">
+        <h3 className="text-base font-bold text-foreground">{label}</h3>
+        <span className="text-base font-bold tabular-nums text-foreground">{selected.total}</span>
       </div>
-      {row.hint && (
-        <p className="mt-1 text-xs text-muted-foreground">
-          {locale === "ko" ? row.hint.ko : row.hint.en}
-        </p>
-      )}
-
       <div className="mt-4">
         <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
-          {locale === "ko" ? "기여 회로 · 스킬" : "Contributors"}
+          {locale === "ko" ? "구성" : "Breakdown"}
         </div>
         <ul className="space-y-1.5">
-          {row.contributors.map((c, i) => (
-            <li key={i} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
-              {c.type === "circuit" || c.type === "buff" ? (
-                <ContributorCircuitItem c={c} locale={locale} />
-              ) : (
-                <span className="text-sm text-foreground">{skillLabel(c.skill, locale)}</span>
-              )}
-              {c.valueStr && (
-                <span className="ml-auto shrink-0 text-xs font-semibold tabular-nums text-foreground">
-                  {c.valueStr}
+          <li className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
+            <div className="size-7 rounded-md bg-surface flex items-center justify-center shrink-0">
+              <span className="text-[10px] font-bold text-muted-foreground">WX</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-semibold text-foreground">
+                {locale === "ko" ? "WX-78 기본" : "WX-78 base"}
+              </div>
+            </div>
+            <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+              {baseValue}
+            </span>
+          </li>
+          {contributors.map((c) => {
+            const color = TYPE_COLORS[c.module.type];
+            return (
+              <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
+                <Image
+                  src={`/images/game-items/${c.module.id}.png`}
+                  alt=""
+                  width={28}
+                  height={28}
+                  className="size-7 object-contain shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
+                    {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                    {c.count > 1 && (
+                      <span
+                        className="text-[10px] font-bold px-1 rounded-sm tabular-nums"
+                        style={{ backgroundColor: `${color}30`, color }}
+                      >
+                        ×{c.count}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+                  +{c.value}
                 </span>
-              )}
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>
-  );
-}
-
-function ContributorCircuitItem({
-  c,
-  locale,
-}: {
-  c: Extract<Contributor, { type: "circuit" | "buff" }>;
-  locale: Locale;
-}) {
-  const m = WX78_CIRCUITS_BY_ID[c.moduleId] as CircuitModule | undefined;
-  if (!m) return null;
-  const color = TYPE_COLORS[m.type];
-  return (
-    <>
-      <Image
-        src={`/images/game-items/${c.moduleId}.png`}
-        alt=""
-        width={28}
-        height={28}
-        className="size-7 object-contain shrink-0"
-      />
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
-          {locale === "ko" ? m.nameI18n.ko : m.nameI18n.en}
-          {c.count > 1 && (
-            <span
-              className="text-[10px] font-bold px-1 rounded-sm tabular-nums"
-              style={{ backgroundColor: `${color}30`, color }}
-            >
-              ×{c.count}
-            </span>
-          )}
-        </div>
-        {c.type === "buff" && (
-          <div className="text-[11px] text-muted-foreground truncate">
-            {locale === "ko" ? "+ 스킬 강화: " : "+ Skill buff: "}
-            {skillLabel(c.skill, locale)}
-          </div>
-        )}
-      </div>
-    </>
   );
 }

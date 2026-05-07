@@ -15,6 +15,18 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.10",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 현황 패널 row 텍스트를 회로판 상세 ScrapbookEffects의 paragraph 그대로 사용 (인게임 한국어)",
+      "fix(skills): 회로 시스템 강화 row(분리/충전/슬롯)는 스킬트리 desc 그대로 사용 (예: '모든 회로 바에 슬롯이 1개 추가됩니다')",
+      "feat(skills): 최대 체력/허기/정신력에 WX-78 기본값 100/100/100 깔고 회로 합산 — Detail panel에 'WX-78 기본 100 + 회로별 +N' 구성 표시",
+      "feat(skills): 현황 row 클릭 시 DetailPanel — 출처 회로(이미지+이름+×N+타입)와 스킬 buff 표시",
+      "refactor(skills): 활성 효과 vs 스킬 강화 효과 두 섹션으로 분리",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.9",
     date: "2026-05-08",
     dev: [
