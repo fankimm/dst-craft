@@ -34,59 +34,64 @@ jobs:
       WORKS_REPO: /Users/fankimm/works/dst-craft
 
     steps:
-      - name: Sync ~/works/dst-craft
+      - name: Sync ~/works/dst-craft + detect changes
         id: sync
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           cd "$WORKS_REPO"
           git fetch --quiet origin main
 
-          BEFORE=$(git rev-parse HEAD)
-          AFTER=$(git rev-parse origin/main)
-          echo "before=$BEFORE" >> "$GITHUB_OUTPUT"
-          echo "after=$AFTER" >> "$GITHUB_OUTPUT"
-
-          if [ "$BEFORE" = "$AFTER" ]; then
-            echo "no_change=true" >> "$GITHUB_OUTPUT"
-            echo "no changes (already at ${AFTER:0:7})"
-            exit 0
-          fi
-
-          # 로컬 변경(tracked + untracked, gitignored 제외)을 stash 보존 후 pull.
-          # 사용자 WIP 손실 방지. 충돌 시 수동 git stash pop 필요.
+          # 사용자 WIP(uncommitted) 보존 — gitignored 제외. 충돌 시 수동 git stash pop 필요.
           if [ -n "$(git status --porcelain)" ]; then
-            stash_msg="actions-pre-pull-$(date -u +%Y%m%dT%H%M%SZ)-${BEFORE:0:7}"
+            stash_msg="actions-pre-pull-$(date -u +%Y%m%dT%H%M%SZ)"
             git stash push -u -m "$stash_msg" >/dev/null
-            echo "stashed local changes as: $stash_msg"
+            echo "stashed: $stash_msg"
           fi
 
-          git pull --ff-only --quiet origin main
-          echo "pulled ${BEFORE:0:7} → ${AFTER:0:7}"
+          # 로컬을 origin/main으로 hard reset (commit이 Mac mini에서 직접 발생했어도 동일)
+          before_local=$(git rev-parse HEAD)
+          git reset --hard --quiet origin/main
+          after_local=$(git rev-parse HEAD)
+          echo "synced ${before_local:0:7} → ${after_local:0:7}"
+          echo "after=$after_local" >> "$GITHUB_OUTPUT"
 
-          changed=$(git diff --name-only "$BEFORE" "$AFTER")
-          echo "$changed"
+          # 변경 경로 판정 — push 이벤트는 BEFORE_SHA..AFTER_SHA 범위 사용 (~/works HEAD 기준이 아님)
+          # workflow_dispatch는 force 입력으로만 작동
+          changed=""
+          ZERO=0000000000000000000000000000000000000000
+          if [ "$EVENT_NAME" = "push" ] && [ -n "${BEFORE_SHA:-}" ] && [ "$BEFORE_SHA" != "$ZERO" ]; then
+            if git cat-file -e "$BEFORE_SHA" 2>/dev/null; then
+              changed=$(git diff --name-only "$BEFORE_SHA" "$AFTER_SHA")
+            else
+              echo "BEFORE_SHA $BEFORE_SHA not in local repo (force-push?). Treating as full deploy."
+              changed="src/ bun-api/"  # 안전망
+            fi
+          elif [ "$EVENT_NAME" = "push" ]; then
+            # 첫 푸시 (BEFORE이 zero) → 전체 배포 간주
+            echo "first push detected, treating as full deploy"
+            changed="src/ bun-api/"
+          fi
+          [ -n "$changed" ] && echo "--- changed files ---" && echo "$changed"
 
-          # 프론트엔드 영향 경로 (deploy-beta.sh 트리거)
           if echo "$changed" | grep -qE '^(src/|public/|scripts/generate-|package\.json|package-lock\.json|next\.config|tsconfig|tailwind|postcss|vercel\.json)'; then
             echo "frontend=true" >> "$GITHUB_OUTPUT"
           fi
-          # bun-api 영향 (launchctl kickstart)
           if echo "$changed" | grep -qE '^bun-api/'; then
             echo "bun_api=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Frontend rebuild (deploy-beta.sh)
-        if: |
-          steps.sync.outputs.no_change != 'true' &&
-          (steps.sync.outputs.frontend == 'true' || inputs.force_frontend == true)
+        if: steps.sync.outputs.frontend == 'true' || inputs.force_frontend == true
         run: |
           set -euo pipefail
           ~/dstcraft/bin/deploy-beta.sh
 
       - name: bun-api restart
-        if: |
-          steps.sync.outputs.no_change != 'true' &&
-          (steps.sync.outputs.bun_api == 'true' || inputs.force_bun_api == true)
+        if: steps.sync.outputs.bun_api == 'true' || inputs.force_bun_api == true
         run: |
           set -euo pipefail
           cp "$WORKS_REPO"/bun-api/infra/com.dstcraft.api.plist ~/Library/LaunchAgents/com.dstcraft.api.plist
@@ -120,9 +125,7 @@ jobs:
           MSG: ${{ github.event.head_commit.message || format('manual dispatch by {0}', github.actor) }}
           TRIGGER: ${{ github.event_name }}
           ACTOR: ${{ github.actor }}
-          BEFORE: ${{ steps.sync.outputs.before }}
           AFTER: ${{ steps.sync.outputs.after }}
-          NO_CHANGE: ${{ steps.sync.outputs.no_change }}
           FRONTEND: ${{ steps.sync.outputs.frontend }}
           BUN_API: ${{ steps.sync.outputs.bun_api }}
         run: |
@@ -138,10 +141,9 @@ jobs:
           first_line=$(printf '%s' "$MSG" | head -1 | cut -c1-200)
 
           parts=""
-          [ "$NO_CHANGE" = "true" ] && parts="${parts}no-op"
-          [ "$FRONTEND" = "true" ] && parts="${parts:+$parts · }frontend"
+          [ "$FRONTEND" = "true" ] && parts="frontend"
           [ "$BUN_API" = "true" ] && parts="${parts:+$parts · }bun-api"
-          [ -z "$parts" ] && parts="(no targeted steps)"
+          [ -z "$parts" ] && parts="no-op"
 
           text="$icon deploy-beta · $STATUS"$'\n'"sha: $short_sha · trigger: $TRIGGER · actor: $ACTOR"$'\n'"steps: $parts"$'\n\n'"$first_line"
 
