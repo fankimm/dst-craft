@@ -90,6 +90,13 @@ mkdir -p "$RELEASES"
 log "Moving out/ -> $NEW_RELEASE"
 mv out "$NEW_RELEASE"
 
+# Carry over previous release's _next/static so in-flight browsers
+# that reference old chunk hashes still find them after symlink swap.
+if [ -L "$LINK" ] && [ -d "$(readlink "$LINK")/_next/static" ]; then
+  log "Merging previous _next/static/ (preserving old chunks)..."
+  cp -Rn "$(readlink "$LINK")/_next/static/." "$NEW_RELEASE/_next/static/" 2>/dev/null || true
+fi
+
 PREV=""
 [ -L "$LINK" ] && PREV=$(readlink "$LINK")
 

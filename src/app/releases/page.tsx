@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.20.2",
+    date: "2026-05-07",
+    dev: [
+      "fix(deploy): deploy-frontend.sh — 새 릴리즈에 이전 릴리즈의 _next/static/ 을 cp -Rn 으로 병합하여 배포 후 구 chunk 404 방지",
+      "fix(layout): ChunkLoadError / Failed to load 감지 시 세션당 1회 자동 새로고침 (sessionStorage 'dst:chunk-retry' 플래그) — error + unhandledrejection 이벤트 양쪽 처리",
+    ],
+    changes: {
+      ko: [
+        "배포 직후 간헐적으로 페이지가 깨지던 문제(ChunkLoadError) 수정 — 자동 새로고침으로 즉시 복구",
+      ],
+      en: [
+        "Fixed intermittent page breakage (ChunkLoadError) after deployments — auto-recovers with a seamless reload",
+      ],
+    },
+  },
+  {
     version: "0.20.1",
     date: "2026-05-06",
     dev: [
