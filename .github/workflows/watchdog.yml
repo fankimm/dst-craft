@@ -96,11 +96,15 @@ jobs:
           VERCEL_TARGET: ${{ vars.WATCHDOG_VERCEL_CNAME }}
         run: |
           set -euo pipefail
+          # GH UI에서 붙여넣을 때 trailing \n 등 whitespace가 따라들어가 CF API 400을 일으킨 사례 있음 → 모두 trim.
+          CF_API_TOKEN=$(printf '%s' "$CF_API_TOKEN" | tr -d '[:space:]')
+          CF_ZONE_ID=$(printf '%s' "$CF_ZONE_ID" | tr -d '[:space:]')
+          VERCEL_TARGET=$(printf '%s' "$VERCEL_TARGET" | tr -d '[:space:]')
           if [ -z "$CF_API_TOKEN" ] || [ -z "$CF_ZONE_ID" ] || [ -z "$VERCEL_TARGET" ]; then
             echo "::error::WATCHDOG_FAILOVER=1이지만 CF_API_TOKEN / CF_ZONE_ID / WATCHDOG_VERCEL_CNAME 미설정"
             exit 1
           fi
-          echo "config: zone=${CF_ZONE_ID:0:8}... target=$VERCEL_TARGET"
+          echo "config: zone=${CF_ZONE_ID:0:8}... target=$VERCEL_TARGET (len=${#VERCEL_TARGET})"
 
           for HOST in dstcraft.com www.dstcraft.com; do
             echo "::group::$HOST"
