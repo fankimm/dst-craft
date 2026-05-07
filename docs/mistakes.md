@@ -305,6 +305,29 @@
 - **검증**: 빌드 후 `out/sitemap.xml`에 새 slug만 있는지 + `out/<path>/<old-slug>.html`의 `<link rel="canonical">`이 새 slug를 가리키는지 확인. 외부에서 옛 URL로 들어와도 200 + canonical 정상이어야 함
 - **부수 발견**: 이름이 같은 아이템이 있을 수 있어 slug 빌드 시 중복 검출 → ID 접미사로 fallback (`<base>-<id>`) 처리 필요
 
+## 인프라 / 셀프호스팅
+
+### nginx 정적 캐시 정규식이 sw.js까지 1년 immutable로 캐시 (PWA 표준 위반)
+- **문제**: Phase 1 nginx 설정의 `location ~* \.(js|css|...)$ { expires 1y; ... immutable; }`가 `sw.js`도 매칭 → Service Worker 파일이 1년간 immutable로 캐시. 빌드를 새로 해도 사용자 브라우저의 옛 SW가 활성 상태로 옛 chunk를 영구 서빙. Phase 3 배포 후 supporters dedupe 패치가 적용된 chunk가 빌드/배포됐는데 사용자 화면엔 여전히 7회 호출되는 현상으로 발견
+- **원인**: brew nginx 정적 캐시 템플릿을 그대로 쓰고 sw.js 예외 처리를 빠뜨림. PWA 표준에선 sw.js는 `Cache-Control: no-cache` 또는 `max-age=0` 권장. 브라우저는 24시간마다 sw.js 재검증하지만 immutable 헤더면 무력화될 수 있고, CDN(Cloudflare 등)이 1년 캐시하면 origin이 바뀌어도 사용자에게 옛 sw.js 서빙
+- **교훈**: nginx에서 `~* \.js$` 같은 정규식 정적 캐시 location을 만들면 **반드시 sw.js / manifest.webmanifest 예외 처리** 먼저 (`location = /sw.js` exact match를 위에 두면 nginx가 우선 적용). chunk 파일은 해시 기반 이름이라 immutable이 안전하지만, sw.js와 manifest는 고정 경로라 캐시되면 영구화됨
+- **해결**:
+  ```nginx
+  location = /sw.js {
+    expires off;
+    add_header Cache-Control "public, max-age=0, must-revalidate";
+  }
+  location = /manifest.webmanifest {
+    expires off;
+    add_header Cache-Control "public, max-age=0, must-revalidate";
+  }
+  location ~* \.(js|css|...)$ { expires 1y; ... immutable; }
+  ```
+- **검증**: `curl -sI https://<domain>/sw.js | grep -i cache-control` → `max-age=0` 확인. immutable 보이면 즉시 패치
+- **부수 작업**: 이미 immutable 헤더를 받은 사용자/CDN 캐시는 자동 무효화 안 됨. CF zone에서 해당 파일 수동 purge 필요. 사용자는 hard refresh + DevTools SW unregister로 즉시 회복
+
+## 분석 / 통계
+
 ### Redis 일별 키에 TTL을 걸어 통계 데이터 영구 손실
 - **문제**: `dst:pv:{날짜}`, `dst:uv:{날짜}` 키에 90일 EXPIRE를 설정 → 90일 이전의 일별 PV/UV 데이터가 자동 삭제되어 복구 불가. 전체 누적(dst:pv:total 등)은 살아있으나 일별 트렌드 그래프에 빈 구간 발생
 - **원인**: Upstash 무료 티어 용량 걱정으로 TTL 설정. 실제로 일별 키는 키당 수 바이트라 수년 분량도 무료 티어 한도(10K commands/day)에 영향 없음
