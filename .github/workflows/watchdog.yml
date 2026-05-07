@@ -84,7 +84,6 @@ jobs:
             --data-urlencode "text=$text" >/dev/null
 
       # Phase 6 활성 시 (vars.WATCHDOG_FAILOVER=1) 3/3 실패면 CF DNS를 Vercel로 자동 rollback.
-      # 현재는 DNS가 이미 Vercel(or Mac mini Tunnel) 어느 쪽이든 vars 미설정이면 skip.
       - name: Auto DNS rollback to Vercel (Phase 6+)
         if: |
           failure() &&
@@ -95,32 +94,46 @@ jobs:
           CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
           VERCEL_TARGET: ${{ vars.WATCHDOG_VERCEL_CNAME }}
         run: |
+          set -euo pipefail
           if [ -z "$CF_API_TOKEN" ] || [ -z "$CF_ZONE_ID" ] || [ -z "$VERCEL_TARGET" ]; then
             echo "::error::WATCHDOG_FAILOVER=1이지만 CF_API_TOKEN / CF_ZONE_ID / WATCHDOG_VERCEL_CNAME 미설정"
             exit 1
           fi
+          echo "config: zone=${CF_ZONE_ID:0:8}... target=$VERCEL_TARGET"
 
           for HOST in dstcraft.com www.dstcraft.com; do
+            echo "::group::$HOST"
             REC=$(curl -fsS \
               -H "Authorization: Bearer $CF_API_TOKEN" \
               "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records?name=$HOST&type=CNAME")
             ID=$(printf '%s' "$REC" | grep -oE '"id":"[^"]+"' | head -1 | cut -d'"' -f4)
             CURRENT=$(printf '%s' "$REC" | grep -oE '"content":"[^"]+"' | head -1 | cut -d'"' -f4)
+            echo "  id=$ID  current=$CURRENT"
             if [ -z "$ID" ]; then
-              echo "$HOST: no CNAME record found, skip"
+              echo "  no CNAME record found, skip"
+              echo "::endgroup::"
               continue
             fi
             if [ "$CURRENT" = "$VERCEL_TARGET" ]; then
-              echo "$HOST: already pointing to Vercel ($CURRENT), no swap needed"
+              echo "  already pointing to Vercel ($CURRENT), no swap needed"
+              echo "::endgroup::"
               continue
             fi
-            echo "$HOST: swap $CURRENT → $VERCEL_TARGET"
-            curl -fsS -X PATCH \
+            echo "  swap $CURRENT → $VERCEL_TARGET"
+            PATCH_RES=$(curl -fsS -X PATCH \
               -H "Authorization: Bearer $CF_API_TOKEN" \
               -H "Content-Type: application/json" \
               -d "{\"content\":\"$VERCEL_TARGET\",\"proxied\":true}" \
-              "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records/$ID" \
-              | grep -oE '"success":(true|false)' || true
+              "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records/$ID")
+            echo "  PATCH response: $(printf '%s' "$PATCH_RES" | head -c 300)"
+            if printf '%s' "$PATCH_RES" | grep -q '"success":true'; then
+              echo "  ✓ swap success"
+            else
+              echo "::error::PATCH failed for $HOST: $PATCH_RES"
+              echo "::endgroup::"
+              exit 1
+            fi
+            echo "::endgroup::"
           done
 
       - name: Telegram alert (DNS swap done)
