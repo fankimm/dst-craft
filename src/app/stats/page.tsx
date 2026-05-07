@@ -523,6 +523,28 @@ export default function StatsPage() {
               )}
             />
 
+            {/* Debug card — beta-only diagnostic for empty recentVisitors */}
+            {isAdmin && (
+              <div className="rounded-lg border border-amber-500/40 bg-amber-50/30 dark:bg-amber-950/20 p-4 space-y-2 text-xs font-mono">
+                <h2 className="text-sm font-semibold text-amber-700 dark:text-amber-300">🐞 debug</h2>
+                <div className="space-y-1 text-foreground/80">
+                  <div>token: {token ? `${String(token).slice(0, 24)}...(len ${String(token).length})` : "null"}</div>
+                  <div>useAuth.isAdmin: {String(isAdmin)}</div>
+                  <div>data.isAdmin (server): {String((data as any).isAdmin)}</div>
+                  <div>data.recentVisitors type: {Array.isArray(data.recentVisitors) ? `Array[${data.recentVisitors.length}]` : typeof data.recentVisitors}</div>
+                  <div>data keys: {Object.keys(data).join(", ")}</div>
+                  <div>data._adminIp: {String((data as any)._adminIp ?? "—")}</div>
+                  <div>data._filteredCount: {String((data as any)._filteredCount ?? "—")}</div>
+                  <div>excludeKR: {String(excludeKR)}</div>
+                  <div>days: {days}</div>
+                  <details>
+                    <summary className="cursor-pointer text-amber-700 dark:text-amber-300">recentVisitors raw (first 3)</summary>
+                    <pre className="mt-1 overflow-x-auto whitespace-pre text-[10px] bg-card p-2 rounded border border-border/40">{JSON.stringify((data.recentVisitors ?? []).slice(0, 3), null, 2)}</pre>
+                  </details>
+                </div>
+              </div>
+            )}
+
             {/* Recent Visitors Table (admin only) */}
             {isAdmin && (
               <div className="rounded-lg border border-border bg-card p-4 space-y-3">
