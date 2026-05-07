@@ -1,4 +1,4 @@
-// Phase 5: deploy-beta.yml self-hosted runner가 bun-api 변경 감지 시 자동으로 plist 동기화 + launchctl 재시작.
+// bun-api 변경 → main 푸시 → self-hosted runner(deploy-beta.yml)가 plist 동기화 + launchctl 재시작.
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
