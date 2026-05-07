@@ -15,6 +15,14 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.17",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): WX-78 합산 카드(이동속도/방어력) 클릭 시 DetailPanel 안 열리던 버그. SelectedDetail kind에 movespeed/armor 추가, 각 분기 렌더링 — 기여 모듈 + chip 합/lookup table / pct 합 + 출처 스킬 표시",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.16",
     date: "2026-05-08",
     dev: [

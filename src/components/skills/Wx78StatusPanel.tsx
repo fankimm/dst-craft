@@ -327,7 +327,9 @@ const ALL_CIRCUIT_SKILLS = [
 type SelectedDetail =
   | { kind: "effect"; row: EffectRow }
   | { kind: "skill"; skill: string; text: string }
-  | { kind: "vital"; statKind: "maxHealth" | "maxHunger" | "maxSanity"; total: number };
+  | { kind: "vital"; statKind: "maxHealth" | "maxHunger" | "maxSanity"; total: number }
+  | { kind: "movespeed"; chips: number; pct: number }
+  | { kind: "armor"; skillId: string; total: number };
 
 function readDevShowAll(): boolean {
   if (typeof window === "undefined") return false;
@@ -458,6 +460,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
                 key="movespeed-agg"
                 text={moveSpeedText(moveSpeedAggregated, locale)}
                 locale={locale}
+                onClick={() => setSelected({ kind: "movespeed", chips: moveSpeedChips, pct: moveSpeedAggregated })}
               />
             )}
             {effectRows.filter((r) => !r.skillId).map((r) => (
@@ -475,6 +478,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
                 skillLabel={skillLabel(armorBuff.skillId, locale)}
                 learned
                 locale={locale}
+                onClick={() => setSelected({ kind: "armor", skillId: armorBuff.skillId, total: armorBuff.total })}
               />
             )}
             {effectRows.filter((r) => r.skillId).map((r) => (
@@ -622,6 +626,120 @@ function Detail({
           <div className="px-3 py-2 rounded-md bg-surface/60 text-sm font-semibold text-foreground">
             {skillLabel(selected.skill, locale)}
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (selected.kind === "movespeed") {
+    // movespeed/movespeed2 chip 합계 → CHIPBOOSTS lookup. 기여 모듈 나열.
+    const contributors: { module: CircuitModule; count: number; chips: number }[] = [];
+    for (const [id, count] of Object.entries(effectiveCounts)) {
+      if (!count) continue;
+      const m = WX78_CIRCUITS_BY_ID[id];
+      if (!m) continue;
+      for (const s of m.stats ?? []) {
+        if (s.kind === "moveSpeed") contributors.push({ module: m, count, chips: s.value * count });
+      }
+    }
+    const totalPct = Math.round(selected.pct * 100);
+    return (
+      <div className="px-4 pt-4 pb-2">
+        <div className="flex items-baseline justify-between">
+          <h3 className="text-base font-bold text-foreground">{locale === "ko" ? "이동 속도" : "Move Speed"}</h3>
+          <span className="text-base font-bold tabular-nums text-foreground">+{totalPct}%</span>
+        </div>
+        <div className="mt-2 text-[11px] text-muted-foreground">
+          {locale === "ko"
+            ? `회로 chip 합계: ${selected.chips}개 → 보너스 ${totalPct}% (lookup table: 0개=0% / 1개=25% / 2개=40% / 3개+=50%)`
+            : `Total chips: ${selected.chips} → +${totalPct}% (lookup: 0=0%, 1=25%, 2=40%, 3+=50%)`}
+        </div>
+        <div className="mt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "기여 모듈" : "Contributing modules"}
+          </div>
+          <ul className="space-y-1.5">
+            {contributors.map((c) => {
+              const color = TYPE_COLORS[c.module.type];
+              return (
+                <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
+                  <Image src={`/images/game-items/${c.module.id}.png`} alt="" width={28} height={28} className="size-7 object-contain shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
+                      {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                      {c.count > 1 && (
+                        <span className="text-[10px] font-bold px-1 rounded-sm tabular-nums" style={{ backgroundColor: `${color}30`, color }}>
+                          ×{c.count}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+                    {locale === "ko" ? `+${c.chips} chip` : `+${c.chips} chip`}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  if (selected.kind === "armor") {
+    // 모듈별 armor pct 기여를 buff stats에서 수집
+    const contributors: { module: CircuitModule; count: number; pct: number }[] = [];
+    for (const [id, count] of Object.entries(effectiveCounts)) {
+      if (!count) continue;
+      const m = WX78_CIRCUITS_BY_ID[id];
+      if (!m) continue;
+      for (const buff of m.buffs ?? []) {
+        if (buff.skill !== selected.skillId) continue;
+        for (const s of buff.stats ?? []) {
+          if (s.kind === "armorPct") {
+            contributors.push({ module: m, count, pct: s.value * 100 * count });
+          }
+        }
+      }
+    }
+    const formatPct = (n: number) => Number.isInteger(n) ? n.toString() : n.toFixed(1).replace(/\.0$/, "");
+    return (
+      <div className="px-4 pt-4 pb-2">
+        <div className="flex items-baseline justify-between">
+          <h3 className="text-base font-bold text-foreground">{locale === "ko" ? "방어력" : "Armor"}</h3>
+          <span className="text-base font-bold tabular-nums text-foreground">+{formatPct(selected.total)}%</span>
+        </div>
+        <div className="mt-2 text-[11px] text-muted-foreground">
+          {locale === "ko" ? "스킬: " : "Skill: "}
+          <span className="font-semibold">{skillLabel(selected.skillId, locale)}</span>
+        </div>
+        <div className="mt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "기여 모듈" : "Contributing modules"}
+          </div>
+          <ul className="space-y-1.5">
+            {contributors.map((c) => {
+              const color = TYPE_COLORS[c.module.type];
+              return (
+                <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
+                  <Image src={`/images/game-items/${c.module.id}.png`} alt="" width={28} height={28} className="size-7 object-contain shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
+                      {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                      {c.count > 1 && (
+                        <span className="text-[10px] font-bold px-1 rounded-sm tabular-nums" style={{ backgroundColor: `${color}30`, color }}>
+                          ×{c.count}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+                    +{formatPct(c.pct)}%
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     );
