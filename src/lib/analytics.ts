@@ -137,13 +137,18 @@ export async function fetchTopCountries(): Promise<{ code: string; count: number
 }
 
 /** Fetch top supporters (public, cached). Names only — amounts are not exposed. */
-let _supportersCache: { promise: Promise<{ name: string }[]>; at: number } | null = null;
+// 캐시는 globalThis에 — Turbopack 코드 분할로 같은 모듈이 여러 chunk에 중복 박혀도
+// module-level 변수로는 chunk별로 캐시가 분리되어 dedupe가 안 됨. 단일 소스 보장 필요.
+type SupportersCache = { promise: Promise<{ name: string }[]>; at: number };
+const SUPPORTERS_KEY = "__dstSupportersCache";
 const SUPPORTERS_TTL_MS = 60_000;
 
 export async function fetchSupporters(): Promise<{ name: string }[]> {
   if (!WORKER_URL) return [];
-  if (_supportersCache && Date.now() - _supportersCache.at < SUPPORTERS_TTL_MS) {
-    return _supportersCache.promise;
+  const g = globalThis as Record<string, unknown>;
+  const cached = g[SUPPORTERS_KEY] as SupportersCache | undefined;
+  if (cached && Date.now() - cached.at < SUPPORTERS_TTL_MS) {
+    return cached.promise;
   }
   const promise = (async () => {
     try {
@@ -155,7 +160,7 @@ export async function fetchSupporters(): Promise<{ name: string }[]> {
       return [];
     }
   })();
-  _supportersCache = { promise, at: Date.now() };
+  g[SUPPORTERS_KEY] = { promise, at: Date.now() } satisfies SupportersCache;
   return promise;
 }
 
