@@ -9,7 +9,8 @@
 > - ✅ Phase 2 완료 — `scripts/deploy-beta.sh` 자동 배포 스크립트
 > - ✅ 운영 정비 일부 — macOS 자동 업데이트/재부팅 차단
 > - ✅ Phase 3 완료 — Worker → Bun API (Hono) 이식, 25 엔드포인트, nginx /api/ 프록시, launchd 자동 시작/재시작
-> - ⏭ 다음: Phase 4 (Upstash Redis → SQLite) 또는 Phase 5 (self-hosted runner)
+> - ✅ Phase 4 코드 완료 (워크스테이션) — bun-api 데이터 레이어 SQLite로 교체 + 마이그레이션 스크립트 + 백업 plist. **Mac mini에서 1회성 실행 필요** (아래 §4.실행 절차 참조)
+> - ⏭ 다음: Mac mini에서 Phase 4 실행 → Phase 5 (self-hosted runner)
 
 ---
 
@@ -327,12 +328,110 @@ curl -I https://beta.dstcraft.com
 
 > 목표: 외부 DB 의존 제거, Bun API의 데이터 레이어를 `bun:sqlite`로 교체.
 
-- 5개 테이블 스키마 설계: `favorites`, `feedback`, `supporters`, `skills_builds`, `analytics_counters`
-  - rate_limit는 in-memory Map + TTL (DB 안 씀)
-- 일회성 마이그레이션 스크립트: Upstash 키 스캔 → SQL 테이블 변환
-- WAL 모드 (`PRAGMA journal_mode=WAL`)
-- 일일 백업: `sqlite3 .backup`을 launchd로 cron 대체
-- 베타에서 데이터 검증 후 Upstash 정리
+## 결정사항 (2026-05-07 합의)
+- **테이블 14개** (TODO 초안의 5개에선 부족 — 실제 25개 엔드포인트의 Redis 키 전부 포팅하면 14개): `users`, `admin_ips`, `favorites`, `skills_builds`, `feedback`, `supporters`, `kofi_transactions`, `config`, `analytics_counters`, `analytics_uv`, `analytics_visitors`, `analytics_duration_samples`, `analytics_clicks`, `analytics_combos`, `rating_ips`
+- **DB 위치**: `~/dstcraft/data/app.db` (코드/데이터 분리, deploy 영향 없음)
+- **전환 전략**: 베타만 즉시 SQLite. prod(Vercel+worker+Upstash)는 그대로 유지. Phase 6 컷오버 시 final-migrate 1회 더.
+- **rate_limit**: in-memory Map + TTL (재시작 시 리셋되어도 무방)
+- **HyperLogLog UV**: IP 추출 불가 → 마이그레이션 안 함. UV 카운트는 SQLite 전환 시점부터 새로 누적.
+
+## 코드 산출물 (워크스테이션 작업, 2026-05-07)
+- `bun-api/src/lib/schema.sql` — 14 테이블 + 인덱스 + rolling-window 트리거 (visitors 200, duration 1000)
+- `bun-api/src/lib/db.ts` — `bun:sqlite` 싱글톤, WAL/PRAGMA, helper (`bumpCounter`/`getCounter`/`addUv`/`countUv`/`countUvExcludingCountry`). 음수 bump clamp 처리.
+- `bun-api/src/lib/rate-limit.ts` — in-memory rate limiter
+- `bun-api/src/routes/*.ts` (7개) — 모든 `redisPipeline` 호출 SQL prepared statement로 교체
+- `bun-api/src/lib/redis.ts` — 삭제 (런타임 미사용)
+- `bun-api/scripts/migrate-upstash.ts` — Upstash → SQLite 일회성 이전. 멱등(re-run safe), `--dry-run` 지원
+- `bun-api/scripts/backup-db.sh` — `sqlite3 .backup` + gzip + 14일 보관 prune
+- `bun-api/infra/com.dstcraft.backup.plist` — 매일 04:00 백업 launchd 정의
+
+## 실행 절차 (Mac mini Claude 세션)
+
+### 1. 사전 점검
+```bash
+cd ~/works/dst-craft
+git pull
+cd bun-api
+bun install
+bun run typecheck   # 통과 확인
+sqlite3 --version   # 3.x 있어야 함 (macOS 기본 포함)
+ls -la ~/dstcraft/data/  # 비어있어야 함 (마이그레이션 첫 실행)
+```
+
+### 2. 드라이런 (실제 INSERT 없음)
+```bash
+# 기존 bun-api launchd가 사용하는 .env 또는 plist EnvironmentVariables에서 변수 가져옴
+launchctl print gui/$(id -u)/com.dstcraft.api | grep -E '(UPSTASH|JWT|GOOGLE)' >&2 || true
+
+# 환경변수 export 후
+export UPSTASH_REDIS_REST_URL=...
+export UPSTASH_REDIS_REST_TOKEN=...
+export JWT_SECRET=...        # 어떤 값이든 OK (db 부팅에만 필요)
+export GOOGLE_CLIENT_ID=...
+export DB_PATH=~/dstcraft/data/app.db
+
+bun scripts/migrate-upstash.ts --dry-run
+# → 각 테이블 카운트 출력. 큰 이상 없으면 다음 단계.
+```
+
+### 3. 실제 마이그레이션
+```bash
+bun scripts/migrate-upstash.ts
+# → ~/dstcraft/data/app.db 생성 + 데이터 삽입
+ls -lh ~/dstcraft/data/app.db
+sqlite3 ~/dstcraft/data/app.db "SELECT COUNT(*) FROM users; SELECT COUNT(*) FROM favorites; SELECT COUNT(*) FROM feedback;"
+```
+
+### 4. bun-api 재시작 (이제 SQLite로 동작)
+```bash
+# launchd plist에 DB_PATH 환경변수 추가 필요. 기존 plist의 EnvironmentVariables 확인:
+plutil -p ~/Library/LaunchAgents/com.dstcraft.api.plist
+
+# DB_PATH=~/dstcraft/data/app.db 가 없으면 plist 편집 후
+launchctl kickstart -k gui/$(id -u)/com.dstcraft.api
+sleep 2
+tail ~/dstcraft/logs/bun-api.out.log
+# "[bun-api] listening on :3001" 확인
+```
+
+### 5. 베타 검증
+```bash
+# 외부 도메인으로 (CF Tunnel 통과)
+curl -s https://beta.dstcraft.com/api/rating
+curl -s https://beta.dstcraft.com/api/top-countries
+curl -s 'https://beta.dstcraft.com/api/stats?days=7' | head
+curl -sX POST https://beta.dstcraft.com/api/track \
+  -H 'Content-Type: application/json' \
+  -d '{"ua":"Mozilla/5.0","isReturn":false}'
+```
+
+브라우저에서 `https://beta.dstcraft.com` → 즐겨찾기/스킬트리/피드백 동작 확인 (마이그레이션된 데이터로).
+
+### 6. 백업 launchd 등록
+```bash
+mkdir -p ~/dstcraft/logs ~/Backups/dstcraft
+cp ~/works/dst-craft/bun-api/infra/com.dstcraft.backup.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.dstcraft.backup.plist
+launchctl print gui/$(id -u)/com.dstcraft.backup | head -20
+
+# 즉시 1회 실행 테스트
+launchctl start com.dstcraft.backup
+sleep 2
+ls -lh ~/Backups/dstcraft/
+cat ~/dstcraft/logs/backup.out.log
+```
+
+### 7. Upstash 정리 시점
+- 베타 수일 안정 동작 확인 후 (→ prod 컷오버 Phase 6 직전)
+- prod도 컷오버 완료된 다음에야 Upstash 삭제
+- 그 전까진 worker가 prod 트래픽으로 계속 사용 중
+
+## 완료 기준
+- [ ] `~/dstcraft/data/app.db` 존재 + 마이그레이션 stats 출력 정상
+- [ ] bun-api SQLite 모드로 재시작 + 25 엔드포인트 응답 확인
+- [ ] 베타 즐겨찾기/스킬트리 신규 추가 → SQLite에 row 추가 확인
+- [ ] launchd backup 1회 정상 실행 + `~/Backups/dstcraft/app-*.db.gz` 생성
+- [ ] 24h 후 안정성 (curl + sqlite3 .schema 확인)
 
 ---
 
@@ -372,17 +471,8 @@ curl -I https://beta.dstcraft.com
 
 ## 다음 세션에서 시작할 위치
 
-**Phase 4 (Upstash Redis → SQLite 이전)** 부터. Mac mini Claude 세션에서:
-```
-TODO-self-hosting.md Phase 4 진행
-```
-또는 `/todo` 스킬로 진행 상황 자동 파악 후 이어가기.
-
-Phase 4 첫 단계 합의 필요:
-- 5개 테이블 스키마 (favorites, feedback, supporters, skills_builds, analytics_counters) 설계 검토
-- `bun-api/data/app.db` 위치 확정 (또는 `~/dstcraft/data/app.db`)
-- 마이그레이션 시점 — 베타에서만 SQLite로 갈지, 또는 Bun API 전체를 SQLite로 갈고 prod도 동시 영향받게 할지
-  - 권장: 베타만 새 DB로, prod는 worker+Upstash 그대로 유지 (Phase 6에서 동시 컷오버)
+**Mac mini Claude 세션에서 Phase 4 §실행 절차 1~6** 단계 진행 (코드는 이미 push됨).
+검증 완료되면 Phase 5 (self-hosted runner)로.
 
 ## 미결정 / 진행 중 결정 필요
 

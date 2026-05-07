@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { redisPipeline } from "../lib/redis";
+import { db, nowSec } from "../lib/db";
 import { extractAdmin } from "../lib/jwt";
 
 const app = new Hono();
@@ -10,9 +10,8 @@ app.get("/", async (c) => {
   if (!key || !/^[a-z_-]+$/.test(key)) {
     return c.json({ error: "Invalid key" }, 400);
   }
-  const result = await redisPipeline([["GET", `dst:config:${key}`]]);
-  const value = result[0]?.result ?? null;
-  return c.json({ key, value });
+  const row = db.query<{ value: string }, [string]>(`SELECT value FROM config WHERE key = ?`).get(key);
+  return c.json({ key, value: row?.value ?? null });
 });
 
 // POST /config — admin only
@@ -26,7 +25,10 @@ app.post("/", async (c) => {
   if (!key || !/^[a-z_-]+$/.test(key) || typeof value !== "string") {
     return c.json({ error: "Invalid request" }, 400);
   }
-  await redisPipeline([["SET", `dst:config:${key}`, value]]);
+  db.query(
+    `INSERT INTO config(key, value, updated_at) VALUES (?, ?, ?)
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
+  ).run(key, value, nowSec());
   return c.json({ ok: true, key, value });
 });
 

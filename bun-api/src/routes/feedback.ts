@@ -1,18 +1,16 @@
 import { Hono } from "hono";
 import { env } from "../lib/env";
-import { redisPipeline } from "../lib/redis";
+import { db, nowSec } from "../lib/db";
 import { extractAdmin } from "../lib/jwt";
 import { extractIp, extractCountry } from "../lib/util";
+import { checkRateLimit } from "../lib/rate-limit";
 
 const app = new Hono();
 
-// POST /feedback — submit anonymous feedback
+// POST /feedback — submit anonymous feedback (1/hour per IP)
 app.post("/", async (c) => {
   const ip = extractIp(c);
-
-  const rateLimitKey = `dst:feedback:rl:${ip}`;
-  const rlCheck = await redisPipeline([["GET", rateLimitKey]]);
-  if (rlCheck[0]?.result) {
+  if (checkRateLimit(`feedback:${ip}`, 1, 3600)) {
     return c.json({ error: "Too many requests" }, 429);
   }
 
@@ -22,19 +20,12 @@ app.post("/", async (c) => {
 
   const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const country = extractCountry(c);
-  const entry = JSON.stringify({
-    id,
-    message,
-    time: new Date().toISOString(),
-    country,
-    ip,
-  });
+  const time = new Date().toISOString();
 
-  await redisPipeline([
-    ["LPUSH", "dst:feedback", entry],
-    ["LTRIM", "dst:feedback", "0", "499"],
-    ["SET", rateLimitKey, "1", "EX", "3600"],
-  ]);
+  db.query(
+    `INSERT INTO feedback(id, message, time, country, ip, status, hidden, created_at)
+     VALUES (?, ?, ?, ?, ?, 'new', 0, ?)`,
+  ).run(id, message, time, country, ip, nowSec());
 
   if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
     const text = `📩 새 피드백\n\n${message}\n\n🌍 ${country} · 🕐 ${new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })}`;
@@ -50,46 +41,25 @@ app.post("/", async (c) => {
 
 // GET /feedback/public — public board (hides IP/country, filters hidden)
 app.get("/public", async (c) => {
-  const results = await redisPipeline([
-    ["LRANGE", "dst:feedback", "0", "99"],
-    ["HGETALL", "dst:feedback:status"],
-    ["HGETALL", "dst:feedback:reply"],
-    ["SMEMBERS", "dst:feedback:hidden"],
-  ]);
-
-  const raw = (results[0]?.result as string[]) ?? [];
-  const statusRaw = results[1]?.result as string[] | null;
-  const replyRaw = results[2]?.result as string[] | null;
-  const hiddenSet = new Set((results[3]?.result as string[]) ?? []);
-
-  const statusMap: Record<string, string> = {};
-  const replyMap: Record<string, string> = {};
-  if (Array.isArray(statusRaw)) {
-    for (let i = 0; i < statusRaw.length; i += 2) statusMap[statusRaw[i]] = statusRaw[i + 1];
-  }
-  if (Array.isArray(replyRaw)) {
-    for (let i = 0; i < replyRaw.length; i += 2) replyMap[replyRaw[i]] = replyRaw[i + 1];
-  }
-
-  const items = raw
-    .map((r) => {
-      try {
-        return JSON.parse(r);
-      } catch {
-        return null;
-      }
-    })
-    .filter((e: any) => e && !hiddenSet.has(e.id))
-    .map((e: any) => ({
-      id: e.id,
-      message: e.message,
-      time: e.time,
-      status: statusMap[e.id] ?? "new",
-      reply: replyMap[e.id] ?? null,
-    }));
-
+  const rows = db
+    .query<
+      { id: string; message: string; time: string; status: string; reply: string | null },
+      []
+    >(
+      `SELECT id, message, time, status, reply FROM feedback
+       WHERE hidden = 0 ORDER BY created_at DESC LIMIT 100`,
+    )
+    .all();
   c.header("Cache-Control", "public, max-age=60");
-  return c.json({ items });
+  return c.json({
+    items: rows.map((r) => ({
+      id: r.id,
+      message: r.message,
+      time: r.time,
+      status: r.status,
+      reply: r.reply,
+    })),
+  });
 });
 
 // GET /feedback — admin only
@@ -98,40 +68,17 @@ app.get("/", async (c) => {
   if (!admin) return c.json({ error: "Forbidden" }, 403);
 
   const limit = Math.min(Number(c.req.query("limit") ?? "50"), 500);
-  const results = await redisPipeline([
-    ["LRANGE", "dst:feedback", "0", `${limit - 1}`],
-    ["HGETALL", "dst:feedback:status"],
-    ["HGETALL", "dst:feedback:reply"],
-    ["SMEMBERS", "dst:feedback:hidden"],
-  ]);
-  const raw = (results[0]?.result as string[]) ?? [];
-  const statusRaw = results[1]?.result as string[] | null;
-  const replyRaw = results[2]?.result as string[] | null;
-  const hiddenSet = new Set((results[3]?.result as string[]) ?? []);
-  const statusMap: Record<string, string> = {};
-  const replyMap: Record<string, string> = {};
-  if (Array.isArray(statusRaw)) {
-    for (let i = 0; i < statusRaw.length; i += 2) statusMap[statusRaw[i]] = statusRaw[i + 1];
-  }
-  if (Array.isArray(replyRaw)) {
-    for (let i = 0; i < replyRaw.length; i += 2) replyMap[replyRaw[i]] = replyRaw[i + 1];
-  }
-  const items = raw
-    .map((r) => {
-      try {
-        const parsed = JSON.parse(r);
-        parsed.status = statusMap[parsed.id] ?? "new";
-        parsed.reply = replyMap[parsed.id] ?? null;
-        parsed.hidden = hiddenSet.has(parsed.id);
-        return parsed;
-      } catch {
-        return null;
-      }
-    })
-    .filter(Boolean);
+  const rows = db
+    .query<any, [number]>(
+      `SELECT id, message, time, country, ip, status, reply, hidden FROM feedback
+       ORDER BY created_at DESC LIMIT ?`,
+    )
+    .all(limit);
 
   c.header("Cache-Control", "no-store");
-  return c.json({ items });
+  return c.json({
+    items: rows.map((r) => ({ ...r, hidden: !!r.hidden })),
+  });
 });
 
 // PATCH /feedback — admin update
@@ -149,12 +96,23 @@ app.patch("/", async (c) => {
     return c.json({ error: "Invalid request" }, 400);
   }
 
-  const ops: any[][] = [];
-  if (status) ops.push(["HSET", "dst:feedback:status", id, status]);
-  if (reply) ops.push(["HSET", "dst:feedback:reply", id, reply]);
-  if (hidden === true) ops.push(["SADD", "dst:feedback:hidden", id]);
-  if (hidden === false) ops.push(["SREM", "dst:feedback:hidden", id]);
-  if (ops.length > 0) await redisPipeline(ops);
+  const sets: string[] = [];
+  const params: any[] = [];
+  if (status) {
+    sets.push("status = ?");
+    params.push(status);
+  }
+  if (reply) {
+    sets.push("reply = ?");
+    params.push(reply);
+  }
+  if (hidden === true) sets.push("hidden = 1");
+  if (hidden === false) sets.push("hidden = 0");
+
+  if (sets.length > 0) {
+    params.push(id);
+    db.query(`UPDATE feedback SET ${sets.join(", ")} WHERE id = ?`).run(...params);
+  }
   return c.json({ ok: true });
 });
 
@@ -166,32 +124,8 @@ app.delete("/", async (c) => {
   const id = c.req.query("id") ?? "";
   if (!id) return c.json({ error: "Invalid request" }, 400);
 
-  const listRes = await redisPipeline([["LRANGE", "dst:feedback", "0", "-1"]]);
-  const raw = (listRes[0]?.result as string[]) ?? [];
-  const target = raw.find((r) => {
-    try {
-      return JSON.parse(r)?.id === id;
-    } catch {
-      return false;
-    }
-  });
-  if (!target) {
-    await redisPipeline([
-      ["HDEL", "dst:feedback:status", id],
-      ["HDEL", "dst:feedback:reply", id],
-      ["SREM", "dst:feedback:hidden", id],
-    ]);
-    return c.json({ ok: true, removed: 0 });
-  }
-
-  const ops = await redisPipeline([
-    ["LREM", "dst:feedback", "1", target],
-    ["HDEL", "dst:feedback:status", id],
-    ["HDEL", "dst:feedback:reply", id],
-    ["SREM", "dst:feedback:hidden", id],
-  ]);
-  const removed = Number(ops[0]?.result ?? 0);
-  return c.json({ ok: true, removed });
+  const res = db.query(`DELETE FROM feedback WHERE id = ?`).run(id);
+  return c.json({ ok: true, removed: Number(res.changes) });
 });
 
 export default app;

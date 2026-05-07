@@ -1,12 +1,12 @@
 import { Hono } from "hono";
 import { env } from "../lib/env";
-import { redisPipeline } from "../lib/redis";
+import { db, nowSec } from "../lib/db";
 import { createJWT } from "../lib/jwt";
 import { extractIp } from "../lib/util";
 
 const app = new Hono();
 
-// POST /auth/google — verify Google ID token, issue JWT
+// POST /auth/google — verify Google ID token, issue JWT, upsert user
 app.post("/google", async (c) => {
   const body = (await c.req.json().catch(() => ({}))) as Record<string, any>;
   const idToken = body.idToken as string;
@@ -27,9 +27,10 @@ app.post("/google", async (c) => {
   const name = (tokenInfo.name as string) ?? "";
   const picture = (tokenInfo.picture as string) ?? "";
 
-  await redisPipeline([
-    ["HSET", `dst:user:${sub}`, "email", email, "name", name, "picture", picture],
-  ]);
+  db.query(
+    `INSERT INTO users(sub, email, name, picture, updated_at) VALUES (?, ?, ?, ?, ?)
+     ON CONFLICT(sub) DO UPDATE SET email = excluded.email, name = excluded.name, picture = excluded.picture, updated_at = excluded.updated_at`,
+  ).run(sub, email, name, picture, nowSec());
 
   const isAdmin = env.ADMIN_EMAILS.includes(email.toLowerCase());
 
@@ -45,7 +46,7 @@ app.post("/google", async (c) => {
   if (isAdmin) {
     const adminIp = extractIp(c);
     if (adminIp && adminIp !== "unknown") {
-      await redisPipeline([["SADD", "dst:admin-ips", adminIp]]);
+      db.query(`INSERT OR IGNORE INTO admin_ips(ip, created_at) VALUES (?, ?)`).run(adminIp, nowSec());
     }
   }
 

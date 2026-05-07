@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { env } from "../lib/env";
-import { redisPipeline } from "../lib/redis";
+import { db, nowSec, bumpCounter } from "../lib/db";
 import { extractAdmin } from "../lib/jwt";
 
 const app = new Hono();
@@ -32,16 +32,18 @@ app.post("/kofi-webhook", async (c) => {
 
   const txId = typeof payload.kofi_transaction_id === "string" ? payload.kofi_transaction_id : "";
   if (txId) {
-    const dupRes = await redisPipeline([["SADD", "dst:kofi:tx", txId]]);
-    if (dupRes[0]?.result === 0) {
+    const res = db.query(`INSERT OR IGNORE INTO kofi_transactions(tx_id, created_at) VALUES (?, ?)`).run(txId, nowSec());
+    if (Number(res.changes) === 0) {
       return c.json({ ok: true, skipped: "duplicate" });
     }
   }
 
-  await redisPipeline([
-    ["ZINCRBY", "dst:supporters", `${cents}`, displayName],
-    ["INCR", "dst:supporters:count"],
-  ]);
+  db.query(
+    `INSERT INTO supporters(name, cents, updated_at) VALUES (?, ?, ?)
+     ON CONFLICT(name) DO UPDATE SET cents = cents + excluded.cents, updated_at = excluded.updated_at`,
+  ).run(displayName, cents, nowSec());
+
+  bumpCounter("supporters_count", "", "");
 
   if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
     const currency = (payload.currency as string) ?? "USD";
@@ -60,10 +62,13 @@ app.post("/kofi-webhook", async (c) => {
 // GET /supporters — public top
 app.get("/supporters", async (c) => {
   const limit = Math.min(Number(c.req.query("limit") ?? "5"), 20);
-  const result = await redisPipeline([["ZREVRANGE", "dst:supporters", "0", `${limit - 1}`]]);
-  const names = (result[0]?.result as string[]) ?? [];
+  const rows = db
+    .query<{ name: string }, [number]>(
+      `SELECT name FROM supporters ORDER BY cents DESC, name ASC LIMIT ?`,
+    )
+    .all(limit);
   c.header("Cache-Control", "public, max-age=60");
-  return c.json({ supporters: names.map((name) => ({ name })) });
+  return c.json({ supporters: rows.map((r) => ({ name: r.name })) });
 });
 
 // POST /supporters — admin manual add
@@ -76,7 +81,10 @@ app.post("/supporters", async (c) => {
   const cents = Number.isInteger(body.cents) ? body.cents : 0;
   if (!name || cents <= 0) return c.json({ error: "name + cents required" }, 400);
 
-  await redisPipeline([["ZINCRBY", "dst:supporters", `${cents}`, name]]);
+  db.query(
+    `INSERT INTO supporters(name, cents, updated_at) VALUES (?, ?, ?)
+     ON CONFLICT(name) DO UPDATE SET cents = cents + excluded.cents, updated_at = excluded.updated_at`,
+  ).run(name, cents, nowSec());
   return c.json({ ok: true, name, cents });
 });
 
@@ -88,8 +96,8 @@ app.delete("/supporters", async (c) => {
   const name = c.req.query("name") ?? "";
   if (!name) return c.json({ error: "name required" }, 400);
 
-  const res = await redisPipeline([["ZREM", "dst:supporters", name]]);
-  return c.json({ ok: true, removed: res[0]?.result ?? 0 });
+  const res = db.query(`DELETE FROM supporters WHERE name = ?`).run(name);
+  return c.json({ ok: true, removed: Number(res.changes) });
 });
 
 export default app;

@@ -342,6 +342,25 @@
   ```
 - **부수 발견**: 같은 이유로 module-level 카운터/플래그/싱글톤 등도 chunk 분할 환경에서 공유가 깨질 수 있음. 진짜 전역 상태가 필요하면 `globalThis` 또는 React Context를 써야 함
 
+### SQLite UPSERT에서 INSERT 측 `MAX(0, ?)` 클램프가 `excluded.count`까지 0으로 만들어 음수 누적이 깨짐
+- **문제**: `bumpCounter`에서 음수 bump(rating 재투표 시 이전 별점 -1) 클램프 위해 다음 SQL 작성:
+  ```sql
+  INSERT INTO analytics_counters(...) VALUES (?, ?, ?, MAX(0, ?))
+  ON CONFLICT(...) DO UPDATE SET count = MAX(0, count + excluded.count)
+  ```
+  `bumpCounter("rating", "5", "", -1)` 호출 시, INSERT 측 `MAX(0, -1)` = 0이 되면서 `excluded.count` = 0이 되어 UPDATE 식의 `count + 0` = 변화 없음. 별점 차감이 무력화됨
+- **원인**: SQLite의 `excluded.<col>`은 INSERT 측 VALUES에서 평가된 결과를 가리킴. INSERT VALUES에서 `MAX(0, ?)`로 클램프하면 그 클램프된 값이 `excluded.count`로 흘러 UPDATE 식에서도 음수 정보가 사라짐
+- **교훈**: UPSERT에서 `excluded.<col>`로 음수 누적이 필요한 경우, INSERT 측에서 클램프하지 말 것. 클램프해야 한다면 파라미터를 두 번 바인딩해서 INSERT/UPDATE 식을 분리:
+  ```sql
+  INSERT INTO ... VALUES (?, ?, ?, MAX(0, ?))
+  ON CONFLICT(...) DO UPDATE SET count = MAX(0, count + ?)
+  ```
+  ```ts
+  stmt.run(scope, bucket, country, by, by);  // by를 두 번
+  ```
+- **검증**: `bumpCounter("x","y","")` 2회 → 2, `bumpCounter("x","y","",-10)` → MAX(0, 2 + -10) = 0. INSERT 경로도 `bumpCounter("z","w","",-5)` → MAX(0, -5) = 0
+- **부수 발견**: ON CONFLICT에서 `excluded.<col>`는 매우 미묘함. 가능하면 ON CONFLICT 경로에서 파라미터 직접 참조(`?`)가 의도가 더 명확
+
 ### Service Worker의 catch-all SWR 핸들러가 /api/*까지 가로채서 매 호출 백그라운드 fetch 추가
 - **문제**: `sw.template.js`의 fetch 핸들러가 `/_next/`, navigation 외 모든 GET을 stale-while-revalidate로 처리. `/api/*` 응답까지 SW 캐시에 들어가고, **매 호출마다 SW가 백그라운드 revalidate fetch 추가 발생** → 클라이언트 dedupe로 1번이어야 할 호출이 네트워크 탭에 2번 보임. 게다가 API 응답이 SW 캐시에 stale 데이터로 남음
 - **원인**: 정적 자산용 SWR 패턴을 catch-all로 두고 API 경로를 예외 처리하지 않음. API는 데이터가 자주 바뀌고 HTTP-level Cache-Control로 충분함

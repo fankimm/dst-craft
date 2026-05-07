@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { redisPipeline } from "../lib/redis";
+import { db, nowSec } from "../lib/db";
 import { extractSub } from "../lib/jwt";
 
 const app = new Hono();
@@ -9,31 +9,23 @@ app.get("/", async (c) => {
   const sub = await extractSub(c.req.header("Authorization"));
   if (!sub) return c.json({ error: "Unauthorized" }, 401);
 
-  const results = await redisPipeline([
-    ["HGETALL", `dst:skills:${sub}`],
-    ["HGETALL", `dst:skills-locks:${sub}`],
-  ]);
-  const skillsRaw = results[0]?.result as string[] | null;
-  const locksRaw = results[1]?.result as string[] | null;
+  const rows = db
+    .query<{ character_id: string; skills_json: string; locks_json: string }, [string]>(
+      `SELECT character_id, skills_json, locks_json FROM skills_builds WHERE user_sub = ?`,
+    )
+    .all(sub);
 
+  // Redis HASH 동작과 동일하게: 빈 배열 캐릭터는 응답에서 누락
   const skills: Record<string, string[]> = {};
-  if (Array.isArray(skillsRaw)) {
-    for (let i = 0; i < skillsRaw.length; i += 2) {
-      try {
-        skills[skillsRaw[i]] = JSON.parse(skillsRaw[i + 1]);
-      } catch {}
-    }
-  }
-
   const locks: Record<string, string[]> = {};
-  if (Array.isArray(locksRaw)) {
-    for (let i = 0; i < locksRaw.length; i += 2) {
-      try {
-        locks[locksRaw[i]] = JSON.parse(locksRaw[i + 1]);
-      } catch {}
-    }
+  for (const r of rows) {
+    let s: string[] = [];
+    let l: string[] = [];
+    try { s = JSON.parse(r.skills_json); } catch {}
+    try { l = JSON.parse(r.locks_json); } catch {}
+    if (s.length > 0) skills[r.character_id] = s;
+    if (l.length > 0) locks[r.character_id] = l;
   }
-
   return c.json({ skills, locks });
 });
 
@@ -51,19 +43,14 @@ app.post("/", async (c) => {
     return c.json({ error: "Invalid request" }, 400);
   }
 
-  const commands: string[][] = [];
-  if (skills.length > 0) {
-    commands.push(["HSET", `dst:skills:${sub}`, characterId, JSON.stringify(skills)]);
+  if (skills.length === 0 && locks.length === 0) {
+    db.query(`DELETE FROM skills_builds WHERE user_sub = ? AND character_id = ?`).run(sub, characterId);
   } else {
-    commands.push(["HDEL", `dst:skills:${sub}`, characterId]);
+    db.query(
+      `INSERT INTO skills_builds(user_sub, character_id, skills_json, locks_json, updated_at) VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT(user_sub, character_id) DO UPDATE SET skills_json = excluded.skills_json, locks_json = excluded.locks_json, updated_at = excluded.updated_at`,
+    ).run(sub, characterId, JSON.stringify(skills), JSON.stringify(locks), nowSec());
   }
-  if (locks.length > 0) {
-    commands.push(["HSET", `dst:skills-locks:${sub}`, characterId, JSON.stringify(locks)]);
-  } else {
-    commands.push(["HDEL", `dst:skills-locks:${sub}`, characterId]);
-  }
-
-  await redisPipeline(commands);
   return c.json({ ok: true });
 });
 

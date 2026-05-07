@@ -1,135 +1,118 @@
 import { Hono } from "hono";
-import { redisPipeline } from "../lib/redis";
+import {
+  db,
+  nowSec,
+  bumpCounter,
+  getCounter,
+  addUv,
+  countUv,
+  countUvExcludingCountry,
+} from "../lib/db";
 import { verifyJWT } from "../lib/jwt";
 import { today, isMobile, parseOS, extractIp, extractCountry } from "../lib/util";
+import { checkRateLimit } from "../lib/rate-limit";
 
 const app = new Hono();
 
-async function isRateLimited(key: string, maxPerWindow: number, windowSec: number): Promise<boolean> {
-  const results = await redisPipeline([
-    ["INCR", key],
-    ["EXPIRE", key, `${windowSec}`, "NX"],
-  ]);
-  const count = parseInt(results[0]?.result ?? "1", 10);
-  return count > maxPerWindow;
-}
-
-// POST /track
+// POST /track — page view
 app.post("/track", async (c) => {
   const ip = extractIp(c);
-  if (await isRateLimited(`dst:rl:track:${ip}`, 30, 60)) {
+  if (checkRateLimit(`rl:track:${ip}`, 30, 60)) {
     return c.json({ error: "Too many requests" }, 429);
   }
   const countryCode = extractCountry(c);
   const date = today();
+  const month = date.slice(0, 7);
   const body = (await c.req.json().catch(() => ({}))) as Record<string, any>;
   const ua = (body.ua as string)?.slice(0, 120) ?? "";
   const isReturn = !!body.isReturn;
   const device = isMobile(ua) ? "mobile" : "desktop";
   const os = parseOS(ua);
 
-  const commands: string[][] = [
-    ["INCR", "dst:pv:total"],
-    ["INCR", `dst:pv:${date}`],
-    ["PFADD", `dst:uv:${date}`, ip],
-    ["PFADD", "dst:uv:total", ip],
-    ["HINCRBY", "dst:device", device, "1"],
-    ["HINCRBY", "dst:os", os, "1"],
-  ];
+  // PV counters
+  bumpCounter("pv_total", "", "");
+  bumpCounter("pv_day", date, "");
+  bumpCounter("pv_month", month, "");
+  bumpCounter("device", device, "");
+  bumpCounter("os", os, "");
 
   if (countryCode) {
-    commands.push(
-      ["HINCRBY", "dst:geo:countries", countryCode, "1"],
-      ["INCR", `dst:pv:total:${countryCode}`],
-      ["INCR", `dst:pv:${date}:${countryCode}`],
-      ["PFADD", `dst:uv:${date}:${countryCode}`, ip],
-      ["PFADD", `dst:uv:total:${countryCode}`, ip],
-      ["HINCRBY", `dst:device:${countryCode}`, device, "1"],
-      ["HINCRBY", `dst:os:${countryCode}`, os, "1"],
-    );
+    bumpCounter("pv_total", "", countryCode);
+    bumpCounter("pv_day", date, countryCode);
+    bumpCounter("pv_month", month, countryCode);
+    bumpCounter("geo", countryCode, "");
+    bumpCounter("device", device, countryCode);
+    bumpCounter("os", os, countryCode);
   }
 
+  // UV
+  addUv("total", "", "", ip);
+  addUv("day", date, "", ip);
+  addUv("month", month, "", ip);
+  if (countryCode) {
+    addUv("total", "", countryCode, ip);
+    addUv("day", date, countryCode, ip);
+    addUv("month", month, countryCode, ip);
+  }
+
+  // Return visitors
   if (isReturn) {
-    commands.push(["INCR", "dst:return:total"]);
-    if (countryCode) commands.push(["INCR", `dst:return:total:${countryCode}`]);
+    bumpCounter("return_total", "", "");
+    if (countryCode) bumpCounter("return_total", "", countryCode);
   }
 
+  // Referrer
   const referrer = (body.referrer as string)?.slice(0, 100);
   if (referrer && referrer !== "direct") {
-    commands.push(["HINCRBY", "dst:referrers", referrer, "1"]);
-    if (countryCode) commands.push(["HINCRBY", `dst:referrers:${countryCode}`, referrer, "1"]);
+    bumpCounter("referrer", referrer, "");
+    if (countryCode) bumpCounter("referrer", referrer, countryCode);
   }
 
-  const logEntry = JSON.stringify({
-    ip,
-    country: countryCode,
-    city: "",
-    region: "",
-    time: new Date().toISOString(),
-    ua,
-    device,
-    os,
-  });
-  const month = date.slice(0, 7);
-  commands.push(
-    ["LPUSH", "dst:visitors", logEntry],
-    ["LTRIM", "dst:visitors", "0", "199"],
-    ["INCR", `dst:pv:m:${month}`],
-    ["PFADD", `dst:uv:m:${month}`, ip],
-  );
-  if (countryCode) {
-    commands.push(
-      ["INCR", `dst:pv:m:${month}:${countryCode}`],
-      ["PFADD", `dst:uv:m:${month}:${countryCode}`, ip],
-    );
-  }
+  // Visitor log (rolling 200, trimmed by trigger)
+  db.query(
+    `INSERT INTO analytics_visitors(ip, country, ua, device, os, time) VALUES (?, ?, ?, ?, ?, ?)`,
+  ).run(ip, countryCode, ua, device, os, new Date().toISOString());
 
-  await redisPipeline(commands);
   return c.json({ ok: true });
 });
 
 // POST /event
 app.post("/event", async (c) => {
   const ip = extractIp(c);
-  if (await isRateLimited(`dst:rl:event:${ip}`, 30, 60)) {
+  if (checkRateLimit(`rl:event:${ip}`, 30, 60)) {
     return c.json({ error: "Too many requests" }, 429);
   }
   const body = (await c.req.json().catch(() => ({}))) as Record<string, any>;
   const type = body.type as string;
-  const commands: string[][] = [];
 
-  if (type === "search") commands.push(["INCR", "dst:events:search"]);
-  else if (type === "pwa_install") commands.push(["INCR", "dst:events:pwa_install"]);
-  else if (type === "share") commands.push(["INCR", "dst:events:share"]);
-  else if (type === "github_star_click") commands.push(["INCR", "dst:events:github_star_click"]);
+  if (type === "search") bumpCounter("event", "search", "");
+  else if (type === "pwa_install") bumpCounter("event", "pwa_install", "");
+  else if (type === "share") bumpCounter("event", "share", "");
+  else if (type === "github_star_click") bumpCounter("event", "github_star_click", "");
   else if (type === "item_click" && typeof body.itemId === "string") {
     const itemId = (body.itemId as string).slice(0, 100);
-    commands.push(["ZINCRBY", "dst:clicks", "1", itemId]);
+    db.query(
+      `INSERT INTO analytics_clicks(item_id, count) VALUES (?, 1)
+       ON CONFLICT(item_id) DO UPDATE SET count = count + 1`,
+    ).run(itemId);
   } else if (type === "duration" && typeof body.value === "number") {
     const duration = Math.min(Math.max(Math.round(body.value), 0), 3600);
-    commands.push(
-      ["LPUSH", "dst:duration:samples", `${duration}`],
-      ["LTRIM", "dst:duration:samples", "0", "999"],
-    );
+    db.query(`INSERT INTO analytics_duration_samples(duration) VALUES (?)`).run(duration);
   }
 
-  if (commands.length > 0) await redisPipeline(commands);
   return c.json({ ok: true });
 });
 
 // GET /popular
 app.get("/popular", async (c) => {
   const limit = Math.min(Number(c.req.query("limit") ?? "200"), 500);
-  const result = await redisPipeline([
-    ["ZREVRANGE", "dst:clicks", "0", `${limit - 1}`, "WITHSCORES"],
-  ]);
-  const raw: string[] = result[0]?.result ?? [];
-  const items: { id: string; clicks: number }[] = [];
-  for (let i = 0; i < raw.length; i += 2) {
-    items.push({ id: raw[i], clicks: Number(raw[i + 1]) });
-  }
+  const rows = db
+    .query<{ item_id: string; count: number }, [number]>(
+      `SELECT item_id, count FROM analytics_clicks ORDER BY count DESC LIMIT ?`,
+    )
+    .all(limit);
   c.header("Cache-Control", "public, max-age=60");
-  return c.json({ items });
+  return c.json({ items: rows.map((r) => ({ id: r.item_id, clicks: r.count })) });
 });
 
 // POST /combo
@@ -141,7 +124,10 @@ app.post("/combo", async (c) => {
     return c.json({ error: "recipeId + 4 ingredient strings required" }, 400);
   }
   const comboKey = (ingredients as string[]).map((s) => s.slice(0, 60)).sort().join(",");
-  await redisPipeline([["ZINCRBY", `dst:combo:${recipeId}`, "1", comboKey]]);
+  db.query(
+    `INSERT INTO analytics_combos(recipe_id, combo_key, count) VALUES (?, ?, 1)
+     ON CONFLICT(recipe_id, combo_key) DO UPDATE SET count = count + 1`,
+  ).run(recipeId, comboKey);
   return c.json({ ok: true });
 });
 
@@ -151,16 +137,15 @@ app.get("/combos/:recipeId", async (c) => {
   if (!recipeId) return c.json({ combos: [] });
 
   const limit = Math.min(Number(c.req.query("limit") ?? "20"), 50);
-  const result = await redisPipeline([
-    ["ZREVRANGE", `dst:combo:${recipeId}`, "0", `${limit - 1}`, "WITHSCORES"],
-  ]);
-  const raw: string[] = result[0]?.result ?? [];
-  const combos: { ingredients: string[]; count: number }[] = [];
-  for (let i = 0; i < raw.length; i += 2) {
-    combos.push({ ingredients: raw[i].split(","), count: Number(raw[i + 1]) });
-  }
+  const rows = db
+    .query<{ combo_key: string; count: number }, [string, number]>(
+      `SELECT combo_key, count FROM analytics_combos WHERE recipe_id = ? ORDER BY count DESC LIMIT ?`,
+    )
+    .all(recipeId, limit);
   c.header("Cache-Control", "public, max-age=60");
-  return c.json({ combos });
+  return c.json({
+    combos: rows.map((r) => ({ ingredients: r.combo_key.split(","), count: r.count })),
+  });
 });
 
 // POST /rate
@@ -172,59 +157,54 @@ app.post("/rate", async (c) => {
     return c.json({ error: "rating must be an integer between 1 and 5" }, 400);
   }
 
-  const prevRes = await redisPipeline([["HGET", "dst:rating:ips", ip]]);
-  const prevRating = prevRes[0]?.result as string | null;
+  const prev = db.query<{ rating: number }, [string]>(`SELECT rating FROM rating_ips WHERE ip = ?`).get(ip);
+  if (prev?.rating === rating) return c.json({ ok: true });
 
-  if (prevRating === `${rating}`) return c.json({ ok: true });
+  db.transaction(() => {
+    if (prev) bumpCounter("rating", String(prev.rating), "", -1);
+    bumpCounter("rating", String(rating), "");
+    db.query(
+      `INSERT INTO rating_ips(ip, rating) VALUES (?, ?)
+       ON CONFLICT(ip) DO UPDATE SET rating = excluded.rating`,
+    ).run(ip, rating);
+  })();
 
-  const commands: string[][] = [
-    ["HINCRBY", "dst:ratings", `${rating}`, "1"],
-    ["HSET", "dst:rating:ips", ip, `${rating}`],
-  ];
-  if (prevRating && prevRating !== `${rating}`) {
-    commands.push(["HINCRBY", "dst:ratings", prevRating, "-1"]);
-  }
-  await redisPipeline(commands);
   return c.json({ ok: true });
 });
 
 // GET /top-countries
 app.get("/top-countries", async (c) => {
-  const raw = await redisPipeline([["HGETALL", "dst:geo:countries"]]);
-  const arr = raw[0]?.result as string[] | null;
-  const countries: { code: string; count: number }[] = [];
-  if (Array.isArray(arr)) {
-    for (let i = 0; i < arr.length; i += 2) {
-      countries.push({ code: arr[i], count: parseInt(arr[i + 1], 10) || 0 });
-    }
-  }
-  countries.sort((a, b) => b.count - a.count);
+  const rows = db
+    .query<{ bucket: string; count: number }, []>(
+      `SELECT bucket, count FROM analytics_counters WHERE scope = 'geo' AND country = '' ORDER BY count DESC LIMIT 5`,
+    )
+    .all();
   c.header("Cache-Control", "public, max-age=60");
-  return c.json(countries.slice(0, 5));
+  return c.json(rows.map((r) => ({ code: r.bucket, count: r.count })));
 });
 
 // GET /rating
 app.get("/rating", async (c) => {
-  const raw = await redisPipeline([["HGETALL", "dst:ratings"]]);
-  const arr = raw[0]?.result as string[] | null;
+  const rows = db
+    .query<{ bucket: string; count: number }, []>(
+      `SELECT bucket, count FROM analytics_counters WHERE scope = 'rating' AND country = ''`,
+    )
+    .all();
   let total = 0;
   let sum = 0;
   const ratings: Record<string, number> = {};
-  if (Array.isArray(arr)) {
-    for (let i = 0; i < arr.length; i += 2) {
-      const star = parseInt(arr[i], 10);
-      const count = parseInt(arr[i + 1], 10) || 0;
-      total += count;
-      sum += star * count;
-      ratings[arr[i]] = count;
-    }
+  for (const r of rows) {
+    const star = parseInt(r.bucket, 10);
+    total += r.count;
+    sum += star * r.count;
+    ratings[r.bucket] = r.count;
   }
   const avg = total > 0 ? Math.round((sum / total) * 10) / 10 : 0;
   c.header("Cache-Control", "no-store");
   return c.json({ avg, total, ratings });
 });
 
-// GET /stats
+// GET /stats — admin가 아니면 recentVisitors 비공개
 app.get("/stats", async (c) => {
   const auth = c.req.header("Authorization") ?? "";
   let isAdmin = false;
@@ -241,214 +221,142 @@ app.get("/stats", async (c) => {
     d.setDate(d.getDate() - i);
     dates.push(d.toISOString().slice(0, 10));
   }
-
-  const commands: string[][] = [
-    ["GET", "dst:pv:total"],
-    ["PFCOUNT", "dst:uv:total"],
-    ["GET", `dst:pv:${date}`],
-    ["PFCOUNT", `dst:uv:${date}`],
-    ["HGETALL", "dst:geo:countries"],
-    ["LRANGE", "dst:visitors", "0", "49"],
-    ["HGETALL", "dst:device"],
-    ["GET", "dst:return:total"],
-    ["GET", "dst:events:search"],
-    ["GET", "dst:events:pwa_install"],
-    ["LRANGE", "dst:duration:samples", "0", "999"],
-    ["HGETALL", "dst:os"],
-    ["HGETALL", "dst:referrers"],
-    ["HGETALL", "dst:ratings"],
-  ];
-  for (const d of dates) {
-    commands.push(["GET", `dst:pv:${d}`]);
-    commands.push(["PFCOUNT", `dst:uv:${d}`]);
-  }
   const months: string[] = [];
   for (let i = 0; i < 24; i++) {
     const d = new Date();
     d.setMonth(d.getMonth() - i);
     months.push(d.toISOString().slice(0, 7));
   }
-  const monthBaseIdx = 14 + dates.length * 2;
-  for (const m of months) {
-    commands.push(["GET", `dst:pv:m:${m}`]);
-    commands.push(["PFCOUNT", `dst:uv:m:${m}`]);
-  }
 
-  const results = await redisPipeline(commands);
-  const r = (i: number) => results[i]?.result;
+  const excludeCountry = c.req.query("excludeCountry") ?? "";
 
-  const countriesRaw = r(4) as string[] | null;
+  // 기본 카운터 (excludeCountry 적용 전)
+  let totalPV = getCounter("pv_total", "", "");
+  let totalUV = countUv("total", "", "");
+  let todayPV = getCounter("pv_day", date, "");
+  let todayUV = countUv("day", date, "");
+  let returnTotal = getCounter("return_total", "", "");
+
   const countries: Record<string, number> = {};
-  if (Array.isArray(countriesRaw)) {
-    for (let i = 0; i < countriesRaw.length; i += 2) {
-      countries[countriesRaw[i]] = parseInt(countriesRaw[i + 1], 10) || 0;
-    }
+  for (const r of db
+    .query<{ bucket: string; count: number }, []>(
+      `SELECT bucket, count FROM analytics_counters WHERE scope = 'geo' AND country = ''`,
+    )
+    .all()) {
+    countries[r.bucket] = r.count;
   }
 
-  const visitorsRaw = r(5) as string[] | null;
-  let recentVisitors = (visitorsRaw ?? [])
-    .map((v) => {
-      try {
-        return JSON.parse(v);
-      } catch {
-        return null;
-      }
-    })
-    .filter(Boolean);
-
-  const deviceRaw = r(6) as string[] | null;
   const device: Record<string, number> = {};
-  if (Array.isArray(deviceRaw)) {
-    for (let i = 0; i < deviceRaw.length; i += 2) {
-      device[deviceRaw[i]] = parseInt(deviceRaw[i + 1], 10) || 0;
-    }
-  }
+  for (const r of db
+    .query<{ bucket: string; count: number }, []>(
+      `SELECT bucket, count FROM analytics_counters WHERE scope = 'device' AND country = ''`,
+    )
+    .all())
+    device[r.bucket] = r.count;
 
-  const referrersRaw = r(12) as string[] | null;
-  const referrers: Record<string, number> = {};
-  if (Array.isArray(referrersRaw)) {
-    for (let i = 0; i < referrersRaw.length; i += 2) {
-      if (referrersRaw[i] === "direct") continue;
-      referrers[referrersRaw[i]] = parseInt(referrersRaw[i + 1], 10) || 0;
-    }
-  }
-
-  const osRaw = r(11) as string[] | null;
   const os: Record<string, number> = {};
-  if (Array.isArray(osRaw)) {
-    for (let i = 0; i < osRaw.length; i += 2) {
-      os[osRaw[i]] = parseInt(osRaw[i + 1], 10) || 0;
-    }
+  for (const r of db
+    .query<{ bucket: string; count: number }, []>(
+      `SELECT bucket, count FROM analytics_counters WHERE scope = 'os' AND country = ''`,
+    )
+    .all())
+    os[r.bucket] = r.count;
+
+  const referrers: Record<string, number> = {};
+  for (const r of db
+    .query<{ bucket: string; count: number }, []>(
+      `SELECT bucket, count FROM analytics_counters WHERE scope = 'referrer' AND country = ''`,
+    )
+    .all()) {
+    if (r.bucket !== "direct") referrers[r.bucket] = r.count;
   }
 
-  const ratingsRaw = r(13) as string[] | null;
   const ratings: Record<string, number> = {};
   let totalRatings = 0;
   let ratingSum = 0;
-  if (Array.isArray(ratingsRaw)) {
-    for (let i = 0; i < ratingsRaw.length; i += 2) {
-      const star = parseInt(ratingsRaw[i], 10);
-      const count = parseInt(ratingsRaw[i + 1], 10) || 0;
-      ratings[ratingsRaw[i]] = count;
-      totalRatings += count;
-      ratingSum += star * count;
-    }
+  for (const r of db
+    .query<{ bucket: string; count: number }, []>(
+      `SELECT bucket, count FROM analytics_counters WHERE scope = 'rating' AND country = ''`,
+    )
+    .all()) {
+    const star = parseInt(r.bucket, 10);
+    ratings[r.bucket] = r.count;
+    totalRatings += r.count;
+    ratingSum += star * r.count;
   }
   const avgRating = totalRatings > 0 ? Math.round((ratingSum / totalRatings) * 10) / 10 : 0;
 
-  const durationRaw = r(10) as string[] | null;
-  let avgDuration = 0;
-  if (Array.isArray(durationRaw) && durationRaw.length > 0) {
-    const sum = durationRaw.reduce((acc, v) => acc + (parseInt(v, 10) || 0), 0);
-    avgDuration = Math.round(sum / durationRaw.length);
-  }
+  // Duration 평균 (rolling 1000 samples)
+  const durationRow = db
+    .query<{ cnt: number; sum: number }, []>(
+      `SELECT COUNT(*) AS cnt, COALESCE(SUM(duration), 0) AS sum FROM analytics_duration_samples`,
+    )
+    .get();
+  const avgDuration = durationRow && durationRow.cnt > 0 ? Math.round(durationRow.sum / durationRow.cnt) : 0;
 
-  let totalPV = parseInt(r(0) ?? "0", 10) || 0;
-  let totalUV = parseInt(r(1) ?? "0", 10) || 0;
-  let todayPV = parseInt(r(2) ?? "0", 10) || 0;
-  let todayUV = parseInt(r(3) ?? "0", 10) || 0;
-  let returnTotal = parseInt(r(7) ?? "0", 10) || 0;
+  let recentVisitors = db
+    .query<
+      { ip: string; country: string; ua: string; device: string; os: string; time: string },
+      []
+    >(`SELECT ip, country, ua, device, os, time FROM analytics_visitors ORDER BY id DESC LIMIT 50`)
+    .all()
+    .map((v) => ({ ...v, city: "", region: "" }));
 
-  let dailyTrend = dates.map((d, i) => ({
+  let dailyTrend = dates.map((d) => ({
     date: d,
-    pv: parseInt(r(14 + i * 2) ?? "0", 10) || 0,
-    uv: parseInt(r(14 + i * 2 + 1) ?? "0", 10) || 0,
+    pv: getCounter("pv_day", d, ""),
+    uv: countUv("day", d, ""),
   }));
 
   const monthlyTrend = months
-    .map((m, i) => ({
+    .map((m) => ({
       month: m,
-      pv: parseInt(r(monthBaseIdx + i * 2) ?? "0", 10) || 0,
-      uv: parseInt(r(monthBaseIdx + i * 2 + 1) ?? "0", 10) || 0,
+      pv: getCounter("pv_month", m, ""),
+      uv: countUv("month", m, ""),
     }))
     .filter((m) => m.pv > 0 || m.uv > 0);
 
-  const excludeCountry = c.req.query("excludeCountry") ?? "";
+  const searchCount = getCounter("event", "search", "");
+  const pwaInstalls = getCounter("event", "pwa_install", "");
+
+  // ─── excludeCountry 적용 ───
   if (excludeCountry) {
-    const exCommands: string[][] = [
-      ["GET", `dst:pv:total:${excludeCountry}`],
-      ["GET", `dst:pv:${date}:${excludeCountry}`],
-      ["HGETALL", `dst:device:${excludeCountry}`],
-      ["HGETALL", `dst:os:${excludeCountry}`],
-      ["GET", `dst:return:total:${excludeCountry}`],
-      ["HGETALL", `dst:referrers:${excludeCountry}`],
-    ];
-    for (const d of dates) {
-      exCommands.push(["GET", `dst:pv:${d}:${excludeCountry}`]);
-    }
+    totalPV = Math.max(0, totalPV - getCounter("pv_total", "", excludeCountry));
+    todayPV = Math.max(0, todayPV - getCounter("pv_day", date, excludeCountry));
+    returnTotal = Math.max(0, returnTotal - getCounter("return_total", "", excludeCountry));
 
-    const otherCountries = Object.keys(countries).filter((cc) => cc !== excludeCountry);
-    const tmpPrefix = `dst:uv:tmp:${excludeCountry}:${Date.now()}:${Math.random().toString(36).slice(2, 8)}`;
-    const uvCommands: string[][] = [];
-    if (otherCountries.length > 0) {
-      uvCommands.push(["PFMERGE", `${tmpPrefix}:total`, ...otherCountries.map((cc) => `dst:uv:total:${cc}`)]);
-      uvCommands.push(["PFCOUNT", `${tmpPrefix}:total`]);
-      uvCommands.push(["DEL", `${tmpPrefix}:total`]);
-      for (const d of dates) {
-        uvCommands.push(["PFMERGE", `${tmpPrefix}:${d}`, ...otherCountries.map((cc) => `dst:uv:${d}:${cc}`)]);
-        uvCommands.push(["PFCOUNT", `${tmpPrefix}:${d}`]);
-        uvCommands.push(["DEL", `${tmpPrefix}:${d}`]);
-      }
-    }
-
-    const [exResults, uvResults] = await Promise.all([
-      redisPipeline(exCommands),
-      uvCommands.length > 0 ? redisPipeline(uvCommands) : Promise.resolve([] as { result: any }[]),
-    ]);
-    const ex = (i: number) => exResults[i]?.result;
-
-    totalPV = Math.max(0, totalPV - (parseInt(ex(0) ?? "0", 10) || 0));
-    todayPV = Math.max(0, todayPV - (parseInt(ex(1) ?? "0", 10) || 0));
-
-    if (otherCountries.length > 0) {
-      totalUV = parseInt(uvResults[1]?.result ?? "0", 10) || 0;
-      dailyTrend = dailyTrend.map((day, i) => ({
-        ...day,
-        uv: parseInt(uvResults[4 + i * 3]?.result ?? "0", 10) || 0,
-      }));
-      todayUV = dailyTrend[0]?.uv ?? 0;
-    } else {
-      totalUV = 0;
-      todayUV = 0;
-      dailyTrend = dailyTrend.map((day) => ({ ...day, uv: 0 }));
-    }
-
-    const exDeviceRaw = ex(2) as string[] | null;
-    if (Array.isArray(exDeviceRaw)) {
-      for (let i = 0; i < exDeviceRaw.length; i += 2) {
-        if (device[exDeviceRaw[i]] !== undefined) {
-          device[exDeviceRaw[i]] = Math.max(0, device[exDeviceRaw[i]] - (parseInt(exDeviceRaw[i + 1], 10) || 0));
-        }
-      }
-    }
-
-    const exOsRaw = ex(3) as string[] | null;
-    if (Array.isArray(exOsRaw)) {
-      for (let i = 0; i < exOsRaw.length; i += 2) {
-        if (os[exOsRaw[i]] !== undefined) {
-          os[exOsRaw[i]] = Math.max(0, os[exOsRaw[i]] - (parseInt(exOsRaw[i + 1], 10) || 0));
-        }
-      }
-    }
-
-    returnTotal = Math.max(0, returnTotal - (parseInt(ex(4) ?? "0", 10) || 0));
-
-    const exRefRaw = ex(5) as string[] | null;
-    if (Array.isArray(exRefRaw)) {
-      for (let i = 0; i < exRefRaw.length; i += 2) {
-        if (referrers[exRefRaw[i]] !== undefined) {
-          referrers[exRefRaw[i]] = Math.max(0, referrers[exRefRaw[i]] - (parseInt(exRefRaw[i + 1], 10) || 0));
-        }
-      }
-    }
-
-    dailyTrend = dailyTrend.map((day, i) => ({
-      ...day,
-      pv: Math.max(0, day.pv - (parseInt(ex(6 + i) ?? "0", 10) || 0)),
+    totalUV = countUvExcludingCountry("total", "", excludeCountry);
+    dailyTrend = dailyTrend.map((day) => ({
+      date: day.date,
+      pv: Math.max(0, day.pv - getCounter("pv_day", day.date, excludeCountry)),
+      uv: countUvExcludingCountry("day", day.date, excludeCountry),
     }));
+    todayUV = dailyTrend[0]?.uv ?? 0;
+
+    for (const r of db
+      .query<{ bucket: string; count: number }, [string]>(
+        `SELECT bucket, count FROM analytics_counters WHERE scope = 'device' AND country = ?`,
+      )
+      .all(excludeCountry)) {
+      if (device[r.bucket] !== undefined) device[r.bucket] = Math.max(0, device[r.bucket] - r.count);
+    }
+    for (const r of db
+      .query<{ bucket: string; count: number }, [string]>(
+        `SELECT bucket, count FROM analytics_counters WHERE scope = 'os' AND country = ?`,
+      )
+      .all(excludeCountry)) {
+      if (os[r.bucket] !== undefined) os[r.bucket] = Math.max(0, os[r.bucket] - r.count);
+    }
+    for (const r of db
+      .query<{ bucket: string; count: number }, [string]>(
+        `SELECT bucket, count FROM analytics_counters WHERE scope = 'referrer' AND country = ?`,
+      )
+      .all(excludeCountry)) {
+      if (referrers[r.bucket] !== undefined) referrers[r.bucket] = Math.max(0, referrers[r.bucket] - r.count);
+    }
 
     delete countries[excludeCountry];
-    recentVisitors = recentVisitors.filter((v: any) => v.country !== excludeCountry);
+    recentVisitors = recentVisitors.filter((v) => v.country !== excludeCountry);
   }
 
   const data: Record<string, any> = {
@@ -466,8 +374,8 @@ app.get("/stats", async (c) => {
     returnVisitors: returnTotal,
     returnRate: totalPV > 0 ? Math.round((returnTotal / totalPV) * 100) : 0,
     avgDuration,
-    searchCount: parseInt(r(8) ?? "0", 10) || 0,
-    pwaInstalls: parseInt(r(9) ?? "0", 10) || 0,
+    searchCount,
+    pwaInstalls,
     ratings,
     avgRating,
     totalRatings,
@@ -476,20 +384,18 @@ app.get("/stats", async (c) => {
 
   if (isAdmin) {
     const adminIp = extractIp(c);
-
     if (adminIp && adminIp !== "unknown") {
-      await redisPipeline([["SADD", "dst:admin-ips", adminIp]]);
+      db.query(`INSERT OR IGNORE INTO admin_ips(ip, created_at) VALUES (?, ?)`).run(adminIp, nowSec());
     }
-
-    const adminIpsRes = await redisPipeline([["SMEMBERS", "dst:admin-ips"]]);
-    const adminIps = new Set<string>(((adminIpsRes[0]?.result as string[]) ?? []));
-
+    const adminIps = new Set(
+      db.query<{ ip: string }, []>(`SELECT ip FROM admin_ips`).all().map((r) => r.ip),
+    );
     data._adminIp = adminIp || "(undetected)";
     data._adminIps = [...adminIps];
 
     if (adminIps.size > 0) {
-      const beforeCount = data.recentVisitors.length;
-      data.recentVisitors = data.recentVisitors.filter((v: any) => !adminIps.has(v.ip));
+      const beforeCount = (data.recentVisitors as any[]).length;
+      data.recentVisitors = (data.recentVisitors as any[]).filter((v: any) => !adminIps.has(v.ip));
       data._filteredCount = beforeCount - data.recentVisitors.length;
     }
   }
