@@ -294,11 +294,12 @@ app.get("/stats", async (c) => {
     .get();
   const avgDuration = durationRow && durationRow.cnt > 0 ? Math.round(durationRow.sum / durationRow.cnt) : 0;
 
+  // 초기 응답엔 30건만. 더보기는 /visitors 엔드포인트(infinite scroll cursor 페이지네이션)로 fetch.
   let recentVisitors = db
     .query<
-      { ip: string; country: string; ua: string; device: string; os: string; time: string },
+      { id: number; ip: string; country: string; ua: string; device: string; os: string; time: string },
       []
-    >(`SELECT ip, country, ua, device, os, time FROM analytics_visitors ORDER BY id DESC LIMIT 200`)
+    >(`SELECT id, ip, country, ua, device, os, time FROM analytics_visitors ORDER BY id DESC LIMIT 30`)
     .all()
     .map((v) => ({ ...v, city: "", region: "" }));
 
@@ -390,6 +391,44 @@ app.get("/stats", async (c) => {
   // 이전 'public, max-age=60' → CF가 Authorization 무시하고 캐시 → admin이 옛 public 응답(빈 recentVisitors) 받는 회귀
   c.header("Cache-Control", isAdmin ? "private, no-store" : "private, max-age=60");
   return c.json(data);
+});
+
+// GET /visitors — admin 전용 cursor 페이지네이션. 접속자 상세 무한 스크롤용.
+// query: cursor(=마지막으로 받은 id), limit(default 30, max 100)
+// returns: { items: [...], nextCursor: number | null }
+app.get("/visitors", async (c) => {
+  const auth = c.req.header("Authorization") ?? "";
+  let isAdmin = false;
+  if (auth.startsWith("Bearer ")) {
+    const jwtPayload = await verifyJWT(auth.slice(7));
+    isAdmin = !!(jwtPayload && jwtPayload.role === "admin");
+  }
+  if (!isAdmin) return c.json({ error: "Forbidden" }, 403);
+
+  const cursor = parseInt(c.req.query("cursor") ?? "", 10);
+  const limit = Math.min(Math.max(parseInt(c.req.query("limit") ?? "30", 10) || 30, 1), 100);
+
+  const rows = isFinite(cursor) && cursor > 0
+    ? db
+        .query<
+          { id: number; ip: string; country: string; ua: string; device: string; os: string; time: string },
+          [number, number]
+        >(`SELECT id, ip, country, ua, device, os, time FROM analytics_visitors WHERE id < ? ORDER BY id DESC LIMIT ?`)
+        .all(cursor, limit)
+    : db
+        .query<
+          { id: number; ip: string; country: string; ua: string; device: string; os: string; time: string },
+          [number]
+        >(`SELECT id, ip, country, ua, device, os, time FROM analytics_visitors ORDER BY id DESC LIMIT ?`)
+        .all(limit);
+
+  const nextCursor = rows.length === limit ? rows[rows.length - 1].id : null;
+
+  c.header("Cache-Control", "private, no-store");
+  return c.json({
+    items: rows.map((r) => ({ ...r, city: "", region: "" })),
+    nextCursor,
+  });
 });
 
 export default app;
