@@ -326,6 +326,33 @@
 - **검증**: `curl -sI https://<domain>/sw.js | grep -i cache-control` → `max-age=0` 확인. immutable 보이면 즉시 패치
 - **부수 작업**: 이미 immutable 헤더를 받은 사용자/CDN 캐시는 자동 무효화 안 됨. CF zone에서 해당 파일 수동 purge 필요. 사용자는 hard refresh + DevTools SW unregister로 즉시 회복
 
+### Turbopack 코드 분할로 module-level dedupe 변수가 chunk별 복제되어 무력화
+- **문제**: `fetchSupporters()`에 module-level `let _supportersCache = null` 캐시 추가했는데, Turbopack이 같은 모듈을 3+ chunk에 중복 번들링하면서 각 chunk가 자기만의 `_supportersCache`를 가짐 → chunk 간 dedupe 미작동. 페이지 1회 로드에 7~8회 fetch.
+- **원인**: 정적 export + Turbopack의 chunk splitting에서 shared 모듈이라도 사용처(컴포넌트)별로 다른 chunk에 들어가면 모듈 코드가 그대로 복제됨. JS의 모듈 일치성은 "같은 URL/ID로 import" 기준이 아니라 chunk별 별도 인스턴스 — 이게 module-level 클로저 변수에는 치명적
+- **검증**: 빌드 후 `grep -lE "fetch\([^)]+/supporters" out/_next/static/chunks/*.js | wc -l` — 1보다 크면 중복. 그리고 minify된 코드의 캐시 변수명이 chunk마다 다른지 확인 (`a.promise` vs `i.promise` vs `l.promise` 등)
+- **교훈**: 빌드 타임에 chunk 분할이 발생할 수 있는 환경(특히 Turbopack/webpack splitChunks)에서는 **dedupe 캐시는 module-level이 아니라 `globalThis`에 저장**해야 단일 소스 보장. 패턴:
+  ```ts
+  const KEY = "__myCache";
+  type Cache = { promise: Promise<T>; at: number };
+  const g = globalThis as Record<string, unknown>;
+  const cached = g[KEY] as Cache | undefined;
+  if (cached && Date.now() - cached.at < TTL) return cached.promise;
+  // ...
+  g[KEY] = { promise, at: Date.now() };
+  ```
+- **부수 발견**: 같은 이유로 module-level 카운터/플래그/싱글톤 등도 chunk 분할 환경에서 공유가 깨질 수 있음. 진짜 전역 상태가 필요하면 `globalThis` 또는 React Context를 써야 함
+
+### Service Worker의 catch-all SWR 핸들러가 /api/*까지 가로채서 매 호출 백그라운드 fetch 추가
+- **문제**: `sw.template.js`의 fetch 핸들러가 `/_next/`, navigation 외 모든 GET을 stale-while-revalidate로 처리. `/api/*` 응답까지 SW 캐시에 들어가고, **매 호출마다 SW가 백그라운드 revalidate fetch 추가 발생** → 클라이언트 dedupe로 1번이어야 할 호출이 네트워크 탭에 2번 보임. 게다가 API 응답이 SW 캐시에 stale 데이터로 남음
+- **원인**: 정적 자산용 SWR 패턴을 catch-all로 두고 API 경로를 예외 처리하지 않음. API는 데이터가 자주 바뀌고 HTTP-level Cache-Control로 충분함
+- **교훈**: SW fetch 핸들러에서 `/api/*` (또는 동적 데이터 경로)는 명시적 early return 으로 bypass. SWR 캐싱은 정적 자산(이미지, font, hashed JS/CSS)에만. 동적 데이터는 HTTP cache + 클라이언트 dedupe 조합으로
+- **해결**:
+  ```js
+  // sw.js fetch handler 내, navigation check 위에:
+  if (url.pathname.startsWith(BASE + "/api/")) return;
+  ```
+- **검증**: Network 탭에서 `/api/<endpoint>` 요청 initiator 확인. `sw.js:<line>` 이 보이면 SW가 가로채는 것 — bypass 추가 필요
+
 ## 분석 / 통계
 
 ### Redis 일별 키에 TTL을 걸어 통계 데이터 영구 손실
