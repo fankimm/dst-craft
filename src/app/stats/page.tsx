@@ -134,6 +134,83 @@ function CollapsibleList({
   );
 }
 
+/** 접속자 상세 — 5건 inline + DetailPanel에서 전체 (rolling 200) */
+function RecentVisitorsCard({ visitors }: { visitors: AnalyticsData["recentVisitors"] }) {
+  const [open, setOpen] = useState(false);
+  const TOP = 5;
+  const visible = visitors.length > TOP ? visitors.slice(0, TOP) : visitors;
+  const hidden = visitors.length - visible.length;
+
+  function renderTable(rows: AnalyticsData["recentVisitors"]) {
+    return (
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="border-b border-border text-left text-muted-foreground">
+              <th className="pb-2 pr-3 font-medium">시간</th>
+              <th className="pb-2 pr-3 font-medium">IP</th>
+              <th className="pb-2 pr-3 font-medium">국가</th>
+              <th className="pb-2 pr-3 font-medium">기기</th>
+              <th className="pb-2 font-medium">OS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((v, i) => (
+              <tr key={i} className="border-b border-border/30 last:border-0">
+                <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap">
+                  {new Date(v.time).toLocaleString("ko-KR", {
+                    month: "numeric",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  })}
+                </td>
+                <td className="py-2 pr-3 font-mono text-foreground/80">{v.ip}</td>
+                <td className="py-2 pr-3 whitespace-nowrap">
+                  {countryFlag(v.country)} {countryName(v.country)}
+                </td>
+                <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "\u{1F4F1}" : "\u{1F5A5}️"}</td>
+                <td className="py-2 text-muted-foreground">{v.os ?? ""}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+      <h2 className="text-sm font-semibold">접속자 상세</h2>
+      {visitors.length === 0 ? (
+        <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
+      ) : (
+        <>
+          {renderTable(visible)}
+          {hidden > 0 && (
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="w-full text-xs text-primary hover:underline pt-1 text-left"
+            >
+              + {hidden}개 더보기
+            </button>
+          )}
+        </>
+      )}
+      <DetailPanel open={open} onClose={() => setOpen(false)}>
+        <div className="px-4 pt-3 pb-6 space-y-3">
+          <h3 className="text-sm font-semibold pr-8">
+            접속자 상세 <span className="text-xs font-normal text-muted-foreground">· 전체 {visitors.length}건</span>
+          </h3>
+          {renderTable(visitors)}
+        </div>
+      </DetailPanel>
+    </div>
+  );
+}
+
 /** SVG Area Chart for cumulative daily trend */
 function CumulativeChart({ data }: { data: { date: string; pv: number; uv: number }[] }) {
   const days = [...data].reverse(); // oldest → newest
@@ -523,54 +600,8 @@ export default function StatsPage() {
               )}
             />
 
-            {/* Recent Visitors Table (admin only) */}
-            {isAdmin && (
-              <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-                <h2 className="text-sm font-semibold">접속자 상세</h2>
-                {data.recentVisitors.length === 0 ? (
-                  <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-xs">
-                      <thead>
-                        <tr className="border-b border-border text-left text-muted-foreground">
-                          <th className="pb-2 pr-3 font-medium">시간</th>
-                          <th className="pb-2 pr-3 font-medium">IP</th>
-                          <th className="pb-2 pr-3 font-medium">국가</th>
-                          <th className="pb-2 pr-3 font-medium">지역</th>
-                          <th className="pb-2 pr-3 font-medium">도시</th>
-                          <th className="pb-2 pr-3 font-medium">기기</th>
-                          <th className="pb-2 font-medium">OS</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {data.recentVisitors.map((v, i) => (
-                          <tr key={i} className="border-b border-border/30 last:border-0">
-                            <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap">
-                              {new Date(v.time).toLocaleString("ko-KR", {
-                                month: "numeric",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                second: "2-digit",
-                              })}
-                            </td>
-                            <td className="py-2 pr-3 font-mono text-foreground/80">{v.ip}</td>
-                            <td className="py-2 pr-3 whitespace-nowrap">
-                              {countryFlag(v.country)} {countryName(v.country)}
-                            </td>
-                            <td className="py-2 pr-3 text-muted-foreground">{v.region}</td>
-                            <td className="py-2 pr-3 text-muted-foreground">{v.city}</td>
-                            <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "\u{1F4F1}" : "\u{1F5A5}\uFE0F"}</td>
-                            <td className="py-2 text-muted-foreground">{v.os ?? ""}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-            )}
+            {/* Recent Visitors (admin only) — top 5 inline + 더보기 → DetailPanel 전체 */}
+            {isAdmin && <RecentVisitorsCard visitors={data.recentVisitors} />}
           </>
         )}
       </div>
