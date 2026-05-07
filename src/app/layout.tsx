@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 import { Analytics } from "@vercel/analytics/react";
 import { APP_VERSION } from "@/lib/version";
+import { BetaBadge } from "@/components/BetaBadge";
 import "./globals.css";
 
 const inter = Inter({
@@ -320,6 +321,7 @@ export default function RootLayout({
           })();
         `}} />
         <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
+        <BetaBadge />
         <SettingsProvider>
           <AuthProvider>
             <FavoritesProvider>
