@@ -87,36 +87,10 @@ self.addEventListener("fetch", (event) => {
   // SWR로 가로채면 매 호출마다 백그라운드 revalidate 추가 fetch 발생 + 응답이 stale로 남음.
   if (url.pathname.startsWith(BASE + "/api/")) return;
 
-  // Navigation: network-first with cache fallback.
-  // - PWA 사용자가 새 빌드를 즉시 받기 위함. (이전: SW 미가로채기 + browser HTTP cache → 5분 stale)
-  // - 3초 타임아웃 후 캐시 폴백 → 오프라인/저속 시 stale-but-fast 동작.
-  // - 'no-store'로 browser/CF 캐시 우회 (CF는 응답 헤더 기준이라 100% 보장은 아니지만 시도).
-  if (event.request.mode === "navigate") {
-    event.respondWith(
-      (async () => {
-        const fetchPromise = fetch(event.request, { cache: "no-store" })
-          .then((response) => {
-            if (response.ok) {
-              const clone = response.clone();
-              caches
-                .open(APP_CACHE)
-                .then((cache) => cache.put(event.request, clone));
-            }
-            return response;
-          });
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("nav-timeout")), 3000)
-        );
-        try {
-          return await Promise.race([fetchPromise, timeoutPromise]);
-        } catch {
-          const cached = await caches.match(event.request);
-          return cached || caches.match(BASE + "/");
-        }
-      })()
-    );
-    return;
-  }
+  // Navigation: 가로채지 않음 — Safari bfcache + browser HTTP cache 그대로.
+  // 새 빌드 propagation은 (a) clients.navigate()를 activate에서 호출 + (b) nginx에 max-age=60 짧은 HTML cache로 처리.
+  // (이전 시도: network-first { cache: 'no-store' } 실패 — Safari에서 페이지 클릭 안 됨 회귀 발생)
+  if (event.request.mode === "navigate") return;
 
   // Other (fonts, etc.): stale-while-revalidate
   event.respondWith(
