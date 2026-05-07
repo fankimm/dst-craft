@@ -9,6 +9,7 @@ import {
   RotateCcw, TrendingUp, ExternalLink, Star,
 } from "lucide-react";
 import { BackToHome } from "@/components/ui/BackToHome";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 /** Convert ISO 3166-1 alpha-2 country code to flag emoji */
@@ -63,6 +64,70 @@ function PercentBar({ label, count, total, icon }: { label: string; count: numbe
         <div className="h-full bg-primary/60 rounded transition-all" style={{ width: `${pct}%` }} />
       </div>
       <span className="w-20 text-right text-xs text-muted-foreground shrink-0">{count} ({pct}%)</span>
+    </div>
+  );
+}
+
+/**
+ * 항목이 10개 초과하면 상위 10개만 보여주고 "더보기" 버튼으로 Sheet에 전체 노출.
+ * sortedItems: [key, count] 배열 (정렬된 상태로 전달).
+ * renderItem: 한 항목을 PercentBar 등으로 렌더링.
+ */
+function CollapsibleList({
+  title,
+  icon,
+  sortedItems,
+  total,
+  renderItem,
+  emptyText = "아직 데이터 없음",
+  topN = 10,
+}: {
+  title: string;
+  icon?: React.ReactNode;
+  sortedItems: [string, number][];
+  total: number;
+  renderItem: (item: [string, number], total: number) => React.ReactNode;
+  emptyText?: string;
+  topN?: number;
+}) {
+  const [open, setOpen] = useState(false);
+  const visible = sortedItems.length > topN ? sortedItems.slice(0, topN) : sortedItems;
+  const hidden = sortedItems.length - visible.length;
+
+  return (
+    <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+      <h2 className="text-sm font-semibold flex items-center gap-2">
+        {icon}
+        {title}
+      </h2>
+      {sortedItems.length === 0 ? (
+        <p className="text-xs text-muted-foreground">{emptyText}</p>
+      ) : (
+        <>
+          <div className="space-y-2">
+            {visible.map((it) => renderItem(it, total))}
+          </div>
+          {hidden > 0 && (
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="w-full text-xs text-primary hover:underline pt-1 text-left"
+            >
+              + {hidden}개 더보기
+            </button>
+          )}
+        </>
+      )}
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>{title} · 전체 {sortedItems.length}개</SheetTitle>
+          </SheetHeader>
+          <div className="space-y-2 px-4 pb-6">
+            {sortedItems.map((it) => renderItem(it, total))}
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
@@ -415,63 +480,49 @@ export default function StatsPage() {
               </div>
 
               {/* OS */}
-              <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-                <h2 className="text-sm font-semibold">운영체제</h2>
-                {sortedOS.length === 0 ? (
-                  <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
-                ) : (
-                  <div className="space-y-2">
-                    {sortedOS.map(([name, count]) => (
-                      <PercentBar key={name} label={name} count={count} total={totalOS} icon={osIcons[name] ?? "\u{1F4BB}"} />
-                    ))}
-                  </div>
+              <CollapsibleList
+                title="운영체제"
+                sortedItems={sortedOS}
+                total={totalOS}
+                renderItem={([name, count], total) => (
+                  <PercentBar key={name} label={name} count={count} total={total} icon={osIcons[name] ?? "\u{1F4BB}"} />
                 )}
-              </div>
+              />
             </div>
 
             {/* Referrers */}
-            <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-              <h2 className="text-sm font-semibold flex items-center gap-2">
-                <ExternalLink className="size-4" />
-                유입 출처
-              </h2>
-              {(() => {
-                const sortedReferrers = Object.entries(data.referrers ?? {}).sort((a, b) => b[1] - a[1]);
-                const totalReferrers = sortedReferrers.reduce((sum, [, c]) => sum + c, 0);
-                return sortedReferrers.length === 0 ? (
-                  <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
-                ) : (
-                  <div className="space-y-2">
-                    {sortedReferrers.map(([source, count]) => (
-                      <PercentBar key={source} label={source} count={count} total={totalReferrers} />
-                    ))}
-                  </div>
-                );
-              })()}
-            </div>
+            {(() => {
+              const sortedReferrers = Object.entries(data.referrers ?? {}).sort((a, b) => b[1] - a[1]);
+              const totalReferrers = sortedReferrers.reduce((sum, [, c]) => sum + c, 0);
+              return (
+                <CollapsibleList
+                  title="유입 출처"
+                  icon={<ExternalLink className="size-4" />}
+                  sortedItems={sortedReferrers}
+                  total={totalReferrers}
+                  renderItem={([source, count], total) => (
+                    <PercentBar key={source} label={source} count={count} total={total} />
+                  )}
+                />
+              );
+            })()}
 
             {/* Countries */}
-            <div className="rounded-lg border border-border bg-card p-4 space-y-3">
-              <h2 className="text-sm font-semibold flex items-center gap-2">
-                <Globe className="size-4" />
-                국가별 방문
-              </h2>
-              {sortedCountries.length === 0 ? (
-                <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
-              ) : (
-                <div className="space-y-2">
-                  {sortedCountries.map(([code, count]) => (
-                    <PercentBar
-                      key={code}
-                      label={countryName(code)}
-                      count={count}
-                      total={totalCountryVisits}
-                      icon={countryFlag(code)}
-                    />
-                  ))}
-                </div>
+            <CollapsibleList
+              title="국가별 방문"
+              icon={<Globe className="size-4" />}
+              sortedItems={sortedCountries}
+              total={totalCountryVisits}
+              renderItem={([code, count], total) => (
+                <PercentBar
+                  key={code}
+                  label={countryName(code)}
+                  count={count}
+                  total={total}
+                  icon={countryFlag(code)}
+                />
               )}
-            </div>
+            />
 
             {/* Recent Visitors Table (admin only) */}
             {isAdmin && (
