@@ -318,8 +318,13 @@ export async function fetchAnalytics(token: string | null, days = 7, excludeCoun
   try {
     const params = new URLSearchParams({ days: String(days) });
     if (excludeCountry) params.set("excludeCountry", excludeCountry);
+    // CF 엣지가 URL만으로 cache key 구성하고 응답의 'private' 지시자도 가끔 무시함 → admin 요청이 옛 public 응답 받는 회귀.
+    // 토큰이 있을 때 _t=admin query를 붙여 cache key 분리. 백엔드는 무시.
     const fetchHeaders: Record<string, string> = {};
-    if (token) fetchHeaders.Authorization = `Bearer ${token}`;
+    if (token) {
+      fetchHeaders.Authorization = `Bearer ${token}`;
+      params.set("_t", "admin");
+    }
     const res = await fetch(`${WORKER_URL}/stats?${params}`, {
       headers: fetchHeaders,
     });
