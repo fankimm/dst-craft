@@ -8,12 +8,15 @@ import {
   WX78_CIRCUITS_BY_ID,
   getMaxSlots,
   getUsedSlotsByType,
+  SCAN_PREFAB_KO,
+  SCAN_PREFAB_EN,
   type CircuitModule,
   type CircuitType,
 } from "@/data/wx78-circuits";
 import type { Locale } from "@/lib/i18n";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
 import { DetailPanel } from "@/components/ui/DetailPanel";
+import { Footer } from "../crafting/Footer";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -123,6 +126,9 @@ export function Wx78CircuitBoard({
               onSelect={setSelectedId}
             />
           ))}
+          <div className="pt-6">
+            <Footer />
+          </div>
         </div>
       </div>
 
@@ -313,12 +319,11 @@ function CircuitTile({
           className="size-12 object-contain"
         />
         {count > 0 && (
-          <div
-            className="absolute -top-1 -right-1 min-w-5 h-5 px-1 flex items-center justify-center rounded-full text-[11px] font-bold text-white shadow-md"
-            style={{ backgroundColor: color }}
+          <span
+            className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80"
           >
             {count}
-          </div>
+          </span>
         )}
       </div>
       <div className="w-full">
@@ -476,14 +481,19 @@ function CircuitDetail({
       {m.scanFrom?.length ? (
         <div className="mt-3">
           <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1.5">
-            {locale === "ko" ? "스캔 출처" : "Scanned From"}
+            {locale === "ko" ? "스캔으로 획득" : "Scanned From"}
           </div>
           <div className="flex flex-wrap gap-1">
-            {m.scanFrom.map((p) => (
-              <span key={p} className="text-[11px] px-1.5 py-0.5 rounded bg-surface/70 text-muted-foreground">
-                {p}
-              </span>
-            ))}
+            {m.scanFrom.map((p) => {
+              const label = locale === "ko"
+                ? SCAN_PREFAB_KO[p] ?? p
+                : SCAN_PREFAB_EN[p] ?? p;
+              return (
+                <span key={p} className="text-[11px] px-1.5 py-0.5 rounded bg-surface/70 text-muted-foreground">
+                  {label}
+                </span>
+              );
+            })}
           </div>
         </div>
       ) : null}

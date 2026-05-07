@@ -15,6 +15,32 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.4",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): WX-78 회로 능력 텍스트 자연스럽게 다듬음 — 음의 정신력 오라/시계태엽/회전기/광전자/음악상자 등 직역 톤 제거, 인게임 동작 기준으로 재작성",
+      "feat(data): SCAN_PREFAB_KO/EN 매핑 추가 — 스캔 대상 prefab(spider, butterfly...)을 ko.po STRINGS.NAMES 기반 인게임 한글/영문명으로 표시",
+      "feat(skills): WX-78 서브탭에 아이콘 — 스킬트리(Brain), 회로판(scanner_item), 현황(scandata)",
+      "fix(skills): 회로판/현황 탭에 Footer 추가 — FloatingSupportPill이 다른 페이지처럼 푸터로 docking",
+      "fix(skills): 회로 카드 카운트 뱃지 UI를 ItemSlot 표준에 맞춤 (bottom-right + surface-hover 배경)",
+      "fix(skills): 회로 라벨 '스캔 출처' → '스캔으로 획득'",
+    ],
+    changes: {
+      ko: [
+        "WX-78 회로 효과 설명을 인게임 동작 기준으로 자연스럽게 재작성 — 시계태엽 친화/광전자 시야/회전기 도구/음악상자 인어 동료화 등 표현 정확도 개선",
+        "회로의 스캔 대상 동물명을 인게임 한글명으로 표시 (spider → 거미 등)",
+        "회로판/현황 탭에 캐릭터 페이지처럼 후원 필이 부드럽게 흡수되는 푸터 추가",
+        "WX-78 서브탭에 아이콘 추가",
+      ],
+      en: [
+        "Rewrote WX-78 circuit effect descriptions to match in-game behavior more naturally",
+        "Scanned-from creature names now use in-game localized names",
+        "Circuit Board and Status tabs now dock the floating support pill into the footer",
+        "Added icons to WX-78 sub-tabs",
+      ],
+    },
+  },
+  {
     version: "0.21.3",
     date: "2026-05-08",
     dev: [

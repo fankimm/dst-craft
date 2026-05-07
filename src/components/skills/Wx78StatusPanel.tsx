@@ -9,6 +9,7 @@ import {
 } from "@/data/wx78-circuits";
 import type { Locale } from "@/lib/i18n";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
+import { Footer } from "../crafting/Footer";
 
 interface Props {
   locale: Locale;
@@ -84,22 +85,22 @@ function getGlobalSkillCaps(activatedSkills: Set<string>): Capability[] {
   if (activatedSkills.has("wx78_circuitry_betterunplug")) {
     out.push({
       id: "betterunplug",
-      ko: "회로 분리 시 충전 소모 −50% (덜 닳음)",
-      en: "Module unplug consumes −50% charge (lasts longer)",
+      ko: "회로 분리 시 충전 −50% 소모 (회로를 더 오래 사용)",
+      en: "Removing a module consumes −50% charge (modules last longer)",
     });
   }
   if (activatedSkills.has("wx78_circuitry_bettercharge")) {
     out.push({
       id: "bettercharge",
-      ko: `회로 충전 속도 ${WX78_TUNING.FASTER_CHARGE_MULTIPLIER}배`,
+      ko: `회로 충전(재가동) 속도 ${WX78_TUNING.FASTER_CHARGE_MULTIPLIER}배 빠름`,
       en: `Module recharge ${WX78_TUNING.FASTER_CHARGE_MULTIPLIER}× faster`,
     });
   }
   if (activatedSkills.has("wx78_circuitry_slot_1")) {
     out.push({
       id: "extra_slot",
-      ko: "회로 슬롯 +1 (총 7)",
-      en: "+1 circuit slot (total 7)",
+      ko: "각 회로 바 슬롯 +1 (알파/베타/감마 모두 7칸)",
+      en: "+1 slot per circuit bar (Alpha/Beta/Gamma all 7)",
     });
   }
   return out;
@@ -129,12 +130,15 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
 
   if (equippedTotal === 0 && skillCaps.length === 0) {
     return (
-      <div className="flex flex-col h-full items-center justify-center px-6 text-center">
-        <p className="text-sm text-muted-foreground">
-          {locale === "ko"
-            ? "회로를 장착하거나 회로 관련 스킬을 학습하면 여기에 통합 현황이 표시됩니다."
-            : "Equip circuits or learn circuit-related skills to see the combined status here."}
-        </p>
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain flex flex-col" data-scroll-container="">
+        <div className="flex-1 flex items-center justify-center px-6 text-center">
+          <p className="text-sm text-muted-foreground">
+            {locale === "ko"
+              ? "회로를 장착하거나 회로 관련 스킬을 학습하면 여기에 통합 현황이 표시됩니다."
+              : "Equip circuits or learn circuit-related skills to see the combined status here."}
+          </p>
+        </div>
+        <Footer />
       </div>
     );
   }
@@ -175,6 +179,9 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
             </ul>
           </div>
         )}
+        <div className="pt-6">
+          <Footer />
+        </div>
       </div>
     </div>
   );

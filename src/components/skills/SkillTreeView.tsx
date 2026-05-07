@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useCallback, useState } from "react";
 import Image from "next/image";
-import { ClipboardPaste, RotateCcw, Share2 } from "lucide-react";
+import { Brain, ClipboardPaste, RotateCcw, Share2 } from "lucide-react";
 import type { CharacterSkillTree, SkillNode, LockCondition } from "@/data/skill-trees/types";
 import { characters } from "@/data/characters";
 import { characterName, characterTitle, t, type Locale, type TranslationKey } from "@/lib/i18n";
@@ -231,21 +231,26 @@ export function SkillTreeView({
       {isWx78 && (
         <div className="shrink-0 flex border-b border-border bg-background/80">
           {([
-            { id: "skills" as const, ko: "스킬트리", en: "Skill Tree" },
-            { id: "circuits" as const, ko: "회로판", en: "Circuit Board" },
-            { id: "status" as const, ko: "현황", en: "Status" },
+            { id: "skills" as const, ko: "스킬트리", en: "Skill Tree", iconKind: "lucide" as const },
+            { id: "circuits" as const, ko: "회로판", en: "Circuit Board", iconKind: "img" as const, src: "/images/game-items/wx78_scanner_item.png" },
+            { id: "status" as const, ko: "현황", en: "Status", iconKind: "img" as const, src: "/images/game-items/scandata.png" },
           ]).map((t) => (
             <button
               key={t.id}
               onClick={() => setWx78SubTab(t.id)}
               className={cn(
-                "flex-1 py-2 text-xs font-semibold transition-colors border-b-2",
+                "flex-1 py-2 px-1 flex items-center justify-center gap-1.5 text-xs font-semibold transition-colors border-b-2",
                 wx78SubTab === t.id
                   ? "text-foreground border-foreground"
                   : "text-muted-foreground hover:text-foreground border-transparent",
               )}
             >
-              {locale === "ko" ? t.ko : t.en}
+              {t.iconKind === "lucide" ? (
+                <Brain className="size-4 shrink-0" />
+              ) : (
+                <Image src={t.src} alt="" width={20} height={20} className="size-5 shrink-0 object-contain" />
+              )}
+              <span className="truncate">{locale === "ko" ? t.ko : t.en}</span>
             </button>
           ))}
         </div>
