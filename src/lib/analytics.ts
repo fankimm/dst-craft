@@ -15,6 +15,7 @@ export interface AnalyticsData {
   dailyTrend: { date: string; pv: number; uv: number }[];
   countries: Record<string, number>;
   recentVisitors: {
+    id?: number;
     ip: string;
     country: string;
     city: string;
@@ -309,6 +310,27 @@ export function trackEvent(type: "search" | "pwa_install" | "share" | "github_st
   const url = analyticsUrl("/event");
   if (!url || skipTracking) return;
   navigator.sendBeacon(url, JSON.stringify({ type }));
+}
+
+export interface VisitorPage {
+  items: AnalyticsData["recentVisitors"];
+  nextCursor: number | null;
+}
+
+/** Fetch paginated visitors (admin only). Pass cursor=last id to fetch older. */
+export async function fetchVisitors(token: string, cursor: number | null, limit = 30): Promise<VisitorPage | null> {
+  if (!WORKER_URL || !token) return null;
+  try {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (cursor != null) params.set("cursor", String(cursor));
+    const res = await fetch(`${WORKER_URL}/visitors?${params}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
 
 /** Fetch analytics data for the stats page (public; admin token enables extra details) */

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchAnalytics, type AnalyticsData } from "@/lib/analytics";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { fetchAnalytics, fetchVisitors, type AnalyticsData } from "@/lib/analytics";
 import { useAuth } from "@/hooks/use-auth";
 import {
   BarChart3, Globe, Users, Eye, RefreshCw,
@@ -134,67 +134,109 @@ function CollapsibleList({
   );
 }
 
-/** 접속자 상세 — 5건 inline + DetailPanel에서 전체 (rolling 200) */
-function RecentVisitorsCard({ visitors }: { visitors: AnalyticsData["recentVisitors"] }) {
-  const [open, setOpen] = useState(false);
-  const TOP = 5;
-  const visible = visitors.length > TOP ? visitors.slice(0, TOP) : visitors;
-  const hidden = visitors.length - visible.length;
-
-  function renderTable(rows: AnalyticsData["recentVisitors"]) {
-    return (
-      <div className="overflow-x-auto">
-        <table className="w-full text-xs">
-          <thead>
-            <tr className="border-b border-border text-left text-muted-foreground">
-              <th className="pb-2 pr-3 font-medium">시간</th>
-              <th className="pb-2 pr-3 font-medium">IP</th>
-              <th className="pb-2 pr-3 font-medium">국가</th>
-              <th className="pb-2 pr-3 font-medium">기기</th>
-              <th className="pb-2 font-medium">OS</th>
+function VisitorTable({ rows }: { rows: AnalyticsData["recentVisitors"] }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="border-b border-border text-left text-muted-foreground">
+            <th className="pb-2 pr-3 font-medium">시간</th>
+            <th className="pb-2 pr-3 font-medium">IP</th>
+            <th className="pb-2 pr-3 font-medium">국가</th>
+            <th className="pb-2 pr-3 font-medium">기기</th>
+            <th className="pb-2 font-medium">OS</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((v, i) => (
+            <tr key={`${v.id ?? "x"}-${i}`} className="border-b border-border/30 last:border-0">
+              <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap">
+                {new Date(v.time).toLocaleString("ko-KR", {
+                  month: "numeric",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })}
+              </td>
+              <td className="py-2 pr-3 font-mono text-foreground/80">{v.ip}</td>
+              <td className="py-2 pr-3 whitespace-nowrap">
+                {countryFlag(v.country)} {countryName(v.country)}
+              </td>
+              <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "\u{1F4F1}" : "\u{1F5A5}️"}</td>
+              <td className="py-2 text-muted-foreground">{v.os ?? ""}</td>
             </tr>
-          </thead>
-          <tbody>
-            {rows.map((v, i) => (
-              <tr key={i} className="border-b border-border/30 last:border-0">
-                <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap">
-                  {new Date(v.time).toLocaleString("ko-KR", {
-                    month: "numeric",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                  })}
-                </td>
-                <td className="py-2 pr-3 font-mono text-foreground/80">{v.ip}</td>
-                <td className="py-2 pr-3 whitespace-nowrap">
-                  {countryFlag(v.country)} {countryName(v.country)}
-                </td>
-                <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "\u{1F4F1}" : "\u{1F5A5}️"}</td>
-                <td className="py-2 text-muted-foreground">{v.os ?? ""}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/** 접속자 상세 — 5건 inline + DetailPanel에서 무한 스크롤 (cursor 페이지네이션) */
+function RecentVisitorsCard({ initial }: { initial: AnalyticsData["recentVisitors"] }) {
+  const { token } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<AnalyticsData["recentVisitors"]>(initial);
+  const [cursor, setCursor] = useState<number | null>(initial[initial.length - 1]?.id ?? null);
+  const [hasMore, setHasMore] = useState(initial.length >= 30);
+  const [loading, setLoading] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  // initial이 바뀌면 (e.g., refresh 이후) 상태 reset
+  useEffect(() => {
+    setItems(initial);
+    setCursor(initial[initial.length - 1]?.id ?? null);
+    setHasMore(initial.length >= 30);
+  }, [initial]);
+
+  const loadMore = useCallback(async () => {
+    if (loading || !hasMore || !token) return;
+    setLoading(true);
+    const page = await fetchVisitors(token, cursor, 30);
+    if (!page) {
+      setHasMore(false);
+    } else {
+      setItems((prev) => [...prev, ...page.items]);
+      setCursor(page.nextCursor);
+      setHasMore(page.nextCursor != null);
+    }
+    setLoading(false);
+  }, [loading, hasMore, token, cursor]);
+
+  // IntersectionObserver — sentinel 영역이 보이면 다음 페이지 fetch
+  useEffect(() => {
+    if (!open || !sentinelRef.current) return;
+    const el = sentinelRef.current;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) loadMore();
+      },
+      { root: null, rootMargin: "200px" },
     );
-  }
+    io.observe(el);
+    return () => io.disconnect();
+  }, [open, loadMore]);
+
+  const TOP = 5;
+  const visible = items.length > TOP ? items.slice(0, TOP) : items;
+  const totalAvailable = hasMore ? `${items.length}+` : `${items.length}`;
 
   return (
     <div className="rounded-lg border border-border bg-card p-4 space-y-3">
       <h2 className="text-sm font-semibold">접속자 상세</h2>
-      {visitors.length === 0 ? (
+      {items.length === 0 ? (
         <p className="text-xs text-muted-foreground">아직 데이터 없음</p>
       ) : (
         <>
-          {renderTable(visible)}
-          {hidden > 0 && (
+          <VisitorTable rows={visible} />
+          {(items.length > TOP || hasMore) && (
             <button
               type="button"
               onClick={() => setOpen(true)}
               className="w-full text-xs text-primary hover:underline pt-1 text-left"
             >
-              + {hidden}개 더보기
+              + 전체 보기
             </button>
           )}
         </>
@@ -202,9 +244,16 @@ function RecentVisitorsCard({ visitors }: { visitors: AnalyticsData["recentVisit
       <DetailPanel open={open} onClose={() => setOpen(false)}>
         <div className="px-4 pt-3 pb-6 space-y-3">
           <h3 className="text-sm font-semibold pr-8">
-            접속자 상세 <span className="text-xs font-normal text-muted-foreground">· 전체 {visitors.length}건</span>
+            접속자 상세 <span className="text-xs font-normal text-muted-foreground">· {totalAvailable}건</span>
           </h3>
-          {renderTable(visitors)}
+          <VisitorTable rows={items} />
+          <div ref={sentinelRef} className="py-2 text-center text-xs text-muted-foreground">
+            {loading
+              ? "불러오는 중..."
+              : hasMore
+                ? "스크롤하면 더 불러옵니다"
+                : "끝"}
+          </div>
         </div>
       </DetailPanel>
     </div>
@@ -601,7 +650,7 @@ export default function StatsPage() {
             />
 
             {/* Recent Visitors (admin only) — top 5 inline + 더보기 → DetailPanel 전체 */}
-            {isAdmin && <RecentVisitorsCard visitors={data.recentVisitors} />}
+            {isAdmin && <RecentVisitorsCard initial={data.recentVisitors} />}
           </>
         )}
       </div>
