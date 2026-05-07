@@ -75,6 +75,65 @@ Circuit_SetUpSkillCb(inst, wx, SANITY_BUFF_SKILLS, maxsanity_skill_activate, max
 **패턴**: 회로 이름이 직관적이지 않을 수 있음. 코드 변수명 (예: `HEAT_FREEZE_RESISTANCE`)을 보면 실제 동작 확인 가능.
 **예시**:
 - 발열 회로(Thermal/Heat) → 빙결 저항 (이름과 직관 다름. 발열로 추위 방어)
-- 냉각 회로(Refrigerant/Cold) → 화염/과열 저항 (시원하게 해서 더위 방어)
+- 냉각 회로(Refrigerant/Cold) → 화염 데미지 저항 (skill 효과). 과열 저항은 BASE 효과(temp 조정)이지 skill 효과 아님.
 - 나무위키는 둘을 반대로 적기도 함
 **일반화**: 회로/아이템의 효과를 이름만 보고 추측하지 말 것. 코드의 변수명/함수 본문에서 실제 효과 확인.
+
+---
+
+## 2026-05-08 — BASE 효과 vs SKILL 효과 분리 (DST WX-78)
+**맥락**: WX-78 details 검증 (방어 회로 knockback, 냉각 회로 과열 저항)
+**패턴**: 회로의 효과를 skill description에 적기 전에 "이게 BASE 모듈 효과인지 SKILL이 추가한 효과인지" 반드시 구분. SetMass(99999), maxtemp 조정 같은 건 모듈 자체가 항상 적용함.
+**예시**:
+- 방어 회로 + gammabuffs_2: 코드의 `shielding_skill_update`는 `PushEvent("refreshwxshielddefense")`만 호출 → 주석에 "Not needed anymore". knockback 면역(SetMass 99999), 80% 피해 감소(WX78_SHIELDING_ARMOR=0.2)는 모두 `ApplyWX78ShieldingDefense`의 BASE 동작. → "방어 중 밀쳐내기 효과 면역"은 skill 효과가 아니라 BASE 효과.
+- 냉각 회로 + betabuffs_1: 코드는 `fire_damage_scale -= 0.5`만 추가. 과열 저항은 cold module의 `update_temperature_temps`가 BASE로 항상 maxtemp를 낮춰서 생김.
+**일반화**: skill에 묶인 콜백을 본 뒤, 그 콜백이 정말 새 효과를 추가하는지(또는 no-op/재계산 호출인지)도 확인. BASE 동작은 활성화 함수(activatefn)에 있고 SKILL 효과는 보통 `Circuit_SetUpSkillCb`로 등록된 별도 콜백에 있다. desc에 BASE 효과를 적어 넣으면 "skill이 그 효과를 준다"는 오해를 부른다.
+
+---
+
+## 2026-05-08 — 코드 태그 vs 위키 표기 (DST 동료화 대상)
+**맥락**: 음악상자(Chorusbox) 회로의 `leaderrollcall` 동료화 대상 추적
+**패턴**: 위키/번역 등에서 자주 잘못 적힌 mob 이름. 코드의 `ONEOF_TAGS = { "pig", "merm", ... }` 같은 태그 리스트를 직접 봐야 정확.
+**예시**:
+- `leaderrollcall.lua`의 `ONEOF_TAGS = { "pig", "merm", "farm_plant" }` → 음악상자가 동료화하는 건 **돼지 + 인어(merm)** 이지 버니맨이 아님.
+- 한국어/영문 번역에서 "bunnymen"으로 잘못 적혀 있던 사례 다수.
+**확인법**: `grep "ONEOF_TAGS\|MUST_TAGS" <component>.lua` → 태그 리스트 → DST 위키에서 해당 prefab의 태그 확인.
+
+---
+
+## 2026-05-08 — 함수에 가려진 호출 (skipskillcbsetup 패턴)
+**맥락**: WX-78 빈부스터(Beanbooster)의 dapperness mult 검증
+**패턴**: 한 모듈의 activate가 다른 모듈의 activate를 부분적으로 재사용할 때, 인자 1개 차이로 효과가 그대로 상속됨. 호출 부모만 보면 놓침.
+**예시**:
+```lua
+-- bee_activate (Beanbooster):
+maxsanity_activate(inst, wx, isloading, true)  -- 4번째 인자 true = skipskillcbsetup
+-- maxsanity_activate 내부:
+inst._skill_sanity_dapperness_mult = TUNING.SKILLS.WX78.MAXSANITY_DAPPERNESS_MULT  -- 0.30
+```
+- 4번째 인자는 `Circuit_SetUpSkillCb`만 스킵. dapperness_mult 값 setting은 그대로 0.30 적용됨
+- 결과: Beanbooster도 Super-Processing과 동일하게 dapperness +30% (위키/번역의 "+25%"는 오류)
+**일반화**: "기능 재사용" 호출이 있으면 본 함수 끝까지 읽고, 어떤 부분이 스킵되고 어떤 부분이 그대로 적용되는지 확인. 인자 이름(`skipskillcbsetup`)으로 추측 금지.
+
+---
+
+## 2026-05-08 — 합산 vs 곱연산 vs 오버라이드 패턴 정리 (DST WX-78 details)
+**맥락**: WX-78 회로 효과들이 어떻게 누적되는지 종합 정리
+**패턴**: details에 "(per circuit)"이라고 쓰면 사용자는 선형 합산을 기대하지만, 실제 누적 방식은 코드마다 다름. 다음 3가지로 분류:
+
+1. **선형 합산** (additive sum): 한 곳에서 for-loop로 모든 모듈 mult를 더함
+   - 예: `dapperness_mult = 1 + Σ(_skill_sanity_dapperness_mult)` → 연산 1개 +10%, 초연산 1개 +30%, 합 +40%
+   - 예: 체력 회로 armor `armor = Σ(base_armor × _skill_health_armor_mult)` → Hardy 1개 2.5%, +Hardy 1개 5%, 합 7.5%
+
+2. **곱연산** (multiplicative SourceModifierList): 각 모듈이 SetModifier(inst, value)로 각자 등록, 시스템이 모두 곱함
+   - 예: hunger `burnratemodifiers` → Gastrogain 2개 alpha1 = 0.95 × 0.95 = -9.75% (선형 -10% 아님)
+   - 예: sanity `neg_aura_modifiers` → Processing 2개 alpha1 = 0.8 × 0.8 = -36% (선형 -40% 아님)
+
+3. **오버라이드** (SetModifier 같은 source/key): 인덱스로 한 값 선택
+   - 예: hunger의 alpha1/alpha2 인덱스 → 알파2 찍으면 알파1 값 덮어씀. 합산 아님.
+
+**일반화**: details에 수치 적기 전에 코드에서 다음 확인:
+- 효과가 한 함수에서 for-loop로 합산되는가 (선형) → "per circuit" OK
+- 각 모듈이 SetModifier로 각자 등록하는가 (곱연산) → "per circuit"은 다중 중첩 시 부정확
+- 같은 source/key로 덮어쓰는가 (오버라이드) → "per circuit" 잘못됨, 절대값 기재
+- 누적 방식이 사용자 체감에 영향이 큰 경우 명시 (예: "회로당 (곱연산)")

@@ -1377,24 +1377,24 @@ export const skillTranslations: Record<
     title: { en: "Alpha Circuits Tinkering II", ko: "알파 회로 제조 II" },
     desc: { en: "Hardy Circuits, Processing Circuits, and Beanbooster Circuit gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "체력 증진 회로, 연산 회로, 빈부스터 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
     details: {
-      en: "Hardy: combat damage -2.5% (per circuit)\nSuper-Hardy: combat damage -5% (per circuit)\nProcessing: sanity-regen gear effectiveness +10% (per circuit)\nSuper-Processing: sanity-regen gear effectiveness +30% (per circuit)\nBeanbooster: shield = 20% max HP × circuits, regen 0.25/s; sanity-regen gear +25%\nGastrogain: hunger rate -10% (per circuit)\nSuper-Gastrogain: hunger rate -30% (per circuit)",
-      ko: "체력 증진 회로: 전투 피해 2.5% 감소 (회로당)\n체력 초증진 회로: 전투 피해 5% 감소 (회로당)\n연산 회로: 정신력 회복 장비 효율 +10% (회로당)\n초연산 회로: 정신력 회복 장비 효율 +30% (회로당)\n빈부스터 모듈: 보호막 = 최대 체력 20% × 회로 수, 초당 0.25 재생, 정신력 회복 장비 효율 +25%\n소화기 확장 회로: 허기 감소 속도 -10% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -30% (회로당)",
+      en: "Hardy: damage taken -2.5% (per circuit)\nSuper-Hardy: damage taken -5% (per circuit)\nProcessing: sanity-regen gear effectiveness +10% (per circuit)\nSuper-Processing: sanity-regen gear effectiveness +30% (per circuit)\nBeanbooster: shield = 20% max HP × circuits, regen 0.25/s; sanity-regen gear +30%\nGastrogain: hunger rate -10% (per circuit)\nSuper-Gastrogain: hunger rate -30% (per circuit)",
+      ko: "체력 증진 회로: 받는 피해 2.5% 감소 (회로당)\n체력 초증진 회로: 받는 피해 5% 감소 (회로당)\n연산 회로: 정신력 회복 장비 효율 +10% (회로당)\n초연산 회로: 정신력 회복 장비 효율 +30% (회로당)\n빈부스터 모듈: 보호막 = 최대 체력 20% × 회로 수, 초당 0.25 재생, 정신력 회복 장비 효율 +30%\n소화기 확장 회로: 허기 감소 속도 -10% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -30% (회로당)",
     },
   },
   wx78_circuitry_betabuffs_1: {
     title: { en: "Beta Circuits Tinkering I", ko: "베타 회로 제조 I" },
     desc: { en: "Thermal Circuit, Refrigerant Circuit, Optoelectronic Circuit, Chorusbox Circuit, and Rangebooster Circuit gain a new effect in addition to their original effect.", ko: "발열 회로, 냉각 회로, 광전자 회로, 음악상자 회로, 범위 증폭 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Thermal: freeze resistance +50% per circuit (immune with 2)\nRefrigerant: fire/overheat resistance +50% per circuit (immune with 2)\nOptoelectronic: removes mole vision tint from night vision\nChorusbox: pigs/bunnymen auto-recruit, follower limit +10 per circuit (max 20)\nRangebooster: Zaptrocuter +5 range, Roto-Mapper +100 range, Bio Scanalyzer +0.5 (+0.75 while scanning)",
-      ko: "발열 회로: 빙결 저항 +50% (2개면 면역)\n냉각 회로: 화염·과열 저항 +50% (2개면 면역)\n광전자 회로: 야간 투시 두더지 비전 효과 삭제\n음악상자 회로: 돼지·버니맨 자동 동료화, 추종자 한도 +10/회로 (최대 20마리)\n시야 확장 회로: 찌릿콥터 +5칸, 회전익 탐사기 +100칸, 생체 스캔 분석기 +0.5칸 (스캔 중 +0.75칸)",
+      en: "Thermal: freeze resistance ×2 (1 circuit), immune (2+ circuits)\nRefrigerant: fire damage -50% per circuit (immune with 2)\nOptoelectronic: removes mole vision tint from night vision\nChorusbox: pigs/merms auto-recruit, follower limit +10 per circuit (max 20)\nRangebooster: Zaptrocuter +5 range, Roto-Mapper +100 range, Bio Scanalyzer scan distance +0.65, player proximity +0.8 (per circuit)",
+      ko: "발열 회로: 빙결 저항 ×2 (1개) / 면역 (2개+)\n냉각 회로: 화염 피해 -50% (회로당, 2개면 면역)\n광전자 회로: 야간 투시 두더지 비전 효과 삭제\n음악상자 회로: 돼지·인어 자동 동료화, 추종자 한도 +10/회로 (최대 20마리)\n시야 확장 회로: 찌릿콥터 +5칸, 회전익 탐사기 +100칸, 생체 분석기 스캔 거리 +0.65 / 플레이어 근접 거리 +0.8 (회로당)",
     },
   },
   wx78_circuitry_betabuffs_2: {
     title: { en: "Beta Circuits Tinkering II", ko: "베타 회로 제조 II" },
     desc: { en: "Acceleration Circuits, Electrification Circuit, and Illumination Circuits gain a new effect in addition to their original effect.", ko: "가속 회로, 전격 회로, 조명 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Acceleration / Super-Acceleration: slow penalty -25% per circuit (max -75%)\nElectrification: 16/14/12 hits to charge → AoE blast (+50 electric damage per circuit)\nIllumination / Super-Illumination: cone-shaped flashlight in facing direction (cone widens per circuit)",
-      ko: "가속 회로 / 초가속 회로: 이동속도 감소 패널티 25% 상쇄 (회로당, 합연산 최대 75%)\n전격 회로: 1/2/3개 장착 시 16/14/12회 피격마다 충전, 가득 차면 주변 광역 전기 폭발 (회로당 +50 피해)\n발광 회로 / 초발광 회로: 바라보는 방향으로 원뿔형 손전등 (회로당 시야각 확장)",
+      en: "Acceleration / Super-Acceleration: slow penalty -25% per circuit (max -75%)\nElectrification: ~15/12/10 hits to charge → AoE blast (+50 electric damage per circuit)\nIllumination / Super-Illumination: cone-shaped flashlight in facing direction (cone widens per circuit)",
+      ko: "가속 회로 / 초가속 회로: 이동속도 감소 패널티 25% 상쇄 (회로당, 합연산 최대 75%)\n전격 회로: 1/2/3개 장착 시 약 15/12/10회 피격마다 충전, 가득 차면 주변 광역 전기 폭발 (회로당 +50 피해)\n발광 회로 / 초발광 회로: 바라보는 방향으로 원뿔형 손전등 (회로당 시야각 확장)",
     },
   },
   wx78_circuitry_gammabuffs_1: {

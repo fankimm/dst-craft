@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.20.4",
+    date: "2026-05-08",
+    dev: [
+      "fix(skill-tree): WX-78 details 인게임 코드 대조 검증 후 7건 수정 — alphabuffs_2 빈부스터 dapperness +25→+30%, Hardy 'combat damage' → 'damage taken' 의미 명확화, betabuffs_1 Thermal +50% → ×2 (1개)/면역(2개+), Refrigerant 화염·과열 → 화염 피해만, Chorusbox 버니맨 → 인어(merm), Rangebooster 스캐너 수치 0.5/0.75 → 0.65/0.8, betabuffs_2 Electrification 16/14/12 → 약 15/12/10회",
+      "docs(analyze): learnings.md 5개 패턴 추가 — BASE vs SKILL 효과 분리, 코드 태그 vs 위키 표기, skipskillcbsetup 패턴, 합산/곱연산/오버라이드 누적 방식 분류",
+    ],
+    changes: {
+      ko: [
+        "WX-78 회로 제조 스킬 details 정확도 개선 — 빈부스터 정신력 회복 장비 효율(+25%→+30%), 발열/냉각 회로 효과 표기, 음악상자 자동 동료화 대상(버니맨→인어) 등 인게임 코드와 다르던 7건 수정",
+      ],
+      en: [
+        "Improved accuracy of WX-78 circuit tinkering skill details — fixed 7 mismatches with in-game code, including Beanbooster sanity-regen effectiveness (+25%→+30%), Thermal/Refrigerant effects, and Chorusbox auto-recruit target (bunnymen→merms)",
+      ],
+    },
+  },
+  {
     version: "0.20.3",
     date: "2026-05-07",
     dev: [
