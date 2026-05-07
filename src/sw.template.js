@@ -63,6 +63,10 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // API: SW 가로채기 금지 — HTTP-level Cache-Control + 클라이언트 dedupe로 처리.
+  // SWR로 가로채면 매 호출마다 백그라운드 revalidate 추가 fetch 발생 + 응답이 stale로 남음.
+  if (url.pathname.startsWith(BASE + "/api/")) return;
+
   // Navigation: don't intercept, preserve Safari bfcache for back/forward
   if (event.request.mode === "navigate") return;
 
