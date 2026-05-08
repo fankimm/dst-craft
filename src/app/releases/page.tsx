@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.21",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 소켓 prefix regex 중복 박힌 텍스트(\"소켓 3개 필요. 소켓 3개 필요. ...\" — heat 모듈) 1번만 strip되던 문제. +로 1번 이상 매칭하도록 수정 (Wx78StatusPanel + Wx78CircuitBoard 동일 적용)",
+      "fix(skills): 동일 텍스트 dedupe — light(발광 회로) + light2(초발광 회로)가 모두 \"빛을 발산한다.\" 같은 효과 문구를 가져 카드 2장 표시되던 문제. text+skillId 키로 dedupe해 1장만 표시",
+      "fix(skills): heat 모듈 buff 텍스트 count 분기 — \"빙결 저항 효과를 얻으며, 2개를 장착하면 빙결에 면역이 된다\" → 1개 장착 시 \"빙결 저항 효과를 얻는다\", 2개+ 장착 시 \"빙결에 면역이 된다\". simplifyConditionalBody 함수 도입",
+      "refactor(skills): Detail 패널 contributor li 블록을 BreakdownRow 공용 컴포넌트로 추출 — movespeed/armor/slow/neg_aura/dapper/hunger_drain/vital 6곳에서 동일 구조 반복되던 것 정리 (사용자 피드백 #938)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.20",
     date: "2026-05-08",
     dev: [

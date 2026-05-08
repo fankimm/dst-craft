@@ -30,8 +30,33 @@ interface Props {
 // ── Paragraph parsing (mirrors Wx78CircuitBoard.ScrapbookEffects) ──
 const KO_SKILL_RE = /^(알파|베타|감마) 회로 제조 (I{1,2})/;
 const EN_SKILL_RE = /^(Alpha|Beta|Gamma) Circuit Tinkering (I{1,2})/;
-const KO_SOCKET_RE = /^소켓 \d+개 필요\.\s*/;
-const EN_SOCKET_RE = /^Requires \d+ sockets? and\s*/i;
+// heat 모듈처럼 인게임 텍스트에 "소켓 N개 필요. 소켓 N개 필요." 중복 박혀있는 케이스 → +로 1번 이상 strip
+const KO_SOCKET_RE = /^(?:소켓 \d+개 필요\.\s*)+/;
+const EN_SOCKET_RE = /^(?:Requires \d+ sockets? and\s*)+/i;
+
+// 모듈 본문 중 인게임 텍스트가 count로 분기되는 케이스를 현재 장착수 기준 단일 표현으로.
+// (인게임 표기 그대로 유지 + 현재 상태에 맞는 한 문장만 노출 — 사용자 피드백 #940)
+function simplifyConditionalBody(body: string, moduleId: string, count: number, locale: Locale): string {
+  if (locale !== "ko") return body;
+  // heat: "빙결 저항 효과를 얻으며, 2개를 장착하면 빙결에 면역이 된다."
+  //  - count=1 → "빙결 저항 효과를 얻는다."
+  //  - count>=2 → "빙결에 면역이 된다."
+  if (moduleId === "wx78module_heat" && /^빙결 저항 효과를 얻으며,\s*2개를 장착하면 빙결에 면역이 된다/.test(body)) {
+    return count >= 2 ? "빙결에 면역이 된다." : "빙결 저항 효과를 얻는다.";
+  }
+  return body;
+}
+
+// 동일 텍스트를 가진 행을 하나로 합치는 dedupe pass. light/light2의 "빛을 발산한다." 같이
+// 여러 모듈이 같은 효과 문구를 갖는 경우 카드 1장으로 표시 (사용자 피드백 #941).
+function dedupeRowsByText(rows: EffectRow[]): EffectRow[] {
+  const seen = new Map<string, EffectRow>();
+  for (const r of rows) {
+    const key = `${r.skillId ?? ""}|${r.text}`;
+    if (!seen.has(key)) seen.set(key, r);
+  }
+  return Array.from(seen.values());
+}
 
 function detectSkillId(para: string, locale: Locale): { skillId: string; label: string } | null {
   const re = locale === "ko" ? KO_SKILL_RE : EN_SKILL_RE;
@@ -79,9 +104,12 @@ function buildEffectRows(
         if (skill) {
           if (!activatedSkills.has(skill.skillId)) return; // not learned → skip
           // Body without skill prefix
-          const body = locale === "ko"
+          let body = locale === "ko"
             ? para.replace(/^.+?의 효과로\s*/, "")
             : para.replace(EN_SKILL_RE, "").replace(/^\s+/, "");
+          // 조건부 텍스트 정리: heat 모듈의 "빙결 저항 효과를 얻으며, 2개를 장착하면 빙결에 면역이 된다"
+          // 같이 count로 분기되는 문구는 현재 장착수 기준으로 단일 표현만 표시.
+          body = simplifyConditionalBody(body, id, count, locale);
           rows.push({
             key: `${id}:${i}`,
             text: body,
@@ -511,7 +539,8 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
       }
       out.push(r);
     }
-    return out;
+    // 동일 텍스트 dedupe (light/light2 "빛을 발산한다." 등 여러 모듈이 같은 효과 문구)
+    return dedupeRowsByText(out);
   }, [afterSlow, negAuraReduction, dapperBoost, hungerReduction]);
   const skillRows = useMemo(
     () => getGlobalSkillRows(effectiveSkills, locale),
@@ -741,6 +770,53 @@ function VitalStat({
 }
 
 // ── DetailPanel content ──────────────────────────────────────
+
+// 공용 contributor row (Detail 내부 거의 모든 분기에서 반복되던 li 블록).
+function BreakdownRow({
+  iconSrc,
+  iconRounded,
+  name,
+  count,
+  type,
+  rightValue,
+}: {
+  iconSrc: string;
+  iconRounded?: boolean;
+  name: string;
+  count?: number;
+  type?: CircuitType;
+  rightValue: React.ReactNode;
+}) {
+  const color = type ? TYPE_COLORS[type] : undefined;
+  return (
+    <li className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
+      <Image
+        src={iconSrc}
+        alt=""
+        width={28}
+        height={28}
+        className={cn("size-7 object-contain shrink-0", iconRounded && "rounded-full")}
+      />
+      <div className="flex-1 min-w-0">
+        <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
+          {name}
+          {count != null && count > 1 && color && (
+            <span
+              className="text-[10px] font-bold px-1 rounded-sm tabular-nums"
+              style={{ backgroundColor: `${color}30`, color }}
+            >
+              ×{count}
+            </span>
+          )}
+        </div>
+      </div>
+      <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+        {rightValue}
+      </span>
+    </li>
+  );
+}
+
 function Detail({
   selected,
   locale,
@@ -849,27 +925,16 @@ function Detail({
             {locale === "ko" ? "기여 모듈" : "Contributing modules"}
           </div>
           <ul className="space-y-1.5">
-            {contributors.map((c) => {
-              const color = TYPE_COLORS[c.module.type];
-              return (
-                <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
-                  <Image src={`/images/game-items/${c.module.id}.png`} alt="" width={28} height={28} className="size-7 object-contain shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
-                      {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
-                      {c.count > 1 && (
-                        <span className="text-[10px] font-bold px-1 rounded-sm tabular-nums" style={{ backgroundColor: `${color}30`, color }}>
-                          ×{c.count}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
-                    {locale === "ko" ? `+${c.chips} chip` : `+${c.chips} chip`}
-                  </span>
-                </li>
-              );
-            })}
+            {contributors.map((c) => (
+              <BreakdownRow
+                key={c.module.id}
+                iconSrc={`/images/game-items/${c.module.id}.png`}
+                name={locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                count={c.count}
+                type={c.module.type}
+                rightValue={`+${c.chips} chip`}
+              />
+            ))}
           </ul>
         </div>
       </div>
@@ -908,27 +973,16 @@ function Detail({
             {locale === "ko" ? "기여 모듈" : "Contributing modules"}
           </div>
           <ul className="space-y-1.5">
-            {contributors.map((c) => {
-              const color = TYPE_COLORS[c.module.type];
-              return (
-                <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
-                  <Image src={`/images/game-items/${c.module.id}.png`} alt="" width={28} height={28} className="size-7 object-contain shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
-                      {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
-                      {c.count > 1 && (
-                        <span className="text-[10px] font-bold px-1 rounded-sm tabular-nums" style={{ backgroundColor: `${color}30`, color }}>
-                          ×{c.count}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
-                    +{formatPct(c.pct)}%
-                  </span>
-                </li>
-              );
-            })}
+            {contributors.map((c) => (
+              <BreakdownRow
+                key={c.module.id}
+                iconSrc={`/images/game-items/${c.module.id}.png`}
+                name={locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                count={c.count}
+                type={c.module.type}
+                rightValue={`+${formatPct(c.pct)}%`}
+              />
+            ))}
           </ul>
         </div>
       </div>
@@ -962,27 +1016,16 @@ function Detail({
             {locale === "ko" ? "기여 모듈" : "Contributing modules"}
           </div>
           <ul className="space-y-1.5">
-            {contributors.map((c) => {
-              const color = TYPE_COLORS[c.module.type];
-              return (
-                <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
-                  <Image src={`/images/game-items/${c.module.id}.png`} alt="" width={28} height={28} className="size-7 object-contain shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
-                      {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
-                      {c.count > 1 && (
-                        <span className="text-[10px] font-bold px-1 rounded-sm tabular-nums" style={{ backgroundColor: `${color}30`, color }}>
-                          ×{c.count}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
-                    {locale === "ko" ? `+${c.chips} chip` : `+${c.chips} chip`}
-                  </span>
-                </li>
-              );
-            })}
+            {contributors.map((c) => (
+              <BreakdownRow
+                key={c.module.id}
+                iconSrc={`/images/game-items/${c.module.id}.png`}
+                name={locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                count={c.count}
+                type={c.module.type}
+                rightValue={`+${c.chips} chip`}
+              />
+            ))}
           </ul>
         </div>
       </div>
@@ -1046,27 +1089,16 @@ function Detail({
             {locale === "ko" ? "기여 모듈" : "Contributing modules"}
           </div>
           <ul className="space-y-1.5">
-            {contributors.map((c) => {
-              const color = TYPE_COLORS[c.module.type];
-              return (
-                <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
-                  <Image src={`/images/game-items/${c.module.id}.png`} alt="" width={28} height={28} className="size-7 object-contain shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
-                      {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
-                      {c.count > 1 && (
-                        <span className="text-[10px] font-bold px-1 rounded-sm tabular-nums" style={{ backgroundColor: `${color}30`, color }}>
-                          ×{c.count}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
-                    {sign}{c.perModulePct}% {locale === "ko" ? "/모듈" : "/each"}
-                  </span>
-                </li>
-              );
-            })}
+            {contributors.map((c) => (
+              <BreakdownRow
+                key={c.module.id}
+                iconSrc={`/images/game-items/${c.module.id}.png`}
+                name={locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                count={c.count}
+                type={c.module.type}
+                rightValue={`${sign}${c.perModulePct}% ${locale === "ko" ? "/모듈" : "/each"}`}
+              />
+            ))}
           </ul>
         </div>
       </div>
@@ -1104,53 +1136,22 @@ function Detail({
           {locale === "ko" ? "구성" : "Breakdown"}
         </div>
         <ul className="space-y-1.5">
-          <li className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
-            <Image
-              src="/images/category-icons/characters/wx78.png"
-              alt=""
-              width={28}
-              height={28}
-              className="size-7 object-contain shrink-0 rounded-full"
+          <BreakdownRow
+            iconSrc="/images/category-icons/characters/wx78.png"
+            iconRounded
+            name={locale === "ko" ? "WX-78 기본" : "WX-78 base"}
+            rightValue={baseValue}
+          />
+          {contributors.map((c) => (
+            <BreakdownRow
+              key={c.module.id}
+              iconSrc={`/images/game-items/${c.module.id}.png`}
+              name={locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+              count={c.count}
+              type={c.module.type}
+              rightValue={`+${c.value}`}
             />
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold text-foreground">
-                {locale === "ko" ? "WX-78 기본" : "WX-78 base"}
-              </div>
-            </div>
-            <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
-              {baseValue}
-            </span>
-          </li>
-          {contributors.map((c) => {
-            const color = TYPE_COLORS[c.module.type];
-            return (
-              <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
-                <Image
-                  src={`/images/game-items/${c.module.id}.png`}
-                  alt=""
-                  width={28}
-                  height={28}
-                  className="size-7 object-contain shrink-0"
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
-                    {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
-                    {c.count > 1 && (
-                      <span
-                        className="text-[10px] font-bold px-1 rounded-sm tabular-nums"
-                        style={{ backgroundColor: `${color}30`, color }}
-                      >
-                        ×{c.count}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
-                  +{c.value}
-                </span>
-              </li>
-            );
-          })}
+          ))}
         </ul>
       </div>
     </div>
