@@ -15,6 +15,16 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.24",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 Detail 패널 디자인 통일 — 크래프팅 ItemDetail 스타일(아이콘 카드 + 제목 + 서브타이틀 + 배지 + 우측 값)로 effect/skill/movespeed/armor/slow/neg_aura/dapper/hunger_drain/vital 모든 분기 통합 (사용자 피드백 #953 '대리석 씨앗쪽이 보기 좋아 보임')",
+      "feat(skills): DetailHeader 공용 컴포넌트 + TypeChip 추출. 효과 헤더에 모듈 아이콘 56px + 한글/영문 이름 + 알파/베타/감마 칩 + 카운트 칩 + 스킬 강화 칩 일관 표시",
+      "feat(skills): 합산 stat 헤더 아이콘 — 정신력 감소 오라=초연산 회로, 의복 정신력 회복=고급 모자, 허기 소모 감소=고급 위장 회로, 체/허/정 vital=health/hunger/sanity UI 아이콘",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.23",
     date: "2026-05-08",
     dev: [

@@ -788,6 +788,61 @@ function VitalStat({
 
 // ── DetailPanel content ──────────────────────────────────────
 
+// Detail 헤더 — 크래프팅 ItemDetail과 동일한 패턴: 아이콘 카드 + 제목 + (서브타이틀/배지) + 우측 값.
+// effect/skill/aggregated stat 분기 모두에서 재사용.
+function DetailHeader({
+  iconSrc,
+  iconRounded,
+  title,
+  subtitle,
+  badges,
+  rightValue,
+}: {
+  iconSrc: string;
+  iconRounded?: boolean;
+  title: string;
+  subtitle?: React.ReactNode;
+  badges?: React.ReactNode;
+  rightValue?: React.ReactNode;
+}) {
+  return (
+    <div className="flex gap-3 px-4 pt-4 pb-1">
+      <div className="flex items-start justify-center shrink-0">
+        <div className="flex items-center justify-center size-14 rounded-md border border-input bg-surface">
+          <img
+            src={iconSrc}
+            alt=""
+            className={cn("size-12 object-contain", iconRounded && "rounded-full")}
+          />
+        </div>
+      </div>
+      <div className="flex-1 min-w-0 space-y-1">
+        <h3 className="text-base font-semibold text-foreground leading-tight">{title}</h3>
+        {subtitle && <div className="text-xs text-muted-foreground">{subtitle}</div>}
+        {badges && <div className="flex items-center gap-1 flex-wrap pt-0.5">{badges}</div>}
+      </div>
+      {rightValue && (
+        <div className="shrink-0 self-start text-base font-bold tabular-nums text-foreground pt-1">
+          {rightValue}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// 타입 칩 (알파/베타/감마)
+function TypeChip({ type, locale }: { type: CircuitType; locale: Locale }) {
+  const color = TYPE_COLORS[type];
+  return (
+    <span
+      className="text-[10px] font-bold px-1.5 py-0.5 rounded-sm"
+      style={{ backgroundColor: `${color}25`, color }}
+    >
+      {typeLabel(type, locale)}
+    </span>
+  );
+}
+
 // 공용 contributor row (Detail 내부 거의 모든 분기에서 반복되던 li 블록).
 function BreakdownRow({
   iconSrc,
@@ -850,48 +905,35 @@ function Detail({
   if (selected.kind === "effect") {
     const r = selected.row;
     const color = TYPE_COLORS[r.module.type];
+    const moduleName = locale === "ko" ? r.module.nameI18n.ko : r.module.nameI18n.en;
+    const moduleAlt = locale === "ko" ? r.module.nameI18n.en : r.module.nameI18n.ko;
     return (
-      <div className="px-4 pt-4 pb-2">
-        <p className="text-base font-semibold text-foreground leading-relaxed">{r.text}</p>
-
-        <div className="mt-4">
-          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
-            {locale === "ko" ? "출처" : "Source"}
-          </div>
-          <div className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
-            <Image
-              src={`/images/game-items/${r.module.id}.png`}
-              alt=""
-              width={36}
-              height={36}
-              className="size-9 object-contain shrink-0"
-            />
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
-                {locale === "ko" ? r.module.nameI18n.ko : r.module.nameI18n.en}
-                {r.count > 1 && (
-                  <span
-                    className="text-[10px] font-bold px-1 rounded-sm tabular-nums"
-                    style={{ backgroundColor: `${color}30`, color }}
-                  >
-                    ×{r.count}
-                  </span>
-                )}
+      <div className="pb-2">
+        <DetailHeader
+          iconSrc={`/images/game-items/${r.module.id}.png`}
+          title={moduleName}
+          subtitle={moduleAlt}
+          badges={
+            <>
+              <TypeChip type={r.module.type} locale={locale} />
+              {r.count > 1 && (
                 <span
-                  className="text-[10px] font-bold px-1 rounded-sm"
-                  style={{ backgroundColor: `${color}25`, color }}
+                  className="text-[10px] font-bold px-1.5 py-0.5 rounded-sm tabular-nums"
+                  style={{ backgroundColor: `${color}30`, color }}
                 >
-                  {typeLabel(r.module.type, locale)}
+                  ×{r.count}
                 </span>
-              </div>
-              {r.skillId && (
-                <div className="text-[11px] text-muted-foreground mt-0.5">
-                  {locale === "ko" ? "+ 스킬 강화: " : "+ Skill buff: "}
-                  <span className="font-semibold">{skillLabel(r.skillId, locale)}</span>
-                </div>
               )}
-            </div>
-          </div>
+              {r.skillId && (
+                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-sm bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
+                  {skillLabel(r.skillId, locale)}
+                </span>
+              )}
+            </>
+          }
+        />
+        <div className="px-4 pt-3">
+          <p className="text-sm leading-relaxed text-foreground/95">{r.text}</p>
         </div>
       </div>
     );
@@ -899,23 +941,21 @@ function Detail({
 
   if (selected.kind === "skill") {
     return (
-      <div className="px-4 pt-4 pb-2">
-        <p className="text-base font-semibold text-foreground leading-relaxed">{selected.text}</p>
-
-        <div className="mt-4">
-          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
-            {locale === "ko" ? "출처" : "Source"}
-          </div>
-          <div className="px-3 py-2 rounded-md bg-surface/60 text-sm font-semibold text-foreground">
-            {skillLabel(selected.skill, locale)}
-          </div>
+      <div className="pb-2">
+        <DetailHeader
+          iconSrc="/images/category-icons/characters/wx78.png"
+          iconRounded
+          title={skillLabel(selected.skill, locale)}
+          subtitle={locale === "ko" ? "회로 시스템 스킬" : "Circuitry Skill"}
+        />
+        <div className="px-4 pt-3">
+          <p className="text-sm leading-relaxed text-foreground/95">{selected.text}</p>
         </div>
       </div>
     );
   }
 
   if (selected.kind === "movespeed") {
-    // movespeed/movespeed2 chip 합계 → CHIPBOOSTS lookup. 기여 모듈 나열.
     const contributors: { module: CircuitModule; count: number; chips: number }[] = [];
     for (const [id, count] of Object.entries(effectiveCounts)) {
       if (!count) continue;
@@ -927,17 +967,16 @@ function Detail({
     }
     const totalPct = Math.round(selected.pct * 100);
     return (
-      <div className="px-4 pt-4 pb-2">
-        <div className="flex items-baseline justify-between">
-          <h3 className="text-base font-bold text-foreground">{locale === "ko" ? "이동 속도" : "Move Speed"}</h3>
-          <span className="text-base font-bold tabular-nums text-foreground">+{totalPct}%</span>
-        </div>
-        <div className="mt-2 text-[11px] text-muted-foreground">
-          {locale === "ko"
-            ? `회로 chip 합계: ${selected.chips}개 → 보너스 ${totalPct}% (lookup table: 0개=0% / 1개=25% / 2개=40% / 3개+=50%)`
-            : `Total chips: ${selected.chips} → +${totalPct}% (lookup: 0=0%, 1=25%, 2=40%, 3+=50%)`}
-        </div>
-        <div className="mt-4">
+      <div className="pb-2">
+        <DetailHeader
+          iconSrc="/images/game-items/cane.png"
+          title={locale === "ko" ? "이동 속도" : "Move Speed"}
+          subtitle={locale === "ko"
+            ? `chip 합계 ${selected.chips}개 → lookup table (0/1/2/3+ = 0/25/40/50%)`
+            : `${selected.chips} chip(s) → lookup table (0/1/2/3+ = 0/25/40/50%)`}
+          rightValue={`+${totalPct}%`}
+        />
+        <div className="px-4 pt-4">
           <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
             {locale === "ko" ? "기여 모듈" : "Contributing modules"}
           </div>
@@ -959,7 +998,6 @@ function Detail({
   }
 
   if (selected.kind === "armor") {
-    // 모듈별 armor pct 기여를 buff stats에서 수집
     const contributors: { module: CircuitModule; count: number; pct: number }[] = [];
     for (const [id, count] of Object.entries(effectiveCounts)) {
       if (!count) continue;
@@ -976,16 +1014,19 @@ function Detail({
     }
     const formatPct = (n: number) => Number.isInteger(n) ? n.toString() : n.toFixed(1).replace(/\.0$/, "");
     return (
-      <div className="px-4 pt-4 pb-2">
-        <div className="flex items-baseline justify-between">
-          <h3 className="text-base font-bold text-foreground">{locale === "ko" ? "방어력" : "Armor"}</h3>
-          <span className="text-base font-bold tabular-nums text-foreground">+{formatPct(selected.total)}%</span>
-        </div>
-        <div className="mt-2 text-[11px] text-muted-foreground">
-          {locale === "ko" ? "스킬: " : "Skill: "}
-          <span className="font-semibold">{skillLabel(selected.skillId, locale)}</span>
-        </div>
-        <div className="mt-4">
+      <div className="pb-2">
+        <DetailHeader
+          iconSrc="/images/game-items/armormarble.png"
+          title={locale === "ko" ? "방어력" : "Armor"}
+          subtitle={
+            <>
+              <span>{locale === "ko" ? "스킬: " : "Skill: "}</span>
+              <span className="font-semibold">{skillLabel(selected.skillId, locale)}</span>
+            </>
+          }
+          rightValue={`+${formatPct(selected.total)}%`}
+        />
+        <div className="px-4 pt-4">
           <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
             {locale === "ko" ? "기여 모듈" : "Contributing modules"}
           </div>
@@ -1018,17 +1059,16 @@ function Detail({
       }
     }
     return (
-      <div className="px-4 pt-4 pb-2">
-        <div className="flex items-baseline justify-between">
-          <h3 className="text-base font-bold text-foreground">{locale === "ko" ? "둔화 저항" : "Slow Resist"}</h3>
-          <span className="text-base font-bold tabular-nums text-foreground">−{totalPct}%</span>
-        </div>
-        <div className="mt-2 text-[11px] text-muted-foreground">
-          {locale === "ko"
-            ? `이속 회로 ${selected.chips}개 × 25% = ${totalPct}% 둔화 회복 (4개 이상이면 100% 무효). 베타 회로 제조 II 학습 필요.`
-            : `${selected.chips} movespeed chip(s) × 25% = ${totalPct}% slow recovered (cap 100% at 4+). Requires Beta Tinkering II.`}
-        </div>
-        <div className="mt-4">
+      <div className="pb-2">
+        <DetailHeader
+          iconSrc="/images/game-items/piggyback.png"
+          title={locale === "ko" ? "둔화 저항" : "Slow Resist"}
+          subtitle={locale === "ko"
+            ? `chip ${selected.chips}개 × 25% (4개+면 100% 무효, 베타 회로 제조 II 학습)`
+            : `${selected.chips} chip(s) × 25% (cap 100% at 4+, requires Beta Tinkering II)`}
+          rightValue={`−${totalPct}%`}
+        />
+        <div className="px-4 pt-4">
           <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
             {locale === "ko" ? "기여 모듈" : "Contributing modules"}
           </div>
@@ -1052,19 +1092,20 @@ function Detail({
   if (selected.kind === "neg_aura" || selected.kind === "dapper" || selected.kind === "hunger_drain") {
     const isNegAura = selected.kind === "neg_aura";
     const isDapper = selected.kind === "dapper";
-    const isHunger = selected.kind === "hunger_drain";
     const totalPct = Math.round(selected.pct * 100);
     const title =
       isNegAura ? (locale === "ko" ? "정신력 감소 오라 영향" : "Negative Sanity Aura")
       : isDapper ? (locale === "ko" ? "의복에 의한 정신력 회복" : "Sanity from Clothing")
       : (locale === "ko" ? "허기 소모 감소" : "Hunger Drain Reduction");
+    const headerIcon =
+      isNegAura ? "/images/game-items/wx78module_maxsanity.png"
+      : isDapper ? "/images/game-items/tophat.png"
+      : "/images/game-items/wx78module_maxhunger.png";
     const sign = isDapper ? "+" : "−";
     const stackingNote =
-      isNegAura ? (locale === "ko" ? "곱연산(modules multiplied)" : "Multiplicative product")
-      : isDapper ? (locale === "ko" ? "합연산(additive)" : "Additive sum")
-      : (locale === "ko" ? "곱연산(modules multiplied)" : "Multiplicative product");
+      isDapper ? (locale === "ko" ? "합연산 (additive)" : "Additive sum")
+      : (locale === "ko" ? "곱연산 (multiplicative)" : "Multiplicative product");
 
-    // Contributing modules
     const contributors: { module: CircuitModule; count: number; perModulePct: number }[] = [];
     for (const [id, count] of Object.entries(effectiveCounts)) {
       if (!count) continue;
@@ -1084,24 +1125,25 @@ function Detail({
     }
 
     return (
-      <div className="px-4 pt-4 pb-2">
-        <div className="flex items-baseline justify-between">
-          <h3 className="text-base font-bold text-foreground">{title}</h3>
-          <span className="text-base font-bold tabular-nums text-foreground">{sign}{totalPct}%</span>
-        </div>
-        <div className="mt-2 text-[11px] text-muted-foreground space-y-0.5">
-          {selected.skillId && (
-            <div>
-              {locale === "ko" ? "스킬: " : "Skill: "}
-              <span className="font-semibold">{skillLabel(selected.skillId, locale)}</span>
-            </div>
-          )}
-          <div>
-            {locale === "ko" ? "스택 방식: " : "Stacking: "}
-            <span>{stackingNote}</span>
-          </div>
-        </div>
-        <div className="mt-4">
+      <div className="pb-2">
+        <DetailHeader
+          iconSrc={headerIcon}
+          title={title}
+          subtitle={
+            <>
+              {selected.skillId && (
+                <span>
+                  {locale === "ko" ? "스킬: " : "Skill: "}
+                  <span className="font-semibold">{skillLabel(selected.skillId, locale)}</span>
+                  <span className="mx-1">·</span>
+                </span>
+              )}
+              <span>{stackingNote}</span>
+            </>
+          }
+          rightValue={`${sign}${totalPct}%`}
+        />
+        <div className="px-4 pt-4">
           <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
             {locale === "ko" ? "기여 모듈" : "Contributing modules"}
           </div>
@@ -1142,13 +1184,19 @@ function Detail({
     statKind === "maxHealth" ? (locale === "ko" ? "최대 체력" : "Max Health") :
     statKind === "maxHunger" ? (locale === "ko" ? "최대 허기" : "Max Hunger") :
     (locale === "ko" ? "최대 정신력" : "Max Sanity");
+  const headerIcon =
+    statKind === "maxHealth" ? "/images/ui/health.png" :
+    statKind === "maxHunger" ? "/images/ui/hunger.png" :
+    "/images/ui/sanity.png";
   return (
-    <div className="px-4 pt-4 pb-2">
-      <div className="flex items-baseline justify-between">
-        <h3 className="text-base font-bold text-foreground">{label}</h3>
-        <span className="text-base font-bold tabular-nums text-foreground">{selected.total}</span>
-      </div>
-      <div className="mt-4">
+    <div className="pb-2">
+      <DetailHeader
+        iconSrc={headerIcon}
+        title={label}
+        subtitle={locale === "ko" ? `WX-78 기본 ${baseValue} + 회로별 합산` : `WX-78 base ${baseValue} + circuit modules`}
+        rightValue={selected.total}
+      />
+      <div className="px-4 pt-4">
         <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
           {locale === "ko" ? "구성" : "Breakdown"}
         </div>
