@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.7",
+    date: "2026-05-08",
+    dev: [
+      "fix(pwa): beta splash 배경색 빨간색(#dc2626) → 흰색(#ffffff). generate-ios-splash.mjs의 ENVS 배열에서 -beta 환경의 bg를 #ffffff로 변경.",
+      "chore(pwa): beta manifest theme_color도 흰색으로 통일 — generate-manifest.cjs의 isBeta 분기 제거.",
+    ],
+    changes: {
+      ko: [
+        "iOS 베타 PWA splash 배경이 빨간색으로 표시되던 문제 수정 — 흰색으로 통일했습니다.",
+      ],
+      en: [
+        "Fixed iOS beta PWA splash background showing red — now unified to white.",
+      ],
+    },
+  },
+  {
     version: "0.22.6",
     date: "2026-05-08",
     dev: [

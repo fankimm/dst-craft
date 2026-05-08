@@ -13,7 +13,7 @@ const manifest = {
   scope: basePath + "/",
   display: "standalone",
   background_color: "#ffffff",
-  theme_color: isBeta ? "#dc2626" : "#ffffff",
+  theme_color: "#ffffff",
   icons: [
     { src: `${basePath}/icons/icon-192${suffix}.png`, sizes: "192x192", type: "image/png", purpose: "any" },
     { src: `${basePath}/icons/icon-512${suffix}.png`, sizes: "512x512", type: "image/png", purpose: "any" },
