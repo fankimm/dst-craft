@@ -10080,6 +10080,20 @@ export const allItems: CraftingItem[] = [
     sortOrder: 77,
   },
   {
+    id: "w_radio",
+    name: "B.U.D.D.Y.",
+    description: "Where is that signal coming from?",
+    image: "w_radio.png",
+    category: ["decorations"],
+    station: "none",
+    materials: [
+      { materialId: "wagpunk_bits", quantity: 5 },
+      { materialId: "transistor", quantity: 2 },
+    ],
+    nounlock: true,
+    sortOrder: 78,
+  },
+  {
     id: "floatinglantern",
     name: "Floatinglantern",
     description: "Sky Lantern",

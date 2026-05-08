@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.4",
+    date: "2026-05-08",
+    dev: [
+      "feat(items): B.U.D.D.Y.(w_radio) 누락 등록 — 인게임 소스(scripts/recipes.lua, prefabs/w_radio.lua) 기준으로 재료 wagpunk_bits×5 + transistor×2, TECH.LOST(Klei 보상 해금)이라 station=\"none\", 카테고리는 DECOR 필터에 맞춰 [\"decorations\"]. 한글명/설명은 ko.po 기준(이름 'B.U.D.D.Y.', 설명 '어디서 오는 신호일까요?').",
+      "asset: public/images/game-items/w_radio.png 추가 (위키 dropped 이미지 → sips 64x64 리사이즈).",
+      "data(locales/ko): items에 w_radio 항목 추가.",
+    ],
+    changes: {
+      ko: [
+        "신규 아이템 'B.U.D.D.Y.' 추가 — 라디오 퍼즐(Exspectamus) 보상으로 해금되는 농장 자동 관리 기기. 잡동사니 5 + 전기 장치 2로 제작, 주변 작물을 자동으로 돌봅니다.",
+      ],
+      en: [
+        "Added missing item 'B.U.D.D.Y.' — Klei reward unlock from the Exspectamus radio puzzle. Crafted from 5 Scrap + 2 Electrical Doodads; automatically tends nearby farm plants.",
+      ],
+    },
+  },
+  {
     version: "0.22.3",
     date: "2026-05-08",
     dev: [
