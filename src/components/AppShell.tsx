@@ -11,7 +11,6 @@ import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
 import { ConsoleApp } from "./console/ConsoleApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { FloatingSupportPill } from "./ui/FloatingSupportPill";
-import { SkillsTourPopover } from "./SkillsTourPopover";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import { t } from "@/lib/i18n";
@@ -295,15 +294,6 @@ export function AppShell() {
         </div>
       </div>
 
-      {/* Skills tour — first-load popover guiding users to the new Skill Simulator */}
-      <SkillsTourPopover
-        skillsTabIndex={tabs.findIndex((t) => t.id === "skills")}
-        totalTabs={tabs.length}
-        isOnSkillsTab={activeTab === "skills"}
-        onTryNow={() => handleTabClick("skills")}
-        locale={resolvedLocale}
-      />
-
       {/* Review Prompt */}
       <ReviewPrompt open={showReview} onClose={handleReviewClose} locale={resolvedLocale} />
 
@@ -408,13 +398,6 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
       action: () => {
         localStorage.removeItem("dst:review-dismissed");
         sessionStorage.removeItem("dst:review-shown");
-      },
-    },
-    {
-      label: "스킬 투어 팝오버 초기화",
-      action: () => {
-        localStorage.removeItem("dst:tour-skills-v0.11.8");
-        location.reload();
       },
     },
     { label: "스킬 아이콘 목록", action: () => window.open("/skill-icons", "_blank") },

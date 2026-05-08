@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.1",
+    date: "2026-05-08",
+    dev: [
+      "fix(bosses): 그림자 기물(shadow_chess) 카테고리에서 underground 제거 — 지상 보스(체스 조각상 3개를 세트피스에 조립 → 삭일 밤 곡괭이로 소환)인데 underground로 잘못 분류돼 있던 것을 raid 단일 카테고리로 정정.",
+      "chore(skills): 스킬 시뮬 첫 접속 투어 팝오버(v0.11.8용) 컴포넌트 + DevMenu 항목 제거. 팝오버는 첫 노출 후 localStorage에 마킹되어 사실상 더 이상 표시되지 않던 잔존물.",
+    ],
+    changes: {
+      ko: [
+        "그림자 기물이 '지하 보스' 필터에 잘못 포함돼 있던 문제 수정 (지상에서 체스 조각상 조립 → 삭일 밤 소환 보스).",
+      ],
+      en: [
+        "Fixed Shadow Pieces incorrectly appearing under the 'Underground' boss filter (it's a surface boss summoned from chess statues on a new moon).",
+      ],
+    },
+  },
+  {
     version: "0.23.0",
     date: "2026-05-08",
     dev: [

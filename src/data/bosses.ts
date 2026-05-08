@@ -458,7 +458,7 @@ export const bosses: Boss[] = [
     id: "shadow_chess",
     name: "Shadow Pieces",
     nameKo: "그림자 체스 말",
-    categories: ["underground", "raid"],
+    categories: ["raid"],
     image: ["shadow_rook.png", "shadow_knight.png", "shadow_bishop.png"],
     loot: [
       { item: "shadowheart", chance: 1 },
