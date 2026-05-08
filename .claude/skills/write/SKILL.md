@@ -37,10 +37,14 @@ description: 글쓰기, 표현 다듬기, 번역 전문 에이전트. 릴리즈 
 
 ### 한→영 (DST 영문 표현 가이드)
 
-#### 출처 우선순위 — Klei가 곧 정답
-1. **Klei scrapbook (`src/data/scrapbook-stats.ts` 의 `specialinfo_en`)** — 인게임 표시되는 공식 영어. 같은 개념 있으면 그 어휘 그대로 차용 (저작권 이슈 없음, 짧은 게임 용어 수준)
-2. **dontstarve.wiki.gg** — 커뮤니티 컨벤션 ("Sanity aura" / "Insanity aura" 등). Klei와 다르면 Klei 우선
-3. **자체 표현** — 1·2에 없을 때만 작성. 새로 영작 잘하려 하지 말 것
+#### 출처 우선순위 — 인게임 텍스트 > 스크랩북 > 창작
+**원칙**: 인게임에 실제 노출되는 영어 표현을 최대한 그대로 가져온다. 창작은 최후의 보루.
+
+1. **인게임 텍스트 그대로** — 아이템명/설명, 레시피 설명, 툴팁, 스킬 desc, 캐릭터 quote 등 게임 플레이 중 실제 표시되는 모든 영문. `scripts/strings.lua`, `scripts/skilltreedata.lua`, ko.po 의 영문 원문. **같은 개념이 있으면 verbatim 차용**.
+2. **스크랩북 텍스트** — `src/data/scrapbook-stats.ts` 의 `specialinfo_en`. 인게임 doku-mentation 이라 톤·어휘가 공식. 1번에 없으면 여기서 차용.
+3. **창작 (최후의 보루)** — 1·2에 같은 개념이 없을 때만. 짧고 평범하게. 영어 문장 잘 쓰려 하지 말고 1·2의 어휘·톤을 그대로 흉내 낼 것.
+
+**보조 참고**: dontstarve.wiki.gg 는 커뮤니티 컨벤션 (`Sanity aura` / `Insanity aura` 등) 확인용이지 출처 아님. Klei 표현과 다르면 Klei 우선.
 
 #### "Klei vocabulary is the bar" 룰
 같은 효과를 묘사하는 Klei scrapbook 문구가 있으면 **벗어나지 말 것**. 예:
