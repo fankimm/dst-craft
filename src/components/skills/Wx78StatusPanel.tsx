@@ -425,19 +425,31 @@ function hungerDrainReduction(counts: CircuitCounts, hasT1: boolean, hasT2: bool
   return 1 - mult;
 }
 
-// Row matchers
+// Row matchers — ko/en 양쪽 처리. 한쪽만 매치하면 영문에서 stat row + 효과 row 중복 노출.
 function isSanityAuraRow(row: EffectRow): boolean {
-  return /^정신력 감소 오라의 영향이 \d+% 감소한다\.?\s*$/.test(row.text);
+  if (/^정신력 감소 오라의 영향이 \d+% 감소한다\.?\s*$/.test(row.text)) return true;
+  // EN scrapbook (skill prefix strip 후): "boosts this circuit to have a N% modifier to negative sanity auras."
+  if (/^boosts this circuit to have a \d+% modifier to negative sanity auras\.?\s*$/i.test(row.text)) return true;
+  return false;
 }
 
 function isDapperRow(row: EffectRow): boolean {
-  return /^의복에 의한 정신력 회복이 \d+% 증가한다\.?\s*$/.test(row.text);
+  if (/^의복에 의한 정신력 회복이 \d+% 증가한다\.?\s*$/.test(row.text)) return true;
+  if (/^boosts this circuit to increase the sanity gain of clothing items by \d+%\.?\s*$/i.test(row.text)) return true;
+  return false;
 }
 
 // 의복 정신력 회복 compound prefix 추출 (bee의 "의복 회복 25% 증가하고, 실드 ..." 케이스)
-function extractDapperPrefixKo(text: string): { rest: string } | null {
-  if (/^의복에 의한 정신력 회복이 \d+% 증가한다\.?\s*$/.test(text)) return { rest: "" };
-  const m = text.match(/^의복에 의한 정신력 회복이 \d+% 증가하고[,\s]+(.+)$/);
+function extractDapperPrefix(text: string, locale: Locale): { rest: string } | null {
+  if (locale === "ko") {
+    if (/^의복에 의한 정신력 회복이 \d+% 증가한다\.?\s*$/.test(text)) return { rest: "" };
+    const m = text.match(/^의복에 의한 정신력 회복이 \d+% 증가하고[,\s]+(.+)$/);
+    if (m) return { rest: m[1].trim() };
+    return null;
+  }
+  // EN
+  if (/^boosts this circuit to increase the sanity gain of clothing items by \d+%\.?\s*$/i.test(text)) return { rest: "" };
+  const m = text.match(/^boosts this circuit to increase the sanity gain of clothing items by \d+%,\s*and\s+(.+)$/i);
   if (m) return { rest: m[1].trim() };
   return null;
 }
@@ -445,6 +457,12 @@ function extractDapperPrefixKo(text: string): { rest: string } | null {
 function isHungerDrainRow(row: EffectRow): boolean {
   if (/^허기 소모가? \d+% 감소한다\.?\s*$/.test(row.text)) return true;
   if (/^허기 소모 감소가 \d+%로 증가한다\.?\s*$/.test(row.text)) return true;
+  // EN base (maxhunger 본문, vital 추출 후 잔여): "reduces Hunger drain by N%."
+  if (/^reduces Hunger drain by \d+%\.?\s*$/i.test(row.text)) return true;
+  // EN T1/T2 buff (maxhunger): "boosts the Hunger drain reduction to N%."
+  if (/^boosts the Hunger drain reduction to \d+%\.?\s*$/i.test(row.text)) return true;
+  // EN T1 buff (maxhunger1): "boosts this circuit to reduce Hunger drain by N%."
+  if (/^boosts this circuit to reduce Hunger drain by \d+%\.?\s*$/i.test(row.text)) return true;
   return false;
 }
 
@@ -623,7 +641,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
       if (fireResist > 0 && isFireResistRow(r)) continue;
       if (hungerReduction > 0 && isHungerDrainRow(r)) continue;
       if (dapperBoost > 0 && r.skillId) {
-        const ex = extractDapperPrefixKo(r.text);
+        const ex = extractDapperPrefix(r.text, locale);
         if (ex) {
           if (ex.rest) out.push({ ...r, text: ex.rest });
           // standalone dapper row → drop (merged card로 대체)
@@ -634,7 +652,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     }
     // 동일 텍스트 dedupe (light/light2 "빛을 발산한다." 등 여러 모듈이 같은 효과 문구)
     return dedupeRowsByText(out);
-  }, [afterSlow, negAuraReduction, dapperBoost, hungerReduction, fireResist]);
+  }, [afterSlow, negAuraReduction, dapperBoost, hungerReduction, fireResist, locale]);
   const skillRows = useMemo(
     () => getGlobalSkillRows(effectiveSkills, locale),
     [effectiveSkills, locale],
