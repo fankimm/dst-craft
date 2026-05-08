@@ -24,11 +24,18 @@
 - Next.js 16 (App Router, Static Export) + TypeScript + Tailwind CSS v4 + shadcn/ui
 - Mac Mini 셀프호스팅 (Nginx + Cloudflare Tunnel), PWA 지원
 
+## Session Start
+- 세션 시작 시 글로벌 SessionStart hook이 `git fetch --all --prune` + `git pull --ff-only`를 자동 실행. Claude는 hook 출력을 확인하여 충돌/divergence가 있으면 사용자에게 알릴 것.
+- ff-only 실패(브랜치 발산) 시 임의로 merge/rebase하지 말고 사용자에게 상태 보고.
+
 ## Branch & Deploy Strategy
-- **`main` 브랜치**: push → GitHub Actions (self-hosted runner on Mac Mini) → prod 자동 배포 (www.dstcraft.com)
-- **`beta` 브랜치**: push → 동일 runner → beta 자동 배포 (beta.dstcraft.com)
-- **`커푸` (커밋+푸시) 요청 시**: `main` 브랜치에 push
-- Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환)
+- **기본 작업 브랜치는 `beta`** — 모든 코드 변경/커밋/푸시는 `beta` 브랜치에서. 세션 시작 시 `beta`로 체크아웃 안 되어 있으면 사용자에게 확인 후 전환.
+- **`main` 브랜치 직접 작업 금지** — 사용자가 *명시적으로* main 작업/푸시를 요청한 경우에만 허용. `커푸`/`/push` 등 일반 푸시 요청은 항상 `beta`로 해석.
+- **배포 매핑**:
+  - `beta` push → `beta.dstcraft.com` (Mac mini 셀프호스팅, Cloudflare Tunnel, GitHub Actions self-hosted runner)
+  - `main` push → `www.dstcraft.com` (Production, 동일 runner)
+- **`/release` 워크플로우**: beta에서 검증된 변경을 main으로 머지 + main push + 릴리즈노트/버전 갱신. main에 직접 푸시하는 유일한 경로.
+- Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 
 ## Architecture
 - **프론트엔드**: `src/` — Next.js Static Export → Nginx serving (Cloudflare Tunnel 뒤)

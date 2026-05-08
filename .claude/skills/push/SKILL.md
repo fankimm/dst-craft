@@ -1,11 +1,13 @@
 ---
 name: push
-description: 현재 변경사항을 커밋 + main 푸시 (Vercel 배포). 릴리즈노트/버전/오답노트 자동 갱신.
+description: 현재 변경사항을 커밋 + beta 푸시 (beta.dstcraft.com 배포). 오답노트 자동 갱신. Production(main) 배포는 /release 사용.
 ---
 
-# /push — 커밋 + 배포 워크플로우
+# /push — 커밋 + beta 배포 워크플로우
 
-현재 작업 디렉토리의 변경사항을 정리해서 `main` 브랜치에 푸시한다 (Vercel auto-deploy). CLAUDE.md의 Release Notes Rules / Mistakes Rules / Branch & Deploy Strategy를 준수.
+현재 작업 디렉토리의 변경사항을 정리해서 `beta` 브랜치에 푸시한다 (Mac mini 셀프호스팅 → beta.dstcraft.com 자동 배포). CLAUDE.md의 Release Notes Rules / Mistakes Rules / Branch & Deploy Strategy를 준수.
+
+> **현재 브랜치가 `beta`가 아니면 먼저 체크아웃** — `main` 등 다른 브랜치에 있다면 사용자에게 확인 후 `git checkout beta`로 전환. 사용자가 명시적으로 main 푸시를 요청한 경우에만 main에 푸시 (그런 경우는 /release 권장).
 
 ## 실행 절차
 
@@ -27,18 +29,13 @@ description: 현재 변경사항을 커밋 + main 푸시 (Vercel 배포). 릴리
 
 판단 애매하면 사용자에게 한 줄로 묻고 진행 (예: "patch로 갈게요. 0.18.2 → 0.18.3.").
 
-### 3. 릴리즈노트 + 버전 갱신
+### 3. 릴리즈노트 / 버전 (beta 단계에서는 선택)
 
-**user-facing 변화가 있는 경우 (필수)**:
-- `src/lib/version.ts`의 `APP_VERSION` 갱신
-- `src/app/releases/page.tsx`의 `releases` 배열 맨 앞에 새 항목 추가
-  - `version`: 새 버전
-  - `date`: 오늘 (YYYY-MM-DD)
-  - `dev`: 기술적 변경사항 (한국어, 파일/함수 수준 디테일 포함). 근거가 있으면 마지막 항목으로 "근거: ..." 추가
-  - `changes.ko` / `changes.en`: 사용자가 이해 가능한 표현. dev에서 의미 있는 항목만 재작성. 두 언어 모두 채울 것
+`/push`(beta 배포) 단계에서는 릴리즈노트/버전 갱신을 **건너뛰어도 됨** — Production 릴리즈가 아니므로. beta에서 누적된 변경은 `/release` 시점에 한꺼번에 정리한다.
 
-**내부 정리만 (release notes 자체 수정, 주석/타입/린트, 문서만 수정 등)**:
-- 버전/릴리즈노트 갱신 생략 가능. 단 dev-only 항목이라도 사용자에게 공유할 가치가 있으면 `changes`는 비워두고 `dev`만 추가하는 절충안 사용 (참고: 0.18.1 항목)
+단, beta에서도 user-facing 변경을 미리 노출하고 싶다면 다음 항목을 갱신할 수 있음 (선택):
+- `src/lib/version.ts`의 `APP_VERSION` (예: `0.20.2-beta.1`)
+- `src/app/releases/page.tsx`의 `releases` 배열에 dev-only 항목 추가
 
 ### 4. 오답노트 작성 (해당 시)
 실수/교훈이 있으면 `docs/mistakes.md`에 새 섹션 추가 후 같은 커밋에 포함. CLAUDE.md의 "Mistakes & Lessons" 규칙 준수.
@@ -59,21 +56,23 @@ description: 현재 변경사항을 커밋 + main 푸시 (Vercel 배포). 릴리
 ```
 git add <변경 파일들 명시>
 git commit -m "$(cat <<'EOF'
-<type>(<scope>): <한 줄 요약 — v버전>
+<type>(<scope>): <한 줄 요약>
 
 <선택: 상세 본문>
 
 Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
 EOF
 )"
-git push origin main
+git push origin beta
 ```
 
 마지막에 `git status` 한 번 더 (clean 확인) + `git log -1 --oneline` 으로 푸시된 커밋 확인.
 
 ## 규칙
-- **항상 `main` 브랜치로 push** (Vercel Production 자동 배포)
+- **항상 `beta` 브랜치로 push** (Mac mini 셀프호스팅 → beta.dstcraft.com 자동 배포)
+- 현재 브랜치가 `beta`가 아니면 먼저 `git checkout beta`로 전환 (사용자 확인 후)
+- **`main`에 직접 푸시 금지** — 사용자가 명시적으로 main 푸시를 요청했더라도 가능하면 `/release` 사용 권장
 - **`git add -A` / `git add .` 금지** — 변경된 파일을 명시적으로 add (CLAUDE.md 안전 규칙)
-- 사용자에게 묻지 않고 위 절차를 끝까지 진행 (이미 push 권한을 위임받은 상태). 단, 버전 bump 단계 / user-facing 분류가 모호하면 한 줄로만 확인.
-- 푸시 후 Vercel 배포는 자동이므로 배포 상태 확인은 별도로 하지 않음 (사용자가 라이브에서 확인).
+- 사용자에게 묻지 않고 위 절차를 끝까지 진행 (이미 push 권한을 위임받은 상태). 단, 분류가 모호하면 한 줄로만 확인.
+- 푸시 후 배포는 자동이므로 배포 상태 확인은 별도로 하지 않음 (사용자가 라이브에서 확인).
 - `--no-verify`, `--force` 등 위험 옵션 사용 금지.
