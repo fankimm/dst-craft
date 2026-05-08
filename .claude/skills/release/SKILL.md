@@ -114,16 +114,18 @@ git push origin main
 
 > 머지 커밋 메시지에 버전이 있다면 포함 (예: `Release v0.22.7: feat/42-buddy-w-radio → main`).
 
-## 5. beta에도 반영 (optional, 보통은 자동)
+## 5. beta에도 반영 (보통은 자동)
 
-`RELEASE_BRANCH`가 이미 beta에 머지되어 있으면 (정상 워크플로우에서는 그러함) beta는 자동으로 머지된 상태가 됨. 별도 작업 불필요.
+`RELEASE_BRANCH`가 이미 beta에 머지되어 있으면 (정상 워크플로우에서는 `/push`를 거쳤으므로 항상 그러함) beta는 그 feat 커밋을 이미 포함. 별도 작업 불필요.
 
-만약 beta를 우회해 main에 직접 머지한 경우(docs/메타 작업), beta에도 동일 변경을 반영:
+beta에 그 feat이 머지 안 돼 있으면 — `/push`를 건너뛴 케이스 — `feat → beta`로만 머지:
 ```bash
 git checkout beta
-git merge --ff-only main  # beta가 main 뒤따라가도록
+git merge --no-ff $RELEASE_BRANCH -m "merge $RELEASE_BRANCH into beta (post-release)"
 git push origin beta
 ```
+
+> ⚠️ **`main ← beta` 방향 머지 절대 금지**. `git checkout main && git merge beta`, `git merge --ff-only beta` 등 beta를 main으로 흘리는 모든 명령은 사용 금지. beta는 in-flight 합집합 검증용이라 다른 feat의 미검증 커밋이 같이 따라 들어간다. main 동기화는 항상 `feat → main` 방향(이 스킬의 4단계)으로만.
 
 ## 6. 워크트리 + 브랜치 정리
 

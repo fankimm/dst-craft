@@ -45,7 +45,7 @@
 
 **왜**: feat 단위 격리로 main 머지 시 의도치 않은 변경 혼입 방지. 멀티 세션 충돌이 우려되면 다른 세션을 정리한 뒤 진행.
 
-코드 변경이 없는 질문/탐색/설명, 그리고 docs-only 메타 작업(CLAUDE.md, `.claude/skills/`, `memory/`)은 `/task` 없이 메인 세션에서 직접 처리.
+코드 변경이 없는 질문/탐색/설명만 `/task` 없이 메인 세션에서 답변. **메타/문서 변경(CLAUDE.md, `.claude/skills/`, `docs/`, `memory/`)도 같은 워크트리 패턴**을 따른다 — 일관성을 위해 예외 없음.
 
 ### feat 워크트리 워크플로우 (`/task` 이후)
 1. **feat 분기 base는 항상 `main`** — `/task`가 자동으로 `git worktree add ../dst-craft-<num> -b feat/<num>-<slug> origin/main` 수행
@@ -67,10 +67,11 @@
 - 새 작업 시작 시 워크트리 생성 제안 (다른 feat과의 충돌 방지)
 - SessionStart hook은 워크트리 디렉터리에서는 그 브랜치를 그대로 유지함 (beta 강제 X)
 
-### 직접 작업 예외
+### 직접 작업 / 머지 방향 규칙
 - **`main` 직접 작업 금지** — 사용자가 *명시적으로* main 작업/푸시를 요청한 경우에만 허용
-- **`beta` 직접 작업 예외**: 1줄짜리 문서/오답노트 수정처럼 즉시 beta로 흘려도 위험이 없는 경우 사용자 명시적 허용 시
-- **beta 우회 (main 직접)**: 빌드 결과에 영향 없는 docs/메타 작업(`CLAUDE.md`, `.claude/skills/`, `memory/` 등)은 main 직접 머지 가능. 사용자 명시적 허용 시.
+- **`beta` 직접 작업 금지** — 메타든 docs든 모두 워크트리 패턴(`/task` → `/push` → `/release`)을 따른다
+- **`main ← beta` 방향 머지 절대 금지** — beta는 in-flight feat의 합집합 검증용일 뿐 main의 입구가 아니다. `git merge --ff-only beta`(main에서) / `git merge beta` 등 beta를 main으로 흘리는 모든 명령 금지. 어기면 검증 안 끝난 다른 feat의 in-flight 커밋이 production에 따라 들어간다 (2026-05-08 사고, `docs/mistakes.md` 참조)
+- **올바른 머지 방향**: `feat → beta` (=`/push`), `feat → main` (=`/release`) 두 가지뿐. 두 쪽으로 각각 직접 머지하는 구조
 
 ### beta 브랜치 정리
 - beta는 main + 검증중 feat들의 합집합. 머지된 feat가 main에 들어가도 beta에 남아있음 (no-op)

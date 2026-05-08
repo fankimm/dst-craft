@@ -474,3 +474,14 @@
 - **문제**: WX-78 스킬트리 상세 수치(details) 기능을 `SkillDetailSheet.tsx`에만 추가하여 실제 화면에 반영되지 않음. 해당 컴포넌트는 이전에 상세 시트 UI를 없애면서 사실상 미사용 상태였으나 파일이 삭제되지 않고 남아있었음
 - **원인**: 파일이 존재하고 import도 유효해서 현재 사용 중인 컴포넌트라고 판단. 실제 렌더링 경로(`SkillTreeView → SkillNodeCard`)를 추적하지 않음
 - **교훈**: 코드 수정 전 반드시 **실제 렌더링 경로를 추적**할 것. 파일 존재 + 타입 에러 없음 ≠ 현재 사용 중. `grep`으로 import/사용처를 확인하고, 사용되지 않는 컴포넌트는 발견 즉시 삭제 제안할 것
+
+## 워크플로우 / 머지
+
+### `main ← beta` 방향 머지로 in-flight feat이 production 배포됨 (2026-05-08)
+- **문제**: 메타 변경(스킬 보강 commit `c89a4d4`)을 메인 워크트리(beta)에서 commit한 뒤, main으로 가져가려 `git checkout main && git merge --ff-only beta && git push origin main` 실행. 그 시점 beta에는 다른 워크트리(`dst-craft-1`)에서 `/push`로 흘려둔 검증 중인 `feat/1-damage-calculator`(`134f2fc`, dev 페이지 `/damage-calc`)가 함께 있었고, ff merge가 그 커밋까지 main으로 가져가 그대로 production(`www.dstcraft.com`)에 배포됨. `/release`를 거치지 않은 채 main에 들어간 사고
+- **원인**: "메타 변경은 beta 우회해서 main 직접 머지 가능"이라는 CLAUDE.md 옛 예외 조항을 잘못 해석. 우회는 "main에서 직접 commit" 또는 "특정 commit cherry-pick"이어야 했는데, "beta에 commit 후 main에 ff merge"로 처리. **beta는 in-flight 합집합 검증용**이지 main의 입구가 아니라는 모델을 잊음
+- **교훈**:
+  - **`main ← beta` 방향의 모든 머지 명령은 절대 금지**. `git merge beta`, `git merge --ff-only beta`(main에서) 등.
+  - 올바른 머지 방향은 `feat → beta`(=`/push`)와 `feat → main`(=`/release`) 둘 뿐. 두 쪽으로 각각 직접 머지하는 비대칭 구조
+  - 메타/문서 변경도 동일 패턴(`/task` → `/push` → `/release`)을 따른다. 예외 없음
+- **사후 처리**: production에 들어간 dev 페이지(`/damage-calc`)는 프론트 진입점이 없어 사용자 노출 없음 → revert하지 않고 그대로 둠. CLAUDE.md / `/release` 스킬에 머지 방향 규칙을 명시하고, 본 사례를 오답노트에 기록 (이슈 #4)
