@@ -95,6 +95,14 @@
 
 > SSG 페이지는 클라이언트 컴포넌트(DetailPanel 등)를 사용하지 않음. 리팩토링 시 주의.
 
+### 데미지 계산기 (`/damage-calc`)
+DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + 단일 컬럼 스크롤 레이아웃:
+- 캐릭터 칩 (TagChip 활성 강조), 무기/방어구 그리드 (ItemSlot + 배지로 데미지/흡수율 표시)
+- 더미 종류 선택 + 더미 머리/몸통 장착 슬롯
+- 버프 토글(체크박스 카드) — 음식, 장비 효과, 환경 변수
+- 결과 패널: 1히트 총 피해 / 처치 타격 수 / 무기 1자루 처치, 접이식 디버그 trace
+- 계산 로직: `src/lib/damage-calc.ts` (인게임 combat.lua / inventory.lua / planarentity.lua 공식 그대로)
+
 ---
 
 ## 공유 컴포넌트
