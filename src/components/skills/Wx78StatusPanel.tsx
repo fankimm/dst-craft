@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import { Shield, Zap, Snowflake } from "lucide-react";
 import {
   WX78_CIRCUITS,
   WX78_CIRCUITS_BY_ID,
@@ -253,6 +254,25 @@ function aggregateArmorBuffs(
   return { remaining, armor: total > 0 && skillId ? { skillId, total } : null };
 }
 
+// ── Slow reduction (둔화 저항) ────────────────────────────────
+// 게임 메커닉 (wx78_common.lua COMMON_ModifySpeedMultiplier):
+//   if Tinkering II activated and slow_mult < 1:
+//     reclaim = (1 - slow_mult) / 4 (denominator=4)
+//     final_mult = min(slow_mult + reclaim * chip_count, 1)
+// → chip 1개당 25% 둔화 회복, 4개 이상이면 100% (둔화 무효)
+function slowReductionPct(chips: number, hasTinkeringII: boolean): number {
+  if (!hasTinkeringII || chips === 0) return 0;
+  return Math.min(chips * 0.25, 1);
+}
+
+// buffRows에서 둔화 행 제거 ("둔화 효과를 N% 적게 받는다." / English).
+function isSlowBuffRow(row: EffectRow): boolean {
+  if (!row.skillId) return false;
+  if (/^둔화 효과를 \d+% 적게 받는다/.test(row.text)) return true;
+  if (/^Reduces slowness effects by \d+%/i.test(row.text)) return true;
+  return false;
+}
+
 // WX-78 baseline — what the user sees as default max stats (회로/스킬 0 기준)
 const WX78_BASE_VITAL = { health: 100, hunger: 100, sanity: 100 };
 
@@ -329,7 +349,8 @@ type SelectedDetail =
   | { kind: "skill"; skill: string; text: string }
   | { kind: "vital"; statKind: "maxHealth" | "maxHunger" | "maxSanity"; total: number }
   | { kind: "movespeed"; chips: number; pct: number }
-  | { kind: "armor"; skillId: string; total: number };
+  | { kind: "armor"; skillId: string; total: number }
+  | { kind: "slow"; chips: number; pct: number };
 
 function readDevShowAll(): boolean {
   if (typeof window === "undefined") return false;
@@ -367,7 +388,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     () => aggregateVitalRows(rawEffectRows, locale),
     [rawEffectRows, locale],
   );
-  // 2차 패스: moveSpeed 합산 — base row에서 movespeed/movespeed2 텍스트 drop, chip 합으로 카드 1장
+  // 2차 패스: moveSpeed 합산 — base row에서 movespeed/movespeed2 텍스트 drop, chip 합으로 stat box
   const moveSpeedChips = useMemo(() => totalMoveSpeedChips(effectiveCounts), [effectiveCounts]);
   const moveSpeedAggregated = moveSpeedChips > 0 ? moveSpeedPct(moveSpeedChips) : 0;
   const afterMoveSpeed = useMemo(
@@ -375,9 +396,16 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     [afterVital],
   );
   // 3차 패스: armor buff (alpha-buff-2) 합산
-  const { remaining: effectRows, armor: armorBuff } = useMemo(
+  const { remaining: afterArmor, armor: armorBuff } = useMemo(
     () => aggregateArmorBuffs(afterMoveSpeed),
     [afterMoveSpeed],
+  );
+  // 4차 패스: 둔화 저항 합산 — chip 합 + Tinkering II → 25% × chips capped at 100%
+  const hasBetaTinkering2 = effectiveSkills.has("wx78_circuitry_betabuffs_2");
+  const slowResistPct = slowReductionPct(moveSpeedChips, hasBetaTinkering2);
+  const effectRows = useMemo(
+    () => afterArmor.filter((r) => !isSlowBuffRow(r)),
+    [afterArmor],
   );
   const skillRows = useMemo(
     () => getGlobalSkillRows(effectiveSkills, locale),
@@ -439,7 +467,36 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
           />
         </div>
 
-        {(vitalCards.length > 0 || moveSpeedAggregated > 0 || armorBuff || effectRows.length > 0 || skillRows.length > 0) && (
+        {/* Combat/movement stats (방어력/이속/둔화) — show when any > 0 */}
+        {(armorBuff || moveSpeedAggregated > 0 || slowResistPct > 0) && (
+          <div className="mt-2 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
+            <VitalStat
+              iconNode={<Shield className="size-full" />}
+              label={locale === "ko" ? "방어력" : "Armor"}
+              value={armorBuff?.total ?? 0}
+              display={armorBuff ? `+${Number.isInteger(armorBuff.total) ? armorBuff.total : armorBuff.total.toFixed(1).replace(/\.0$/, "")}%` : "—"}
+              onClick={armorBuff ? () => setSelected({ kind: "armor", skillId: armorBuff.skillId, total: armorBuff.total }) : undefined}
+            />
+            <VitalStat
+              iconNode={<Zap className="size-full" />}
+              label={locale === "ko" ? "이동 속도" : "Move Speed"}
+              value={moveSpeedAggregated}
+              display={moveSpeedAggregated > 0 ? `+${Math.round(moveSpeedAggregated * 100)}%` : "—"}
+              divider
+              onClick={moveSpeedAggregated > 0 ? () => setSelected({ kind: "movespeed", chips: moveSpeedChips, pct: moveSpeedAggregated }) : undefined}
+            />
+            <VitalStat
+              iconNode={<Snowflake className="size-full" />}
+              label={locale === "ko" ? "둔화 저항" : "Slow Resist"}
+              value={slowResistPct}
+              display={slowResistPct > 0 ? `−${Math.round(slowResistPct * 100)}%` : "—"}
+              divider
+              onClick={slowResistPct > 0 ? () => setSelected({ kind: "slow", chips: moveSpeedChips, pct: slowResistPct }) : undefined}
+            />
+          </div>
+        )}
+
+        {(vitalCards.length > 0 || effectRows.length > 0 || skillRows.length > 0) && (
           <div className="mt-3 space-y-1.5">
             {vitalCards.map((v) => {
               const statKind = v.kind;
@@ -455,14 +512,6 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
                 />
               );
             })}
-            {moveSpeedAggregated > 0 && (
-              <EffectCard
-                key="movespeed-agg"
-                text={moveSpeedText(moveSpeedAggregated, locale)}
-                locale={locale}
-                onClick={() => setSelected({ kind: "movespeed", chips: moveSpeedChips, pct: moveSpeedAggregated })}
-              />
-            )}
             {effectRows.filter((r) => !r.skillId).map((r) => (
               <EffectCard
                 key={r.key}
@@ -471,16 +520,6 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
                 onClick={() => setSelected({ kind: "effect", row: r })}
               />
             ))}
-            {armorBuff && (
-              <EffectCard
-                key="armor-agg"
-                text={armorBuffText(armorBuff.total, locale)}
-                skillLabel={skillLabel(armorBuff.skillId, locale)}
-                learned
-                locale={locale}
-                onClick={() => setSelected({ kind: "armor", skillId: armorBuff.skillId, total: armorBuff.total })}
-              />
-            )}
             {effectRows.filter((r) => r.skillId).map((r) => (
               <EffectCard
                 key={r.key}
@@ -522,17 +561,22 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
 // ── UI ──────────────────────────────────────────────────────
 function VitalStat({
   iconSrc,
+  iconNode,
   label,
   value,
+  display,
   divider,
   onClick,
 }: {
-  iconSrc: string;
+  iconSrc?: string;
+  iconNode?: React.ReactNode;
   label: string;
-  value: number;
+  value: number;       // 0이면 "—" 표시 (display가 따로 주어지지 않은 경우)
+  display?: string;    // "12.5%" 같이 포맷된 표시값. 있으면 value 대신 사용
   divider?: boolean;
   onClick?: () => void;
 }) {
+  const shown = display ?? (value > 0 ? value.toString() : "—");
   return (
     <button
       onClick={onClick}
@@ -543,10 +587,14 @@ function VitalStat({
         onClick && "hover:bg-foreground/5 px-1 -mx-1",
       )}
     >
-      <img src={iconSrc} alt="" className="size-5 object-contain" />
+      {iconSrc ? (
+        <img src={iconSrc} alt="" className="size-5 object-contain" />
+      ) : iconNode ? (
+        <span className="size-5 inline-flex items-center justify-center text-muted-foreground">{iconNode}</span>
+      ) : null}
       <div className="text-left">
         <div className="text-sm font-semibold tabular-nums leading-tight text-foreground">
-          {value > 0 ? value : "—"}
+          {shown}
         </div>
         <div className="text-[10px] text-muted-foreground leading-tight">{label}</div>
       </div>
@@ -735,6 +783,60 @@ function Detail({
                   </div>
                   <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
                     +{formatPct(c.pct)}%
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  if (selected.kind === "slow") {
+    const totalPct = Math.round(selected.pct * 100);
+    const contributors: { module: CircuitModule; count: number; chips: number }[] = [];
+    for (const [id, count] of Object.entries(effectiveCounts)) {
+      if (!count) continue;
+      const m = WX78_CIRCUITS_BY_ID[id];
+      if (!m) continue;
+      for (const s of m.stats ?? []) {
+        if (s.kind === "moveSpeed") contributors.push({ module: m, count, chips: s.value * count });
+      }
+    }
+    return (
+      <div className="px-4 pt-4 pb-2">
+        <div className="flex items-baseline justify-between">
+          <h3 className="text-base font-bold text-foreground">{locale === "ko" ? "둔화 저항" : "Slow Resist"}</h3>
+          <span className="text-base font-bold tabular-nums text-foreground">−{totalPct}%</span>
+        </div>
+        <div className="mt-2 text-[11px] text-muted-foreground">
+          {locale === "ko"
+            ? `이속 회로 ${selected.chips}개 × 25% = ${totalPct}% 둔화 회복 (4개 이상이면 100% 무효). 베타 회로 제조 II 학습 필요.`
+            : `${selected.chips} movespeed chip(s) × 25% = ${totalPct}% slow recovered (cap 100% at 4+). Requires Beta Tinkering II.`}
+        </div>
+        <div className="mt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "기여 모듈" : "Contributing modules"}
+          </div>
+          <ul className="space-y-1.5">
+            {contributors.map((c) => {
+              const color = TYPE_COLORS[c.module.type];
+              return (
+                <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
+                  <Image src={`/images/game-items/${c.module.id}.png`} alt="" width={28} height={28} className="size-7 object-contain shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
+                      {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                      {c.count > 1 && (
+                        <span className="text-[10px] font-bold px-1 rounded-sm tabular-nums" style={{ backgroundColor: `${color}30`, color }}>
+                          ×{c.count}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+                    {locale === "ko" ? `+${c.chips} chip` : `+${c.chips} chip`}
                   </span>
                 </li>
               );

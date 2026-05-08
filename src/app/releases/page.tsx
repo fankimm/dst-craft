@@ -15,6 +15,16 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.18",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 현황 패널 — 방어력/이동 속도/둔화 저항 stat row 추가 (vital row 아래). 카드 리스트에서 해당 행 제거 → 헤더 stat box로만 표시. 각 box 클릭 시 DetailPanel breakdown",
+      "feat(skills): 둔화 저항 합산 — 게임 메커닉 (wx78_common.lua COMMON_ModifySpeedMultiplier): chip 1개당 25% 둔화 회복, 4개 이상 100% 무효. Beta Tinkering II 학습 시에만 활성. 차감(−) 표시",
+      "fix(skills): VitalStat 컴포넌트 — iconSrc(이미지) 또는 iconNode(ReactNode) 둘 다 받도록 확장. display prop으로 포맷된 표시값(\"+12.5%\", \"−50%\") 직접 전달 가능",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.17",
     date: "2026-05-08",
     dev: [
