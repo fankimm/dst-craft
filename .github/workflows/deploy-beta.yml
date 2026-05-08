@@ -163,7 +163,9 @@ jobs:
           NEXT_PUBLIC_DEPLOY_ENV: beta
         run: |
           set -euo pipefail
-          ~/works/dst-craft/scripts/deploy-frontend.sh beta
+          # --force: the previous Sync step already aligned source-beta to origin/beta,
+          # so the script's "already up to date" check would otherwise skip the rebuild.
+          ~/works/dst-craft/scripts/deploy-frontend.sh beta --force
 
       - name: Telegram notify
         if: always()
