@@ -138,6 +138,8 @@ jobs:
 
       - name: Frontend rebuild — beta → ~/dstcraft/beta
         if: steps.br.outputs.branch == 'beta' && (github.event_name == 'push' || inputs.force_frontend == true)
+        env:
+          NEXT_PUBLIC_DEPLOY_ENV: beta
         run: |
           set -euo pipefail
           ~/works/dst-craft/scripts/deploy-frontend.sh beta
