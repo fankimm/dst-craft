@@ -177,12 +177,46 @@ const themeScript = `
     }
   } catch(e) {}
 })();
+(function(){
+  var KEY = 'dst:chunk-retry';
+  var V = '${APP_VERSION}';
+  var MAX = 2;
+  function isChunkErr(m) {
+    return !!m && (m.indexOf('ChunkLoadError') !== -1
+      || m.indexOf('Loading chunk') !== -1
+      || m.indexOf('Loading CSS chunk') !== -1
+      || m.indexOf('Failed to load') !== -1
+      || m.indexOf('error loading dynamically imported module') !== -1
+      || m.indexOf('Importing a module script failed') !== -1);
+  }
+  function reload() {
+    var n = parseInt(sessionStorage.getItem(KEY) || '0', 10);
+    if (n >= MAX) return;
+    sessionStorage.setItem(KEY, String(n + 1));
+    var url = location.href;
+    if (n >= 1) url += (url.indexOf('?') === -1 ? '?' : '&') + '_v=' + encodeURIComponent(V);
+    try { document.documentElement.style.visibility = 'hidden'; } catch(e) {}
+    location.replace(url);
+  }
+  window.__dstChunkReload = reload;
+  window.addEventListener('error', function(e) {
+    var m = e.message || (e.error && e.error.message) || '';
+    if (isChunkErr(m)) { try { e.preventDefault(); } catch(_){} reload(); }
+  }, true);
+  window.addEventListener('unhandledrejection', function(e) {
+    var r = e.reason;
+    var m = r && (r.message || String(r)) || '';
+    if (isChunkErr(m)) { try { e.preventDefault(); } catch(_){} reload(); }
+  });
+  window.addEventListener('load', function() { sessionStorage.removeItem(KEY); });
+})();
 ${process.env.NODE_ENV === "production" ? `if ('serviceWorker' in navigator) {
-  // 새 SW가 활성화되어 'SW_UPDATED' 메시지를 보내면 자동 reload
-  // (최초 설치 시에는 message가 안 옴 — 옛 cache가 없으므로 sw.template.js에서 가드함)
   navigator.serviceWorker.addEventListener('message', function(ev) {
-    if (ev.data && ev.data.type === 'SW_UPDATED') {
+    if (!ev.data) return;
+    if (ev.data.type === 'SW_UPDATED') {
       window.location.reload();
+    } else if (ev.data.type === 'CHUNK_MISSING') {
+      (window.__dstChunkReload || function(){ window.location.reload(); })();
     }
   });
   window.addEventListener('load', function() {
@@ -198,25 +232,6 @@ ${process.env.NODE_ENV === "production" ? `if ('serviceWorker' in navigator) {
     });
   }
 }`}
-(function(){
-  var KEY = 'dst:chunk-retry';
-  function check(msg) {
-    if (msg && (msg.indexOf('ChunkLoadError') !== -1 || msg.indexOf('Failed to load') !== -1)) {
-      if (!sessionStorage.getItem(KEY)) {
-        sessionStorage.setItem(KEY, '1');
-        window.location.reload();
-      }
-    }
-  }
-  window.addEventListener('error', function(e) {
-    check(e.message || (e.error && e.error.message) || '');
-  });
-  window.addEventListener('unhandledrejection', function(e) {
-    var r = e.reason;
-    check(r && (r.message || String(r)) || '');
-  });
-  window.addEventListener('load', function() { sessionStorage.removeItem(KEY); });
-})();
 `;
 
 const ANALYTICS_WORKER = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";

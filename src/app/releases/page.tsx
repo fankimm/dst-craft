@@ -15,6 +15,190 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.0",
+    date: "2026-05-08",
+    dev: [
+      "release: beta 0.21.15 → 0.21.30 누적 변경분 main 승격. 핵심 주제 두 갈래 — (1) WX-78 스킬트리 디테일 패널 대규모 정비, (2) 배포 청크 캐시 UX.",
+      "feat(skills): WX-78 현황 패널을 stat row 중심 구조로 재편. 이동속도/방어력/둔화 저항/체온/부패 속도/건조 속도/정신력 감소 오라/의복 정신력 회복/허기 소모 감소/화염 피해 저항 — 모듈 카운트 기반 자동 합산값을 stat row로 노출, 카드 list에서 중복 텍스트 strip. 클릭 시 DetailPanel에 메커닉 + 기여 모듈 breakdown.",
+      "feat(skills): DetailHeader / TypeChip / TagChip 등 공용 컴포넌트로 효과/스킬/통계 디테일 분기를 통일. 인게임 ItemDetail 스타일(아이콘 카드 + 제목 + 서브타이틀 + 알파/베타/감마 배지 + 카운트 칩) 일관 적용.",
+      "refactor(ui): StatBox 공용 컴포넌트 추출 — 요리 RecipeDetail의 stats box + WX-78 stat row 단일 컴포넌트화. 색상은 +값=초록 / 부패 +값=빨강 시멘틱.",
+      "feat(skills): 냉각/발열 회로 본문 수치를 count로 곱한 누적값 표시 (게임 소스 추출 additive linear 케이스: MINTEMPCHANGE_PER_MODULE × count, preserver lean × PERISH_RATE_MODULELEAN, heat_activate maxDryingRate += 0.1).",
+      "fix(skills): WX-78 details 인게임 코드 대조 검증 후 7건 수정 — alphabuffs_2 빈부스터 dapperness +30%, Hardy 'damage taken' 의미 명확화, betabuffs_1 Thermal ×2/면역 정정, Refrigerant 화염 피해만, Chorusbox 인어, Rangebooster 0.65/0.8, Electrification 약 15/12/10회. 이외 합산 카드 클릭 버그 / 둔화 저항 아이콘 / 빈부스터 비문 등 잔손질.",
+      "fix(deploy): chunk-load 에러 UX — layout.tsx에 매처 6종 + retry 2회 + 2회차 ?_v=APP_VERSION cache-bust + 감지 즉시 visibility hidden으로 React 에러 boundary 렌더 가림. sw.template.js의 _next/ fetch가 .js/.css 404 받으면 활성 윈도우에 CHUNK_MISSING postMessage → 동일 silent reload 경로로 위임 (script 태그 우회 fetch 안전망).",
+      "fix(settings): 개발자 메뉴 토글 useState lazy 초기화로 변경 — 마운트 즉시 localStorage 값 반영, isAdmin 비동기 로드와의 타이밍 불일치로 잠깐 보이던 flicker 제거.",
+    ],
+    changes: {
+      ko: [
+        "WX-78 스킬트리 상세 패널 대대적인 정비 — 이동속도, 방어력, 체온, 부패 속도, 정신력 오라 등을 한눈에 보는 수치 행으로 정리하고, 클릭하면 어떤 모듈이 얼마씩 기여하는지 분해해서 보여줍니다.",
+        "WX-78 모듈 효과 수치 검증 — 인게임 코드와 대조해 빈부스터/하디/단열/냉매/합창 모듈 등 7개 항목의 잘못된 수치를 수정했습니다.",
+        "냉각/발열 회로를 여러 개 끼웠을 때 누적 수치(예: 2개 → 체온 -40°)를 본문에서 바로 볼 수 있게 수정.",
+        "배포 직후 잠깐 에러 메시지가 깜빡이고 자동 새로고침되던 현상을 제거 — 새 빌드로의 전환이 보이지 않게 처리됩니다.",
+      ],
+      en: [
+        "Major overhaul of the WX-78 skill tree detail panel — movespeed, armor, temperature, perish rate, sanity aura and more are now consolidated into stat rows, and clicking each shows a breakdown of contributing modules.",
+        "Verified WX-78 module values against in-game code — corrected 7 entries (Bean Booster, Hardy, Thermal, Refrigerant, Chorusbox, etc.).",
+        "Cold/heat circuits now show cumulative values inline when stacked (e.g. 2× cold → temperature −40°).",
+        "Eliminated the brief error flash + auto-refresh that could appear right after a deploy — recovery is now invisible.",
+      ],
+    },
+  },
+  {
+    version: "0.21.30",
+    date: "2026-05-08",
+    dev: [
+      "fix(deploy): chunk-load 에러 UX — 새 빌드 직후 옛 HTML이 가리키는 _next/ chunk가 사라졌을 때 Next.js 클라이언트 에러 UI가 잠깐 보이고 reload되는 증상 제거. (1) layout.tsx의 chunk-retry IIFE를 SW 등록 블록 위로 이동시켜 window.__dstChunkReload 노출. 매처 6종(ChunkLoadError/Loading chunk/Loading CSS chunk/Failed to load/error loading dynamically imported module/Importing a module script failed)으로 확대, retry 1→2회 + 2회차에 ?_v=APP_VERSION cache-bust, 감지 즉시 e.preventDefault() + documentElement.style.visibility='hidden'으로 React 에러 boundary 렌더 가림, error 리스너는 capture phase 등록. (2) sw.template.js의 _next/ fetch가 .js/.css 404 받으면 모든 활성 윈도우에 postMessage({type:'CHUNK_MISSING'}) 브로드캐스트, layout.tsx의 SW message 핸들러가 받아 동일 silent reload 경로로 위임 — script 태그 우회 fetch에도 안전망 동작.",
+    ],
+    changes: {
+      ko: ["배포 직후 에러 메시지가 잠깐 깜빡이고 새로고침되던 현상 제거 — 자동 재시도가 보이지 않게 처리됨"],
+      en: ["Eliminated the brief error flash + auto-refresh that could appear right after a deploy — recovery is now invisible"],
+    },
+  },
+  {
+    version: "0.21.29",
+    date: "2026-05-08",
+    dev: [
+      "fix(settings): 개발자 메뉴 토글 — useState lazy 초기화로 변경하여 마운트 즉시 localStorage 값 반영. 기존엔 기본값(true)로 마운트 후 useEffect에서 비로소 localStorage 읽어 false로 갱신했는데, isAdmin 비동기 로드와 타이밍이 어긋나 OFF 상태인데도 메뉴가 잠깐 보이는 flicker 발생. PWA/배포 후 fresh mount마다 재현되어 사용자 입장에선 \"꺼놨는데 자꾸 켜짐\"으로 인식됨. devMenuEnabled는 isAdmin 게이트 안에서만 사용되므로 SSR HTML에 노출되지 않아 lazy 초기화로 hydration 불일치 우려 없음",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.28",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 의복 정신력 회복 / 허기 소모 감소도 stat row로 이동, 머지 카드 list 렌더링 제거",
+      "  · 의복 정신력 회복: 태머센터(walrushat.png) 아이콘",
+      "  · 허기 소모 감소: 허기의 허리띠(armorslurper.png) 아이콘",
+      "  · Row 4 (alpha-buff aggregated): 정신력 감소 오라 + 의복 정신력 회복 + 허기 소모 감소 (3 columns)",
+      "  · Row 5 (beta-buff): 화염 피해 저항 (단일)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.27",
+    date: "2026-05-08",
+    dev: [
+      "refactor(ui): StatBox 공용 컴포넌트 추출 (src/components/ui/StatBox.tsx) — 요리 RecipeDetail의 stats box + WX-78 현황 stat row가 동일 컴포넌트 사용. 한 곳 수정하면 양쪽 반영 (사용자 피드백 #965 \"이거 컴포넌트화 하면 일일히 양쪽 수정 안해도 되자나?\")",
+      "feat(skills): WX-78 stat row에 색상 적용 (statColor) — 요리 RecipeDetail과 동일한 +값=초록 / 부패 +값=빨강 시멘틱. 사용자 입장 좋은 효과는 초록, 나쁜 효과는 빨강",
+      "feat(skills): 정신력 감소 오라 + 화염 피해 저항 stat row 추가 (Row 4) — 사용자 피드백 #963 #964",
+      "  · 정신력 감소 오라: 비퀸 모자(hivehat.png) 아이콘",
+      "  · 화염 피해 저항: 비늘(dragon_scales.png) 아이콘",
+      "  · 화염 저항 메커닉: 각 cold + Beta T1 모듈마다 -50% (cap 100% at 2+)",
+      "  · 카드 list에서 sanity-aura 머지 카드 제거, fire-resist 행 제거 → stat row가 유일 표시",
+      "  · 클릭 시 DetailPanel breakdown",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.26",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 효과 detail 패널 — 효과를 메인으로, 모듈은 출처(secondary)로 되돌림 (사용자 피드백 #960). 효과 텍스트가 큰 텍스트로 위, 모듈 카드는 작게 아래. 통계 detail(movespeed/armor/...)은 stat이 메인이므로 DetailHeader 스타일 유지",
+      "refactor(skills): 인라인 칩(베타/×2/스킬 강화)을 기존 TagChip 컴포넌트로 통일 — 사용자 피드백 #959 \"x2같은건 이미 사용하는 디자인이 있고 태그필도 이미 쓰고 있는게있는데\". TypeChip 커스텀 컴포넌트 제거, 크래프팅 ItemDetail이 쓰는 TagChip 패턴 그대로 사용",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.25",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 stat row 추가 — 체온/부패 속도/건조 속도. cold/heat 모듈 카운트 기준 자동 계산 (사용자 피드백 #955)",
+      "  · 체온: (heat − cold) × 20° (signed)",
+      "  · 부패 속도: (heat − cold) × 25% (signed, + = 빠른 부패)",
+      "  · 건조 속도: heat × 10% (heat-only)",
+      "  · 아이콘: heatrock.png / ui/perish.png / meatrack.png",
+      "  · 클릭 시 DetailPanel — 메커닉 설명 + 기여 모듈(발열 회로 ×N → +N° / 냉각 회로 ×N → −N° 등)",
+      "feat(skills): cold/heat 모듈 본문에서 체온/부패/건조 부분 strip — stat row와 중복 방지. 남는 텍스트는 \"주변 생존자의 체온도 낮춰/높여준다.\"만 카드 표시. applyCountToBody는 stripCountedStatsFromBody로 대체",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.24",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 Detail 패널 디자인 통일 — 크래프팅 ItemDetail 스타일(아이콘 카드 + 제목 + 서브타이틀 + 배지 + 우측 값)로 effect/skill/movespeed/armor/slow/neg_aura/dapper/hunger_drain/vital 모든 분기 통합 (사용자 피드백 #953 '대리석 씨앗쪽이 보기 좋아 보임')",
+      "feat(skills): DetailHeader 공용 컴포넌트 + TypeChip 추출. 효과 헤더에 모듈 아이콘 56px + 한글/영문 이름 + 알파/베타/감마 칩 + 카운트 칩 + 스킬 강화 칩 일관 표시",
+      "feat(skills): 합산 stat 헤더 아이콘 — 정신력 감소 오라=초연산 회로, 의복 정신력 회복=고급 모자, 허기 소모 감소=고급 위장 회로, 체/허/정 vital=health/hunger/sanity UI 아이콘",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.23",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 냉각/발열 회로 본문 수치를 count로 곱해 누적값 표시 — 2개 끼면 \"체온이 40도 낮아지고\", \"부패 속도가 50% 감소한다\", 발열 2개면 \"생물이 죽는 속도가 20% 증가\". 게임 소스 확인된 additive linear 케이스만 매칭 (wx78_moduledefs.lua MINTEMPCHANGE_PER_MODULE × count, wx78_common.lua preserver = 1 + lean × PERISH_RATE_MODULELEAN, heat_activate maxDryingRate += 0.1)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.22",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 둔화 저항 stat box 아이콘 → 돼지 등가방(piggyback.png). 초가속 회로(wx78module_movespeed2)에서 교체",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.21",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 소켓 prefix regex 중복 박힌 텍스트(\"소켓 3개 필요. 소켓 3개 필요. ...\" — heat 모듈) 1번만 strip되던 문제. +로 1번 이상 매칭하도록 수정 (Wx78StatusPanel + Wx78CircuitBoard 동일 적용)",
+      "fix(skills): 동일 텍스트 dedupe — light(발광 회로) + light2(초발광 회로)가 모두 \"빛을 발산한다.\" 같은 효과 문구를 가져 카드 2장 표시되던 문제. text+skillId 키로 dedupe해 1장만 표시",
+      "fix(skills): heat 모듈 buff 텍스트 count 분기 — \"빙결 저항 효과를 얻으며, 2개를 장착하면 빙결에 면역이 된다\" → 1개 장착 시 \"빙결 저항 효과를 얻는다\", 2개+ 장착 시 \"빙결에 면역이 된다\". simplifyConditionalBody 함수 도입",
+      "refactor(skills): Detail 패널 contributor li 블록을 BreakdownRow 공용 컴포넌트로 추출 — movespeed/armor/slow/neg_aura/dapper/hunger_drain/vital 6곳에서 동일 구조 반복되던 것 정리 (사용자 피드백 #938)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.20",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 현황 — alpha 회로 buff 머지 카드 3종. 모듈마다 한 줄씩 보이던 중복 제거하고 합산값 1장씩으로 압축",
+      "  · 정신력 감소 오라 영향 (T1 학습): 곱연산 product (예: maxsanity1+maxsanity+bee → 0.8×0.5×0.5=0.2 → '−80%')",
+      "  · 의복에 의한 정신력 회복 (T2 학습): 합연산 sum (예: 10%+30%+30% → '+70%')",
+      "  · 허기 소모 감소 (T1/T2 변동): 곱연산 product. T2 우선 (T1 supersede)",
+      "feat(skills): bee compound 텍스트(\"의복 정신력 회복 25% 증가하고, 실드 ...\")에서 dapper 부분 자동 분리. 실드 메커닉만 별도 row로 유지",
+      "feat(skills): 합산 카드 클릭 시 DetailPanel breakdown — 출처 스킬, 스택 방식(곱/합연산), 기여 모듈별 per-module % 표시",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.19",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 stat box 아이콘을 게임 PNG로 교체 — 방어력=대리석 갑옷(armormarble), 이속=워킹 케인(cane), 둔화 저항=초가속 회로(wx78module_movespeed2). lucide 아이콘(Shield/Zap/Snowflake) 제거, 일관된 인게임 비주얼",
+      "feat(skills): vital 합산 카드(\"최대 체력이 240 증가한다.\" 류) 카드 리스트에서 제거 — 헤더의 stat box(체/허/정)에서 이미 표시되고 있어 중복. compound 패러그래프(허기 소모 -20%, bee 회복 효과 등)는 vital 부분만 잘라낸 본문으로 그대로 별도 row 표시",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.18",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 현황 패널 — 방어력/이동 속도/둔화 저항 stat row 추가 (vital row 아래). 카드 리스트에서 해당 행 제거 → 헤더 stat box로만 표시. 각 box 클릭 시 DetailPanel breakdown",
+      "feat(skills): 둔화 저항 합산 — 게임 메커닉 (wx78_common.lua COMMON_ModifySpeedMultiplier): chip 1개당 25% 둔화 회복, 4개 이상 100% 무효. Beta Tinkering II 학습 시에만 활성. 차감(−) 표시",
+      "fix(skills): VitalStat 컴포넌트 — iconSrc(이미지) 또는 iconNode(ReactNode) 둘 다 받도록 확장. display prop으로 포맷된 표시값(\"+12.5%\", \"−50%\") 직접 전달 가능",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.17",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): WX-78 합산 카드(이동속도/방어력) 클릭 시 DetailPanel 안 열리던 버그. SelectedDetail kind에 movespeed/armor 추가, 각 분기 렌더링 — 기여 모듈 + chip 합/lookup table / pct 합 + 출처 스킬 표시",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
+    version: "0.21.16",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 현황 패널 — 이동속도 합산 카드. movespeed/movespeed2 모듈 본문(\"1개=25%, 2개=40%, 3개=50%\" lookup table)을 현재 chip 합계에 해당하는 단일 값으로 압축 표시 (예: 1 chip → \"이동 속도가 25% 증가한다.\"). TUNING.MOVESPEED_CHIPBOOSTS=[0,0.25,0.4,0.5] 인덱스 lookup",
+      "feat(skills): WX-78 현황 패널 — 방어력 buff 합산. maxhealth(2.5%) + maxhealth2(5%) + Tinkering II 학습 시 7.5% 합산 카드 1장으로. additive sourcemodifierlist 메커닉 기준",
+      "note: 정신력 감소 오라 영향(maxsanity1 -20%, maxsanity -50%, bee -50%)은 multiplicative 스택 메커닉(SourceModifierList product)이라 단순 합산 못함 → 이번엔 per-module 표시 유지. 추후 product 합산 카드로 전환 검토",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.15",
     date: "2026-05-08",
     dev: [

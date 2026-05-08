@@ -1,4 +1,4 @@
-const APP_CACHE = "dst-app-a691c21";
+const APP_CACHE = "dst-app-0f27862";
 const IMG_CACHE = "dst-images-v1";
 const BASE = new URL(self.location.href).pathname.replace(/\/sw\.js$/, "");
 
@@ -75,6 +75,11 @@ self.addEventListener("fetch", (event) => {
           if (response.ok) {
             const clone = response.clone();
             caches.open(APP_CACHE).then((cache) => cache.put(event.request, clone));
+          } else if (response.status === 404 && /\.(js|css)$/.test(url.pathname)) {
+            // 옛 HTML이 사라진 chunk 참조 → 활성 클라이언트에 silent reload 요청
+            self.clients.matchAll({ type: "window" }).then((clients) => {
+              for (const c of clients) c.postMessage({ type: "CHUNK_MISSING", url: url.pathname });
+            });
           }
           return response;
         });

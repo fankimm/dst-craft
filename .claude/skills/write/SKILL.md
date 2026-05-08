@@ -35,6 +35,38 @@ description: 글쓰기, 표현 다듬기, 번역 전문 에이전트. 릴리즈 
 - **UI 문맥**: 버튼/라벨은 짧게 (2~4단어), 설명은 한 문장 이내
 - **i18n 키**: `src/lib/i18n.ts`의 기존 번역 톤과 통일
 
+### 한→영 (DST 영문 표현 가이드)
+
+#### 출처 우선순위 — Klei가 곧 정답
+1. **Klei scrapbook (`src/data/scrapbook-stats.ts` 의 `specialinfo_en`)** — 인게임 표시되는 공식 영어. 같은 개념 있으면 그 어휘 그대로 차용 (저작권 이슈 없음, 짧은 게임 용어 수준)
+2. **dontstarve.wiki.gg** — 커뮤니티 컨벤션 ("Sanity aura" / "Insanity aura" 등). Klei와 다르면 Klei 우선
+3. **자체 표현** — 1·2에 없을 때만 작성. 새로 영작 잘하려 하지 말 것
+
+#### "Klei vocabulary is the bar" 룰
+같은 효과를 묘사하는 Klei scrapbook 문구가 있으면 **벗어나지 말 것**. 예:
+- ❌ `+5 HP every 30s while below max health` (자체 영작)
+- ✅ `Heals 5 Health every 30 seconds when injured` (Klei: "heals 5 Health every 30 seconds")
+
+#### DST 영문 체크리스트
+- [ ] **prefab id를 노출하지 않음**: `foodbrick`(코드) → `Nutribrick`(인게임), `radar`(코드) → `Bio Scanalyzer`(인게임)
+- [ ] **`Health`** (capital, 풀 단어). `HP` / `hp` 금지
+- [ ] **`Sanity`** capital. **`negative sanity auras`** (Klei 정확 표현)
+- [ ] **인게임 아이템 풀네임**: `Roto-Mapper / Zaptrocuter / Bio Scanalyzer` (제너릭 "scout drone" 안 됨)
+- [ ] **`Clockworks`** (Klei) — wiki는 "Chess Monsters"라 부르지만 Klei가 인게임에서 "Clockwork(s)" 사용
+- [ ] **약어 금지**: `dmg` → `damage`, `etc.` 같은 이름 나열은 풀네임 또는 카테고리어
+- [ ] **부호**: `−` (U+2212 minus) for 감소%, `+` for 증가%
+- [ ] **게이머 슬랭 금지**: `aggro` → `attack`, `min 3` → 짧은 라벨에선 OK지만 본문엔 `minimum 3`
+- [ ] **불투명 괄호 금지**: `(efficient tool use auto-applied)` 처럼 코드/내부 용어를 그대로 노출 → 의미 풀이 못 하면 차라리 삭제
+- [ ] **redundancy 점검**: `directional beam facing WX-78's direction` (directional이 이미 방향성 함의) → `forward-facing directional beam`
+- [ ] **UI 라벨 ↔ 본문 톤 통일**: StatBox 라벨이 `Sanity from Clothing` 인데 본문이 `Sanity gain of clothing items`이면 톤 분열 → 라벨 톤을 본문에도 가져올 것
+- [ ] **ko ↔ en 콘텐츠 일치 검증**: 같은 효과의 두 언어가 다른 대상을 말하면 **번역 버그**. 예: ko `근처 인어` vs Klei scrapbook `Pig Men and Bunny Men` → 콘텐츠 검증 영역, 별도 처리
+
+#### 비원어민 작성자 워크플로우
+영어 표현 "자연스러움"을 본인이 판단 못 하는 경우:
+1. **Klei scrapbook 베끼기 우선** — Klei 본인이 출고한 표현이라 자연스러움 보장됨
+2. **Klei에 없는 caps만 자체 작성** + **별도 Agent에 독립 리뷰 의뢰** (`general-purpose` subagent에 파일 컨텍스트 없이 strings만 넘겨 review). 두 AI 시각이 갈리는 곳이 위험 신호
+3. 리뷰에서 잡아낸 패턴: 게이머 슬랭 (`aggro`, `min`), redundancy (`directional beam facing X's direction`), 게임 메커니즘 추측 (`bakes Nutribrick` vs `produces Nutribrick`), 라벨/본문 톤 분열
+
 ### 릴리즈 노트
 - **dev**: 기술적, 파일/함수 수준. 접두사(feat/fix/refactor) 사용
 - **changes.ko**: 사용자 관점, "~했습니다" 체
