@@ -23,7 +23,7 @@ const devices = JSON.parse(await readFile(DEVICES_JSON, "utf8"));
 await mkdir(OUT_DIR, { recursive: true });
 
 async function generateOne({ pxW, pxH, env }) {
-  const logoSize = Math.round(Math.min(pxW, pxH) * 0.25);
+  const logoSize = Math.round(Math.min(pxW, pxH) * 0.4);
   const logoBuf = await sharp(LOGO_SRC)
     .resize(logoSize, logoSize, { fit: "contain" })
     .png()
