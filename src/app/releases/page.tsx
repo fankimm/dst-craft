@@ -15,6 +15,14 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.23",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 냉각/발열 회로 본문 수치를 count로 곱해 누적값 표시 — 2개 끼면 \"체온이 40도 낮아지고\", \"부패 속도가 50% 감소한다\", 발열 2개면 \"생물이 죽는 속도가 20% 증가\". 게임 소스 확인된 additive linear 케이스만 매칭 (wx78_moduledefs.lua MINTEMPCHANGE_PER_MODULE × count, wx78_common.lua preserver = 1 + lean × PERISH_RATE_MODULELEAN, heat_activate maxDryingRate += 0.1)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.22",
     date: "2026-05-08",
     dev: [

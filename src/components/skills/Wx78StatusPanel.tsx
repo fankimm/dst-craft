@@ -47,6 +47,23 @@ function simplifyConditionalBody(body: string, moduleId: string, count: number, 
   return body;
 }
 
+// 모듈 본문 내 per-module 수치를 count로 곱해 누적값으로 표시.
+// 게임 소스 확인된 additive linear stacking 케이스만 매칭 (cold/heat의 체온/부패/건조).
+// 사용자 피드백 #948 #949: 냉각/발열 회로 2개 끼면 -40°/-50% 등 누적값을 그대로 표시.
+function applyCountToBody(body: string, moduleId: string, count: number, locale: Locale): string {
+  if (count <= 1 || locale !== "ko") return body;
+  if (moduleId === "wx78module_cold" || moduleId === "wx78module_heat") {
+    // wx78_moduledefs.lua: heat_count * MINTEMPCHANGE_PER_MODULE (linear)
+    // wx78_common.lua    : preserver = 1 + temperature_modulelean * PERISH_RATE_MODULELEAN (linear, lean=±count)
+    // heat_activate      : maxDryingRate += 0.1 per heat module (linear)
+    return body
+      .replace(/체온이 (\d+)도/g, (_, n) => `체온이 ${parseInt(n, 10) * count}도`)
+      .replace(/부패 속도가 (\d+)%/g, (_, n) => `부패 속도가 ${parseInt(n, 10) * count}%`)
+      .replace(/생물이 죽는 속도가 (\d+)%/g, (_, n) => `생물이 죽는 속도가 ${parseInt(n, 10) * count}%`);
+  }
+  return body;
+}
+
 // 동일 텍스트를 가진 행을 하나로 합치는 dedupe pass. light/light2의 "빛을 발산한다." 같이
 // 여러 모듈이 같은 효과 문구를 갖는 경우 카드 1장으로 표시 (사용자 피드백 #941).
 function dedupeRowsByText(rows: EffectRow[]): EffectRow[] {
@@ -107,9 +124,8 @@ function buildEffectRows(
           let body = locale === "ko"
             ? para.replace(/^.+?의 효과로\s*/, "")
             : para.replace(EN_SKILL_RE, "").replace(/^\s+/, "");
-          // 조건부 텍스트 정리: heat 모듈의 "빙결 저항 효과를 얻으며, 2개를 장착하면 빙결에 면역이 된다"
-          // 같이 count로 분기되는 문구는 현재 장착수 기준으로 단일 표현만 표시.
           body = simplifyConditionalBody(body, id, count, locale);
+          body = applyCountToBody(body, id, count, locale);
           rows.push({
             key: `${id}:${i}`,
             text: body,
@@ -121,8 +137,9 @@ function buildEffectRows(
           });
         } else {
           // Default paragraph — strip socket prefix
-          const cleaned = (locale === "ko" ? para.replace(KO_SOCKET_RE, "") : para.replace(EN_SOCKET_RE, "")).trim();
+          let cleaned = (locale === "ko" ? para.replace(KO_SOCKET_RE, "") : para.replace(EN_SOCKET_RE, "")).trim();
           if (!cleaned) return;
+          cleaned = applyCountToBody(cleaned, id, count, locale);
           rows.push({
             key: `${id}:${i}`,
             text: cleaned,
