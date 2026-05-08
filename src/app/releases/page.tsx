@@ -15,6 +15,18 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.28",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 의복 정신력 회복 / 허기 소모 감소도 stat row로 이동, 머지 카드 list 렌더링 제거",
+      "  · 의복 정신력 회복: 태머센터(walrushat.png) 아이콘",
+      "  · 허기 소모 감소: 허기의 허리띠(armorslurper.png) 아이콘",
+      "  · Row 4 (alpha-buff aggregated): 정신력 감소 오라 + 의복 정신력 회복 + 허기 소모 감소 (3 columns)",
+      "  · Row 5 (beta-buff): 화염 피해 저항 (단일)",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.27",
     date: "2026-05-08",
     dev: [

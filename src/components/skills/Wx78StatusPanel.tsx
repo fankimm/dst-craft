@@ -727,8 +727,8 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
           </div>
         )}
 
-        {/* Sanity-aura / fire-resist stats — show when relevant */}
-        {(negAuraReduction > 0 || fireResist > 0) && (
+        {/* Alpha-buff aggregated stats (정신력 감소 오라 / 의복 정신력 회복 / 허기 소모 감소) */}
+        {(negAuraReduction > 0 || dapperBoost > 0 || hungerReduction > 0) && (
           <div className="mt-2 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
             <StatBox
               iconSrc={assetPath("/images/game-items/hivehat.png")}
@@ -738,17 +738,42 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
               onClick={negAuraReduction > 0 ? () => setSelected({ kind: "neg_aura", pct: negAuraReduction, skillId: "wx78_circuitry_alphabuffs_1" }) : undefined}
             />
             <StatBox
-              iconSrc={assetPath("/images/game-items/dragon_scales.png")}
-              label={locale === "ko" ? "화염 피해 저항" : "Fire Resist"}
-              formatted={fireResist > 0 ? `+${Math.round(fireResist * 100)}%` : "—"}
-              colorClass={fireResist > 0 ? statColor(1) : undefined}
+              iconSrc={assetPath("/images/game-items/walrushat.png")}
+              label={locale === "ko" ? "의복 정신력 회복" : "Sanity from Clothing"}
+              formatted={dapperBoost > 0 ? `+${Math.round(dapperBoost * 100)}%` : "—"}
+              colorClass={dapperBoost > 0 ? statColor(1) : undefined}
               divider
-              onClick={fireResist > 0 ? () => setSelected({ kind: "fire_resist", pct: fireResist }) : undefined}
+              onClick={dapperBoost > 0 ? () => setSelected({ kind: "dapper", pct: dapperBoost, skillId: "wx78_circuitry_alphabuffs_2" }) : undefined}
+            />
+            <StatBox
+              iconSrc={assetPath("/images/game-items/armorslurper.png")}
+              label={locale === "ko" ? "허기 소모 감소" : "Hunger Drain"}
+              formatted={hungerReduction > 0 ? `−${Math.round(hungerReduction * 100)}%` : "—"}
+              colorClass={hungerReduction > 0 ? statColor(1) : undefined}
+              divider
+              onClick={hungerReduction > 0 ? () => setSelected({
+                kind: "hunger_drain",
+                pct: hungerReduction,
+                skillId: hasAlphaT2 ? "wx78_circuitry_alphabuffs_2" : hasAlphaT1 ? "wx78_circuitry_alphabuffs_1" : null,
+              }) : undefined}
             />
           </div>
         )}
 
-        {(effectRows.length > 0 || skillRows.length > 0 || dapperBoost > 0 || hungerReduction > 0) && (
+        {/* Fire resist stat — show when cold + Beta T1 active */}
+        {fireResist > 0 && (
+          <div className="mt-2 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
+            <StatBox
+              iconSrc={assetPath("/images/game-items/dragon_scales.png")}
+              label={locale === "ko" ? "화염 피해 저항" : "Fire Resist"}
+              formatted={`+${Math.round(fireResist * 100)}%`}
+              colorClass={statColor(1)}
+              onClick={() => setSelected({ kind: "fire_resist", pct: fireResist })}
+            />
+          </div>
+        )}
+
+        {(effectRows.length > 0 || skillRows.length > 0) && (
           <div className="mt-3 space-y-1.5">
             {effectRows.filter((r) => !r.skillId).map((r) => (
               <EffectCard
@@ -758,34 +783,6 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
                 onClick={() => setSelected({ kind: "effect", row: r })}
               />
             ))}
-            {dapperBoost > 0 && (
-              <EffectCard
-                key="dapper-agg"
-                text={locale === "ko"
-                  ? `의복에 의한 정신력 회복이 ${Math.round(dapperBoost * 100)}% 증가한다.`
-                  : `Sanity gain from clothing increased by ${Math.round(dapperBoost * 100)}%.`}
-                skillLabel={skillLabel("wx78_circuitry_alphabuffs_2", locale)}
-                learned
-                locale={locale}
-                onClick={() => setSelected({ kind: "dapper", pct: dapperBoost, skillId: "wx78_circuitry_alphabuffs_2" })}
-              />
-            )}
-            {hungerReduction > 0 && (
-              <EffectCard
-                key="hunger-drain-agg"
-                text={locale === "ko"
-                  ? `허기 소모가 ${Math.round(hungerReduction * 100)}% 감소한다.`
-                  : `Hunger drain reduced by ${Math.round(hungerReduction * 100)}%.`}
-                skillLabel={
-                  hasAlphaT2 ? skillLabel("wx78_circuitry_alphabuffs_2", locale)
-                  : hasAlphaT1 ? skillLabel("wx78_circuitry_alphabuffs_1", locale)
-                  : undefined
-                }
-                learned={hasAlphaT2 || hasAlphaT1 ? true : undefined}
-                locale={locale}
-                onClick={() => setSelected({ kind: "hunger_drain", pct: hungerReduction, skillId: hasAlphaT2 ? "wx78_circuitry_alphabuffs_2" : hasAlphaT1 ? "wx78_circuitry_alphabuffs_1" : null })}
-              />
-            )}
             {effectRows.filter((r) => r.skillId).map((r) => (
               <EffectCard
                 key={r.key}
