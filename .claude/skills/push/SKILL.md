@@ -20,6 +20,8 @@ feat 워크트리에서 작업한 케이스. 다음을 수행:
 2. **메인 워크트리**(`/Users/jihwan-kim3/private-works/dst-craft`)가 `beta`에 있는지 확인 — 아니면 사용자에게 보고 후 중단
 3. 메인 워크트리에서 `git merge feat/X` + `git push origin beta` ← `git -C` 사용해서 현재 디렉터리를 떠나지 않고 처리
 
+> **cwd 처리 규칙 (이 환경 한정)**: Claude Code Bash tool은 매 호출마다 cwd가 메인 워킹 디렉터리로 리셋된다. 따라서 feat 워크트리에 commit할 때도 단순 `git add` / `git commit`은 메인 워크트리(beta)에 적용된다. **모든 git 명령은 `git -C <워크트리경로>` 형태로 호출**하거나 `cd <워크트리경로> &&` 프리픽스를 매번 붙일 것. Read/Edit/Write는 절대경로라 영향 없음.
+
 ### C. 현재 브랜치 = `main` 또는 기타
 사용자에게 명확히 묻고 중단 — main에서는 작업 금지. 보통은 잘못 들어온 상태.
 
@@ -53,6 +55,7 @@ feat 워크트리에서 작업한 케이스. 다음을 수행:
 ### 5. 빌드 검증 (선택, 큰 변경일 때)
 - 의존성 변경 / 라우트 추가 / 빌드 영향 큰 변경 → `npm run build` 한 번 돌려보기
 - 단순 fix는 `npx tsc --noEmit` 정도로 OK
+- **feat 워크트리에는 `node_modules`가 없을 수 있음** — `npm run build`가 sharp 등에서 즉시 실패. 그 경우는 시나리오 B 2단계(beta 머지) 후 메인 워크트리에서 검증하거나, feat 워크트리에서 `npm install` 먼저
 
 ### 6. 시나리오별 푸시
 
@@ -70,12 +73,14 @@ git push origin beta
 
 **시나리오 B (feat 워크트리)**:
 ```bash
-# 1. feat에 commit + 백업 push
-git add <files>
-git commit -m "..."
-git push origin <feat-branch>
+FEAT_WT="../dst-craft-<issue-num>"   # 또는 git worktree list로 찾기
 
-# 2. 메인 워크트리에서 beta 머지 + push (디렉터리 이동 없이 -C로)
+# 1. feat 워크트리에 commit + 백업 push (모두 -C 사용 — cwd 리셋 대응)
+git -C "$FEAT_WT" add <files>
+git -C "$FEAT_WT" commit -m "..."
+git -C "$FEAT_WT" push origin <feat-branch>
+
+# 2. 메인 워크트리(beta)에서 머지 + push
 MAIN_WT=$(git worktree list --porcelain | awk '/^worktree/{path=$2} /^branch refs\/heads\/beta$/{print path}')
 git -C "$MAIN_WT" fetch origin
 git -C "$MAIN_WT" pull --ff-only origin beta

@@ -33,6 +33,27 @@ description: 특정 feat 브랜치를 main으로 머지 + main 푸시 (Productio
 - `main..$RELEASE_BRANCH`가 비어있음 (이미 main에 머지됨, 또는 새 커밋 없음) → 중단
 - `origin/main`이 로컬 `main`보다 앞서감 → 사용자에게 보고 후 결정 (보통 `git pull` 먼저)
 
+## 0. feat 워크트리 base 자동 동기화
+
+`/task`로 만든 feat 워크트리는 만든 시점의 `origin/main`에서 분기하므로, 그 사이 main에 다른 feat이 머지됐다면 base가 뒤처져 있다. 그대로 main에 머지하려 하면:
+- `version.ts` / `releases/page.tsx`에서 충돌 (이번 release가 작성한 새 버전과 그 사이 들어간 버전이 같은 위치를 건드림)
+- 릴리즈노트가 그 사이 들어간 항목 위에 정확히 붙는지 보장 X
+
+따라서 **릴리즈노트 작성 전에 항상 `origin/main`을 feat 브랜치에 머지**한다:
+
+```bash
+# feat 워크트리 경로 (보통 ../dst-craft-<issue-num>)
+FEAT_WT=$(git worktree list --porcelain | awk -v b="refs/heads/$RELEASE_BRANCH" '/^worktree/{p=$2} $0=="branch "b{print p}')
+
+# 사전 점검에서 main..origin/main이 비어있지 않거나 origin/main..$RELEASE_BRANCH의 base가 origin/main보다 뒤처졌으면 머지
+git -C "$FEAT_WT" fetch origin main
+if ! git -C "$FEAT_WT" merge-base --is-ancestor origin/main HEAD; then
+  git -C "$FEAT_WT" merge origin/main --no-edit
+fi
+```
+
+머지 충돌 시 중단하고 사용자에게 보고. 이 단계가 끝나면 feat 브랜치는 `origin/main` 위에 깔끔히 올라가 있고, 이후 릴리즈노트 작성/버전 bump가 충돌 없이 그 위에 누적된다.
+
 ## 1. 릴리즈 범위 분석
 
 `git log --oneline main..$RELEASE_BRANCH`와 `git diff main...$RELEASE_BRANCH`를 보고:
