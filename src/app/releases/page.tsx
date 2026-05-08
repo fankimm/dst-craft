@@ -15,6 +15,20 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.25",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 stat row 추가 — 체온/부패 속도/건조 속도. cold/heat 모듈 카운트 기준 자동 계산 (사용자 피드백 #955)",
+      "  · 체온: (heat − cold) × 20° (signed)",
+      "  · 부패 속도: (heat − cold) × 25% (signed, + = 빠른 부패)",
+      "  · 건조 속도: heat × 10% (heat-only)",
+      "  · 아이콘: heatrock.png / ui/perish.png / meatrack.png",
+      "  · 클릭 시 DetailPanel — 메커닉 설명 + 기여 모듈(발열 회로 ×N → +N° / 냉각 회로 ×N → −N° 등)",
+      "feat(skills): cold/heat 모듈 본문에서 체온/부패/건조 부분 strip — stat row와 중복 방지. 남는 텍스트는 \"주변 생존자의 체온도 낮춰/높여준다.\"만 카드 표시. applyCountToBody는 stripCountedStatsFromBody로 대체",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.24",
     date: "2026-05-08",
     dev: [

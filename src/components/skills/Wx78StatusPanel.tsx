@@ -47,21 +47,39 @@ function simplifyConditionalBody(body: string, moduleId: string, count: number, 
   return body;
 }
 
-// 모듈 본문 내 per-module 수치를 count로 곱해 누적값으로 표시.
-// 게임 소스 확인된 additive linear stacking 케이스만 매칭 (cold/heat의 체온/부패/건조).
-// 사용자 피드백 #948 #949: 냉각/발열 회로 2개 끼면 -40°/-50% 등 누적값을 그대로 표시.
-function applyCountToBody(body: string, moduleId: string, count: number, locale: Locale): string {
-  if (count <= 1 || locale !== "ko") return body;
-  if (moduleId === "wx78module_cold" || moduleId === "wx78module_heat") {
-    // wx78_moduledefs.lua: heat_count * MINTEMPCHANGE_PER_MODULE (linear)
-    // wx78_common.lua    : preserver = 1 + temperature_modulelean * PERISH_RATE_MODULELEAN (linear, lean=±count)
-    // heat_activate      : maxDryingRate += 0.1 per heat module (linear)
-    return body
-      .replace(/체온이 (\d+)도/g, (_, n) => `체온이 ${parseInt(n, 10) * count}도`)
-      .replace(/부패 속도가 (\d+)%/g, (_, n) => `부패 속도가 ${parseInt(n, 10) * count}%`)
-      .replace(/생물이 죽는 속도가 (\d+)%/g, (_, n) => `생물이 죽는 속도가 ${parseInt(n, 10) * count}%`);
-  }
-  return body;
+// cold/heat 모듈 본문에서 체온/부패/건조 문구는 stat row(헤더)로 분리 표시 → 본문에서 제거.
+// 남는 텍스트: "주변 생존자의 체온도 낮춰/높여준다." (cold/heat 각각)
+// 사용자 피드백 #955.
+function stripCountedStatsFromBody(body: string, moduleId: string, locale: Locale): string {
+  if (locale !== "ko") return body;
+  if (moduleId !== "wx78module_cold" && moduleId !== "wx78module_heat") return body;
+  return body.replace(/^체온이 .+?(?:증가한다|감소한다)\.\s*/, "").trim();
+}
+
+// ── Cold/Heat aggregate stats (체온/부패/건조) ────────────────
+// 게임 메커닉 (wx78_moduledefs.lua + wx78_common.lua):
+// - 체온: (heat_count - cold_count) × MINTEMPCHANGE_PER_MODULE (additive linear, signed)
+// - 부패: 1 + lean × PERISH_RATE_MODULELEAN (lean = heat - cold, signed)
+// - 건조: heat_count × EXTRA_DRYRATE (heat-only)
+const BODY_TEMP_PER_MODULE = 20;        // TUNING.WX78_MINTEMPCHANGEPERMODULE
+const SPOIL_RATE_PER_MODULE = 0.25;     // TUNING.WX78_PERISH_RATE_MODULELEAN (gameplay-confirmed via 25% 표기)
+const DRY_RATE_PER_HEAT = 0.10;         // EXTRA_DRYRATE in heat_activate
+
+function bodyTempDelta(counts: CircuitCounts): number {
+  const heat = counts["wx78module_heat"] ?? 0;
+  const cold = counts["wx78module_cold"] ?? 0;
+  return (heat - cold) * BODY_TEMP_PER_MODULE;
+}
+
+function spoilRateDelta(counts: CircuitCounts): number {
+  const heat = counts["wx78module_heat"] ?? 0;
+  const cold = counts["wx78module_cold"] ?? 0;
+  return (heat - cold) * SPOIL_RATE_PER_MODULE;
+}
+
+function dryingRateBoost(counts: CircuitCounts): number {
+  const heat = counts["wx78module_heat"] ?? 0;
+  return heat * DRY_RATE_PER_HEAT;
 }
 
 // 동일 텍스트를 가진 행을 하나로 합치는 dedupe pass. light/light2의 "빛을 발산한다." 같이
@@ -125,7 +143,6 @@ function buildEffectRows(
             ? para.replace(/^.+?의 효과로\s*/, "")
             : para.replace(EN_SKILL_RE, "").replace(/^\s+/, "");
           body = simplifyConditionalBody(body, id, count, locale);
-          body = applyCountToBody(body, id, count, locale);
           rows.push({
             key: `${id}:${i}`,
             text: body,
@@ -139,7 +156,8 @@ function buildEffectRows(
           // Default paragraph — strip socket prefix
           let cleaned = (locale === "ko" ? para.replace(KO_SOCKET_RE, "") : para.replace(EN_SOCKET_RE, "")).trim();
           if (!cleaned) return;
-          cleaned = applyCountToBody(cleaned, id, count, locale);
+          cleaned = stripCountedStatsFromBody(cleaned, id, locale);
+          if (!cleaned) return;
           rows.push({
             key: `${id}:${i}`,
             text: cleaned,
@@ -464,7 +482,10 @@ type SelectedDetail =
   | { kind: "slow"; chips: number; pct: number }
   | { kind: "neg_aura"; pct: number; skillId: string }
   | { kind: "dapper"; pct: number; skillId: string }
-  | { kind: "hunger_drain"; pct: number; skillId: string | null };
+  | { kind: "hunger_drain"; pct: number; skillId: string | null }
+  | { kind: "body_temp"; delta: number }
+  | { kind: "spoil_rate"; delta: number }
+  | { kind: "drying_rate"; delta: number };
 
 function readDevShowAll(): boolean {
   if (typeof window === "undefined") return false;
@@ -519,6 +540,10 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
   // 4차 패스: 둔화 저항 합산 — chip 합 + Tinkering II → 25% × chips capped at 100%
   const hasBetaTinkering2 = effectiveSkills.has("wx78_circuitry_betabuffs_2");
   const slowResistPct = slowReductionPct(moveSpeedChips, hasBetaTinkering2);
+  // Cold/Heat aggregated stats (체온/부패/건조)
+  const tempDelta = useMemo(() => bodyTempDelta(effectiveCounts), [effectiveCounts]);
+  const spoilDelta = useMemo(() => spoilRateDelta(effectiveCounts), [effectiveCounts]);
+  const dryDelta = useMemo(() => dryingRateBoost(effectiveCounts), [effectiveCounts]);
   const afterSlow = useMemo(
     () => afterArmor.filter((r) => !isSlowBuffRow(r)),
     [afterArmor],
@@ -644,6 +669,35 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
               display={slowResistPct > 0 ? `−${Math.round(slowResistPct * 100)}%` : "—"}
               divider
               onClick={slowResistPct > 0 ? () => setSelected({ kind: "slow", chips: moveSpeedChips, pct: slowResistPct }) : undefined}
+            />
+          </div>
+        )}
+
+        {/* Cold/Heat stats (체온/부패/건조) — show when cold or heat equipped */}
+        {(tempDelta !== 0 || spoilDelta !== 0 || dryDelta > 0) && (
+          <div className="mt-2 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
+            <VitalStat
+              iconSrc={assetPath("/images/game-items/heatrock.png")}
+              label={locale === "ko" ? "체온" : "Body Temp"}
+              value={tempDelta}
+              display={tempDelta !== 0 ? `${tempDelta > 0 ? "+" : "−"}${Math.abs(tempDelta)}°` : "—"}
+              onClick={tempDelta !== 0 ? () => setSelected({ kind: "body_temp", delta: tempDelta }) : undefined}
+            />
+            <VitalStat
+              iconSrc={assetPath("/images/ui/perish.png")}
+              label={locale === "ko" ? "부패 속도" : "Spoil Rate"}
+              value={spoilDelta}
+              display={spoilDelta !== 0 ? `${spoilDelta > 0 ? "+" : "−"}${Math.abs(Math.round(spoilDelta * 100))}%` : "—"}
+              divider
+              onClick={spoilDelta !== 0 ? () => setSelected({ kind: "spoil_rate", delta: spoilDelta }) : undefined}
+            />
+            <VitalStat
+              iconSrc={assetPath("/images/game-items/meatrack.png")}
+              label={locale === "ko" ? "건조 속도" : "Drying"}
+              value={dryDelta}
+              display={dryDelta > 0 ? `+${Math.round(dryDelta * 100)}%` : "—"}
+              divider
+              onClick={dryDelta > 0 ? () => setSelected({ kind: "drying_rate", delta: dryDelta }) : undefined}
             />
           </div>
         )}
@@ -1156,6 +1210,75 @@ function Detail({
                 count={c.count}
                 type={c.module.type}
                 rightValue={`${sign}${c.perModulePct}% ${locale === "ko" ? "/모듈" : "/each"}`}
+              />
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  if (selected.kind === "body_temp" || selected.kind === "spoil_rate" || selected.kind === "drying_rate") {
+    const heat = effectiveCounts["wx78module_heat"] ?? 0;
+    const cold = effectiveCounts["wx78module_cold"] ?? 0;
+    const heatModule = WX78_CIRCUITS_BY_ID["wx78module_heat"];
+    const coldModule = WX78_CIRCUITS_BY_ID["wx78module_cold"];
+
+    let title = "";
+    let icon = "";
+    let total = "";
+    let subtitle: React.ReactNode = "";
+    const contribs: { module: CircuitModule; count: number; right: string }[] = [];
+
+    if (selected.kind === "body_temp") {
+      title = locale === "ko" ? "체온" : "Body Temp";
+      icon = "/images/game-items/heatrock.png";
+      total = `${selected.delta > 0 ? "+" : "−"}${Math.abs(selected.delta)}°`;
+      subtitle = locale === "ko"
+        ? `발열/냉각 차이 × ${BODY_TEMP_PER_MODULE}° (additive)`
+        : `(heat − cold) × ${BODY_TEMP_PER_MODULE}° (additive)`;
+      if (heat > 0 && heatModule) contribs.push({ module: heatModule, count: heat, right: `+${heat * BODY_TEMP_PER_MODULE}°` });
+      if (cold > 0 && coldModule) contribs.push({ module: coldModule, count: cold, right: `−${cold * BODY_TEMP_PER_MODULE}°` });
+    } else if (selected.kind === "spoil_rate") {
+      title = locale === "ko" ? "부패 속도" : "Spoil Rate";
+      icon = "/images/ui/perish.png";
+      total = `${selected.delta > 0 ? "+" : "−"}${Math.abs(Math.round(selected.delta * 100))}%`;
+      subtitle = locale === "ko"
+        ? `1 + (발열 − 냉각) × 25% (additive). 양수 = 빠르게 부패, 음수 = 느리게 부패`
+        : `1 + (heat − cold) × 25% (additive). + = faster spoil, − = slower`;
+      if (heat > 0 && heatModule) contribs.push({ module: heatModule, count: heat, right: `+${heat * 25}%` });
+      if (cold > 0 && coldModule) contribs.push({ module: coldModule, count: cold, right: `−${cold * 25}%` });
+    } else {
+      title = locale === "ko" ? "건조 속도" : "Drying Speed";
+      icon = "/images/game-items/meatrack.png";
+      total = `+${Math.round(selected.delta * 100)}%`;
+      subtitle = locale === "ko"
+        ? `발열 회로 × 10% (additive). 생물 건조대 가속`
+        : `Heat circuit × 10% (additive). Speeds up drying rack`;
+      if (heat > 0 && heatModule) contribs.push({ module: heatModule, count: heat, right: `+${heat * 10}%` });
+    }
+
+    return (
+      <div className="pb-2">
+        <DetailHeader
+          iconSrc={icon}
+          title={title}
+          subtitle={subtitle}
+          rightValue={total}
+        />
+        <div className="px-4 pt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "기여 모듈" : "Contributing modules"}
+          </div>
+          <ul className="space-y-1.5">
+            {contribs.map((c) => (
+              <BreakdownRow
+                key={c.module.id}
+                iconSrc={`/images/game-items/${c.module.id}.png`}
+                name={locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                count={c.count}
+                type={c.module.type}
+                rightValue={c.right}
               />
             ))}
           </ul>
