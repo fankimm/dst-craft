@@ -1,4 +1,4 @@
-const APP_CACHE = "dst-app-d65acec";
+const APP_CACHE = "dst-app-0f27862";
 const IMG_CACHE = "dst-images-v1";
 const BASE = new URL(self.location.href).pathname.replace(/\/sw\.js$/, "");
 

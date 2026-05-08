@@ -15,6 +15,34 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.0",
+    date: "2026-05-08",
+    dev: [
+      "release: beta 0.21.15 → 0.21.30 누적 변경분 main 승격. 핵심 주제 두 갈래 — (1) WX-78 스킬트리 디테일 패널 대규모 정비, (2) 배포 청크 캐시 UX.",
+      "feat(skills): WX-78 현황 패널을 stat row 중심 구조로 재편. 이동속도/방어력/둔화 저항/체온/부패 속도/건조 속도/정신력 감소 오라/의복 정신력 회복/허기 소모 감소/화염 피해 저항 — 모듈 카운트 기반 자동 합산값을 stat row로 노출, 카드 list에서 중복 텍스트 strip. 클릭 시 DetailPanel에 메커닉 + 기여 모듈 breakdown.",
+      "feat(skills): DetailHeader / TypeChip / TagChip 등 공용 컴포넌트로 효과/스킬/통계 디테일 분기를 통일. 인게임 ItemDetail 스타일(아이콘 카드 + 제목 + 서브타이틀 + 알파/베타/감마 배지 + 카운트 칩) 일관 적용.",
+      "refactor(ui): StatBox 공용 컴포넌트 추출 — 요리 RecipeDetail의 stats box + WX-78 stat row 단일 컴포넌트화. 색상은 +값=초록 / 부패 +값=빨강 시멘틱.",
+      "feat(skills): 냉각/발열 회로 본문 수치를 count로 곱한 누적값 표시 (게임 소스 추출 additive linear 케이스: MINTEMPCHANGE_PER_MODULE × count, preserver lean × PERISH_RATE_MODULELEAN, heat_activate maxDryingRate += 0.1).",
+      "fix(skills): WX-78 details 인게임 코드 대조 검증 후 7건 수정 — alphabuffs_2 빈부스터 dapperness +30%, Hardy 'damage taken' 의미 명확화, betabuffs_1 Thermal ×2/면역 정정, Refrigerant 화염 피해만, Chorusbox 인어, Rangebooster 0.65/0.8, Electrification 약 15/12/10회. 이외 합산 카드 클릭 버그 / 둔화 저항 아이콘 / 빈부스터 비문 등 잔손질.",
+      "fix(deploy): chunk-load 에러 UX — layout.tsx에 매처 6종 + retry 2회 + 2회차 ?_v=APP_VERSION cache-bust + 감지 즉시 visibility hidden으로 React 에러 boundary 렌더 가림. sw.template.js의 _next/ fetch가 .js/.css 404 받으면 활성 윈도우에 CHUNK_MISSING postMessage → 동일 silent reload 경로로 위임 (script 태그 우회 fetch 안전망).",
+      "fix(settings): 개발자 메뉴 토글 useState lazy 초기화로 변경 — 마운트 즉시 localStorage 값 반영, isAdmin 비동기 로드와의 타이밍 불일치로 잠깐 보이던 flicker 제거.",
+    ],
+    changes: {
+      ko: [
+        "WX-78 스킬트리 상세 패널 대대적인 정비 — 이동속도, 방어력, 체온, 부패 속도, 정신력 오라 등을 한눈에 보는 수치 행으로 정리하고, 클릭하면 어떤 모듈이 얼마씩 기여하는지 분해해서 보여줍니다.",
+        "WX-78 모듈 효과 수치 검증 — 인게임 코드와 대조해 빈부스터/하디/단열/냉매/합창 모듈 등 7개 항목의 잘못된 수치를 수정했습니다.",
+        "냉각/발열 회로를 여러 개 끼웠을 때 누적 수치(예: 2개 → 체온 -40°)를 본문에서 바로 볼 수 있게 수정.",
+        "배포 직후 잠깐 에러 메시지가 깜빡이고 자동 새로고침되던 현상을 제거 — 새 빌드로의 전환이 보이지 않게 처리됩니다.",
+      ],
+      en: [
+        "Major overhaul of the WX-78 skill tree detail panel — movespeed, armor, temperature, perish rate, sanity aura and more are now consolidated into stat rows, and clicking each shows a breakdown of contributing modules.",
+        "Verified WX-78 module values against in-game code — corrected 7 entries (Bean Booster, Hardy, Thermal, Refrigerant, Chorusbox, etc.).",
+        "Cold/heat circuits now show cumulative values inline when stacked (e.g. 2× cold → temperature −40°).",
+        "Eliminated the brief error flash + auto-refresh that could appear right after a deploy — recovery is now invisible.",
+      ],
+    },
+  },
+  {
     version: "0.21.30",
     date: "2026-05-08",
     dev: [
