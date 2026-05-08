@@ -46,6 +46,11 @@ description: 글쓰기, 표현 다듬기, 번역 전문 에이전트. 릴리즈 
 
 **보조 참고**: dontstarve.wiki.gg 는 커뮤니티 컨벤션 (`Sanity aura` / `Insanity aura` 등) 확인용이지 출처 아님. Klei 표현과 다르면 Klei 우선.
 
+#### 언어 간 동작 대칭 (cross-language symmetry)
+ko/en 문구를 다듬을 때, **렌더링 로직(파싱·추출·합산)이 한쪽에서만 동작하면 UX 분열**. 같은 패턴이면 양쪽 모두 처리하거나, 양쪽 모두 안 하거나. 한쪽만 처리해서 한국어에선 깔끔하고 영어에선 raw 텍스트 노출되는 상황이 가장 흔한 함정. 작성·다듬기 후 반드시 양쪽 locale에서 시각 확인.
+
+예시 (실제 발생): WX-78 현황 패널의 vital 합산 로직이 `extractVitalKo`만 구현되어 영문에서 "increases Maximum Health by 100 points" 가 그대로 row로 노출. 같은 의미를 갖는 영문 패턴(`"raises Maximum X +N"` / `"increases Maximum X by N points"`)을 처리하는 미러 함수를 함께 만들지 않으면 분열.
+
 #### "Klei vocabulary is the bar" 룰
 같은 효과를 묘사하는 Klei scrapbook 문구가 있으면 **벗어나지 말 것**. 예:
 - ❌ `+5 HP every 30s while below max health` (자체 영작)

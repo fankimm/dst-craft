@@ -35,7 +35,8 @@ const KO_SKILL_RE = /^(알파|베타|감마) 회로 제조 (I{1,2})/;
 const EN_SKILL_RE = /^(Alpha|Beta|Gamma) Circuit Tinkering (I{1,2})/;
 // heat 모듈처럼 인게임 텍스트에 "소켓 N개 필요. 소켓 N개 필요." 중복 박혀있는 케이스 → +로 1번 이상 strip
 const KO_SOCKET_RE = /^(?:소켓 \d+개 필요\.\s*)+/;
-const EN_SOCKET_RE = /^(?:Requires \d+ sockets? and\s*)+/i;
+// Klei scrapbook은 "Requires N sockets and ", "Requires N sockets, ", "Requires N sockets." 세 형태를 섞어 씀.
+const EN_SOCKET_RE = /^(?:Requires \d+ sockets?(?:\s+and\s+|,\s*|\.\s*))+/i;
 
 // 모듈 본문 중 인게임 텍스트가 count로 분기되는 케이스를 현재 장착수 기준 단일 표현으로.
 // (인게임 표기 그대로 유지 + 현재 상태에 맞는 한 문장만 노출 — 사용자 피드백 #940)
@@ -203,6 +204,12 @@ const VITAL_FROM_KO_LABEL: Record<string, VitalKind> = {
   "허기": "maxHunger",
 };
 
+const VITAL_FROM_EN_LABEL: Record<string, VitalKind> = {
+  "Health": "maxHealth",
+  "Sanity": "maxSanity",
+  "Hunger": "maxHunger",
+};
+
 // 행 텍스트에서 vital 부분만 추출(합산용) + 나머지 텍스트 분리.
 // 표준화 케이스:
 //   1) standalone:  "최대 X(이|가) N 증가한다."
@@ -221,17 +228,36 @@ function extractVitalKo(text: string): { kind: VitalKind; perModule: number; res
   return null;
 }
 
+// extractVitalKo의 영문 미러. Klei scrapbook은 두 패턴을 혼용:
+//   "raises Maximum X +N." / "raises Maximum X +N points."
+//   "increases Maximum X by N points."
+// 결합 형태도 처리:
+//   1) standalone
+//   2) 앞:  "increases Maximum X by N points and ..."
+//   3) 뒤:  "... and increases Maximum X by N points." / "..., increases Maximum X by N points."
+function extractVitalEn(text: string): { kind: VitalKind; perModule: number; rest: string } | null {
+  let m = text.match(/^(?:raises|increases)\s+Maximum\s+(Health|Sanity|Hunger)\s+(?:by\s+)?\+?(\d+)(?:\s+points?)?\.?\s*$/);
+  if (m) return { kind: VITAL_FROM_EN_LABEL[m[1]], perModule: parseInt(m[2], 10), rest: "" };
+  m = text.match(/^(?:raises|increases)\s+Maximum\s+(Health|Sanity|Hunger)\s+(?:by\s+)?\+?(\d+)(?:\s+points?)?\s+and\s+(.+)$/);
+  if (m) return { kind: VITAL_FROM_EN_LABEL[m[1]], perModule: parseInt(m[2], 10), rest: m[3].trim() };
+  m = text.match(/^(.+?)(?:\s+and|,)\s+(?:raises|increases)\s+Maximum\s+(Health|Sanity|Hunger)\s+(?:by\s+)?\+?(\d+)(?:\s+points?)?\.?\s*$/);
+  if (m) {
+    const rest = m[1].trim();
+    return { kind: VITAL_FROM_EN_LABEL[m[2]], perModule: parseInt(m[3], 10), rest: rest.endsWith(".") ? rest : `${rest}.` };
+  }
+  return null;
+}
+
 // baseRows에서 vital 부분 분리: standalone vital 행은 제거 (헤더에 별도 표시),
 // compound 패러그래프는 vital 부분만 잘라내고 나머지 텍스트로 별도 row.
 function aggregateVitalRows(
   rows: EffectRow[],
   locale: Locale,
 ): { remaining: EffectRow[] } {
-  if (locale !== "ko") return { remaining: rows };
   const remaining: EffectRow[] = [];
   for (const row of rows) {
     if (row.skillId) { remaining.push(row); continue; }
-    const ex = extractVitalKo(row.text);
+    const ex = locale === "ko" ? extractVitalKo(row.text) : extractVitalEn(row.text);
     if (!ex) { remaining.push(row); continue; }
     if (ex.rest) remaining.push({ ...row, text: ex.rest });
     // standalone 행은 drop (vital만 있던 행 → 헤더에서 표시)

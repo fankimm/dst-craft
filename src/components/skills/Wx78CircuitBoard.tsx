@@ -487,7 +487,8 @@ const KO_SKILL_RE = /^(알파|베타|감마) 회로 제조 (I{1,2})/;
 const EN_SKILL_RE = /^(Alpha|Beta|Gamma) Circuit Tinkering (I{1,2})/;
 // heat 모듈처럼 "소켓 3개 필요. 소켓 3개 필요." 중복 박힌 인게임 텍스트 → +로 1번 이상 strip
 const KO_SOCKET_RE = /^(?:소켓 \d+개 필요\.\s*)+/;
-const EN_SOCKET_RE = /^(?:Requires \d+ sockets? and\s*)+/i;
+// Klei scrapbook은 "Requires N sockets and ", "Requires N sockets, ", "Requires N sockets." 세 형태를 섞어 씀.
+const EN_SOCKET_RE = /^(?:Requires \d+ sockets?(?:\s+and\s+|,\s*|\.\s*))+/i;
 
 function detectSkillId(para: string, locale: Locale): { skillId: string; label: string } | null {
   const re = locale === "ko" ? KO_SKILL_RE : EN_SKILL_RE;
