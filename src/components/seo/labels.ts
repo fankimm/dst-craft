@@ -74,9 +74,10 @@ export const L = {
 
   // Boss categories (also used in seo-text Korean)
   bcSeasonal: { en: "Seasonal Boss", ko: "계절 보스" },
+  bcStory: { en: "Story Boss", ko: "스토리 보스" },
+  bcUnderground: { en: "Underground Boss", ko: "지하 보스" },
   bcRaid: { en: "Raid Boss", ko: "레이드 보스" },
   bcOcean: { en: "Ocean Boss", ko: "바다 보스" },
-  bcDungeon: { en: "Dungeon Boss", ko: "던전 보스" },
   bcEvent: { en: "Event Boss", ko: "이벤트 보스" },
   bcMini: { en: "Mini Boss", ko: "미니 보스" },
 

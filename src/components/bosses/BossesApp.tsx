@@ -228,7 +228,7 @@ export function BossesApp({
         .map((id) => bosses.find((b) => b.id === id))
         .filter((b): b is Boss => !!b);
     } else {
-      result = bosses.filter((b) => b.category === selectedCategory);
+      result = bosses.filter((b) => b.categories.includes(selectedCategory));
     }
     if (sortByPopular) {
       return [...result].sort((a, b) => getClicks(`boss:${b.id}`) - getClicks(`boss:${a.id}`));
@@ -796,11 +796,14 @@ function BossDetail({
             <PrefabIdButton id={boss.id} locale={locale} />
             <ViewCount clicks={clicks} />
           </div>
-          <div className="mt-1">
-            <TagChip
-              label={categoryLabel(boss.category, locale)}
-              icon={`bosses/${Array.isArray(boss.image) ? boss.image[0] : boss.image}`}
-            />
+          <div className="mt-1 flex flex-wrap gap-1.5">
+            {boss.categories.map((cat) => (
+              <TagChip
+                key={cat}
+                label={categoryLabel(cat, locale)}
+                icon={`bosses/${Array.isArray(boss.image) ? boss.image[0] : boss.image}`}
+              />
+            ))}
           </div>
         </div>
       </div>
