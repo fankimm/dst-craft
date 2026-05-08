@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.1",
+    date: "2026-05-08",
+    dev: [
+      "feat(pwa): iOS 공식 apple-touch-startup-image 도입 — 18개 기기 사양(src/lib/ios-splash-devices.json)을 single source로, scripts/generate-ios-splash.mjs가 sharp로 prod(흰색)/beta(빨강) 환경별 PNG 72장 자동 생성. 기존 #app-loading JS 오버레이 제거 (iOS는 standalone 모드에서 첫 페인트까지 OS 스플래시 표시 → 커스텀 오버레이가 오히려 깜빡임 유발). viewport themeColor 라이트/다크 동적 분기 (#ffffff / #0a0a0c).",
+      "feat(pwa): beta 빌드 전용 manifest + BETA 배지 아이콘 — scripts/generate-beta-icons.mjs가 sharp로 6종 변형에 빨간 BETA 띠 합성, generate-manifest.cjs가 NEXT_PUBLIC_DEPLOY_ENV=beta일 때 name/theme_color/icons 분기. layout.tsx의 SITE_URL/title/icons 메타도 동일 env로 분기. .github/workflows/deploy-beta.yml에서 beta 스텝에 env 직접 주입.",
+      "fix(skills): WX-78 영문 stat row 표시 정확도 — 영문 vital(허기 소모/정신력 오라/의복 회복) 추출 누락/중복 수정, 소켓 prefix 콤마/마침표 매칭 보강. Circuit Board detail에도 동일 vital 추출 헬퍼 적용 (refactor: 헬퍼 분리).",
+      "docs(write): /write 스킬에 영문 작성 출처 우선순위 명시 — 인게임 텍스트 > 스크랩북 > 창작.",
+    ],
+    changes: {
+      ko: [
+        "iOS에서 PWA로 설치한 경우, 첫 로딩 화면(스플래시)을 OS 공식 방식으로 개선 — 화면 깜빡임 제거.",
+        "WX-78 스킬트리 영문 표시 정확도 개선 — 일부 모듈 효과(허기 소모, 정신력 오라, 의복 회복)가 중복되거나 누락되던 현상 수정.",
+      ],
+      en: [
+        "iOS installed PWA now uses Apple's official splash screens — eliminates the brief flash on launch.",
+        "Improved WX-78 skill tree English text accuracy — fixed duplicate/missing module effects (Hunger Drain, Sanity Aura, Dapperness).",
+      ],
+    },
+  },
+  {
     version: "0.22.0",
     date: "2026-05-08",
     dev: [
