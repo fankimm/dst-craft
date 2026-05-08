@@ -1369,7 +1369,7 @@ export const skillTranslations: Record<
     title: { en: "Alpha Circuits Tinkering I", ko: "알파 회로 제조 I" },
     desc: { en: "Processing Circuits gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "연산 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
     details: {
-      en: "Processing: enemy sanity drain aura -20% (per circuit)\nSuper-Processing: enemy sanity drain aura -50% (per circuit)\nBeanbooster: enemy sanity drain aura -50%\nGastrogain: hunger rate -5% (per circuit)\nSuper-Gastrogain: hunger rate -25% (per circuit)",
+      en: "Processing: negative sanity auras -20% (per circuit)\nSuper-Processing: negative sanity auras -50% (per circuit)\nBeanbooster: negative sanity auras -50%\nGastrogain: Hunger drain -5% (per circuit)\nSuper-Gastrogain: Hunger drain -25% (per circuit)",
       ko: "연산 회로: 적의 정신력 감소 오라 20% 상쇄 (회로당)\n초연산 회로: 적의 정신력 감소 오라 50% 상쇄 (회로당)\n빈부스터 모듈: 적의 정신력 감소 오라 50% 상쇄\n소화기 확장 회로: 허기 감소 속도 -5% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -25% (회로당)",
     },
   },
@@ -1377,7 +1377,7 @@ export const skillTranslations: Record<
     title: { en: "Alpha Circuits Tinkering II", ko: "알파 회로 제조 II" },
     desc: { en: "Hardy Circuits, Processing Circuits, and Beanbooster Circuit gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "체력 증진 회로, 연산 회로, 빈부스터 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
     details: {
-      en: "Hardy: damage taken -2.5% (per circuit)\nSuper-Hardy: damage taken -5% (per circuit)\nProcessing: sanity-regen gear effectiveness +10% (per circuit)\nSuper-Processing: sanity-regen gear effectiveness +30% (per circuit)\nBeanbooster: shield = 20% max HP × circuits, regen 0.25/s; sanity-regen gear +30%\nGastrogain: hunger rate -10% (per circuit)\nSuper-Gastrogain: hunger rate -30% (per circuit)",
+      en: "Hardy: damage taken -2.5% (per circuit)\nSuper-Hardy: damage taken -5% (per circuit)\nProcessing: Sanity from clothing +10% (per circuit)\nSuper-Processing: Sanity from clothing +30% (per circuit)\nBeanbooster: shield = 20% max Health × circuits, regen 0.25/s; Sanity from clothing +30%\nGastrogain: Hunger drain -10% (per circuit)\nSuper-Gastrogain: Hunger drain -30% (per circuit)",
       ko: "체력 증진 회로: 받는 피해 2.5% 감소 (회로당)\n체력 초증진 회로: 받는 피해 5% 감소 (회로당)\n연산 회로: 정신력 회복 장비 효율 +10% (회로당)\n초연산 회로: 정신력 회복 장비 효율 +30% (회로당)\n빈부스터 모듈: 보호막 = 최대 체력 20% × 회로 수, 초당 0.25 재생, 정신력 회복 장비 효율 +30%\n소화기 확장 회로: 허기 감소 속도 -10% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -30% (회로당)",
     },
   },
@@ -1385,7 +1385,7 @@ export const skillTranslations: Record<
     title: { en: "Beta Circuits Tinkering I", ko: "베타 회로 제조 I" },
     desc: { en: "Thermal Circuit, Refrigerant Circuit, Optoelectronic Circuit, Chorusbox Circuit, and Rangebooster Circuit gain a new effect in addition to their original effect.", ko: "발열 회로, 냉각 회로, 광전자 회로, 음악상자 회로, 범위 증폭 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Thermal: freeze resistance ×2 (1 circuit), immune (2+ circuits)\nRefrigerant: fire damage -50% per circuit (immune with 2)\nOptoelectronic: removes mole vision tint from night vision\nChorusbox: pigs/merms auto-recruit, follower limit +10 per circuit (max 20)\nRangebooster: Zaptrocuter +5 range, Roto-Mapper +100 range, Bio Scanalyzer scan distance +0.65, player proximity +0.8 (per circuit)",
+      en: "Thermal: freeze resistance ×2 (1 circuit), immune (2+ circuits)\nRefrigerant: fire damage -50% per circuit (immune with 2)\nOptoelectronic: removes the inverted Mole Hat vision (clear daytime-like view)\nChorusbox: Pigs and Merms auto-recruit, follower limit +10 per circuit (max 20)\nRangebooster: Zaptrocuter +5 range, Roto-Mapper +100 range, Bio Scanalyzer scan distance +0.65, player proximity +0.8 (per circuit)",
       ko: "발열 회로: 빙결 저항 ×2 (1개) / 면역 (2개+)\n냉각 회로: 화염 피해 -50% (회로당, 2개면 면역)\n광전자 회로: 야간 투시 두더지 비전 효과 삭제\n음악상자 회로: 돼지·인어 자동 동료화, 추종자 한도 +10/회로 (최대 20마리)\n시야 확장 회로: 찌릿콥터 +5칸, 회전익 탐사기 +100칸, 생체 분석기 스캔 거리 +0.65 / 플레이어 근접 거리 +0.8 (회로당)",
     },
   },
@@ -1393,7 +1393,7 @@ export const skillTranslations: Record<
     title: { en: "Beta Circuits Tinkering II", ko: "베타 회로 제조 II" },
     desc: { en: "Acceleration Circuits, Electrification Circuit, and Illumination Circuits gain a new effect in addition to their original effect.", ko: "가속 회로, 전격 회로, 조명 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Acceleration / Super-Acceleration: slow penalty -25% per circuit (max -75%)\nElectrification: ~15/12/10 hits to charge → AoE blast (+50 electric damage per circuit)\nIllumination / Super-Illumination: cone-shaped flashlight in facing direction (cone widens per circuit)",
+      en: "Acceleration / Super-Acceleration: slow penalty -25% per circuit (max -75%)\nElectrification: ~15/12/10 hits to charge → area electric blast (+50 damage per circuit)\nIllumination / Super-Illumination: forward-facing directional cone of light (widens per circuit)",
       ko: "가속 회로 / 초가속 회로: 이동속도 감소 패널티 25% 상쇄 (회로당, 합연산 최대 75%)\n전격 회로: 1/2/3개 장착 시 약 15/12/10회 피격마다 충전, 가득 차면 주변 광역 전기 폭발 (회로당 +50 피해)\n발광 회로 / 초발광 회로: 바라보는 방향으로 원뿔형 손전등 (회로당 시야각 확장)",
     },
   },
@@ -1401,7 +1401,7 @@ export const skillTranslations: Record<
     title: { en: "Gamma Circuits Tinkering I", ko: "감마 회로 제조 I" },
     desc: { en: "Redigestion Circuit and Sonic-Invoker Circuit gain a new effect in addition to their original effect.", ko: "재소화 회로와 음파 발진 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Redigestion: even nearly-spoiled food counts toward Nutribrick\nSonic-Invoker: emits sonic wave continuously until cancelled\nChessmaster: clockworks become neutral, can be recruited without electric stun",
+      en: "Redigestion: even nearly-spoiled food counts toward Nutribrick\nSonic-Invoker: emits sonic wave continuously until cancelled\nChessmaster: Clockworks become neutral, can be recruited without electric stun",
       ko: "재소화 회로: 상하기 직전의 음식도 영양 블록 카운트에 포함\n음파 발진 회로: 입력으로 멈출 때까지 음파 무한 방출\n체스 마스터 회로: 시계태엽 몬스터 중립화, 전기로 그로기 시키지 않아도 동료화 가능",
     },
   },
@@ -1409,7 +1409,7 @@ export const skillTranslations: Record<
     title: { en: "Gamma Circuits Tinkering II", ko: "감마 회로 제조 II" },
     desc: { en: "Blocking Circuit and Spin-Cycle Circuit gain a new effect in addition to their original effect.", ko: "방어 회로와 회전기 회로에 새로운 효과가 추가됩니다." },
     details: {
-      en: "Blocking: knockback immunity while shielding\nSpin-Cycle: spin speed 2.5/s → 3/s",
+      en: "Blocking: knockback immunity while blocking\nSpin-Cycle: spin speed 2.5/s → 3/s",
       ko: "방어 회로: 방어 중 밀쳐내기 효과 면역\n회전기 회로: 회전 속도 초당 2.5회전 → 3회전",
     },
   },
@@ -1465,7 +1465,7 @@ export const skillTranslations: Record<
     title: { en: "Signal Booster", ko: "Signal Booster" },
     desc: { en: "Expands the Bio Scanalyzer's scan radius, and extends the range of the Roto-Mapper, Zaptrocuter, Auto-Grabber, and Exploiterator.", ko: "생체 분석기의 스캔 반경을 넓히고, 회전익 탐사기, 전격 구축기, 자동 수집기, 착취기의 범위를 확장합니다." },
     details: {
-      en: "Scout drone range ×2.5\nZap drone range ×2\nScanner: +3 Rangebooster equivalent",
+      en: "Roto-Mapper range ×2.5\nZaptrocuter range ×2\nBio Scanalyzer: +3 Rangebooster Circuit equivalent",
       ko: "탐사 드론 범위 2.5배\n전격 드론 범위 2배\n스캐너: 시야 확장 회로 3개분 효과",
     },
   },
@@ -1505,7 +1505,7 @@ export const skillTranslations: Record<
     title: { en: "Lunar Vessel", ko: "월광의 그릇" },
     desc: { en: "Using \"borrowed\" technology from the Cryptic Founder, allow Gestalts to possess your Backup Chassis and become your spectrobotic minions.", ko: "비밀스러운 창립자에게서 \"빌려온\" 기술을 이용해 게슈탈트를 예비 동체에 빙의하게 하여 심령 로봇 하수인으로 부립니다." },
     details: {
-      en: "Lunar damage -10%\n+10% vs Shadow enemies",
+      en: "Lunar damage -10%\n+10% damage to Shadow enemies",
       ko: "달 속성 피해 10% 감소\n그림자 적에게 피해 10% 증가",
     },
   },
@@ -1513,7 +1513,7 @@ export const skillTranslations: Record<
     title: { en: "Shadow Servitor", ko: "그림자의 종" },
     desc: { en: "Allows insertion of select shadow components into your circuitry, granting your Chassis various abilities in both inhabited and uninhabited states.", ko: "회로에 제한된 종류의 그림자 부품을 삽입하여, 동체에 의식이 있을 때와 없을 때 각각 다양한 효과를 얻습니다." },
     details: {
-      en: "Shadow damage -10%\n+10% vs Lunar enemies\nShadow drones: item collectors (max 2), debuffers (max 3, +6% damage each)",
+      en: "Shadow damage -10%\n+10% damage to Lunar enemies\nShadow drones: item collectors (max 2), debuffers (max 3, +6% damage each)",
       ko: "그림자 속성 피해 10% 감소\n달 적에게 피해 10% 증가\n그림자 드론: 아이템 수집 (최대 2기), 적 약화 (최대 3기, 드론당 피해 +6%)",
     },
   },
