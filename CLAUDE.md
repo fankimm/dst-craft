@@ -29,17 +29,46 @@
 - ff-only 실패(브랜치 발산) 시 임의로 merge/rebase하지 말고 사용자에게 상태 보고.
 
 ## Branch & Deploy Strategy
-- **모든 작업은 워크트리에서** — 단일/다중 세션 여부와 관계없이 기본 워크플로우는 `git worktree add` + feature 브랜치. 다른 세션 존재 여부를 안정적으로 판단할 수 없으므로 "항상 격리"로 통일.
-  - 워크트리 안에서 작업 → 검증 완료 후 beta로 머지 → `/release`는 beta가 "릴리즈 가능 상태"일 때만
-  - SessionStart hook은 워크트리 디렉터리 안에서 켜면 해당 브랜치를 유지함 (beta 강제 X)
-  - 메인 워킹 디렉터리(`/Users/jihwan-kim3/private-works/dst-craft`)에서 새 작업이 시작되면 워크트리 생성을 먼저 제안할 것
-  - 예외: 1줄짜리 문서/오답노트 수정처럼 즉시 beta로 흘려도 위험이 없는 경우는 사용자가 명시적으로 허용 시에만 beta 직접 작업
-- **`main` 브랜치 직접 작업 금지** — 사용자가 *명시적으로* main 작업/푸시를 요청한 경우에만 허용. `커푸`/`/push` 등 일반 푸시 요청은 항상 `beta`로 해석.
-- **배포 매핑**:
-  - `beta` push → `beta.dstcraft.com` (Mac mini 셀프호스팅, Cloudflare Tunnel, GitHub Actions self-hosted runner)
-  - `main` push → `www.dstcraft.com` (Production, 동일 runner)
-- **`/release` 워크플로우**: beta에서 검증된 변경을 main으로 머지 + main push + 릴리즈노트/버전 갱신. main에 직접 푸시하는 유일한 경로.
-- Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
+
+**핵심 원칙**: feat 단위로 격리해서 작업하고, beta는 staging-only(검증용 여러 feat 합집합), main은 통과한 feat만 골라 머지. `/release`가 "beta 전체 → main"이 아니라 **"특정 feat 브랜치 → main"** 으로 동작.
+
+### 배포 매핑
+- `beta` push → `beta.dstcraft.com` (Mac mini 셀프호스팅, Cloudflare Tunnel, GitHub Actions self-hosted runner)
+- `main` push → `www.dstcraft.com` (Production, 동일 runner)
+
+### feat 워크트리 워크플로우
+1. **feat 분기 base는 항상 `main`** — `git worktree add ../dst-craft-X -b feat/X main`
+   - `beta`에서 분기하지 말 것 — beta의 in-flight 커밋이 딸려 들어와 main 머지 시 의도치 않은 변경 포함 가능
+   - feat끼리 독립 → 한 feat이 다른 feat의 미완성 변경을 끌어들이지 않음
+2. **워크트리 안에서 작업 + 커밋** — `feat/X` 브랜치에 누적
+3. **beta 머지 + 푸시 (staging 배포)** — `git checkout beta && git merge feat/X && git push origin beta`
+   - 이 단계는 `beta.dstcraft.com`에서 검증/테스트하기 위함. 다른 in-flight feat과 함께 통합 검증 가능
+   - 릴리즈노트/버전은 **건드리지 않음** — beta 머지는 deploy-only
+4. **테스트 통과** — beta.dstcraft.com에서 의도대로 동작 확인
+5. **main 머지 (production 배포)** — `/release` 호출. 인자 없으면 현재 워크트리 브랜치를 자동 인식.
+   - `/release`가 그 feat 브랜치 하나만 main에 `--no-ff` merge
+   - main 머지 직전에 릴리즈노트/버전 bump를 한 번에 작성 (그 feat 분량만)
+6. **워크트리 정리** — main 머지 + push 끝나면 `git worktree remove` + `git branch -d feat/X`
+
+### 메인 워킹 디렉터리 규칙
+- 메인 워킹 디렉터리(`/Users/jihwan-kim3/private-works/dst-craft`)는 항상 `beta` 브랜치 유지
+- 새 작업 시작 시 워크트리 생성 제안 (다른 feat과의 충돌 방지)
+- SessionStart hook은 워크트리 디렉터리에서는 그 브랜치를 그대로 유지함 (beta 강제 X)
+
+### 직접 작업 예외
+- **`main` 직접 작업 금지** — 사용자가 *명시적으로* main 작업/푸시를 요청한 경우에만 허용
+- **`beta` 직접 작업 예외**: 1줄짜리 문서/오답노트 수정처럼 즉시 beta로 흘려도 위험이 없는 경우 사용자 명시적 허용 시
+- **beta 우회 (main 직접)**: 빌드 결과에 영향 없는 docs/메타 작업(`CLAUDE.md`, `.claude/skills/`, `memory/` 등)은 main 직접 머지 가능. 사용자 명시적 허용 시.
+
+### beta 브랜치 정리
+- beta는 main + 검증중 feat들의 합집합. 머지된 feat가 main에 들어가도 beta에 남아있음 (no-op)
+- 명시적 정리 불필요 — git 머지가 알아서 처리
+
+### `/push` 의미
+- 현재 워크트리 변경사항을 commit + beta로 push. feat 워크트리든 main 워크트리든 `beta` 브랜치에 푸시
+- Production(main) 배포는 항상 `/release` 사용
+
+Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 
 ## Architecture
 - **프론트엔드**: `src/` — Next.js Static Export → Nginx serving (Cloudflare Tunnel 뒤)
