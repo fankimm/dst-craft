@@ -29,7 +29,11 @@
 - ff-only 실패(브랜치 발산) 시 임의로 merge/rebase하지 말고 사용자에게 상태 보고.
 
 ## Branch & Deploy Strategy
-- **기본 작업 브랜치는 `beta`** — 모든 코드 변경/커밋/푸시는 `beta` 브랜치에서. 세션 시작 시 `beta`로 체크아웃 안 되어 있으면 사용자에게 확인 후 전환.
+- **모든 작업은 워크트리에서** — 단일/다중 세션 여부와 관계없이 기본 워크플로우는 `git worktree add` + feature 브랜치. 다른 세션 존재 여부를 안정적으로 판단할 수 없으므로 "항상 격리"로 통일.
+  - 워크트리 안에서 작업 → 검증 완료 후 beta로 머지 → `/release`는 beta가 "릴리즈 가능 상태"일 때만
+  - SessionStart hook은 워크트리 디렉터리 안에서 켜면 해당 브랜치를 유지함 (beta 강제 X)
+  - 메인 워킹 디렉터리(`/Users/jihwan-kim3/private-works/dst-craft`)에서 새 작업이 시작되면 워크트리 생성을 먼저 제안할 것
+  - 예외: 1줄짜리 문서/오답노트 수정처럼 즉시 beta로 흘려도 위험이 없는 경우는 사용자가 명시적으로 허용 시에만 beta 직접 작업
 - **`main` 브랜치 직접 작업 금지** — 사용자가 *명시적으로* main 작업/푸시를 요청한 경우에만 허용. `커푸`/`/push` 등 일반 푸시 요청은 항상 `beta`로 해석.
 - **배포 매핑**:
   - `beta` push → `beta.dstcraft.com` (Mac mini 셀프호스팅, Cloudflare Tunnel, GitHub Actions self-hosted runner)

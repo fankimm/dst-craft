@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.3",
+    date: "2026-05-08",
+    dev: [
+      "fix(pwa): iOS 스플래시 미표시 문제 — apple-touch-startup-image media query에 'screen and' 접두사 누락으로 iOS Safari가 매칭 실패하던 문제 수정. 로고 크기 25% → 40%로 시인성 개선.",
+      "chore: .claude/scheduled_tasks.lock gitignore 처리.",
+      "docs(workflow): CLAUDE.md Branch & Deploy Strategy 갱신 — 단일/다중 세션 무관하게 'git worktree + feature 브랜치' 기본값으로 통일. 다른 세션 존재 여부를 안정적으로 판단 불가 → '항상 격리'로 결정.",
+      "todo: 트래픽·SEO 인사이트 액션 5건 추가 (WX-78 페이지 SEO 강화, referrer 풀 URL 저장, 싱가포르 봇 검증, 메인 추천 카드 bounce 개선, CF baseline 1주 누적 후 재분석).",
+    ],
+    changes: {
+      ko: [
+        "iOS에서 PWA로 설치한 경우 앱 로딩 스플래시가 표시되지 않던 문제를 수정했습니다. 로고 크기도 키워 시인성을 개선했습니다.",
+      ],
+      en: [
+        "Fixed missing splash screen on iOS PWA installs. Also bumped logo size for better visibility.",
+      ],
+    },
+  },
+  {
     version: "0.22.2",
     date: "2026-05-08",
     dev: [
