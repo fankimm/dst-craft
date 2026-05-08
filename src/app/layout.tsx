@@ -294,13 +294,13 @@ export default function RootLayout({
             key={`splash-${d.name}-portrait`}
             rel="apple-touch-startup-image"
             media={`screen and (device-width: ${d.cssW}px) and (device-height: ${d.cssH}px) and (-webkit-device-pixel-ratio: ${d.dpr}) and (orientation: portrait)`}
-            href={`/icons/splash/splash-${d.w}x${d.h}${ICON_SUFFIX}.png`}
+            href={`/icons/splash/splash-${d.w}x${d.h}${ICON_SUFFIX}.png?v=${APP_VERSION}`}
           />,
           <link
             key={`splash-${d.name}-landscape`}
             rel="apple-touch-startup-image"
             media={`screen and (device-width: ${d.cssW}px) and (device-height: ${d.cssH}px) and (-webkit-device-pixel-ratio: ${d.dpr}) and (orientation: landscape)`}
-            href={`/icons/splash/splash-${d.h}x${d.w}${ICON_SUFFIX}.png`}
+            href={`/icons/splash/splash-${d.h}x${d.w}${ICON_SUFFIX}.png?v=${APP_VERSION}`}
           />,
         ])}
         <script

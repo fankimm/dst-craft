@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.8",
+    date: "2026-05-08",
+    dev: [
+      "fix(pwa): apple-touch-startup-image href에 ?v=${APP_VERSION} query string 추가 — iOS가 같은 URL의 splash 이미지를 영구 캐시하는 문제 회피. 0.22.7에서 splash bg를 흰색으로 바꿨는데도 사용자 디바이스가 빨간색 splash를 계속 보던 원인. 매 APP_VERSION bump마다 query 변경 → iOS 새 URL로 인식 → 재다운로드.",
+    ],
+    changes: {
+      ko: [
+        "iOS PWA splash가 이전 버전 이미지로 계속 표시되던 문제 수정 — 이번 배포부터는 매 버전마다 자동 갱신됩니다. 홈 화면 아이콘 삭제 후 재추가하면 새 splash가 적용됩니다.",
+      ],
+      en: [
+        "Fixed iOS PWA splash sticking to old cached image — now auto-refreshes per version. Remove and re-add the home screen icon to pick up the new splash.",
+      ],
+    },
+  },
+  {
     version: "0.22.7",
     date: "2026-05-08",
     dev: [
