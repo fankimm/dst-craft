@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.30",
+    date: "2026-05-08",
+    dev: [
+      "fix(deploy): chunk-load 에러 UX — 새 빌드 직후 옛 HTML이 가리키는 _next/ chunk가 사라졌을 때 Next.js 클라이언트 에러 UI가 잠깐 보이고 reload되는 증상 제거. (1) layout.tsx의 chunk-retry IIFE를 SW 등록 블록 위로 이동시켜 window.__dstChunkReload 노출. 매처 6종(ChunkLoadError/Loading chunk/Loading CSS chunk/Failed to load/error loading dynamically imported module/Importing a module script failed)으로 확대, retry 1→2회 + 2회차에 ?_v=APP_VERSION cache-bust, 감지 즉시 e.preventDefault() + documentElement.style.visibility='hidden'으로 React 에러 boundary 렌더 가림, error 리스너는 capture phase 등록. (2) sw.template.js의 _next/ fetch가 .js/.css 404 받으면 모든 활성 윈도우에 postMessage({type:'CHUNK_MISSING'}) 브로드캐스트, layout.tsx의 SW message 핸들러가 받아 동일 silent reload 경로로 위임 — script 태그 우회 fetch에도 안전망 동작.",
+    ],
+    changes: {
+      ko: ["배포 직후 에러 메시지가 잠깐 깜빡이고 새로고침되던 현상 제거 — 자동 재시도가 보이지 않게 처리됨"],
+      en: ["Eliminated the brief error flash + auto-refresh that could appear right after a deploy — recovery is now invisible"],
+    },
+  },
+  {
+    version: "0.21.29",
+    date: "2026-05-08",
+    dev: [
+      "fix(settings): 개발자 메뉴 토글 — useState lazy 초기화로 변경하여 마운트 즉시 localStorage 값 반영. 기존엔 기본값(true)로 마운트 후 useEffect에서 비로소 localStorage 읽어 false로 갱신했는데, isAdmin 비동기 로드와 타이밍이 어긋나 OFF 상태인데도 메뉴가 잠깐 보이는 flicker 발생. PWA/배포 후 fresh mount마다 재현되어 사용자 입장에선 \"꺼놨는데 자꾸 켜짐\"으로 인식됨. devMenuEnabled는 isAdmin 게이트 안에서만 사용되므로 SSR HTML에 노출되지 않아 lazy 초기화로 hydration 불일치 우려 없음",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.28",
     date: "2026-05-08",
     dev: [

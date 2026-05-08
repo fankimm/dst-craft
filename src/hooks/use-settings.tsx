@@ -51,6 +51,12 @@ function resolveLocale(setting: LocaleSetting): Locale {
   return setting;
 }
 
+function getInitialDevMenuEnabled(): boolean {
+  if (typeof window === "undefined") return DEFAULT_DEV_MENU_ENABLED;
+  const saved = localStorage.getItem("dst-dev-menu");
+  return saved === null ? DEFAULT_DEV_MENU_ENABLED : saved === "1";
+}
+
 function applyTheme(resolved: ResolvedTheme) {
   const root = document.documentElement;
   if (resolved === "dark") {
@@ -69,7 +75,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
   const [theme, setThemeState] = useState<ThemeSetting>(DEFAULT_THEME);
   const [locale, setLocaleState] = useState<LocaleSetting>(DEFAULT_LOCALE);
-  const [devMenuEnabled, setDevMenuEnabledState] = useState<boolean>(DEFAULT_DEV_MENU_ENABLED);
+  const [devMenuEnabled, setDevMenuEnabledState] = useState<boolean>(getInitialDevMenuEnabled);
 
   // Before mount, use SSR-safe resolved values to prevent hydration mismatch
   const resolvedTheme = useMemo(
@@ -103,10 +109,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       (localStorage.getItem("dst-theme") as ThemeSetting) || DEFAULT_THEME;
     const savedLocale =
       (localStorage.getItem("dst-locale") as LocaleSetting) || DEFAULT_LOCALE;
-    const savedDevMenu = localStorage.getItem("dst-dev-menu");
     setThemeState(savedTheme);
     setLocaleState(savedLocale);
-    setDevMenuEnabledState(savedDevMenu === null ? DEFAULT_DEV_MENU_ENABLED : savedDevMenu === "1");
     applyTheme(resolveTheme(savedTheme));
     setMounted(true);
   }, []);
