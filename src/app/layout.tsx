@@ -20,10 +20,14 @@ const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
 });
 
-const SITE_URL = "https://www.dstcraft.com";
+const IS_BETA = process.env.NEXT_PUBLIC_DEPLOY_ENV === "beta";
+const SITE_URL = IS_BETA ? "https://beta.dstcraft.com" : "https://www.dstcraft.com";
+const ICON_SUFFIX = IS_BETA ? "-beta" : "";
 
 export const metadata: Metadata = {
-  title: "Don't Craft Without Recipes — DST Crafting & Cooking Guide",
+  title: IS_BETA
+    ? "[BETA] Don't Craft Without Recipes — DST Crafting & Cooking Guide"
+    : "Don't Craft Without Recipes — DST Crafting & Cooking Guide",
   description:
     "Don't Starve Together crafting & cooking guide — DST craft calculator, crock pot simulator, skill tree simulator, and recipe finder. Search all crafting recipes, crock pot recipes, materials & character-specific items.",
   keywords: [
@@ -116,15 +120,15 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Don't Craft Without Recipes",
+    title: IS_BETA ? "DST Craft (BETA)" : "Don't Craft Without Recipes",
   },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "48x48" },
-      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: `/icons/icon-192${ICON_SUFFIX}.png`, sizes: "192x192", type: "image/png" },
+      { url: `/icons/icon-512${ICON_SUFFIX}.png`, sizes: "512x512", type: "image/png" },
     ],
-    apple: { url: "/icons/icon-180.png", sizes: "180x180", type: "image/png" },
+    apple: { url: `/icons/icon-180${ICON_SUFFIX}.png`, sizes: "180x180", type: "image/png" },
   },
 };
 
@@ -313,53 +317,6 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased`}
       >
-        <div
-          id="app-loading"
-          suppressHydrationWarning
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 9999,
-            display: "none",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "1.5rem",
-            background: "var(--loading-bg, #fafafa)",
-            transition: "opacity 0.3s ease",
-          }}
-        >
-          <style dangerouslySetInnerHTML={{ __html: `
-            .dark { --loading-bg: #09090b; --loading-fg: #fafafa; --loading-text: #a1a1aa; }
-            :root { --loading-bg: #fafafa; --loading-fg: #09090b; --loading-text: #71717a; }
-            #app-loading img { width: 96px; height: 96px; border-radius: 20px; animation: loading-pulse 2s ease-in-out infinite; }
-            @keyframes loading-pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
-          `}} />
-          <img src="/icons/icon-512.png" alt="" width={96} height={96} />
-          <p style={{ margin: 0, fontSize: "0.875rem", letterSpacing: "0.05em", color: "var(--loading-fg, #09090b)" }}>
-            <span style={{ fontWeight: 700 }}>DON&apos;T CRAFT</span>{" "}
-            <span style={{ color: "var(--loading-text)" }}>WITHOUT RECIPES</span>
-          </p>
-        </div>
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-            var el = document.getElementById('app-loading');
-            if (!el) return;
-            var isPwa = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-            if (!isPwa) return;
-            el.style.display = 'flex';
-            function hide() {
-              if (el.dataset.hidden) return;
-              el.dataset.hidden = '1';
-              el.style.opacity = '0';
-              el.style.pointerEvents = 'none';
-              setTimeout(function() { el.style.display = 'none'; }, 300);
-            }
-            if (document.readyState !== 'loading') { hide(); }
-            else { document.addEventListener('DOMContentLoaded', hide); }
-            setTimeout(hide, 2000);
-          })();
-        `}} />
         <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
         <SettingsProvider>
           <AuthProvider>
