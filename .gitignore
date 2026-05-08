@@ -39,6 +39,9 @@ yarn-error.log*
 # playwright-mcp artifacts (debug snapshots/console logs)
 .playwright-mcp/
 
+# Claude Code internal state (/loop scheduling, etc.)
+.claude/scheduled_tasks.lock
+
 # generated service worker (built from src/sw.template.js)
 public/sw.js
 

@@ -65,6 +65,29 @@
 
 ---
 
+## 트래픽·SEO 인사이트 액션 (2026-05-08)
+> 근거: Vercel 30일 visitors 3,094 (+209%) / GSC 28일 클릭 1.02k·노출 8.26만·CTR 1.2%·평균 순위 7.6위 / CF는 5/7 cutover라 baseline 미정.
+> 분석 세션 결과 정리. CF Web Analytics는 baseline 누적(1주)되면 재검토.
+
+- [ ] **WX-78 페이지 SEO 강화** — 평균 순위 7.6위 → 1~3위 노리기. 회로 시리즈가 검색 트래픽 견인 중인데 ROI 최고
+  - 대상 페이지: `/ko/skill-tree/wx-78`(CTR 16.6%), `/item/{zaptrocuter, chessmaster-circuit, redignition-circuit, sonic-invoker-circuit, spatializer-circuit, rangebooster-circuit}`, `/item/celestial-scion`
+  - description 메타·structured data(`Game`/`SoftwareApplication` 등) 점검
+  - sitemap priority/lastmod 조정
+- [ ] **referrer 풀 URL 저장** — DC인사이드(m.dcinside + gall.dcinside) 30일 ~300명(9%) 유입. 어떤 갤러리 글에서 들어오는지 모름
+  - bun-api `/api/stats` 스키마에 `referrer_url` 컬럼 추가 (현재 도메인만 저장)
+  - 프론트 analytics 호출 시 `document.referrer` 풀 URL 전달
+  - admin /stats 페이지에 referrer URL Top N 표시
+- [ ] **싱가포르 봇 트래픽 검증·차단** — Vercel 30일 SG 28%, CF 동일. 실유저 비율로는 비정상
+  - bun-api 로그에서 SG IP 패턴 분석 (CIDR 후보 추출)
+  - CF Firewall rule로 의심 IP 차단 또는 challenge
+  - Web Analytics에서 SG 필터링 시 실제 한국 비중 확인
+- [ ] **메인 추천 카드 — bounce rate 개선** — 현재 76% (DST 가이드 특성상 자연스러우나 75%↓ 시도)
+  - 메인에서 인기 회로/스킬트리/요리로 유도하는 추천 카드 도입
+  - "최근 본 항목" 또는 "이 캐릭터의 회로" 같은 cross-link
+- [ ] **CF Web Analytics baseline 누적 후 재분석** (2026-05-14 이후) — 현재 5/7 cutover라 1주치 baseline 부족. 일주일 뒤 CF 단독으로 분석 가능
+
+---
+
 ## 대기 (다음 작업 후보)
 
 - [x] **CF "static cache" rule 좁히기 — All requests → 정적 자산만** (2026-05-07 완료)
