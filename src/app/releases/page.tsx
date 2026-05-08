@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.5",
+    date: "2026-05-08",
+    dev: [
+      "fix(pwa): iOS 스플래시 여전히 미표시 → Next.js 16 Metadata API의 `appleWebApp.capable: true`가 신규 표준 `<meta name=\"mobile-web-app-capable\">`만 출력하고 레거시 `<meta name=\"apple-mobile-web-app-capable\">`는 누락. iOS Safari는 PWA standalone 모드 활성화에 apple-prefix 메타가 여전히 필요 → layout.tsx <head>에 수동 주입.",
+      "chore(pwa): appleWebApp.title을 \"dstcraft.com\"으로 통일 (prod \"Don't Craft Without Recipes\" / beta \"DST Craft (BETA)\" → 둘 다 \"dstcraft.com\"). manifest.json의 name/short_name과 일치.",
+    ],
+    changes: {
+      ko: [
+        "iOS PWA 스플래시 미표시 문제 재수정 — 기존 홈 화면 아이콘은 한 번 삭제 후 다시 추가해야 적용됩니다.",
+        "iOS 홈 화면에 표시되는 PWA 이름을 \"dstcraft.com\"으로 통일 (베타도 동일).",
+      ],
+      en: [
+        "Re-fixed iOS PWA splash screen — if you previously installed to home screen, please remove and re-add the icon.",
+        "Unified iOS home screen PWA name to \"dstcraft.com\" (beta included).",
+      ],
+    },
+  },
+  {
     version: "0.22.4",
     date: "2026-05-08",
     dev: [

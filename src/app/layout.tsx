@@ -121,7 +121,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: IS_BETA ? "DST Craft (BETA)" : "Don't Craft Without Recipes",
+    title: "dstcraft.com",
   },
   icons: {
     icon: [
@@ -286,6 +286,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />
         {iosSplashDevices.flatMap((d) => [
