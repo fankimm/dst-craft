@@ -136,6 +136,27 @@ jobs:
             exit 1
           fi
 
+      - name: Sync source-beta + ~/works (beta)
+        if: steps.br.outputs.branch == 'beta' && (github.event_name == 'push' || inputs.force_frontend == true)
+        run: |
+          set -euo pipefail
+          # ~/works (deploy script source) — keep scripts current on beta pushes too
+          cd "$WORKS_REPO"
+          git fetch --quiet origin
+          if [ -n "$(git status --porcelain)" ]; then
+            git stash push -u -m "actions-pre-pull-beta-$(date -u +%Y%m%dT%H%M%SZ)" >/dev/null
+          fi
+          git checkout -B beta origin/beta --quiet
+          git reset --hard --quiet origin/beta
+
+          # source-beta build cache — force-align to origin/beta to recover from any divergence
+          # (prior failed deploys, manual edits, etc.). This is just a build cache; local commits
+          # should never matter here.
+          cd ~/dstcraft/source-beta
+          git fetch --quiet origin beta
+          git reset --hard --quiet origin/beta
+          git clean -fd >/dev/null 2>&1 || true
+
       - name: Frontend rebuild — beta → ~/dstcraft/beta
         if: steps.br.outputs.branch == 'beta' && (github.event_name == 'push' || inputs.force_frontend == true)
         env:
