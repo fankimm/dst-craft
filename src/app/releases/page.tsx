@@ -15,6 +15,14 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.2",
+    date: "2026-05-08",
+    dev: [
+      "fix(stats): 관리자 통계 페이지 `접속자 상세` 표(`VisitorTable`) 시간/IP 컬럼 정리. 시간은 `toLocaleString({month,day,hour,minute,second})` → `toLocaleTimeString(\"en-GB\", {hour,minute})` 로 변경해 24h `HH:MM` 표기. IP는 inline-block + `w-[15ch]` + `truncate`로 IPv4 최대(`111.111.111.111`) 기준 고정 폭, 초과 시 ellipsis. 잘린 값은 `title` 속성으로 hover 노출.",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.23.1",
     date: "2026-05-08",
     dev: [
