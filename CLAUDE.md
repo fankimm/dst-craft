@@ -41,9 +41,9 @@
 - GitHub 이슈 오픈 (제목/AC 초안 → 사용자 확인)
 - main에서 분기한 `feat/<issue-num>-<slug>` 브랜치 생성
 - `../dst-craft-<issue-num>` 워크트리 생성
-- 사용자에게 새 세션을 그 워크트리에서 열도록 안내
+- 현재 세션이 그 워크트리로 `cd` 이동 → 같은 세션에서 그대로 작업 진행
 
-**왜**: 메인 워크트리는 항상 beta라서 동시에 여러 세션이 작업하면 한쪽의 in-flight 변경이 다른 쪽 `/push`에 섞인다. 워크트리를 작업 단위로 격리해 구조적으로 차단.
+**왜**: feat 단위 격리로 main 머지 시 의도치 않은 변경 혼입 방지. 멀티 세션 충돌이 우려되면 다른 세션을 정리한 뒤 진행.
 
 코드 변경이 없는 질문/탐색/설명, 그리고 docs-only 메타 작업(CLAUDE.md, `.claude/skills/`, `memory/`)은 `/task` 없이 메인 세션에서 직접 처리.
 
@@ -51,7 +51,7 @@
 1. **feat 분기 base는 항상 `main`** — `/task`가 자동으로 `git worktree add ../dst-craft-<num> -b feat/<num>-<slug> origin/main` 수행
    - `beta`에서 분기하지 말 것 — beta의 in-flight 커밋이 딸려 들어와 main 머지 시 의도치 않은 변경 포함 가능
    - feat끼리 독립 → 한 feat이 다른 feat의 미완성 변경을 끌어들이지 않음
-2. **워크트리 안에서 작업 + 커밋** — `feat/<num>-<slug>` 브랜치에 누적 (새 Claude 세션을 그 워크트리에서 열어 진행)
+2. **워크트리 안에서 작업 + 커밋** — `feat/<num>-<slug>` 브랜치에 누적 (`/task`가 현재 세션을 워크트리로 cd 이동시킨 뒤 그대로 진행)
 3. **beta 머지 + 푸시 (staging 배포)** — `/push` 호출 (자동: feat 커밋 + 메인 워크트리에서 beta 머지/푸시)
    - 이 단계는 `beta.dstcraft.com`에서 검증/테스트하기 위함. 다른 in-flight feat과 함께 통합 검증 가능
    - 릴리즈노트/버전은 **건드리지 않음** — beta 머지는 deploy-only
