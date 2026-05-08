@@ -19,11 +19,15 @@ const releases: Release[] = [
     date: "2026-05-08",
     dev: [
       "fix(materials): wagpunk_bits 영문명 Wagpunk Bits → Scrap — 인게임 strings.lua(STRINGS.NAMES.WAGPUNK_BITS = \"Scrap\") 기준으로 보정. 한글은 이미 \"고철더미\"로 정확. B.U.D.D.Y. 등 wagpunk_bits 사용 레시피의 영문 표기가 게임 인벤토리와 일치하도록.",
+      "fix(pwa): beta manifest의 name/short_name도 \"dstcraft.com\"으로 통일 — generate-manifest.cjs가 isBeta일 때 \"dstcraft.com (BETA)\" / \"dstcraft BETA\"로 분기하던 부분 제거. iOS는 apple-mobile-web-app-title보다 manifest의 short_name을 우선시하는 케이스가 있어, appleWebApp.title만 바꿔서는 홈 화면 이름이 그대로였음. manifest 자체를 통일.",
     ],
     changes: {
-      ko: [],
+      ko: [
+        "iOS 베타 PWA 홈 화면 이름이 여전히 \"dstcraft BETA\"로 표시되던 문제 수정 — manifest까지 통일했습니다. 기존 아이콘은 한 번 더 삭제 후 재추가하세요.",
+      ],
       en: [
         "Renamed material 'Wagpunk Bits' → 'Scrap' to match the in-game name (Klei renamed it; Korean was already correct as 고철더미).",
+        "Fixed iOS beta PWA home screen still showing \"dstcraft BETA\" — manifest is now unified with prod. Please remove and re-add the home screen icon once more.",
       ],
     },
   },

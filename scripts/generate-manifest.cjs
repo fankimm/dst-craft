@@ -6,8 +6,8 @@ const isBeta = process.env.NEXT_PUBLIC_DEPLOY_ENV === "beta";
 const suffix = isBeta ? "-beta" : "";
 
 const manifest = {
-  name: isBeta ? "dstcraft.com (BETA)" : "dstcraft.com",
-  short_name: isBeta ? "dstcraft BETA" : "dstcraft.com",
+  name: "dstcraft.com",
+  short_name: "dstcraft.com",
   description: "Don't Starve Together 크래프팅·쿠킹 레시피 가이드",
   start_url: basePath + "/",
   scope: basePath + "/",
