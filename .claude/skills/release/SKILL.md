@@ -73,16 +73,25 @@ description: 특정 feat 브랜치를 main으로 머지 + main 푸시 (Productio
 
 ## 4. main 머지 + 푸시 (Production 배포)
 
+브랜치명에서 이슈 번호 추출 (`feat/<num>-<slug>` 패턴이면 `<num>`). 있으면 머지 커밋 메시지에 `Closes #<num>` 포함 → main 푸시 시 GitHub가 자동으로 이슈 close.
+
 ```bash
+# 이슈 번호 추출 (있는 경우)
+ISSUE_NUM=$(echo "$RELEASE_BRANCH" | sed -nE 's|^feat/([0-9]+)-.*|\1|p')
+
 git checkout main
 git pull --ff-only origin main
-git merge --no-ff $RELEASE_BRANCH -m "Release: $RELEASE_BRANCH → main"
+if [ -n "$ISSUE_NUM" ]; then
+  git merge --no-ff $RELEASE_BRANCH -m "Release: $RELEASE_BRANCH → main" -m "Closes #$ISSUE_NUM"
+else
+  git merge --no-ff $RELEASE_BRANCH -m "Release: $RELEASE_BRANCH → main"
+fi
 git push origin main
 ```
 
 머지 충돌 시 중단하고 사용자에게 보고. 임의 해결 금지.
 
-> 머지 커밋 메시지에 버전이 있다면 포함 (예: `Release v0.22.7: feat/buddy-w-radio → main`).
+> 머지 커밋 메시지에 버전이 있다면 포함 (예: `Release v0.22.7: feat/42-buddy-w-radio → main`).
 
 ## 5. beta에도 반영 (optional, 보통은 자동)
 
@@ -97,14 +106,23 @@ git push origin beta
 
 ## 6. 워크트리 + 브랜치 정리
 
-릴리즈된 feat 브랜치는 정리:
+릴리즈된 feat 브랜치는 정리. `/task`로 만든 워크트리는 `../dst-craft-<issue-num>` 패턴이므로 이슈 번호로 찾음.
+
 ```bash
-# 워크트리가 있다면
-git worktree remove <path-to-feat-worktree>
-# 브랜치 삭제
+# 워크트리 자동 탐색 (이슈 번호 기반)
+if [ -n "$ISSUE_NUM" ]; then
+  WT_PATH="../dst-craft-$ISSUE_NUM"
+  if git worktree list | grep -q "$WT_PATH"; then
+    git worktree remove "$WT_PATH"
+  fi
+fi
+# 또는 일반: git worktree list 출력에서 $RELEASE_BRANCH가 체크아웃된 경로 찾아서 remove
+
+# 브랜치 삭제 (로컬)
 git branch -d $RELEASE_BRANCH
-# 원격에도 있었다면
-git push origin --delete $RELEASE_BRANCH  # 사용자 확인 후
+
+# 원격에도 있었다면 사용자 확인 후
+git push origin --delete $RELEASE_BRANCH
 ```
 
 ## 7. 마무리
