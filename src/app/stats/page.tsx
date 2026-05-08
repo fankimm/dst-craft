@@ -150,16 +150,20 @@ function VisitorTable({ rows }: { rows: AnalyticsData["recentVisitors"] }) {
         <tbody>
           {rows.map((v, i) => (
             <tr key={`${v.id ?? "x"}-${i}`} className="border-b border-border/30 last:border-0">
-              <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap">
-                {new Date(v.time).toLocaleString("ko-KR", {
-                  month: "numeric",
-                  day: "numeric",
+              <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap font-mono tabular-nums">
+                {new Date(v.time).toLocaleTimeString("en-GB", {
                   hour: "2-digit",
                   minute: "2-digit",
-                  second: "2-digit",
                 })}
               </td>
-              <td className="py-2 pr-3 font-mono text-foreground/80">{v.ip}</td>
+              <td className="py-2 pr-3">
+                <span
+                  className="font-mono text-foreground/80 inline-block w-[15ch] truncate align-middle"
+                  title={v.ip}
+                >
+                  {v.ip}
+                </span>
+              </td>
               <td className="py-2 pr-3 whitespace-nowrap">
                 {countryFlag(v.country)} {countryName(v.country)}
               </td>
