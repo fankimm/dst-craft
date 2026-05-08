@@ -14,6 +14,7 @@ import {
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import { skillTranslations } from "@/data/skill-trees/translations";
 import type { Locale } from "@/lib/i18n";
+import { extractVital } from "./wx78-vital-extract";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
 import { Footer } from "../crafting/Footer";
 import { DetailPanel } from "@/components/ui/DetailPanel";
@@ -195,58 +196,8 @@ function buildEffectRows(
 
 // ── Vital aggregation ────────────────────────────────────────
 // 같은 vital(체/허/정) stat을 여러 회로가 올리면 카드 하나로 합쳐 표시.
-// 인게임 텍스트 원문 형식("최대 N이 V 증가한다.") 그대로 쓰되 V만 합산값으로 치환.
+// extractVital 헬퍼는 wx78-vital-extract.ts (Wx78CircuitBoard와 공유).
 type VitalKind = "maxHealth" | "maxSanity" | "maxHunger";
-
-const VITAL_FROM_KO_LABEL: Record<string, VitalKind> = {
-  "체력": "maxHealth",
-  "정신력": "maxSanity",
-  "허기": "maxHunger",
-};
-
-const VITAL_FROM_EN_LABEL: Record<string, VitalKind> = {
-  "Health": "maxHealth",
-  "Sanity": "maxSanity",
-  "Hunger": "maxHunger",
-};
-
-// 행 텍스트에서 vital 부분만 추출(합산용) + 나머지 텍스트 분리.
-// 표준화 케이스:
-//   1) standalone:  "최대 X(이|가) N 증가한다."
-//   2) 앞에 붙은 compound:  "최대 X(이|가) N 증가하고[, ] ..."
-//   3) 끝에 붙은 compound:  "..., 최대 X(이|가) N 증가한다."
-function extractVitalKo(text: string): { kind: VitalKind; perModule: number; rest: string } | null {
-  let m = text.match(/^최대 (체력|정신력|허기)(?:이|가) (\d+) 증가한다\.?\s*$/);
-  if (m) return { kind: VITAL_FROM_KO_LABEL[m[1]], perModule: parseInt(m[2], 10), rest: "" };
-  m = text.match(/^최대 (체력|정신력|허기)(?:이|가) (\d+) 증가하고[,\s]+(.+)$/);
-  if (m) return { kind: VITAL_FROM_KO_LABEL[m[1]], perModule: parseInt(m[2], 10), rest: m[3].trim() };
-  m = text.match(/^(.+),\s*최대 (체력|정신력|허기)(?:이|가) (\d+) 증가한다\.?\s*$/);
-  if (m) {
-    const rest = m[1].trim();
-    return { kind: VITAL_FROM_KO_LABEL[m[2]], perModule: parseInt(m[3], 10), rest: rest.endsWith(".") ? rest : `${rest}.` };
-  }
-  return null;
-}
-
-// extractVitalKo의 영문 미러. Klei scrapbook은 두 패턴을 혼용:
-//   "raises Maximum X +N." / "raises Maximum X +N points."
-//   "increases Maximum X by N points."
-// 결합 형태도 처리:
-//   1) standalone
-//   2) 앞:  "increases Maximum X by N points and ..."
-//   3) 뒤:  "... and increases Maximum X by N points." / "..., increases Maximum X by N points."
-function extractVitalEn(text: string): { kind: VitalKind; perModule: number; rest: string } | null {
-  let m = text.match(/^(?:raises|increases)\s+Maximum\s+(Health|Sanity|Hunger)\s+(?:by\s+)?\+?(\d+)(?:\s+points?)?\.?\s*$/);
-  if (m) return { kind: VITAL_FROM_EN_LABEL[m[1]], perModule: parseInt(m[2], 10), rest: "" };
-  m = text.match(/^(?:raises|increases)\s+Maximum\s+(Health|Sanity|Hunger)\s+(?:by\s+)?\+?(\d+)(?:\s+points?)?\s+and\s+(.+)$/);
-  if (m) return { kind: VITAL_FROM_EN_LABEL[m[1]], perModule: parseInt(m[2], 10), rest: m[3].trim() };
-  m = text.match(/^(.+?)(?:\s+and|,)\s+(?:raises|increases)\s+Maximum\s+(Health|Sanity|Hunger)\s+(?:by\s+)?\+?(\d+)(?:\s+points?)?\.?\s*$/);
-  if (m) {
-    const rest = m[1].trim();
-    return { kind: VITAL_FROM_EN_LABEL[m[2]], perModule: parseInt(m[3], 10), rest: rest.endsWith(".") ? rest : `${rest}.` };
-  }
-  return null;
-}
 
 // baseRows에서 vital 부분 분리: standalone vital 행은 제거 (헤더에 별도 표시),
 // compound 패러그래프는 vital 부분만 잘라내고 나머지 텍스트로 별도 row.
@@ -257,7 +208,7 @@ function aggregateVitalRows(
   const remaining: EffectRow[] = [];
   for (const row of rows) {
     if (row.skillId) { remaining.push(row); continue; }
-    const ex = locale === "ko" ? extractVitalKo(row.text) : extractVitalEn(row.text);
+    const ex = extractVital(row.text, locale);
     if (!ex) { remaining.push(row); continue; }
     if (ex.rest) remaining.push({ ...row, text: ex.rest });
     // standalone 행은 drop (vital만 있던 행 → 헤더에서 표시)

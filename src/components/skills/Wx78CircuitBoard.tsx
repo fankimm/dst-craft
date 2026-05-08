@@ -19,6 +19,7 @@ import {
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import type { Locale } from "@/lib/i18n";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
+import { extractVital } from "./wx78-vital-extract";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { Footer } from "../crafting/Footer";
 import { cn } from "@/lib/utils";
@@ -548,7 +549,13 @@ export function ScrapbookEffects({
         }
         const cleaned = stripSocket(para).trim();
         if (!cleaned) return null;
-        return <EffectCard key={i} text={cleaned} locale={locale} />;
+        // vital(최대 체/허/정) 부분 추출 — Status 패널과 동일 로직 (ko/en 양쪽).
+        // compound(rest 있음)인 경우만 vital 부분 제거 → ko/en detail 패널 컨텐츠 대칭.
+        // standalone(vital이 유일한 효과, 예: maxhealth, maxsanity)은 원본 유지 — detail 패널은
+        // 단일 모듈 spec 조회용이라 vital 정보가 사라지면 안 됨.
+        const ex = extractVital(cleaned, locale);
+        const text = ex && ex.rest ? ex.rest : cleaned;
+        return <EffectCard key={i} text={text} locale={locale} />;
       })}
     </div>
   );
