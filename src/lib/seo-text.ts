@@ -179,18 +179,20 @@ export function generateFoodSeoText(
 
 const categorySeasons: Record<string, string> = {
   seasonal: "a seasonal boss",
+  story: "a story boss",
+  underground: "an underground boss",
   raid: "a raid boss",
   ocean: "an ocean boss",
-  dungeon: "a dungeon boss",
   event: "an event boss",
   mini: "a mini boss",
 };
 
 const categoryTips: Record<string, string> = {
   seasonal: "Seasonal bosses appear at specific times of the year and must be dealt with to survive.",
+  story: "Story bosses gate major progression — defeating them unlocks new content and key items.",
+  underground: "Underground bosses dwell in the caves and Ruins. Prepare light sources, sanity restoration, and strong equipment.",
   raid: "Raid bosses are powerful enemies that require preparation. Bring armor, weapons, and healing food before engaging.",
   ocean: "Ocean bosses are encountered while sailing. Make sure your boat is sturdy and bring ranged weapons.",
-  dungeon: "Dungeon bosses are found deep in the Ruins. Prepare with light sources and strong equipment.",
   event: "Event bosses appear during special in-game events. They offer unique rewards not available elsewhere.",
   mini: "Mini bosses are less powerful but still dangerous. They can appear unexpectedly during exploration.",
 };
@@ -206,8 +208,9 @@ export function generateBossSeoText(
   boss: Boss,
   lootNames: { item: string; nameEn: string }[],
 ): BossSeoContent {
-  const catDesc = categorySeasons[boss.category] ?? "a boss";
-  const catTip = categoryTips[boss.category] ?? "";
+  const primaryCategory = boss.categories[0];
+  const catDesc = categorySeasons[primaryCategory] ?? "a boss";
+  const catTip = categoryTips[primaryCategory] ?? "";
 
   // Deduplicate loot items for description
   const uniqueItems = [...new Set(lootNames.map((l) => l.nameEn))];
@@ -241,12 +244,12 @@ export function generateBossSeoText(
   // Strategy
   let strategy = `When fighting ${boss.name}, preparation is key. `;
   strategy += `Bring strong armor and weapons, along with healing food. `;
-  if (boss.category === "seasonal") {
+  if (boss.categories.includes("seasonal")) {
     strategy += `As a seasonal boss, ${boss.name} will appear regardless of player readiness, so prepare in advance.`;
-  } else if (boss.category === "raid") {
-    strategy += `${boss.name} is a challenging raid boss. Consider fighting with a team for the best results.`;
-  } else if (boss.category === "ocean") {
+  } else if (boss.categories.includes("ocean")) {
     strategy += `Since ${boss.name} is an ocean boss, ensure your boat is repaired and bring boat-repair supplies.`;
+  } else if (boss.categories.includes("raid")) {
+    strategy += `${boss.name} is a challenging raid boss. Consider fighting with a team for the best results.`;
   } else {
     strategy += `Study ${boss.name}'s attack patterns and use kiting to avoid damage.`;
   }
@@ -722,18 +725,20 @@ export function generateFoodSeoTextKo(
 
 const categorySeasonsKo: Record<string, string> = {
   seasonal: "계절 보스",
+  story: "스토리 보스",
+  underground: "지하 보스",
   raid: "레이드 보스",
   ocean: "바다 보스",
-  dungeon: "던전 보스",
   event: "이벤트 보스",
   mini: "미니 보스",
 };
 
 const categoryTipsKo: Record<string, string> = {
   seasonal: "계절 보스는 특정 시기에 등장하므로 생존을 위해 반드시 처치해야 합니다.",
+  story: "스토리 보스는 주요 진행을 좌우합니다 — 처치하면 새로운 콘텐츠와 핵심 아이템이 해금됩니다.",
+  underground: "지하 보스는 동굴과 폐허에 서식합니다. 광원, 정신력 회복 수단, 강한 장비를 준비하세요.",
   raid: "레이드 보스는 강력한 적으로, 충분한 준비가 필요합니다. 교전 전에 갑옷, 무기, 회복 음식을 챙기세요.",
   ocean: "바다 보스는 항해 중 마주칩니다. 배의 내구도를 점검하고 원거리 무기를 준비하세요.",
-  dungeon: "던전 보스는 폐허 깊숙한 곳에 있습니다. 광원과 강력한 장비를 준비하세요.",
   event: "이벤트 보스는 특별한 게임 이벤트 동안 등장하며, 다른 곳에서 얻을 수 없는 보상을 줍니다.",
   mini: "미니 보스는 위력이 덜하지만 여전히 위험합니다. 탐험 중 갑작스럽게 등장할 수 있습니다.",
 };
@@ -743,8 +748,9 @@ export function generateBossSeoTextKo(
   lootKoNames: { item: string; nameKo: string }[],
 ): BossSeoContent {
   const nameKo = boss.nameKo;
-  const catKo = categorySeasonsKo[boss.category] ?? "보스";
-  const catTipKo = categoryTipsKo[boss.category] ?? "";
+  const primaryCategory = boss.categories[0];
+  const catKo = categorySeasonsKo[primaryCategory] ?? "보스";
+  const catTipKo = categoryTipsKo[primaryCategory] ?? "";
 
   const uniqueItems = [...new Set(lootKoNames.map((l) => l.nameKo))];
   const guaranteedLoot = boss.loot
@@ -777,12 +783,12 @@ export function generateBossSeoTextKo(
   // Strategy
   let strategy = `${nameKo}와(과) 전투할 때는 준비가 핵심입니다. `;
   strategy += `튼튼한 갑옷과 무기, 회복 음식을 챙기세요. `;
-  if (boss.category === "seasonal") {
+  if (boss.categories.includes("seasonal")) {
     strategy += `계절 보스이므로 ${nameKo}은(는) 플레이어의 준비 상태와 무관하게 등장하니 미리 대비해야 합니다.`;
-  } else if (boss.category === "raid") {
-    strategy += `${nameKo}은(는) 도전적인 레이드 보스입니다. 팀을 꾸려 함께 싸우는 것을 추천합니다.`;
-  } else if (boss.category === "ocean") {
+  } else if (boss.categories.includes("ocean")) {
     strategy += `${nameKo}은(는) 바다 보스이므로 배를 수리하고 보트 수리 자재를 챙기세요.`;
+  } else if (boss.categories.includes("raid")) {
+    strategy += `${nameKo}은(는) 도전적인 레이드 보스입니다. 팀을 꾸려 함께 싸우는 것을 추천합니다.`;
   } else {
     strategy += `${nameKo}의 공격 패턴을 익히고 카이팅으로 피해를 회피하세요.`;
   }

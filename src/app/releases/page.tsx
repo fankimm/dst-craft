@@ -15,6 +15,39 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.0",
+    date: "2026-05-08",
+    dev: [
+      "feat(bosses): 보스 카테고리 다중 분류 마이그레이션 — `category: BossCategoryId` 단일 필드 → `categories: BossCategoryId[]` 배열로 스키마 변경. 한 보스가 여러 분류에 동시 속할 수 있게 됨 (예: Ancient Fuelweaver = ['underground', 'story', 'raid']).",
+      "feat(bosses): 카테고리 셋 개편 — 기존 `dungeon`(코뿔소 1마리뿐) 제거, 새로 `story`(스토리 진행 보스), `underground`(지하 보스 = 동굴/폐허) 도입. 최종 7종: seasonal/story/underground/raid/ocean/event/mini. 30개 보스 전부 다중 태그 재분류.",
+      "feat(items): Great Depths Worm(거대 동굴지렁이, prefab `worm_boss`) 누락 등록 — 인게임 소스(scripts/prefabs/worm_boss.lua, tuning.lua) 기준. HP 5000, damage 14, spine reflect 14. categories=['underground','raid']. 임시 portrait는 chesspiece_wormboss.png 복사 사용.",
+      "feat(items): Wrathful Rabbit King(분노한 토끼왕, prefab `rabbitking_aggressive`) 누락 등록 — Year of the Rabbit 이벤트 보스. HP 2000, damage 75. loot: monstermeat + beardhair×2 + rabbitkingspear. categories=['event','mini']. 임시 portrait는 rabbitking_lucky.png 복사 사용.",
+      "data(bosses): bossCategories 배열에 story/underground 추가, 기존 dungeon 제거. 대표 보스: story=stalker_atrium, underground=minotaur.",
+      "data(loot): wormlight(발광 베리), beardhair(수염털), rabbitkingspear(토끼왕의 곤봉), chesspiece_wormboss_sketch(거대 동굴지렁이 조각상 도면) 한글명 추가.",
+      "i18n: boss_dungeon → boss_underground 리네임 + boss_story 신규. labels.ts(SEO)도 bcDungeon → bcUnderground + bcStory 동일 적용.",
+      "refactor(seo): BossPageContent의 categoryKey/categoryColors/relatedBosses, seo-text.ts의 categorySeasons/categoryTipsKo/strategy 분기 모두 `boss.categories[0]` primary 또는 `categories.includes()` 매칭으로 마이그레이션. relatedBosses는 카테고리 교집합 매칭으로 변경.",
+      "refactor(ui): BossesApp.tsx의 필터(`b.category === selectedCategory` → `b.categories.includes(...)`) + Detail panel 태그 칩(단일 → 다중) 마이그레이션.",
+      "검증: tsc --noEmit clean, npm run build 성공.",
+      "참고: Challenge Board mod(Workshop #3565356900)와 비교해 누락 보스 식별. Shadow Rifts 보스(Ink Blight 4종, Mega Blight)는 epic 태그 없는 rift event 적이라 보스 탭에서 제외, Mini 후보(Ewecus, Koalefant, Varglet, Birchnut Tree 변종)는 일반 elite 몹이라 제외.",
+    ],
+    changes: {
+      ko: [
+        "보스 분류 체계 개편 — 한 보스가 여러 카테고리에 속할 수 있게 됐습니다 (예: 고대의 연료직공 = 지하/스토리/레이드).",
+        "새 카테고리 '스토리 보스' 추가, '던전 보스' → '지하 보스'로 변경 (의미가 더 정확해졌습니다).",
+        "신규 보스 '거대 동굴지렁이(Great Depths Worm)' 추가 — 동굴 폭포 지대에 등장하는 거대 지렁이 보스.",
+        "신규 보스 '분노한 토끼왕(Wrathful Rabbit King)' 추가 — Year of the Rabbit 이벤트 보스.",
+        "보스 상세에 분류 칩이 모두 표시되도록 변경 (이전: 1개 / 변경: 해당 보스의 모든 분류).",
+      ],
+      en: [
+        "Reworked boss categorization — a single boss can now belong to multiple categories (e.g. Ancient Fuelweaver = Underground / Story / Raid).",
+        "Added new 'Story' category; renamed 'Dungeon' → 'Underground' for clarity.",
+        "Added missing boss 'Great Depths Worm' — giant worm boss in the cave grotto.",
+        "Added missing boss 'Wrathful Rabbit King' — Year of the Rabbit event boss.",
+        "Boss detail now shows all category chips (was: only the first).",
+      ],
+    },
+  },
+  {
     version: "0.22.8",
     date: "2026-05-08",
     dev: [

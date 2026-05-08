@@ -12,18 +12,20 @@ const craftableIds = new Set(allItems.map((i) => i.id));
 
 const categoryKey = {
   seasonal: "bcSeasonal",
+  story: "bcStory",
+  underground: "bcUnderground",
   raid: "bcRaid",
   ocean: "bcOcean",
-  dungeon: "bcDungeon",
   event: "bcEvent",
   mini: "bcMini",
 } as const;
 
 const categoryColors: Record<string, string> = {
   seasonal: "text-sky-600 dark:text-sky-400 bg-sky-500/10 border-sky-500/30",
+  story: "text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30",
+  underground: "text-purple-600 dark:text-purple-400 bg-purple-500/10 border-purple-500/30",
   raid: "text-red-600 dark:text-red-400 bg-red-500/10 border-red-500/30",
   ocean: "text-blue-600 dark:text-blue-400 bg-blue-500/10 border-blue-500/30",
-  dungeon: "text-purple-600 dark:text-purple-400 bg-purple-500/10 border-purple-500/30",
   event: "text-orange-600 dark:text-orange-400 bg-orange-500/10 border-orange-500/30",
   mini: "text-zinc-600 dark:text-zinc-400 bg-zinc-500/10 border-zinc-500/30",
 };
@@ -37,8 +39,9 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
   const subtitle = lang === "ko" ? boss.name : boss.nameKo;
   const images = Array.isArray(boss.image) ? boss.image : [boss.image];
 
-  const categoryLabel = L[categoryKey[boss.category as keyof typeof categoryKey]]?.[lang] ?? boss.category;
-  const categoryColor = categoryColors[boss.category] ?? "text-muted-foreground border-border";
+  const primaryCategory = boss.categories[0];
+  const categoryLabel = L[categoryKey[primaryCategory as keyof typeof categoryKey]]?.[lang] ?? primaryCategory;
+  const categoryColor = categoryColors[primaryCategory] ?? "text-muted-foreground border-border";
 
   const uniqueLoot = boss.loot.filter(
     (l, i, arr) => arr.findIndex((x) => x.item === l.item) === i
@@ -61,7 +64,11 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
       );
 
   const relatedBosses = bosses
-    .filter((b) => b.category === boss.category && b.id !== boss.id)
+    .filter(
+      (b) =>
+        b.id !== boss.id &&
+        b.categories.some((c) => boss.categories.includes(c)),
+    )
     .slice(0, 4);
 
   const routePrefix = lang === "ko" ? "/ko" : "";
@@ -350,8 +357,9 @@ export function buildBossMetadata(slug: string, lang: SeoLang) {
   const lootList = [
     ...new Set(boss.loot.map((l) => lootDisplayName(l.item, lang === "ko" ? "ko" : "en"))),
   ].join(", ");
+  const primaryCategory = boss.categories[0];
   const categoryLabel =
-    L[categoryKey[boss.category as keyof typeof categoryKey]]?.[lang] ?? boss.category;
+    L[categoryKey[primaryCategory as keyof typeof categoryKey]]?.[lang] ?? primaryCategory;
 
   const title = lang === "ko"
     ? `${displayName} — Don't Starve Together 보스 가이드`

@@ -27,13 +27,22 @@ export interface BossStashLoot {
   bundles?: StashBundle[];
 }
 
-export type BossCategoryId = "seasonal" | "raid" | "ocean" | "dungeon" | "event" | "mini" | "all";
+export type BossCategoryId =
+  | "seasonal"
+  | "story"
+  | "underground"
+  | "raid"
+  | "ocean"
+  | "event"
+  | "mini"
+  | "all";
 
 export interface Boss {
   id: string;
   name: string;
   nameKo: string;
-  category: BossCategoryId;
+  /** 다중 카테고리 — 한 보스가 여러 분류에 동시에 속할 수 있음. 첫 번째 항목이 primary(SEO/뱃지용). */
+  categories: BossCategoryId[];
   image: string | string[]; // filename(s) in /images/bosses/
   loot: BossLoot[];
   stashLoot?: BossStashLoot; // secondary loot from a stash/chest mechanic (e.g., Klaus Loot Stash)
@@ -44,7 +53,7 @@ export const bosses: Boss[] = [
     id: "deerclops",
     name: "Deerclops",
     nameKo: "외눈사슴",
-    category: "seasonal",
+    categories: ["seasonal"],
     image: "deerclops.png",
     loot: [
       { item: "meat", chance: 1, count: 8 },
@@ -56,7 +65,7 @@ export const bosses: Boss[] = [
     id: "moose",
     name: "Moose/Goose",
     nameKo: "큰거위사슴/큰사슴거위",
-    category: "seasonal",
+    categories: ["seasonal"],
     image: "moose.png",
     loot: [
       { item: "meat", chance: 1, count: 6 },
@@ -70,7 +79,7 @@ export const bosses: Boss[] = [
     id: "bearger",
     name: "Bearger",
     nameKo: "곰소리",
-    category: "seasonal",
+    categories: ["seasonal"],
     image: "bearger.png",
     loot: [
       { item: "meat", chance: 1, count: 8 },
@@ -82,7 +91,7 @@ export const bosses: Boss[] = [
     id: "antlion",
     name: "Antlion",
     nameKo: "개미사자",
-    category: "seasonal",
+    categories: ["seasonal"],
     image: "antlion.png",
     loot: [
       { item: "townportal_blueprint", chance: 1, blueprint: true },
@@ -99,7 +108,7 @@ export const bosses: Boss[] = [
     id: "dragonfly",
     name: "Dragonfly",
     nameKo: "용파리",
-    category: "raid",
+    categories: ["raid"],
     image: "dragonfly.png",
     loot: [
       { item: "dragon_scales", chance: 1 },
@@ -125,7 +134,7 @@ export const bosses: Boss[] = [
     id: "beequeen",
     name: "Bee Queen",
     nameKo: "여왕벌",
-    category: "raid",
+    categories: ["raid"],
     image: "beequeen.png",
     loot: [
       { item: "royal_jelly", chance: 1, count: 6 },
@@ -144,7 +153,7 @@ export const bosses: Boss[] = [
     id: "klaus",
     name: "Klaus",
     nameKo: "클라우스",
-    category: "raid",
+    categories: ["raid"],
     image: "klaus.png",
     loot: [
       { item: "monstermeat", chance: 1 },
@@ -223,7 +232,7 @@ export const bosses: Boss[] = [
     id: "toadstool",
     name: "Toadstool",
     nameKo: "독꺼비버섯",
-    category: "raid",
+    categories: ["underground", "raid"],
     image: "toadstool.png",
     loot: [
       { item: "shroom_skin", chance: 1 },
@@ -240,7 +249,7 @@ export const bosses: Boss[] = [
     id: "stalker_atrium",
     name: "Ancient Fuelweaver",
     nameKo: "고대의 연료직공",
-    category: "raid",
+    categories: ["underground", "story", "raid"],
     image: "stalker_atrium.png",
     loot: [
       { item: "shadowheart", chance: 1 },
@@ -256,7 +265,7 @@ export const bosses: Boss[] = [
     id: "crabking",
     name: "Crab King",
     nameKo: "대게왕",
-    category: "raid",
+    categories: ["raid"],
     image: "crabking.png",
     loot: [
       { item: "trident_blueprint", chance: 1, blueprint: true },
@@ -284,7 +293,7 @@ export const bosses: Boss[] = [
     id: "daywalker",
     name: "Nightmare Werepig",
     nameKo: "악몽화된 늑대돼지",
-    category: "raid",
+    categories: ["underground", "raid"],
     image: "daywalker.png",
     loot: [
       { item: "horrorfuel", chance: 1, count: 4 },
@@ -302,7 +311,7 @@ export const bosses: Boss[] = [
     id: "malbatross",
     name: "Malbatross",
     nameKo: "꽉새치",
-    category: "ocean",
+    categories: ["ocean", "raid"],
     image: "malbatross.png",
     loot: [
       { item: "meat", chance: 1, count: 7 },
@@ -317,7 +326,7 @@ export const bosses: Boss[] = [
     id: "minotaur",
     name: "Ancient Guardian",
     nameKo: "고대의 수호자",
-    category: "dungeon",
+    categories: ["underground", "story"],
     image: "minotaur.png",
     loot: [
       { item: "meat", chance: 1, count: 8 },
@@ -358,7 +367,7 @@ export const bosses: Boss[] = [
     id: "eyeofterror",
     name: "Eye of Terror",
     nameKo: "공포의 눈",
-    category: "event",
+    categories: ["event", "raid"],
     image: "eyeofterror.png",
     loot: [
       { item: "chesspiece_eyeofterror_sketch", chance: 1 },
@@ -373,7 +382,7 @@ export const bosses: Boss[] = [
     id: "twinsofterror",
     name: "Twins of Terror",
     nameKo: "공포의 쌍둥이",
-    category: "event",
+    categories: ["event", "raid"],
     image: ["retinazor.png", "spazmatism.png"],
     loot: [
       { item: "chesspiece_twinsofterror_sketch", chance: 1 },
@@ -402,7 +411,7 @@ export const bosses: Boss[] = [
     id: "spiderqueen",
     name: "Spider Queen",
     nameKo: "여왕 거미",
-    category: "mini",
+    categories: ["mini"],
     image: "spiderqueen.png",
     loot: [
       { item: "monstermeat", chance: 1, count: 4 },
@@ -415,7 +424,7 @@ export const bosses: Boss[] = [
     id: "alterguardian_phase3",
     name: "Celestial Champion",
     nameKo: "천상의 대변자",
-    category: "raid",
+    categories: ["story", "raid"],
     image: "alterguardian_phase3.png",
     loot: [
       { item: "alterguardianhat", chance: 1 },
@@ -435,7 +444,7 @@ export const bosses: Boss[] = [
     id: "daywalker2",
     name: "Scrappy Werepig",
     nameKo: "고철덩이 늑대돼지",
-    category: "raid",
+    categories: ["underground", "raid"],
     image: "daywalker2.png",
     loot: [
       { item: "wagpunk_bits", chance: 1, count: 4 },
@@ -449,7 +458,7 @@ export const bosses: Boss[] = [
     id: "shadow_chess",
     name: "Shadow Pieces",
     nameKo: "그림자 체스 말",
-    category: "raid",
+    categories: ["underground", "raid"],
     image: ["shadow_rook.png", "shadow_knight.png", "shadow_bishop.png"],
     loot: [
       { item: "shadowheart", chance: 1 },
@@ -462,7 +471,7 @@ export const bosses: Boss[] = [
     id: "sharkboi",
     name: "Frostjaw",
     nameKo: "서리턱상어",
-    category: "ocean",
+    categories: ["ocean", "raid"],
     image: "sharkboi.png",
     loot: [
       { item: "bootleg", chance: 1 },
@@ -473,7 +482,7 @@ export const bosses: Boss[] = [
     id: "leif",
     name: "Treeguard",
     nameKo: "트리가드",
-    category: "mini",
+    categories: ["mini"],
     image: "leif.png",
     loot: [
       { item: "livinglog", chance: 1, count: 6 },
@@ -484,7 +493,7 @@ export const bosses: Boss[] = [
     id: "warg",
     name: "Warg",
     nameKo: "바르그",
-    category: "mini",
+    categories: ["mini"],
     image: "warg.png",
     loot: [
       { item: "monstermeat", chance: 1, count: 4 },
@@ -498,7 +507,7 @@ export const bosses: Boss[] = [
     id: "mutatedwarg",
     name: "Possessed Varg",
     nameKo: "귀신들린 바르그",
-    category: "mini",
+    categories: ["seasonal", "mini"],
     image: "mutatedwarg.png",
     loot: [
       { item: "chesspiece_warg_mutated_sketch", chance: 1 },
@@ -515,7 +524,7 @@ export const bosses: Boss[] = [
     id: "lordfruitfly",
     name: "Lord of the Fruit Flies",
     nameKo: "초파리 대왕",
-    category: "mini",
+    categories: ["mini"],
     image: "lordfruitfly.png",
     loot: [
       { item: "plantmeat", chance: 1 },
@@ -526,7 +535,7 @@ export const bosses: Boss[] = [
     id: "mutateddeerclops",
     name: "Crystalline Deerclops",
     nameKo: "수정 외눈사슴",
-    category: "seasonal",
+    categories: ["seasonal"],
     image: "mutateddeerclops.png",
     loot: [
       { item: "spoiled_food", chance: 1, count: 3 },
@@ -542,7 +551,7 @@ export const bosses: Boss[] = [
     id: "mutatedbearger",
     name: "Armored Bearger",
     nameKo: "무장 곰소리",
-    category: "seasonal",
+    categories: ["seasonal"],
     image: "mutatedbearger.png",
     loot: [
       { item: "spoiled_food", chance: 1, count: 3 },
@@ -556,7 +565,7 @@ export const bosses: Boss[] = [
     id: "alterguardian_phase1_lunarrift",
     name: "Celestial Retinue",
     nameKo: "천상의 복수자",
-    category: "raid",
+    categories: ["story", "raid"],
     image: "alterguardian_phase1_lunarrift.png",
     loot: [
       { item: "moonrocknugget", chance: 1, count: 3 },
@@ -574,7 +583,7 @@ export const bosses: Boss[] = [
     id: "alterguardian_phase4_lunarrift",
     name: "Celestial Scion",
     nameKo: "천상의 귀공자",
-    category: "raid",
+    categories: ["story", "raid"],
     image: "alterguardian_phase4.png",
     loot: [
       { item: "lunar_seed", chance: 1, count: 5 },
@@ -588,10 +597,36 @@ export const bosses: Boss[] = [
     ],
   },
   {
+    id: "rabbitking_aggressive",
+    name: "Wrathful Rabbit King",
+    nameKo: "분노한 토끼왕",
+    categories: ["event", "mini"],
+    image: "rabbitking_aggressive.png",
+    loot: [
+      { item: "monstermeat", chance: 1 },
+      { item: "beardhair", chance: 1, count: 2 },
+      { item: "rabbitkingspear", chance: 1 },
+    ],
+  },
+  {
+    id: "worm_boss",
+    name: "Great Depths Worm",
+    nameKo: "거대 동굴지렁이",
+    categories: ["underground", "raid"],
+    image: "worm_boss.png",
+    loot: [
+      { item: "monstermeat", chance: 1, count: 3 },
+      { item: "monstermeat", chance: 0.66 },
+      { item: "monstermeat", chance: 0.66 },
+      { item: "wormlight", chance: 1 },
+      { item: "chesspiece_wormboss_sketch", chance: 1 },
+    ],
+  },
+  {
     id: "wagboss_robot",
     name: "W.A.R.B.O.T.",
     nameKo: "W.A.R.B.O.T.",
-    category: "raid",
+    categories: ["story", "raid"],
     image: "wagboss_robot.png",
     loot: [
       { item: "wagpunk_bits", chance: 1 },
@@ -666,6 +701,10 @@ export const lootNameKo: Record<string, string> = {
   chesspiece_deerclops_mutated_sketch: "수정 외눈사슴 조각상 도면",
   chesspiece_bearger_mutated_sketch: "무장 곰소리 조각상 도면",
   chesspiece_wagboss_robot_sketch: "W.A.R.B.O.T. 조각상 도면",
+  chesspiece_wormboss_sketch: "거대 동굴지렁이 조각상 도면",
+  wormlight: "발광 베리",
+  beardhair: "수염털",
+  rabbitkingspear: "토끼왕의 곤봉",
   rocks: "돌", boat_bumper_crabking_kit: "대게왕 범퍼 키트", barnacle: "거북순", messagebottle: "편지가 든 병",
   singingshell_octave3: "바리톤 소리고둥", singingshell_octave4: "알토 소리고둥", singingshell_octave5: "소프라노 소리고둥",
   ice: "얼음", lunar_seed: "천상의 보석",
@@ -678,6 +717,7 @@ const SKETCHES_WITH_ICONS = new Set([
   "chesspiece_malbatross_sketch",
   "chesspiece_guardianphase3_sketch",
   "chesspiece_sharkboi_sketch",
+  "chesspiece_wormboss_sketch",
 ]);
 
 /** Resolve image path for a loot item */
@@ -703,9 +743,10 @@ export function lootDisplayName(itemId: string, locale: string): string {
 export const bossCategories: { id: BossCategoryId; representativeBoss: string }[] = [
   { id: "all", representativeBoss: "deerclops" },
   { id: "seasonal", representativeBoss: "deerclops" },
+  { id: "story", representativeBoss: "stalker_atrium" },
+  { id: "underground", representativeBoss: "minotaur" },
   { id: "raid", representativeBoss: "dragonfly" },
   { id: "ocean", representativeBoss: "malbatross" },
-  { id: "dungeon", representativeBoss: "minotaur" },
   { id: "event", representativeBoss: "eyeofterror" },
   { id: "mini", representativeBoss: "spiderqueen" },
 ];
