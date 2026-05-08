@@ -15,6 +15,19 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.6",
+    date: "2026-05-08",
+    dev: [
+      "fix(materials): wagpunk_bits 영문명 Wagpunk Bits → Scrap — 인게임 strings.lua(STRINGS.NAMES.WAGPUNK_BITS = \"Scrap\") 기준으로 보정. 한글은 이미 \"고철더미\"로 정확. B.U.D.D.Y. 등 wagpunk_bits 사용 레시피의 영문 표기가 게임 인벤토리와 일치하도록.",
+    ],
+    changes: {
+      ko: [],
+      en: [
+        "Renamed material 'Wagpunk Bits' → 'Scrap' to match the in-game name (Klei renamed it; Korean was already correct as 고철더미).",
+      ],
+    },
+  },
+  {
     version: "0.22.5",
     date: "2026-05-08",
     dev: [
