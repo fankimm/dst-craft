@@ -17,6 +17,7 @@ import type { Locale } from "@/lib/i18n";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
 import { Footer } from "../crafting/Footer";
 import { DetailPanel } from "@/components/ui/DetailPanel";
+import { TagChip } from "@/components/ui/TagChip";
 import { assetPath } from "@/lib/asset-path";
 import { cn } from "@/lib/utils";
 import { EffectCard } from "./Wx78CircuitBoard";
@@ -884,19 +885,6 @@ function DetailHeader({
   );
 }
 
-// 타입 칩 (알파/베타/감마)
-function TypeChip({ type, locale }: { type: CircuitType; locale: Locale }) {
-  const color = TYPE_COLORS[type];
-  return (
-    <span
-      className="text-[10px] font-bold px-1.5 py-0.5 rounded-sm"
-      style={{ backgroundColor: `${color}25`, color }}
-    >
-      {typeLabel(type, locale)}
-    </span>
-  );
-}
-
 // 공용 contributor row (Detail 내부 거의 모든 분기에서 반복되던 li 블록).
 function BreakdownRow({
   iconSrc,
@@ -957,37 +945,36 @@ function Detail({
   hasAlphaT2Detail: boolean;
 }) {
   if (selected.kind === "effect") {
+    // 효과 = 메인 (큰 텍스트 위), 모듈 = 출처 (작은 카드 아래)
     const r = selected.row;
-    const color = TYPE_COLORS[r.module.type];
     const moduleName = locale === "ko" ? r.module.nameI18n.ko : r.module.nameI18n.en;
-    const moduleAlt = locale === "ko" ? r.module.nameI18n.en : r.module.nameI18n.ko;
     return (
-      <div className="pb-2">
-        <DetailHeader
-          iconSrc={`/images/game-items/${r.module.id}.png`}
-          title={moduleName}
-          subtitle={moduleAlt}
-          badges={
-            <>
-              <TypeChip type={r.module.type} locale={locale} />
-              {r.count > 1 && (
-                <span
-                  className="text-[10px] font-bold px-1.5 py-0.5 rounded-sm tabular-nums"
-                  style={{ backgroundColor: `${color}30`, color }}
-                >
-                  ×{r.count}
-                </span>
-              )}
-              {r.skillId && (
-                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-sm bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
-                  {skillLabel(r.skillId, locale)}
-                </span>
-              )}
-            </>
-          }
-        />
-        <div className="px-4 pt-3">
-          <p className="text-sm leading-relaxed text-foreground/95">{r.text}</p>
+      <div className="px-4 pt-4 pb-2">
+        <p className="text-base font-semibold text-foreground leading-relaxed">{r.text}</p>
+
+        <div className="mt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "출처" : "Source"}
+          </div>
+          <div className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
+            <img
+              src={assetPath(`/images/game-items/${r.module.id}.png`)}
+              alt=""
+              className="size-9 object-contain shrink-0"
+            />
+            <div className="flex-1 min-w-0 text-sm font-semibold text-foreground truncate">
+              {moduleName}
+            </div>
+            <div className="flex items-center gap-1 shrink-0 flex-wrap justify-end">
+              <TagChip label={typeLabel(r.module.type, locale)} />
+              {r.count > 1 && <TagChip label={`×${r.count}`} />}
+            </div>
+          </div>
+          {r.skillId && (
+            <div className="mt-2">
+              <TagChip label={`${locale === "ko" ? "스킬 강화: " : "Skill buff: "}${skillLabel(r.skillId, locale)}`} />
+            </div>
+          )}
         </div>
       </div>
     );
@@ -995,15 +982,14 @@ function Detail({
 
   if (selected.kind === "skill") {
     return (
-      <div className="pb-2">
-        <DetailHeader
-          iconSrc="/images/category-icons/characters/wx78.png"
-          iconRounded
-          title={skillLabel(selected.skill, locale)}
-          subtitle={locale === "ko" ? "회로 시스템 스킬" : "Circuitry Skill"}
-        />
-        <div className="px-4 pt-3">
-          <p className="text-sm leading-relaxed text-foreground/95">{selected.text}</p>
+      <div className="px-4 pt-4 pb-2">
+        <p className="text-base font-semibold text-foreground leading-relaxed">{selected.text}</p>
+
+        <div className="mt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "출처" : "Source"}
+          </div>
+          <TagChip label={skillLabel(selected.skill, locale)} />
         </div>
       </div>
     );

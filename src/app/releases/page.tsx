@@ -15,6 +15,15 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.26",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 효과 detail 패널 — 효과를 메인으로, 모듈은 출처(secondary)로 되돌림 (사용자 피드백 #960). 효과 텍스트가 큰 텍스트로 위, 모듈 카드는 작게 아래. 통계 detail(movespeed/armor/...)은 stat이 메인이므로 DetailHeader 스타일 유지",
+      "refactor(skills): 인라인 칩(베타/×2/스킬 강화)을 기존 TagChip 컴포넌트로 통일 — 사용자 피드백 #959 \"x2같은건 이미 사용하는 디자인이 있고 태그필도 이미 쓰고 있는게있는데\". TypeChip 커스텀 컴포넌트 제거, 크래프팅 ItemDetail이 쓰는 TagChip 패턴 그대로 사용",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.25",
     date: "2026-05-08",
     dev: [
