@@ -15,6 +15,15 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.19",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 stat box 아이콘을 게임 PNG로 교체 — 방어력=대리석 갑옷(armormarble), 이속=워킹 케인(cane), 둔화 저항=초가속 회로(wx78module_movespeed2). lucide 아이콘(Shield/Zap/Snowflake) 제거, 일관된 인게임 비주얼",
+      "feat(skills): vital 합산 카드(\"최대 체력이 240 증가한다.\" 류) 카드 리스트에서 제거 — 헤더의 stat box(체/허/정)에서 이미 표시되고 있어 중복. compound 패러그래프(허기 소모 -20%, bee 회복 효과 등)는 vital 부분만 잘라낸 본문으로 그대로 별도 row 표시",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.18",
     date: "2026-05-08",
     dev: [

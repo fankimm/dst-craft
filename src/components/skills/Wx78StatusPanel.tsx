@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { Shield, Zap, Snowflake } from "lucide-react";
 import {
   WX78_CIRCUITS,
   WX78_CIRCUITS_BY_ID,
@@ -120,27 +119,6 @@ const VITAL_FROM_KO_LABEL: Record<string, VitalKind> = {
   "허기": "maxHunger",
 };
 
-const VITAL_LABEL_KO: Record<VitalKind, string> = {
-  maxHealth: "체력",
-  maxSanity: "정신력",
-  maxHunger: "허기",
-};
-
-const VITAL_LABEL_EN: Record<VitalKind, string> = {
-  maxHealth: "Health",
-  maxSanity: "Sanity",
-  maxHunger: "Hunger",
-};
-
-function vitalText(kind: VitalKind, total: number, locale: Locale): string {
-  if (locale === "ko") {
-    const label = VITAL_LABEL_KO[kind];
-    const particle = label === "허기" ? "가" : "이";
-    return `최대 ${label}${particle} ${total} 증가한다.`;
-  }
-  return `Maximum ${VITAL_LABEL_EN[kind]} +${total}.`;
-}
-
 // 행 텍스트에서 vital 부분만 추출(합산용) + 나머지 텍스트 분리.
 // 표준화 케이스:
 //   1) standalone:  "최대 X(이|가) N 증가한다."
@@ -159,27 +137,22 @@ function extractVitalKo(text: string): { kind: VitalKind; perModule: number; res
   return null;
 }
 
-// baseRows에서 vital 부분 추출 → 합산 카드용 데이터 + vital이 분리된 나머지 row.
+// baseRows에서 vital 부분 분리: standalone vital 행은 제거 (헤더에 별도 표시),
+// compound 패러그래프는 vital 부분만 잘라내고 나머지 텍스트로 별도 row.
 function aggregateVitalRows(
   rows: EffectRow[],
   locale: Locale,
-): { vitals: { kind: VitalKind; total: number }[]; remaining: EffectRow[] } {
-  if (locale !== "ko") return { vitals: [], remaining: rows };
-  const sums: Record<VitalKind, number> = { maxHealth: 0, maxSanity: 0, maxHunger: 0 };
+): { remaining: EffectRow[] } {
+  if (locale !== "ko") return { remaining: rows };
   const remaining: EffectRow[] = [];
   for (const row of rows) {
     if (row.skillId) { remaining.push(row); continue; }
     const ex = extractVitalKo(row.text);
     if (!ex) { remaining.push(row); continue; }
-    sums[ex.kind] += ex.perModule * row.count;
     if (ex.rest) remaining.push({ ...row, text: ex.rest });
-    // standalone 행은 drop (vital만 있던 행 → 합산 카드로 대체)
+    // standalone 행은 drop (vital만 있던 행 → 헤더에서 표시)
   }
-  const vitals: { kind: VitalKind; total: number }[] = [];
-  for (const k of ["maxHealth", "maxSanity", "maxHunger"] as VitalKind[]) {
-    if (sums[k] > 0) vitals.push({ kind: k, total: sums[k] });
-  }
-  return { vitals, remaining };
+  return { remaining };
 }
 
 // ── MoveSpeed aggregation ────────────────────────────────────
@@ -383,8 +356,10 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     () => buildEffectRows(effectiveCounts, effectiveSkills, locale),
     [effectiveCounts, effectiveSkills, locale],
   );
-  // 1차 패스: vital 합산 (체/허/정)
-  const { vitals: vitalCards, remaining: afterVital } = useMemo(
+  // 1차 패스: 카드 리스트에서 vital 부분 분리 — 본문(체/허/정)은 헤더로만 표시하기로 함.
+  // compound 패러그래프(maxhunger의 "최대 허기 +N 증가하고 허기 소모 -P% 감소", bee의 회복+max sanity)에서
+  // vital 부분만 제거하고 나머지(허기 소모 감소, 회복 등)는 별도 row로 분리.
+  const { remaining: afterVital } = useMemo(
     () => aggregateVitalRows(rawEffectRows, locale),
     [rawEffectRows, locale],
   );
@@ -471,14 +446,14 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
         {(armorBuff || moveSpeedAggregated > 0 || slowResistPct > 0) && (
           <div className="mt-2 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
             <VitalStat
-              iconNode={<Shield className="size-full" />}
+              iconSrc={assetPath("/images/game-items/armormarble.png")}
               label={locale === "ko" ? "방어력" : "Armor"}
               value={armorBuff?.total ?? 0}
               display={armorBuff ? `+${Number.isInteger(armorBuff.total) ? armorBuff.total : armorBuff.total.toFixed(1).replace(/\.0$/, "")}%` : "—"}
               onClick={armorBuff ? () => setSelected({ kind: "armor", skillId: armorBuff.skillId, total: armorBuff.total }) : undefined}
             />
             <VitalStat
-              iconNode={<Zap className="size-full" />}
+              iconSrc={assetPath("/images/game-items/cane.png")}
               label={locale === "ko" ? "이동 속도" : "Move Speed"}
               value={moveSpeedAggregated}
               display={moveSpeedAggregated > 0 ? `+${Math.round(moveSpeedAggregated * 100)}%` : "—"}
@@ -486,7 +461,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
               onClick={moveSpeedAggregated > 0 ? () => setSelected({ kind: "movespeed", chips: moveSpeedChips, pct: moveSpeedAggregated }) : undefined}
             />
             <VitalStat
-              iconNode={<Snowflake className="size-full" />}
+              iconSrc={assetPath("/images/game-items/wx78module_movespeed2.png")}
               label={locale === "ko" ? "둔화 저항" : "Slow Resist"}
               value={slowResistPct}
               display={slowResistPct > 0 ? `−${Math.round(slowResistPct * 100)}%` : "—"}
@@ -496,22 +471,8 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
           </div>
         )}
 
-        {(vitalCards.length > 0 || effectRows.length > 0 || skillRows.length > 0) && (
+        {(effectRows.length > 0 || skillRows.length > 0) && (
           <div className="mt-3 space-y-1.5">
-            {vitalCards.map((v) => {
-              const statKind = v.kind;
-              const total =
-                statKind === "maxHealth" ? vitals.health :
-                statKind === "maxHunger" ? vitals.hunger : vitals.sanity;
-              return (
-                <EffectCard
-                  key={`vital-${statKind}`}
-                  text={vitalText(statKind, v.total, locale)}
-                  locale={locale}
-                  onClick={() => setSelected({ kind: "vital", statKind, total })}
-                />
-              );
-            })}
             {effectRows.filter((r) => !r.skillId).map((r) => (
               <EffectCard
                 key={r.key}
