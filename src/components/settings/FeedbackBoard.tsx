@@ -82,6 +82,7 @@ export function FeedbackBoard({ locale, newItem }: Props) {
   const { panelItem, panelOpen } = useDetailPanel(selected);
   const [copied, setCopied] = useState<"msg" | null>(null);
   const [replyText, setReplyText] = useState("");
+  const [savingReply, setSavingReply] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
 
@@ -121,6 +122,20 @@ export function FeedbackBoard({ locale, newItem }: Props) {
     const prev = items;
     setItems((cur) => cur.map((fb) => (fb.id === id ? { ...fb, status: next, reply: reply ?? fb.reply } : fb)));
     const ok = await updateFeedbackStatus(token, id, next, reply);
+    if (!ok) setItems(prev);
+  }, [token, items, replyText]);
+
+  const handleSaveReply = useCallback(async (id: string) => {
+    if (!token) return;
+    const target = items.find((fb) => fb.id === id);
+    if (!target) return;
+    const trimmed = replyText.trim();
+    if (!trimmed || trimmed === (target.reply ?? "").trim()) return;
+    const prev = items;
+    setSavingReply(true);
+    setItems((cur) => cur.map((fb) => (fb.id === id ? { ...fb, reply: trimmed } : fb)));
+    const ok = await updateFeedbackStatus(token, id, target.status, trimmed);
+    setSavingReply(false);
     if (!ok) setItems(prev);
   }, [token, items, replyText]);
 
@@ -262,6 +277,20 @@ export function FeedbackBoard({ locale, newItem }: Props) {
                 <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} maxLength={500} rows={2}
                   placeholder="답변을 입력하세요..."
                   className="w-full rounded-md border border-border bg-background px-3 py-2 text-base resize-none focus:outline-none focus:ring-1 focus:ring-ring" />
+                {(() => {
+                  const trimmed = replyText.trim();
+                  const original = (panelItem.reply ?? "").trim();
+                  const dirty = trimmed.length > 0 && trimmed !== original;
+                  return (
+                    <button type="button" disabled={!panelItem.id || !dirty || savingReply}
+                      onClick={() => panelItem.id && handleSaveReply(panelItem.id)}
+                      className={cn("w-full rounded-md border px-3 py-2 text-xs transition-colors",
+                        dirty && !savingReply ? "border-foreground bg-foreground text-background hover:opacity-90"
+                          : "border-border text-muted-foreground opacity-50 cursor-not-allowed")}>
+                      {savingReply ? "저장 중..." : "답변 저장"}
+                    </button>
+                  );
+                })()}
               </div>
 
               <div className="space-y-1.5">

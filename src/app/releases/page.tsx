@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.3",
+    date: "2026-05-08",
+    dev: [
+      "feat(feedback): 관리자 피드백 패널의 답변 영역에 별도 \"답변 저장\" 버튼 추가. 기존에는 상태 변경 버튼을 눌러야만 답글이 함께 저장되어 답글만 수정하려면 같은 상태를 다시 클릭해야 했음. handleSaveReply 핸들러를 분리해 현재 status를 그대로 유지하고 reply만 PATCH. 답글이 변경되지 않았거나 빈 입력이면 버튼 비활성화.",
+    ],
+    changes: {
+      ko: [
+        "관리자 패널에서 피드백 답변을 상태 변경 없이도 저장할 수 있게 됐습니다.",
+      ],
+      en: [
+        "Admin feedback panel: replies can now be saved without changing the status.",
+      ],
+    },
+  },
+  {
     version: "0.23.2",
     date: "2026-05-08",
     dev: [
