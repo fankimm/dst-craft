@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { ItemSlot } from "../ui/ItemSlot";
+import { StatBox } from "../ui/StatBox";
 import { TagChip } from "../ui/TagChip";
 import { CookingSearchBar } from "./CookingSearchBar";
 import { useAuth } from "@/hooks/use-auth";
@@ -759,14 +760,12 @@ function RecipeDetail({
         <StatBox
           iconSrc={assetPath("/images/ui/health.png")}
           label={t(locale, "cooking_health")}
-          value={recipe.health}
           formatted={formatStat(recipe.health)}
           colorClass={statColor(recipe.health)}
         />
         <StatBox
           iconSrc={assetPath("/images/ui/hunger.png")}
           label={t(locale, "cooking_hunger")}
-          value={recipe.hunger}
           formatted={formatStat(recipe.hunger)}
           colorClass={statColor(recipe.hunger)}
           divider
@@ -774,7 +773,6 @@ function RecipeDetail({
         <StatBox
           iconSrc={assetPath("/images/ui/sanity.png")}
           label={t(locale, "cooking_sanity")}
-          value={recipe.sanity}
           formatted={formatStat(recipe.sanity)}
           colorClass={statColor(recipe.sanity)}
           divider
@@ -1112,31 +1110,6 @@ function RequirementsSections({ text, locale, onIngredientClick }: { text: strin
 // ---------------------------------------------------------------------------
 // Small UI components
 // ---------------------------------------------------------------------------
-
-function StatBox({
-  iconSrc,
-  label,
-  formatted,
-  colorClass,
-  divider,
-}: {
-  iconSrc: string;
-  label: string;
-  value: number;
-  formatted: string;
-  colorClass: string;
-  divider?: boolean;
-}) {
-  return (
-    <div className={cn("flex items-center gap-1.5", divider && "border-l border-border pl-4")}>
-      <img src={iconSrc} alt={label} className="size-5 object-contain" />
-      <div>
-        <div className={cn("text-sm font-semibold tabular-nums leading-tight", colorClass)}>{formatted}</div>
-        <div className="text-[10px] text-muted-foreground leading-tight">{label}</div>
-      </div>
-    </div>
-  );
-}
 
 // ---------------------------------------------------------------------------
 // Tag helpers

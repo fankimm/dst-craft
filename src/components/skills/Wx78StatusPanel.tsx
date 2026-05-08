@@ -18,6 +18,8 @@ import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
 import { Footer } from "../crafting/Footer";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { TagChip } from "@/components/ui/TagChip";
+import { StatBox } from "@/components/ui/StatBox";
+import { statColor } from "@/lib/stat-utils";
 import { assetPath } from "@/lib/asset-path";
 import { cn } from "@/lib/utils";
 import { EffectCard } from "./Wx78CircuitBoard";
@@ -55,6 +57,23 @@ function stripCountedStatsFromBody(body: string, moduleId: string, locale: Local
   if (locale !== "ko") return body;
   if (moduleId !== "wx78module_cold" && moduleId !== "wx78module_heat") return body;
   return body.replace(/^체온이 .+?(?:증가한다|감소한다)\.\s*/, "").trim();
+}
+
+// ── Fire damage resistance (화염 피해 저항) ──────────────────
+// 게임 메커닉 (wx78_moduledefs.lua cold_skill_activate):
+// 각 cold + Beta T1마다 fire_damage_scale -= COLD_FIRE_DAMAGE_SCALE (0.5)
+// → 1 cold = -50%, 2 cold = -100% (immune). 0~1 cap.
+const COLD_FIRE_DMG_REDUCTION_PER_MODULE = 0.5;
+function fireResistPct(counts: CircuitCounts, hasBetaT1: boolean): number {
+  if (!hasBetaT1) return 0;
+  const cold = counts["wx78module_cold"] ?? 0;
+  return Math.min(cold * COLD_FIRE_DMG_REDUCTION_PER_MODULE, 1);
+}
+function isFireResistRow(row: EffectRow): boolean {
+  if (!row.skillId) return false;
+  if (/^화염 피해 저항 \d+%/.test(row.text)) return true;
+  if (/^Fire damage resistance \+\d+%/i.test(row.text)) return true;
+  return false;
 }
 
 // ── Cold/Heat aggregate stats (체온/부패/건조) ────────────────
@@ -486,7 +505,8 @@ type SelectedDetail =
   | { kind: "hunger_drain"; pct: number; skillId: string | null }
   | { kind: "body_temp"; delta: number }
   | { kind: "spoil_rate"; delta: number }
-  | { kind: "drying_rate"; delta: number };
+  | { kind: "drying_rate"; delta: number }
+  | { kind: "fire_resist"; pct: number };
 
 function readDevShowAll(): boolean {
   if (typeof window === "undefined") return false;
@@ -539,12 +559,14 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     [afterMoveSpeed],
   );
   // 4차 패스: 둔화 저항 합산 — chip 합 + Tinkering II → 25% × chips capped at 100%
+  const hasBetaTinkering1 = effectiveSkills.has("wx78_circuitry_betabuffs_1");
   const hasBetaTinkering2 = effectiveSkills.has("wx78_circuitry_betabuffs_2");
   const slowResistPct = slowReductionPct(moveSpeedChips, hasBetaTinkering2);
   // Cold/Heat aggregated stats (체온/부패/건조)
   const tempDelta = useMemo(() => bodyTempDelta(effectiveCounts), [effectiveCounts]);
   const spoilDelta = useMemo(() => spoilRateDelta(effectiveCounts), [effectiveCounts]);
   const dryDelta = useMemo(() => dryingRateBoost(effectiveCounts), [effectiveCounts]);
+  const fireResist = useMemo(() => fireResistPct(effectiveCounts, hasBetaTinkering1), [effectiveCounts, hasBetaTinkering1]);
   const afterSlow = useMemo(
     () => afterArmor.filter((r) => !isSlowBuffRow(r)),
     [afterArmor],
@@ -570,7 +592,9 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
   const effectRows = useMemo(() => {
     const out: EffectRow[] = [];
     for (const r of afterSlow) {
+      // 정신력 감소 오라(stat row) / 화염 피해 저항(stat row) 행 drop
       if (negAuraReduction > 0 && isSanityAuraRow(r)) continue;
+      if (fireResist > 0 && isFireResistRow(r)) continue;
       if (hungerReduction > 0 && isHungerDrainRow(r)) continue;
       if (dapperBoost > 0 && r.skillId) {
         const ex = extractDapperPrefixKo(r.text);
@@ -584,7 +608,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
     }
     // 동일 텍스트 dedupe (light/light2 "빛을 발산한다." 등 여러 모듈이 같은 효과 문구)
     return dedupeRowsByText(out);
-  }, [afterSlow, negAuraReduction, dapperBoost, hungerReduction]);
+  }, [afterSlow, negAuraReduction, dapperBoost, hungerReduction, fireResist]);
   const skillRows = useMemo(
     () => getGlobalSkillRows(effectiveSkills, locale),
     [effectiveSkills, locale],
@@ -623,23 +647,23 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
         )}
         {/* Vital stats — always show (base 100 + circuits) */}
         <div className="mt-3 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
-          <VitalStat
+          <StatBox
             iconSrc={assetPath("/images/ui/health.png")}
             label={locale === "ko" ? "최대 체력" : "Max Health"}
-            value={vitals.health}
+            formatted={vitals.health.toString()}
             onClick={() => setSelected({ kind: "vital", statKind: "maxHealth", total: vitals.health })}
           />
-          <VitalStat
+          <StatBox
             iconSrc={assetPath("/images/ui/hunger.png")}
             label={locale === "ko" ? "최대 허기" : "Max Hunger"}
-            value={vitals.hunger}
+            formatted={vitals.hunger.toString()}
             divider
             onClick={() => setSelected({ kind: "vital", statKind: "maxHunger", total: vitals.hunger })}
           />
-          <VitalStat
+          <StatBox
             iconSrc={assetPath("/images/ui/sanity.png")}
             label={locale === "ko" ? "최대 정신력" : "Max Sanity"}
-            value={vitals.sanity}
+            formatted={vitals.sanity.toString()}
             divider
             onClick={() => setSelected({ kind: "vital", statKind: "maxSanity", total: vitals.sanity })}
           />
@@ -648,26 +672,26 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
         {/* Combat/movement stats (방어력/이속/둔화) — show when any > 0 */}
         {(armorBuff || moveSpeedAggregated > 0 || slowResistPct > 0) && (
           <div className="mt-2 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
-            <VitalStat
+            <StatBox
               iconSrc={assetPath("/images/game-items/armormarble.png")}
               label={locale === "ko" ? "방어력" : "Armor"}
-              value={armorBuff?.total ?? 0}
-              display={armorBuff ? `+${Number.isInteger(armorBuff.total) ? armorBuff.total : armorBuff.total.toFixed(1).replace(/\.0$/, "")}%` : "—"}
+              formatted={armorBuff ? `+${Number.isInteger(armorBuff.total) ? armorBuff.total : armorBuff.total.toFixed(1).replace(/\.0$/, "")}%` : "—"}
+              colorClass={armorBuff ? statColor(1) : undefined}
               onClick={armorBuff ? () => setSelected({ kind: "armor", skillId: armorBuff.skillId, total: armorBuff.total }) : undefined}
             />
-            <VitalStat
+            <StatBox
               iconSrc={assetPath("/images/game-items/cane.png")}
               label={locale === "ko" ? "이동 속도" : "Move Speed"}
-              value={moveSpeedAggregated}
-              display={moveSpeedAggregated > 0 ? `+${Math.round(moveSpeedAggregated * 100)}%` : "—"}
+              formatted={moveSpeedAggregated > 0 ? `+${Math.round(moveSpeedAggregated * 100)}%` : "—"}
+              colorClass={moveSpeedAggregated > 0 ? statColor(1) : undefined}
               divider
               onClick={moveSpeedAggregated > 0 ? () => setSelected({ kind: "movespeed", chips: moveSpeedChips, pct: moveSpeedAggregated }) : undefined}
             />
-            <VitalStat
+            <StatBox
               iconSrc={assetPath("/images/game-items/piggyback.png")}
               label={locale === "ko" ? "둔화 저항" : "Slow Resist"}
-              value={slowResistPct}
-              display={slowResistPct > 0 ? `−${Math.round(slowResistPct * 100)}%` : "—"}
+              formatted={slowResistPct > 0 ? `−${Math.round(slowResistPct * 100)}%` : "—"}
+              colorClass={slowResistPct > 0 ? statColor(1) : undefined}
               divider
               onClick={slowResistPct > 0 ? () => setSelected({ kind: "slow", chips: moveSpeedChips, pct: slowResistPct }) : undefined}
             />
@@ -677,33 +701,54 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
         {/* Cold/Heat stats (체온/부패/건조) — show when cold or heat equipped */}
         {(tempDelta !== 0 || spoilDelta !== 0 || dryDelta > 0) && (
           <div className="mt-2 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
-            <VitalStat
+            <StatBox
               iconSrc={assetPath("/images/game-items/heatrock.png")}
               label={locale === "ko" ? "체온" : "Body Temp"}
-              value={tempDelta}
-              display={tempDelta !== 0 ? `${tempDelta > 0 ? "+" : "−"}${Math.abs(tempDelta)}°` : "—"}
+              formatted={tempDelta !== 0 ? `${tempDelta > 0 ? "+" : "−"}${Math.abs(tempDelta)}°` : "—"}
+              colorClass={tempDelta !== 0 ? statColor(tempDelta > 0 ? 1 : -1) : undefined}
               onClick={tempDelta !== 0 ? () => setSelected({ kind: "body_temp", delta: tempDelta }) : undefined}
             />
-            <VitalStat
+            <StatBox
               iconSrc={assetPath("/images/ui/perish.png")}
               label={locale === "ko" ? "부패 속도" : "Spoil Rate"}
-              value={spoilDelta}
-              display={spoilDelta !== 0 ? `${spoilDelta > 0 ? "+" : "−"}${Math.abs(Math.round(spoilDelta * 100))}%` : "—"}
+              formatted={spoilDelta !== 0 ? `${spoilDelta > 0 ? "+" : "−"}${Math.abs(Math.round(spoilDelta * 100))}%` : "—"}
+              colorClass={spoilDelta !== 0 ? statColor(spoilDelta < 0 ? 1 : -1) : undefined}
               divider
               onClick={spoilDelta !== 0 ? () => setSelected({ kind: "spoil_rate", delta: spoilDelta }) : undefined}
             />
-            <VitalStat
+            <StatBox
               iconSrc={assetPath("/images/game-items/meatrack.png")}
               label={locale === "ko" ? "건조 속도" : "Drying"}
-              value={dryDelta}
-              display={dryDelta > 0 ? `+${Math.round(dryDelta * 100)}%` : "—"}
+              formatted={dryDelta > 0 ? `+${Math.round(dryDelta * 100)}%` : "—"}
+              colorClass={dryDelta > 0 ? statColor(1) : undefined}
               divider
               onClick={dryDelta > 0 ? () => setSelected({ kind: "drying_rate", delta: dryDelta }) : undefined}
             />
           </div>
         )}
 
-        {(effectRows.length > 0 || skillRows.length > 0 || negAuraReduction > 0 || dapperBoost > 0 || hungerReduction > 0) && (
+        {/* Sanity-aura / fire-resist stats — show when relevant */}
+        {(negAuraReduction > 0 || fireResist > 0) && (
+          <div className="mt-2 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
+            <StatBox
+              iconSrc={assetPath("/images/game-items/hivehat.png")}
+              label={locale === "ko" ? "정신력 감소 오라" : "Sanity Drain Aura"}
+              formatted={negAuraReduction > 0 ? `−${Math.round(negAuraReduction * 100)}%` : "—"}
+              colorClass={negAuraReduction > 0 ? statColor(1) : undefined}
+              onClick={negAuraReduction > 0 ? () => setSelected({ kind: "neg_aura", pct: negAuraReduction, skillId: "wx78_circuitry_alphabuffs_1" }) : undefined}
+            />
+            <StatBox
+              iconSrc={assetPath("/images/game-items/dragon_scales.png")}
+              label={locale === "ko" ? "화염 피해 저항" : "Fire Resist"}
+              formatted={fireResist > 0 ? `+${Math.round(fireResist * 100)}%` : "—"}
+              colorClass={fireResist > 0 ? statColor(1) : undefined}
+              divider
+              onClick={fireResist > 0 ? () => setSelected({ kind: "fire_resist", pct: fireResist }) : undefined}
+            />
+          </div>
+        )}
+
+        {(effectRows.length > 0 || skillRows.length > 0 || dapperBoost > 0 || hungerReduction > 0) && (
           <div className="mt-3 space-y-1.5">
             {effectRows.filter((r) => !r.skillId).map((r) => (
               <EffectCard
@@ -713,18 +758,6 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
                 onClick={() => setSelected({ kind: "effect", row: r })}
               />
             ))}
-            {negAuraReduction > 0 && (
-              <EffectCard
-                key="neg-aura-agg"
-                text={locale === "ko"
-                  ? `정신력 감소 오라의 영향이 ${Math.round(negAuraReduction * 100)}% 감소한다.`
-                  : `Negative sanity aura effect reduced by ${Math.round(negAuraReduction * 100)}%.`}
-                skillLabel={skillLabel("wx78_circuitry_alphabuffs_1", locale)}
-                learned
-                locale={locale}
-                onClick={() => setSelected({ kind: "neg_aura", pct: negAuraReduction, skillId: "wx78_circuitry_alphabuffs_1" })}
-              />
-            )}
             {dapperBoost > 0 && (
               <EffectCard
                 key="dapper-agg"
@@ -794,50 +827,6 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
         )}
       </DetailPanel>
     </div>
-  );
-}
-
-// ── UI ──────────────────────────────────────────────────────
-function VitalStat({
-  iconSrc,
-  iconNode,
-  label,
-  value,
-  display,
-  divider,
-  onClick,
-}: {
-  iconSrc?: string;
-  iconNode?: React.ReactNode;
-  label: string;
-  value: number;       // 0이면 "—" 표시 (display가 따로 주어지지 않은 경우)
-  display?: string;    // "12.5%" 같이 포맷된 표시값. 있으면 value 대신 사용
-  divider?: boolean;
-  onClick?: () => void;
-}) {
-  const shown = display ?? (value > 0 ? value.toString() : "—");
-  return (
-    <button
-      onClick={onClick}
-      disabled={!onClick}
-      className={cn(
-        "flex items-center gap-1.5 rounded-md transition-colors",
-        divider && "border-l border-border pl-4",
-        onClick && "hover:bg-foreground/5 px-1 -mx-1",
-      )}
-    >
-      {iconSrc ? (
-        <img src={iconSrc} alt="" className="size-5 object-contain" />
-      ) : iconNode ? (
-        <span className="size-5 inline-flex items-center justify-center text-muted-foreground">{iconNode}</span>
-      ) : null}
-      <div className="text-left">
-        <div className="text-sm font-semibold tabular-nums leading-tight text-foreground">
-          {shown}
-        </div>
-        <div className="text-[10px] text-muted-foreground leading-tight">{label}</div>
-      </div>
-    </button>
   );
 }
 
@@ -1198,6 +1187,40 @@ function Detail({
                 rightValue={`${sign}${c.perModulePct}% ${locale === "ko" ? "/모듈" : "/each"}`}
               />
             ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  if (selected.kind === "fire_resist") {
+    const cold = effectiveCounts["wx78module_cold"] ?? 0;
+    const coldModule = WX78_CIRCUITS_BY_ID["wx78module_cold"];
+    const totalPct = Math.round(selected.pct * 100);
+    return (
+      <div className="pb-2">
+        <DetailHeader
+          iconSrc="/images/game-items/dragon_scales.png"
+          title={locale === "ko" ? "화염 피해 저항" : "Fire Resist"}
+          subtitle={locale === "ko"
+            ? `냉각 회로 ${cold}개 × 50% (cap 100% at 2+, 베타 회로 제조 I 학습 필요)`
+            : `${cold} cold circuit(s) × 50% (cap 100% at 2+, requires Beta Tinkering I)`}
+          rightValue={`+${totalPct}%`}
+        />
+        <div className="px-4 pt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "기여 모듈" : "Contributing modules"}
+          </div>
+          <ul className="space-y-1.5">
+            {cold > 0 && coldModule && (
+              <BreakdownRow
+                iconSrc={`/images/game-items/${coldModule.id}.png`}
+                name={locale === "ko" ? coldModule.nameI18n.ko : coldModule.nameI18n.en}
+                count={cold}
+                type={coldModule.type}
+                rightValue={`+${cold * 50}%`}
+              />
+            )}
           </ul>
         </div>
       </div>

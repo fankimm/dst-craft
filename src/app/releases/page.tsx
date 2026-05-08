@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.27",
+    date: "2026-05-08",
+    dev: [
+      "refactor(ui): StatBox 공용 컴포넌트 추출 (src/components/ui/StatBox.tsx) — 요리 RecipeDetail의 stats box + WX-78 현황 stat row가 동일 컴포넌트 사용. 한 곳 수정하면 양쪽 반영 (사용자 피드백 #965 \"이거 컴포넌트화 하면 일일히 양쪽 수정 안해도 되자나?\")",
+      "feat(skills): WX-78 stat row에 색상 적용 (statColor) — 요리 RecipeDetail과 동일한 +값=초록 / 부패 +값=빨강 시멘틱. 사용자 입장 좋은 효과는 초록, 나쁜 효과는 빨강",
+      "feat(skills): 정신력 감소 오라 + 화염 피해 저항 stat row 추가 (Row 4) — 사용자 피드백 #963 #964",
+      "  · 정신력 감소 오라: 비퀸 모자(hivehat.png) 아이콘",
+      "  · 화염 피해 저항: 비늘(dragon_scales.png) 아이콘",
+      "  · 화염 저항 메커닉: 각 cold + Beta T1 모듈마다 -50% (cap 100% at 2+)",
+      "  · 카드 list에서 sanity-aura 머지 카드 제거, fire-resist 행 제거 → stat row가 유일 표시",
+      "  · 클릭 시 DetailPanel breakdown",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.26",
     date: "2026-05-08",
     dev: [
