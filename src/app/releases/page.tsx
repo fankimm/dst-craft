@@ -15,6 +15,14 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.22",
+    date: "2026-05-08",
+    dev: [
+      "fix(skills): 둔화 저항 stat box 아이콘 → 돼지 등가방(piggyback.png). 초가속 회로(wx78module_movespeed2)에서 교체",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.21",
     date: "2026-05-08",
     dev: [

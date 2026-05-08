@@ -621,7 +621,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
               onClick={moveSpeedAggregated > 0 ? () => setSelected({ kind: "movespeed", chips: moveSpeedChips, pct: moveSpeedAggregated }) : undefined}
             />
             <VitalStat
-              iconSrc={assetPath("/images/game-items/wx78module_movespeed2.png")}
+              iconSrc={assetPath("/images/game-items/piggyback.png")}
               label={locale === "ko" ? "둔화 저항" : "Slow Resist"}
               value={slowResistPct}
               display={slowResistPct > 0 ? `−${Math.round(slowResistPct * 100)}%` : "—"}
