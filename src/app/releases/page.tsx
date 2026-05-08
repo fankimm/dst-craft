@@ -15,6 +15,19 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.2",
+    date: "2026-05-08",
+    dev: [
+      "refactor(skills): WX-78 스킬트리 details.en 영문을 Klei 공식 어휘로 정렬 — max HP→max Health, sanity-regen gear→Sanity from clothing, enemy sanity drain aura→negative sanity auras, hunger rate→Hunger drain, Scout/Zap/Scanner drone→Roto-Mapper/Zaptrocuter/Bio Scanalyzer, AoE blast→area electric blast, cone flashlight→directional cone of light, mole vision tint→inverted Mole Hat vision, vs Shadow/Lunar→damage to Shadow/Lunar 등 13건. SKILL.md 'Klei vocabulary is the bar' 룰 적용.",
+    ],
+    changes: {
+      ko: [],
+      en: [
+        "WX-78 skill tree English descriptions now use Klei's official in-game vocabulary (e.g. Roto-Mapper / Zaptrocuter / Bio Scanalyzer, Sanity from clothing, negative sanity auras).",
+      ],
+    },
+  },
+  {
     version: "0.22.1",
     date: "2026-05-08",
     dev: [
