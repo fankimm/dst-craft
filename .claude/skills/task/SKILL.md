@@ -5,7 +5,7 @@ description: 새 작업 시작용 — 깃허브 이슈 오픈 → feat 브랜치
 
 # /task — 이슈 기반 워크트리 부트스트랩
 
-새 작업을 받으면 **반드시** 이 스킬로 시작한다. 깃허브 이슈를 만들고, 그 이슈 번호로 `feat/<num>-<slug>` 브랜치를 main에서 분기한 뒤, `../dst-craft-<num>` 워크트리를 만들어 격리된 작업 공간을 제공한다. 이후 작업은 새 세션을 그 워크트리에서 열어 진행한다.
+새 작업을 받으면 **반드시** 이 스킬로 시작한다. 깃허브 이슈를 만들고, 그 이슈 번호로 `feat/<num>-<slug>` 브랜치를 main에서 분기한 뒤, `../dst-craft-<num>` 워크트리를 만들어 격리된 작업 공간을 제공한다. 워크트리 생성 직후 현재 세션의 작업 디렉터리를 그 워크트리로 옮겨 같은 세션에서 그대로 작업을 이어간다.
 
 ## 왜 이렇게 하나
 메인 워크트리(`/Users/jihwan-kim3/private-works/dst-craft`)는 항상 beta 브랜치라서, 같은 디렉터리에서 동시에 여러 Claude 세션이 작업하면 한 세션의 in-flight 변경이 다른 세션의 `/push`에 섞여 들어간다. 모든 코드 변경 작업을 별도 워크트리로 격리하면 이 문제가 구조적으로 사라진다.
@@ -57,30 +57,29 @@ EOF
 - 슬러그: 제목을 ASCII로 변환 (한글 → 영문 키워드 또는 transliterate). Claude가 짧은 영문 슬러그 만들기 (kebab-case, 4단어 이하)
 - 브랜치명: `feat/<issue-num>-<slug>` (예: `feat/42-shadow-chess-fix`)
 
-### 4. 워크트리 생성
+### 4. 워크트리 생성 + 작업 디렉터리 이동
 ```bash
 git fetch origin main
 git worktree add ../dst-craft-<issue-num> -b feat/<issue-num>-<slug> origin/main
+cd ../dst-craft-<issue-num>
 ```
 - 워크트리 경로는 항상 `../dst-craft-<issue-num>` (이슈 번호 기준 — 슬러그 충돌 방지)
 - main에서 분기 (CLAUDE.md 규칙)
+- **`cd`까지 이 스킬 안에서 실행**한다. Claude Code Bash 세션의 working directory는 이후 명령에 그대로 유지되므로, 같은 세션에서 곧바로 워크트리 작업이 가능
+- 단, 메인 워크트리에서 동시에 다른 Claude 세션이 돌고 있다면 cd 이동만으로는 그 세션의 in-flight 변경을 막지 못함. 멀티 세션 충돌 방지가 핵심이라면 사용자에게 "다른 세션이 돌고 있나요?" 한 번 묻고 진행
 
-### 5. 사용자 안내
-- 이슈 URL, 워크트리 경로, 브랜치명을 한 블록으로 출력
-- **새 Claude 세션을 그 워크트리에서 열라고 안내** (현재 세션에서 cd로 이동 X — 컨텍스트 혼란 방지)
+### 5. 사용자 안내 (한 블록)
+- 이슈 URL, 워크트리 경로, 브랜치명, 그리고 **현재 세션이 이미 워크트리로 이동했음**을 알린다
 - 안내 예시:
   ```
-  ✅ 작업 환경 준비됨
+  ✅ 작업 환경 준비됨 (이 세션이 그대로 이어서 작업합니다)
   - 이슈: <URL>
-  - 워크트리: ~/private-works/dst-craft-42
+  - 워크트리: ~/private-works/dst-craft-42 (현재 cwd)
   - 브랜치: feat/42-shadow-chess-fix
 
-  → 새 터미널에서 `cd ~/private-works/dst-craft-42` 후 Claude 세션 시작
-  → 작업 완료되면 그 세션에서 /push (beta 배포) → /release (main 배포)
+  바로 작업 시작합니다. 완료되면 /push (beta) → /release (main).
   ```
-
-### 6. 메인 세션은 종료 또는 다른 작업 대기
-- 현재 세션은 더 이상 그 작업에 관여하지 않음 (격리 원칙)
+- 이후 곧바로 사용자 요청 작업 진행 (별도 세션 전환 불필요)
 
 ## /push, /release와의 연동
 - `/push`는 그대로 동작 — feat 워크트리에서 commit + beta 머지/푸시
