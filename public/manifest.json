@@ -1,12 +1,12 @@
 {
-  "name": "Don't Craft Without Recipes",
+  "name": "dstcraft.com",
   "short_name": "dstcraft.com",
   "description": "Don't Starve Together 크래프팅·쿠킹 레시피 가이드",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0a0a0c",
-  "theme_color": "#0a0a0c",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "/icons/icon-192.png",

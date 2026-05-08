@@ -78,8 +78,8 @@ fi
 log "npm ci..."
 npm ci --silent
 
-log "npm run build..."
-npm run build
+log "npm run build... (NEXT_PUBLIC_DEPLOY_ENV=$TARGET)"
+NEXT_PUBLIC_DEPLOY_ENV="$TARGET" npm run build
 
 [ -f out/index.html ] || { err "Build output invalid (out/index.html missing)"; exit 1; }
 

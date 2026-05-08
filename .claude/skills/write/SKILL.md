@@ -37,10 +37,19 @@ description: 글쓰기, 표현 다듬기, 번역 전문 에이전트. 릴리즈 
 
 ### 한→영 (DST 영문 표현 가이드)
 
-#### 출처 우선순위 — Klei가 곧 정답
-1. **Klei scrapbook (`src/data/scrapbook-stats.ts` 의 `specialinfo_en`)** — 인게임 표시되는 공식 영어. 같은 개념 있으면 그 어휘 그대로 차용 (저작권 이슈 없음, 짧은 게임 용어 수준)
-2. **dontstarve.wiki.gg** — 커뮤니티 컨벤션 ("Sanity aura" / "Insanity aura" 등). Klei와 다르면 Klei 우선
-3. **자체 표현** — 1·2에 없을 때만 작성. 새로 영작 잘하려 하지 말 것
+#### 출처 우선순위 — 인게임 텍스트 > 스크랩북 > 창작
+**원칙**: 인게임에 실제 노출되는 영어 표현을 최대한 그대로 가져온다. 창작은 최후의 보루.
+
+1. **인게임 텍스트 그대로** — 아이템명/설명, 레시피 설명, 툴팁, 스킬 desc, 캐릭터 quote 등 게임 플레이 중 실제 표시되는 모든 영문. `scripts/strings.lua`, `scripts/skilltreedata.lua`, ko.po 의 영문 원문. **같은 개념이 있으면 verbatim 차용**.
+2. **스크랩북 텍스트** — `src/data/scrapbook-stats.ts` 의 `specialinfo_en`. 인게임 doku-mentation 이라 톤·어휘가 공식. 1번에 없으면 여기서 차용.
+3. **창작 (최후의 보루)** — 1·2에 같은 개념이 없을 때만. 짧고 평범하게. 영어 문장 잘 쓰려 하지 말고 1·2의 어휘·톤을 그대로 흉내 낼 것.
+
+**보조 참고**: dontstarve.wiki.gg 는 커뮤니티 컨벤션 (`Sanity aura` / `Insanity aura` 등) 확인용이지 출처 아님. Klei 표현과 다르면 Klei 우선.
+
+#### 언어 간 동작 대칭 (cross-language symmetry)
+ko/en 문구를 다듬을 때, **렌더링 로직(파싱·추출·합산)이 한쪽에서만 동작하면 UX 분열**. 같은 패턴이면 양쪽 모두 처리하거나, 양쪽 모두 안 하거나. 한쪽만 처리해서 한국어에선 깔끔하고 영어에선 raw 텍스트 노출되는 상황이 가장 흔한 함정. 작성·다듬기 후 반드시 양쪽 locale에서 시각 확인.
+
+예시 (실제 발생): WX-78 현황 패널의 vital 합산 로직이 `extractVitalKo`만 구현되어 영문에서 "increases Maximum Health by 100 points" 가 그대로 row로 노출. 같은 의미를 갖는 영문 패턴(`"raises Maximum X +N"` / `"increases Maximum X by N points"`)을 처리하는 미러 함수를 함께 만들지 않으면 분열.
 
 #### "Klei vocabulary is the bar" 룰
 같은 효과를 묘사하는 Klei scrapbook 문구가 있으면 **벗어나지 말 것**. 예:

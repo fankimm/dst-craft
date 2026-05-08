@@ -19,6 +19,7 @@ import {
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import type { Locale } from "@/lib/i18n";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
+import { extractVital } from "./wx78-vital-extract";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { Footer } from "../crafting/Footer";
 import { cn } from "@/lib/utils";
@@ -487,7 +488,8 @@ const KO_SKILL_RE = /^(알파|베타|감마) 회로 제조 (I{1,2})/;
 const EN_SKILL_RE = /^(Alpha|Beta|Gamma) Circuit Tinkering (I{1,2})/;
 // heat 모듈처럼 "소켓 3개 필요. 소켓 3개 필요." 중복 박힌 인게임 텍스트 → +로 1번 이상 strip
 const KO_SOCKET_RE = /^(?:소켓 \d+개 필요\.\s*)+/;
-const EN_SOCKET_RE = /^(?:Requires \d+ sockets? and\s*)+/i;
+// Klei scrapbook은 "Requires N sockets and ", "Requires N sockets, ", "Requires N sockets." 세 형태를 섞어 씀.
+const EN_SOCKET_RE = /^(?:Requires \d+ sockets?(?:\s+and\s+|,\s*|\.\s*))+/i;
 
 function detectSkillId(para: string, locale: Locale): { skillId: string; label: string } | null {
   const re = locale === "ko" ? KO_SKILL_RE : EN_SKILL_RE;
@@ -547,7 +549,13 @@ export function ScrapbookEffects({
         }
         const cleaned = stripSocket(para).trim();
         if (!cleaned) return null;
-        return <EffectCard key={i} text={cleaned} locale={locale} />;
+        // vital(최대 체/허/정) 부분 추출 — Status 패널과 동일 로직 (ko/en 양쪽).
+        // compound(rest 있음)인 경우만 vital 부분 제거 → ko/en detail 패널 컨텐츠 대칭.
+        // standalone(vital이 유일한 효과, 예: maxhealth, maxsanity)은 원본 유지 — detail 패널은
+        // 단일 모듈 spec 조회용이라 vital 정보가 사라지면 안 됨.
+        const ex = extractVital(cleaned, locale);
+        const text = ex && ex.rest ? ex.rest : cleaned;
+        return <EffectCard key={i} text={text} locale={locale} />;
       })}
     </div>
   );
