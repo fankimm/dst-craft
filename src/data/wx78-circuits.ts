@@ -161,7 +161,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     buffs: [
       {
         skill: "wx78_circuitry_alphabuffs_2",
-        caps: [{ id: "maxsanity1_dapperness", ko: "정신력 회복 장비(태머 센터, 계몽 왕관 등) 효율 +10%, 적의 정신력 감소 오라 −20%", en: "Sanity-restore gear (Tam, Crown, etc.) +10% effective; hostile sanity-drain aura −20%" }],
+        caps: [{ id: "maxsanity1_dapperness", ko: "정신력 회복 장비(태머 센터, 계몽 왕관 등) 효율 +10%, 적의 정신력 감소 오라 −20%", en: "Sanity from clothing +10%; negative sanity auras −20%" }],
       },
     ],
   },
@@ -180,7 +180,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     buffs: [
       {
         skill: "wx78_circuitry_alphabuffs_2",
-        caps: [{ id: "maxsanity_dapperness", ko: "정신력 회복 장비 효율 +30%, 적의 정신력 감소 오라 −50%", en: "Sanity-restore gear +30% effective; hostile sanity-drain aura −50%" }],
+        caps: [{ id: "maxsanity_dapperness", ko: "정신력 회복 장비 효율 +30%, 적의 정신력 감소 오라 −50%", en: "Sanity from clothing +30%; negative sanity auras −50%" }],
       },
     ],
   },
@@ -240,7 +240,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
       { kind: "dapperness", value: 100 / (480 * 10) },
       { kind: "regenPerTick", value: 5 }, // 30초 주기로 5 HP (피해 받은 상태)
     ],
-    caps: [{ id: "bee_regen_note", ko: "체력이 깎였을 때 30초마다 +5 HP 회복", en: "+5 HP every 30s while below max health" }],
+    caps: [{ id: "bee_regen_note", ko: "체력이 깎였을 때 30초마다 +5 HP 회복", en: "Heals 5 Health every 30 seconds when injured" }],
     buffs: [
       {
         skill: "wx78_circuitry_alphabuffs_2",
@@ -248,7 +248,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
           { kind: "shieldPctOfHP", value: 0.2 }, // 모듈당 최대체력의 20%
           { kind: "shieldRegenPerSec", value: 0.25 },
         ],
-        caps: [{ id: "bee_alphabuff2", ko: "정신력 회복 장비 효율 +30%, 적의 정신력 감소 오라 −50%", en: "Sanity-restore gear +30% effective; hostile sanity-drain aura −50%" }],
+        caps: [{ id: "bee_alphabuff2", ko: "정신력 회복 장비 효율 +30%, 적의 정신력 감소 오라 −50%", en: "Sanity from clothing +30%; negative sanity auras −50%" }],
       },
     ],
   },
@@ -286,7 +286,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
       { kind: "minTempUp", value: 20 },   // MINTEMPCHANGEPERMODULE
       { kind: "dryRate", value: 0.1 },
     ],
-    caps: [{ id: "heat_freeze_immune", ko: "발열 회로 2개 끼면 얼리기 면역", en: "Two heat circuits = freeze immunity" }],
+    caps: [{ id: "heat_freeze_immune", ko: "발열 회로 2개 끼면 얼리기 면역", en: "Two Thermal Circuits grant freeze immunity" }],
     buffs: [
       {
         skill: "wx78_circuitry_betabuffs_1",
@@ -318,11 +318,11 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     nameI18n: { ko: "광전자 회로", en: "Optoelectronic Circuit" },
     desc: { ko: "광학 센서를 야간 투시에 맞게 조율합니다.", en: "Recalibrate your optic sensors for night vision." },
     scanFrom: ["mole"],
-    caps: [{ id: "nightvision_at_night", ko: "어둠에서도 시야 확보 (두더지 비전과 비슷한 색 반전 화면, 만월 밤은 제외)", en: "See in the dark (mole-hat-style inverted view; doesn't trigger on full-moon nights)" }],
+    caps: [{ id: "nightvision_at_night", ko: "어둠에서도 시야 확보 (두더지 비전과 비슷한 색 반전 화면, 만월 밤은 제외)", en: "See in the dark with inverted Mole Hat vision (disabled on full-moon nights)" }],
     buffs: [
       {
         skill: "wx78_circuitry_betabuffs_1",
-        caps: [{ id: "nightvision_clear", ko: "야간 시야의 색 반전 효과 제거 — 일반 낮처럼 선명하게 보임", en: "Removes the inverted-color filter — clear daytime-like view" }],
+        caps: [{ id: "nightvision_clear", ko: "야간 시야의 색 반전 효과 제거 — 일반 낮처럼 선명하게 보임", en: "Removes the inverted vision — see clearly as if in daylight" }],
       },
     ],
   },
@@ -335,14 +335,14 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     desc: { ko: "덤비는 놈들은 전부 짜릿짜릿해질 겁니다.", en: "Anything that attacks you will get a shocking surprise." },
     scanFrom: ["lightninggoat"],
     caps: [
-      { id: "taser_retaliate", ko: "맞을 때 공격자 감전 — 20 피해 + 주변 체인 스턴", en: "On hit: shocks attacker for 20 dmg + chain stun nearby" },
-      { id: "taser_insulated", ko: "번개·전기 피해 무효", en: "Immune to lightning/electric damage" },
+      { id: "taser_retaliate", ko: "맞을 때 공격자 감전 — 20 피해 + 주변 체인 스턴", en: "When hit, shocks the attacker for 20 damage and chain-stuns nearby enemies" },
+      { id: "taser_insulated", ko: "번개·전기 피해 무효", en: "Immune to lightning and electric damage" },
     ],
     buffs: [
       {
         skill: "wx78_circuitry_betabuffs_2",
         caps: [
-          { id: "taser_buildup", ko: "맞을수록 전기가 충전됨 — 가득 차면 주변 전기 폭발 (50 피해, 반경 2m + 모듈당 1m)", en: "Builds up charge from hits — full charge triggers nearby blast (50 dmg, 2m radius + 1m/module)" },
+          { id: "taser_buildup", ko: "맞을수록 전기가 충전됨 — 가득 차면 주변 전기 폭발 (50 피해, 반경 2m + 모듈당 1m)", en: "Stores charge from each hit; at full charge, releases an electric blast (50 damage, 2m radius, +1m per module)" },
         ],
       },
     ],
@@ -359,7 +359,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     buffs: [
       {
         skill: "wx78_circuitry_betabuffs_2",
-        caps: [{ id: "light_beam", ko: "빛이 향한 방향으로 더 멀리 비추는 빔으로 변경", en: "Light becomes a directional beam, reaching farther" }],
+        caps: [{ id: "light_beam", ko: "빛이 향한 방향으로 더 멀리 비추는 빔으로 변경", en: "Light becomes a forward-facing directional beam" }],
       },
     ],
   },
@@ -375,7 +375,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     buffs: [
       {
         skill: "wx78_circuitry_betabuffs_2",
-        caps: [{ id: "light_beam", ko: "빛이 향한 방향으로 더 멀리 비추는 빔으로 변경", en: "Light becomes a directional beam, reaching farther" }],
+        caps: [{ id: "light_beam", ko: "빛이 향한 방향으로 더 멀리 비추는 빔으로 변경", en: "Light becomes a forward-facing directional beam" }],
       },
     ],
   },
@@ -391,7 +391,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     buffs: [
       {
         skill: "wx78_circuitry_betabuffs_1",
-        caps: [{ id: "radar_drone_range", ko: "정찰·감전 드론과 스캐너 사거리 강화", en: "Boosts scout/zap drone range and scanner reach" }],
+        caps: [{ id: "radar_drone_range", ko: "정찰·감전 드론과 스캐너 사거리 강화", en: "Extends the range of Roto-Mapper, Zaptrocuter, and Bio Scanalyzer" }],
       },
     ],
   },
@@ -408,12 +408,12 @@ export const WX78_CIRCUITS: CircuitModule[] = [
       { kind: "dapperness", value: 100 / (480 * 4.5) },
       { kind: "tendRange", value: 12 },
     ],
-    caps: [{ id: "music_tend_farm", ko: "주변 12m 농작물 자동 보살핌 (모듈당 범위 +12m)", en: "Auto-tends farm plants within 12m (per module)" }],
+    caps: [{ id: "music_tend_farm", ko: "주변 12m 농작물 자동 보살핌 (모듈당 범위 +12m)", en: "Automatically tends garden plants within 12m (+12m per additional module)" }],
     buffs: [
       {
         skill: "wx78_circuitry_betabuffs_1",
         stats: [{ kind: "follower", value: 10 }],
-        caps: [{ id: "music_followers", ko: "근처 인어가 동료가 되어 농작물 보살핌을 도움", en: "Nearby Merms become helpers and tend plants too" }],
+        caps: [{ id: "music_followers", ko: "근처 인어가 동료가 되어 농작물 보살핌을 도움", en: "Nearby Merms become followers and help tend plants" }],
       },
     ],
   },
@@ -437,7 +437,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     nameI18n: { ko: "음파 발진 회로", en: "Sonic-Invoker Circuit" },
     desc: { ko: "영혼 없는 자동기계의 무시무시한 함성을 외칩니다!", en: "Unleash the fearsome battlecry of the soulless automaton!" },
     scanFrom: ["molebat"],
-    caps: [{ id: "screech_action", ko: "비명 행동 사용 가능 — 사용 시 주변 적·중립 몹이 공포로 도주", en: "Adds Screech action — fears nearby hostile/neutral mobs into fleeing" }],
+    caps: [{ id: "screech_action", ko: "비명 행동 사용 가능 — 사용 시 주변 적·중립 몹이 공포로 도주", en: "Unlocks the Screech action — frightens nearby hostile and neutral mobs into fleeing" }],
   },
   {
     id: "wx78module_digestion",
@@ -448,13 +448,13 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     desc: { ko: "상한 음식도 다시 보자!", en: "Give spoiled food a second chance!" },
     scanFrom: ["catcoon"],
     caps: [
-      { id: "digestion_eat_spoiled", ko: "상한 음식을 깎임 없이 먹을 수 있음", en: "Can eat spoiled food without penalty" },
-      { id: "digestion_brick", ko: "상한 음식 5개 먹으면 푸드브릭 생성 (회로 1개 추가마다 −1, 최소 3개)", en: "Eat 5 spoiled foods → produces foodbrick (−1 per extra circuit, min 3)" },
+      { id: "digestion_eat_spoiled", ko: "상한 음식을 깎임 없이 먹을 수 있음", en: "Eat spoiled food without penalty" },
+      { id: "digestion_brick", ko: "상한 음식 5개 먹으면 푸드브릭 생성 (회로 1개 추가마다 −1, 최소 3개)", en: "Eating 5 spoiled foods produces a Nutribrick (−1 per extra circuit, min 3)" },
     ],
     buffs: [
       {
         skill: "wx78_circuitry_gammabuffs_1",
-        caps: [{ id: "digestion_perm", ko: "회로를 빼도 상한 음식 섭취 능력 유지", en: "Spoiled-food eating persists even after unequipping" }],
+        caps: [{ id: "digestion_perm", ko: "회로를 빼도 상한 음식 섭취 능력 유지", en: "Keeps the ability to eat spoiled food even after the circuit is removed" }],
       },
     ],
   },
@@ -466,7 +466,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     nameI18n: { ko: "회전기 회로", en: "Spin-Cycle Circuit" },
     desc: { ko: "도끼·곡괭이를 들면 회전 광역 공격이 가능해집니다.", en: "Hold an axe or pickaxe to perform spin AOE attacks." },
     scanFrom: ["mossling"],
-    caps: [{ id: "spin_aoe", ko: "도끼·곡괭이를 들면 회전 광역 공격 가능 (도구 효율적 사용도 자동 적용)", en: "Hold an axe or pickaxe to spin-attack (efficient tool use auto-applied)" }],
+    caps: [{ id: "spin_aoe", ko: "도끼·곡괭이를 들면 회전 광역 공격 가능 (도구 효율적 사용도 자동 적용)", en: "Hold an Axe or Pickaxe to perform a spin attack" }],
   },
   {
     id: "wx78module_shielding",
@@ -476,11 +476,11 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     nameI18n: { ko: "방어 회로", en: "Blocking Circuit" },
     desc: { ko: "스스로를 지키세요!", en: "Protect yourself!" },
     scanFrom: ["rocky", "slurtle", "snurtle"],
-    caps: [{ id: "shielding_action", ko: "방어 자세 토글 가능 — 켜면 못 움직이지만 받는 피해 감소", en: "Toggle blocking stance — can't move but reduces damage taken" }],
+    caps: [{ id: "shielding_action", ko: "방어 자세 토글 가능 — 켜면 못 움직이지만 받는 피해 감소", en: "Activate a blocking stance — prevents movement but reduces incoming damage" }],
     buffs: [
       {
         skill: "wx78_circuitry_gammabuffs_2",
-        caps: [{ id: "shielding_buff", ko: "방어 자세 시 피해 감소량 강화", en: "Stronger damage reduction while blocking" }],
+        caps: [{ id: "shielding_buff", ko: "방어 자세 시 피해 감소량 강화", en: "Stronger damage reduction during the blocking stance" }],
       },
     ],
   },
@@ -493,13 +493,13 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     desc: { ko: "시계태엽 기계를 감전시키지 않아도 톱니바퀴를 줘서 우리편으로 만들 수 있음.", en: "Recruit Clockworks with gears — no need to shock-stun them first." },
     scanFrom: ["knight", "knight_nightmare", "knight_yoth"],
     caps: [
-      { id: "chess_follower", ko: "시계태엽 추종자 최대치 +1 (모듈당)", en: "+1 max Clockwork follower per module" },
-      { id: "chess_no_stun", ko: "감전(기절)시키지 않아도 톱니바퀴를 줘서 우리편 만들 수 있음", en: "Recruit Clockworks with gears without stunning them first" },
+      { id: "chess_follower", ko: "시계태엽 추종자 최대치 +1 (모듈당)", en: "+1 maximum Clockwork follower per module" },
+      { id: "chess_no_stun", ko: "감전(기절)시키지 않아도 톱니바퀴를 줘서 우리편 만들 수 있음", en: "Recruit Clockworks with gears — no stunning required" },
     ],
     buffs: [
       {
         skill: "wx78_circuitry_gammabuffs_1",
-        caps: [{ id: "chess_no_aggro", ko: "원래 선공인 시계태엽이 가까이 가도 공격하지 않음", en: "Hostile Clockworks no longer aggro when you approach" }],
+        caps: [{ id: "chess_no_aggro", ko: "원래 선공인 시계태엽이 가까이 가도 공격하지 않음", en: "Hostile Clockworks no longer attack on approach" }],
       },
     ],
   },

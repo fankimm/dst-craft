@@ -628,7 +628,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
           <p className="text-sm text-muted-foreground">
             {locale === "ko"
               ? "회로를 장착하거나 회로 관련 스킬을 학습하면 여기에 통합 현황이 표시됩니다."
-              : "Equip circuits or learn circuit-related skills to see the combined status here."}
+              : "Equip a circuit or learn a circuit skill to see your combined effects."}
           </p>
         </div>
         <Footer />
@@ -710,7 +710,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
             />
             <StatBox
               iconSrc={assetPath("/images/ui/perish.png")}
-              label={locale === "ko" ? "부패 속도" : "Spoil Rate"}
+              label={locale === "ko" ? "부패 속도" : "Spoilage Rate"}
               formatted={spoilDelta !== 0 ? `${spoilDelta > 0 ? "+" : "−"}${Math.abs(Math.round(spoilDelta * 100))}%` : "—"}
               colorClass={spoilDelta !== 0 ? statColor(spoilDelta < 0 ? 1 : -1) : undefined}
               divider
@@ -718,7 +718,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
             />
             <StatBox
               iconSrc={assetPath("/images/game-items/meatrack.png")}
-              label={locale === "ko" ? "건조 속도" : "Drying"}
+              label={locale === "ko" ? "건조 속도" : "Drying Rate"}
               formatted={dryDelta > 0 ? `+${Math.round(dryDelta * 100)}%` : "—"}
               colorClass={dryDelta > 0 ? statColor(1) : undefined}
               divider
