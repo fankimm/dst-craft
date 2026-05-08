@@ -57,29 +57,37 @@ EOF
 - 슬러그: 제목을 ASCII로 변환 (한글 → 영문 키워드 또는 transliterate). Claude가 짧은 영문 슬러그 만들기 (kebab-case, 4단어 이하)
 - 브랜치명: `feat/<issue-num>-<slug>` (예: `feat/42-shadow-chess-fix`)
 
-### 4. 워크트리 생성 + 작업 디렉터리 이동
+### 4. 워크트리 생성
 ```bash
 git fetch origin main
 git worktree add ../dst-craft-<issue-num> -b feat/<issue-num>-<slug> origin/main
-cd ../dst-craft-<issue-num>
 ```
 - 워크트리 경로는 항상 `../dst-craft-<issue-num>` (이슈 번호 기준 — 슬러그 충돌 방지)
 - main에서 분기 (CLAUDE.md 규칙)
-- **`cd`까지 이 스킬 안에서 실행**한다. Claude Code Bash 세션의 working directory는 이후 명령에 그대로 유지되므로, 같은 세션에서 곧바로 워크트리 작업이 가능
-- 단, 메인 워크트리에서 동시에 다른 Claude 세션이 돌고 있다면 cd 이동만으로는 그 세션의 in-flight 변경을 막지 못함. 멀티 세션 충돌 방지가 핵심이라면 사용자에게 "다른 세션이 돌고 있나요?" 한 번 묻고 진행
+- 멀티 세션 충돌 방지가 핵심이라면 다른 Claude 세션이 메인 워크트리에서 돌고 있는지 사용자에게 한 번 확인
 
-### 5. 사용자 안내 (한 블록)
-- 이슈 URL, 워크트리 경로, 브랜치명, 그리고 **현재 세션이 이미 워크트리로 이동했음**을 알린다
+### 5. 같은 세션에서 그대로 작업 진행 — cwd 처리 규칙
+**중요**: 이 환경의 Bash tool은 매 호출마다 cwd가 메인 워킹 디렉터리(`/Users/jihwan-kim3/private-works/dst-craft`)로 리셋된다 (`Shell cwd was reset to ...` 메시지로 확인됨). 따라서 단순한 `cd ../dst-craft-<num>`은 다음 Bash 호출에 유지되지 않는다.
+
+대신 다음 규칙으로 워크트리 작업:
+- **Bash 명령**: 매번 `cd ../dst-craft-<num> &&` 프리픽스를 붙이거나, git 명령은 `git -C ../dst-craft-<num> ...` 형태로 호출
+- **Read / Edit / Write**: 항상 워크트리 절대 경로(`/Users/jihwan-kim3/private-works/dst-craft-<num>/...`)로 호출 — 이건 cwd 영향 안 받음
+- **빌드 등 node_modules 필요한 작업**: feat 워크트리엔 `node_modules`가 없을 수 있음. `npm run build` / `npx tsc`는 메인 워크트리에서 main 머지 후 검증하거나, 워크트리에서 `npm install` 먼저
+
+> 메모: 만약 이후 환경 변경으로 cwd가 유지되도록 바뀌면, 위 프리픽스 규칙은 단순 `cd` 한 번으로 대체 가능.
+
+### 6. 사용자 안내 (한 블록)
+- 이슈 URL, 워크트리 경로, 브랜치명을 출력하고 **이 세션이 그대로 이어서 작업할 것**임을 알린다
 - 안내 예시:
   ```
   ✅ 작업 환경 준비됨 (이 세션이 그대로 이어서 작업합니다)
   - 이슈: <URL>
-  - 워크트리: ~/private-works/dst-craft-42 (현재 cwd)
+  - 워크트리: ~/private-works/dst-craft-42
   - 브랜치: feat/42-shadow-chess-fix
 
   바로 작업 시작합니다. 완료되면 /push (beta) → /release (main).
   ```
-- 이후 곧바로 사용자 요청 작업 진행 (별도 세션 전환 불필요)
+- 이후 곧바로 사용자 요청 작업 진행 — 모든 파일 조작은 워크트리 경로 기준으로
 
 ## /push, /release와의 연동
 - `/push`는 그대로 동작 — feat 워크트리에서 commit + beta 머지/푸시
