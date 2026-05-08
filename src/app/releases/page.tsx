@@ -15,6 +15,19 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.21.20",
+    date: "2026-05-08",
+    dev: [
+      "feat(skills): WX-78 현황 — alpha 회로 buff 머지 카드 3종. 모듈마다 한 줄씩 보이던 중복 제거하고 합산값 1장씩으로 압축",
+      "  · 정신력 감소 오라 영향 (T1 학습): 곱연산 product (예: maxsanity1+maxsanity+bee → 0.8×0.5×0.5=0.2 → '−80%')",
+      "  · 의복에 의한 정신력 회복 (T2 학습): 합연산 sum (예: 10%+30%+30% → '+70%')",
+      "  · 허기 소모 감소 (T1/T2 변동): 곱연산 product. T2 우선 (T1 supersede)",
+      "feat(skills): bee compound 텍스트(\"의복 정신력 회복 25% 증가하고, 실드 ...\")에서 dapper 부분 자동 분리. 실드 메커닉만 별도 row로 유지",
+      "feat(skills): 합산 카드 클릭 시 DetailPanel breakdown — 출처 스킬, 스택 방식(곱/합연산), 기여 모듈별 per-module % 표시",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.21.19",
     date: "2026-05-08",
     dev: [

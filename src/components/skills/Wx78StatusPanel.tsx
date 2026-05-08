@@ -5,6 +5,7 @@ import Image from "next/image";
 import {
   WX78_CIRCUITS,
   WX78_CIRCUITS_BY_ID,
+  WX78_TUNING,
   TYPE_COLORS,
   typeLabel,
   type CircuitType,
@@ -246,6 +247,98 @@ function isSlowBuffRow(row: EffectRow): boolean {
   return false;
 }
 
+// ── Alpha buffs aggregation ──────────────────────────────────
+// 정신력 감소 오라 영향 (T1 학습 시 active). 게임 메커닉: SourceModifierList multiplicative product.
+//   maxsanity1 (T1 활성): 0.8 (-20% aura), maxsanity: 0.5, bee: 0.5
+const SANITY_NEG_AURA_MULT: Record<string, number> = {
+  wx78module_maxsanity1: WX78_TUNING.MAXSANITY1_SANITY_MOD_ALPHABUFF,  // 0.8
+  wx78module_maxsanity: WX78_TUNING.MAXSANITY_SANITY_MOD_ALPHABUFF,    // 0.5
+  wx78module_bee: WX78_TUNING.MAXSANITY_SANITY_MOD_ALPHABUFF,          // 0.5 (bee uses maxsanity 값 재사용)
+};
+
+// 의복에 의한 정신력 회복 (T2 활성). 게임 메커닉: dapperness_mult += per-module value (additive).
+const SANITY_DAPPER_MULT: Record<string, number> = {
+  wx78module_maxsanity1: WX78_TUNING.MAXSANITY1_DAPPERNESS_MULT,  // 0.10
+  wx78module_maxsanity: WX78_TUNING.MAXSANITY_DAPPERNESS_MULT,    // 0.30
+  wx78module_bee: WX78_TUNING.MAXSANITY_DAPPERNESS_MULT,          // 0.30
+};
+
+function negSanityAuraReduction(counts: CircuitCounts, hasAlphaT1: boolean): number {
+  if (!hasAlphaT1) return 0;
+  let mult = 1;
+  for (const [id, count] of Object.entries(counts)) {
+    if (!count) continue;
+    const m = SANITY_NEG_AURA_MULT[id];
+    if (!m) continue;
+    for (let i = 0; i < count; i++) mult *= m;
+  }
+  return 1 - mult; // 0..1 (감소 비율)
+}
+
+function dapperSanityBoost(counts: CircuitCounts, hasAlphaT2: boolean): number {
+  if (!hasAlphaT2) return 0;
+  let total = 0;
+  for (const [id, count] of Object.entries(counts)) {
+    if (!count) continue;
+    const v = SANITY_DAPPER_MULT[id];
+    if (v) total += v * count;
+  }
+  return total; // 누적 증가 비율
+}
+
+// 허기 소모 감소. 게임 메커닉: SourceModifierList multiplicative product.
+// maxhunger:
+//   base (no skill): 0.80, T1: 0.75, T2: 0.70
+// maxhunger1:
+//   base: 1 (no effect), T1: 0.95, T2: 0.90
+function hungerModuleMult(id: string, hasT1: boolean, hasT2: boolean): number {
+  if (id === "wx78module_maxhunger") {
+    return hasT2 ? WX78_TUNING.MAXHUNGER_SLOWPERCENT_ALPHABUFF_2  // 0.70
+         : hasT1 ? WX78_TUNING.MAXHUNGER_SLOWPERCENT_ALPHABUFF    // 0.75
+         : WX78_TUNING.MAXHUNGER_SLOWPERCENT;                      // 0.80
+  }
+  if (id === "wx78module_maxhunger1") {
+    if (hasT2) return WX78_TUNING.MAXHUNGER1_SLOWPERCENT_ALPHABUFF_2; // 0.90
+    if (hasT1) return WX78_TUNING.MAXHUNGER1_SLOWPERCENT_ALPHABUFF;   // 0.95
+    return 1;
+  }
+  return 1;
+}
+
+function hungerDrainReduction(counts: CircuitCounts, hasT1: boolean, hasT2: boolean): number {
+  let mult = 1;
+  for (const [id, count] of Object.entries(counts)) {
+    if (!count) continue;
+    if (id !== "wx78module_maxhunger" && id !== "wx78module_maxhunger1") continue;
+    const m = hungerModuleMult(id, hasT1, hasT2);
+    for (let i = 0; i < count; i++) mult *= m;
+  }
+  return 1 - mult;
+}
+
+// Row matchers
+function isSanityAuraRow(row: EffectRow): boolean {
+  return /^정신력 감소 오라의 영향이 \d+% 감소한다\.?\s*$/.test(row.text);
+}
+
+function isDapperRow(row: EffectRow): boolean {
+  return /^의복에 의한 정신력 회복이 \d+% 증가한다\.?\s*$/.test(row.text);
+}
+
+// 의복 정신력 회복 compound prefix 추출 (bee의 "의복 회복 25% 증가하고, 실드 ..." 케이스)
+function extractDapperPrefixKo(text: string): { rest: string } | null {
+  if (/^의복에 의한 정신력 회복이 \d+% 증가한다\.?\s*$/.test(text)) return { rest: "" };
+  const m = text.match(/^의복에 의한 정신력 회복이 \d+% 증가하고[,\s]+(.+)$/);
+  if (m) return { rest: m[1].trim() };
+  return null;
+}
+
+function isHungerDrainRow(row: EffectRow): boolean {
+  if (/^허기 소모가? \d+% 감소한다\.?\s*$/.test(row.text)) return true;
+  if (/^허기 소모 감소가 \d+%로 증가한다\.?\s*$/.test(row.text)) return true;
+  return false;
+}
+
 // WX-78 baseline — what the user sees as default max stats (회로/스킬 0 기준)
 const WX78_BASE_VITAL = { health: 100, hunger: 100, sanity: 100 };
 
@@ -323,7 +416,10 @@ type SelectedDetail =
   | { kind: "vital"; statKind: "maxHealth" | "maxHunger" | "maxSanity"; total: number }
   | { kind: "movespeed"; chips: number; pct: number }
   | { kind: "armor"; skillId: string; total: number }
-  | { kind: "slow"; chips: number; pct: number };
+  | { kind: "slow"; chips: number; pct: number }
+  | { kind: "neg_aura"; pct: number; skillId: string }
+  | { kind: "dapper"; pct: number; skillId: string }
+  | { kind: "hunger_drain"; pct: number; skillId: string | null };
 
 function readDevShowAll(): boolean {
   if (typeof window === "undefined") return false;
@@ -378,10 +474,45 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
   // 4차 패스: 둔화 저항 합산 — chip 합 + Tinkering II → 25% × chips capped at 100%
   const hasBetaTinkering2 = effectiveSkills.has("wx78_circuitry_betabuffs_2");
   const slowResistPct = slowReductionPct(moveSpeedChips, hasBetaTinkering2);
-  const effectRows = useMemo(
+  const afterSlow = useMemo(
     () => afterArmor.filter((r) => !isSlowBuffRow(r)),
     [afterArmor],
   );
+
+  // 5차 패스: alpha-buff 합산 — 정신력 감소 오라(T1) + 의복 정신력 회복(T2) + 허기 소모 감소
+  // 모듈마다 행이 여러 개씩 나오는 중복을 단일 카드로 압축. compound 본문(bee dapper compound 등)은
+  // dapper 부분만 잘라내고 나머지는 별도 row 유지.
+  const hasAlphaT1 = effectiveSkills.has("wx78_circuitry_alphabuffs_1");
+  const hasAlphaT2 = effectiveSkills.has("wx78_circuitry_alphabuffs_2");
+  const negAuraReduction = useMemo(
+    () => negSanityAuraReduction(effectiveCounts, hasAlphaT1),
+    [effectiveCounts, hasAlphaT1],
+  );
+  const dapperBoost = useMemo(
+    () => dapperSanityBoost(effectiveCounts, hasAlphaT2),
+    [effectiveCounts, hasAlphaT2],
+  );
+  const hungerReduction = useMemo(
+    () => hungerDrainReduction(effectiveCounts, hasAlphaT1, hasAlphaT2),
+    [effectiveCounts, hasAlphaT1, hasAlphaT2],
+  );
+  const effectRows = useMemo(() => {
+    const out: EffectRow[] = [];
+    for (const r of afterSlow) {
+      if (negAuraReduction > 0 && isSanityAuraRow(r)) continue;
+      if (hungerReduction > 0 && isHungerDrainRow(r)) continue;
+      if (dapperBoost > 0 && r.skillId) {
+        const ex = extractDapperPrefixKo(r.text);
+        if (ex) {
+          if (ex.rest) out.push({ ...r, text: ex.rest });
+          // standalone dapper row → drop (merged card로 대체)
+          continue;
+        }
+      }
+      out.push(r);
+    }
+    return out;
+  }, [afterSlow, negAuraReduction, dapperBoost, hungerReduction]);
   const skillRows = useMemo(
     () => getGlobalSkillRows(effectiveSkills, locale),
     [effectiveSkills, locale],
@@ -471,7 +602,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
           </div>
         )}
 
-        {(effectRows.length > 0 || skillRows.length > 0) && (
+        {(effectRows.length > 0 || skillRows.length > 0 || negAuraReduction > 0 || dapperBoost > 0 || hungerReduction > 0) && (
           <div className="mt-3 space-y-1.5">
             {effectRows.filter((r) => !r.skillId).map((r) => (
               <EffectCard
@@ -481,6 +612,46 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
                 onClick={() => setSelected({ kind: "effect", row: r })}
               />
             ))}
+            {negAuraReduction > 0 && (
+              <EffectCard
+                key="neg-aura-agg"
+                text={locale === "ko"
+                  ? `정신력 감소 오라의 영향이 ${Math.round(negAuraReduction * 100)}% 감소한다.`
+                  : `Negative sanity aura effect reduced by ${Math.round(negAuraReduction * 100)}%.`}
+                skillLabel={skillLabel("wx78_circuitry_alphabuffs_1", locale)}
+                learned
+                locale={locale}
+                onClick={() => setSelected({ kind: "neg_aura", pct: negAuraReduction, skillId: "wx78_circuitry_alphabuffs_1" })}
+              />
+            )}
+            {dapperBoost > 0 && (
+              <EffectCard
+                key="dapper-agg"
+                text={locale === "ko"
+                  ? `의복에 의한 정신력 회복이 ${Math.round(dapperBoost * 100)}% 증가한다.`
+                  : `Sanity gain from clothing increased by ${Math.round(dapperBoost * 100)}%.`}
+                skillLabel={skillLabel("wx78_circuitry_alphabuffs_2", locale)}
+                learned
+                locale={locale}
+                onClick={() => setSelected({ kind: "dapper", pct: dapperBoost, skillId: "wx78_circuitry_alphabuffs_2" })}
+              />
+            )}
+            {hungerReduction > 0 && (
+              <EffectCard
+                key="hunger-drain-agg"
+                text={locale === "ko"
+                  ? `허기 소모가 ${Math.round(hungerReduction * 100)}% 감소한다.`
+                  : `Hunger drain reduced by ${Math.round(hungerReduction * 100)}%.`}
+                skillLabel={
+                  hasAlphaT2 ? skillLabel("wx78_circuitry_alphabuffs_2", locale)
+                  : hasAlphaT1 ? skillLabel("wx78_circuitry_alphabuffs_1", locale)
+                  : undefined
+                }
+                learned={hasAlphaT2 || hasAlphaT1 ? true : undefined}
+                locale={locale}
+                onClick={() => setSelected({ kind: "hunger_drain", pct: hungerReduction, skillId: hasAlphaT2 ? "wx78_circuitry_alphabuffs_2" : hasAlphaT1 ? "wx78_circuitry_alphabuffs_1" : null })}
+              />
+            )}
             {effectRows.filter((r) => r.skillId).map((r) => (
               <EffectCard
                 key={r.key}
@@ -512,7 +683,13 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
 
       <DetailPanel open={!!selected} onClose={() => setSelected(null)} hideClose>
         {selected && (
-          <Detail selected={selected} locale={locale} effectiveCounts={effectiveCounts} />
+          <Detail
+            selected={selected}
+            locale={locale}
+            effectiveCounts={effectiveCounts}
+            hasAlphaT1Detail={hasAlphaT1}
+            hasAlphaT2Detail={hasAlphaT2}
+          />
         )}
       </DetailPanel>
     </div>
@@ -568,10 +745,14 @@ function Detail({
   selected,
   locale,
   effectiveCounts,
+  hasAlphaT1Detail,
+  hasAlphaT2Detail,
 }: {
   selected: SelectedDetail;
   locale: Locale;
   effectiveCounts: CircuitCounts;
+  hasAlphaT1Detail: boolean;
+  hasAlphaT2Detail: boolean;
 }) {
   if (selected.kind === "effect") {
     const r = selected.row;
@@ -798,6 +979,90 @@ function Detail({
                   </div>
                   <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
                     {locale === "ko" ? `+${c.chips} chip` : `+${c.chips} chip`}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  if (selected.kind === "neg_aura" || selected.kind === "dapper" || selected.kind === "hunger_drain") {
+    const isNegAura = selected.kind === "neg_aura";
+    const isDapper = selected.kind === "dapper";
+    const isHunger = selected.kind === "hunger_drain";
+    const totalPct = Math.round(selected.pct * 100);
+    const title =
+      isNegAura ? (locale === "ko" ? "정신력 감소 오라 영향" : "Negative Sanity Aura")
+      : isDapper ? (locale === "ko" ? "의복에 의한 정신력 회복" : "Sanity from Clothing")
+      : (locale === "ko" ? "허기 소모 감소" : "Hunger Drain Reduction");
+    const sign = isDapper ? "+" : "−";
+    const stackingNote =
+      isNegAura ? (locale === "ko" ? "곱연산(modules multiplied)" : "Multiplicative product")
+      : isDapper ? (locale === "ko" ? "합연산(additive)" : "Additive sum")
+      : (locale === "ko" ? "곱연산(modules multiplied)" : "Multiplicative product");
+
+    // Contributing modules
+    const contributors: { module: CircuitModule; count: number; perModulePct: number }[] = [];
+    for (const [id, count] of Object.entries(effectiveCounts)) {
+      if (!count) continue;
+      const m = WX78_CIRCUITS_BY_ID[id];
+      if (!m) continue;
+      if (isNegAura) {
+        const v = SANITY_NEG_AURA_MULT[id];
+        if (v != null) contributors.push({ module: m, count, perModulePct: Math.round((1 - v) * 100) });
+      } else if (isDapper) {
+        const v = SANITY_DAPPER_MULT[id];
+        if (v != null) contributors.push({ module: m, count, perModulePct: Math.round(v * 100) });
+      } else {
+        if (id !== "wx78module_maxhunger" && id !== "wx78module_maxhunger1") continue;
+        const mod = hungerModuleMult(id, hasAlphaT1Detail, hasAlphaT2Detail);
+        if (mod < 1) contributors.push({ module: m, count, perModulePct: Math.round((1 - mod) * 100) });
+      }
+    }
+
+    return (
+      <div className="px-4 pt-4 pb-2">
+        <div className="flex items-baseline justify-between">
+          <h3 className="text-base font-bold text-foreground">{title}</h3>
+          <span className="text-base font-bold tabular-nums text-foreground">{sign}{totalPct}%</span>
+        </div>
+        <div className="mt-2 text-[11px] text-muted-foreground space-y-0.5">
+          {selected.skillId && (
+            <div>
+              {locale === "ko" ? "스킬: " : "Skill: "}
+              <span className="font-semibold">{skillLabel(selected.skillId, locale)}</span>
+            </div>
+          )}
+          <div>
+            {locale === "ko" ? "스택 방식: " : "Stacking: "}
+            <span>{stackingNote}</span>
+          </div>
+        </div>
+        <div className="mt-4">
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2">
+            {locale === "ko" ? "기여 모듈" : "Contributing modules"}
+          </div>
+          <ul className="space-y-1.5">
+            {contributors.map((c) => {
+              const color = TYPE_COLORS[c.module.type];
+              return (
+                <li key={c.module.id} className="flex items-center gap-2 px-2 py-2 rounded-md bg-surface/60">
+                  <Image src={`/images/game-items/${c.module.id}.png`} alt="" width={28} height={28} className="size-7 object-contain shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold text-foreground truncate flex items-center gap-1.5">
+                      {locale === "ko" ? c.module.nameI18n.ko : c.module.nameI18n.en}
+                      {c.count > 1 && (
+                        <span className="text-[10px] font-bold px-1 rounded-sm tabular-nums" style={{ backgroundColor: `${color}30`, color }}>
+                          ×{c.count}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+                    {sign}{c.perModulePct}% {locale === "ko" ? "/모듈" : "/each"}
                   </span>
                 </li>
               );
