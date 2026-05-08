@@ -319,6 +319,14 @@
 
 ## 인프라 / 셀프호스팅
 
+### Next.js 16 Metadata API의 `appleWebApp.capable`이 `apple-mobile-web-app-capable` 메타를 출력하지 않음
+- **문제**: iOS PWA 스플래시(apple-touch-startup-image)가 미표시. 18개 기기 사양으로 PNG 72장 + media query까지 정확히 세팅했는데도 안 나옴. `screen and` prefix 누락(0.22.3)을 고친 후에도 여전히 미표시
+- **원인**: Next.js 16의 `metadata.appleWebApp.capable: true` 설정이 신규 표준인 `<meta name="mobile-web-app-capable" content="yes">`만 출력하고, **레거시 `<meta name="apple-mobile-web-app-capable" content="yes">`는 누락**. iOS Safari는 PWA standalone 모드 활성화에 여전히 apple-prefix 메타가 필요 → 활성화 안 되면 splash 매칭도 스킵됨
+- **검증**: `grep -oE '<meta name="(apple|mobile)[^>]*>' out/index.html` → `mobile-web-app-capable`만 보이고 `apple-mobile-web-app-capable` 없으면 이 케이스
+- **해결**: `layout.tsx`의 `<head>`에 `<meta name="apple-mobile-web-app-capable" content="yes" />` 수동 주입
+- **교훈**: PWA 메타 태그는 Next.js Metadata API에 100% 위임 금지. 빌드 결과(`out/<page>.html`)에서 실제로 어떤 메타가 출력되는지 grep으로 확인하는 단계 필수. 특히 iOS는 deprecated 표기에도 여전히 apple-prefix를 요구하는 케이스가 있음
+- **부수**: 이미 홈 화면에 추가된 PWA 아이콘은 첫 install 시점의 splash 메타를 캐시함. 메타 수정 후 사용자는 **아이콘 삭제 후 재추가** 필요 (릴리즈 노트에 명시)
+
 ### nginx 정적 캐시 정규식이 sw.js까지 1년 immutable로 캐시 (PWA 표준 위반)
 - **문제**: Phase 1 nginx 설정의 `location ~* \.(js|css|...)$ { expires 1y; ... immutable; }`가 `sw.js`도 매칭 → Service Worker 파일이 1년간 immutable로 캐시. 빌드를 새로 해도 사용자 브라우저의 옛 SW가 활성 상태로 옛 chunk를 영구 서빙. Phase 3 배포 후 supporters dedupe 패치가 적용된 chunk가 빌드/배포됐는데 사용자 화면엔 여전히 7회 호출되는 현상으로 발견
 - **원인**: brew nginx 정적 캐시 템플릿을 그대로 쓰고 sw.js 예외 처리를 빠뜨림. PWA 표준에선 sw.js는 `Cache-Control: no-cache` 또는 `max-age=0` 권장. 브라우저는 24시간마다 sw.js 재검증하지만 immutable 헤더면 무력화될 수 있고, CDN(Cloudflare 등)이 1년 캐시하면 origin이 바뀌어도 사용자에게 옛 sw.js 서빙

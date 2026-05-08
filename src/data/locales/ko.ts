@@ -720,6 +720,7 @@ export const ko: LocaleData = {
     "cutstone_bunch": { name: "석재 묶음", desc: "석재를 그득하게." },
     "phonograph": { name: "축음기", desc: "가만히 앉아서 악몽 같은 노래들을 들어보세요." },
     "record": { name: "레코드", desc: "콘스탄트의 클래식들을 레코드판으로." },
+    "w_radio": { name: "B.U.D.D.Y.", desc: "어디서 오는 신호일까요?" },
     "floatinglantern": { name: "풍등", desc: "한번 불 켜 보자고!" },
     "yoth_knightstick": { name: "목마", desc: "말 달리자 이랴." },
     "yoth_chair_rocking_item": { name: "흔들목마 키트", desc: "달리면서도 멈춰 있는 즐거움." },

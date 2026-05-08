@@ -16,7 +16,7 @@ const DEVICES_JSON = join(ROOT, "src", "lib", "ios-splash-devices.json");
 
 const ENVS = [
   { suffix: "", bg: "#ffffff" },
-  { suffix: "-beta", bg: "#dc2626" },
+  { suffix: "-beta", bg: "#ffffff" },
 ];
 
 const devices = JSON.parse(await readFile(DEVICES_JSON, "utf8"));

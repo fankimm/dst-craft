@@ -225,7 +225,7 @@ export const materials: Material[] = [
   { id: "turf_marsh", name: "Marsh Turf", image: "turf_marsh.png" },
   { id: "twigs", name: "Twigs", image: "twigs.png" },
   { id: "voidcloth", name: "Voidcloth", image: "voidcloth.png" },
-  { id: "wagpunk_bits", name: "Wagpunk Bits", image: "wagpunk_bits.png" },
+  { id: "wagpunk_bits", name: "Scrap", image: "wagpunk_bits.png" },
   { id: "walrus_tusk", name: "Walrus Tusk", image: "walrus_tusk.png" },
   { id: "waterballoon", name: "Waterballoon", image: "waterballoon.png" },
   { id: "watermelon", name: "Watermelon", image: "watermelon.png" },

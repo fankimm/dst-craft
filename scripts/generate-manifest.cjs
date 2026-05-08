@@ -6,14 +6,14 @@ const isBeta = process.env.NEXT_PUBLIC_DEPLOY_ENV === "beta";
 const suffix = isBeta ? "-beta" : "";
 
 const manifest = {
-  name: isBeta ? "dstcraft.com (BETA)" : "dstcraft.com",
-  short_name: isBeta ? "dstcraft BETA" : "dstcraft.com",
+  name: "dstcraft.com",
+  short_name: "dstcraft.com",
   description: "Don't Starve Together 크래프팅·쿠킹 레시피 가이드",
   start_url: basePath + "/",
   scope: basePath + "/",
   display: "standalone",
   background_color: "#ffffff",
-  theme_color: isBeta ? "#dc2626" : "#ffffff",
+  theme_color: "#ffffff",
   icons: [
     { src: `${basePath}/icons/icon-192${suffix}.png`, sizes: "192x192", type: "image/png", purpose: "any" },
     { src: `${basePath}/icons/icon-512${suffix}.png`, sizes: "512x512", type: "image/png", purpose: "any" },

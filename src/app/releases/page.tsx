@@ -15,6 +15,89 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.22.8",
+    date: "2026-05-08",
+    dev: [
+      "fix(pwa): apple-touch-startup-image href에 ?v=${APP_VERSION} query string 추가 — iOS가 같은 URL의 splash 이미지를 영구 캐시하는 문제 회피. 0.22.7에서 splash bg를 흰색으로 바꿨는데도 사용자 디바이스가 빨간색 splash를 계속 보던 원인. 매 APP_VERSION bump마다 query 변경 → iOS 새 URL로 인식 → 재다운로드.",
+    ],
+    changes: {
+      ko: [
+        "iOS PWA splash가 이전 버전 이미지로 계속 표시되던 문제 수정 — 이번 배포부터는 매 버전마다 자동 갱신됩니다. 홈 화면 아이콘 삭제 후 재추가하면 새 splash가 적용됩니다.",
+      ],
+      en: [
+        "Fixed iOS PWA splash sticking to old cached image — now auto-refreshes per version. Remove and re-add the home screen icon to pick up the new splash.",
+      ],
+    },
+  },
+  {
+    version: "0.22.7",
+    date: "2026-05-08",
+    dev: [
+      "fix(pwa): beta splash 배경색 빨간색(#dc2626) → 흰색(#ffffff). generate-ios-splash.mjs의 ENVS 배열에서 -beta 환경의 bg를 #ffffff로 변경.",
+      "chore(pwa): beta manifest theme_color도 흰색으로 통일 — generate-manifest.cjs의 isBeta 분기 제거.",
+    ],
+    changes: {
+      ko: [
+        "iOS 베타 PWA splash 배경이 빨간색으로 표시되던 문제 수정 — 흰색으로 통일했습니다.",
+      ],
+      en: [
+        "Fixed iOS beta PWA splash background showing red — now unified to white.",
+      ],
+    },
+  },
+  {
+    version: "0.22.6",
+    date: "2026-05-08",
+    dev: [
+      "fix(materials): wagpunk_bits 영문명 Wagpunk Bits → Scrap — 인게임 strings.lua(STRINGS.NAMES.WAGPUNK_BITS = \"Scrap\") 기준으로 보정. 한글은 이미 \"고철더미\"로 정확. B.U.D.D.Y. 등 wagpunk_bits 사용 레시피의 영문 표기가 게임 인벤토리와 일치하도록.",
+      "fix(pwa): beta manifest의 name/short_name도 \"dstcraft.com\"으로 통일 — generate-manifest.cjs가 isBeta일 때 \"dstcraft.com (BETA)\" / \"dstcraft BETA\"로 분기하던 부분 제거. iOS는 apple-mobile-web-app-title보다 manifest의 short_name을 우선시하는 케이스가 있어, appleWebApp.title만 바꿔서는 홈 화면 이름이 그대로였음. manifest 자체를 통일.",
+    ],
+    changes: {
+      ko: [
+        "iOS 베타 PWA 홈 화면 이름이 여전히 \"dstcraft BETA\"로 표시되던 문제 수정 — manifest까지 통일했습니다. 기존 아이콘은 한 번 더 삭제 후 재추가하세요.",
+      ],
+      en: [
+        "Renamed material 'Wagpunk Bits' → 'Scrap' to match the in-game name (Klei renamed it; Korean was already correct as 고철더미).",
+        "Fixed iOS beta PWA home screen still showing \"dstcraft BETA\" — manifest is now unified with prod. Please remove and re-add the home screen icon once more.",
+      ],
+    },
+  },
+  {
+    version: "0.22.5",
+    date: "2026-05-08",
+    dev: [
+      "fix(pwa): iOS 스플래시 여전히 미표시 → Next.js 16 Metadata API의 `appleWebApp.capable: true`가 신규 표준 `<meta name=\"mobile-web-app-capable\">`만 출력하고 레거시 `<meta name=\"apple-mobile-web-app-capable\">`는 누락. iOS Safari는 PWA standalone 모드 활성화에 apple-prefix 메타가 여전히 필요 → layout.tsx <head>에 수동 주입.",
+      "chore(pwa): appleWebApp.title을 \"dstcraft.com\"으로 통일 (prod \"Don't Craft Without Recipes\" / beta \"DST Craft (BETA)\" → 둘 다 \"dstcraft.com\"). manifest.json의 name/short_name과 일치.",
+    ],
+    changes: {
+      ko: [
+        "iOS PWA 스플래시 미표시 문제 재수정 — 기존 홈 화면 아이콘은 한 번 삭제 후 다시 추가해야 적용됩니다.",
+        "iOS 홈 화면에 표시되는 PWA 이름을 \"dstcraft.com\"으로 통일 (베타도 동일).",
+      ],
+      en: [
+        "Re-fixed iOS PWA splash screen — if you previously installed to home screen, please remove and re-add the icon.",
+        "Unified iOS home screen PWA name to \"dstcraft.com\" (beta included).",
+      ],
+    },
+  },
+  {
+    version: "0.22.4",
+    date: "2026-05-08",
+    dev: [
+      "feat(items): B.U.D.D.Y.(w_radio) 누락 등록 — 인게임 소스(scripts/recipes.lua, prefabs/w_radio.lua) 기준으로 재료 wagpunk_bits×5 + transistor×2, TECH.LOST(Klei 보상 해금)이라 station=\"none\", 카테고리는 DECOR 필터에 맞춰 [\"decorations\"]. 한글명/설명은 ko.po 기준(이름 'B.U.D.D.Y.', 설명 '어디서 오는 신호일까요?').",
+      "asset: public/images/game-items/w_radio.png 추가 (위키 dropped 이미지 → sips 64x64 리사이즈).",
+      "data(locales/ko): items에 w_radio 항목 추가.",
+    ],
+    changes: {
+      ko: [
+        "신규 아이템 'B.U.D.D.Y.' 추가 — 라디오 퍼즐(Exspectamus) 보상으로 해금되는 농장 자동 관리 기기. 잡동사니 5 + 전기 장치 2로 제작, 주변 작물을 자동으로 돌봅니다.",
+      ],
+      en: [
+        "Added missing item 'B.U.D.D.Y.' — Klei reward unlock from the Exspectamus radio puzzle. Crafted from 5 Scrap + 2 Electrical Doodads; automatically tends nearby farm plants.",
+      ],
+    },
+  },
+  {
     version: "0.22.3",
     date: "2026-05-08",
     dev: [
