@@ -12,8 +12,8 @@ const manifest = {
   start_url: basePath + "/",
   scope: basePath + "/",
   display: "standalone",
-  background_color: "#0a0a0c",
-  theme_color: isBeta ? "#dc2626" : "#0a0a0c",
+  background_color: "#ffffff",
+  theme_color: isBeta ? "#dc2626" : "#ffffff",
   icons: [
     { src: `${basePath}/icons/icon-192${suffix}.png`, sizes: "192x192", type: "image/png", purpose: "any" },
     { src: `${basePath}/icons/icon-512${suffix}.png`, sizes: "512x512", type: "image/png", purpose: "any" },

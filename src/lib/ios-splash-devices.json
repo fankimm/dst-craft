@@ -1,0 +1,20 @@
+[
+  { "name": "iphone-16-pro-max", "w": 1320, "h": 2868, "dpr": 3, "cssW": 440, "cssH": 956 },
+  { "name": "iphone-16-pro", "w": 1206, "h": 2622, "dpr": 3, "cssW": 402, "cssH": 874 },
+  { "name": "iphone-14-15-pro-max", "w": 1290, "h": 2796, "dpr": 3, "cssW": 430, "cssH": 932 },
+  { "name": "iphone-14-15-pro", "w": 1179, "h": 2556, "dpr": 3, "cssW": 393, "cssH": 852 },
+  { "name": "iphone-12-13-pro-max", "w": 1284, "h": 2778, "dpr": 3, "cssW": 428, "cssH": 926 },
+  { "name": "iphone-12-13-14", "w": 1170, "h": 2532, "dpr": 3, "cssW": 390, "cssH": 844 },
+  { "name": "iphone-x-xs-11pro-12mini-13mini", "w": 1125, "h": 2436, "dpr": 3, "cssW": 375, "cssH": 812 },
+  { "name": "iphone-xs-max-11-pro-max", "w": 1242, "h": 2688, "dpr": 3, "cssW": 414, "cssH": 896 },
+  { "name": "iphone-xr-11", "w": 828, "h": 1792, "dpr": 2, "cssW": 414, "cssH": 896 },
+  { "name": "iphone-6-7-8-plus", "w": 1242, "h": 2208, "dpr": 3, "cssW": 414, "cssH": 736 },
+  { "name": "iphone-se-6-7-8", "w": 750, "h": 1334, "dpr": 2, "cssW": 375, "cssH": 667 },
+  { "name": "ipad-pro-13-m4", "w": 2064, "h": 2752, "dpr": 2, "cssW": 1032, "cssH": 1376 },
+  { "name": "ipad-pro-12.9", "w": 2048, "h": 2732, "dpr": 2, "cssW": 1024, "cssH": 1366 },
+  { "name": "ipad-pro-11-air", "w": 1668, "h": 2388, "dpr": 2, "cssW": 834, "cssH": 1194 },
+  { "name": "ipad-10.9", "w": 1640, "h": 2360, "dpr": 2, "cssW": 820, "cssH": 1180 },
+  { "name": "ipad-10.2", "w": 1620, "h": 2160, "dpr": 2, "cssW": 810, "cssH": 1080 },
+  { "name": "ipad-mini-6", "w": 1488, "h": 2266, "dpr": 2, "cssW": 744, "cssH": 1133 },
+  { "name": "ipad-9.7-mini-5", "w": 1536, "h": 2048, "dpr": 2, "cssW": 768, "cssH": 1024 }
+]

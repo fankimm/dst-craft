@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 import { Analytics } from "@vercel/analytics/react";
 import { APP_VERSION } from "@/lib/version";
+import iosSplashDevices from "@/lib/ios-splash-devices.json";
 import "./globals.css";
 
 const inter = Inter({
@@ -133,7 +134,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0c" },
+  ],
   viewportFit: "cover",
 };
 
@@ -145,7 +149,7 @@ const themeScript = `
     if (d) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
     var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.setAttribute('content', '#000000');
+    if (m) m.setAttribute('content', d ? '#0a0a0c' : '#ffffff');
   } catch(e) {}
   try {
     var s = localStorage.getItem('dst-locale');
@@ -284,6 +288,20 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />
+        {iosSplashDevices.flatMap((d) => [
+          <link
+            key={`splash-${d.name}-portrait`}
+            rel="apple-touch-startup-image"
+            media={`(device-width: ${d.cssW}px) and (device-height: ${d.cssH}px) and (-webkit-device-pixel-ratio: ${d.dpr}) and (orientation: portrait)`}
+            href={`/icons/splash/splash-${d.w}x${d.h}${ICON_SUFFIX}.png`}
+          />,
+          <link
+            key={`splash-${d.name}-landscape`}
+            rel="apple-touch-startup-image"
+            media={`(device-width: ${d.cssW}px) and (device-height: ${d.cssH}px) and (-webkit-device-pixel-ratio: ${d.dpr}) and (orientation: landscape)`}
+            href={`/icons/splash/splash-${d.h}x${d.w}${ICON_SUFFIX}.png`}
+          />,
+        ])}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
