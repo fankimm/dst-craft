@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.11",
+    date: "2026-05-09",
+    dev: [
+      "feat(ops): Vercel 빌드를 사용자 영향 변경에만 한정 (#17). `vercel.json`에 `ignoreCommand: bash scripts/vercel-ignore.sh` 추가. 스크립트는 변경 파일이 `src/`, `public/`, `package(-lock)?.json`, `next.config`, `tsconfig.json`, `postcss.config`, `vercel.json`, `scripts/generate-*` 패턴에 매칭되면 build(exit 1), 그 외(`docs/`, `.claude/`, `todo.md`, `memory/`, `bun-api/`, 루트 `*.md`, `eslint.config.*`, `components.json` 등)는 skip(exit 0). `VERCEL_GIT_PREVIOUS_SHA` env var 우선 사용, 없으면 `HEAD^` fallback. 동기: Vercel은 watchdog failover 용도(CLAUDE.md Phase 6)로만 유지 중인데 매 main push마다 빌드되어 Hobby edge req 한도 잠식. `bun-api/`는 패턴에서 제외 — Vercel은 정적 export만 호스팅하고 `/api/*`는 vercel.json rewrite로 beta.dstcraft.com origin에 프록시되므로 bun-api 코드 변경은 Vercel 빌드 출력에 영향 없음. 9개 시나리오 케이스로 로컬 검증 완료. drift 위험은 사용자 영향 변경이 들어올 때 자연 해소되므로 watchdog failover 신뢰성 영향 없음.",
+    ],
+    changes: {
+      ko: [],
+      en: [],
+    },
+  },
+  {
     version: "0.23.10",
     date: "2026-05-09",
     dev: [
