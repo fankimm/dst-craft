@@ -149,7 +149,7 @@ export function CookingApp({
   // Search (tag-based, same UX as crafting tab)
   const {
     tags: searchTags, inputValue: searchInput, setInputValue: setSearchInput,
-    addTag, removeTag, clearAll: clearSearch, results: searchResults, isSearching,
+    addTag, removeTag, clearAll: clearSearch, results: searchResults, isSearching, pending: searchPending,
   } = useCookingSearch(resolvedLocale);
 
   const slideClass = useSlideAnimation(selectedCategory, (v) => v === null);
@@ -299,6 +299,7 @@ export function CookingApp({
       onRemoveTag={removeTag}
       onClearAll={clearSearch}
       locale={resolvedLocale}
+      pending={searchPending}
     />
   );
 

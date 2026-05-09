@@ -45,6 +45,8 @@ interface CookingSearchBarProps {
   onRemoveTag: (index: number) => void;
   onClearAll: () => void;
   locale: Locale;
+  /** True while the 300ms debounce is in flight — surfaced as a small spinner. */
+  pending?: boolean;
   className?: string;
 }
 
@@ -56,6 +58,7 @@ export function CookingSearchBar({
   onRemoveTag,
   onClearAll,
   locale,
+  pending,
   className,
 }: CookingSearchBarProps) {
   const hasContent = tags.length > 0 || inputValue.length > 0;
@@ -97,6 +100,7 @@ export function CookingSearchBar({
         onBackspace={tags.length > 0 ? () => onRemoveTag(tags.length - 1) : undefined}
         onClear={onClearAll}
         showClear={hasContent}
+        pending={pending}
         placeholder={t(locale, "searchPlaceholder")}
       />
       {tags.length > 0 && (

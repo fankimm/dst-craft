@@ -8,11 +8,12 @@
 ## 진행중
 
 ### 요리탭 검색 개선 [~] (2026-04-14)
-- [~] useCookingSearch() 훅 생성 — 제작탭 useSearch()와 동일한 UX, 요리 전용 로직
-- [ ] 다중 태그 필터 조합 지원 (예: "고기" + "요리솥")
-- [ ] 서제스천 개선 — 제한 해제, 분류 체계 통일
-- [ ] 검색 중 상태 UI 명확화
-- [ ] 설명 필드 검색 추가
+> 핵심 4개 sub-item은 #21로 완료(2026-05-09). description 추가만 보류 — 별도 이슈로 분리 후 이 섹션 [x]로.
+- [x] useCookingSearch() 훅 생성 — 제작탭 useSearch()와 동일한 UX (다중 태그 AND, 300ms 디바운스, live preview, isSearching)
+- [x] 다중 태그 필터 조합 지원 (예: "고기" + "요리솥") — `tags.every()` 기반 AND 체이닝으로 작동. OR 콤보(예: "고기 OR 생선")는 미지원, 별도 이슈로 분리 가능
+- [x] 서제스천 개선 (#21, 2026-05-09) — `slice(0, 12)` 제한 제거 + 6단계 분류 정렬(foodType → ingredient tag → station → effect → individual ingredient → recipe name). foodType/station/effect 서제스천 신규 추가
+- [x] 검색 중 상태 UI 명확화 (#21, 2026-05-09) — `useCookingSearch`에 `pending` 플래그 노출, `SearchWithSuggestions`가 디바운스 동안 Search 아이콘을 Loader2 스피너로 전환
+- [ ] 설명 필드 검색 추가 — **보류**: DST `scripts/strings.lua`의 `STRINGS.RECIPE_DESC` 테이블은 제작 레시피용(BOOKSTATION, GUNPOWDER 등)이고 cookpot 음식에는 description이 없음. 자체 작성이 필요 → 별도 이슈로 분리하되 우선순위 낮음 (캐릭터별 음식 quote는 별개 기능)
 
 ---
 

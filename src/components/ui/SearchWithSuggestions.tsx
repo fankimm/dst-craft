@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, X } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 
@@ -37,6 +37,9 @@ interface SearchWithSuggestionsProps {
   placeholder?: string;
   /** Whether to show clear button (defaults to value.length > 0) */
   showClear?: boolean;
+  /** When true, swap the Search icon for a spinner — used while a debounced
+   * search is in flight so the user knows the visible result list is stale. */
+  pending?: boolean;
   className?: string;
 }
 
@@ -53,6 +56,7 @@ export function SearchWithSuggestions({
   onBackspace,
   onClear,
   showClear,
+  pending,
   placeholder,
   className,
 }: SearchWithSuggestionsProps) {
@@ -130,7 +134,14 @@ export function SearchWithSuggestions({
 
   return (
     <div className={cn("relative", className)} ref={containerRef}>
-      <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+      {pending ? (
+        <Loader2
+          aria-label="searching"
+          className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground pointer-events-none animate-spin"
+        />
+      ) : (
+        <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+      )}
       <input
         type="text"
         value={value}
