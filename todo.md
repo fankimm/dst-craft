@@ -75,10 +75,11 @@
   - ItemPageContent: WX-78 우선 아이템 title/description에 "WX-78 회로/Circuit" 키워드 보강 + HowTo `about: VideoGame` 추가
   - GSC 순위 영향은 배포 후 1~2주 모니터링 필요 (`/ko/skill-tree/wx-78` CTR 16.6% 기준선)
   - redignition→redigestion(`wx78module_digestion`) 오타 정정. `/item/celestial-scion`은 `/boss/celestial-scion`으로 보정
-- [ ] **referrer 풀 URL 저장** — DC인사이드(m.dcinside + gall.dcinside) 30일 ~300명(9%) 유입. 어떤 갤러리 글에서 들어오는지 모름
-  - bun-api `/api/stats` 스키마에 `referrer_url` 컬럼 추가 (현재 도메인만 저장)
-  - 프론트 analytics 호출 시 `document.referrer` 풀 URL 전달
-  - admin /stats 페이지에 referrer URL Top N 표시
+- [x] **referrer 풀 URL 저장** ✅ (#15, 2026-05-09) — DC인사이드(m.dcinside + gall.dcinside) 30일 ~300명(9%) 유입. 어떤 갤러리 글에서 들어오는지 모름
+  - bun-api `analytics_referrer_urls(url PK, count, last_seen_at)` 테이블 + `/track`이 `referrerUrl` 수신/upsert (500자 클램프)
+  - `/stats`는 admin에 한해 `referrerUrls: { url, count }[]` Top 50 반환 (URL에 PII 가능성)
+  - 프론트 `src/lib/analytics.ts` + `layout.tsx` 인라인 스크립트가 외부 도메인일 때 `document.referrer` 풀 URL 전송
+  - stats 페이지 admin 전용 "유입 URL" CollapsibleList 섹션 (Top 10 inline + DetailPanel 전체 50건)
 - [ ] **싱가포르 봇 트래픽 검증·차단** — Vercel 30일 SG 28%, CF 동일. 실유저 비율로는 비정상
   - bun-api 로그에서 SG IP 패턴 분석 (CIDR 후보 추출)
   - CF Firewall rule로 의심 IP 차단 또는 challenge

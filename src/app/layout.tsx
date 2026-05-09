@@ -254,14 +254,19 @@ const trackingScript = `
     var isReturn = !!localStorage.getItem('dst:visitor');
     localStorage.setItem('dst:visitor', '1');
     var ref = '';
+    var refUrl = '';
     if (document.referrer) {
       try {
         var r = new URL(document.referrer);
-        if (r.hostname.indexOf('dstcraft.com') === -1) ref = r.hostname.replace(/^www\\./, '');
+        if (r.hostname.indexOf('dstcraft.com') === -1) {
+          ref = r.hostname.replace(/^www\\./, '');
+          refUrl = document.referrer.slice(0, 500);
+        }
       } catch(e) {}
     }
     var body = { ua: navigator.userAgent.slice(0, 120), isReturn: isReturn };
     if (ref) body.referrer = ref;
+    if (refUrl) body.referrerUrl = refUrl;
     fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).catch(function(){});
     var start = Date.now();
     var sent = false;

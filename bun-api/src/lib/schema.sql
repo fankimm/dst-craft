@@ -142,3 +142,15 @@ CREATE TABLE IF NOT EXISTS rating_ips (
   ip TEXT PRIMARY KEY,
   rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5)
 );
+
+-- 풀 URL referrer (high-cardinality, exact-match aggregation by URL).
+-- 도메인 referrer는 analytics_counters(scope='referrer') 그대로 유지하고, 여기는 어떤 글에서 들어왔는지 추적용.
+-- URL은 PII 가능성(쿼리스트링)이라 admin 응답에만 노출. 길이는 라우트에서 500자로 클램프.
+-- 폭증 시 별도 cleanup: 카운트 낮은 행 trim (현 시점엔 미적용, 모니터링 후 필요 시 추가).
+CREATE TABLE IF NOT EXISTS analytics_referrer_urls (
+  url TEXT PRIMARY KEY,
+  count INTEGER NOT NULL DEFAULT 0,
+  last_seen_at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_referrer_urls_count ON analytics_referrer_urls(count DESC);
+CREATE INDEX IF NOT EXISTS idx_referrer_urls_last_seen ON analytics_referrer_urls(last_seen_at);
