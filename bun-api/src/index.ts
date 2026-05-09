@@ -15,7 +15,11 @@ import debug from "./routes/debug";
 
 const app = new Hono();
 
-app.use("*", logger());
+// 액세스 로그에 ISO 타임스탬프 prefix — 사후 forensic을 위해 (5/7 사고 RCA에서 timestamp 부재로 시간대 매칭 불가했음).
+// hono/logger는 print 함수를 받으므로 wrapping해서 timestamp만 추가.
+app.use("*", logger((message: string, ...rest: string[]) => {
+  console.log(new Date().toISOString(), message, ...rest);
+}));
 
 app.use(
   "*",
