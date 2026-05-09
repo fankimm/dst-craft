@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.6",
+    date: "2026-05-09",
+    dev: [
+      "chore(deps): @vercel/analytics 제거. Vercel → Mac mini 셀프호스팅 이주 완료 후에도 layout.tsx에 `<Analytics />` 컴포넌트가 남아 매 페이지뷰마다 `/_vercel/insights/script.js` + `/view`를 호출 → nginx 404. 분석 기간 1,415건(`script.js` 805 + `view` 610). 자체 analytics는 이미 bun-api `/api/track` + `/api/event`로 처리 중이라 불필요. layout.tsx 9·344라인, package.json dependency, package-lock.json 정리.",
+    ],
+    changes: {
+      ko: [
+        "내부 정리: 사용하지 않는 외부 분석 스크립트를 제거해 페이지 로딩 시 발생하던 백그라운드 404 요청을 없앴습니다.",
+      ],
+      en: [
+        "Internal cleanup: removed an unused third-party analytics script, eliminating background 404 requests during page loads.",
+      ],
+    },
+  },
+  {
     version: "0.23.5",
     date: "2026-05-09",
     dev: [
