@@ -54,17 +54,6 @@
 
 ---
 
-## 스크랩북 데이터 마이그레이션 [~] (2026-04-20)
-> 설계: `docs/scrapbook-migration.md`
-> 수작업 item-stats-v3 → 인게임 scrapbookdata.lua 기반으로 교체
-
-- [x] Phase 1: 파이프라인 — `scripts/convert-scrapbook.py` 작성 + `scrapbook-stats.ts` 생성 (1541개 엔트리, specialinfo ko/en 799개)
-- [x] Phase 2: 타입 + 데이터 통합 — ItemDetail에서 scrapbookStats 직접 조회, 스킬트리 역참조는 v3에 3개뿐이라 보류
-- [x] Phase 3: UI 재작성 — ItemStatsPanel을 ScrapbookStats 기반으로 재작성 (인게임 렌더 순서), Beta 뱃지 제거
-- [~] Phase 4: 정리 + 배포 — v3 삭제 (현재 dead code), 브라우저 확인 후 삭제, 테스트, 릴리즈
-
----
-
 ## 트래픽·SEO 인사이트 액션 (2026-05-08)
 > 근거: Vercel 30일 visitors 3,094 (+209%) / GSC 28일 클릭 1.02k·노출 8.26만·CTR 1.2%·평균 순위 7.6위 / CF는 5/7 cutover라 baseline 미정.
 > 분석 세션 결과 정리. CF Web Analytics는 baseline 누적(1주)되면 재검토.
@@ -108,7 +97,7 @@
 - [x] path 기반 차단: `/wp-*`, `/wordpress/*`, `/wp-admin/*`, `/wp-includes/*`, `/.env`, `/.git/*`, `xmlrpc.php`, `/test.php`, `/phpinfo*` → `return 444`
 - [x] UA 기반 차단: `AhrefsBot|MJ12bot|TLM-Audit-Scanner` → `return 444`
 - [x] AI 검색 + 검색 엔진 봇은 차단 안 함 명시 (주석)
-- [ ] **수동 적용 필요**: Mac mini SSH로 `nginx -s reload`. 배포 스크립트에서 자동화 X (인프라 설정은 의도적으로 수동)
+- [x] **Mac mini reload 적용 완료** (2026-05-09) — 워커 프로세스 5/9 14:52:23 재시작 확인. 외부 검증: `/wp-admin`, `/.env`, `/xmlrpc.php`, `User-Agent: AhrefsBot` 모두 502 (origin 444 close), 정상 요청은 200
 
 ### P2 — 2026-05-07 17:33~18:31 bun-api 502 사고 RCA — 조사 완료, follow-up 분리
 > 결론: 프로세스가 hang(deadlock 추정)이라 launchd KeepAlive(Crashed:true)는 트리거 안 됨. err.log 0바이트(stderr 안 씀), DiagnosticReports에 crash 없음, macOS unified log retention(2일) 만료로 직접 증거 소실. Watchdog은 정확히 감지했으나 **Telegram secrets 미설정으로 알림 안 갔음**.
@@ -140,12 +129,19 @@
 
 ## 완료
 
+### 스크랩북 데이터 마이그레이션 ✅ (2026-04-20 ~ 2026-05-09)
+> 설계: `docs/scrapbook-migration.md`
+> 수작업 item-stats-v3 → 인게임 scrapbookdata.lua 기반으로 교체. v2/v3 시대 파이프라인 잔재까지 정리 완료.
+- [x] Phase 1: `scripts/convert-scrapbook.py` + `scrapbook-stats.ts` 생성 (1541개 엔트리, specialinfo ko/en 799개)
+- [x] Phase 2: 타입 + 데이터 통합 — ItemDetail이 scrapbookStats 직접 조회
+- [x] Phase 3: UI 재작성 — ItemStatsPanel을 ScrapbookStats 기반으로 (인게임 렌더 순서), Beta 뱃지 제거
+- [x] Phase 4 (#18, 2026-05-09): v2/v3 잔재 정리 — `TODO-item-stats-v3.md`, `docs/item-stats-{pipeline,todo}.md`, `docs/stats/` 27개 md + i18n, `scripts/{md-to-v2,migrate-v2-to-v3,verify-v3-stats}.py` 삭제. CLAUDE.md Key Paths + Item Stats Pipeline Rules 섹션을 scrapbook 기반으로 갱신
+
 ### 캐릭터 선호 음식 표시 ✅ (2026-04-14)
 - [x] 인게임 소스 기반 선호 음식 데이터 추출 (`food-affinity.ts`)
 - [x] 요리 탭 RecipeDetail에 캐릭터 초상화+이름 배지 표시
 
-### item-stats v3 리스트럭처링 ✅ (2026-04-09)
-> 상세: `TODO-item-stats-v3.md`
+### item-stats v3 리스트럭처링 ✅ (2026-04-09, v0.13.0에서 scrapbook 기반으로 대체됨)
 - [x] ItemStatsV3 인터페이스 + 버전 훅
 - [x] v2→v3 마이그레이션 (434개 아이템)
 - [x] ItemStatsPanel 컴포넌트 (4그룹: 전투/방어/유틸리티/특수)

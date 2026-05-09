@@ -1,5 +1,8 @@
 # 스크랩북 데이터 마이그레이션 설계
 
+> **상태: 완료 (2026-05-09, #18 Phase 4)**
+> 모든 Phase 마무리. v3 코드는 v0.13.0(2026-04-20)에 이미 삭제. v2/v3 시대 파이프라인 잔존 파일(docs/stats/, docs/item-stats-{pipeline,todo}.md, scripts/{md-to-v2,migrate-v2-to-v3,verify-v3-stats}.py)은 #18에서 정리. 이 문서는 설계 히스토리로만 보존.
+
 ## 목표
 현재 수작업 item-stats-v3을 인게임 scrapbookdata.lua 기반으로 교체하여 데이터 정확성·커버리지·유지보수성을 근본적으로 개선한다.
 

@@ -114,9 +114,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - 작업 시작 → `[~]`, 완료 → `[x]` + 날짜
 
 ## Key Paths
-- `src/data/` — 게임 데이터 (categories, characters, materials, items/, item-stats-v3)
-- `src/data/item-stats-v3.ts` — v3 아이템 스펙 (구조화 필드: tags/character/resistance/set_bonus/repair/skill_tree/immunities/effects)
-- `src/components/crafting/ItemStatsPanel.tsx` — v3 스펙 렌더링 컴포넌트 (4그룹: 전투/방어/유틸리티/특수)
+- `src/data/` — 게임 데이터 (categories, characters, materials, items/, scrapbook-stats)
+- `src/components/crafting/ItemStatsPanel.tsx` — 스크랩북 기반 아이템 스펙 렌더링 (인게임 scrapbookscreen.lua 순서)
 - `src/components/crafting/` — 메인 앱 컴포넌트
 - `src/components/cooking/` — 요리 탭 컴포넌트
 - `src/components/console/` — 콘솔 명령어 탭 컴포넌트
@@ -144,9 +143,9 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `worker/wrangler.toml` — Worker 설정 (레거시)
 - `docs/terminology.md` — UI 용어집
 - `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
-- `docs/stats/` — 인게임 소스 기반 아이템 스펙 md (파이프라인 산출물)
-- `docs/item-stats-pipeline.md` — 아이템 스펙 추출 파이프라인 설계
-- `docs/item-stats-todo.md` — 파이프라인 TODO
+- `docs/scrapbook-migration.md` — 스크랩북 데이터 마이그레이션 설계 (히스토리)
+- `src/data/scrapbook-stats.ts` — 인게임 scrapbookdata.lua 기반 아이템 스펙 (1541개, specialinfo ko/en 799개) — 자동 생성, 수정 금지
+- `scripts/convert-scrapbook.py` — scrapbookdata.lua + strings.lua + ko.po → scrapbook-stats.ts 생성 파이프라인
 
 ## Deploy Checklist
 배포 전 반드시 확인:
@@ -200,13 +199,16 @@ jihwan-kim3 (macOS):
   - `src/data/locales/ko.ts` — 로캘 데이터 (아이템/스테이션 이름)
 
 ## Item Stats Pipeline Rules
-- `docs/stats/*.md` 파일은 인게임 소스(tuning.lua, prefabs/*.lua)에서 추출한 아이템 스펙
-- **양식 필수**: `## {id} — {영문명} ({한글명})` + `- {필드}: {값}` 형식. h3(###) 금지, 테이블 형식 금지
-- **소스 참조**: 인게임 소스만 참조. `src/data/items.ts`, `item-stats.ts` 등 앱 소스 절대 참조 금지 (검증 대상이므로)
-- **한글명**: 반드시 ko.po에서 `STRINGS.NAMES.<UPPER_ID>` → `msgstr` 확인. 추측 금지
-- **함수명으로 동작 추측 금지**: 반드시 구현부(함수 본문)를 읽은 후 작성
-- **프리팹 필수 확인**: tuning.lua만으로 스펙이 완전하다고 판단하지 말 것 (dapperness, SetConsumption, attackwear 등 프리팹에서만 설정하는 속성 있음)
-- 상세 설계: `docs/item-stats-pipeline.md` 참조
+- 아이템 스펙은 인게임 `scripts/scrapbookdata.lua` 자동 생성 데이터를 단일 진실 공급원으로 사용 (v0.13.0부터)
+- `src/data/scrapbook-stats.ts`는 `scripts/convert-scrapbook.py`가 자동 생성 — **수동 편집 금지**
+- 게임 업데이트 시 갱신 절차:
+  1. Steam에서 게임 업데이트 후 `scripts.zip` 재추출
+  2. `python3 scripts/convert-scrapbook.py` 실행 → `src/data/scrapbook-stats.ts` 재생성
+  3. diff로 변경점 확인
+- 변환 스크립트는 `scrapbookdata.lua`(수치) + `strings.lua`(영문) + ko.po(한국어 specialinfo + DATA_* 라벨)를 합쳐 `ScrapbookStats` 구조 출력
+- 렌더링 컴포넌트: `src/components/crafting/ItemStatsPanel.tsx` — 인게임 `scrapbookscreen.lua` 렌더 순서 그대로 (피해→내구→방어→수리→방수→보온→정신력→지속→유통기한→진영→specialinfo)
+- 누락된 보조 매핑(set_bonus 상세, skill_tree 효과 등)은 specialinfo 텍스트가 대부분 커버 — 구조화가 필요하면 별도 매핑 테이블로 추가 (코드 외 데이터)
+- 설계 히스토리: `docs/scrapbook-migration.md`
 
 ## Skill Tree Verification
 - `scripts/verify-skill-trees.py` — 인게임 `skilltree_<char>.lua` vs 우리 `src/data/skill-trees/*.ts` 정적 비교
