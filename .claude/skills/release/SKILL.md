@@ -96,18 +96,23 @@ fi
 
 브랜치명에서 이슈 번호 추출 (`feat/<num>-<slug>` 패턴이면 `<num>`). 있으면 머지 커밋 메시지에 `Closes #<num>` 포함 → main 푸시 시 GitHub가 자동으로 이슈 close.
 
+메인 워크트리(=`main` 브랜치 유지)에서 머지·푸시:
+
 ```bash
 # 이슈 번호 추출 (있는 경우)
 ISSUE_NUM=$(echo "$RELEASE_BRANCH" | sed -nE 's|^feat/([0-9]+)-.*|\1|p')
 
-git checkout main
-git pull --ff-only origin main
+# 메인 워크트리 경로 자동 탐색 (main 체크아웃된 곳)
+MAIN_WT=$(git worktree list --porcelain \
+  | awk '/^worktree/{p=$2} /^branch refs\/heads\/main$/{print p}')
+
+git -C "$MAIN_WT" pull --ff-only origin main
 if [ -n "$ISSUE_NUM" ]; then
-  git merge --no-ff $RELEASE_BRANCH -m "Release: $RELEASE_BRANCH → main" -m "Closes #$ISSUE_NUM"
+  git -C "$MAIN_WT" merge --no-ff $RELEASE_BRANCH -m "Release: $RELEASE_BRANCH → main" -m "Closes #$ISSUE_NUM"
 else
-  git merge --no-ff $RELEASE_BRANCH -m "Release: $RELEASE_BRANCH → main"
+  git -C "$MAIN_WT" merge --no-ff $RELEASE_BRANCH -m "Release: $RELEASE_BRANCH → main"
 fi
-git push origin main
+git -C "$MAIN_WT" push origin main
 ```
 
 머지 충돌 시 중단하고 사용자에게 보고. 임의 해결 금지.
@@ -116,16 +121,21 @@ git push origin main
 
 ## 5. beta에도 반영 (보통은 자동)
 
-`RELEASE_BRANCH`가 이미 beta에 머지되어 있으면 (정상 워크플로우에서는 `/push`를 거쳤으므로 항상 그러함) beta는 그 feat 커밋을 이미 포함. 별도 작업 불필요.
+`RELEASE_BRANCH`가 이미 beta에 머지되어 있으면 (정상 워크플로우에서는 `/beta`를 거쳤으므로 항상 그러함) beta는 그 feat 커밋을 이미 포함. 별도 작업 불필요.
 
-beta에 그 feat이 머지 안 돼 있으면 — `/push`를 건너뛴 케이스 — `feat → beta`로만 머지:
+beta에 그 feat이 머지 안 돼 있으면 — `/beta`를 건너뛴 케이스 — `../dst-craft-beta` 워크트리에서 `feat → beta`로만 머지:
 ```bash
-git checkout beta
-git merge --no-ff $RELEASE_BRANCH -m "merge $RELEASE_BRANCH into beta (post-release)"
-git push origin beta
+BETA_WT="../dst-craft-beta"
+# 없으면 생성
+if ! git worktree list --porcelain | grep -q "^worktree .*dst-craft-beta$"; then
+  git fetch origin beta
+  git worktree add "$BETA_WT" beta
+fi
+git -C "$BETA_WT" merge --no-ff $RELEASE_BRANCH -m "merge $RELEASE_BRANCH into beta (post-release)"
+git -C "$BETA_WT" push origin beta
 ```
 
-> ⚠️ **`main ← beta` 방향 머지 절대 금지**. `git checkout main && git merge beta`, `git merge --ff-only beta` 등 beta를 main으로 흘리는 모든 명령은 사용 금지. beta는 in-flight 합집합 검증용이라 다른 feat의 미검증 커밋이 같이 따라 들어간다. main 동기화는 항상 `feat → main` 방향(이 스킬의 4단계)으로만.
+> ⚠️ **`main ← beta` 방향 머지 절대 금지**. `git merge beta`, `git merge --ff-only beta` 등 beta를 main으로 흘리는 모든 명령은 사용 금지. beta는 in-flight 합집합 검증용이라 다른 feat의 미검증 커밋이 같이 따라 들어간다. main 동기화는 항상 `feat → main` 방향(이 스킬의 4단계)으로만.
 
 ## 6. 워크트리 + 브랜치 정리
 
@@ -150,14 +160,14 @@ git push origin --delete $RELEASE_BRANCH
 
 ## 7. 마무리
 
-- `git checkout beta` — 작업 브랜치로 복귀 (메인 워킹 디렉터리 기준)
-- `git log -1 --oneline` (main, beta 각각) — 푸시 결과 확인
+- 메인 워크트리는 `main` 그대로 유지 (CLAUDE.md 규칙). 임의로 brancht 변경 X
+- `git -C "$MAIN_WT" log -1 --oneline` + `git -C "$BETA_WT" log -1 --oneline` — 푸시 결과 확인
 - 사용자에게 결과 보고: 릴리즈된 feat, 머지된 커밋 수, 새 버전(있으면), www.dstcraft.com 배포 트리거 여부
 
 ## 규칙
 - **main 푸시는 /release를 통해서만** — 다른 경로로 main에 직접 푸시 금지
 - 머지 전략은 `--no-ff` (머지 커밋 명시적으로 남김 — 릴리즈 경계 추적용)
-- 머지 후 main에서 작업하지 말 것 — 즉시 `git checkout beta`로 복귀
+- 메인 워크트리는 `main` 유지 — 임의로 다른 브랜치로 옮기지 말 것
 - `--no-verify`, `--force` 사용 금지
 - 사용자가 명시적으로 "특정 커밋만 cherry-pick" 같은 변형을 요청하면 그에 따름. 기본은 `--no-ff` merge.
 - **여러 feat을 한 번에 main에 넣으려면**: 각각 `/release feat/A`, `/release feat/B` 순서로 호출. 자동으로 합쳐주지 않음 (의도적).

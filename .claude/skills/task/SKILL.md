@@ -1,6 +1,6 @@
 ---
 name: task
-description: 새 작업 시작용 — 깃허브 이슈 오픈 → feat 브랜치 분기 → 워크트리 생성까지 일괄 처리. 멀티 세션 충돌 방지(메인 beta 워크트리에 다른 세션의 in-flight 변경이 섞이는 문제) 목적. 사용법 `/task <한 줄 설명>`. 코드 변경 작업의 진입점.
+description: 새 작업 시작용 — 깃허브 이슈 오픈 → feat 브랜치 분기 → 워크트리 생성까지 일괄 처리. 멀티 세션 충돌 방지(메인 main 워크트리에 다른 세션의 in-flight 변경이 섞이는 문제) 목적. 사용법 `/task <한 줄 설명>`. 코드 변경 작업의 진입점.
 ---
 
 # /task — 이슈 기반 워크트리 부트스트랩
@@ -8,12 +8,12 @@ description: 새 작업 시작용 — 깃허브 이슈 오픈 → feat 브랜치
 새 작업을 받으면 **반드시** 이 스킬로 시작한다. 깃허브 이슈를 만들고, 그 이슈 번호로 `feat/<num>-<slug>` 브랜치를 main에서 분기한 뒤, `../dst-craft-<num>` 워크트리를 만들어 격리된 작업 공간을 제공한다. 워크트리 생성 직후 현재 세션의 작업 디렉터리를 그 워크트리로 옮겨 같은 세션에서 그대로 작업을 이어간다.
 
 ## 왜 이렇게 하나
-메인 워크트리(`/Users/jihwan-kim3/private-works/dst-craft`)는 항상 beta 브랜치라서, 같은 디렉터리에서 동시에 여러 Claude 세션이 작업하면 한 세션의 in-flight 변경이 다른 세션의 `/push`에 섞여 들어간다. 모든 코드 변경 작업을 별도 워크트리로 격리하면 이 문제가 구조적으로 사라진다.
+메인 워크트리(`/Users/jihwan-kim3/private-works/dst-craft`)는 항상 main 브랜치라서, 같은 디렉터리에서 동시에 여러 Claude 세션이 작업하면 한 세션의 in-flight 변경이 다른 세션의 작업에 섞여 들어간다. 모든 코드 변경 작업을 별도 워크트리로 격리하면 이 문제가 구조적으로 사라진다.
 
 ## 적용 범위
 - ✅ **모든 코드 변경 지시** — 1줄 fix든 새 기능이든 동일하게 `/task`로 시작
 - ❌ 탐색/질문/설명 요청 (코드를 바꾸지 않는 작업) — 메인 세션에서 그대로 답변
-- ❌ 문서만 수정하는 메타 작업 (CLAUDE.md, .claude/skills/, memory/) — 메인 beta에서 직접 가능 (CLAUDE.md 규칙)
+- ❌ 문서만 수정하는 메타 작업도 워크트리 패턴 사용 (CLAUDE.md 규칙 — 일관성)
 
 판단 애매하면 사용자에게 한 줄로 묻는다.
 
@@ -85,13 +85,14 @@ git worktree add ../dst-craft-<issue-num> -b feat/<issue-num>-<slug> origin/main
   - 워크트리: ~/private-works/dst-craft-42
   - 브랜치: feat/42-shadow-chess-fix
 
-  바로 작업 시작합니다. 완료되면 /push (beta) → /release (main).
+  바로 작업 시작합니다. 완료되면 /push (origin) → /beta (staging) → /release (production).
   ```
 - 이후 곧바로 사용자 요청 작업 진행 — 모든 파일 조작은 워크트리 경로 기준으로
 
-## /push, /release와의 연동
-- `/push`는 그대로 동작 — feat 워크트리에서 commit + beta 머지/푸시
-- `/release` 시 PR/머지 커밋 메시지에 `Closes #<issue-num>` 자동 포함 → main 머지 시 이슈 자동 close
+## /push, /beta, /release와의 연동
+- `/push`: feat 워크트리에서 commit + origin push (배포 X)
+- `/beta`: 타겟 브랜치를 beta에 머지·푸시 → beta.dstcraft.com 배포. 인자 없으면 현재 브랜치
+- `/release`: 타겟 브랜치를 main에 머지·푸시 → www.dstcraft.com 배포. PR/머지 커밋 메시지에 `Closes #<issue-num>` 자동 포함 → main 머지 시 이슈 자동 close
   - `/release` 스킬도 이 규칙을 알아야 함 — 호출 시 현재 브랜치명에서 이슈 번호 추출(`feat/<num>-...`)해서 commit message에 `Closes #<num>` 추가
 
 ## 워크트리 정리
