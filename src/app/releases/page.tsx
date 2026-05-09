@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.8",
+    date: "2026-05-09",
+    dev: [
+      "feat(seo): WX-78 회로/스킬트리 페이지 sitemap priority + structured data 강화 (#14). 우선 페이지 화이트리스트 `src/lib/seo-priority.ts` 신설 — 회로 6종(zaptrocuter/chessmaster/digestion/screech/stacksize/radar) + Celestial Scion 보스 + wx-78 스킬트리 ID 등록. `sitemap.ts`에서 해당 페이지 priority 0.9(en)/0.85(ko) + changeFrequency=weekly로 격상(기본은 0.8/0.7 monthly). `SkillTreePageContent`에 VideoGame(DST 본체) + SoftwareApplication(스킬트리 시뮬레이터) JSON-LD 추가, 기존 WebPage에 `about: VideoGame` 연결. `ItemPageContent.buildItemMetadata`가 `isWx78PriorityItem(id)` 분기로 우선 아이템에 한해 title을 `(WX-78 회로/Circuit)` 형태로 변경 + description에 `WX-78 스킬트리 해금 조건/unlock requirements in the WX-78 skill tree` 키워드 삽입. HowTo JSON-LD에 `about: VideoGame` 보편 추가. 근거: GSC 28일 평균 순위 7.6위, `/ko/skill-tree/wx-78` CTR 16.6% — 회로 시리즈가 검색 트래픽 견인 중.",
+    ],
+    changes: {
+      ko: [],
+      en: [],
+    },
+  },
+  {
     version: "0.23.7",
     date: "2026-05-09",
     dev: [
