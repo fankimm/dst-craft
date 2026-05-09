@@ -151,12 +151,11 @@ if [ -n "$ISSUE_NUM" ]; then
 fi
 # 또는 일반: git worktree list 출력에서 $RELEASE_BRANCH가 체크아웃된 경로 찾아서 remove
 
-# 브랜치 삭제 (로컬)
+# 브랜치 삭제 (로컬만)
 git branch -d $RELEASE_BRANCH
-
-# 원격에도 있었다면 사용자 확인 후
-git push origin --delete $RELEASE_BRANCH
 ```
+
+> **원격 feat 브랜치는 유지가 디폴트.** 머지 커밋이 main에 `Release: <branch> → main`으로 박혀있어 히스토리는 보장되고, 회귀 발견 시 `git diff origin/<branch>~..origin/<branch>` 같은 시점별 비교가 직관적. 브랜치는 commit hash 하나라 저장 비용 ~0. 사용자가 **명시적으로** 삭제 요청한 경우에만 `git push origin --delete $RELEASE_BRANCH` 실행.
 
 ## 7. 마무리
 
