@@ -1,3 +1,5 @@
+import { apiFetch, TokenExpiredError } from "./api-fetch";
+
 const WORKER_URL = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
 
 export interface AuthUser {
@@ -19,23 +21,28 @@ export async function loginWithGoogle(idToken: string): Promise<{ token: string;
 }
 
 export async function fetchFavorites(token: string): Promise<string[]> {
-  const res = await fetch(`${WORKER_URL}/favorites`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.items ?? [];
+  try {
+    const res = await apiFetch(`${WORKER_URL}/favorites`, token);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.items ?? [];
+  } catch (e) {
+    if (e instanceof TokenExpiredError) return [];
+    throw e;
+  }
 }
 
 export async function updateFavorite(token: string, itemId: string, action: "add" | "remove"): Promise<void> {
-  await fetch(`${WORKER_URL}/favorites`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ itemId, action }),
-  });
+  try {
+    await apiFetch(`${WORKER_URL}/favorites`, token, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ itemId, action }),
+    });
+  } catch (e) {
+    if (e instanceof TokenExpiredError) return;
+    throw e;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -48,11 +55,14 @@ export interface SkillsData {
 }
 
 export async function fetchAllSkills(token: string): Promise<SkillsData> {
-  const res = await fetch(`${WORKER_URL}/skills`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) return { skills: {}, locks: {} };
-  return res.json();
+  try {
+    const res = await apiFetch(`${WORKER_URL}/skills`, token);
+    if (!res.ok) return { skills: {}, locks: {} };
+    return res.json();
+  } catch (e) {
+    if (e instanceof TokenExpiredError) return { skills: {}, locks: {} };
+    throw e;
+  }
 }
 
 export async function saveCharacterSkills(
@@ -61,12 +71,14 @@ export async function saveCharacterSkills(
   skills: string[],
   locks: string[],
 ): Promise<void> {
-  await fetch(`${WORKER_URL}/skills`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ characterId, skills, locks }),
-  });
+  try {
+    await apiFetch(`${WORKER_URL}/skills`, token, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ characterId, skills, locks }),
+    });
+  } catch (e) {
+    if (e instanceof TokenExpiredError) return;
+    throw e;
+  }
 }
