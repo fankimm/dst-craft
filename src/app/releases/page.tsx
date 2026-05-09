@@ -15,6 +15,18 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.7",
+    date: "2026-05-09",
+    dev: [
+      "feat(ops): bun-api 액세스 로그에 ISO 타임스탬프 prefix 추가 — `bun-api/src/index.ts`의 `logger()` print 함수를 wrapping해 모든 요청 라인 앞에 `new Date().toISOString()` 출력. 5/7 사고 RCA에서 timestamp 부재로 시간대 매칭이 불가능했던 문제 해결.",
+      "feat(ops): watchdog 자동 복구 스텝 추가 — `.github/workflows/watchdog.yml`에 3/3 헬스 실패 시 Tailscale + SSH로 Mac mini에 접속해 `launchctl kickstart -k com.dstcraft.api` 실행. 활성화 조건은 `vars.WATCHDOG_AUTORECOVER=1` + secrets `TS_AUTHKEY`/`SSH_PRIVATE_KEY` + vars `WATCHDOG_MACMINI_HOST`/`USER`. launchd `KeepAlive(Crashed:true)`는 hang 케이스를 잡지 못해 5/7처럼 1시간 무응답이 발생 — 워치독 측에서 강제 kick으로 5분 내 회복 가능. 복구 후 헬스 재확인 + Telegram으로 결과 알림. `.github/workflows/README-watchdog-secrets.md` 신규에 모든 secrets/vars 설정 가이드 정리.",
+    ],
+    changes: {
+      ko: [],
+      en: [],
+    },
+  },
+  {
     version: "0.23.6",
     date: "2026-05-09",
     dev: [
