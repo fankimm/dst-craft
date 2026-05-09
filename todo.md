@@ -92,36 +92,29 @@
 > 근거: GoAccess + raw nginx access.log 3일 분석 (567명 / 99,646 요청 / 봇 ~10.2%)
 > 우선순위: P0=실유저 영향, P1=품질, P2=보안/안정성. SEO 강화는 위 2026-05-08 섹션 참조.
 
-### P0 — `/api/skills` 401 토큰 만료 처리 (실유저 영향)
-- [ ] 현상: Google ID 토큰 만료(1h) 후 자동 갱신/탈락 로직 부재. 분석 기간 401 × 479건 전부 실유저(SamsungBrowser 199, iPhone Safari 123, Mac Safari 125)
-- [ ] `src/components/skills/SkillSimulatorApp.tsx:70` `fetchAllSkills(token)` 호출 시 401 응답이면 토큰 클리어 + GIS 재로그인 트리거
-- [ ] 동일 패턴 적용: `/api/favorites` (51건 401), `/api/feedback` (25건 403)
-- [ ] `src/lib/favorites-api.ts`의 fetch 함수들(`fetchFavorites`, `fetchAllSkills`, `saveCharacterSkills` 등)에 공통 401 핸들러 추가
-- 예상 작업량: 0.5~1d
+### P0 — `/api/skills` 401 토큰 만료 처리 (실유저 영향) ✅ (#10, v0.23.5)
+- [x] `src/lib/jwt.ts` + `src/lib/api-fetch.ts` 신설 (decodeJWTPayload + isJWTValid + apiFetch wrapper + AUTH_EXPIRED_EVENT)
+- [x] favorites-api.ts 4함수, analytics.ts 5함수 wrapper 사용. fetchAnalytics는 token optional이라 inline 검증 + public fallback
+- [x] useAuth가 auth:expired 이벤트로 자동 logout
 
-### P1 — `_vercel/insights/*` 호출처 제거 (404 1,415건)
-- [ ] 현상: `/_vercel/insights/script.js` 805 + `/view` 610 = 1,415건 404
-- [ ] 원인 후보: Vercel 호스팅 시절 코드 잔존, 또는 PWA service worker가 옛날 sw.js 캐시
-- [ ] `grep -rn "_vercel/insights\|@vercel/analytics" src/` 로 호출처 추적 후 제거
-- [ ] sw.js 버전 bump로 캐시 강제 갱신
-- 예상 작업량: 0.5d
+### P1 — `_vercel/insights/*` 호출처 제거 (404 1,415건) ✅ (#11, v0.23.6)
+- [x] 원인: layout.tsx의 `<Analytics />` (`@vercel/analytics`). Vercel 셀프호스팅 이주 후 잔존
+- [x] import + 컴포넌트 제거, package.json/lock 정리
 
-### P2 — nginx 보안/봇 차단 룰
-- [ ] **path 기반 차단 (무조건 권장)** — 작업 위치: `bun-api/infra/nginx-dstcraft-common.conf`
-  - 워드프레스 스캐너: `/wp-*`, `/wordpress/*`, `/wp-admin/*`, `/wp-includes/*`
-  - 시크릿 스캔: `/.env`, `/.git/*`, `xmlrpc.php`, `/test.php`, `/phpinfo*`
-  - 적용 후 Mac mini에서 `nginx -s reload` 수동
-- [ ] **UA 기반 선택적 차단 (가치 없는 봇만)**: `AhrefsBot` (2,044건), `MJ12bot` (2,909건), `TLM-Audit-Scanner` (1,890건)
-- [ ] **차단 금지 (사이트 발견 채널 — 절대 막지 말 것)**:
-  - AI 검색: `OAI-SearchBot`, `ChatGPT-User`, `PerplexityBot`, `Claude-Web`, `Bytespider`, `Applebot`
-  - 검색 엔진: `Googlebot`, `bingbot`, `NaverBot`, `DuckDuckBot`
-- 예상 작업량: 0.5d
+### P2 — nginx 보안/봇 차단 룰 ✅ (#12)
+- [x] path 기반 차단: `/wp-*`, `/wordpress/*`, `/wp-admin/*`, `/wp-includes/*`, `/.env`, `/.git/*`, `xmlrpc.php`, `/test.php`, `/phpinfo*` → `return 444`
+- [x] UA 기반 차단: `AhrefsBot|MJ12bot|TLM-Audit-Scanner` → `return 444`
+- [x] AI 검색 + 검색 엔진 봇은 차단 안 함 명시 (주석)
+- [ ] **수동 적용 필요**: Mac mini SSH로 `nginx -s reload`. 배포 스크립트에서 자동화 X (인프라 설정은 의도적으로 수동)
 
-### P2 — 2026-05-07 17:33~18:31 bun-api 502 사고 RCA
-- [ ] 현상: 5xx 74건 전부 이 1시간 windowed. 이후 5xx 0건 (launchd 자동 재시작으로 회복)
-- [ ] `~/Library/Logs/dstcraft-api.err.log` 그 시간대 grep해서 root cause 확인
-- [ ] watchdog Telegram alert에 잡혔는지 확인 (`.github/workflows/watchdog.yml`)
-- [ ] 재발 방지: 원인이 OOM/크래시면 자동 재시작 그대로, resource exhaustion이면 limit 조정
+### P2 — 2026-05-07 17:33~18:31 bun-api 502 사고 RCA — 조사 완료, follow-up 분리
+> 결론: 프로세스가 hang(deadlock 추정)이라 launchd KeepAlive(Crashed:true)는 트리거 안 됨. err.log 0바이트(stderr 안 씀), DiagnosticReports에 crash 없음, macOS unified log retention(2일) 만료로 직접 증거 소실. Watchdog은 정확히 감지했으나 **Telegram secrets 미설정으로 알림 안 갔음**.
+- [x] err.log/crash report 확인 → 증거 없음
+- [x] watchdog 동작 확인 → 08:34 UTC부터 3/3 fail 다수 기록, alert 미발송
+- 후속 follow-up (별도 이슈 제안):
+  - [ ] **GitHub repo secrets 설정**: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` (즉시 알림 복원)
+  - [ ] **bun-api 액세스 로그에 ISO 타임스탬프 추가** (사후 분석 가능하게)
+  - [ ] watchdog 워크플로우에 자동 복구 단계 추가 (3/3 실패 시 SSH로 `launchctl kickstart -k com.dstcraft.api`)
 - 예상 작업량: 0.5d
 
 ---
