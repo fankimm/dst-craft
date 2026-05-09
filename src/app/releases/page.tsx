@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.4",
+    date: "2026-05-09",
+    dev: [
+      "fix(bosses): 보스 카테고리 분류 정정 5건 — daywalker2(고철덩이 늑대돼지) underground 제거(지상 폐허 보스), mutatedwarg(귀신들린 바르그) seasonal 제거 + story 추가, crabking(대게왕) ocean 추가, mutateddeerclops(수정 외눈사슴)/mutatedbearger(무장 곰소리) story 추가(시즌 의존성 유지 — 가을·겨울 일반 보스 사망 후 균열 빙의 부활 메커니즘).",
+      "chore(workflow): 슬래시 명령어 책임 분리 — `/push`(commit + origin push 전용, 배포 X), `/beta` 신설(타겟 브랜치를 ../dst-craft-beta 워크트리에서 beta 머지·푸시). 두 명령 모두 타겟 인자 파싱(브랜치명/이슈번호/이슈URL/자연어).",
+      "chore(workflow): 메인 워크트리 기본 브랜치를 beta → main으로 변경. beta 배포는 별도 영속 워크트리(../dst-craft-beta)에서만. CLAUDE.md Branch & Deploy Strategy 섹션 + /release·/task 스킬 본문 동기화.",
+    ],
+    changes: {
+      ko: [
+        "보스 카테고리 정정: 대게왕이 '해양 보스'에 추가됐고, 고철덩이 늑대돼지가 '지하 보스'에서 빠졌습니다.",
+        "귀신들린 바르그·수정 외눈사슴·무장 곰소리가 '스토리 보스'에 표시됩니다 (천상의 귀공자로 가는 길에 만나는 보스).",
+        "귀신들린 바르그는 '시즌 보스'에서 빠졌습니다 (다른 시즌 보스와 달리 시즌 자동 등장이 아닙니다).",
+      ],
+      en: [
+        "Boss category fixes: Crab King now appears under 'Ocean', and Scrappy Werepig no longer appears under 'Underground'.",
+        "Possessed Varg, Crystalline Deerclops, and Armored Bearger now appear under 'Story' (prerequisites on the path to Celestial Scion).",
+        "Possessed Varg removed from 'Seasonal' (unlike other seasonal bosses, it doesn't auto-spawn with the season).",
+      ],
+    },
+  },
+  {
     version: "0.23.3",
     date: "2026-05-08",
     dev: [
