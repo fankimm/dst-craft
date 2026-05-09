@@ -69,10 +69,11 @@
   - `/stats`는 admin에 한해 `referrerUrls: { url, count }[]` Top 50 반환 (URL에 PII 가능성)
   - 프론트 `src/lib/analytics.ts` + `layout.tsx` 인라인 스크립트가 외부 도메인일 때 `document.referrer` 풀 URL 전송
   - stats 페이지 admin 전용 "유입 URL" CollapsibleList 섹션 (Top 10 inline + DetailPanel 전체 50건)
-- [ ] **싱가포르 봇 트래픽 검증·차단** — Vercel 30일 SG 28%, CF 동일. 실유저 비율로는 비정상
-  - bun-api 로그에서 SG IP 패턴 분석 (CIDR 후보 추출)
-  - CF Firewall rule로 의심 IP 차단 또는 challenge
-  - Web Analytics에서 SG 필터링 시 실제 한국 비중 확인
+- [~] **싱가포르 봇 트래픽 검증·차단** (#19, 2026-05-09) — Vercel/CF 30일 SG 28%, 실유저 비율로는 비정상
+  - [x] analytics_uv DB로 SG IP 패턴 분석 — 335 IP 중 ~84%가 Tencent `43.128.0.0/10` + Alibaba `47.82/16` + Volcengine `43.119/16` + Alibaba HK `8.208/12`. UA는 outdated Chrome 로테이션 + Sogou spider
+  - [x] nginx common.conf에 CIDR-regex IP 차단 룰 추가 — `$http_cf_connecting_ip` 매칭, `return 444`
+  - [ ] Mac mini nginx reload + 외부 검증
+  - [ ] 24h 후 SG 비중 재분석
 - [ ] **메인 추천 카드 — bounce rate 개선** — 현재 76% (DST 가이드 특성상 자연스러우나 75%↓ 시도)
   - 메인에서 인기 회로/스킬트리/요리로 유도하는 추천 카드 도입
   - "최근 본 항목" 또는 "이 캐릭터의 회로" 같은 cross-link
