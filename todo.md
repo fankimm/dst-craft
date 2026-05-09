@@ -72,8 +72,8 @@
 - [~] **싱가포르 봇 트래픽 검증·차단** (#19, 2026-05-09) — Vercel/CF 30일 SG 28%, 실유저 비율로는 비정상
   - [x] analytics_uv DB로 SG IP 패턴 분석 — 335 IP 중 ~84%가 Tencent `43.128.0.0/10` + Alibaba `47.82/16` + Volcengine `43.119/16` + Alibaba HK `8.208/12`. UA는 outdated Chrome 로테이션 + Sogou spider
   - [x] nginx common.conf에 CIDR-regex IP 차단 룰 추가 — `$http_cf_connecting_ip` 매칭, `return 444`
-  - [ ] Mac mini nginx reload + 외부 검증
-  - [ ] 24h 후 SG 비중 재분석
+  - [x] Mac mini nginx reload + origin 검증 (2026-05-09 17:32 KST 적용) — 포트 8080 직접 테스트로 4개 대역 모두 444, 경계 IP(43.127/43.192/8.207/8.224)는 200 통과 확인. 첫 80 포트 테스트는 macOS 기본 Apache가 응답하던 것 (`docs/mistakes.md` 추가)
+  - [ ] 24h 후 SG 비중 재분석 — **2026-05-10 이후 실행**: `ssh mac-mini "sqlite3 ~/dstcraft/data/app.db \"SELECT substr(ip,1,instr(ip,'.'||substr(ip,instr(ip,'.')+1,99))-1) AS prefix2, COUNT(*) FROM analytics_uv WHERE date >= '2026-05-10' GROUP BY prefix2 ORDER BY 2 DESC LIMIT 20\""` 또는 기존 분석 스크립트 재사용. 차단 후 SG IP 트래픽이 0/매우 낮아야 정상
 - [ ] **메인 추천 카드 — bounce rate 개선** — 현재 76% (DST 가이드 특성상 자연스러우나 75%↓ 시도)
   - 메인에서 인기 회로/스킬트리/요리로 유도하는 추천 카드 도입
   - "최근 본 항목" 또는 "이 캐릭터의 회로" 같은 cross-link
