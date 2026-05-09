@@ -10,6 +10,8 @@ import {
   useState,
 } from "react";
 import { loginWithGoogle, type AuthUser } from "@/lib/favorites-api";
+import { decodeJWTPayload } from "@/lib/jwt";
+import { AUTH_EXPIRED_EVENT } from "@/lib/api-fetch";
 
 // GIS typings
 declare global {
@@ -58,20 +60,6 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 const STORAGE_KEY = "dst-auth-token";
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "";
-
-function decodeJWTPayload(token: string): Record<string, unknown> | null {
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 3) return null;
-    const padded = parts[1].replace(/-/g, "+").replace(/_/g, "/") + "==".slice(0, (4 - (parts[1].length % 4)) % 4);
-    const binary = atob(padded);
-    const bytes = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-    return JSON.parse(new TextDecoder().decode(bytes));
-  } catch {
-    return null;
-  }
-}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -168,6 +156,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(null);
     localStorage.removeItem(STORAGE_KEY);
   }, []);
+
+  // 토큰 만료/거부 시 자동 logout (apiFetch에서 dispatch)
+  useEffect(() => {
+    const handler = () => logout();
+    window.addEventListener(AUTH_EXPIRED_EVENT, handler);
+    return () => window.removeEventListener(AUTH_EXPIRED_EVENT, handler);
+  }, [logout]);
 
   const isAdmin = user?.role === "admin";
 

@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.5",
+    date: "2026-05-09",
+    dev: [
+      "fix(auth): API 401 토큰 만료 자동 처리. `src/lib/jwt.ts` 신설(decodeJWTPayload + isJWTValid 분리, 30초 clock-skew 버퍼). `src/lib/api-fetch.ts` 신설(apiFetch wrapper, TokenExpiredError, AUTH_EXPIRED_EVENT). useAuth가 auth:expired 이벤트로 자동 logout(state + localStorage 정리). favorites-api.ts 4개 함수(fetchFavorites/updateFavorite/fetchAllSkills/saveCharacterSkills), analytics.ts 5개 admin 함수(fetchFeedback/updateFeedbackStatus/toggleFeedbackHidden/deleteFeedback/fetchVisitors)가 wrapper 사용. fetchAnalytics는 token optional이라 inline isJWTValid 검증 + public 모드 fallback. 분석 기간 /api/skills 401 × 479건, /api/favorites 401 × 51건, /api/feedback 403 × 25건 — 전부 만료된 토큰을 들고 있는 실유저 브라우저(SamsungBrowser/iPhone Safari/Mac Safari)에서 발생. 기존엔 use-auth가 마운트 시점에만 exp 검증해서 1시간+ 열어둔 탭의 토큰은 무한히 유효 취급됨.",
+    ],
+    changes: {
+      ko: [
+        "로그인 세션이 만료되면 자동으로 로그아웃되도록 변경됐습니다. 이전에는 만료된 채로 즐겨찾기/스킬트리 동기화가 조용히 실패해 사용자가 인지하지 못했습니다.",
+      ],
+      en: [
+        "Your session now signs you out automatically when it expires. Previously, favorites/skill-tree sync would silently fail without notice while the session was stale.",
+      ],
+    },
+  },
+  {
     version: "0.23.4",
     date: "2026-05-09",
     dev: [

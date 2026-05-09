@@ -1,3 +1,6 @@
+import { apiFetch, TokenExpiredError, notifyAuthExpired } from "./api-fetch";
+import { isJWTValid } from "./jwt";
+
 const WORKER_URL = process.env.NEXT_PUBLIC_ANALYTICS_WORKER_URL ?? "";
 
 function analyticsUrl(path: string): string | null {
@@ -228,13 +231,12 @@ export interface FeedbackItem {
 export async function fetchFeedback(token: string): Promise<FeedbackItem[]> {
   if (!WORKER_URL) return [];
   try {
-    const res = await fetch(`${WORKER_URL}/feedback`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await apiFetch(`${WORKER_URL}/feedback`, token);
     if (!res.ok) return [];
     const data = await res.json() as { items: FeedbackItem[] };
     return data.items ?? [];
-  } catch {
+  } catch (e) {
+    if (e instanceof TokenExpiredError) return [];
     return [];
   }
 }
@@ -243,13 +245,14 @@ export async function fetchFeedback(token: string): Promise<FeedbackItem[]> {
 export async function updateFeedbackStatus(token: string, id: string, status: FeedbackStatus, reply?: string): Promise<boolean> {
   if (!WORKER_URL) return false;
   try {
-    const res = await fetch(`${WORKER_URL}/feedback`, {
+    const res = await apiFetch(`${WORKER_URL}/feedback`, token, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, status, ...(reply ? { reply } : {}) }),
     });
     return res.ok;
-  } catch {
+  } catch (e) {
+    if (e instanceof TokenExpiredError) return false;
     return false;
   }
 }
@@ -280,13 +283,14 @@ export async function fetchPublicFeedback(): Promise<PublicFeedbackItem[]> {
 export async function toggleFeedbackHidden(token: string, id: string, hidden: boolean): Promise<boolean> {
   if (!WORKER_URL) return false;
   try {
-    const res = await fetch(`${WORKER_URL}/feedback`, {
+    const res = await apiFetch(`${WORKER_URL}/feedback`, token, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, hidden }),
     });
     return res.ok;
-  } catch {
+  } catch (e) {
+    if (e instanceof TokenExpiredError) return false;
     return false;
   }
 }
@@ -295,12 +299,12 @@ export async function toggleFeedbackHidden(token: string, id: string, hidden: bo
 export async function deleteFeedback(token: string, id: string): Promise<boolean> {
   if (!WORKER_URL) return false;
   try {
-    const res = await fetch(`${WORKER_URL}/feedback?id=${encodeURIComponent(id)}`, {
+    const res = await apiFetch(`${WORKER_URL}/feedback?id=${encodeURIComponent(id)}`, token, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
     });
     return res.ok;
-  } catch {
+  } catch (e) {
+    if (e instanceof TokenExpiredError) return false;
     return false;
   }
 }
@@ -323,12 +327,11 @@ export async function fetchVisitors(token: string, cursor: number | null, limit 
   try {
     const params = new URLSearchParams({ limit: String(limit) });
     if (cursor != null) params.set("cursor", String(cursor));
-    const res = await fetch(`${WORKER_URL}/visitors?${params}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await apiFetch(`${WORKER_URL}/visitors?${params}`, token);
     if (!res.ok) return null;
     return await res.json();
-  } catch {
+  } catch (e) {
+    if (e instanceof TokenExpiredError) return null;
     return null;
   }
 }
@@ -337,19 +340,30 @@ export async function fetchVisitors(token: string, cursor: number | null, limit 
 export async function fetchAnalytics(token: string | null, days = 7, excludeCountry?: string): Promise<AnalyticsData | null> {
   if (!WORKER_URL) return null;
 
+  // 토큰이 있지만 만료됐으면 logout 트리거 후 public 모드로 fallback
+  let effectiveToken = token;
+  if (effectiveToken && !isJWTValid(effectiveToken)) {
+    notifyAuthExpired();
+    effectiveToken = null;
+  }
+
   try {
     const params = new URLSearchParams({ days: String(days) });
     if (excludeCountry) params.set("excludeCountry", excludeCountry);
     // CF 엣지가 URL만으로 cache key 구성하고 응답의 'private' 지시자도 가끔 무시함 → admin 요청이 옛 public 응답 받는 회귀.
     // 토큰이 있을 때 _t=admin query를 붙여 cache key 분리. 백엔드는 무시.
     const fetchHeaders: Record<string, string> = {};
-    if (token) {
-      fetchHeaders.Authorization = `Bearer ${token}`;
+    if (effectiveToken) {
+      fetchHeaders.Authorization = `Bearer ${effectiveToken}`;
       params.set("_t", "admin");
     }
     const res = await fetch(`${WORKER_URL}/stats?${params}`, {
       headers: fetchHeaders,
     });
+    if (res.status === 401) {
+      notifyAuthExpired();
+      return null;
+    }
     if (!res.ok) return null;
     return await res.json();
   } catch {
