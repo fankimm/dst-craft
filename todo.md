@@ -88,6 +88,44 @@
 
 ---
 
+## 트래픽 분석 권장 액션 (2026-05-09)
+> 근거: GoAccess + raw nginx access.log 3일 분석 (567명 / 99,646 요청 / 봇 ~10.2%)
+> 우선순위: P0=실유저 영향, P1=품질, P2=보안/안정성. SEO 강화는 위 2026-05-08 섹션 참조.
+
+### P0 — `/api/skills` 401 토큰 만료 처리 (실유저 영향)
+- [ ] 현상: Google ID 토큰 만료(1h) 후 자동 갱신/탈락 로직 부재. 분석 기간 401 × 479건 전부 실유저(SamsungBrowser 199, iPhone Safari 123, Mac Safari 125)
+- [ ] `src/components/skills/SkillSimulatorApp.tsx:70` `fetchAllSkills(token)` 호출 시 401 응답이면 토큰 클리어 + GIS 재로그인 트리거
+- [ ] 동일 패턴 적용: `/api/favorites` (51건 401), `/api/feedback` (25건 403)
+- [ ] `src/lib/favorites-api.ts`의 fetch 함수들(`fetchFavorites`, `fetchAllSkills`, `saveCharacterSkills` 등)에 공통 401 핸들러 추가
+- 예상 작업량: 0.5~1d
+
+### P1 — `_vercel/insights/*` 호출처 제거 (404 1,415건)
+- [ ] 현상: `/_vercel/insights/script.js` 805 + `/view` 610 = 1,415건 404
+- [ ] 원인 후보: Vercel 호스팅 시절 코드 잔존, 또는 PWA service worker가 옛날 sw.js 캐시
+- [ ] `grep -rn "_vercel/insights\|@vercel/analytics" src/` 로 호출처 추적 후 제거
+- [ ] sw.js 버전 bump로 캐시 강제 갱신
+- 예상 작업량: 0.5d
+
+### P2 — nginx 보안/봇 차단 룰
+- [ ] **path 기반 차단 (무조건 권장)** — 작업 위치: `bun-api/infra/nginx-dstcraft-common.conf`
+  - 워드프레스 스캐너: `/wp-*`, `/wordpress/*`, `/wp-admin/*`, `/wp-includes/*`
+  - 시크릿 스캔: `/.env`, `/.git/*`, `xmlrpc.php`, `/test.php`, `/phpinfo*`
+  - 적용 후 Mac mini에서 `nginx -s reload` 수동
+- [ ] **UA 기반 선택적 차단 (가치 없는 봇만)**: `AhrefsBot` (2,044건), `MJ12bot` (2,909건), `TLM-Audit-Scanner` (1,890건)
+- [ ] **차단 금지 (사이트 발견 채널 — 절대 막지 말 것)**:
+  - AI 검색: `OAI-SearchBot`, `ChatGPT-User`, `PerplexityBot`, `Claude-Web`, `Bytespider`, `Applebot`
+  - 검색 엔진: `Googlebot`, `bingbot`, `NaverBot`, `DuckDuckBot`
+- 예상 작업량: 0.5d
+
+### P2 — 2026-05-07 17:33~18:31 bun-api 502 사고 RCA
+- [ ] 현상: 5xx 74건 전부 이 1시간 windowed. 이후 5xx 0건 (launchd 자동 재시작으로 회복)
+- [ ] `~/Library/Logs/dstcraft-api.err.log` 그 시간대 grep해서 root cause 확인
+- [ ] watchdog Telegram alert에 잡혔는지 확인 (`.github/workflows/watchdog.yml`)
+- [ ] 재발 방지: 원인이 OOM/크래시면 자동 재시작 그대로, resource exhaustion이면 limit 조정
+- 예상 작업량: 0.5d
+
+---
+
 ## 대기 (다음 작업 후보)
 
 - [x] **CF "static cache" rule 좁히기 — All requests → 정적 자산만** (2026-05-07 완료)
