@@ -129,6 +129,7 @@
   - edge_ttl: `override_origin 1d` → `respect_origin`
   - CF API로 적용, HTML `cache-control: public, max-age=60` origin 헤더 살아있음 확인
 - [ ] **Vercel → Mac mini 셀프호스팅 이주** (2026-05-07, 우선순위 높음) — Vercel Hobby edge req 한도 임박. Phase 1: `beta.dstcraft.com` 정적 셀프호스팅. 상세: `TODO-self-hosting.md`. **Mac mini SSH 세션에서 진행할 것**.
+- [x] **Vercel 빌드를 사용자 영향 변경에만 한정** ✅ (#17, 2026-05-09) — `vercel.json`에 `ignoreCommand: bash scripts/vercel-ignore.sh` 추가. src/, public/, package*, next.config, tsconfig, postcss.config, vercel.json, scripts/generate-* 외 변경(docs, .claude, todo.md, memory, bun-api 등)은 Vercel 빌드 스킵. Hobby 한도 잠식 완화. drift 위험은 사용자 영향 변경 시 자연 해소 — failover 신뢰성 유지.
 - [ ] **git 히스토리 이메일 재작성** (2026-04-27, 우선순위 높음) — 회사 계정(kolon.com) 314커밋이 GitHub에 노출됨. 다른 머신(macOS 권장)에서 진행. 상세 계획: `TODO-rewrite-email-history.md`
 - [x] 누락된 보스 추가 (2026-04-14) — 8종
 - [x] 건조대/구이 등 비요리솥 음식 정보 (2026-04-14) — 구이 31종 + 건조 6종
