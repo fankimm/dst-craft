@@ -61,11 +61,21 @@ app.post("/track", async (c) => {
     if (countryCode) bumpCounter("return_total", "", countryCode);
   }
 
-  // Referrer
+  // Referrer (도메인) — 기존 hostname 기반 집계.
   const referrer = (body.referrer as string)?.slice(0, 100);
   if (referrer && referrer !== "direct") {
     bumpCounter("referrer", referrer, "");
     if (countryCode) bumpCounter("referrer", referrer, countryCode);
+  }
+
+  // Referrer 풀 URL — DC인사이드 등 외부 글 단위 유입 경로 추적용. 길이 500자로 클램프.
+  // 외부 도메인 여부 판정 + 정규화는 클라이언트 책임 (analytics.ts / layout.tsx 인라인 스크립트).
+  const referrerUrl = typeof body.referrerUrl === "string" ? body.referrerUrl.slice(0, 500) : "";
+  if (referrerUrl) {
+    db.query(
+      `INSERT INTO analytics_referrer_urls(url, count, last_seen_at) VALUES (?, 1, ?)
+       ON CONFLICT(url) DO UPDATE SET count = count + 1, last_seen_at = excluded.last_seen_at`,
+    ).run(referrerUrl, nowSec());
   }
 
   // Visitor log (rolling 200, trimmed by trigger)
@@ -303,6 +313,15 @@ app.get("/stats", async (c) => {
     .all()
     .map((v) => ({ ...v, city: "", region: "" }));
 
+  // referrer 풀 URL Top 50 — admin only (URL에 PII가 박힐 가능성).
+  const referrerUrls = isAdmin
+    ? db
+        .query<{ url: string; count: number }, []>(
+          `SELECT url, count FROM analytics_referrer_urls ORDER BY count DESC LIMIT 50`,
+        )
+        .all()
+    : [];
+
   let dailyTrend = dates.map((d) => ({
     date: d,
     pv: getCounter("pv_day", d, ""),
@@ -372,6 +391,7 @@ app.get("/stats", async (c) => {
     device,
     os,
     referrers,
+    referrerUrls,
     returnVisitors: returnTotal,
     returnRate: totalPV > 0 ? Math.round((returnTotal / totalPV) * 100) : 0,
     avgDuration,

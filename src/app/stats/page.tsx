@@ -636,6 +636,41 @@ export default function StatsPage() {
               );
             })()}
 
+            {/* Referrer URLs (admin only) — DC인사이드 갤러리 글 등 외부 유입 경로 추적 */}
+            {isAdmin && (data.referrerUrls?.length ?? 0) > 0 && (() => {
+              const urls = data.referrerUrls ?? [];
+              const sortedUrls: [string, number][] = urls.map((r) => [r.url, r.count]);
+              const totalUrls = sortedUrls.reduce((sum, [, c]) => sum + c, 0);
+              return (
+                <CollapsibleList
+                  title="유입 URL (admin)"
+                  icon={<ExternalLink className="size-4" />}
+                  sortedItems={sortedUrls}
+                  total={totalUrls}
+                  topN={10}
+                  renderItem={([url, count], total) => {
+                    const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+                    return (
+                      <div key={url} className="flex items-center gap-3 text-sm">
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 min-w-0 truncate text-primary hover:underline"
+                          title={url}
+                        >
+                          {url}
+                        </a>
+                        <span className="w-20 text-right text-xs text-muted-foreground shrink-0 tabular-nums">
+                          {count} ({pct}%)
+                        </span>
+                      </div>
+                    );
+                  }}
+                />
+              );
+            })()}
+
             {/* Countries */}
             <CollapsibleList
               title="국가별 방문"

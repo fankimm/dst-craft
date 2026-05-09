@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.9",
+    date: "2026-05-09",
+    dev: [
+      "feat(analytics): referrer 풀 URL 저장 + admin 통계 표시 (#15). bun-api `analytics_referrer_urls(url PRIMARY KEY, count, last_seen_at)` 테이블 신설 + count/last_seen_at 인덱스. `/track` 라우트가 `referrerUrl`(외부 도메인일 때만, 500자 클램프) 받아 INSERT/UPDATE upsert. `/stats`는 admin 인증된 요청에 한해 `referrerUrls: { url, count }[]` Top 50 반환(URL에 PII 가능성 있어 비-admin엔 빈 배열). 프론트는 `src/lib/analytics.ts`와 `src/app/layout.tsx` 인라인 트래킹 스크립트 모두 `document.referrer` 풀 URL 추가 전송. stats 페이지에 admin 전용 '유입 URL' CollapsibleList 섹션 추가 — Top 10 inline + DetailPanel에서 전체 50건. 도메인 referrer(`analytics_counters scope='referrer'`)는 그대로 유지하고 풀 URL은 별도 테이블이라 후방 호환. 근거: GSC/Vercel 분석에서 DC인사이드(m.dcinside + gall.dcinside) 30일 ~300명(9%) 유입 발견했으나 어떤 갤러리 글에서 들어오는지 추적 불가했던 문제 해소.",
+    ],
+    changes: {
+      ko: [],
+      en: [],
+    },
+  },
+  {
     version: "0.23.8",
     date: "2026-05-09",
     dev: [

@@ -31,6 +31,8 @@ export interface AnalyticsData {
   device: Record<string, number>;
   os: Record<string, number>;
   referrers: Record<string, number>;
+  /** 풀 URL referrer Top 50 — admin only (비-admin 응답은 빈 배열) */
+  referrerUrls?: { url: string; count: number }[];
   returnVisitors: number;
   returnRate: number;
   avgDuration: number;
@@ -53,11 +55,14 @@ export async function trackVisit(skipTracking?: boolean) {
   localStorage.setItem("dst:visitor", "1");
 
   let referrer = "";
+  let referrerUrl = "";
   if (document.referrer) {
     try {
       const refUrl = new URL(document.referrer);
       if (!refUrl.hostname.endsWith("dstcraft.com")) {
         referrer = refUrl.hostname.replace(/^www\./, "");
+        // 풀 URL은 외부 도메인일 때만 전송. 길이는 서버에서 500자 클램프.
+        referrerUrl = document.referrer.slice(0, 500);
       }
     } catch { /* malformed referrer */ }
   }
@@ -70,6 +75,7 @@ export async function trackVisit(skipTracking?: boolean) {
         ua: navigator.userAgent.slice(0, 120),
         isReturn: hasVisited,
         ...(referrer ? { referrer } : {}),
+        ...(referrerUrl ? { referrerUrl } : {}),
       }),
     });
   } catch {
