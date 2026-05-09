@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.12",
+    date: "2026-05-09",
+    dev: [
+      "chore: 스크랩북 마이그레이션 Phase 4 마무리 (#18). v3 코드는 v0.13.0(2026-04-20)에 이미 삭제됐으나 v2/v3 시대 파이프라인의 잔존 파일/문서를 정리. 삭제: `TODO-item-stats-v3.md`, `docs/item-stats-pipeline.md`, `docs/item-stats-todo.md`, `docs/stats/` 27개 카테고리 md + `docs/stats/i18n/` 번역 디렉터리, `scripts/md-to-v2.py`, `scripts/migrate-v2-to-v3.py`, `scripts/verify-v3-stats.py`. CLAUDE.md의 'Item Stats Pipeline Rules' 섹션 + Key Paths를 scrapbook 기반으로 갱신 — 인게임 `scripts/scrapbookdata.lua` → `scripts/convert-scrapbook.py` → `src/data/scrapbook-stats.ts`(자동 생성, 수동 편집 금지) 흐름 명시. 게임 업데이트 시 갱신 절차 정리. todo.md '스크랩북 데이터 마이그레이션' 섹션을 진행중→완료로 이동. 사용자 영향 없음(코드 변경 없음).",
+    ],
+    changes: {
+      ko: [],
+      en: [],
+    },
+  },
+  {
     version: "0.23.11",
     date: "2026-05-09",
     dev: [
