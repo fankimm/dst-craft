@@ -460,6 +460,13 @@
   ```
 - **부수 발견**: SW 캐시도 같은 함정 — 새 SW(ea7a4ec)가 activate에서 `clients.navigate()`로 강제 reload하지만, 사용자 PWA가 한 번도 새 SW를 받기 전이면 이 안전망 미작동. CF 엣지 fresh + SW activate hook 둘 다 있어야 1차/2차 보호 완성
 
+### nginx origin 검증 시 포트 80에 macOS 기본 Apache가 떠있어 "차단 룰이 안 먹힌다"고 오진 (2026-05-09)
+- **문제**: #19 SG IP 차단 룰 배포 후 `curl -H 'CF-Connecting-IP: 43.128.5.10' http://127.0.0.1/` 으로 origin 검증했는데 모든 spoofed IP가 200 반환 → "룰이 깨졌다"고 판단하고 디버깅 시작
+- **원인**: Mac mini의 nginx는 `listen 8080` (CF Tunnel이 그쪽으로 라우팅). 포트 80에는 macOS에 따라온 Apache 2.4.62가 기본 페이지("It works!")를 서빙 중이었음. 80에 hit하면 Apache가 받고 nginx 룰은 통과조차 못 함. `Server: Apache/2.4.62 (Unix)` 헤더로 식별 가능
+- **교훈**: 셀프호스팅 Mac mini에서 nginx origin 검증은 **반드시 nginx가 실제 listen하는 포트**(현재 8080)로 hit. `lsof -i :80 -sTCP:LISTEN` / `lsof -i :8080` 로 사전에 listener 확인. 80 포트 응답이 200이라도 nginx 결과가 아닐 수 있다는 의심 먼저
+- **검증**: `curl -sI http://127.0.0.1/ | grep -i server` → `Server: nginx` 가 아니면 즉시 정지하고 포트 재확인. 또는 nginx 단독 테스트는 항상 `127.0.0.1:8080`
+- **부수**: Apache가 떠있는 자체는 dstcraft 서비스에 영향 없음 (CF Tunnel은 8080으로만 매핑). 다만 origin 디버깅 시 잡음. 향후 비활성 검토 가능 (`sudo apachectl stop` + launchd 비활성화)
+
 ## 분석 / 통계
 
 ### Redis 일별 키에 TTL을 걸어 통계 데이터 영구 손실
