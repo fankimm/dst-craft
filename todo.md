@@ -111,10 +111,10 @@
 > 결론: 프로세스가 hang(deadlock 추정)이라 launchd KeepAlive(Crashed:true)는 트리거 안 됨. err.log 0바이트(stderr 안 씀), DiagnosticReports에 crash 없음, macOS unified log retention(2일) 만료로 직접 증거 소실. Watchdog은 정확히 감지했으나 **Telegram secrets 미설정으로 알림 안 갔음**.
 - [x] err.log/crash report 확인 → 증거 없음
 - [x] watchdog 동작 확인 → 08:34 UTC부터 3/3 fail 다수 기록, alert 미발송
-- 후속 follow-up (별도 이슈 제안):
-  - [ ] **GitHub repo secrets 설정**: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` (즉시 알림 복원)
-  - [ ] **bun-api 액세스 로그에 ISO 타임스탬프 추가** (사후 분석 가능하게)
-  - [ ] watchdog 워크플로우에 자동 복구 단계 추가 (3/3 실패 시 SSH로 `launchctl kickstart -k com.dstcraft.api`)
+- 후속 follow-up (#13):
+  - [x] **`TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` repo secrets** — 사고 직후(2026-05-07) 사용자가 설정 완료. 향후 2/3·3/3 헬스 실패 시 자동 알림 발송됨
+  - [x] **bun-api 액세스 로그에 ISO 타임스탬프 추가** — `bun-api/src/index.ts`의 `logger()`를 timestamp prefix wrapping으로 교체
+  - [x] **watchdog 자동 복구 스텝 추가** — `vars.WATCHDOG_AUTORECOVER=1` flag 뒤에 Tailscale + SSH + launchctl kickstart. 활성화하려면 `.github/workflows/README-watchdog-secrets.md` 참고하여 `TS_AUTHKEY` / `SSH_PRIVATE_KEY` secrets + `WATCHDOG_AUTORECOVER` / `WATCHDOG_MACMINI_HOST` / `WATCHDOG_MACMINI_USER` vars 설정 필요
 - 예상 작업량: 0.5d
 
 ---
