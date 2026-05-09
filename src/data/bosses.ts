@@ -265,7 +265,7 @@ export const bosses: Boss[] = [
     id: "crabking",
     name: "Crab King",
     nameKo: "대게왕",
-    categories: ["raid"],
+    categories: ["ocean", "raid"],
     image: "crabking.png",
     loot: [
       { item: "trident_blueprint", chance: 1, blueprint: true },
@@ -444,7 +444,7 @@ export const bosses: Boss[] = [
     id: "daywalker2",
     name: "Scrappy Werepig",
     nameKo: "고철덩이 늑대돼지",
-    categories: ["underground", "raid"],
+    categories: ["raid"],
     image: "daywalker2.png",
     loot: [
       { item: "wagpunk_bits", chance: 1, count: 4 },
@@ -507,7 +507,7 @@ export const bosses: Boss[] = [
     id: "mutatedwarg",
     name: "Possessed Varg",
     nameKo: "귀신들린 바르그",
-    categories: ["seasonal", "mini"],
+    categories: ["story", "mini"],
     image: "mutatedwarg.png",
     loot: [
       { item: "chesspiece_warg_mutated_sketch", chance: 1 },
@@ -535,7 +535,7 @@ export const bosses: Boss[] = [
     id: "mutateddeerclops",
     name: "Crystalline Deerclops",
     nameKo: "수정 외눈사슴",
-    categories: ["seasonal"],
+    categories: ["seasonal", "story"],
     image: "mutateddeerclops.png",
     loot: [
       { item: "spoiled_food", chance: 1, count: 3 },
@@ -551,7 +551,7 @@ export const bosses: Boss[] = [
     id: "mutatedbearger",
     name: "Armored Bearger",
     nameKo: "무장 곰소리",
-    categories: ["seasonal"],
+    categories: ["seasonal", "story"],
     image: "mutatedbearger.png",
     loot: [
       { item: "spoiled_food", chance: 1, count: 3 },
