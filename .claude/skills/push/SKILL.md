@@ -1,103 +1,102 @@
 ---
 name: push
-description: 현재 변경사항을 커밋한 뒤 beta 브랜치로 흘려 beta.dstcraft.com에 배포. feat 워크트리면 feat 커밋 + main 워크트리에서 beta 머지/푸시까지 자동. 오답노트 반영. Production(main) 배포는 /release 사용.
+description: 타겟 브랜치를 origin으로 push (배포 X). 인자 없으면 현재 워크트리 브랜치를 commit+push. 인자(브랜치명/이슈번호/이슈URL/자연어)로 다른 브랜치 지정 가능. beta 배포는 /beta, production 배포는 /release.
 ---
 
-# /push — 커밋 + beta 배포 워크플로우
+# /push — 브랜치를 origin으로 push (배포 X)
 
-현재 변경사항을 커밋하고, 그 결과를 `beta` 브랜치에 반영해서 `beta.dstcraft.com`에 자동 배포한다. CLAUDE.md의 Branch & Deploy Strategy / Release Notes Rules / Mistakes Rules를 준수.
+타겟 브랜치를 GitHub origin에 push한다. **배포 동작 없음** — beta 배포는 `/beta`, production은 `/release`.
 
-## 시나리오 분기
+## 인자 처리 — 타겟 결정
 
-현재 워크트리의 브랜치(`git rev-parse --abbrev-ref HEAD`)에 따라 동작이 다르다:
+인자 형식 (공통: `/beta`도 동일하게 적용):
+- **인자 없음**: 현재 워크트리 브랜치(`git rev-parse --abbrev-ref HEAD`)를 타겟으로 사용
+- **`feat/...` 등 브랜치명**: 그대로 타겟
+- **숫자만** (예: `42`): `feat/42-*` 패턴으로 로컬 브랜치 검색 → 매칭되는 1개를 타겟
+- **이슈 URL** (`https://github.com/.../issues/<num>`): `<num>` 추출 후 위와 동일
+- **자연어** (예: `보스 분류`): `gh issue list --state all --json number,title,state` → 제목 fuzzy 매칭으로 후보 제시. 1개면 자동, 2+개는 사용자에게 1줄 확인
 
-### A. 현재 브랜치 = `beta`
-직접 beta 작업 케이스. 변경사항을 그대로 beta에 commit + push.
+타겟 결정 후 `TARGET_BRANCH` 변수로 부른다. 결정에 실패하거나 모호하면 중단하고 사용자에게 묻기.
 
-### B. 현재 브랜치 = `feat/X` (정상 워크플로우)
-feat 워크트리에서 작업한 케이스. 다음을 수행:
-1. feat 워크트리에서 commit + `git push origin feat/X` (백업)
-2. **메인 워크트리**(`/Users/jihwan-kim3/private-works/dst-craft`)가 `beta`에 있는지 확인 — 아니면 사용자에게 보고 후 중단
-3. 메인 워크트리에서 `git merge feat/X` + `git push origin beta` ← `git -C` 사용해서 현재 디렉터리를 떠나지 않고 처리
+## 동작 분기
 
-> **cwd 처리 규칙 (이 환경 한정)**: Claude Code Bash tool은 매 호출마다 cwd가 메인 워킹 디렉터리로 리셋된다. 따라서 feat 워크트리에 commit할 때도 단순 `git add` / `git commit`은 메인 워크트리(beta)에 적용된다. **모든 git 명령은 `git -C <워크트리경로>` 형태로 호출**하거나 `cd <워크트리경로> &&` 프리픽스를 매번 붙일 것. Read/Edit/Write는 절대경로라 영향 없음.
+### A. TARGET_BRANCH = 현재 워크트리 브랜치 (인자 없거나 같은 브랜치 지정)
+**commit + push**:
+1. 상태 점검 (`git status`, `git diff`, `git log -5 --oneline`)
+2. 변경사항이 있으면 commit 초안 작성 → 같은 워크트리에 commit
+3. `git push origin <TARGET_BRANCH>`
 
-### C. 현재 브랜치 = `main` 또는 기타
-사용자에게 명확히 묻고 중단 — main에서는 작업 금지. 보통은 잘못 들어온 상태.
+`docs/mistakes.md` 작성 필요 여부도 같이 체크 (실수/교훈 있으면 같은 커밋에 포함).
+
+### B. TARGET_BRANCH = 다른 브랜치 (현재 워크트리와 다름)
+**commit 없이 push만**:
+1. 그 브랜치가 로컬에 존재하는지 확인 (`git rev-parse --verify <TARGET_BRANCH>`)
+2. 그 브랜치가 체크아웃된 워크트리 경로 찾기 (`git worktree list --porcelain`)
+3. `git -C <워크트리경로> push origin <TARGET_BRANCH>` (워크트리 dirty면 사용자에게 보고 후 중단)
+
+> 다른 브랜치에 commit까지 떠넘기지 않는 이유: 의도와 어긋나는 변경 혼입 위험. commit하려면 그 브랜치 워크트리로 옮겨가서 직접 작업 후 `/push`.
 
 ## 실행 절차
 
-### 1. 상태 점검 (병렬)
-- `git status`
-- `git diff` (스테이지 + 언스테이지)
-- `git log -5 --oneline` (최근 커밋 스타일 참고)
-- `git rev-parse --abbrev-ref HEAD` — 시나리오 분기용
+### 0. cwd 처리 규칙
+이 환경의 Bash tool은 매 호출마다 cwd가 메인 워킹 디렉터리로 리셋된다. **모든 git 명령은 `git -C <워크트리경로>` 형태로 호출**하거나 `cd <워크트리경로> &&` 프리픽스를 매번 붙일 것. Read/Edit/Write는 절대경로라 영향 없음.
 
-변경이 없고 머지할 것도 없으면 즉시 중단.
+### 1. 타겟 결정
+인자 파싱 → `TARGET_BRANCH` + 그 브랜치가 체크아웃된 워크트리 경로 `TARGET_WT`.
 
-### 2. 변경 분류
-- **user-facing 여부**: 사용자가 화면에서 인지할 변화가 있는가? (UI/UX/기능/버그픽스 등)
-- **버전 bump 단계**:
-  - `patch` (0.0.x): 버그픽스, 소규모 수정, UX 미세 조정
-  - `minor` (0.x.0): 새 기능 / 새 페이지 / 의미 있는 기능 추가
-  - `major` (x.0.0): 대규모 구조 변경
-- **오답노트 필요 여부**: 작업 중 실수/오해/교훈이 있었는가? 있으면 `docs/mistakes.md` 먼저 작성
-
-판단 애매하면 사용자에게 한 줄로 묻고 진행 (예: "patch로 갈게요").
-
-### 3. 릴리즈노트 / 버전 (beta 단계에서는 건너뜀)
-
-`/push`(beta 배포) 단계에서는 릴리즈노트/버전 갱신을 **하지 않는다** — feat 분량만 따져서 한 번에 작성하기 위해 `/release` 시점까지 보류한다.
-
-### 4. 오답노트 작성 (해당 시)
-실수/교훈이 있으면 `docs/mistakes.md`에 새 섹션 추가 후 같은 커밋에 포함.
-
-### 5. 빌드 검증 (선택, 큰 변경일 때)
-- 의존성 변경 / 라우트 추가 / 빌드 영향 큰 변경 → `npm run build` 한 번 돌려보기
-- 단순 fix는 `npx tsc --noEmit` 정도로 OK
-- **feat 워크트리에는 `node_modules`가 없을 수 있음** — `npm run build`가 sharp 등에서 즉시 실패. 그 경우는 시나리오 B 2단계(beta 머지) 후 메인 워크트리에서 검증하거나, feat 워크트리에서 `npm install` 먼저
-
-### 6. 시나리오별 푸시
-
-**시나리오 A (beta 직접)**:
 ```bash
-git add <files>
-git commit -m "$(cat <<'EOF'
-<type>(<scope>): <한 줄 요약>
+# 현재 브랜치라면
+TARGET_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+TARGET_WT="."  # 현재 디렉터리
 
-Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
-EOF
-)"
-git push origin beta
+# 다른 브랜치라면
+TARGET_WT=$(git worktree list --porcelain \
+  | awk -v b="refs/heads/$TARGET_BRANCH" '/^worktree/{p=$2} $0=="branch "b{print p}')
+# TARGET_WT가 비어있으면 그 브랜치는 어떤 워크트리에도 체크아웃되지 않음 → push만 가능
 ```
 
-**시나리오 B (feat 워크트리)**:
+### 2. 상태 점검
+- `git -C "$TARGET_WT" status`
+- `git -C "$TARGET_WT" diff` (스테이지 + 언스테이지)
+- `git -C "$TARGET_WT" log -5 --oneline` (커밋 스타일 참고)
+
+### 3. 시나리오 분기 실행
+
+**시나리오 A (현재 브랜치, dirty)**:
+- 변경 분류: user-facing 여부 + commit 메시지 type/scope 결정
+- 오답노트: 실수/교훈 있으면 `docs/mistakes.md` 먼저 추가 (같은 커밋에 포함)
+- commit:
+  ```bash
+  git add <files>  # 명시적 파일 추가, -A/. 금지
+  git commit -m "$(cat <<'EOF'
+  <type>(<scope>): <한 줄 요약>
+
+  Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+  EOF
+  )"
+  ```
+- push: `git push origin <TARGET_BRANCH>`
+
+**시나리오 A (현재 브랜치, clean)**: 그냥 push만.
 ```bash
-FEAT_WT="../dst-craft-<issue-num>"   # 또는 git worktree list로 찾기
-
-# 1. feat 워크트리에 commit + 백업 push (모두 -C 사용 — cwd 리셋 대응)
-git -C "$FEAT_WT" add <files>
-git -C "$FEAT_WT" commit -m "..."
-git -C "$FEAT_WT" push origin <feat-branch>
-
-# 2. 메인 워크트리(beta)에서 머지 + push
-MAIN_WT=$(git worktree list --porcelain | awk '/^worktree/{path=$2} /^branch refs\/heads\/beta$/{print path}')
-git -C "$MAIN_WT" fetch origin
-git -C "$MAIN_WT" pull --ff-only origin beta
-git -C "$MAIN_WT" merge <feat-branch> -m "merge <feat-branch> into beta for staging"
-git -C "$MAIN_WT" push origin beta
+git push origin <TARGET_BRANCH>
 ```
+push할 미푸시 커밋도 없으면 즉시 중단 ("nothing to push").
 
-> 메인 워크트리가 beta가 아니면 (위 awk가 빈 결과) — 사용자에게 보고하고 중단. 임의로 메인 워크트리 브랜치 바꾸지 말 것.
+**시나리오 B (다른 브랜치)**:
+- TARGET_WT가 dirty면 보고 후 중단 (그 워크트리에서 직접 push 또는 commit 권유)
+- 미푸시 커밋이 없으면 중단
+- `git -C "$TARGET_WT" push origin <TARGET_BRANCH>`
 
-마지막에 `git status` (clean 확인) + `git log -1 --oneline` 결과 확인.
+### 4. 마무리
+- `git -C "$TARGET_WT" log -1 --oneline` 결과 확인
+- 사용자에게 결과 보고: 푸시된 브랜치, 푸시 커밋 수
 
 ## 규칙
-- **항상 `beta`로 흘림** — `feat/X` 워크트리에서도 결국 beta에 머지되어야 배포됨
-- **메인 워크트리는 beta 유지** — 다른 브랜치로 가있으면 /push가 동작 안 함. 작업 전 확인.
-- **`main`에 직접 푸시 금지** — 사용자가 명시적으로 main 푸시를 요청해도 `/release` 권장
+- **배포 동작 없음** — beta 배포는 `/beta`, production은 `/release`
+- **`main`에 직접 push 금지** — 사용자가 명시해도 `/release` 권장
 - **`git add -A` / `git add .` 금지** — 변경된 파일을 명시적으로 add (CLAUDE.md 안전 규칙)
-- 사용자에게 묻지 않고 위 절차를 끝까지 진행 (이미 push 권한을 위임받은 상태). 단, 분류가 모호하면 한 줄로만 확인.
-- 푸시 후 배포는 자동이므로 배포 상태 확인은 별도로 하지 않음 (사용자가 라이브에서 확인).
-- `--no-verify`, `--force` 등 위험 옵션 사용 금지.
-- feat 머지 시 fast-forward 가능하면 그대로(`--ff-only`), 안 되면 `--no-ff` 머지 커밋 명시.
+- **다른 브랜치에 commit 강요 금지** — 시나리오 B에서는 push만
+- 릴리즈노트/버전 bump는 `/release`에서. `/push`에서는 건드리지 않음
+- `--no-verify`, `--force` 등 위험 옵션 사용 금지
+- 사용자에게 묻지 않고 위 절차를 끝까지 진행 (이미 push 권한 위임). 단, 타겟 결정이 모호하면 한 줄로만 확인.
