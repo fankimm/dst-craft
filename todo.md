@@ -69,10 +69,12 @@
 > 근거: Vercel 30일 visitors 3,094 (+209%) / GSC 28일 클릭 1.02k·노출 8.26만·CTR 1.2%·평균 순위 7.6위 / CF는 5/7 cutover라 baseline 미정.
 > 분석 세션 결과 정리. CF Web Analytics는 baseline 누적(1주)되면 재검토.
 
-- [ ] **WX-78 페이지 SEO 강화** — 평균 순위 7.6위 → 1~3위 노리기. 회로 시리즈가 검색 트래픽 견인 중인데 ROI 최고
-  - 대상 페이지: `/ko/skill-tree/wx-78`(CTR 16.6%), `/item/{zaptrocuter, chessmaster-circuit, redignition-circuit, sonic-invoker-circuit, spatializer-circuit, rangebooster-circuit}`, `/item/celestial-scion`
-  - description 메타·structured data(`Game`/`SoftwareApplication` 등) 점검
-  - sitemap priority/lastmod 조정
+- [x] **WX-78 페이지 SEO 강화** ✅ (#14, 2026-05-09) — 평균 순위 7.6위 → 1~3위 노리기. 회로 시리즈가 검색 트래픽 견인 중인데 ROI 최고
+  - sitemap.ts 우선 페이지 화이트리스트(`src/lib/seo-priority.ts`) — WX-78 스킬트리 + 회로 6종 + Celestial Scion 보스 priority 0.9/0.85, changeFrequency=weekly
+  - SkillTreePageContent: VideoGame(DST) + SoftwareApplication(시뮬레이터) JSON-LD 추가, WebPage `about` 연결
+  - ItemPageContent: WX-78 우선 아이템 title/description에 "WX-78 회로/Circuit" 키워드 보강 + HowTo `about: VideoGame` 추가
+  - GSC 순위 영향은 배포 후 1~2주 모니터링 필요 (`/ko/skill-tree/wx-78` CTR 16.6% 기준선)
+  - redignition→redigestion(`wx78module_digestion`) 오타 정정. `/item/celestial-scion`은 `/boss/celestial-scion`으로 보정
 - [ ] **referrer 풀 URL 저장** — DC인사이드(m.dcinside + gall.dcinside) 30일 ~300명(9%) 유입. 어떤 갤러리 글에서 들어오는지 모름
   - bun-api `/api/stats` 스키마에 `referrer_url` 컬럼 추가 (현재 도메인만 저장)
   - 프론트 analytics 호출 시 `document.referrer` 풀 URL 전달

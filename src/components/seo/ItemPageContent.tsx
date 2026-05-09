@@ -7,6 +7,7 @@ import { stationImages } from "@/lib/crafting-data";
 import { stationName } from "@/lib/i18n";
 import { generateItemSeoText, generateItemSeoTextKo } from "@/lib/seo-text";
 import { canonicalForItem, resolveItemSlug } from "@/lib/slug";
+import { isWx78PriorityItem } from "@/lib/seo-priority";
 import type { CraftingStation } from "@/lib/types";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -140,6 +141,11 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
     description,
     image: `${SITE_URL}/images/game-items/${item.image}`,
     inLanguage: lang === "ko" ? "ko-KR" : "en-US",
+    about: {
+      "@type": "VideoGame",
+      name: "Don't Starve Together",
+      url: "https://www.klei.com/games/dont-starve-together",
+    },
     supply: item.materials.map((m) => {
       const mat = materials.find((x) => x.id === m.materialId);
       const matName = lang === "ko"
@@ -432,12 +438,21 @@ export function buildItemMetadata(slug: string, lang: SeoLang) {
     })
     .join(", ");
 
+  const wx78Priority = isWx78PriorityItem(item.id);
   const title = lang === "ko"
-    ? `${displayName} — Don't Starve Together 제작 레시피`
-    : `${displayName} — Don't Starve Together Crafting Recipe`;
+    ? wx78Priority
+      ? `${displayName} (WX-78 회로) — Don't Starve Together 제작 가이드`
+      : `${displayName} — Don't Starve Together 제작 레시피`
+    : wx78Priority
+      ? `${displayName} (WX-78 Circuit) — Don't Starve Together Guide`
+      : `${displayName} — Don't Starve Together Crafting Recipe`;
   const desc = lang === "ko"
-    ? `Don't Starve Together에서 ${displayName} 만드는 법. ${description} 재료: ${matList}. 제작대, 용도, 팁을 확인하세요.`
-    : `How to craft ${displayName} in Don't Starve Together. ${description} Materials: ${matList}. See crafting station, uses, and tips.`;
+    ? wx78Priority
+      ? `Don't Starve Together WX-78 회로 ${displayName}. ${description} 재료: ${matList}. WX-78 스킬트리 해금 조건, 효과, 추천 빌드를 확인하세요.`
+      : `Don't Starve Together에서 ${displayName} 만드는 법. ${description} 재료: ${matList}. 제작대, 용도, 팁을 확인하세요.`
+    : wx78Priority
+      ? `WX-78 circuit ${displayName} in Don't Starve Together. ${description} Materials: ${matList}. See unlock requirements in the WX-78 skill tree, effects, and build tips.`
+      : `How to craft ${displayName} in Don't Starve Together. ${description} Materials: ${matList}. See crafting station, uses, and tips.`;
 
   const enUrl = `${SITE_URL}/item/${canonicalSlug}`;
   const koUrl = `${SITE_URL}/ko/item/${canonicalSlug}`;

@@ -56,6 +56,16 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
     .filter(Boolean);
 
   const routePrefix = lang === "ko" ? "/ko" : "";
+  const pageUrl = `${SITE_URL}${routePrefix}/skill-tree/${char.id}`;
+  const inLanguage = lang === "ko" ? "ko-KR" : "en-US";
+
+  const videoGame = {
+    "@type": "VideoGame",
+    name: "Don't Starve Together",
+    url: "https://www.klei.com/games/dont-starve-together",
+    applicationCategory: "Game",
+    gamePlatform: ["PC", "Mac", "Linux", "PlayStation", "Xbox", "Nintendo Switch"],
+  };
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -65,18 +75,36 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
       : `${displayName} Skill Tree — Don't Starve Together`,
     description: seo.overview,
     image: `${SITE_URL}/images/characters/${char.portrait}.png`,
-    inLanguage: lang === "ko" ? "ko-KR" : "en-US",
+    inLanguage,
+    url: pageUrl,
     isPartOf: {
       "@type": "WebApplication",
       name: "Don't Craft Without Recipes",
       url: SITE_URL,
     },
+    about: videoGame,
+  };
+
+  const softwareAppLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: lang === "ko"
+      ? `${displayName} 스킬트리 시뮬레이터 — Don't Starve Together`
+      : `${displayName} Skill Tree Simulator — Don't Starve Together`,
+    description: seo.howToUse,
+    url: pageUrl,
+    applicationCategory: "GameApplication",
+    operatingSystem: "Web",
+    inLanguage,
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    about: videoGame,
   };
 
   const faqLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    inLanguage: lang === "ko" ? "ko-KR" : "en-US",
+    inLanguage,
     mainEntity: seo.faq.map((q) => ({
       "@type": "Question",
       name: q.question,
@@ -87,6 +115,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
   return (
     <div className="min-h-screen bg-background text-foreground">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
       <header className="border-b border-border px-4 py-3">
