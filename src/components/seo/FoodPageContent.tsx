@@ -91,10 +91,6 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
       lang === "ko" ? "요리솥 레시피" : "crock pot recipe",
       ...(subtitleName ? [subtitleName] : []),
     ].join(", "),
-    nutrition: {
-      "@type": "NutritionInformation",
-      calories: lang === "ko" ? `허기 ${recipe.hunger}` : `${recipe.hunger} hunger points`,
-    },
   };
 
   const faqLd = {
