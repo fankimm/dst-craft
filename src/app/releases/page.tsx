@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.10",
+    date: "2026-05-09",
+    dev: [
+      "fix(seo): Recipe JSON-LD에서 nutrition 객체 제거 (#16). `src/components/seo/FoodPageContent.tsx`의 요리솥 레시피 구조화 데이터에서 `nutrition.calories: '허기 N'` 매핑 삭제. GSC가 'calories' 입력란 누락 경고를 보낸 원인 — Google Rich Results 파서는 NutritionInformation.calories 값으로 Energy 형식(`'240 calories'` 등)을 요구하는데 우리는 게임 허기를 그대로 박아넣어 파싱 실패해 missing 처리됐음. DST 게임 허기는 실제 영양 정보가 아니라 nutrition 매핑 자체가 부적절하므로 객체 통째로 제거 — 파서한테 거짓 신호 주는 것보다 정직. author(Organization)/keywords(comma-string)는 schema.org 및 Google 문서 모두 유효한 형태로 명시되어 있어 그대로 유지(GSC 보고서는 4/28 이전 캐시로 추정 — 재스캔 후 자연 해소 예상).",
+    ],
+    changes: {
+      ko: [],
+      en: [],
+    },
+  },
+  {
     version: "0.23.9",
     date: "2026-05-09",
     dev: [
