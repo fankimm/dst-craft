@@ -9,11 +9,11 @@ import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/Se
 import { TagChip } from "@/components/ui/TagChip";
 
 const typeLabels: Record<string, Record<CookingTagType, string>> = {
-  ko: { ingredient: "재료", station: "요리솥", foodType: "음식유형", effect: "효과", text: "텍스트" },
-  en: { ingredient: "Ingredient", station: "Station", foodType: "Food Type", effect: "Effect", text: "Text" },
-  ja: { ingredient: "素材", station: "調理鍋", foodType: "食品タイプ", effect: "効果", text: "テキスト" },
-  zh_CN: { ingredient: "材料", station: "烹饪锅", foodType: "食物类型", effect: "效果", text: "文本" },
-  zh_TW: { ingredient: "材料", station: "烹飪鍋", foodType: "食物類型", effect: "效果", text: "文字" },
+  ko: { ingredient: "재료", station: "요리솥", foodType: "음식유형", effect: "효과", recipe: "레시피", text: "텍스트" },
+  en: { ingredient: "Ingredient", station: "Station", foodType: "Food Type", effect: "Effect", recipe: "Recipe", text: "Text" },
+  ja: { ingredient: "素材", station: "調理鍋", foodType: "食品タイプ", effect: "効果", recipe: "レシピ", text: "テキスト" },
+  zh_CN: { ingredient: "材料", station: "烹饪锅", foodType: "食物类型", effect: "效果", recipe: "食谱", text: "文本" },
+  zh_TW: { ingredient: "材料", station: "烹飪鍋", foodType: "食物類型", effect: "效果", recipe: "食譜", text: "文字" },
 };
 
 const tagStyles: Record<CookingTagType, string> = {
@@ -25,6 +25,8 @@ const tagStyles: Record<CookingTagType, string> = {
     "border-[#a08060] bg-[#f5ece2] text-[#5a3820] dark:border-[#8b6040]/60 dark:bg-[#3c2418]/50 dark:text-[#c9965a]",
   effect:
     "border-[#6a8a6a] bg-[#e8f0e8] text-[#2a4a2a] dark:border-[#4a7a4a]/60 dark:bg-[#1a2e1a]/50 dark:text-[#80b080]",
+  recipe:
+    "border-[#7a6aa8] bg-[#ede8f5] text-[#3a2a6a] dark:border-[#5a4a8b]/60 dark:bg-[#1c1542]/50 dark:text-[#9a8acf]",
   text:
     "border-[#b8b0a0] bg-[#f0ece4] text-[#5a5040] dark:border-[#6a6458]/60 dark:bg-[#2e2c24]/50 dark:text-[#a09880]",
 };
@@ -34,6 +36,7 @@ const suggestionDotStyles: Record<CookingTagType, string> = {
   station: "bg-[#a8584f]",
   foodType: "bg-[#a08060]",
   effect: "bg-[#6a8a6a]",
+  recipe: "bg-[#7a6aa8]",
   text: "bg-muted-foreground",
 };
 
@@ -45,6 +48,8 @@ interface CookingSearchBarProps {
   onRemoveTag: (index: number) => void;
   onClearAll: () => void;
   locale: Locale;
+  /** True while the 300ms debounce is in flight — surfaced as a small spinner. */
+  pending?: boolean;
   className?: string;
 }
 
@@ -56,6 +61,7 @@ export function CookingSearchBar({
   onRemoveTag,
   onClearAll,
   locale,
+  pending,
   className,
 }: CookingSearchBarProps) {
   const hasContent = tags.length > 0 || inputValue.length > 0;
@@ -97,6 +103,7 @@ export function CookingSearchBar({
         onBackspace={tags.length > 0 ? () => onRemoveTag(tags.length - 1) : undefined}
         onClear={onClearAll}
         showClear={hasContent}
+        pending={pending}
         placeholder={t(locale, "searchPlaceholder")}
       />
       {tags.length > 0 && (

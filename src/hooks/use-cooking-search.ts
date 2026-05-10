@@ -4,8 +4,8 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import type { CookingRecipe } from "@/data/recipes";
 import { cookingRecipes } from "@/data/recipes";
 import { cookpotIngredients } from "@/data/cookpot-ingredients";
-import { foodName } from "@/lib/i18n";
-import type { Locale } from "@/lib/i18n";
+import { foodName, t } from "@/lib/i18n";
+import type { Locale, TranslationKey } from "@/lib/i18n";
 import { trackEvent } from "@/lib/analytics";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -16,7 +16,8 @@ export type CookingTagType =
   | "station"      // 요리솥 / 이동식 요리솥
   | "foodType"     // 음식 유형 (meat, veggie, goodies 등)
   | "effect"       // 특수 효과 (temperature, speed 등)
-  | "text";        // 자유 텍스트 검색
+  | "recipe"       // 특정 레시피 ID 정확 매칭 (서제스천에서 레시피 이름 클릭 시)
+  | "text";        // 자유 텍스트 검색 (사용자가 직접 입력 후 Enter)
 
 export interface CookingSearchTag {
   text: string;
@@ -83,6 +84,9 @@ function searchRecipes(
         case "effect":
           return recipe.specialEffect === tag.engName;
 
+        case "recipe":
+          return recipe.id === tag.engName;
+
         case "ingredient": {
           if (!recipe.requirements) return false;
           const items = recipe.requirements.split(",").map(s => s.trim()).filter(Boolean);
@@ -137,36 +141,115 @@ function ingredientImage(ing: { id: string; image?: string }): string {
   return ing.image ?? `${ing.id}.png`;
 }
 
+// ── Catalog metadata for foodType / station / effect suggestions ──
+
+const foodTypeMeta: Record<string, { key: TranslationKey; image: string }> = {
+  meat:     { key: "foodtype_meat",     image: "game-items/meat.png" },
+  veggie:   { key: "foodtype_veggie",   image: "game-items/carrot.png" },
+  goodies:  { key: "foodtype_goodies",  image: "game-items/honey.png" },
+  roughage: { key: "foodtype_roughage", image: "game-items/cutlichen.png" },
+  nonfood:  { key: "foodtype_nonfood",  image: "game-items/batnosehat.png" },
+};
+
+const stationMeta: Record<string, { key: TranslationKey; image: string }> = {
+  cookpot:         { key: "cooking_cookpot",         image: "game-items/cookpot.png" },
+  portablecookpot: { key: "cooking_portablecookpot", image: "game-items/portablecookpot_item.png" },
+  campfire:        { key: "cooking_campfire",        image: "game-items/campfire.png" },
+  dryingrack:      { key: "cooking_dryingrack",      image: "game-items/meatrack.png" },
+};
+
+// effect_<value> keys must exist in i18n.ts for these to render localized labels.
+const effectKey = (value: string) => `effect_${value}` as TranslationKey;
+
+function effectLabel(value: string, locale: Locale): string {
+  const key = effectKey(value);
+  const label = t(locale, key);
+  return label !== key ? label : value;
+}
+
+/** Distinct foodType / station / specialEffect values that actually appear in recipes. */
+const distinctFoodTypes: string[] = Array.from(
+  new Set(cookingRecipes.map((r) => r.foodType as string)),
+).filter((v) => v in foodTypeMeta);
+const distinctStations: string[] = Array.from(
+  new Set(cookingRecipes.map((r) => r.station as string)),
+).filter((v) => v in stationMeta);
+const distinctEffects: string[] = Array.from(
+  new Set(
+    cookingRecipes
+      .map((r) => r.specialEffect)
+      .filter((v): v is NonNullable<typeof v> => v != null),
+  ),
+);
+
 export function getCookingSuggestions(query: string, locale: Locale): CookingSuggestion[] {
   const lower = query.toLowerCase();
   if (!lower) return [];
   const results: CookingSuggestion[] = [];
   const seen = new Set<string>();
 
-  // 1. Ingredient tag suggestions (Meat, Veggie, etc.)
+  // Match priority mirrors the crafting tab (broad → narrow):
+  // foodType → ingredient tag → station → effect → individual ingredient → recipe name
+
+  // 1. Food type (meat / veggie / goodies / ...)
+  for (const value of distinctFoodTypes) {
+    const meta = foodTypeMeta[value];
+    const localized = t(locale, meta.key);
+    const names = [value, localized.toLowerCase()];
+    const id = `foodType:${value}`;
+    if (names.some((n) => n.includes(lower)) && !seen.has(id)) {
+      seen.add(id);
+      results.push({ text: localized, type: "foodType", image: meta.image, engName: value });
+    }
+  }
+
+  // 2. Ingredient tag (Meat / Veggie / Fruit / ... — these are recipe-requirement tokens)
   for (const [engTag, icon] of Object.entries(tagIcons)) {
     const translated = reqTagTranslations[locale]?.[engTag];
     const names = [engTag.toLowerCase()];
     if (translated) names.push(translated.toLowerCase());
-    if (names.some(n => n.includes(lower))) {
-      if (!seen.has(engTag)) {
-        seen.add(engTag);
-        results.push({
-          text: translated || engTag,
-          type: "ingredient",
-          image: `game-items/${icon}`,
-          engName: engTag,
-        });
-      }
+    const id = `ingredient:${engTag}`;
+    if (names.some((n) => n.includes(lower)) && !seen.has(id)) {
+      seen.add(id);
+      results.push({
+        text: translated || engTag,
+        type: "ingredient",
+        image: `game-items/${icon}`,
+        engName: engTag,
+      });
     }
   }
 
-  // 2. Individual ingredient suggestions
+  // 3. Station (cookpot / portable / campfire / dryingrack)
+  for (const value of distinctStations) {
+    const meta = stationMeta[value];
+    const localized = t(locale, meta.key);
+    const names = [value, localized.toLowerCase()];
+    const id = `station:${value}`;
+    if (names.some((n) => n.includes(lower)) && !seen.has(id)) {
+      seen.add(id);
+      results.push({ text: localized, type: "station", image: meta.image, engName: value });
+    }
+  }
+
+  // 4. Special effect (heat_resistance / electric_attack / ...)
+  for (const value of distinctEffects) {
+    const localized = effectLabel(value, locale);
+    const names = [value.toLowerCase(), localized.toLowerCase()];
+    const id = `effect:${value}`;
+    if (names.some((n) => n.includes(lower)) && !seen.has(id)) {
+      seen.add(id);
+      results.push({ text: localized, type: "effect", engName: value });
+    }
+  }
+
+  // 5. Individual ingredient (carrot / monstermeat / ...)
   for (const ing of cookpotIngredients) {
     const names = [ing.name.toLowerCase()];
     if (ing.nameKo) names.push(ing.nameKo.toLowerCase());
-    if (names.some(n => n.includes(lower)) && !seen.has(ing.name)) {
-      seen.add(ing.name);
+    const id = `ingredient:${ing.name}`;
+    if (names.some((n) => n.includes(lower)) && !seen.has(id)) {
+      seen.add(id);
       results.push({
         text: locale === "ko" && ing.nameKo ? ing.nameKo : ing.name,
         type: "ingredient",
@@ -174,27 +257,25 @@ export function getCookingSuggestions(query: string, locale: Locale): CookingSug
         engName: ing.name,
       });
     }
-    if (results.length >= 12) break;
   }
 
-  // 3. Recipe name suggestions
-  const q = lower;
+  // 6. Recipe name (Meatballs / Pierogi / ...) — exact recipe ID match
   for (const r of cookingRecipes) {
-    if (results.length >= 12) break;
     const localName = foodName(r, locale).toLowerCase();
     const engName = r.name.toLowerCase();
-    if ((localName.includes(q) || engName.includes(q)) && !seen.has(r.id)) {
-      seen.add(r.id);
+    const id = `recipe:${r.id}`;
+    if ((localName.includes(lower) || engName.includes(lower)) && !seen.has(id)) {
+      seen.add(id);
       results.push({
         text: foodName(r, locale),
-        type: "text",
+        type: "recipe",
         image: `game-items/${r.id}.png`,
         engName: r.id,
       });
     }
   }
 
-  return results.slice(0, 12);
+  return results;
 }
 
 // ── Hook ──
@@ -217,6 +298,11 @@ export function useCookingSearch(locale: Locale) {
       : tags,
     [tags, inputValue]
   );
+
+  // `pending` is true while the 300ms debounce is in flight — i.e., the user
+  // typed something that hasn't yet been reflected in `results`. Used by
+  // CookingSearchBar for transient "검색 중" visual feedback.
+  const pending = tagKey(effectiveTags) !== tagKey(debouncedTags);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedTags(effectiveTags), 300);
@@ -272,5 +358,6 @@ export function useCookingSearch(locale: Locale) {
     clearAll,
     results,
     isSearching,
+    pending,
   };
 }
