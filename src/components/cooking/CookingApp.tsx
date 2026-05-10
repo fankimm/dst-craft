@@ -56,6 +56,7 @@ const cookpotCount = cookingRecipes.filter((r) => r.station === "cookpot").lengt
 const portableCount = cookingRecipes.filter((r) => r.station === "portablecookpot").length;
 const campfireCount = cookingRecipes.filter((r) => r.station === "campfire").length;
 const dryingrackCount = cookingRecipes.filter((r) => r.station === "dryingrack").length;
+const teashopCount = cookingRecipes.filter((r) => r.station === "teashop").length;
 const healthRecommendCount = cookingRecipes.filter((r) => r.health >= HEALTH_THRESHOLD).length;
 const sanityRecommendCount = cookingRecipes.filter((r) => r.sanity >= SANITY_THRESHOLD).length;
 const hungerRecommendCount = cookingRecipes.filter((r) => r.hunger >= HUNGER_THRESHOLD).length;
@@ -66,6 +67,7 @@ const cookingCategories: CookingCategory[] = [
   { id: "portablecookpot", labelKey: "cooking_portablecookpot", image: "game-items/portablecookpot_item.png", count: portableCount },
   { id: "campfire", labelKey: "cooking_campfire", image: "game-items/campfire.png", count: campfireCount },
   { id: "dryingrack", labelKey: "cooking_dryingrack", image: "game-items/meatrack.png", count: dryingrackCount },
+  { id: "teashop", labelKey: "cooking_teashop", image: "game-items/hermitcrab_teashop.png", count: teashopCount },
   { id: "raw", labelKey: "cooking_raw", image: "game-items/berries.png", count: rawFoods.length },
   { id: "recommend_health", labelKey: "cooking_recommend_health", image: "ui/health.png", count: healthRecommendCount },
   { id: "recommend_sanity", labelKey: "cooking_recommend_sanity", image: "ui/sanity.png", count: sanityRecommendCount },
@@ -1049,6 +1051,13 @@ function RecipeDetail({
                 onClick={onStationClick ? () => onStationClick("dryingrack", t(locale, "cooking_dryingrack")) : undefined}
               />
             )}
+            {recipe.station === "teashop" && (
+              <TagChip
+                label={t(locale, "cooking_teashop")}
+                icon="game-items/hermitcrab_teashop.png"
+                onClick={onStationClick ? () => onStationClick("teashop", t(locale, "cooking_teashop")) : undefined}
+              />
+            )}
             {recipe.specialEffect && (
               <TagChip
                 label={effectLabel(recipe.specialEffect, locale)}
@@ -1130,13 +1139,15 @@ function RecipeDetail({
                 <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_perish")}</div>
               </div>
             </div>
-            <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
-              <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" />
-              <div>
-                <div className="font-semibold tabular-nums leading-tight">{cookSeconds}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></div>
-                <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_cooktime")}</div>
+            {recipe.station !== "teashop" && (
+              <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
+                <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" />
+                <div>
+                  <div className="font-semibold tabular-nums leading-tight">{cookSeconds}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></div>
+                  <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_cooktime")}</div>
+                </div>
               </div>
-            </div>
+            )}
             {recipe.temperature != null && (
               <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
                 <img
@@ -1157,6 +1168,11 @@ function RecipeDetail({
 
           {/* Requirements — split into needed / excluded */}
           {recipe.requirements && <RequirementsSections text={recipe.requirements} locale={locale} onIngredientClick={onIngredientClick} />}
+
+          {/* Teashop level info — Pearl decoration score reduces dried-plant cost */}
+          {recipe.station === "teashop" && recipe.teashopLevels && (
+            <TeashopLevelTable levels={recipe.teashopLevels} locale={locale} />
+          )}
         </>
       ) : (
         <CombosTab combos={combos} loading={combosLoading} locale={locale} />
@@ -1416,6 +1432,23 @@ function RequirementsSections({ text, locale, onIngredientClick }: { text: strin
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function TeashopLevelTable({ levels, locale }: { levels: [number, number, number]; locale: Locale }) {
+  return (
+    <div className="space-y-1.5">
+      <span className="text-xs text-muted-foreground font-medium">{t(locale, "cooking_teashop_level")}</span>
+      <div className="grid grid-cols-3 gap-2 rounded-lg border border-border bg-surface px-2 py-2">
+        {levels.map((qty, i) => (
+          <div key={i} className="flex flex-col items-center gap-0.5">
+            <span className="text-[10px] text-muted-foreground">Lv {i + 1}</span>
+            <span className="text-sm font-semibold tabular-nums">×{qty}</span>
+          </div>
+        ))}
+      </div>
+      <p className="text-[11px] text-muted-foreground leading-snug">{t(locale, "cooking_teashop_level_help")}</p>
     </div>
   );
 }

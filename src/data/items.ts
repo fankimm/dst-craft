@@ -9284,8 +9284,8 @@ export const allItems: CraftingItem[] = [
   },
   {
     id: "hermitcrab_teashop",
-    name: "Hermitcrab Teashop",
-    description: "Pearl's Tea Shop",
+    name: "Pearl's Tea Shop",
+    description: "There's nothing a cup of Pearl's tea can't fix.",
     image: "hermitcrab_teashop.png",
     category: ["structures"],
     station: "none",

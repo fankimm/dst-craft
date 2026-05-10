@@ -1,4 +1,4 @@
-export type CookingStation = "cookpot" | "portablecookpot" | "campfire" | "dryingrack";
+export type CookingStation = "cookpot" | "portablecookpot" | "campfire" | "dryingrack" | "teashop";
 export type FoodType = "meat" | "veggie" | "goodies" | "roughage" | "generic" | "nonfood";
 
 export interface CookingRecipe {
@@ -18,6 +18,10 @@ export interface CookingRecipe {
   temperatureDuration?: number;
   specialEffect?: string;
   cardIngredients?: [string, number][];
+  /** Teashop-only — dried ingredient quantity at each Pearl decoration level [<25 unavail, level1<50, level2<75, level3]. */
+  teashopLevels?: [number, number, number];
+  /** Optional finalized buff description (i18n key) — used for teashop teas to describe the timed buff. */
+  buffEffectKey?: string;
 }
 
 export const cookingRecipes: CookingRecipe[] = [
@@ -1211,6 +1215,145 @@ export const cookingRecipes: CookingRecipe[] = [
     station: "cookpot",
     specialEffect: "hunger_regen",
     cardIngredients: [["batnose", 1], ["kelp", 1], ["goatmilk", 1], ["milkywhites", 1]],
+  },
+
+  // ============================================================
+  // Pearl's Tea Shop (펄 할머니의 진주네 찻집)
+  // Source: prefabs/hermitcrabtea_defs.lua + prefabs/hermitcrabtea.lua + recipes.lua
+  // - Brewed at hermitcrab_teashop. Each bottle has 10 sips (HERMITCRABTEA_USES); stats below are per sip.
+  // - Pearl's house decoration score determines recipe level (1: <50, 2: 50-74, 3: ≥75) → fewer dried plants needed.
+  //   Common: 8/6/4 dried plants per level. Rare (succulent / firenettles / tillweed / forgetmelots): 6/4/2.
+  //   Below 25 deco score the tea shop becomes inaccessible.
+  // ============================================================
+  {
+    id: "hermitcrabtea_petals",
+    name: "Petal Tea",
+    requirements: "Empty Bottle ×1, Dried Petals ×8",
+    foodType: "goodies",
+    health: 1,
+    hunger: 0,
+    sanity: 10,
+    perishDays: null,
+    cookTime: 0,
+    priority: 0,
+    station: "teashop",
+    specialEffect: "tea_petals_buff",
+    teashopLevels: [8, 6, 4],
+    cardIngredients: [["messagebottleempty", 1], ["petals_dried", 8]],
+  },
+  {
+    id: "hermitcrabtea_petals_evil",
+    name: "Dark Petal Tea",
+    requirements: "Empty Bottle ×1, Dried Dark Petals ×8",
+    foodType: "goodies",
+    health: 1,
+    hunger: 0,
+    sanity: -15,
+    perishDays: null,
+    cookTime: 0,
+    priority: 0,
+    station: "teashop",
+    specialEffect: "tea_petals_evil_buff",
+    teashopLevels: [8, 6, 4],
+    cardIngredients: [["messagebottleempty", 1], ["petals_evil_dried", 8]],
+  },
+  {
+    id: "hermitcrabtea_foliage",
+    name: "Foliage Tea",
+    requirements: "Empty Bottle ×1, Dried Foliage ×8",
+    foodType: "goodies",
+    health: 1,
+    hunger: 0,
+    sanity: 5,
+    perishDays: null,
+    cookTime: 0,
+    priority: 0,
+    station: "teashop",
+    specialEffect: "tea_foliage_buff",
+    teashopLevels: [8, 6, 4],
+    cardIngredients: [["messagebottleempty", 1], ["foliage_dried", 8]],
+  },
+  {
+    id: "hermitcrabtea_succulent_picked",
+    name: "Succulent Tea",
+    requirements: "Empty Bottle ×1, Dried Succulent ×6",
+    foodType: "goodies",
+    health: 8,
+    hunger: 0,
+    sanity: 5,
+    perishDays: null,
+    cookTime: 0,
+    priority: 0,
+    station: "teashop",
+    temperature: -40,
+    temperatureDuration: 120,
+    teashopLevels: [6, 4, 2],
+    cardIngredients: [["messagebottleempty", 1], ["succulent_picked_dried", 6]],
+  },
+  {
+    id: "hermitcrabtea_firenettles",
+    name: "Fire Nettle Tea",
+    requirements: "Empty Bottle ×1, Dried Fire Nettles ×6",
+    foodType: "goodies",
+    health: 1,
+    hunger: 0,
+    sanity: 5,
+    perishDays: null,
+    cookTime: 0,
+    priority: 0,
+    station: "teashop",
+    temperature: 40,
+    temperatureDuration: 120,
+    teashopLevels: [6, 4, 2],
+    cardIngredients: [["messagebottleempty", 1], ["firenettles_dried", 6]],
+  },
+  {
+    id: "hermitcrabtea_tillweed",
+    name: "Tillweed Tea",
+    requirements: "Empty Bottle ×1, Dried Tillweed ×6",
+    foodType: "goodies",
+    health: 20,
+    hunger: 0,
+    sanity: 5,
+    perishDays: null,
+    cookTime: 0,
+    priority: 0,
+    station: "teashop",
+    specialEffect: "tea_tillweed_buff",
+    teashopLevels: [6, 4, 2],
+    cardIngredients: [["messagebottleempty", 1], ["tillweed_dried", 6]],
+  },
+  {
+    id: "hermitcrabtea_moon_tree_blossom",
+    name: "Lune Tree Blossom Tea",
+    requirements: "Empty Bottle ×1, Dried Moon Tree Blossom ×8",
+    foodType: "goodies",
+    health: 1,
+    hunger: 0,
+    sanity: 10,
+    perishDays: null,
+    cookTime: 0,
+    priority: 0,
+    station: "teashop",
+    specialEffect: "tea_moon_tree_blossom_buff",
+    teashopLevels: [8, 6, 4],
+    cardIngredients: [["messagebottleempty", 1], ["moon_tree_blossom_dried", 8]],
+  },
+  {
+    id: "hermitcrabtea_forgetmelots",
+    name: "Forget-Me-Lots Tea",
+    requirements: "Empty Bottle ×1, Dried Forget-Me-Lots ×6",
+    foodType: "goodies",
+    health: 1,
+    hunger: 0,
+    sanity: 20,
+    perishDays: null,
+    cookTime: 0,
+    priority: 0,
+    station: "teashop",
+    specialEffect: "tea_forgetmelots_buff",
+    teashopLevels: [6, 4, 2],
+    cardIngredients: [["messagebottleempty", 1], ["forgetmelots_dried", 6]],
   },
 
   // ============================================================
