@@ -16,7 +16,8 @@ export type CookingTagType =
   | "station"      // 요리솥 / 이동식 요리솥
   | "foodType"     // 음식 유형 (meat, veggie, goodies 등)
   | "effect"       // 특수 효과 (temperature, speed 등)
-  | "text";        // 자유 텍스트 검색
+  | "recipe"       // 특정 레시피 ID 정확 매칭 (서제스천에서 레시피 이름 클릭 시)
+  | "text";        // 자유 텍스트 검색 (사용자가 직접 입력 후 Enter)
 
 export interface CookingSearchTag {
   text: string;
@@ -82,6 +83,9 @@ function searchRecipes(
 
         case "effect":
           return recipe.specialEffect === tag.engName;
+
+        case "recipe":
+          return recipe.id === tag.engName;
 
         case "ingredient": {
           if (!recipe.requirements) return false;
@@ -255,16 +259,16 @@ export function getCookingSuggestions(query: string, locale: Locale): CookingSug
     }
   }
 
-  // 6. Recipe name (Meatballs / Pierogi / ...)
+  // 6. Recipe name (Meatballs / Pierogi / ...) — exact recipe ID match
   for (const r of cookingRecipes) {
     const localName = foodName(r, locale).toLowerCase();
     const engName = r.name.toLowerCase();
-    const id = `text:${r.id}`;
+    const id = `recipe:${r.id}`;
     if ((localName.includes(lower) || engName.includes(lower)) && !seen.has(id)) {
       seen.add(id);
       results.push({
         text: foodName(r, locale),
-        type: "text",
+        type: "recipe",
         image: `game-items/${r.id}.png`,
         engName: r.id,
       });
