@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.15",
+    date: "2026-05-10",
+    dev: [
+      "fix(cooking): 워트 선호 음식 표기 정확화 — 두리안만 \"워트의 선호 음식\" 라벨 노출 (#23). 인게임 wurt.lua에서 `AddFoodtypeAffinity(VEGGIE, 1.33)`와 `AddPrefabAffinity(\"durian\", 1.93) -- veggi bonus + 15`을 구분: 모든 채소가 ×1.33 카테고리 다이어트지만 두리안만 채소 기본을 *초과*하는 +15 추가 보너스를 받음. 켈프류(kelp/kelp_cooked/boatpatch_kelp)는 prefab override지만 배수가 채소 기본과 동일(1.33), 인게임 주석이 \"prevents the negative stats, otherwise foodtypeaffinity would have suffice\"라 명시 — 음수 스탯 방지용일 뿐 특별 보너스 아님. `getAffinityCharacters()`를 prefab 보너스 > foodtype baseline일 때만 반환하도록 수정 → 모든 채소 음식 카드에 \"워트의 선호 음식\" 라벨이 붙던 노이즈 제거, 두리안/구운 두리안만 라벨 유지. `FOODTYPE_AFFINITIES` 데이터는 보존(채소 다이어트 메커닉의 진실 공급원). 사용자 피드백 기반(이전 답변에서 \"모든 채소가 선호 음식이 맞다\"고 잘못 닫은 케이스). docs/mistakes.md에 \"카테고리 affinity\"를 \"특별 선호 음식\"과 동일시 항목 추가.",
+    ],
+    changes: {
+      ko: [
+        "요리탭 음식 카드의 \"워트의 선호 음식\" 라벨이 두리안에만 표시되도록 정정 — 다른 채소들은 모두 워트가 ×1.33 허기 보너스를 받지만, 카드별 라벨로 강조될 정도의 특별 선호는 두리안(+15 추가 보너스)뿐임",
+      ],
+      en: [
+        "\"Wurt's favorite\" label on cooking cards is now shown only on Durian. All veggies still grant Wurt the standard ×1.33 hunger bonus, but Durian is the only one with the extra +15 specialty.",
+      ],
+    },
+  },
+  {
     version: "0.23.14",
     date: "2026-05-10",
     dev: [
