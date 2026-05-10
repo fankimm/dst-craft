@@ -161,6 +161,11 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **용도**: 드롭다운 서제스천 + 태그 지원 검색 입력
 - **사용처**: CookingApp, BossesApp
 
+### AffinityBadges (`src/components/cooking/CookingApp.tsx` 내부)
+- **용도**: 음식의 캐릭터 선호 라벨 ("○○의 선호 음식") 한 줄 노출
+- **사용처**: RecipeDetail (cookpot 레시피), RawFoodDetail (생식 음식)
+- **데이터 소스**: `getAffinityCharacters(foodId, foodType)` — prefab 보너스가 캐릭터의 foodtype 기본을 *초과*할 때만 표시 (예: 워트는 두리안만, 카테고리 ×1.33 일치 항목은 노출 안 됨)
+
 ---
 
 ## 공유 훅
