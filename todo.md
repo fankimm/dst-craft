@@ -7,6 +7,14 @@
 
 ## 진행중
 
+### 요리탭 "생식 가능" 카테고리 [~] (#22, 2026-05-10)
+- [x] DST prefabs에서 raw food stat 추출 스크립트 (`scripts/extract-raw-foods.py`) — VEGGIES 테이블 + mushrooms + per-prefab edible 패턴 3종 처리, TUNING 상수 자동 해석
+- [x] `src/data/raw-foods.ts` 자동 생성 (35개) — id/name/nameKo/foodType/hunger/health/sanity/perishDays
+- [x] 요리탭 카테고리 그리드 + `RawFoodGrid` + `RawFoodDetail` UI
+- [ ] 검색 통합 — 현재 카테고리 그리드로만 접근. 차후 `useCookingSearch`에 raw food 인덱싱 추가 (별도 follow-up)
+- [ ] 즐겨찾기/최근 통합 — raw food를 즐겨찾기 추가는 가능하나 "즐겨찾기" 카테고리는 cookingRecipes만 표시 (raw food 누락). `filteredRecipes` 로직 확장 필요 (별도 follow-up)
+- [ ] 추가 raw food 항목 — eel/pondfish/pondeel/mole/trunk_summer/winter/mandrake/tallbirdegg/royal_jelly 등 누락 ~15-20개. 추출 스크립트의 SPECIAL_FILES 추가 또는 새 prefab 패턴 처리 (별도 follow-up)
+
 ### 요리탭 검색 개선 [~] (2026-04-14)
 > 핵심 4개 sub-item은 #21로 완료(2026-05-09). description 추가만 보류 — 별도 이슈로 분리 후 이 섹션 [x]로.
 - [x] useCookingSearch() 훅 생성 — 제작탭 useSearch()와 동일한 UX (다중 태그 AND, 300ms 디바운스, live preview, isSearching)

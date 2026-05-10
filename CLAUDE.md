@@ -210,6 +210,22 @@ jihwan-kim3 (macOS):
 - 누락된 보조 매핑(set_bonus 상세, skill_tree 효과 등)은 specialinfo 텍스트가 대부분 커버 — 구조화가 필요하면 별도 매핑 테이블로 추가 (코드 외 데이터)
 - 설계 히스토리: `docs/scrapbook-migration.md`
 
+## Raw Foods Pipeline Rules
+- "생식 가능" 카테고리(요리탭)에 표시되는 원재료의 hunger/health/sanity/perish 값은 인게임 `prefabs/{veggies,mushrooms,meats,...}.lua`의 `inst.components.edible` 자동 추출 데이터 사용 (v0.23.14부터, #22)
+- `src/data/raw-foods.ts`는 `scripts/extract-raw-foods.py`가 자동 생성 — **수동 편집 금지**
+- 게임 업데이트 시 갱신 절차:
+  1. `unzip -o "$SCRIPTS_ZIP" 'scripts/prefabs/*.lua' 'scripts/tuning.lua' 'scripts/strings.lua' -d /tmp/dst-extract/`
+  2. `python3 scripts/extract-raw-foods.py` 실행 → `src/data/raw-foods.ts` 재생성
+  3. diff로 변경점 확인 (TUNING.* 상수 변동, 새 prefab 추가 등)
+- 추출 패턴 3종:
+  1. `prefabs/veggies.lua`의 `VEGGIES = { ... }` 테이블 (MakeVegStats 위치 인자 1=seedweight, 2=hunger, 3=health, 4=perish, 5=sanity)
+  2. `prefabs/mushrooms.lua`의 pickloot=red/green/blue_cap 블록
+  3. `prefabs/{meats,butter,honey,egg,acorn,...}.lua`의 per-prefab `inst.components.edible.{foodtype,hungervalue,healthvalue,sanityvalue}` 직접 설정
+- 한국어 이름은 ko.po(`STRINGS.NAMES.<ID>`)에서 자동 매칭. 누락 시 영문 fallback
+- 정확하지 않은 항목은 스크립트 상단의 `OVERRIDES` dict에 명시적으로 수정 (예: butter → foodtype dairy)
+- 제외할 항목은 `EXCLUDE_IDS`에 ID 추가 (예: acorn — FOODTYPE.SEEDS, raw 식용 의미 없음)
+- 렌더링: `src/components/cooking/CookingApp.tsx`의 `RawFoodGrid` + `RawFoodDetail` (요리탭 "raw" 카테고리에서만)
+
 ## Skill Tree Verification
 - `scripts/verify-skill-trees.py` — 인게임 `skilltree_<char>.lua` vs 우리 `src/data/skill-trees/*.ts` 정적 비교
   - 비교: 스킬 ID set, group, root, connects, locks(AND-deps), tags(set), lock_open 유무

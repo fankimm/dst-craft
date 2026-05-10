@@ -6,6 +6,7 @@ import { ChevronRight } from "lucide-react";
 import { trackItemClick, fetchCombos } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 import { cookingRecipes, type CookingRecipe } from "@/data/recipes";
+import { rawFoods, type RawFood } from "@/data/raw-foods";
 import { cookpotIngredients, ingredientImage } from "@/data/cookpot-ingredients";
 import { getItemById } from "@/lib/crafting-data";
 import { useSettings } from "@/hooks/use-settings";
@@ -65,6 +66,7 @@ const cookingCategories: CookingCategory[] = [
   { id: "portablecookpot", labelKey: "cooking_portablecookpot", image: "game-items/portablecookpot_item.png", count: portableCount },
   { id: "campfire", labelKey: "cooking_campfire", image: "game-items/campfire.png", count: campfireCount },
   { id: "dryingrack", labelKey: "cooking_dryingrack", image: "game-items/meatrack.png", count: dryingrackCount },
+  { id: "raw", labelKey: "cooking_raw", image: "game-items/berries.png", count: rawFoods.length },
   { id: "recommend_health", labelKey: "cooking_recommend_health", image: "ui/health.png", count: healthRecommendCount },
   { id: "recommend_sanity", labelKey: "cooking_recommend_sanity", image: "ui/sanity.png", count: sanityRecommendCount },
   { id: "recommend_hunger", labelKey: "cooking_recommend_hunger", image: "ui/hunger.png", count: hungerRecommendCount },
@@ -130,9 +132,13 @@ export function CookingApp({
     goHome,
   } = useCookingState();
 
-  // Derive recipe object from ID
+  // Derive recipe object from ID — falls back to raw foods so that selecting
+  // a raw item (carrot, meat, ...) opens its detail panel through the same hook.
   const selectedRecipe = selectedRecipeId
     ? cookingRecipes.find((r) => r.id === selectedRecipeId) ?? null
+    : null;
+  const selectedRawFood: RawFood | null = !selectedRecipe && selectedRecipeId
+    ? rawFoods.find((f) => f.id === selectedRecipeId) ?? null
     : null;
 
   // Cooking favorites: filter recipes whose id is in favorites set
@@ -166,6 +172,7 @@ export function CookingApp({
   }, [pendingRecipeId, onClearPendingRecipe, openRecipeFromExternal]);
 
   const { panelItem: panelRecipe, panelOpen } = useDetailPanel(selectedRecipe);
+  const { panelItem: panelRawFood, panelOpen: rawPanelOpen } = useDetailPanel(selectedRawFood);
 
   const handleGoHome = useCallback(() => {
     goHome();
@@ -272,8 +279,8 @@ export function CookingApp({
     ? cookingCategories.find((c) => c.id === selectedCategory)
     : null;
 
-  // Detail panel
-  const detailPanel = panelRecipe && (
+  // Detail panel — recipe (cookpot/campfire/dryingrack) OR raw food (생식 가능)
+  const detailPanel = panelRecipe ? (
     <DetailPanel open={panelOpen} onClose={handleClosePanel}>
       <RecipeDetail
         recipe={panelRecipe}
@@ -287,7 +294,19 @@ export function CookingApp({
         clicks={getClicks(panelRecipe.id)}
       />
     </DetailPanel>
-  );
+  ) : panelRawFood ? (
+    <DetailPanel open={rawPanelOpen} onClose={handleClosePanel}>
+      <RawFoodDetail
+        food={panelRawFood}
+        locale={resolvedLocale}
+        onFoodTypeClick={handleFoodTypeClick}
+        onIngredientClick={onViewCraftingItem}
+        isFav={isFavorite(panelRawFood.id)}
+        onToggleFav={() => toggleFavorite(panelRawFood.id)}
+        clicks={getClicks(panelRawFood.id)}
+      />
+    </DetailPanel>
+  ) : null;
 
   // Search bar component (shared between both views)
   const searchBar = (
@@ -410,17 +429,28 @@ export function CookingApp({
         {searchBar}
       </div>
 
-      {/* Recipe grid */}
+      {/* Recipe grid (or raw food grid for the "raw" category) */}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
         <div className="flex flex-col min-h-full">
-          <RecipeGrid
-            recipes={displayRecipes}
-            locale={resolvedLocale}
-            onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); addRecent(recipe.id); }}
-            isFavorite={isFavorite}
-            onToggleFav={toggleFavorite}
-            getClicks={sortByPopular ? getClicks : undefined}
-          />
+          {selectedCategory === "raw" && !isSearching ? (
+            <RawFoodGrid
+              foods={rawFoods}
+              locale={resolvedLocale}
+              onSelect={(food) => { selectRecipe(food.id); trackItemClick(food.id); addRecent(food.id); }}
+              isFavorite={isFavorite}
+              onToggleFav={toggleFavorite}
+              getClicks={sortByPopular ? getClicks : undefined}
+            />
+          ) : (
+            <RecipeGrid
+              recipes={displayRecipes}
+              locale={resolvedLocale}
+              onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); addRecent(recipe.id); }}
+              isFavorite={isFavorite}
+              onToggleFav={toggleFavorite}
+              getClicks={sortByPopular ? getClicks : undefined}
+            />
+          )}
           <Footer />
         </div>
       </div>
@@ -596,6 +626,229 @@ function RecipeCard({
         {localName}
       </span>
     </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Raw food grid + card + detail (생식 가능 — items eaten without cooking)
+// ---------------------------------------------------------------------------
+
+function rawFoodLocaleName(food: RawFood, locale: Locale): string {
+  if (locale === "ko" && food.nameKo) return food.nameKo;
+  return food.name;
+}
+
+function RawFoodGrid({
+  foods,
+  locale,
+  onSelect,
+  isFavorite,
+  onToggleFav,
+  getClicks,
+}: {
+  foods: RawFood[];
+  locale: Locale;
+  onSelect: (food: RawFood) => void;
+  isFavorite: (id: string) => boolean;
+  onToggleFav: (id: string) => void;
+  getClicks?: (id: string) => number;
+}) {
+  const [visibleCount, setVisibleCount] = useState(RECIPE_PAGE_SIZE);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { setVisibleCount(RECIPE_PAGE_SIZE); }, [foods]);
+
+  const loadMore = useCallback(() => {
+    setVisibleCount((prev) => Math.min(prev + RECIPE_PAGE_SIZE, foods.length));
+  }, [foods.length]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || visibleCount >= foods.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => { if (entries[0].isIntersecting) loadMore(); },
+      { rootMargin: "200px" },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [visibleCount, foods.length, loadMore]);
+
+  if (foods.length === 0) {
+    return (
+      <div className="flex items-center justify-center py-12 text-muted-foreground text-sm">
+        {t(locale, "noItems")}
+      </div>
+    );
+  }
+
+  const visible = foods.length > RECIPE_PAGE_SIZE ? foods.slice(0, visibleCount) : foods;
+
+  return (
+    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+      {visible.map((food) => (
+        <RawFoodCard
+          key={food.id}
+          food={food}
+          locale={locale}
+          onClick={() => onSelect(food)}
+          isFav={isFavorite(food.id)}
+          onToggleFav={() => onToggleFav(food.id)}
+          clicks={getClicks?.(food.id)}
+        />
+      ))}
+      {visibleCount < foods.length && (
+        <div ref={sentinelRef} className="col-span-full flex justify-center py-4">
+          <div className="size-5 border-2 border-muted-foreground/30 border-t-muted-foreground rounded-full animate-spin" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RawFoodCard({
+  food,
+  locale,
+  onClick,
+  isFav,
+  onToggleFav,
+  clicks,
+}: {
+  food: RawFood;
+  locale: Locale;
+  onClick: () => void;
+  isFav: boolean;
+  onToggleFav: () => void;
+  clicks?: number;
+}) {
+  const localName = rawFoodLocaleName(food, locale);
+
+  return (
+    <button
+      onClick={onClick}
+      className="relative flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover border-border hover:border-ring"
+    >
+      <FavClickBadge isFav={isFav} onToggleFav={onToggleFav} clicks={clicks} />
+      <img
+        src={assetPath(`/images/game-items/${food.image ?? `${food.id}.png`}`)}
+        alt={localName}
+        className="size-12 sm:size-14 object-contain"
+        loading="lazy"
+      />
+      <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight line-clamp-2">
+        {localName}
+      </span>
+    </button>
+  );
+}
+
+function RawFoodDetail({
+  food,
+  locale,
+  onFoodTypeClick,
+  onIngredientClick,
+  isFav,
+  onToggleFav,
+  clicks,
+}: {
+  food: RawFood;
+  locale: Locale;
+  onFoodTypeClick?: (foodType: string) => void;
+  onIngredientClick?: (id: string) => void;
+  isFav: boolean;
+  onToggleFav: () => void;
+  clicks?: number;
+}) {
+  const localName = rawFoodLocaleName(food, locale);
+  const ftLabelKey = foodTypeLabelKeys[food.foodType];
+  const ftLabel = ftLabelKey ? t(locale, ftLabelKey) : food.foodType;
+  const secondaryFtLabelKey = food.secondaryFoodType ? foodTypeLabelKeys[food.secondaryFoodType] : undefined;
+  const secondaryFtLabel = secondaryFtLabelKey ? t(locale, secondaryFtLabelKey) : food.secondaryFoodType;
+
+  return (
+    <div className="flex flex-col h-full overflow-y-auto px-4 py-3 sm:px-5 sm:py-4">
+      {/* Header: image + name + favorite + clicks */}
+      <div className="flex items-start gap-3 mb-3">
+        <img
+          src={assetPath(`/images/game-items/${food.image ?? `${food.id}.png`}`)}
+          alt={localName}
+          className="size-16 sm:size-20 object-contain shrink-0"
+        />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <h2 className="text-lg sm:text-xl font-semibold text-foreground leading-tight">{localName}</h2>
+            <button
+              onClick={onToggleFav}
+              className="p-0.5 rounded-full transition-colors shrink-0"
+              aria-label="favorite"
+            >
+              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} />
+            </button>
+            <ShareButton
+              url={`/?tab=cooking&cat=raw&recipe=${food.id}`}
+              toastMessage={locale === "ko" ? "링크가 복사되었습니다" : "Link copied"}
+            />
+          </div>
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <PrefabIdButton id={food.id} locale={locale} />
+            <ViewCount clicks={clicks ?? 0} />
+          </div>
+          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+            <TagChip
+              label={ftLabel}
+              icon={foodTypeIcons[food.foodType]}
+              onClick={onFoodTypeClick ? () => onFoodTypeClick(food.foodType) : undefined}
+            />
+            {secondaryFtLabel && food.secondaryFoodType && (
+              <TagChip
+                label={secondaryFtLabel}
+                icon={foodTypeIcons[food.secondaryFoodType]}
+                onClick={onFoodTypeClick ? () => onFoodTypeClick(food.secondaryFoodType!) : undefined}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Stats inline */}
+      <div className="flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
+        <StatBox
+          iconSrc={assetPath("/images/ui/health.png")}
+          label={t(locale, "cooking_health")}
+          formatted={formatStat(food.health)}
+          colorClass={statColor(food.health)}
+        />
+        <StatBox
+          iconSrc={assetPath("/images/ui/hunger.png")}
+          label={t(locale, "cooking_hunger")}
+          formatted={formatStat(food.hunger)}
+          colorClass={statColor(food.hunger)}
+          divider
+        />
+        <StatBox
+          iconSrc={assetPath("/images/ui/sanity.png")}
+          label={t(locale, "cooking_sanity")}
+          formatted={formatStat(food.sanity)}
+          colorClass={statColor(food.sanity)}
+          divider
+        />
+        <StatBox
+          label={t(locale, "cooking_perish")}
+          formatted={`${food.perishDays}${t(locale, "cooking_days")}`}
+          divider
+        />
+      </div>
+
+      {/* Optional jump to crafting tab */}
+      {onIngredientClick && getItemById(food.id) && (
+        <button
+          onClick={() => onIngredientClick(food.id)}
+          className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ChevronRight className="size-3" />
+          {locale === "ko" ? "제작탭에서 보기" : "View in crafting tab"}
+        </button>
+      )}
+    </div>
   );
 }
 

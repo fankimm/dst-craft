@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.14",
+    date: "2026-05-10",
+    dev: [
+      "feat(cooking): 요리탭에 \"생식 가능\" 카테고리 추가 + DST prefabs raw food stat 자동 추출 파이프라인 (#22). `scripts/extract-raw-foods.py` 신설 — `tuning.lua`의 TUNING.* 상수(CALORIES_*/HEALING_*/SANITY_*/PERISH_*) 해석 후 `prefabs/veggies.lua`의 VEGGIES 테이블(MakeVegStats positional args), `prefabs/mushrooms.lua`의 pickloot=red/green/blue_cap 블록, `prefabs/{meats,butter,honey,egg,acorn}.lua`의 per-prefab `inst.components.edible` 직접 설정 3가지 패턴을 처리. ko.po `STRINGS.NAMES.<ID>` 자동 매칭으로 한국어 이름 채움. OVERRIDES dict로 정확하지 않은 항목 수정(butter→dairy), EXCLUDE_IDS로 부적합 제외(acorn — FOODTYPE.SEEDS), IMAGE_OVERRIDES로 누락 아이콘 매핑(onion → quagmire_onion.png). 출력: `src/data/raw-foods.ts` (35개, 자동 생성, 수동 편집 금지).",
+      "feat(cooking): 요리탭 카테고리 그리드에 \"생식 가능\" 항목 + RawFoodGrid + RawFoodCard + RawFoodDetail 컴포넌트. `cookingCategories`에 `{ id: 'raw', label: cooking_raw, image: berries.png }` 추가, `CookingCategoryId`에 `RawCategoryId` 합성. selectedCategory === 'raw' && !isSearching 분기에서 RawFoodGrid 렌더링(기존 RecipeGrid 우회). `useDetailPanel<RawFood>` 별도 훅으로 raw 패널 분리, RawFoodDetail이 RecipeDetail과 동일 레이아웃(이미지+이름+공유+즐찾+태그+stat boxes) — 생식 raw 영양(체력/허기/정신력/유통기한) 노출. 음식유형 칩 클릭 시 cookingRecipes 필터로 cross-link.",
+      "feat: i18n `cooking_raw` 신설 (\"생식 가능\"/\"Raw Food\"). CLAUDE.md에 Raw Foods Pipeline Rules 섹션 추가 — Item Stats Pipeline Rules 패턴 미러, 게임 업데이트 시 갱신 절차/패턴/OVERRIDES 운영 규칙 명시.",
+      "fix(cooking): 양파 이미지 깨짐 — base `onion.png`가 public/images/game-items/에 없고 `quagmire_onion.png`만 존재. `IMAGE_OVERRIDES` dict로 매핑.",
+    ],
+    changes: {
+      ko: [
+        "요리탭에 \"생식 가능\" 카테고리 신설 — 굽거나 요리하지 않고 바로 먹을 수 있는 35개 원재료(고기/채소/과일/버섯/달걀/꿀/버터/얼음 등)와 raw 영양 수치(체력/허기/정신력/유통기한) 표시",
+        "양파 이미지 깨짐 수정",
+      ],
+      en: [
+        "New \"Raw Food\" category in the cooking tab — 35 raw ingredients (meat / veggies / fruits / mushrooms / eggs / honey / butter / ice / ...) with raw eat stats (health, hunger, sanity, perish days).",
+        "Fixed broken onion icon.",
+      ],
+    },
+  },
+  {
     version: "0.23.13",
     date: "2026-05-10",
     dev: [

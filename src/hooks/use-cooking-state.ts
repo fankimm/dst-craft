@@ -8,7 +8,9 @@ import type { CookingStation } from "@/data/recipes";
 // ---------------------------------------------------------------------------
 
 export type RecommendCategoryId = "recommend_health" | "recommend_sanity" | "recommend_hunger";
-export type CookingCategoryId = "all" | "favorites" | "recent" | CookingStation | RecommendCategoryId;
+/** Synthetic category — items eaten without cooking, sourced from `src/data/raw-foods.ts`. */
+export type RawCategoryId = "raw";
+export type CookingCategoryId = "all" | "favorites" | "recent" | CookingStation | RecommendCategoryId | RawCategoryId;
 
 // ---------------------------------------------------------------------------
 // URL helpers
