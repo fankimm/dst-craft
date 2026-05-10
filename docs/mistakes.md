@@ -38,6 +38,13 @@
 - **검증**: `grep -A1 'STRINGS.SCRAPBOOK.SPECIALINFO.<ID_UPPER>' ko.po | grep msgstr` ↔ `grep '<ID_UPPER>' tuning.lua` ↔ 영문 specialinfo (`grep -A5 'SCRAPBOOK_SPECIALINFO' strings.lua`). 셋이 같은 수치를 가리키는지 교차 확인
 - **부수**: 비슷한 번역 버그가 다른 회로/캐릭터/아이템에도 있을 수 있음. 시뮬레이터/스탯 시스템에서 한글 스크랩북 텍스트의 수치를 직접 파싱해 사용하지 말 것 — 별도 정형 필드(value: number)로 코드 기준 값을 두고, 텍스트는 표시용으로만 사용
 
+### "카테고리 affinity"를 "특별 선호 음식"과 동일시
+- **문제**: 워트가 `AddFoodtypeAffinity(FOODTYPE.VEGGIE, 1.33)`을 가지고 있다는 사실만 보고 "모든 채소는 워트 선호 음식"이라고 답변/구현 → 음식 카드마다 "워트의 선호 음식" 라벨이 붙어 노이즈가 됨. 사용자 피드백으로 발각: "워트 선호는 두리안만 맞는 것 같다, 두리안에게만 +15 추가 보너스가 있다"
+- **원인**: 인게임 wurt.lua를 다시 읽어보니 `AddPrefabAffinity("durian", 1.93)` 주석이 명시적으로 "veggi bonus + 15", `AddPrefabAffinity("kelp", 1.33)` 주석은 "prevents the negative stats, otherwise foodtypeaffinity would have suffice"라고 적혀있음. 즉 두리안만 채소 기본을 *초과*하는 진짜 특별 선호이고, 켈프는 음수 스탯 방지용 동일 배수 override일 뿐. 코드 주석을 끝까지 안 읽고 함수 호출만 보고 결론지음
+- **교훈**: foodtype affinity와 prefab affinity는 다른 의미. UI에서 "○○의 선호 음식"으로 강조하려면 prefab 보너스가 그 캐릭터의 foodtype 기본 보너스를 *초과*해야 함. 동일하면 카테고리 다이어트(예: 워트 = 채식주의자, 모든 채소 ×1.33)일 뿐 카드별 강조 라벨은 부적절. 또한 수치 옆 인게임 주석은 항상 끝까지 읽을 것 — `-- veggi bonus + 15` / `-- prevents the negative stats` 같은 짧은 주석에 결정적 의미가 들어있음
+- **검증**: `grep -B2 -A5 "foodaffinity" prefabs/<char>.lua` → AddFoodtypeAffinity와 AddPrefabAffinity의 배수 비교 → 코드 주석으로 "특별 보너스 vs 동일 override" 의도 확인. UI 라벨은 prefab > foodtype baseline일 때만 표시
+- **추가 사실**: 사용자가 같은 주제로 두 번 피드백을 줬는데 1차 답변에서 "모든 채소가 선호 음식이 맞다"고 잘못 닫았다. 사용자 재차 지적하지 않았다면 그대로 잘못된 상태로 남았을 것 — 사용자 피드백을 받았을 때 코드를 한 단계 더 확인하지 않은 게 본질적 실수
+
 ### 함수명만 보고 동작을 추측
 - **문제**: `MakeForgeRepairable` 함수명만 보고 "대장간에서 수리 가능"이라고 작성 → 실제로는 전용 수리 키트로 수리하는 구조
 - **원인**: 함수 내부 구현(standardcomponents.lua)과 관련 컴포넌트(forgerepair.lua, forgerepairable.lua)를 읽지 않고 함수명에서 의미를 추측
