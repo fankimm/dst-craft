@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.13",
+    date: "2026-05-10",
+    dev: [
+      "feat(cooking): 요리탭 검색 개선 — 서제스천 제한 해제 + 분류 정렬 통일 + 디바운스 스피너 + 라벨 disambiguate (#21). `getCookingSuggestions`의 12-item slice 제거 (제작탭 useSearch와 동일하게 무제한). 분류 우선순위를 6단계로 정렬: foodType → ingredient tag → station → effect → individual ingredient → recipe (제작탭 character→category→material→item→station 패턴 미러). foodType/station/effect 서제스천을 신규 추가 — `cookingRecipes`의 distinct 값에서 컴파일타임 컴파일, i18n.ts의 `foodtype_*`/`cooking_*`/`effect_*` 키로 라벨. `useCookingSearch`에 `pending` 플래그 노출 (effectiveTags vs debouncedTags 비교) → `SearchWithSuggestions`가 디바운스 동안 Search 아이콘을 lucide Loader2(animate-spin)로 스왑. 한국어 음식유형 라벨 disambiguate: foodtype_meat \"고기\"→\"육류\", foodtype_veggie \"채소\"→\"채소류\" — 검색 dropdown에서 음식유형과 재료(Meat 태그)가 같은 라벨로 노출돼 결과가 비슷해 보이는 UX 혼선 해소. 새 CookingTagType `recipe` 추가 — 레시피 이름 매칭 서제스천이 free-text(\"텍스트\")와 같은 타입을 공유하던 것을 분리, `searchRecipes`에서 `recipe.id === tag.engName` 정확 매칭 (이전 substring 매칭). 5개 로케일 모두 `레시피`/`Recipe`/`レシピ`/`食谱`/`食譜` typeLabel + 보라색 톤 tagStyles 추가. todo.md 요리탭 검색 개선 4/5 sub-item [x] 갱신, description은 보류(DST RECIPE_DESC 테이블에 cookpot food 미포함).",
+    ],
+    changes: {
+      ko: [
+        "요리탭 검색 서제스천 개선 — 음식유형/요리솥/효과까지 제안 + 12개 제한 해제 + 디바운스 중 검색 아이콘이 스피너로 전환",
+        "검색에서 음식유형과 재료가 같은 \"고기\"/\"채소\"로 보이던 혼선 해소 — 음식유형은 \"육류\"/\"채소류\"로, 재료는 그대로 \"고기\"/\"채소\"",
+        "레시피 이름 서제스천이 \"레시피\" 타입으로 분리되어 정확히 그 레시피만 필터 (이전엔 \"텍스트\" 라벨에 substring 매칭)",
+      ],
+      en: [
+        "Cooking search suggestions now include food type, station, effect; the 12-item cap is removed; the search icon spins during debounce.",
+        "Korean labels for food type vs ingredient are disambiguated (육류/채소류 vs 고기/채소) so suggestions don't share the same label.",
+        "Recipe-name suggestions are now their own \"Recipe\" tag type with exact recipe id matching, instead of the previous catch-all \"Text\" substring search.",
+      ],
+    },
+  },
+  {
     version: "0.23.12",
     date: "2026-05-09",
     dev: [
