@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.19",
+    date: "2026-05-10",
+    dev: [
+      "feat(cooking): 펄 할머니 진주네 찻집 차 8종 + 찻집 구조물 데이터 누락 보강 (#27). 게임 소스(`prefabs/hermitcrabtea_defs.lua`, `prefabs/hermitcrabtea.lua`, `recipes.lua` 1280-1292행) 기준으로 8종 차(petals/petals_evil/foliage/succulent_picked/firenettles/tillweed/moon_tree_blossom/forgetmelots) 추가: 즉시효과(sanity/health) — TUNING.SANITY_TINY/SMALL/MED/MEDLARGE + HEALING_TINY/MEDSMALL/MED 매핑, 온도효과 succulent ×−40°C·firenettles ×+40°C(120s = 4 seg), 지속버프 6종(petals: +1정신/sec×45s, petals_evil: −2정신/sec×60s, foliage: 광역 정신데미지 −10%×3분, tillweed: +1체력/0.5s×15s, moon_tree_blossom: 그림자 위협×3분, forgetmelots: +2정신/sec×45s). `CookingStation`에 `\"teashop\"` 추가, `CookingRecipe.teashopLevels?: [number, number, number]` 신설(펄집 장식점수 레벨별 마른재료 수량 — common 8/6/4, rare 6/4/2, ≥75점 lv3). `cookpot-ingredients.ts`에 `forgetmelots_dried`(말린 건망초) + `messagebottleempty`(빈 병) 추가 — 요구사항 칩 아이콘/한국어 매칭용. `CookingApp.tsx` `cookingCategories`에 `teashop` 카테고리(`hermitcrab_teashop.png` 아이콘) + RecipeDetail에 teashop 칩 + `TeashopLevelTable` 컴포넌트 신설 + cookTime 행은 station=teashop일 때 숨김. i18n `cooking_teashop`/`cooking_teashop_level`/`cooking_teashop_level_help` + `effect_tea_*_buff` 6종 추가(ko/en). `locales/ko.ts`에 `hermitcrabtea_*` 8종 name/desc 추가(ko.po 원문 기준). `items.ts` `hermitcrab_teashop`은 이미 structures 카테고리에 있어 \"제작탭에 추가\" 요청은 추가 작업 불필요 — name/description만 ko.po·strings.lua 원문(\"There's nothing a cup of Pearl's tea can't fix.\")으로 정정. 텔레그램 채널 메시지로 시작된 작업.",
+    ],
+    changes: {
+      ko: [
+        "요리탭에 \"진주네 찻집\" 카테고리 신설 — 펄 할머니가 만들어주는 차 8종(꽃차/어둠꽃차/고사리차/다육이차/불쐐기차/뒤엎시라차/달빛나무 꽃차/건망초차) 표시",
+        "각 차의 즉시효과(체력/정신력)·온도효과·지속버프(예: 정신력 +1/초 × 45초)와 찻집 레벨 1/2/3에 따른 재료 수량 변화 표기",
+        "찻집(진주네 찻집) 구조물의 한국어명·설명을 ko.po·인게임 원문 기준으로 정정",
+      ],
+      en: [
+        "New \"Pearl's Tea Shop\" category in the cooking tab — Pearl's 8 brewable teas (Petal / Dark Petal / Foliage / Succulent / Fire Nettle / Tillweed / Lune Tree Blossom / Forget-Me-Lots).",
+        "Each tea shows immediate effect (health/sanity), temperature effect (where applicable), the duration buff (e.g., +1 Sanity/sec for 45s), and the dried-ingredient cost at each Pearl decoration level (1 / 2 / 3).",
+        "Tea Shop structure name and description corrected to match ko.po and the in-game string.",
+      ],
+    },
+  },
+  {
     version: "0.23.18",
     date: "2026-05-10",
     dev: [

@@ -123,6 +123,9 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "firenettles_dried", name: "Dried Fire Nettles", nameKo: "말린 불쐐기풀", tags: { decoration: 1, dried: 1 }, category: "misc" },
   { id: "tillweed_dried", name: "Dried Tillweed", nameKo: "말린 잡초", tags: { decoration: 1, dried: 1 }, category: "misc" },
   { id: "moon_tree_blossom_dried", name: "Dried Moon Tree Blossom", nameKo: "말린 달나무 꽃", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "forgetmelots_dried", name: "Dried Forget-Me-Lots", nameKo: "말린 건망초", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  // Pearl's Tea Shop bottle — not a cookpot ingredient, but listed so requirements icons resolve.
+  { id: "messagebottleempty", name: "Empty Bottle", nameKo: "빈 병", tags: {}, category: "misc" },
 ];
 
 // ---------------------------------------------------------------------------
