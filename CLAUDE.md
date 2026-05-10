@@ -152,6 +152,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 1. **프론트엔드**: `main`/`beta` push → GitHub Actions가 자동 빌드+배포 (수동: `scripts/deploy-frontend.sh main|beta`)
 2. **bun-api**: `bun-api/` 변경 시 push하면 GitHub Actions가 자동 재시작 (main만, beta는 무시)
 3. **Nginx 설정**: `bun-api/infra/nginx-*.conf` 변경 시 Mac Mini에서 수동 `nginx -s reload` 필요
+   - **Drift 주의**: 실서버 `/usr/local/etc/nginx/snippets/dstcraft-common.conf` ↔ 레포 `bun-api/infra/nginx-dstcraft-common.conf`. 실서버를 직접 편집했으면 반드시 레포에도 동일하게 반영해 단일 진실 공급원 유지 (안 그러면 다음 push 때 롤백됨)
 4. **환경변수**: `.env.local`에 새 `NEXT_PUBLIC_*` 변수 추가 시 Mac Mini의 빌드 환경에도 반영 확인
 5. **Cloudflare 캐시**: 배포 스크립트가 자동 purge (`~/.cf-env` 필요). 수동 purge 필요 시 CF 대시보드
 6. **Google Cloud Console**: 새 도메인 추가 시 승인된 JavaScript 원본에 등록 확인
