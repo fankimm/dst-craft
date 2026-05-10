@@ -396,6 +396,13 @@ OVERRIDES: dict[str, dict] = {
     "butter": {"foodtype": "dairy"},  # FOODTYPE.DAIRY in DST source
 }
 
+# Image filename overrides — used when prefab id doesn't match the icon asset
+# we have in `public/images/game-items/`. Verify the file exists locally before
+# adding (e.g., `ls public/images/game-items/<file>`).
+IMAGE_OVERRIDES: dict[str, str] = {
+    "onion": "quagmire_onion.png",  # base onion.png is missing; quagmire_ variant exists
+}
+
 
 def main():
     if not TUNING_LUA.exists():
@@ -454,11 +461,13 @@ def main():
         ko_field = f', nameKo: {json.dumps(ko, ensure_ascii=False)}' if ko else ""
         secondary = it.get("secondary_foodtype")
         secondary_field = f', secondaryFoodType: "{secondary}"' if secondary else ""
+        image = IMAGE_OVERRIDES.get(it["id"])
+        image_field = f', image: "{image}"' if image else ""
         lines.append(
             f'  {{ id: "{it["id"]}", name: {json.dumps(eng)}{ko_field}, '
             f'foodType: "{it["foodtype"]}"{secondary_field}, '
             f'hunger: {it["hunger"]}, health: {it["health"]}, sanity: {it["sanity"]}, '
-            f'perishDays: {it["perish_days"]} }},'
+            f'perishDays: {it["perish_days"]}{image_field} }},'
         )
     lines += ["];", ""]
 
