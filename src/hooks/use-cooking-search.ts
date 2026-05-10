@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import type { CookingRecipe } from "@/data/recipes";
 import { cookingRecipes } from "@/data/recipes";
 import { cookpotIngredients } from "@/data/cookpot-ingredients";
-import { rawFoods } from "@/data/raw-foods";
+import { rawFoods, type RawFood } from "@/data/raw-foods";
 import { foodName, t } from "@/lib/i18n";
 import type { Locale, TranslationKey } from "@/lib/i18n";
 import { trackEvent } from "@/lib/analytics";
@@ -132,6 +132,44 @@ function searchRecipes(
           if (recipe.foodType?.toLowerCase().includes(q)) return true;
           return false;
         }
+      }
+    });
+  });
+}
+
+/**
+ * Search raw foods (생식 가능 카테고리) by tag list. Returns raw foods that match
+ * EVERY tag — same intersection semantics as searchRecipes. Raw foods aren't
+ * recipes, so most tag types (station/effect/recipe) reject them; we match on
+ * `text` and `foodType` (and `ingredient` against the prefab id).
+ *
+ * 호출 시점: 사용자가 검색 dropdown에서 raw food 외 다른 매치(text/ingredient/foodType
+ * 등)로 들어왔을 때, raw food도 같은 tag로 같이 검색해서 cookpot 결과 옆에 띄움.
+ */
+function searchRawFoodsForTags(tags: CookingSearchTag[], locale: Locale): RawFood[] {
+  if (tags.length === 0) return [];
+  return rawFoods.filter((food) => {
+    return tags.every((tag) => {
+      switch (tag.type) {
+        case "rawFood":
+          return food.id === tag.engName;
+        case "foodType":
+          return food.foodType === tag.engName || food.secondaryFoodType === tag.engName;
+        case "ingredient":
+          // Match by prefab id (engName for ingredient suggestion is the prefab id)
+          return food.id === tag.engName;
+        case "text": {
+          const q = tag.text.toLowerCase();
+          const ko = (food.nameKo ?? "").toLowerCase();
+          const en = food.name.toLowerCase();
+          if (ko.includes(q) || en.includes(q)) return true;
+          // Also match localized foodtype label (e.g., "채소" matches veggie)
+          if (food.foodType.toLowerCase().includes(q)) return true;
+          return false;
+        }
+        // station / effect / recipe → raw food can't satisfy these
+        default:
+          return false;
       }
     });
   });
@@ -317,6 +355,7 @@ export function useCookingSearch(locale: Locale) {
   const [inputValue, setInputValue] = useState("");
   const [debouncedTags, setDebouncedTags] = useState<CookingSearchTag[]>([]);
   const [results, setResults] = useState<CookingRecipe[]>([]);
+  const [rawFoodResults, setRawFoodResults] = useState<RawFood[]>([]);
   const searchTracked = useRef(false);
 
   const effectiveTags: CookingSearchTag[] = useMemo(() =>
@@ -339,9 +378,11 @@ export function useCookingSearch(locale: Locale) {
   useEffect(() => {
     if (debouncedTags.length === 0) {
       setResults([]);
+      setRawFoodResults([]);
       return;
     }
     setResults(searchRecipes(debouncedTags, locale));
+    setRawFoodResults(searchRawFoodsForTags(debouncedTags, locale));
     if (!searchTracked.current) {
       searchTracked.current = true;
       trackEvent("search", isAdmin);
@@ -384,6 +425,7 @@ export function useCookingSearch(locale: Locale) {
     removeTag,
     clearAll,
     results,
+    rawFoodResults,
     isSearching,
     pending,
   };
