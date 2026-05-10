@@ -9,11 +9,11 @@ import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/Se
 import { TagChip } from "@/components/ui/TagChip";
 
 const typeLabels: Record<string, Record<CookingTagType, string>> = {
-  ko: { ingredient: "재료", station: "요리솥", foodType: "음식유형", effect: "효과", recipe: "레시피", text: "텍스트" },
-  en: { ingredient: "Ingredient", station: "Station", foodType: "Food Type", effect: "Effect", recipe: "Recipe", text: "Text" },
-  ja: { ingredient: "素材", station: "調理鍋", foodType: "食品タイプ", effect: "効果", recipe: "レシピ", text: "テキスト" },
-  zh_CN: { ingredient: "材料", station: "烹饪锅", foodType: "食物类型", effect: "效果", recipe: "食谱", text: "文本" },
-  zh_TW: { ingredient: "材料", station: "烹飪鍋", foodType: "食物類型", effect: "效果", recipe: "食譜", text: "文字" },
+  ko: { ingredient: "재료", station: "요리솥", foodType: "음식유형", effect: "효과", recipe: "레시피", rawFood: "생식", text: "텍스트" },
+  en: { ingredient: "Ingredient", station: "Station", foodType: "Food Type", effect: "Effect", recipe: "Recipe", rawFood: "Raw Food", text: "Text" },
+  ja: { ingredient: "素材", station: "調理鍋", foodType: "食品タイプ", effect: "効果", recipe: "レシピ", rawFood: "生食", text: "テキスト" },
+  zh_CN: { ingredient: "材料", station: "烹饪锅", foodType: "食物类型", effect: "效果", recipe: "食谱", rawFood: "生食", text: "文本" },
+  zh_TW: { ingredient: "材料", station: "烹飪鍋", foodType: "食物類型", effect: "效果", recipe: "食譜", rawFood: "生食", text: "文字" },
 };
 
 const tagStyles: Record<CookingTagType, string> = {
@@ -27,6 +27,8 @@ const tagStyles: Record<CookingTagType, string> = {
     "border-[#6a8a6a] bg-[#e8f0e8] text-[#2a4a2a] dark:border-[#4a7a4a]/60 dark:bg-[#1a2e1a]/50 dark:text-[#80b080]",
   recipe:
     "border-[#7a6aa8] bg-[#ede8f5] text-[#3a2a6a] dark:border-[#5a4a8b]/60 dark:bg-[#1c1542]/50 dark:text-[#9a8acf]",
+  rawFood:
+    "border-[#5a8a8a] bg-[#e2f0f0] text-[#1a4a4a] dark:border-[#4a7a7a]/60 dark:bg-[#152e2e]/50 dark:text-[#80b8b8]",
   text:
     "border-[#b8b0a0] bg-[#f0ece4] text-[#5a5040] dark:border-[#6a6458]/60 dark:bg-[#2e2c24]/50 dark:text-[#a09880]",
 };
@@ -37,6 +39,7 @@ const suggestionDotStyles: Record<CookingTagType, string> = {
   foodType: "bg-[#a08060]",
   effect: "bg-[#6a8a6a]",
   recipe: "bg-[#7a6aa8]",
+  rawFood: "bg-[#5a8a8a]",
   text: "bg-muted-foreground",
 };
 
@@ -47,6 +50,10 @@ interface CookingSearchBarProps {
   onAddTag: (value: string | CookingSearchTag) => void;
   onRemoveTag: (index: number) => void;
   onClearAll: () => void;
+  /** Called when user picks a "rawFood" suggestion. The cookpot search index doesn't
+   * include raw foods (they aren't recipes), so instead of adding a tag we route
+   * straight to that food's detail panel. */
+  onSelectRawFood?: (foodId: string) => void;
   locale: Locale;
   /** True while the 300ms debounce is in flight — surfaced as a small spinner. */
   pending?: boolean;
@@ -60,6 +67,7 @@ export function CookingSearchBar({
   onAddTag,
   onRemoveTag,
   onClearAll,
+  onSelectRawFood,
   locale,
   pending,
   className,
@@ -80,6 +88,10 @@ export function CookingSearchBar({
 
   const handleSelect = (s: SearchSuggestion) => {
     const original = s.data as CookingSearchTag & { engName: string };
+    if (original.type === "rawFood" && onSelectRawFood) {
+      onSelectRawFood(original.engName);
+      return;
+    }
     onAddTag({
       text: original.text,
       type: original.type,

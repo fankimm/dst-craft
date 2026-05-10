@@ -308,6 +308,20 @@ export function CookingApp({
     </DetailPanel>
   ) : null;
 
+  // Raw food suggestion → open the food's detail panel directly. Raw foods
+  // aren't part of the cookpot search index (they aren't recipes), so picking
+  // one from the dropdown bypasses tag-based search entirely.
+  const handleSelectRawFood = useCallback(
+    (foodId: string) => {
+      clearSearch();
+      selectCategory("raw");
+      selectRecipe(foodId);
+      trackItemClick(foodId);
+      addRecent(foodId);
+    },
+    [clearSearch, selectCategory, selectRecipe, addRecent],
+  );
+
   // Search bar component (shared between both views)
   const searchBar = (
     <CookingSearchBar
@@ -317,6 +331,7 @@ export function CookingApp({
       onAddTag={addTag}
       onRemoveTag={removeTag}
       onClearAll={clearSearch}
+      onSelectRawFood={handleSelectRawFood}
       locale={resolvedLocale}
       pending={searchPending}
     />
@@ -638,6 +653,39 @@ function rawFoodLocaleName(food: RawFood, locale: Locale): string {
   return food.name;
 }
 
+/**
+ * Shared "○○의 선호 음식" badge row used by both RecipeDetail (cookpot recipes)
+ * and RawFoodDetail (raw foods like durian). Reads from food-affinity data —
+ * only items whose prefab affinity exceeds the character's foodtype baseline
+ * surface here (see src/data/food-affinity.ts).
+ */
+function AffinityBadges({ foodId, foodType, locale }: { foodId: string; foodType?: string; locale: Locale }) {
+  const affinityChars = getAffinityCharacters(foodId, foodType);
+  if (affinityChars.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {affinityChars.map(({ character: charId }) => {
+        const char = characters.find((c) => c.id === charId);
+        if (!char) return null;
+        const name = locale === "ko" ? char.nameKo : char.name;
+        return (
+          <div
+            key={charId}
+            className="inline-flex items-center gap-1 text-xs rounded-full bg-pink-500/12 border border-pink-500/20 px-2 py-0.5 text-pink-700 dark:text-pink-300"
+          >
+            <img
+              src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
+              alt={name}
+              className="size-4 rounded-full object-cover"
+            />
+            <span>{locale === "ko" ? `${name}의 선호 음식` : `${name}'s favorite`}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function RawFoodGrid({
   foods,
   locale,
@@ -807,6 +855,11 @@ function RawFoodDetail({
             )}
           </div>
         </div>
+      </div>
+
+      {/* Character food affinity */}
+      <div className="mb-3">
+        <AffinityBadges foodId={food.id} foodType={food.foodType} locale={locale} />
       </div>
 
       {/* Stats inline */}
@@ -982,32 +1035,7 @@ function RecipeDetail({
       </div>
 
       {/* Character food affinity */}
-      {(() => {
-        const affinityChars = getAffinityCharacters(recipe.id, recipe.foodType);
-        if (affinityChars.length === 0) return null;
-        return (
-          <div className="flex flex-wrap gap-1.5">
-            {affinityChars.map(({ character: charId }) => {
-              const char = characters.find((c) => c.id === charId);
-              if (!char) return null;
-              const name = locale === "ko" ? char.nameKo : char.name;
-              return (
-                <div
-                  key={charId}
-                  className="inline-flex items-center gap-1 text-xs rounded-full bg-pink-500/12 border border-pink-500/20 px-2 py-0.5 text-pink-700 dark:text-pink-300"
-                >
-                  <img
-                    src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
-                    alt={name}
-                    className="size-4 rounded-full object-cover"
-                  />
-                  <span>{locale === "ko" ? `${name}의 선호 음식` : `${name}'s favorite`}</span>
-                </div>
-              );
-            })}
-          </div>
-        );
-      })()}
+      <AffinityBadges foodId={recipe.id} foodType={recipe.foodType} locale={locale} />
 
       {/* Stats inline */}
       <div className="flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">

@@ -154,6 +154,28 @@ def parse_veggies(tuning: dict) -> list[dict]:
             "secondary_foodtype": secondary,
             "source": "veggies.lua",
         })
+        # Emit cooked variant when whitelisted (positions 5..8 of MakeVegStats)
+        if name in INCLUDE_COOKED_VARIANTS_VEGGIE and len(args_list) >= 9:
+            c_hunger = lookup(tuning, args_list[5])
+            c_health = lookup(tuning, args_list[6])
+            c_perish_arg = args_list[7]
+            c_or = re.search(r"or\s+(TUNING\.[A-Z_]+)\b", c_perish_arg)
+            if c_or:
+                c_perish_arg = c_or.group(1)
+            c_perish = lookup(tuning, c_perish_arg)
+            c_sanity = lookup(tuning, args_list[8])
+            if c_hunger is not None and c_health is not None and c_sanity is not None:
+                c_perish_days = round(c_perish / 480, 1) if c_perish else None
+                out.append({
+                    "id": f"{name}_cooked",
+                    "foodtype": "veggie",
+                    "hunger": c_hunger,
+                    "health": c_health,
+                    "sanity": c_sanity,
+                    "perish_days": c_perish_days,
+                    "secondary_foodtype": secondary,  # monster carries to cooked variant
+                    "source": "veggies.lua",
+                })
     return out
 
 
@@ -388,6 +410,15 @@ EXCLUDE_IDS = {
     "moonbutterflywings",  # rare; keep if you want
     "acorn",  # FOODTYPE.SEEDS, not a typical "raw eat" food (used for cooking)
 }
+
+# Whitelist of veggie ids whose `_cooked` variant should ALSO be emitted as a
+# raw-eat entry. The default policy is to skip cooked variants (extract raw
+# only), but durian's cooked form has materially different stats from raw
+# (health -3 → 0, perish 10d → 6d) so users want both visible. Keep this small
+# and grounded — only add ids where raw vs cooked actually differ in a way
+# that's player-relevant. parse_veggies() reads positions 5..8 of MakeVegStats
+# (cooked_hunger, cooked_health, cooked_perish_time, cooked_sanity).
+INCLUDE_COOKED_VARIANTS_VEGGIE: set[str] = {"durian"}
 
 # Field overrides for items the parser gets wrong (foodtype defaults to MEAT in
 # component, so dairy items end up tagged "meat"). Keep this small and grounded

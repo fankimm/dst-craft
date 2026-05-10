@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.16",
+    date: "2026-05-10",
+    dev: [
+      "feat(cooking): 생식 가능 카테고리에 구운 두리안 추가 + 검색에서 raw food 노출 (#24). 두 가지 변경: (1) `scripts/extract-raw-foods.py`에 `INCLUDE_COOKED_VARIANTS_VEGGIE = {\"durian\"}` 화이트리스트 신설 — `parse_veggies()`가 raw 항목을 emit한 뒤 화이트리스트 매치 시 `MakeVegStats` 위치 인자 5..8(cooked_hunger/health/perish/sanity)을 읽어 `<id>_cooked` 항목도 함께 emit. 두리안만 raw vs cooked 스탯 차이가 player-relevant(health -3 → 0, perish 10d → 6d)라 예외, 다른 채소는 default policy(_cooked skip) 유지. `src/data/raw-foods.ts` 재생성으로 35→36개. secondaryFoodType(monster)는 cooked 변종에도 자동 전파. (2) `useCookingSearch`/`getCookingSuggestions`가 `rawFoods`를 새 `CookingTagType = \"rawFood\"`로 인덱싱 — 기존 search index는 cookpot 레시피만 봐서 \"두리안\" 검색 시 (cookpot 레시피에 두리안이 안 들어가 결과 0개) 사용자가 빈 화면을 보던 문제 해소. `CookingSearchBar`에 `onSelectRawFood` prop 추가 — rawFood suggestion 클릭 시 `addTag` 거치지 않고 `selectCategory(\"raw\") + selectRecipe(foodId)`로 detail panel 직행. `searchRecipes`의 `case \"rawFood\": return false`는 안전망 (UI가 가로채므로 도달하지 않아야 함). 5개 로케일 모두 typeLabels(\"생식\"/\"Raw Food\"/\"生食\"/\"生食\"/\"生食\") + tagStyles/dotStyles 청록 톤 추가.",
+      "refactor(cooking): RawFoodDetail에 \"○○의 선호 음식\" 라벨 누락 보강. v0.23.15에서 두리안만 워트 선호로 마킹하는 로직(`getAffinityCharacters` 필터링)이 `RecipeDetail`(cookpot 레시피 상세)에만 있고 `RawFoodDetail`(raw 음식 상세)에는 없어서 사용자가 두리안 raw 카드를 열어도 라벨이 안 보이던 문제. 두 곳 동일 로직이라 CLAUDE.md 공통화 규칙(\"2곳 이상 패턴 → 공유 컴포넌트 추출\")에 따라 `AffinityBadges` 로컬 컴포넌트로 추출하고 양쪽에서 사용. `docs/ui.md` 공유 컴포넌트 목록에 항목 추가.",
+    ],
+    changes: {
+      ko: [
+        "생식 가능 카테고리에 \"구운 두리안\" 추가 — 두리안은 raw vs 익혀먹기 스탯 차이가 커서(체력 -3 → 0, 유통기한 10일 → 6일) 둘 다 노출",
+        "검색창에 음식 이름(예: \"두리안\")을 넣으면 생식 음식도 \"생식\" 칩으로 제안됨 — 클릭 시 바로 그 음식의 상세 패널로 이동",
+        "생식 음식 상세에서도 \"○○의 선호 음식\" 라벨 표시 (두리안 → 워트 선호) — 이전엔 요리솥 레시피 상세에만 있었음",
+      ],
+      en: [
+        "Added \"Cooked Durian\" to the Raw Food category — durian's raw vs cooked stats diverge enough (health −3 → 0, perish 10d → 6d) to warrant showing both.",
+        "Search now suggests raw foods (e.g. \"durian\") with a \"Raw Food\" chip — selecting one opens its detail panel directly.",
+        "Raw food detail panels now show the \"X's favorite\" badge too (e.g., Durian → Wurt). Previously the badge only appeared on cookpot recipes.",
+      ],
+    },
+  },
+  {
     version: "0.23.15",
     date: "2026-05-10",
     dev: [
