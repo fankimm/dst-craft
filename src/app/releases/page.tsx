@@ -15,6 +15,14 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.18",
+    date: "2026-05-10",
+    dev: [
+      "chore(infra): nginx real_ip 3줄 레포-실서버 drift 해소 (#26). 실서버 `/usr/local/etc/nginx/snippets/dstcraft-common.conf`에는 `set_real_ip_from 127.0.0.1; real_ip_header CF-Connecting-IP; real_ip_recursive on;`이 사용자 직접 편집으로 적용돼 있어 access_log의 `$remote_addr`이 진짜 방문자 IP로 찍히는데, 레포 `bun-api/infra/nginx-dstcraft-common.conf`엔 빠져있어 다음 push 시 롤백될 위험. GoAccess(`http://100.85.118.4:7891/live.html`) 분석에서 127.0.0.1이 79.84% 트래픽(107k hits)을 차지해 발견 — fix 적용 이전 시점 누적분이 아직 남아 있어서. 같은 3줄을 레포에 server-include 상단(차단 룰 위)에 추가해 단일 진실 공급원 복원. CLAUDE.md Deploy Checklist 3번에 \"실서버 직접 편집 시 반드시 레포에 반영\" drift 경고 한 줄 추가.",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.23.17",
     date: "2026-05-10",
     dev: [
