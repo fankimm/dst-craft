@@ -308,6 +308,20 @@ export function CookingApp({
     </DetailPanel>
   ) : null;
 
+  // Raw food suggestion → open the food's detail panel directly. Raw foods
+  // aren't part of the cookpot search index (they aren't recipes), so picking
+  // one from the dropdown bypasses tag-based search entirely.
+  const handleSelectRawFood = useCallback(
+    (foodId: string) => {
+      clearSearch();
+      selectCategory("raw");
+      selectRecipe(foodId);
+      trackItemClick(foodId);
+      addRecent(foodId);
+    },
+    [clearSearch, selectCategory, selectRecipe, addRecent],
+  );
+
   // Search bar component (shared between both views)
   const searchBar = (
     <CookingSearchBar
@@ -317,6 +331,7 @@ export function CookingApp({
       onAddTag={addTag}
       onRemoveTag={removeTag}
       onClearAll={clearSearch}
+      onSelectRawFood={handleSelectRawFood}
       locale={resolvedLocale}
       pending={searchPending}
     />

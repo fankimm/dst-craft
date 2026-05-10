@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import type { CookingRecipe } from "@/data/recipes";
 import { cookingRecipes } from "@/data/recipes";
 import { cookpotIngredients } from "@/data/cookpot-ingredients";
+import { rawFoods } from "@/data/raw-foods";
 import { foodName, t } from "@/lib/i18n";
 import type { Locale, TranslationKey } from "@/lib/i18n";
 import { trackEvent } from "@/lib/analytics";
@@ -17,6 +18,7 @@ export type CookingTagType =
   | "foodType"     // 음식 유형 (meat, veggie, goodies 등)
   | "effect"       // 특수 효과 (temperature, speed 등)
   | "recipe"       // 특정 레시피 ID 정확 매칭 (서제스천에서 레시피 이름 클릭 시)
+  | "rawFood"      // 생식 가능 음식 — 클릭 시 raw food detail panel 직행 (cookpot 레시피 검색과 분리)
   | "text";        // 자유 텍스트 검색 (사용자가 직접 입력 후 Enter)
 
 export interface CookingSearchTag {
@@ -86,6 +88,13 @@ function searchRecipes(
 
         case "recipe":
           return recipe.id === tag.engName;
+
+        case "rawFood":
+          // Raw foods aren't cookpot recipes — UI routes rawFood suggestion
+          // selection directly to the detail panel via onSelectRawFood, so this
+          // tag should never reach searchRecipes. Guard with `false` in case
+          // it does (e.g., a stale tag from another code path).
+          return false;
 
         case "ingredient": {
           if (!recipe.requirements) return false;
@@ -271,6 +280,24 @@ export function getCookingSuggestions(query: string, locale: Locale): CookingSug
         type: "recipe",
         image: `game-items/${r.id}.png`,
         engName: r.id,
+      });
+    }
+  }
+
+  // 7. Raw food (생식 가능) — durian / durian_cooked / carrot / meat / ...
+  // Distinct from "recipe" because raw foods aren't in cookingRecipes; clicking
+  // a rawFood suggestion opens that food's detail panel directly.
+  for (const f of rawFoods) {
+    const ko = (f.nameKo ?? "").toLowerCase();
+    const en = f.name.toLowerCase();
+    const id = `rawFood:${f.id}`;
+    if ((ko.includes(lower) || en.includes(lower)) && !seen.has(id)) {
+      seen.add(id);
+      results.push({
+        text: locale === "ko" && f.nameKo ? f.nameKo : f.name,
+        type: "rawFood",
+        image: `game-items/${f.image ?? `${f.id}.png`}`,
+        engName: f.id,
       });
     }
   }

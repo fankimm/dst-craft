@@ -34,6 +34,7 @@ export const rawFoods: RawFood[] = [
   { id: "dragonfruit", name: "Dragonfruit", nameKo: "용과", foodType: "veggie", hunger: 9.375, health: 3, sanity: 0.0, perishDays: 6.0 },
   { id: "drumstick", name: "Drumstick", nameKo: "닭다리", foodType: "meat", hunger: 12.5, health: 0.0, sanity: -10, perishDays: 6.0 },
   { id: "durian", name: "Durian", nameKo: "두리안", foodType: "veggie", secondaryFoodType: "monster", hunger: 25.0, health: -3, sanity: -5, perishDays: 10.0 },
+  { id: "durian_cooked", name: "Durian Cooked", nameKo: "냄새 독한 두리안", foodType: "veggie", secondaryFoodType: "monster", hunger: 25.0, health: 0.0, sanity: -5, perishDays: 6.0 },
   { id: "eggplant", name: "Eggplant", nameKo: "가지", foodType: "veggie", hunger: 25.0, health: 8, sanity: 0.0, perishDays: 10.0 },
   { id: "fig", name: "Fig", nameKo: "무화과", foodType: "veggie", hunger: 12.5, health: 0.0, sanity: 0.0, perishDays: 6.0 },
   { id: "fishmeat", name: "Fishmeat", nameKo: "날생선", foodType: "meat", hunger: 25.0, health: 8, sanity: 0.0, perishDays: 3.0 },
