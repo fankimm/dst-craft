@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.17",
+    date: "2026-05-10",
+    dev: [
+      "fix(cooking): 재료 ItemSlot 매핑 + text 검색 raw food 누락 (#25). 크롬으로 production 직접 검증해 두 이슈 발견. (1) `구운 생선 조각` 등 campfire 레시피 detail 재료 섹션에 `?` placeholder + 영문명 노출 — `recipes.ts` requirements 짧은 형(`Small Fish ×1`, `Small Meat ×1`)이 `cookpot-ingredients.ts` 정식명(`Small Fish Morsel`, `Morsel`)과 매칭 안 돼서. 전체 mismatch 스캔(Python) 결과 4개: `Small Fish`, `Small Meat`, `Seed`, `Seeds`. `ingredientByName`에 alias 2개 추가(`Small Fish` → fishmeat_small, `Small Meat` → smallmeat) + `tagIcons`/`reqTagTranslations`에 `Seeds` 항목 추가 (`Seed` 이미 존재). (2) 검색에서 `두리안` 입력 후 Enter → 0 결과. cookpot 레시피에 `Durian` 재료 사용 0개 + raw food는 `cookingRecipes` 인덱스 밖이라 매치 못함. `useCookingSearch`에 `searchRawFoodsForTags()` 추가하고 hook이 `rawFoodResults`를 별도로 노출. CookingApp이 검색 모드에서 raw food 결과를 cookpot grid 위에 별도 섹션(\"생식 가능\" 라벨 + RawFoodGrid)으로 렌더 — \"두리안\" 검색 시 raw 두리안 + 냄새 독한 두리안 노출. cookpot 결과가 0개일 때는 빈 RecipeGrid placeholder 숨김. tag 매칭 매트릭스: `rawFood`(prefab id), `foodType`(primary/secondary), `ingredient`(prefab id), `text`(name/foodType 부분 매치). station/effect/recipe는 raw food 못 만족 → `false` 반환.",
+    ],
+    changes: {
+      ko: [
+        "검색에서 음식 이름(예: \"두리안\") 입력 후 엔터 시 생식 가능 음식들도 결과에 노출 — 이전엔 두리안을 재료로 쓰는 요리솥 레시피가 없어 빈 결과만 떴음",
+        "구운 음식 상세 패널의 재료 섹션에서 `?`로 표시되던 \"생선 조각\"·\"고깃조각\" 이미지/한국어명 정상 표시",
+      ],
+      en: [
+        "Searching by food name (e.g., \"Durian\") and pressing Enter now surfaces raw foods alongside cookpot recipes. Previously the result was empty because no cookpot recipe takes Durian and raw foods weren't part of the search index.",
+        "Cooked recipe detail panels now show proper icons + Korean names for \"Small Fish Morsel\" and \"Morsel\" ingredients (was showing as `?` placeholder).",
+      ],
+    },
+  },
+  {
     version: "0.23.16",
     date: "2026-05-10",
     dev: [

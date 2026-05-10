@@ -7,6 +7,15 @@
 
 ## 진행중
 
+### 요리탭 검색·재료 표시 정확도 [~] (#25, 2026-05-10)
+> 크롬으로 production 직접 검증해 발견한 이슈들. #25에서 핵심 두 항목 처리, 나머지는 후속 점검.
+- [x] 재료 ItemSlot 매핑 — `Small Fish` / `Small Meat` / `Seeds` ingredient name mismatch alias 추가 (#25)
+- [x] text 검색 결과에 raw food 노출 — `useCookingSearch`에 `searchRawFoodsForTags()` + 별도 grid 섹션 (#25)
+- [ ] 검색 결과에 즐겨찾기/최근에 raw food 통합 — `filteredRecipes` 로직 확장
+- [ ] cookpot 레시피의 ingredient 이름 정규화 점검 — `recipes.ts` requirements가 cookpot 정식명으로 통일되어 있는지 (현재는 alias로 우회)
+- [ ] cooked 변종 다른 채소 추가 검토 (eggplant_cooked, pumpkin_cooked 등) — 현재는 durian만 화이트리스트. 사용자 요청 시 확장
+- [ ] raw food 검색 한국어 ingredient label 매칭 — \"채소\" 입력 시 raw 채소들도 매치 (현재는 영문 foodType만 매치)
+
 ### 요리탭 "생식 가능" 카테고리 [~] (#22, 2026-05-10)
 - [x] DST prefabs에서 raw food stat 추출 스크립트 (`scripts/extract-raw-foods.py`) — VEGGIES 테이블 + mushrooms + per-prefab edible 패턴 3종 처리, TUNING 상수 자동 해석
 - [x] `src/data/raw-foods.ts` 자동 생성 (35개) — id/name/nameKo/foodType/hunger/health/sanity/perishDays

@@ -155,7 +155,7 @@ export function CookingApp({
   // Search (tag-based, same UX as crafting tab)
   const {
     tags: searchTags, inputValue: searchInput, setInputValue: setSearchInput,
-    addTag, removeTag, clearAll: clearSearch, results: searchResults, isSearching, pending: searchPending,
+    addTag, removeTag, clearAll: clearSearch, results: searchResults, rawFoodResults: searchRawFoodResults, isSearching, pending: searchPending,
   } = useCookingSearch(resolvedLocale);
 
   const slideClass = useSlideAnimation(selectedCategory, (v) => v === null);
@@ -457,14 +457,40 @@ export function CookingApp({
               getClicks={sortByPopular ? getClicks : undefined}
             />
           ) : (
-            <RecipeGrid
-              recipes={displayRecipes}
-              locale={resolvedLocale}
-              onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); addRecent(recipe.id); }}
-              isFavorite={isFavorite}
-              onToggleFav={toggleFavorite}
-              getClicks={sortByPopular ? getClicks : undefined}
-            />
+            <>
+              {/* When searching, raw food matches surface above cookpot recipes — they aren't
+                  in the cookpot recipe index, so otherwise typing "두리안" returns 0 results. */}
+              {isSearching && searchRawFoodResults.length > 0 && (
+                <div className="border-b border-border/50">
+                  <div className="px-3 sm:px-4 pt-3 pb-1.5">
+                    <span className="text-xs text-muted-foreground font-medium">
+                      {t(resolvedLocale, "cooking_raw")}
+                    </span>
+                  </div>
+                  <RawFoodGrid
+                    foods={searchRawFoodResults}
+                    locale={resolvedLocale}
+                    onSelect={(food) => { selectRecipe(food.id); trackItemClick(food.id); addRecent(food.id); }}
+                    isFavorite={isFavorite}
+                    onToggleFav={toggleFavorite}
+                    getClicks={sortByPopular ? getClicks : undefined}
+                  />
+                </div>
+              )}
+              {/* Skip the empty RecipeGrid when searching surfaces only raw food matches —
+                  the "noItems" placeholder under the raw foods would otherwise read as
+                  "no recipes" and confuse readers who already see the raw food results. */}
+              {!(isSearching && searchRawFoodResults.length > 0 && displayRecipes.length === 0) && (
+                <RecipeGrid
+                  recipes={displayRecipes}
+                  locale={resolvedLocale}
+                  onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); addRecent(recipe.id); }}
+                  isFavorite={isFavorite}
+                  onToggleFav={toggleFavorite}
+                  getClicks={sortByPopular ? getClicks : undefined}
+                />
+              )}
+            </>
           )}
           <Footer />
         </div>
@@ -1231,11 +1257,15 @@ function groupIngredients(ids: string[]): { id: string; count: number }[] {
 
 /** Ingredient lookup by display name (from cookpot-ingredients — single source of truth) */
 const ingredientByName = new Map(cookpotIngredients.map(ing => [ing.name, ing]));
-// Aliases for requirement names that differ from canonical ingredient names
+// Aliases for requirement names that differ from canonical ingredient names.
+// Each alias points the requirement string used in recipes.ts to the matching
+// cookpot ingredient, so ItemSlot resolves an icon + Korean label instead of "?".
 ingredientByName.set("Kelp", ingredientByName.get("Kelp Fronds")!);
 ingredientByName.set("Lichen", ingredientByName.get("Cut Lichen")!);
 ingredientByName.set("Moleworm", ingredientByName.get("Naked Mole Bat")!);
 ingredientByName.set("Acorn", ingredientByName.get("Birchnut")!);
+ingredientByName.set("Small Fish", ingredientByName.get("Small Fish Morsel")!);   // fishmeat_small
+ingredientByName.set("Small Meat", ingredientByName.get("Morsel")!);              // smallmeat
 
 /** Tag-based requirement icons (not tied to a specific ingredient) */
 const tagIcons: Record<string, string> = {
@@ -1251,6 +1281,7 @@ const tagIcons: Record<string, string> = {
   "Dairy": "butter.png",
   "Fat": "butter.png",
   "Seed": "seeds.png",
+  "Seeds": "seeds.png",
   "Magic": "nightmarefuel.png",
 };
 
@@ -1266,7 +1297,7 @@ const reqTagTranslations: Record<string, Record<string, string>> = {
   ko: {
     "Meat": "고기", "Veggie": "채소", "Fruit": "과일", "Fish": "생선",
     "Egg": "알", "Sweetener": "감미료", "Monster": "괴물", "Inedible": "못먹는것",
-    "Frozen": "얼음", "Dairy": "유제품", "Fat": "지방", "Seed": "씨앗",
+    "Frozen": "얼음", "Dairy": "유제품", "Fat": "지방", "Seed": "씨앗", "Seeds": "씨앗",
     "Magic": "마법",
   },
 };
