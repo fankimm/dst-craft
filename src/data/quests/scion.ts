@@ -61,10 +61,9 @@ export const scionQuest: Quest = {
       craftId: "gestalt_cage",
       count: 6,
       substeps: [
-        { id: "gestalt_thulecitebugnet", nameKo: "툴레사이트 잠자리채", nameEn: "Thulecite Bug Net", icon: "thulecitebugnet.png",    qty: 6,  craftId: "thulecitebugnet" },
-        { id: "gestalt_wagpunk_bits",    nameKo: "고철더미",            nameEn: "Scrap",             icon: "wagpunk_bits.png",       qty: 12 },
-        { id: "gestalt_small",           nameKo: "작은 게슈탈트",       nameEn: "Small Gestalt",     icon: "gestalt_cage_filled1.png", qty: 1, noteKo: "최소 1개 (굴러지 변환)", noteEn: "Min 1 (becomes Terramite)" },
-        { id: "gestalt_big",             nameKo: "큰 게슈탈트",         nameEn: "Big Gestalt",       icon: "gestalt_cage_filled2.png", qty: 1, noteKo: "최소 1개 (개개비 드론 변환)", noteEn: "Min 1 (becomes Warbler)" },
+        { id: "gestalt_thulecitebugnet", nameKo: "툴레사이트 잠자리채", nameEn: "Thulecite Bug Net", icon: "thulecitebugnet.png", qty: 6,  craftId: "thulecitebugnet" },
+        { id: "gestalt_wagpunk_bits",    nameKo: "고철더미",            nameEn: "Scrap",             icon: "wagpunk_bits.png",    qty: 12 },
+        { id: "gestalt_capture", nameKo: "게슈탈트 포획", nameEn: "Gestalt Capture", icon: "gestalt_cage_filled2.png", qty: 6, noteKo: "작은(굴러지)·큰(개개비 드론) 각 최소 1개 필수", noteEn: "Min 1 small (Terramite) + min 1 big (Warbler)" },
       ],
     },
   ],
