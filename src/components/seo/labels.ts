@@ -220,6 +220,38 @@ export const L = {
   // Used by skill tree, food page, etc.
   relatedRecipes: { en: "Related", ko: "관련" },
   recipesSuffix: { en: "Recipes", ko: "레시피" },
+
+  // Quest SEO pages
+  questGuide: { en: "Quest Guide", ko: "퀘스트 가이드" },
+  questsTitle: { en: "Don't Starve Together Quests", ko: "Don't Starve Together 퀘스트" },
+  questsIntro: {
+    en: "Endgame progression quests in Don't Starve Together — Hermit Quests, Ancient Fuelweaver, Celestial Champion, and Celestial Scion. Each checklist tracks every material, blueprint, and boss kill required, sourced from the in-game recipes.lua, prefabs, and the Challenge Board mod.",
+    ko: "Don't Starve Together의 엔드게임 진행 퀘스트 — 은둔자 퀘스트, 고대의 연료직공, 천상의 대변자, 천상의 귀공자. 각 체크리스트는 인게임 recipes.lua, prefabs, Challenge Board 모드를 출처로 필요한 자재·청사진·보스 처치를 모두 추적합니다.",
+  },
+  stepsLabel: { en: "Steps", ko: "단계" },
+  substepsLabel: { en: "Substeps", ko: "하위 단계" },
+  questStepsBreakdown: { en: "Steps Breakdown", ko: "단계 상세" },
+  questTips: { en: "Tips", ko: "팁" },
+  questOverview: { en: "About", ko: "소개" },
+  goalLabel: { en: "Required for reward", ko: "보상 필요 단계" },
+  totalStepsLabel: { en: "Total steps", ko: "전체 단계" },
+  otherQuests: { en: "Other Quests", ko: "다른 퀘스트" },
+  seeAllQuests: { en: "See all DST quest checklists", ko: "DST 퀘스트 체크리스트 전체 보기" },
+  openQuestChecklist: { en: "Open Quest Checklist →", ko: "퀘스트 체크리스트 열기 →" },
+  questChecklistHelper: {
+    en: "Track progress with checkboxes saved to your browser",
+    ko: "브라우저에 저장되는 체크박스로 진행 상황 추적",
+  },
+  questsLink: { en: "Quest Checklists", ko: "퀘스트 체크리스트" },
+  questCardSummary: {
+    en: "{steps} steps · {subs} substeps",
+    ko: "{steps}단계 · {subs} 하위 단계",
+  },
+  questCardSummaryNoSubs: { en: "{steps} steps", ko: "{steps}단계" },
+  goalNote: {
+    en: "Only {goal} of {steps} steps required for the main reward.",
+    ko: "메인 보상에는 {steps}단계 중 {goal}단계만 필요합니다.",
+  },
 } as const;
 
 export function t(key: keyof typeof L, lang: SeoLang): string {

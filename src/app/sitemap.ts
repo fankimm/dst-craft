@@ -1,5 +1,12 @@
 import type { MetadataRoute } from "next";
-import { bossSlugs, canonicalForBoss, canonicalForItem, foodSlugs, itemSlugs } from "@/lib/slug";
+import {
+  bossSlugs,
+  canonicalForBoss,
+  canonicalForItem,
+  foodSlugs,
+  itemSlugs,
+  questSlugs,
+} from "@/lib/slug";
 import { characters } from "@/data/characters";
 import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 import {
@@ -60,7 +67,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const staticPaths = ["/browse", "/cookpot", "/characters"];
+  const staticPaths = ["/browse", "/cookpot", "/characters", "/quests"];
   const staticRoutes: MetadataRoute.Sitemap = staticPaths.flatMap((p) => [
     {
       url: `${SITE_URL}${p}`,
@@ -84,6 +91,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/boss", slugs: Array.from(bossSlugs.idToSlug.values()) },
     { path: "/character", slugs: characters.map((c) => c.id) },
     { path: "/skill-tree", slugs: [...CHARACTERS_WITH_SKILLS] },
+    { path: "/quest", slugs: Array.from(questSlugs.idToSlug.values()) },
   ];
 
   const dynamicRoutes: MetadataRoute.Sitemap = dynamicEntries.flatMap(({ path, slugs }) =>

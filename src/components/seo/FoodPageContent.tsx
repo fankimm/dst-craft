@@ -34,7 +34,7 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
 
   const nameKo = ko.foods?.[recipe.id]?.name;
   const displayName = lang === "ko" ? (nameKo ?? recipe.name) : recipe.name;
-  const subtitleName = lang === "ko" ? recipe.name : nameKo;
+  const subtitleName = lang === "ko" ? recipe.name : null;
 
   const isWarlyOnly = recipe.station === "portablecookpot";
   const stationLabel = lang === "ko"
@@ -303,7 +303,7 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               {relatedRecipes.map((r) => {
                 const rNameKo = ko.foods?.[r.id]?.name;
                 const rDisplayName = lang === "ko" ? (rNameKo ?? r.name) : r.name;
-                const rSubtitle = lang === "ko" ? r.name : rNameKo;
+                const rSubtitle = lang === "ko" ? r.name : null;
                 return (
                   <Link
                     key={r.id}

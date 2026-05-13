@@ -4,7 +4,8 @@ import { bosses } from "@/data/bosses";
 import { characters } from "@/data/characters";
 import { categories } from "@/data/categories";
 import { ko } from "@/data/locales/ko";
-import { canonicalForBoss, canonicalForFood, canonicalForItem } from "@/lib/slug";
+import { quests } from "@/data/quests";
+import { canonicalForBoss, canonicalForFood, canonicalForItem, canonicalForQuest } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 
@@ -55,7 +56,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
                   {items.map((item) => {
                     const nameKo = ko.items[item.id]?.name;
                     const primary = lang === "ko" ? (nameKo ?? item.name) : item.name;
-                    const secondary = lang === "ko" ? item.name : nameKo;
+                    const secondary = lang === "ko" ? item.name : null;
                     return (
                       <li key={item.id} className="mb-1 break-inside-avoid">
                         <Link
@@ -83,7 +84,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
             {cookingRecipes.map((r) => {
               const nameKo = ko.foods?.[r.id]?.name;
               const primary = lang === "ko" ? (nameKo ?? r.name) : r.name;
-              const secondary = lang === "ko" ? r.name : nameKo;
+              const secondary = lang === "ko" ? r.name : null;
               return (
                 <li key={r.id} className="mb-1 break-inside-avoid">
                   <Link
@@ -108,7 +109,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
           <ul className="columns-2 sm:columns-3 md:columns-4 gap-x-4 text-sm">
             {bosses.map((b) => {
               const primary = lang === "ko" ? b.nameKo : b.name;
-              const secondary = lang === "ko" ? b.name : b.nameKo;
+              const secondary = lang === "ko" ? b.name : null;
               return (
                 <li key={b.id} className="mb-1 break-inside-avoid">
                   <Link
@@ -133,11 +134,38 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
           <ul className="columns-2 sm:columns-3 md:columns-4 gap-x-4 text-sm">
             {characters.map((c) => {
               const primary = lang === "ko" ? (c.nameKo ?? c.name) : c.name;
-              const secondary = lang === "ko" ? c.name : c.nameKo;
+              const secondary = lang === "ko" ? c.name : null;
               return (
                 <li key={c.id} className="mb-1 break-inside-avoid">
                   <Link
                     href={`${routePrefix}/character/${c.id}`}
+                    className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
+                  >
+                    {primary}
+                    {secondary && secondary !== primary && (
+                      <span className="text-muted-foreground text-xs ml-1">{secondary}</span>
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold mb-4">
+            <Link href={`${routePrefix}/quests`} className="hover:underline">
+              {L.questsLink[lang]} ({quests.length})
+            </Link>
+          </h2>
+          <ul className="columns-2 sm:columns-3 md:columns-4 gap-x-4 text-sm">
+            {quests.map((q) => {
+              const primary = lang === "ko" ? q.titleKo : q.titleEn;
+              const secondary = lang === "ko" ? q.titleEn : null;
+              return (
+                <li key={q.id} className="mb-1 break-inside-avoid">
+                  <Link
+                    href={`${routePrefix}/quest/${canonicalForQuest(q.id)}`}
                     className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
                   >
                     {primary}

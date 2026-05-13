@@ -53,7 +53,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
   const nameKo = ko.items[item.id]?.name;
   const descKo = ko.items[item.id]?.desc;
   const displayName = lang === "ko" ? (nameKo ?? item.name) : item.name;
-  const subtitle = lang === "ko" ? item.name : nameKo;
+  const subtitle = lang === "ko" ? item.name : null;
   const description = lang === "ko" ? (descKo ?? item.description) : item.description;
   const altDescription = lang === "ko" ? item.description : descKo;
 
@@ -289,7 +289,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               const matName = mat?.name ?? m.materialId;
               const matNameKo = ko.materials[m.materialId]?.name ?? ko.items[m.materialId]?.name;
               const primary = lang === "ko" ? (matNameKo ?? matName) : matName;
-              const secondary = lang === "ko" ? matName : matNameKo;
+              const secondary = lang === "ko" ? matName : null;
               const inner = (
                 <>
                   <div className="relative shrink-0">

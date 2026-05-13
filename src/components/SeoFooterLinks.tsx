@@ -5,7 +5,8 @@ import { bosses } from "@/data/bosses";
 import { characters } from "@/data/characters";
 import { categories } from "@/data/categories";
 import { ko } from "@/data/locales/ko";
-import { canonicalForBoss, canonicalForFood, canonicalForItem } from "@/lib/slug";
+import { quests } from "@/data/quests";
+import { canonicalForBoss, canonicalForFood, canonicalForItem, canonicalForQuest } from "@/lib/slug";
 
 /** Pick representative items from each category for a balanced link set */
 function pickRepresentativeItems(count: number) {
@@ -86,6 +87,26 @@ export function SeoFooterLinks() {
                 className="hover:text-foreground hover:underline"
               >
                 {b.name}
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Quests */}
+        <section>
+          <h3 className="font-medium text-foreground/60 mb-1">
+            <Link href="/quests" className="hover:underline">
+              Quest Checklists ({quests.length})
+            </Link>
+          </h3>
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+            {quests.map((q) => (
+              <Link
+                key={q.id}
+                href={`/quest/${canonicalForQuest(q.id)}`}
+                className="hover:text-foreground hover:underline"
+              >
+                {q.titleEn}
               </Link>
             ))}
           </div>
