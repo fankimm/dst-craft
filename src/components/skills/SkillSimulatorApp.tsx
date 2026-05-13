@@ -16,6 +16,7 @@ import { fetchAllSkills, saveCharacterSkills } from "@/lib/favorites-api";
 import { cn } from "@/lib/utils";
 import { encodeBuild, decodeBuild } from "@/lib/skill-build-codec";
 import { useWx78Circuits, encodeCircuits, decodeCircuits } from "@/hooks/use-wx78-circuits";
+import { useSkillUnlimited } from "@/hooks/use-skill-unlimited";
 import { SkillCharacterGrid } from "./SkillCharacterGrid";
 import { SkillTreeView } from "./SkillTreeView";
 
@@ -121,6 +122,8 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
       : null,
   );
 
+  const { unlimited, toggle: toggleUnlimited } = useSkillUnlimited();
+
   const {
     activatedSkills,
     totalPoints,
@@ -132,7 +135,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     toggleSkill,
     resetAll,
     loadBuild,
-  } = useSkillTree(tree, manualLocks, refreshKey, sharedBuildRef.current);
+  } = useSkillTree(tree, manualLocks, refreshKey, sharedBuildRef.current, unlimited);
 
   // WX-78 circuits — lifted up from SkillTreeView so we can include them in share URLs
   const {
@@ -389,6 +392,8 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
             onCircuitEquip={circuitEquip}
             onCircuitUnequip={circuitUnequip}
             onCircuitReset={circuitReset}
+            unlimited={unlimited}
+            onToggleUnlimited={toggleUnlimited}
           />
         ) : (
           <div className="h-full overflow-y-auto overscroll-contain" data-scroll-container="">

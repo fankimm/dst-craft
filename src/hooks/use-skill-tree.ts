@@ -113,6 +113,7 @@ export function useSkillTree(
   manualLocks?: Set<string>,
   refreshKey?: number,
   sharedBuild?: string | null,
+  unlimited?: boolean,
 ): UseSkillTreeReturn {
   const [activatedSkills, setActivatedSkills] = useState<Set<string>>(new Set());
   const appliedBuildForChar = useRef<string | null>(null);
@@ -186,12 +187,14 @@ export function useSkillTree(
       if (isLockNode(node)) return false;
       if (node.tags?.includes("infographic")) return false;
 
-      // Check skill point limit (max 15)
-      const currentPoints = [...activatedSkills].filter((sid) => {
-        const n = nodeMap.get(sid);
-        return n && !isLockNode(n);
-      }).length;
-      if (currentPoints >= 15) return false;
+      // Check skill point limit (max 15) — bypassed when unlimited mode is on
+      if (!unlimited) {
+        const currentPoints = [...activatedSkills].filter((sid) => {
+          const n = nodeMap.get(sid);
+          return n && !isLockNode(n);
+        }).length;
+        if (currentPoints >= 15) return false;
+      }
 
       // Check parent requirement (OR gate): at least one parent must be activated
       // (or satisfied, for lock parents), OR node must be root
@@ -223,7 +226,7 @@ export function useSkillTree(
 
       return true;
     },
-    [tree, activatedSkills, nodeMap, parentMap, manualLocks],
+    [tree, activatedSkills, nodeMap, parentMap, manualLocks, unlimited],
   );
 
   const canUnlearn = useCallback(

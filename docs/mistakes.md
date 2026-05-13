@@ -499,3 +499,11 @@
   - 올바른 머지 방향은 `feat → beta`(=`/push`)와 `feat → main`(=`/release`) 둘 뿐. 두 쪽으로 각각 직접 머지하는 비대칭 구조
   - 메타/문서 변경도 동일 패턴(`/task` → `/push` → `/release`)을 따른다. 예외 없음
 - **사후 처리**: production에 들어간 dev 페이지(`/damage-calc`)는 프론트 진입점이 없어 사용자 노출 없음 → revert하지 않고 그대로 둠. CLAUDE.md / `/release` 스킬에 머지 방향 규칙을 명시하고, 본 사례를 오답노트에 기록 (이슈 #4)
+
+### SessionStart hook의 divergence 경고를 놓침 (2026-05-13)
+- **문제**: 세션 시작 시 `[git sync] beta` hook이 `fatal: Not possible to fast-forward, aborting.`를 출력했는데 즉시 인지하지 못하고 `/task`로 새 작업(이슈 #28)을 진행. 이슈 #29 메타 작업까지 끝낸 후에야 메인 워크트리(beta)가 origin/beta 대비 5 ahead / 40 behind 발산 상태임을 발견. 그 사이 사용자가 옛 `/push` 모델을 전제로 흐름을 짜고 있었음
+- **원인**: SessionStart hook 출력을 시스템 알림 정도로 흘려 봄. `[git sync]` 라벨 + `fatal:` 키워드가 같이 떴는데도 우선순위를 낮게 잡음
+- **교훈**:
+  - **세션 시작 시 SessionStart hook 출력에 `fatal`/`error`/`conflict`/`diverging` 단어가 보이면 즉시 사용자에게 보고하고 작업 보류**. hook이 자동 동기화에 실패했다는 건 working tree와 origin의 모델이 어긋났다는 신호
+  - `git status`만으로는 발산 감지 못 함 (clean으로 표시됨). `git rev-parse HEAD origin/<branch>` 비교 또는 `git log @..@{u}` / `@{u}..@` 확인 필요
+- **사후 처리**: 별개로 정리(메인 워크트리를 main으로 전환 + `/beta clear`). 새 `/beta clear` 서브커맨드가 이런 청소에 쓰임
