@@ -105,11 +105,17 @@ function QuestSection({
   const [collapsed, setCollapsed] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const wasCollapsedRef = useRef(collapsed);
-  // 접을 때만 섹션 헤더를 뷰포트 상단으로 끌어올린다. 그러지 않으면 위쪽 콘텐츠가
-  // 줄어든 만큼 아래 섹션들이 위로 밀려 올라가 사용자가 의도하지 않은 위치로 이동.
+  // 접을 때만 섹션 헤더를 스크롤 컨테이너 상단으로 끌어올린다.
+  // scrollIntoView를 쓰면 외부(탭바 포함) 컨테이너까지 같이 스크롤되는 사이드이펙트가 있어,
+  // 데이터-스크롤-컨테이너에만 명시적으로 scrollTop을 조정.
   useEffect(() => {
     if (!wasCollapsedRef.current && collapsed) {
-      sectionRef.current?.scrollIntoView({ block: "start", behavior: "instant" as ScrollBehavior });
+      const container = sectionRef.current?.closest("[data-scroll-container]") as HTMLElement | null;
+      if (container && sectionRef.current) {
+        const sectionTop = sectionRef.current.getBoundingClientRect().top;
+        const containerTop = container.getBoundingClientRect().top;
+        container.scrollTop += sectionTop - containerTop;
+      }
     }
     wasCollapsedRef.current = collapsed;
   }, [collapsed]);
