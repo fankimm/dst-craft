@@ -25,18 +25,6 @@ export const scionQuest: Quest = {
   iconPath: "/images/bosses/alterguardian_phase4.png",
   steps: [
     {
-      id: "mutated_trio",
-      // Challenge Board UI:POSSESSED_BOSS
-      titleKo: "빙의된 보스 처치",
-      titleEn: "Possessed Bosses",
-      iconPath: "/images/bosses/mutateddeerclops.png",
-      substeps: [
-        { id: "mutatedwarg",      nameKo: "귀신들린 바르그", nameEn: "Possessed Varg",    iconPath: "/images/bosses/mutatedwarg.png",      bossId: "mutatedwarg" },
-        { id: "mutateddeerclops", nameKo: "수정체 외눈사슴", nameEn: "Crystal Deerclops", iconPath: "/images/bosses/mutateddeerclops.png", bossId: "mutateddeerclops" },
-        { id: "mutatedbearger",   nameKo: "무장한 곰소리",   nameEn: "Armored Bearger",   iconPath: "/images/bosses/mutatedbearger.png",   bossId: "mutatedbearger" },
-      ],
-    },
-    {
       id: "task_pearlmap_help",
       // Challenge Board UI:PEARL_MAP_HELP_FMT + STRINGS.NAMES.HERMITCRAB
       titleKo: "게팍한 은둔자 이사 돕기",
@@ -80,15 +68,5 @@ export const scionQuest: Quest = {
       titleEn: "Capture Pure Gestalt",
       iconPath: "/images/bosses/alterguardian_phase1_lunarrift.png",
       bossId: "alterguardian_phase1_lunarrift" },
-    { id: "wagboss_robot",
-      titleKo: "W.A.R.B.O.T. 처치",
-      titleEn: "Defeat W.A.R.B.O.T.",
-      iconPath: "/images/bosses/wagboss_robot.png",
-      bossId: "wagboss_robot" },
-    { id: "alterguardian_phase4_lunarrift",
-      titleKo: "천상의 귀공자 처치",
-      titleEn: "Defeat the Celestial Scion",
-      iconPath: "/images/bosses/alterguardian_phase4.png",
-      bossId: "alterguardian_phase4_lunarrift" },
   ],
 };
