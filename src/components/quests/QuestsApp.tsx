@@ -8,7 +8,7 @@ import { quests, type Quest, type QuestStep } from "@/data/quests";
 import { t, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
-import { Footer } from "../crafting/Footer";
+import { TabScrollArea } from "@/components/ui/TabScrollArea";
 
 function stepTitle(step: QuestStep, locale: Locale): string {
   return locale === "ko" ? step.titleKo : step.titleEn;
@@ -38,8 +38,8 @@ export function QuestsApp() {
         </p>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto" data-scroll-container>
-        <div className="max-w-3xl mx-auto px-3 py-3 space-y-3">
+      <TabScrollArea scrollContainer>
+        <div className="max-w-3xl mx-auto px-3 py-3 space-y-3 w-full">
           {quests.map((quest) => (
             <QuestSection
               key={quest.id}
@@ -52,8 +52,7 @@ export function QuestsApp() {
             />
           ))}
         </div>
-        <Footer />
-      </div>
+      </TabScrollArea>
     </div>
   );
 }
@@ -202,6 +201,31 @@ function QuestSection({ quest, locale, isChecked, onToggle, onReset, checkedCoun
                         )}
                       >
                         {stepDesc(step, locale)}
+                      </span>
+                    )}
+                    {/* Sub-materials (e.g. hermithouse_construction recipe) */}
+                    {step.materials && step.materials.length > 0 && (
+                      <span className="flex flex-wrap gap-1.5 mt-1.5">
+                        {step.materials.map((m) => (
+                          <span
+                            key={m.id}
+                            className={cn(
+                              "inline-flex items-center gap-1 rounded-md border border-border bg-surface/70 px-1.5 py-0.5 text-[10px]",
+                              checked && "opacity-50",
+                            )}
+                          >
+                            <img
+                              src={assetPath(`/images/game-items/${m.icon}`)}
+                              alt=""
+                              className="size-4 object-contain"
+                              loading="lazy"
+                            />
+                            <span className="font-medium text-foreground/90">
+                              {locale === "ko" ? m.nameKo : m.nameEn}
+                            </span>
+                            <span className="text-muted-foreground tabular-nums">×{m.qty}</span>
+                          </span>
+                        ))}
                       </span>
                     )}
                   </span>

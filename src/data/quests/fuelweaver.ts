@@ -9,13 +9,15 @@ import type { Quest } from "./types";
  * - 한국어 명칭: 한글모드 ko.po (STRINGS.NAMES.*)
  *
  * 진행 순서:
- *  1. 유적(Ruins) 진입 → 고대 유사과학 정거장(Pseudoscience Station) 발견
- *  2. 4색 보석으로 고대의 열쇠 제작
- *  3. 화석 8조각을 모아 'Odd Skeleton' 조립
- *  4. 그림자 향로 / 부활 도구 준비
- *  5. 유적 동굴의 Atrium에서 Ancient Gateway 활성화
- *  6. 페이즈 1: 일반 Stalker (지상 잡몹) — 선택
- *  7. 페이즈 2: Ancient Fuelweaver (관문 활성 상태) 처치 → 뼈 갑옷·뼈 투구 청사진
+ *  1. 유적(Ruins) 진입 → Atrium 동굴 + 고대 유사과학 정거장 위치 확보
+ *  2. 고대의 열쇠 회수 (제작 불가 — recipes.lua에 Recipe2 없음. 유적에서 1회 회수)
+ *  3. 화석 조각을 모아 'Odd Skeleton'(fossil_stalker) 조립
+ *  4. 그림자 향로 등 보조 도구 준비
+ *  5. 관문(atrium_gate)에 열쇠를 trade → Fuelweaver 소환
+ *  6. 처치 → 게이트는 ATRIUM_GATE_COOLDOWN(20일) 후 재활성
+ *
+ * 검증 위치: atrium_gate.lua(trader/pickable, TUNING.ATRIUM_GATE_COOLDOWN=20일),
+ * stalker.lua(fossil_piece loot 8회), recipes.lua(atrium_key Recipe2 없음).
  */
 export const fuelweaverQuest: Quest = {
   id: "fuelweaver",
@@ -42,60 +44,59 @@ export const fuelweaverQuest: Quest = {
       icon: "researchlab4.png",
     },
     {
-      id: "craft_atrium_key",
-      titleKo: "고대의 열쇠 제작",
-      titleEn: "Craft the Ancient Key",
-      descKo: "악몽 연료 5 + 4색 보석(붉은·푸른·보라·노랑) 1개씩으로 제작.",
-      descEn: "Craft with 5 Nightmare Fuel + Red/Blue/Purple/Yellow Gems.",
+      id: "obtain_atrium_key",
+      titleKo: "고대의 열쇠 회수",
+      titleEn: "Obtain the Ancient Key",
+      descKo: "유적 안에 1회 배치된 고대의 열쇠를 회수 (제작 불가). 처치 후엔 관문에서 재회수.",
+      descEn: "Pick up the Ancient Key from the Ruins (not craftable). After each kill it can be picked back from the gate.",
       icon: "atrium_key.png",
     },
     {
       id: "collect_fossils",
-      titleKo: "화석 조각 8개 수집",
-      titleEn: "Collect 8 Fossil Pieces",
-      descKo: "달의 섬·갈고리꼬리·코끼리 등에서 화석 조각을 모아 'Odd Skeleton' 조립 재료 확보.",
-      descEn: "Gather 8 Fossil Pieces from the Lunar Isle and other sources.",
+      titleKo: "화석 조각 수집",
+      titleEn: "Collect Fossil Pieces",
+      descKo: "유적·미궁 등에서 화석 조각(fossil_piece)을 모음.",
+      descEn: "Gather Fossil Pieces from the Ruins / Labyrinth.",
       icon: "fossil_piece.png",
-      count: 8,
     },
     {
       id: "assemble_odd_skeleton",
       titleKo: "이상한 해골 조립",
       titleEn: "Assemble the Odd Skeleton",
-      descKo: "화석 8개로 'Odd Skeleton' 조립 — 연료직공 부활용 사체.",
-      descEn: "Build the Odd Skeleton (Fossil Stalker) — Fuelweaver's body.",
+      descKo: "화석 조각을 배치해 'Odd Skeleton'(fossil_stalker) 조립 — 연료직공 부활용 사체.",
+      descEn: "Place fossil pieces to construct the Odd Skeleton (fossil_stalker) — Fuelweaver's body.",
       icon: "fossil_piece.png",
     },
     {
       id: "prepare_thurible",
       titleKo: "그림자 향로 준비",
       titleEn: "Prepare Shadow Thuribles",
-      descKo: "악몽 연료·뼛조각·붉은 보석으로 향로 제작(부활/패턴 대응용).",
-      descEn: "Craft Shadow Thuribles (used to extinguish shadow tentacles).",
+      descKo: "보스전 중 그림자 패턴 대응용으로 그림자 향로(thurible) 보조.",
+      descEn: "Bring Shadow Thuribles to deal with shadow patterns during the fight.",
       icon: "thurible.png",
     },
     {
       id: "activate_gateway",
-      titleKo: "관문 활성화",
-      titleEn: "Activate the Gateway",
-      descKo: "고대의 열쇠를 관문에 사용 → 'Odd Skeleton'이 깨어나며 보스전 시작.",
-      descEn: "Use the Ancient Key on the gateway to awaken the Fuelweaver.",
+      titleKo: "관문에 열쇠 삽입",
+      titleEn: "Insert Key into the Gateway",
+      descKo: "고대의 열쇠를 관문(atrium_gate)에 trade — 'Odd Skeleton'이 깨어나며 보스전 시작.",
+      descEn: "Trade the Ancient Key to the Ancient Gateway — the Odd Skeleton reanimates as the Fuelweaver.",
       icon: "atrium_key.png",
     },
     {
       id: "defeat_fuelweaver",
       titleKo: "고대의 연료직공 처치",
       titleEn: "Defeat the Ancient Fuelweaver",
-      descKo: "그림자 패턴·미니언·뼈벽 패턴 극복. 처치 시 뼈 갑옷·뼈 투구 청사진 보상.",
-      descEn: "Survive the shadow patterns and minions. Drops Bone Helm/Armor blueprints.",
+      descKo: "그림자·미니언 패턴 극복 후 처치.",
+      descEn: "Survive the shadow & minion patterns and bring it down.",
       icon: "boneshard.png",
     },
     {
       id: "reset_atrium",
       titleKo: "아트리움 리셋 (선택)",
       titleEn: "Reset the Atrium (Optional)",
-      descKo: "처치 후 약 20일 뒤 관문이 다시 활성 — 반복 도전 가능.",
-      descEn: "The gateway becomes reusable ~20 days after each kill.",
+      descKo: "처치 후 게이트는 20일(TUNING.ATRIUM_GATE_COOLDOWN) 뒤 다시 활성 — 반복 도전 가능.",
+      descEn: "The gateway becomes reusable after 20 days (TUNING.ATRIUM_GATE_COOLDOWN).",
       icon: "nightmarefuel.png",
     },
   ],

@@ -20,6 +20,12 @@ export const hermitQuest: Quest = {
       descKo: "허름한 오두막에 자재를 부어 1차 보강.",
       descEn: "Upgrade hermit's hovel to stage 2.",
       icon: "hermitcrab_lightpost.png",
+      // 출처: recipes.lua 1300 — ["hermithouse_construction1"]
+      materials: [
+        { id: "cookiecuttershell", nameKo: "과자틀소라 조가비", nameEn: "Cookie Cutter Shell", icon: "cookiecuttershell.png", qty: 10 },
+        { id: "boards", nameKo: "나무 판자", nameEn: "Boards", icon: "boards.png", qty: 10 },
+        { id: "fireflies", nameKo: "반딧불이", nameEn: "Fireflies", icon: "fireflies.png", qty: 1 },
+      ],
     },
     {
       id: "fix_house_2",
@@ -28,14 +34,26 @@ export const hermitQuest: Quest = {
       descKo: "2차 보강 — 펄이 재료를 더 요구함.",
       descEn: "Upgrade to stage 3.",
       icon: "hermitcrab_lightpost.png",
+      // 출처: recipes.lua 1301 — ["hermithouse_construction2"]
+      materials: [
+        { id: "marble", nameKo: "대리석", nameEn: "Marble", icon: "marble.png", qty: 10 },
+        { id: "cutstone", nameKo: "석재", nameEn: "Cut Stone", icon: "cutstone.png", qty: 5 },
+        { id: "lightbulb", nameKo: "전구근", nameEn: "Light Bulb", icon: "lightbulb.png", qty: 3 },
+      ],
     },
     {
       id: "fix_house_3",
       titleKo: "집 수리 3단계",
       titleEn: "Fix House (Stage 3)",
-      descKo: "최종 완성 — 차 가게 청사진을 받음.",
-      descEn: "Finish the house to unlock the tea shop.",
+      descKo: "최종 단계 — 펄의 찻집 구조물 완성. 겨울 축제 중이면 찻집 모양 겨울 장식품 1개.",
+      descEn: "Final stage — Pearl's tea shop is built. Drops a Hermit House winter ornament if Winter's Feast is active.",
       icon: "hermitcrab_teashop.png",
+      // 출처: recipes.lua 1302 — ["hermithouse_construction3"]
+      materials: [
+        { id: "moonrocknugget", nameKo: "월석", nameEn: "Moon Rock", icon: "moonrocknugget.png", qty: 10 },
+        { id: "rope", nameKo: "밧줄", nameEn: "Rope", icon: "rope.png", qty: 5 },
+        { id: "turf_carpetfloor", nameKo: "카펫 깔린 바닥", nameEn: "Carpeted Flooring", icon: "turf_carpetfloor.png", qty: 5 },
+      ],
     },
     {
       id: "plant_flowers",

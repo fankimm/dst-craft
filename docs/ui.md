@@ -85,6 +85,25 @@
 - 파라미터 있는 명령어: 인라인 편집 후 즉시 반영
 - 탭하면 클립보드 복사 + 토스트
 
+### 탭 컨텐츠 스크롤 + Footer 패턴 — **반드시 `TabScrollArea`로 감쌀 것**
+새 탭을 만들 때 가장 흔히 잘못되는 부분: 컨텐츠가 짧을 때 Footer가 화면 중간에 떠버리는 버그.
+원인은 `mt-auto`가 flex-col 부모에서만 동작하는데, `overflow-y-auto` 컨테이너 안에 그냥 div + Footer를 두면
+flex가 아니라서 Footer가 컨텐츠 바로 뒤에 붙어버리기 때문.
+
+**해결 — `<TabScrollArea scrollContainer>` 컴포넌트 사용**(`src/components/ui/TabScrollArea.tsx`):
+```tsx
+return (
+  <div className="flex flex-col h-full ...">
+    <div className="shrink-0 ...">{header}</div>
+    <TabScrollArea scrollContainer>
+      <div className="max-w-3xl mx-auto px-3 py-3 w-full">{main}</div>
+    </TabScrollArea>
+  </div>
+);
+```
+내부 구조: `flex-1 min-h-0 overflow-y-auto` → `flex flex-col min-h-full` → children + Footer.
+Footer는 자동 포함 (`noFooter` prop으로 끌 수 있음 — CookpotApp처럼 외부에 pinned할 때만).
+
 ### 퀘스트 탭 (QuestsApp)
 단일 화면 스크롤: 3개 퀘스트 섹션(은둔자/대변자/연료직공) 카드형 체크리스트
 ```

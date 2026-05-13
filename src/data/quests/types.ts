@@ -12,6 +12,16 @@
 
 export type QuestId = "hermit" | "celestial" | "fuelweaver";
 
+export interface QuestMaterial {
+  /** 게임 prefab id (예: "cookiecuttershell") — 디버그용 */
+  id: string;
+  nameKo: string;
+  nameEn: string;
+  /** public/images/game-items/<icon> */
+  icon: string;
+  qty: number;
+}
+
 export interface QuestStep {
   /** 안정 ID — localStorage 키로 사용, 변경 금지 */
   id: string;
@@ -27,6 +37,8 @@ export interface QuestStep {
   icon?: string;
   /** 반복 횟수 (있으면 "×N" 배지로 표시) */
   count?: number;
+  /** 단계 한 뎁스 아래 표시할 보조 아이템(예: 집 수리 재료, 보스 처치 청사진 보상) */
+  materials?: QuestMaterial[];
 }
 
 export interface Quest {
