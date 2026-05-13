@@ -109,6 +109,7 @@ export function BossesApp({
   onClearPendingBoss,
   externalBackLabel,
   onExternalBack,
+  onPanelClose,
 }: {
   onViewCraftingItem?: (itemId: string) => void;
   pendingLootItemId?: string | null;
@@ -117,6 +118,8 @@ export function BossesApp({
   onClearPendingBoss?: () => void;
   externalBackLabel?: string | null;
   onExternalBack?: () => void;
+  /** 사용자가 X로 패널을 닫았을 때 — 외부 back 라벨 정리용 */
+  onPanelClose?: () => void;
 }) {
   const { resolvedLocale } = useSettings();
   const { isAdmin } = useAuth();
@@ -235,7 +238,8 @@ export function BossesApp({
 
   const handleClosePanel = useCallback(() => {
     setSelectedBoss(null);
-  }, []);
+    onPanelClose?.();
+  }, [onPanelClose]);
 
   const filteredBosses = useMemo(() => {
     let result: Boss[];

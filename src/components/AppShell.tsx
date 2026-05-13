@@ -321,7 +321,7 @@ export function AppShell() {
       {/* Tab content */}
       <div className="flex-1 min-h-0 overflow-hidden">
         <div className={activeTab === "crafting" ? "h-full" : "hidden"}>
-          <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} externalBackLabel={craftingBack?.label ?? null} onExternalBack={craftingBack ? handleExternalBack : undefined} />
+          <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} externalBackLabel={craftingBack?.label ?? null} onExternalBack={craftingBack ? handleExternalBack : undefined} onPanelClose={() => setCraftingBack(null)} />
         </div>
         <div className={activeTab === "cooking" ? "h-full" : "hidden"}>
           <CookingApp pendingRecipeId={pendingRecipeId} onClearPendingRecipe={handleClearPendingRecipe} onViewCraftingItem={handleViewCraftingItem} />
@@ -330,7 +330,7 @@ export function AppShell() {
           <CookpotApp onViewRecipe={handleViewRecipe} />
         </div>
         <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
-          <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} pendingBossId={pendingBossId} onClearPendingBoss={handleClearPendingBoss} externalBackLabel={bossesBack?.label ?? null} onExternalBack={bossesBack ? handleBossesExternalBack : undefined} />
+          <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} pendingBossId={pendingBossId} onClearPendingBoss={handleClearPendingBoss} externalBackLabel={bossesBack?.label ?? null} onExternalBack={bossesBack ? handleBossesExternalBack : undefined} onPanelClose={() => setBossesBack(null)} />
         </div>
         <div className={activeTab === "skills" ? "h-full" : "hidden"}>
           <SkillSimulatorApp onViewCraftingItem={handleViewCraftingItem} />
