@@ -145,7 +145,43 @@ export function useQuestState() {
     [isStepDone],
   );
 
+  /**
+   * goal과 required 단계를 모두 고려한 "효과적 진행도".
+   * 필수 단계가 모두 끝나지 않으면 percent가 100%에 도달하지 못함.
+   *  - effective = (완료된 필수) + min(완료된 선택, goal - 총 필수)
+   *  - denom = goal (또는 quest.goal 미정 시 전체 단계 수)
+   */
+  const getEffectiveProgress = useCallback(
+    (quest: Quest) => {
+      const total = quest.steps.length;
+      const requiredSteps = quest.steps.filter((s) => s.required);
+      const optionalSteps = quest.steps.filter((s) => !s.required);
+      const requiredDone = requiredSteps.filter((s) => isStepDone(quest.id, s)).length;
+      const optionalDone = optionalSteps.filter((s) => isStepDone(quest.id, s)).length;
+      const checkedCount = requiredDone + optionalDone;
+
+      const goal = quest.goal ?? total;
+      const totalRequired = requiredSteps.length;
+      const optionalNeededForGoal = Math.max(0, goal - totalRequired);
+      const effective = requiredDone + Math.min(optionalDone, optionalNeededForGoal);
+      const goalReached = effective >= goal;
+      const allDone = checkedCount === total && total > 0;
+
+      return {
+        total,
+        checkedCount,
+        goal,
+        effective,
+        totalRequired,
+        requiredDone,
+        goalReached,
+        allDone,
+      };
+    },
+    [isStepDone],
+  );
+
   const hasAnyChecked = Object.keys(checks).length > 0;
 
-  return { isStepDone, isSubstepDone, toggleStep, toggleSubstep, resetQuest, resetAll, countStepsDone, hasAnyChecked };
+  return { isStepDone, isSubstepDone, toggleStep, toggleSubstep, resetQuest, resetAll, countStepsDone, getEffectiveProgress, hasAnyChecked };
 }

@@ -63,11 +63,13 @@ export const celestialQuest: Quest = {
       titleKo: "달 공명추출기 설치",
       titleEn: "Install Lunar Siphonator",
       icon: "moon_device_construction1.png",
+      craftId: "moon_device_construction1",
       descKo: "총 3단계 (1차 제작 → 1단계 자재 추가 → 2단계 자재 추가). 청사진은 와그펑크 작업장에서 받음.",
       descEn: "3 steps total (initial craft → stage 1 fill → stage 2 fill). Blueprint from the Wagpunk Workstation.",
       substeps: [
         { id: "craft_construction1", nameKo: "1차 제작 (moon_device_construction1)", nameEn: "Initial craft (moon_device_construction1)",
           icon: "moon_device_construction1.png",
+          craftId: "moon_device_construction1",
           noteKo: "wagpunk_bits 4 + moonstorm_spark 5 + transistor 2 — TECH.LOST 청사진 필요",
           noteEn: "wagpunk_bits 4 + moonstorm_spark 5 + transistor 2 — requires TECH.LOST blueprint" },
         { id: "fill_construction1", nameKo: "1단계 자재 충전",                 nameEn: "Stage 1 fill",

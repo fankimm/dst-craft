@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { RotateCcw, Check, ChevronDown, ChevronUp } from "lucide-react";
+import { RotateCcw, Check, ChevronDown, ChevronUp, Star, ExternalLink } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
 import { useQuestState } from "@/hooks/use-quest-state";
 import { quests, type Quest, type QuestStep, type QuestSubstep } from "@/data/quests";
@@ -32,7 +32,7 @@ function resolveIcon(item: { icon?: string; iconPath?: string }): string | null 
   return null;
 }
 
-export function QuestsApp() {
+export function QuestsApp({ onViewCraftingItem }: { onViewCraftingItem?: (itemId: string) => void } = {}) {
   const { resolvedLocale } = useSettings();
   const state = useQuestState();
   const { resetAll, hasAnyChecked } = state;
@@ -77,6 +77,7 @@ export function QuestsApp() {
               quest={quest}
               locale={resolvedLocale}
               state={state}
+              onViewCraftingItem={onViewCraftingItem}
             />
           ))}
         </div>
@@ -87,15 +88,38 @@ export function QuestsApp() {
 
 type QuestStateApi = ReturnType<typeof useQuestState>;
 
-function QuestSection({ quest, locale, state }: { quest: Quest; locale: Locale; state: QuestStateApi }) {
+function QuestSection({
+  quest,
+  locale,
+  state,
+  onViewCraftingItem,
+}: {
+  quest: Quest;
+  locale: Locale;
+  state: QuestStateApi;
+  onViewCraftingItem?: (itemId: string) => void;
+}) {
   const [collapsed, setCollapsed] = useState(false);
-  const { isStepDone, isSubstepDone, toggleStep, toggleSubstep, resetQuest, countStepsDone } = state;
+  // 서브스텝이 있는 단계는 기본 펼쳐짐. 사용자가 접고/펼치고 토글 가능 (세션 한정).
+  const [collapsedSteps, setCollapsedSteps] = useState<Set<string>>(() => new Set());
+  const toggleStepExpand = useCallback((stepId: string) => {
+    setCollapsedSteps((prev) => {
+      const next = new Set(prev);
+      if (next.has(stepId)) next.delete(stepId);
+      else next.add(stepId);
+      return next;
+    });
+  }, []);
+  const { isStepDone, isSubstepDone, toggleStep, toggleSubstep, resetQuest, getEffectiveProgress } = state;
 
-  const checkedCount = countStepsDone(quest);
-  const total = quest.steps.length;
-  const percent = total === 0 ? 0 : Math.round((checkedCount / total) * 100);
-  const allDone = checkedCount === total && total > 0;
+  const progress = getEffectiveProgress(quest);
+  const { total, checkedCount, goal, effective, goalReached, allDone } = progress;
+  const denom = goal;
+  const percent = denom === 0 ? 0 : Math.round((effective / denom) * 100);
   const questIconSrc = resolveIcon(quest);
+  // 진행바: effective/goal 기반. goal < total인 경우 goal 위치 마커 표시
+  const fillPercent = denom === 0 ? 0 : Math.min(100, Math.round((effective / denom) * 100));
+  const goalMarkerPercent = goal < total ? Math.round((goal / total) * 100) : null;
 
   const handleReset = useCallback(() => {
     if (checkedCount === 0) return;
@@ -131,11 +155,17 @@ function QuestSection({ quest, locale, state }: { quest: Quest; locale: Locale; 
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
               <div className="text-right">
-                <div className="text-xs font-mono tabular-nums">
-                  {checkedCount}/{total}
+                <div className="text-xs font-mono tabular-nums flex items-center gap-1 justify-end">
+                  <span>{effective}/{denom}</span>
+                  {goal < total && (
+                    <span className="text-[9px] font-normal text-muted-foreground tabular-nums">
+                      ({checkedCount}/{total})
+                    </span>
+                  )}
                 </div>
-                <div className="text-[10px] text-muted-foreground tabular-nums">
-                  {percent}%
+                <div className="text-[10px] text-muted-foreground tabular-nums flex items-center gap-1 justify-end">
+                  {goalReached && <Star className="size-3 fill-amber-500 text-amber-500" strokeWidth={0} />}
+                  <span>{percent}%</span>
                 </div>
               </div>
               {collapsed ? <ChevronDown className="size-4 text-muted-foreground" /> : <ChevronUp className="size-4 text-muted-foreground" />}
@@ -156,69 +186,108 @@ function QuestSection({ quest, locale, state }: { quest: Quest; locale: Locale; 
           <div
             className={cn(
               "h-full transition-[width] duration-300",
-              allDone ? "bg-emerald-500" : "bg-primary",
+              allDone ? "bg-emerald-500" : goalReached ? "bg-amber-500" : "bg-primary",
             )}
-            style={{ width: `${percent}%` }}
+            style={{ width: `${fillPercent}%` }}
           />
+          {goalMarkerPercent != null && (
+            <div
+              className={cn(
+                "absolute top-0 bottom-0 w-px",
+                goalReached ? "bg-amber-700/60" : "bg-amber-500/80",
+              )}
+              style={{ left: `${goalMarkerPercent}%` }}
+              aria-hidden
+            />
+          )}
         </div>
       </div>
 
       {!collapsed && (
         <ul className="divide-y divide-border/60">
-          {quest.steps.map((step) => {
-            const checked = isStepDone(quest.id, step);
-            const hasSubsteps = !!step.substeps && step.substeps.length > 0;
-            const stepIconSrc = resolveIcon(step);
-            return (
-              <li key={step.id}>
-                <button
-                  onClick={() => toggleStep(quest.id, step)}
-                  className={cn(
-                    "w-full flex items-start gap-3 px-3 py-2.5 text-left transition-colors",
-                    "hover:bg-surface/60 focus:bg-surface/60 focus:outline-none",
-                  )}
-                >
-                  <Checkbox checked={checked} />
+          {(() => {
+            const doneIds = new Set(quest.steps.filter((s) => isStepDone(quest.id, s)).map((s) => s.id));
+            return quest.steps.map((step) => {
+              const checked = isStepDone(quest.id, step);
+              const hasSubsteps = !!step.substeps && step.substeps.length > 0;
+              const stepIconSrc = resolveIcon(step);
+              const expanded = hasSubsteps && !collapsedSteps.has(step.id);
+              const locked = (step.requires ?? []).some((r) => !doneIds.has(r));
+              return (
+              <li key={step.id} className={cn(locked && "bg-surface/50 opacity-60")}>
+                <div className="flex items-stretch">
+                  <button
+                    onClick={() => { if (!locked) toggleStep(quest.id, step); }}
+                    disabled={locked}
+                    className={cn(
+                      "flex-1 min-w-0 flex items-start gap-3 px-3 py-2.5 text-left transition-colors",
+                      locked
+                        ? "cursor-not-allowed focus:outline-none"
+                        : "hover:bg-surface/60 focus:bg-surface/60 focus:outline-none",
+                    )}
+                  >
+                    <Checkbox checked={checked} />
 
-                  {stepIconSrc && (
-                    <span className="relative shrink-0 inline-flex items-center justify-center size-9 rounded border border-input bg-surface">
-                      <img
-                        src={stepIconSrc}
-                        alt=""
-                        className={cn("size-7 object-contain", checked && "opacity-50")}
-                        loading="lazy"
-                      />
-                      {step.count && step.count > 1 && (
-                        <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[10px] font-bold bg-surface-hover border border-ring text-foreground/80 tabular-nums">
-                          {step.count}
+                    {stepIconSrc && (
+                      <span className="relative shrink-0 inline-flex items-center justify-center size-9 rounded border border-input bg-surface">
+                        <img
+                          src={stepIconSrc}
+                          alt=""
+                          className={cn("size-7 object-contain", checked && "opacity-50")}
+                          loading="lazy"
+                        />
+                        {step.count && step.count > 1 && (
+                          <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[10px] font-bold bg-surface-hover border border-ring text-foreground/80 tabular-nums">
+                            {step.count}
+                          </span>
+                        )}
+                      </span>
+                    )}
+
+                    <span className="flex-1 min-w-0">
+                      <span
+                        className={cn(
+                          "block text-sm font-medium",
+                          checked && "line-through text-muted-foreground",
+                        )}
+                      >
+                        {stepTitle(step, locale)}
+                      </span>
+                      {stepDesc(step, locale) && (
+                        <span
+                          className={cn(
+                            "block text-[11px] leading-snug mt-0.5",
+                            checked ? "text-muted-foreground/60 line-through" : "text-muted-foreground",
+                          )}
+                        >
+                          {stepDesc(step, locale)}
                         </span>
                       )}
                     </span>
-                  )}
-
-                  <span className="flex-1 min-w-0">
-                    <span
-                      className={cn(
-                        "block text-sm font-medium",
-                        checked && "line-through text-muted-foreground",
-                      )}
+                  </button>
+                  {step.craftId && onViewCraftingItem && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onViewCraftingItem(step.craftId!); }}
+                      aria-label="제작 상세 보기"
+                      title="제작 탭에서 보기"
+                      className="shrink-0 px-2 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-surface/60 transition-colors"
                     >
-                      {stepTitle(step, locale)}
-                    </span>
-                    {stepDesc(step, locale) && (
-                      <span
-                        className={cn(
-                          "block text-[11px] leading-snug mt-0.5",
-                          checked ? "text-muted-foreground/60 line-through" : "text-muted-foreground",
-                        )}
-                      >
-                        {stepDesc(step, locale)}
-                      </span>
-                    )}
-                  </span>
-                </button>
+                      <ExternalLink className="size-3.5" />
+                    </button>
+                  )}
+                  {hasSubsteps && (
+                    <button
+                      onClick={() => toggleStepExpand(step.id)}
+                      aria-expanded={expanded}
+                      aria-label={expanded ? "접기" : "펼치기"}
+                      className="shrink-0 px-2 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-surface/60 transition-colors"
+                    >
+                      {expanded ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+                    </button>
+                  )}
+                </div>
 
-                {hasSubsteps && (
+                {hasSubsteps && expanded && (
                   <ul className="pl-12 pr-3 pb-2 space-y-1">
                     {step.substeps!.map((s) => (
                       <SubstepRow
@@ -227,13 +296,15 @@ function QuestSection({ quest, locale, state }: { quest: Quest; locale: Locale; 
                         locale={locale}
                         checked={isSubstepDone(quest.id, step.id, s.id)}
                         onToggle={() => toggleSubstep(quest.id, step, s.id)}
+                        onViewCraftingItem={onViewCraftingItem}
                       />
                     ))}
                   </ul>
                 )}
               </li>
             );
-          })}
+            });
+          })()}
         </ul>
       )}
     </section>
@@ -245,20 +316,22 @@ function SubstepRow({
   locale,
   checked,
   onToggle,
+  onViewCraftingItem,
 }: {
   substep: QuestSubstep;
   locale: Locale;
   checked: boolean;
   onToggle: () => void;
+  onViewCraftingItem?: (itemId: string) => void;
 }) {
   const iconSrc = resolveIcon(substep);
   const note = substepNote(substep, locale);
   return (
-    <li>
+    <li className="flex items-stretch">
       <button
         onClick={onToggle}
         className={cn(
-          "w-full flex items-start gap-2 rounded-md px-2 py-1.5 text-left transition-colors",
+          "flex-1 min-w-0 flex items-start gap-2 rounded-md px-2 py-1.5 text-left transition-colors",
           "hover:bg-surface/60 focus:bg-surface/60 focus:outline-none",
         )}
       >
@@ -274,17 +347,17 @@ function SubstepRow({
           />
         )}
         <span className="flex-1 min-w-0">
-          <span className="flex items-baseline gap-2">
+          <span className="flex items-baseline flex-wrap gap-x-1.5">
             <span
               className={cn(
-                "flex-1 min-w-0 text-[11px] truncate",
+                "text-[11px] truncate",
                 checked ? "line-through text-muted-foreground" : "text-foreground/90",
               )}
             >
               {locale === "ko" ? substep.nameKo : substep.nameEn}
             </span>
             {substep.qty != null && (
-              <span className={cn("text-[11px] tabular-nums shrink-0", checked ? "text-muted-foreground/60" : "text-muted-foreground")}>
+              <span className={cn("text-[11px] tabular-nums", checked ? "text-muted-foreground/60" : "text-muted-foreground")}>
                 {substep.qty}
               </span>
             )}
@@ -301,6 +374,16 @@ function SubstepRow({
           )}
         </span>
       </button>
+      {substep.craftId && onViewCraftingItem && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onViewCraftingItem(substep.craftId!); }}
+          aria-label="제작 상세 보기"
+          title="제작 탭에서 보기"
+          className="shrink-0 px-2 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-surface/60 rounded-md transition-colors"
+        >
+          <ExternalLink className="size-3" />
+        </button>
+      )}
     </li>
   );
 }

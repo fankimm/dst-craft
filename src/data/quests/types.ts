@@ -25,6 +25,8 @@ export interface QuestSubstep {
   /** 부가 설명 (한국어) — 라벨 아래 한 줄 */
   noteKo?: string;
   noteEn?: string;
+  /** 제작 가능한 아이템의 items.ts id — 클릭 시 제작탭 해당 상세로 점프 */
+  craftId?: string;
 }
 
 export interface QuestStep {
@@ -36,10 +38,16 @@ export interface QuestStep {
   descEn?: string;
   icon?: string;
   iconPath?: string;
-  /** 단계 아이콘 오른쪽 아래 숫자 배지 (예: 펄 퀘스트 plant_flowers = 10) */
+  /** 단계 아이콘 오른쪽 아래 숫자 배지 */
   count?: number;
   /** 한 뎁스 아래 sub-checkbox 목록 */
   substeps?: QuestSubstep[];
+  /** 필수 단계 표시(★) — 일부 퀘스트는 게임 메커닉상 반드시 완료해야 후속 진행 */
+  required?: boolean;
+  /** 선행 단계 id 목록 — 모두 완료해야 본 단계 토글 가능 (스킬트리 잠금과 동일한 UX) */
+  requires?: string[];
+  /** 제작 가능한 아이템의 items.ts id — 클릭 시 제작탭 해당 상세로 점프 */
+  craftId?: string;
 }
 
 export interface Quest {
@@ -51,4 +59,9 @@ export interface Quest {
   summaryKo: string;
   summaryEn: string;
   steps: QuestStep[];
+  /**
+   * 목표 단계 수 (전체 totalSteps와 다를 수 있음 — 예: 은둔자는 17개 중 10개 완료가 친구 Lv 10 달성 기준).
+   * 지정 시 진행률 바에 마커가 표시되고 카운트 표기가 "n/goal" 형태로 바뀜.
+   */
+  goal?: number;
 }
