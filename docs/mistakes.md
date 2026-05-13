@@ -164,6 +164,18 @@
   3. 두 가지를 모두 확인하고 구분하여 입력
 - **검증**: `grep "SetSharedLootTable\|chest_loot\|GetLoot\|dospawnchest" prefabs/<boss>.lua`
 
+### 퀘스트/진행 단계 설명을 인게임 소스 미검증으로 작성
+- **문제**: #29 퀘스트 체크리스트 작성 시 자체 추정이 그대로 들어감:
+  1. 은둔자 fix_house_3 설명 "최종 완성 — 차 가게 청사진을 받음" — hermitcrab.lua 870-876행 확인 결과 평시엔 추가 보상 없음. 겨울 축제 중에만 `winter_ornament_boss_hermithouse` 1개. 청사진은 받지 않음.
+  2. 연료직공 craft_atrium_key 설명 "악몽 연료 5 + 4색 보석으로 제작" — recipes.lua에 `Recipe2("atrium_key", ...)`가 존재하지 않음. 실제는 유적에 1회 배치된 키를 회수 → atrium_gate에 trade로 삽입 → 처치 후 pickable로 재회수 (atrium_gate.lua trader/pickable + TUNING.ATRIUM_GATE_COOLDOWN=20일).
+  3. 천상의 대변자 페이즈별 패턴 묘사("광역 레이저와 분신", "가시 분출과 돌진") — SG state 미확인 자체 묘사.
+- **원인**: prefab 파일을 line-by-line 보지 않고 community/wiki 지식으로 채움. user-facing 단계 설명이라 "그럴듯한 묘사"만 채우고 진행.
+- **교훈**:
+  1. 퀘스트/진행 체인 단계 설명도 인게임 소스에서 직접 검증할 것 — `prefabs/<boss>.lua`의 reward 함수, `recipes.lua` Recipe2 존재 여부, `TUNING.<KEY>` 상수, world spawn / construction 메커니즘 등
+  2. 검증 못한 단계는 "묘사 없이 단계명만" 두는 게 그럴듯한 거짓 묘사보다 낫다 (memory: `feedback_specialinfo_no_self_authoring`의 일반화)
+  3. 사용자가 한 번 의심하면 같은 패턴의 다른 단계도 즉시 전수 재검증할 것
+- **검증**: `grep 'Recipe2("<prefab>"' recipes.lua`, `grep "TUNING\\.<KEY>" tuning.lua`, prefab 파일에서 lootdropper / construction_product / friendlevels rewardfn 등 직접 추적
+
 ### 아이템 특수 효과 팩트체크 누락
 - **문제**: item-stats.ts에 usage 추가 시 게임 지식에만 의존하여 3개 오류 발생
   1. `yellowamulet` — 부활 효과로 적었으나 실제는 발광+이동속도 부적 (부활은 `amulet`)

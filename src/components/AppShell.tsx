@@ -9,6 +9,7 @@ import { BossesApp } from "./bosses/BossesApp";
 import { SettingsPage } from "./settings/SettingsPage";
 import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
 import { ConsoleApp } from "./console/ConsoleApp";
+import { QuestsApp } from "./quests/QuestsApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { FloatingSupportPill } from "./ui/FloatingSupportPill";
 import { useSettings } from "@/hooks/use-settings";
@@ -17,7 +18,7 @@ import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "skills" | "console" | "settings";
+type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "skills" | "quests" | "console" | "settings";
 
 const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?: boolean }[] = [
   { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.png" },
@@ -25,6 +26,7 @@ const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?
   { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
   { id: "bosses", labelKey: "tab_bosses", image: "/images/game-items/deerclops_eyeball.png" },
   { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.png" },
+  { id: "quests", labelKey: "tab_quests", image: "/images/game-items/hermitcrab_npc.png" },
   { id: "console", labelKey: "tab_console", image: "/images/game-items/papyrus.png" },
   { id: "settings", labelKey: "tab_settings", image: "/images/game-items/gears.png" },
 ];
@@ -33,7 +35,7 @@ const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?
 function readTabFromUrl(): TabId {
   if (typeof window === "undefined") return "crafting";
   const tab = new URLSearchParams(window.location.search).get("tab");
-  if (tab === "cooking" || tab === "cookpot" || tab === "bosses" || tab === "skills" || tab === "console" || tab === "settings") return tab;
+  if (tab === "cooking" || tab === "cookpot" || tab === "bosses" || tab === "skills" || tab === "quests" || tab === "console" || tab === "settings") return tab;
   return "crafting";
 }
 
@@ -116,17 +118,36 @@ export function AppShell() {
     setPendingRecipeId(null);
   }, []);
 
-  // Boss → Crafting item shortcut
-  const handleViewCraftingItem = useCallback((itemId: string) => {
+  // Boss/Cooking/Skill/Quest → Crafting item shortcut.
+  // originTab: 외부 진입 시 DetailPanel에 표시할 "← <label>" 빠른 뒤로 버튼 + 클릭 시 돌아갈 탭
+  const [craftingBack, setCraftingBack] = useState<{ tab: TabId; label: string } | null>(null);
+  const handleViewCraftingItem = useCallback((itemId: string, origin?: { tab: TabId; label: string }) => {
     const url = `${window.location.pathname}`;
     window.history.pushState({ _appNav: true }, "", url);
     setPendingItemId(itemId);
+    setCraftingBack(origin ?? null);
     setActiveTab("crafting");
   }, []);
 
   const handleClearPendingItem = useCallback(() => {
     setPendingItemId(null);
   }, []);
+
+  const handleExternalBack = useCallback(() => {
+    if (!craftingBack) return;
+    const target = craftingBack.tab;
+    const url = target === "crafting" ? window.location.pathname : `${window.location.pathname}?tab=${target}`;
+    window.history.pushState({ _appNav: true }, "", url);
+    setCraftingBack(null);
+    setActiveTab(target);
+  }, [craftingBack]);
+
+  // 사용자가 탭바를 직접 누르거나 brower back으로 crafting을 떠나면 외부 back 라벨 해제
+  useEffect(() => {
+    if (activeTab !== "crafting" && craftingBack) {
+      setCraftingBack(null);
+    }
+  }, [activeTab, craftingBack]);
 
   // Crafting → Boss loot search
   const [pendingLootItemId, setPendingLootItemId] = useState<string | null>(null);
@@ -141,6 +162,34 @@ export function AppShell() {
   const handleClearPendingLoot = useCallback(() => {
     setPendingLootItemId(null);
   }, []);
+
+  // Quest → Boss detail jump
+  const [pendingBossId, setPendingBossId] = useState<string | null>(null);
+  const [bossesBack, setBossesBack] = useState<{ tab: TabId; label: string } | null>(null);
+  const handleViewBoss = useCallback((bossId: string, origin?: { tab: TabId; label: string }) => {
+    const url = `${window.location.pathname}?tab=bosses&boss=${bossId}`;
+    window.history.pushState({ _appNav: true }, "", url);
+    setPendingBossId(bossId);
+    setBossesBack(origin ?? null);
+    setActiveTab("bosses");
+  }, []);
+  const handleClearPendingBoss = useCallback(() => {
+    setPendingBossId(null);
+  }, []);
+  const handleBossesExternalBack = useCallback(() => {
+    if (!bossesBack) return;
+    const target = bossesBack.tab;
+    const url = target === "crafting" ? window.location.pathname : `${window.location.pathname}?tab=${target}`;
+    window.history.pushState({ _appNav: true }, "", url);
+    setBossesBack(null);
+    setActiveTab(target);
+  }, [bossesBack]);
+  // 사용자가 보스 탭을 떠나면 외부 back 라벨 해제
+  useEffect(() => {
+    if (activeTab !== "bosses" && bossesBack) {
+      setBossesBack(null);
+    }
+  }, [activeTab, bossesBack]);
 
   const handleSkillClick = useCallback((skillId: string) => {
     // Extract character from skill ID (e.g., "wilson_alchemy_1" → "wilson")
@@ -272,7 +321,7 @@ export function AppShell() {
       {/* Tab content */}
       <div className="flex-1 min-h-0 overflow-hidden">
         <div className={activeTab === "crafting" ? "h-full" : "hidden"}>
-          <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} />
+          <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} externalBackLabel={craftingBack?.label ?? null} onExternalBack={craftingBack ? handleExternalBack : undefined} onPanelClose={() => setCraftingBack(null)} />
         </div>
         <div className={activeTab === "cooking" ? "h-full" : "hidden"}>
           <CookingApp pendingRecipeId={pendingRecipeId} onClearPendingRecipe={handleClearPendingRecipe} onViewCraftingItem={handleViewCraftingItem} />
@@ -281,10 +330,13 @@ export function AppShell() {
           <CookpotApp onViewRecipe={handleViewRecipe} />
         </div>
         <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
-          <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} />
+          <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} pendingBossId={pendingBossId} onClearPendingBoss={handleClearPendingBoss} externalBackLabel={bossesBack?.label ?? null} onExternalBack={bossesBack ? handleBossesExternalBack : undefined} onPanelClose={() => setBossesBack(null)} />
         </div>
         <div className={activeTab === "skills" ? "h-full" : "hidden"}>
           <SkillSimulatorApp onViewCraftingItem={handleViewCraftingItem} />
+        </div>
+        <div className={activeTab === "quests" ? "h-full" : "hidden"}>
+          <QuestsApp onViewCraftingItem={(id) => handleViewCraftingItem(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} onViewBoss={(id) => handleViewBoss(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} />
         </div>
         <div className={activeTab === "console" ? "h-full" : "hidden"}>
           <ConsoleApp />

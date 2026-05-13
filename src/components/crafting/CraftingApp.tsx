@@ -34,11 +34,20 @@ export function CraftingApp({
   onClearPendingItem,
   onBlueprintClick,
   onSkillClick,
+  externalBackLabel,
+  onExternalBack,
+  onPanelClose,
 }: {
   pendingItemId?: string | null;
   onClearPendingItem?: () => void;
   onBlueprintClick?: (itemId: string) => void;
   onSkillClick?: (skillId: string) => void;
+  /** 외부 탭에서 진입했을 때 DetailPanel에 "← <label>" 빠른 뒤로 버튼 표시 */
+  externalBackLabel?: string | null;
+  /** 외부 뒤로 버튼 클릭 핸들러 (해당 원래 탭으로 복귀) */
+  onExternalBack?: () => void;
+  /** 사용자가 X로 패널을 닫았을 때 — 외부 back 라벨 정리용 */
+  onPanelClose?: () => void;
 }) {
   const {
     selectedCategory,
@@ -188,9 +197,9 @@ export function CraftingApp({
   const detailPanel = panelItem && (
     <DetailPanel
       open={panelOpen}
-      onClose={() => setItem(null)}
-      onBack={previousItem ? goBackToItem : undefined}
-      backLabel={previousItem ? itemName(previousItem, resolvedLocale) : undefined}
+      onClose={() => { setItem(null); onPanelClose?.(); }}
+      onBack={previousItem ? goBackToItem : (externalBackLabel && onExternalBack) ? () => { setItem(null); onExternalBack(); } : undefined}
+      backLabel={previousItem ? itemName(previousItem, resolvedLocale) : externalBackLabel ?? undefined}
     >
       <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} onSkillClick={onSkillClick} />
     </DetailPanel>

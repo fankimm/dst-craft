@@ -105,10 +105,21 @@ export function BossesApp({
   onViewCraftingItem,
   pendingLootItemId,
   onClearPendingLoot,
+  pendingBossId,
+  onClearPendingBoss,
+  externalBackLabel,
+  onExternalBack,
+  onPanelClose,
 }: {
   onViewCraftingItem?: (itemId: string) => void;
   pendingLootItemId?: string | null;
   onClearPendingLoot?: () => void;
+  pendingBossId?: string | null;
+  onClearPendingBoss?: () => void;
+  externalBackLabel?: string | null;
+  onExternalBack?: () => void;
+  /** 사용자가 X로 패널을 닫았을 때 — 외부 back 라벨 정리용 */
+  onPanelClose?: () => void;
 }) {
   const { resolvedLocale } = useSettings();
   const { isAdmin } = useAuth();
@@ -198,6 +209,18 @@ export function BossesApp({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // External jump: quest tab → boss detail
+  useEffect(() => {
+    if (!pendingBossId) return;
+    const boss = bosses.find((b) => b.id === pendingBossId);
+    if (boss) {
+      setSelectedCategory(null);
+      setSelectedBoss(boss);
+      addRecent(boss.id);
+    }
+    onClearPendingBoss?.();
+  }, [pendingBossId, onClearPendingBoss, addRecent]);
+
   // Re-tap active tab → go home
   useEffect(() => {
     const handler = () => handleGoHome();
@@ -215,7 +238,8 @@ export function BossesApp({
 
   const handleClosePanel = useCallback(() => {
     setSelectedBoss(null);
-  }, []);
+    onPanelClose?.();
+  }, [onPanelClose]);
 
   const filteredBosses = useMemo(() => {
     let result: Boss[];
@@ -237,7 +261,12 @@ export function BossesApp({
   }, [selectedCategory, favorites, recentIds, sortByPopular, getClicks]);
 
   const detailPanel = panelBoss && (
-    <DetailPanel open={panelOpen} onClose={handleClosePanel}>
+    <DetailPanel
+      open={panelOpen}
+      onClose={handleClosePanel}
+      onBack={externalBackLabel && onExternalBack ? () => { setSelectedBoss(null); onExternalBack(); } : undefined}
+      backLabel={externalBackLabel ?? undefined}
+    >
       <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} clicks={getClicks(`boss:${panelBoss.id}`)} isFav={isFavorite(panelBoss.id)} onToggleFav={() => toggleFavorite(panelBoss.id)} />
     </DetailPanel>
   );

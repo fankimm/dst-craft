@@ -5,6 +5,38 @@
 
 ---
 
+## 다음 세션 이어서 (퇴근→폰에서 맥미니 세션 접속)
+
+### 퀘스트 탭 (#29 feat/29-quest-checklist) [~] — 베타에 푸시됨
+- **워크트리**: `~/private-works/dst-craft-29` (브랜치: `feat/29-quest-checklist`)
+- **베타**: https://beta.dstcraft.com/?tab=quests 에서 검증
+- **이슈**: https://github.com/fankimm/dst-craft/issues/29
+
+#### 이번 세션에 완료
+- [x] Challenge Board 모드 구조로 4개 퀘스트 재구성 (은둔자/연료직공/대변자/귀공자)
+- [x] 펄 캐릭터 portrait 위키에서 받아 적용 (`hermitcrab_npc.png`)
+- [x] 집수리 단계별 wiki 이미지 (`hermithouse_stage1/2/3.png`)
+- [x] 바다 쓰레기 제거 아이콘 → 윈치(`winch.png`)
+- [x] 베리덤불 아이콘 → `dug_berrybush.png`
+- [x] 의자 만들기 체인 substeps 분해 (모조유물 의자 → 목공 작업대 → 의자)
+- [x] 진행률 goal 10 + 마커, 필수 단계 의존성(스킬트리 동일 잠금 UX)
+- [x] 서브스텝 접기/펼치기, 재료 옆 수량 인접 표시
+- [x] 제작 가능 아이템 → 제작 탭 점프 (↗) + DetailPanel "← 퀘스트" 빠른 뒤로
+- [x] 사용자 피드백 정정: shadowheart Stalker 드롭, atrium_key 미노타우르스 회수, 변형 보스 3종 prereq, 펄 이사 substeps, 게슈탈트 포획기 substeps, 달 공명추출기 단계별 자재
+
+#### 다음에 검토 (사용자 한 줄: "흠 손볼게 매우 많다...")
+- [ ] 사용자가 베타에서 추가 손볼 항목 알려줄 예정 (현재 미정의)
+- [ ] 보스탭 연동: shadowheart 단계 → stalker 보스, atrium_key 단계 → minotaur 보스 (현재는 정보 텍스트만)
+- [ ] 검증 못 한 단계 묘사 추가 검증 (와그스태프 기구 4대 mechanism, 천상의 공물 충전 메커니즘 등)
+- [ ] OK 시 `/release` 해서 main 배포
+
+#### 폰에서 재개할 때
+1. `~/private-works/dst-craft-29` 워크트리에서 시작 (이 디렉토리에서 `claude` 실행)
+2. todo.md 이 섹션 확인
+3. 베타 화면을 보면서 사용자가 손볼 항목 지시
+
+---
+
 ## 진행중
 
 ### 요리탭 검색·재료 표시 정확도 [~] (#25, 2026-05-10)
