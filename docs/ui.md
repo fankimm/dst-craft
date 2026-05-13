@@ -9,7 +9,7 @@
 ### AppShell (`src/components/AppShell.tsx`)
 ```
 ┌─ 상태바 커버 (z-60, safe-area-inset-top) ──────────────┐
-├─ 탭 바 (crafting | cooking | cookpot | bosses | skills | console | settings)─┤
+├─ 탭 바 (crafting | cooking | cookpot | bosses | skills | quests | console | settings)─┤
 ├─ 활성 탭 컨텐츠 ──────────────────────────────────────────┤
 │                                                           │
 │  ┌─ CraftingApp / CookingApp / BossesApp / CookpotApp ─┐ │
@@ -84,6 +84,31 @@
 - 명령어 카드: 이름+설명 + 파라미터(인라인 input/select) + 복사 버튼
 - 파라미터 있는 명령어: 인라인 편집 후 즉시 반영
 - 탭하면 클립보드 복사 + 토스트
+
+### 퀘스트 탭 (QuestsApp)
+단일 화면 스크롤: 3개 퀘스트 섹션(은둔자/대변자/연료직공) 카드형 체크리스트
+```
+┌─────────────────────────────────────────────┐
+│ 퀘스트 체크리스트                            │
+│ (한 줄 설명)                                │
+├─────────────────────────────────────────────┤
+│ ┌─ 은둔자 ─────────────  3/17  17%   [↻] ┐  │ ← 섹션 헤더 (탭하면 collapse)
+│ │ ━━━━░░░░░░░░░░░░░░ (진행 바)            │  │
+│ │ ☐ [icon] 집 수리 1단계  (한 줄 설명)    │  │ ← 체크 OFF
+│ │ ☑ [icon] 집 수리 2단계  (취소선)       │  │ ← 체크 ON
+│ │ ...                                     │  │
+│ └─────────────────────────────────────────┘  │
+│ ┌─ 대변자 ─────────────  0/18   0%        ┐  │
+│ │ ...                                     │  │
+│ ┌─ 연료직공 ──────────  0/9    0%        ┐  │
+│ │ ...                                     │  │
+│ <Footer />                                   │
+└──────────────────────────────────────────────┘
+```
+- 체크 상태: localStorage `dst:quest-checks` (`{questId:stepId}` 형식 키)
+- 데이터: `src/data/quests/{hermit,celestial,fuelweaver}.ts` (인게임 + Challenge Board 모드 원천)
+- 훅: `useQuestState` — toggle / resetQuest / countChecked
+- 아이템 아이콘은 게임 내 이미지 사용 (lureplantbulb, moon_altar_*, atrium_key, thurible 등)
 
 ### SEO 전용 SSG 페이지
 클라이언트 앱과 별도로 서버 렌더링되는 정적 페이지:

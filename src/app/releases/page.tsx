@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.24.0",
+    date: "2026-05-13",
+    dev: [
+      "feat(quests): 퀘스트 체크리스트 탭 신설 (#29) — 은둔자(Pearl, 17단계) / 대변자(Celestial Champion, 18단계) / 연료직공(Ancient Fuelweaver, 9단계) 3대 엔드게임 진행을 카드형 체크리스트로 제공. Challenge Board 모드(workshop 3565356900) `challenge_defs.lua` + ko.po 참고해 은둔자 17개 태스크 ID/title 1:1 매핑(fix_house_1..3, plant_flowers, remove_trash 등), 대변자/연료직공은 인게임 `prefabs/moon_altar_*`, `alterguardian_phase1/2/3`, `wagstaff_npc`, `atrium_gate`, `stalker`, `thurible` 등 + ko.po 한국어 명칭으로 진행 단계 재구성. 데이터: `src/data/quests/{types,hermit,celestial,fuelweaver,index}.ts` (분리해서 보강 용이). 훅: `src/hooks/use-quest-state.ts` — localStorage `dst:quest-checks` 키에 `{questId:stepId}` 형식으로 영속화, toggle/resetQuest/countChecked API. UI: `src/components/quests/QuestsApp.tsx` — 섹션별 collapse + 진행률 바(완료 시 emerald) + 체크박스(완료 시 line-through) + 항목별 게임 아이콘(ItemSlot 패턴 직접 적용, 반복 카운트는 ×N 배지). `AppShell`에 `quests` 탭 추가(`hermitcrab_shell.png` 아이콘) + i18n `tab_quests`/`quests_header`/`quests_subheader`/`quests_reset`/`quests_reset_confirm` ko·en. `docs/ui.md`에 화면 구조도 + 데이터/훅 출처 문서화.",
+    ],
+    changes: {
+      ko: [
+        "새 \"퀘스트\" 탭 — 은둔자(펄)·대변자(천상의 대변자)·연료직공(고대의 연료직공) 3대 엔드게임 진행 체크리스트 제공",
+        "은둔자 17단계(집 수리, 꽃 심기, 사계절 트로피 물고기 등), 대변자 18단계(달의 섬 → 천상의 제단 조립 → 와그스태프 기구 4대 → 3페이즈 보스), 연료직공 9단계(고대의 열쇠 제작 → 화석 8조각 → 관문 활성화 → 처치)",
+        "체크 상태는 이 기기에만 저장되며, 섹션별 진행률(예: 3/17, 18%)과 완료 시 취소선으로 표시됨",
+      ],
+      en: [
+        "New \"Quests\" tab — three end-game progression checklists for Hermit Pearl, the Celestial Champion, and the Ancient Fuelweaver.",
+        "Hermit Pearl (17 steps including house repairs, flower planting, seasonal trophy fish), Celestial Champion (18 steps from reaching the Lunar Isle through assembling the altar, activating Wagstaff's four devices, and beating all three phases), Fuelweaver (9 steps from crafting the Ancient Key through collecting 8 fossils, activating the gateway, and the boss kill).",
+        "Checks are stored only on this device. Each section shows progress (e.g. 3/17, 18%) and completed steps strike through.",
+      ],
+    },
+  },
+  {
     version: "0.23.20",
     date: "2026-05-13",
     dev: [
