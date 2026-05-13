@@ -43,9 +43,7 @@ export const scionQuest: Quest = {
       titleEn: "Help Crabby Hermit Relocate",
       icon: "hermitcrab_relocation_kit.png",
       substeps: [
-        { id: "get_monkey_map",   nameKo: "원숭이섬 포털 지도",     nameEn: "Monkey Island Portal Map",   icon: "hermitcrab_npc.png" },
-        { id: "give_to_wagstaff", nameKo: "와그스태프 변환 지도",   nameEn: "Wagstaff's Converted Map",   icon: "wagstaff_item_1.png" },
-        { id: "give_to_pearl",    nameKo: "새 거주지로 이사",       nameEn: "Relocation Complete",        icon: "hermitcrab_relocation_kit.png" },
+        { id: "make_map", nameKo: "지도 만들기", nameEn: "Make the Map", icon: "cartographydesk.png", craftId: "cartographydesk" },
       ],
     },
     {
