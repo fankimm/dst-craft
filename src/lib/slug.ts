@@ -1,6 +1,7 @@
 import { allItems } from "@/data/items";
 import { cookingRecipes } from "@/data/recipes";
 import { bosses } from "@/data/bosses";
+import { quests } from "@/data/quests";
 
 export function nameToSlug(name: string): string {
   return name
@@ -56,6 +57,7 @@ function buildIndex<T extends Indexable>(records: T[]): SlugIndex {
 export const itemSlugs = buildIndex(allItems);
 export const foodSlugs = buildIndex(cookingRecipes);
 export const bossSlugs = buildIndex(bosses);
+export const questSlugs = buildIndex(quests.map((q) => ({ id: q.id, name: q.titleEn })));
 
 export function resolveItemSlug(slug: string): string | undefined {
   return itemSlugs.slugToId.get(slug) ?? itemSlugs.legacySlugToId.get(slug);
@@ -67,6 +69,10 @@ export function resolveFoodSlug(slug: string): string | undefined {
 
 export function resolveBossSlug(slug: string): string | undefined {
   return bossSlugs.slugToId.get(slug) ?? bossSlugs.legacySlugToId.get(slug);
+}
+
+export function resolveQuestSlug(slug: string): string | undefined {
+  return questSlugs.slugToId.get(slug) ?? questSlugs.legacySlugToId.get(slug);
 }
 
 export function isCanonicalSlug(slug: string, index: SlugIndex): boolean {
@@ -83,4 +89,8 @@ export function canonicalForFood(id: string): string | undefined {
 
 export function canonicalForBoss(id: string): string | undefined {
   return bossSlugs.idToSlug.get(id);
+}
+
+export function canonicalForQuest(id: string): string | undefined {
+  return questSlugs.idToSlug.get(id);
 }

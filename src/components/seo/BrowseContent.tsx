@@ -4,7 +4,8 @@ import { bosses } from "@/data/bosses";
 import { characters } from "@/data/characters";
 import { categories } from "@/data/categories";
 import { ko } from "@/data/locales/ko";
-import { canonicalForBoss, canonicalForFood, canonicalForItem } from "@/lib/slug";
+import { quests } from "@/data/quests";
+import { canonicalForBoss, canonicalForFood, canonicalForItem, canonicalForQuest } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 
@@ -138,6 +139,33 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
                 <li key={c.id} className="mb-1 break-inside-avoid">
                   <Link
                     href={`${routePrefix}/character/${c.id}`}
+                    className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
+                  >
+                    {primary}
+                    {secondary && secondary !== primary && (
+                      <span className="text-muted-foreground text-xs ml-1">{secondary}</span>
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold mb-4">
+            <Link href={`${routePrefix}/quests`} className="hover:underline">
+              {L.questsLink[lang]} ({quests.length})
+            </Link>
+          </h2>
+          <ul className="columns-2 sm:columns-3 md:columns-4 gap-x-4 text-sm">
+            {quests.map((q) => {
+              const primary = lang === "ko" ? q.titleKo : q.titleEn;
+              const secondary = lang === "ko" ? q.titleEn : q.titleKo;
+              return (
+                <li key={q.id} className="mb-1 break-inside-avoid">
+                  <Link
+                    href={`${routePrefix}/quest/${canonicalForQuest(q.id)}`}
                     className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
                   >
                     {primary}

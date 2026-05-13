@@ -15,6 +15,30 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.25.0",
+    date: "2026-05-13",
+    dev: [
+      "feat(seo): 퀘스트 전용 SEO 페이지 풀세트 (#30) — `/quest/[slug]` 4종(은둔자/연료직공/대변자/귀공자) + `/quests` 인덱스, en/ko 미러. 자동 생성기 `generateQuestSeoText[Ko]` 추가: overview / stepsSummary / tips / faq. HowTo JSON-LD(step + itemListElement) + FAQ JSON-LD 동시 주입.",
+      "feat(seo): `src/components/seo/QuestPageContent.tsx` — boss 페이지 패턴 그대로. 메인 step + substep 트리 렌더, 단계 craftId/bossId → `/item/<slug>`·`/boss/<slug>` 링크, goal 마커, required ★ 배지, related quests, 인터랙티브 체크리스트 CTA. `QuestsListContent.tsx` 인덱스는 카드 그리드 + step/substep 수 + goal 메모.",
+      "feat(slug): `questSlugs` 추가 (id↔slug 매핑) — `canonicalForQuest` / `resolveQuestSlug` 헬퍼. titleEn 기반 슬러그(`hermit-quests`, `ancient-fuelweaver`, `celestial-champion`, `celestial-scion`).",
+      "feat(seo): sitemap.ts에 `/quests` + `/quest/<slug>` 4종 등록 (en/ko 각각). priority/changeFrequency 기존 dynamic 항목과 동일.",
+      "feat(seo): SeoFooterLinks + BrowseContent에 quests 진입 링크 추가 — 크롤러 디스커버리 + 사용자 네비게이션 일관화.",
+      "feat(i18n): labels.ts에 quest 전용 라벨 12종 추가 (questGuide/questsTitle/questsIntro/stepsLabel/substepsLabel/questStepsBreakdown/questTips/questOverview/goalLabel/totalStepsLabel/otherQuests/seeAllQuests/openQuestChecklist/questChecklistHelper/questsLink/questCardSummary/questCardSummaryNoSubs/goalNote).",
+    ],
+    changes: {
+      ko: [
+        "퀘스트 4종 전용 SEO 페이지 + 인덱스 페이지 추가 — 검색엔진에 노출되는 가이드 페이지(`/quests`, `/quest/<slug>`)에서 각 퀘스트의 단계, 필요 자재, 보스, FAQ를 자동 정리.",
+        "퀘스트 페이지에서 자재 클릭 시 제작 가이드, 보스 클릭 시 보스 가이드로 바로 이동. 모든 단계는 인게임 출처 검증된 데이터.",
+        "둘러보기(`/browse`) 페이지에도 퀘스트 섹션 추가.",
+      ],
+      en: [
+        "Dedicated SEO pages for all 4 quest checklists + index — `/quests` and `/quest/<slug>` surface each quest's steps, materials, boss kills, and FAQ for search engines.",
+        "Material substeps link straight to crafting guides; boss-kill steps link to boss guides. All entries are sourced from the in-game files.",
+        "Browse (`/browse`) page now includes a Quest Checklists section.",
+      ],
+    },
+  },
+  {
     version: "0.24.0",
     date: "2026-05-13",
     dev: [

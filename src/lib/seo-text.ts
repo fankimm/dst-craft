@@ -6,6 +6,7 @@
 import type { CookingRecipe } from "@/data/recipes";
 import type { Boss } from "@/data/bosses";
 import type { CharacterSkillTree } from "@/data/skill-trees/types";
+import type { Quest } from "@/data/quests";
 
 // ===========================
 // FOOD SEO
@@ -1050,4 +1051,136 @@ export function generateSkillTreeSeoTextKo(
   }
 
   return { overview, branchesDescription, howToUse, faq };
+}
+
+// ===========================
+// QUEST SEO
+// ===========================
+
+export interface QuestSeoContent {
+  overview: string;
+  stepsSummary: string;
+  tips: string;
+  faq: { question: string; answer: string }[];
+}
+
+function countSubsteps(quest: Quest): number {
+  let n = 0;
+  for (const s of quest.steps) n += s.substeps?.length ?? 0;
+  return n;
+}
+
+function topStepTitles(quest: Quest, lang: "en" | "ko", limit = 5): string[] {
+  return quest.steps
+    .slice(0, limit)
+    .map((s) => (lang === "ko" ? s.titleKo : s.titleEn));
+}
+
+export function generateQuestSeoText(quest: Quest): QuestSeoContent {
+  const totalSteps = quest.steps.length;
+  const subCount = countSubsteps(quest);
+  const goal = quest.goal;
+  const topSteps = topStepTitles(quest, "en", 5);
+  const remaining = totalSteps - topSteps.length;
+  const stepsList = remaining > 0 ? `${topSteps.join(", ")}, and ${remaining} more` : topSteps.join(", ");
+
+  let overview = `${quest.titleEn} is an in-game progression quest in Don't Starve Together. `;
+  overview += `It consists of ${totalSteps} main step${totalSteps === 1 ? "" : "s"}`;
+  if (subCount > 0) overview += ` with ${subCount} substeps`;
+  overview += ". ";
+  if (goal && goal < totalSteps) {
+    overview += `You only need to complete ${goal} of the ${totalSteps} steps to reach the main reward. `;
+  }
+  overview += `This quest checklist on dstcraft.com tracks every required material, blueprint, and boss kill — sourced directly from the game's recipes.lua, prefabs, and the Challenge Board mod.`;
+
+  let stepsSummary = `The ${quest.titleEn} progression includes: ${stepsList}. `;
+  stepsSummary += `Each step lists exact in-game material counts, blueprints required, and any prerequisite bosses to defeat. `;
+  stepsSummary += `Substeps for crafted materials link directly into the crafting recipe pages, and boss kill requirements link into the boss guide pages for drop tables and strategy.`;
+
+  let tips = `Use the interactive checklist on dstcraft.com to track ${quest.titleEn} progress across sessions — checks are saved locally to your browser. `;
+  tips += `Locked steps automatically open when prerequisites are completed, mirroring how the in-game flow gates progression. `;
+  if (goal && goal < totalSteps) {
+    tips += `Since only ${goal} of ${totalSteps} steps are required for the main reward, prioritize the easiest steps first if you're rushing.`;
+  } else {
+    tips += `All steps must be completed for full quest progression.`;
+  }
+
+  const faq: { question: string; answer: string }[] = [
+    {
+      question: `How many steps does ${quest.titleEn} have in DST?`,
+      answer: `${quest.titleEn} has ${totalSteps} main step${totalSteps === 1 ? "" : "s"}${subCount > 0 ? ` and ${subCount} substeps` : ""}${goal && goal < totalSteps ? `, with only ${goal} required for the main reward` : ""}.`,
+    },
+    {
+      question: `Where does the ${quest.titleEn} data come from?`,
+      answer: `Step lists and material counts are sourced from the in-game recipes.lua, prefab files, and the Challenge Board mod (workshop 3565356900). Korean text follows the official DST Korean translation (workshop 2391246365).`,
+    },
+    {
+      question: `Can I track ${quest.titleEn} progress on this site?`,
+      answer: `Yes. Open the Quest tab on dstcraft.com — checkboxes for each step and substep are saved to your browser's local storage, so you can close the tab and resume later.`,
+    },
+  ];
+
+  if (goal && goal < totalSteps) {
+    faq.push({
+      question: `Do I need to complete all ${totalSteps} ${quest.titleEn} steps?`,
+      answer: `No. Only ${goal} of the ${totalSteps} steps are needed to reach the main reward. The remaining steps are optional but provide additional content.`,
+    });
+  }
+
+  return { overview, stepsSummary, tips, faq };
+}
+
+export function generateQuestSeoTextKo(quest: Quest): QuestSeoContent {
+  const totalSteps = quest.steps.length;
+  const subCount = countSubsteps(quest);
+  const goal = quest.goal;
+  const topSteps = topStepTitles(quest, "ko", 5);
+  const remaining = totalSteps - topSteps.length;
+  const stepsList = remaining > 0 ? `${topSteps.join(", ")} 외 ${remaining}개` : topSteps.join(", ");
+  const nameKo = quest.titleKo;
+
+  let overview = `${pp(nameKo, "은", "는")} Don't Starve Together의 인게임 진행 퀘스트입니다. `;
+  overview += `총 ${totalSteps}개의 메인 단계`;
+  if (subCount > 0) overview += `와 ${subCount}개의 하위 단계`;
+  overview += `로 구성되어 있습니다. `;
+  if (goal && goal < totalSteps) {
+    overview += `메인 보상까지는 ${totalSteps}개 중 ${goal}개만 완료하면 됩니다. `;
+  }
+  overview += `dstcraft.com의 이 퀘스트 체크리스트는 게임 내 recipes.lua, prefabs, Challenge Board 모드를 출처로 모든 필요 자재·청사진·보스 처치를 정확한 수량과 함께 추적합니다.`;
+
+  let stepsSummary = `${nameKo} 진행 단계는 다음과 같습니다: ${stepsList}. `;
+  stepsSummary += `각 단계마다 게임 내 정확한 자재 수량, 필요 청사진, 선행 보스 처치 여부가 함께 표시됩니다. `;
+  stepsSummary += `제작 가능 자재는 제작 레시피 페이지로, 보스 처치 요구는 보스 가이드 페이지로 바로 연결되어 드롭표·공략을 함께 확인할 수 있습니다.`;
+
+  let tips = `dstcraft.com의 인터랙티브 체크리스트로 ${nameKo} 진행 상황을 추적하세요. 체크 상태는 브라우저에 저장되어 세션을 이어갈 수 있습니다. `;
+  tips += `선행 단계가 잠긴 상태로 표시되어 인게임 진행 흐름과 동일한 게이팅을 따라갑니다. `;
+  if (goal && goal < totalSteps) {
+    tips += `메인 보상에 필요한 단계가 ${totalSteps}개 중 ${goal}개뿐이므로, 빠르게 클리어할 경우 가장 쉬운 단계부터 우선 처리하세요.`;
+  } else {
+    tips += `완전한 퀘스트 진행을 위해서는 모든 단계를 완료해야 합니다.`;
+  }
+
+  const faq: { question: string; answer: string }[] = [
+    {
+      question: `DST에서 ${nameKo}은(는) 몇 단계로 구성되어 있나요?`,
+      answer: `${nameKo}은(는) 메인 ${totalSteps}단계${subCount > 0 ? `와 하위 ${subCount}단계` : ""}로 구성됩니다${goal && goal < totalSteps ? `. 단, 메인 보상에는 ${goal}단계만 필요합니다` : ""}.`,
+    },
+    {
+      question: `${nameKo} 데이터의 출처는 어디인가요?`,
+      answer: `단계 목록과 자재 수량은 인게임 recipes.lua, prefab 파일, Challenge Board 모드(workshop 3565356900)에서 가져왔습니다. 한국어 표기는 공식 DST 한글 모드(workshop 2391246365)를 따릅니다.`,
+    },
+    {
+      question: `이 사이트에서 ${nameKo} 진행 상황을 추적할 수 있나요?`,
+      answer: `네. dstcraft.com의 퀘스트 탭을 열면 각 단계·하위 단계의 체크박스가 브라우저 로컬에 저장되어 다음 방문 때도 그대로 이어집니다.`,
+    },
+  ];
+
+  if (goal && goal < totalSteps) {
+    faq.push({
+      question: `${nameKo}의 ${totalSteps}단계를 모두 완료해야 하나요?`,
+      answer: `아니요. 메인 보상에는 ${totalSteps}단계 중 ${goal}단계만 필요합니다. 나머지는 선택 사항이지만 추가 콘텐츠를 제공합니다.`,
+    });
+  }
+
+  return { overview, stepsSummary, tips, faq };
 }
