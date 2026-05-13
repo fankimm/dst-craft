@@ -19,7 +19,7 @@ function stepDesc(step: QuestStep, locale: Locale): string | undefined {
 function questTitle(quest: Quest, locale: Locale): string {
   return locale === "ko" ? quest.titleKo : quest.titleEn;
 }
-function questSummary(quest: Quest, locale: Locale): string {
+function questSummary(quest: Quest, locale: Locale): string | undefined {
   return locale === "ko" ? quest.summaryKo : quest.summaryEn;
 }
 function substepNote(s: QuestSubstep, locale: Locale): string | undefined {
@@ -149,9 +149,11 @@ function QuestSection({
                 </h3>
                 {allDone && <Check className="size-4 text-emerald-600 dark:text-emerald-400 shrink-0" />}
               </div>
-              <p className="text-[10px] text-muted-foreground truncate">
-                {questSummary(quest, locale)}
-              </p>
+              {questSummary(quest, locale) && (
+                <p className="text-[10px] text-muted-foreground truncate">
+                  {questSummary(quest, locale)}
+                </p>
+              )}
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
               <div className="text-right">

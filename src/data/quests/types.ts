@@ -56,8 +56,9 @@ export interface Quest {
   titleEn: string;
   icon?: string;
   iconPath?: string;
-  summaryKo: string;
-  summaryEn: string;
+  /** 섹션 부제 — Challenge Board에 없는 자체 작성은 가급적 피함 */
+  summaryKo?: string;
+  summaryEn?: string;
   steps: QuestStep[];
   /**
    * 목표 단계 수 (전체 totalSteps와 다를 수 있음 — 예: 은둔자는 17개 중 10개 완료가 친구 Lv 10 달성 기준).
