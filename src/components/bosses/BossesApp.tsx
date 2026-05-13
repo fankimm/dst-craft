@@ -107,12 +107,16 @@ export function BossesApp({
   onClearPendingLoot,
   pendingBossId,
   onClearPendingBoss,
+  externalBackLabel,
+  onExternalBack,
 }: {
   onViewCraftingItem?: (itemId: string) => void;
   pendingLootItemId?: string | null;
   onClearPendingLoot?: () => void;
   pendingBossId?: string | null;
   onClearPendingBoss?: () => void;
+  externalBackLabel?: string | null;
+  onExternalBack?: () => void;
 }) {
   const { resolvedLocale } = useSettings();
   const { isAdmin } = useAuth();
@@ -253,7 +257,12 @@ export function BossesApp({
   }, [selectedCategory, favorites, recentIds, sortByPopular, getClicks]);
 
   const detailPanel = panelBoss && (
-    <DetailPanel open={panelOpen} onClose={handleClosePanel}>
+    <DetailPanel
+      open={panelOpen}
+      onClose={handleClosePanel}
+      onBack={externalBackLabel && onExternalBack ? () => { setSelectedBoss(null); onExternalBack(); } : undefined}
+      backLabel={externalBackLabel ?? undefined}
+    >
       <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} clicks={getClicks(`boss:${panelBoss.id}`)} isFav={isFavorite(panelBoss.id)} onToggleFav={() => toggleFavorite(panelBoss.id)} />
     </DetailPanel>
   );

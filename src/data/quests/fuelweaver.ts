@@ -8,8 +8,7 @@ import type { Quest } from "./types";
  *
  * 출처 검증:
  *  - atrium_key: minotaur.lua 612 — 고대의 수호자 처치 시 minotaurchest에서 회수 (제작 불가)
- *  - shadowheart: stalker.lua 973/1248/1453/1476 — Stalker(되살아난 해골)의 3가지 변형
- *    (동굴·숲·atrium decay) 모두 lootdropper에 AddChanceLoot("shadowheart", 1)
+ *  - shadowheart: bosses.ts loot — shadow_chess(그림자 기물) 100% 드롭
  *  - 게이트 cooldown: TUNING.ATRIUM_GATE_COOLDOWN = 20일 (tuning.lua)
  */
 export const fuelweaverQuest: Quest = {
@@ -38,12 +37,11 @@ export const fuelweaverQuest: Quest = {
       titleEn: "Shadow Atrium",
       icon: "shadowheart.png",
       substeps: [
-        { id: "defeat_stalker",
-          nameKo: "Stalker 처치",
-          nameEn: "Defeat the Stalker",
-          iconPath: "/images/bosses/stalker_atrium.png",
-          noteKo: "동굴·숲·아트리움 3종 변형 어느 것이든 100% 드롭",
-          noteEn: "Drops 100% from any of the 3 Stalker variants (cave / forest / atrium)" },
+        { id: "defeat_shadow_chess",
+          nameKo: "그림자 기물 처치",
+          nameEn: "Defeat Shadow Pieces",
+          iconPath: "/images/bosses/shadow_rook.png",
+          bossId: "shadow_chess" },
       ],
     },
     { id: "stalker_atrium",    titleKo: "고대의 연료직공 처치", titleEn: "Defeat the Ancient Fuelweaver",

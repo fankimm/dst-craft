@@ -165,15 +165,31 @@ export function AppShell() {
 
   // Quest → Boss detail jump
   const [pendingBossId, setPendingBossId] = useState<string | null>(null);
-  const handleViewBoss = useCallback((bossId: string) => {
+  const [bossesBack, setBossesBack] = useState<{ tab: TabId; label: string } | null>(null);
+  const handleViewBoss = useCallback((bossId: string, origin?: { tab: TabId; label: string }) => {
     const url = `${window.location.pathname}?tab=bosses&boss=${bossId}`;
     window.history.pushState({ _appNav: true }, "", url);
     setPendingBossId(bossId);
+    setBossesBack(origin ?? null);
     setActiveTab("bosses");
   }, []);
   const handleClearPendingBoss = useCallback(() => {
     setPendingBossId(null);
   }, []);
+  const handleBossesExternalBack = useCallback(() => {
+    if (!bossesBack) return;
+    const target = bossesBack.tab;
+    const url = target === "crafting" ? window.location.pathname : `${window.location.pathname}?tab=${target}`;
+    window.history.pushState({ _appNav: true }, "", url);
+    setBossesBack(null);
+    setActiveTab(target);
+  }, [bossesBack]);
+  // 사용자가 보스 탭을 떠나면 외부 back 라벨 해제
+  useEffect(() => {
+    if (activeTab !== "bosses" && bossesBack) {
+      setBossesBack(null);
+    }
+  }, [activeTab, bossesBack]);
 
   const handleSkillClick = useCallback((skillId: string) => {
     // Extract character from skill ID (e.g., "wilson_alchemy_1" → "wilson")
@@ -314,13 +330,13 @@ export function AppShell() {
           <CookpotApp onViewRecipe={handleViewRecipe} />
         </div>
         <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
-          <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} pendingBossId={pendingBossId} onClearPendingBoss={handleClearPendingBoss} />
+          <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} pendingBossId={pendingBossId} onClearPendingBoss={handleClearPendingBoss} externalBackLabel={bossesBack?.label ?? null} onExternalBack={bossesBack ? handleBossesExternalBack : undefined} />
         </div>
         <div className={activeTab === "skills" ? "h-full" : "hidden"}>
           <SkillSimulatorApp onViewCraftingItem={handleViewCraftingItem} />
         </div>
         <div className={activeTab === "quests" ? "h-full" : "hidden"}>
-          <QuestsApp onViewCraftingItem={(id) => handleViewCraftingItem(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} onViewBoss={handleViewBoss} />
+          <QuestsApp onViewCraftingItem={(id) => handleViewCraftingItem(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} onViewBoss={(id) => handleViewBoss(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} />
         </div>
         <div className={activeTab === "console" ? "h-full" : "hidden"}>
           <ConsoleApp />
