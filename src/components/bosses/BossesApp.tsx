@@ -105,10 +105,14 @@ export function BossesApp({
   onViewCraftingItem,
   pendingLootItemId,
   onClearPendingLoot,
+  pendingBossId,
+  onClearPendingBoss,
 }: {
   onViewCraftingItem?: (itemId: string) => void;
   pendingLootItemId?: string | null;
   onClearPendingLoot?: () => void;
+  pendingBossId?: string | null;
+  onClearPendingBoss?: () => void;
 }) {
   const { resolvedLocale } = useSettings();
   const { isAdmin } = useAuth();
@@ -197,6 +201,18 @@ export function BossesApp({
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // External jump: quest tab → boss detail
+  useEffect(() => {
+    if (!pendingBossId) return;
+    const boss = bosses.find((b) => b.id === pendingBossId);
+    if (boss) {
+      setSelectedCategory(null);
+      setSelectedBoss(boss);
+      addRecent(boss.id);
+    }
+    onClearPendingBoss?.();
+  }, [pendingBossId, onClearPendingBoss, addRecent]);
 
   // Re-tap active tab → go home
   useEffect(() => {

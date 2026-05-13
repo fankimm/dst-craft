@@ -32,7 +32,7 @@ function resolveIcon(item: { icon?: string; iconPath?: string }): string | null 
   return null;
 }
 
-export function QuestsApp({ onViewCraftingItem }: { onViewCraftingItem?: (itemId: string) => void } = {}) {
+export function QuestsApp({ onViewCraftingItem, onViewBoss }: { onViewCraftingItem?: (itemId: string) => void; onViewBoss?: (bossId: string) => void } = {}) {
   const { resolvedLocale } = useSettings();
   const state = useQuestState();
   const { resetAll, hasAnyChecked } = state;
@@ -78,6 +78,7 @@ export function QuestsApp({ onViewCraftingItem }: { onViewCraftingItem?: (itemId
               locale={resolvedLocale}
               state={state}
               onViewCraftingItem={onViewCraftingItem}
+              onViewBoss={onViewBoss}
             />
           ))}
         </div>
@@ -93,11 +94,13 @@ function QuestSection({
   locale,
   state,
   onViewCraftingItem,
+  onViewBoss,
 }: {
   quest: Quest;
   locale: Locale;
   state: QuestStateApi;
   onViewCraftingItem?: (itemId: string) => void;
+  onViewBoss?: (bossId: string) => void;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   // 서브스텝이 있는 단계는 기본 펼쳐짐. 사용자가 접고/펼치고 토글 가능 (세션 한정).
@@ -277,6 +280,16 @@ function QuestSection({
                       <ExternalLink className="size-3.5" />
                     </button>
                   )}
+                  {step.bossId && onViewBoss && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onViewBoss(step.bossId!); }}
+                      aria-label="보스 상세 보기"
+                      title="보스 탭에서 보기"
+                      className="shrink-0 px-2 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-surface/60 transition-colors"
+                    >
+                      <ExternalLink className="size-3.5" />
+                    </button>
+                  )}
                   {hasSubsteps && (
                     <button
                       onClick={() => toggleStepExpand(step.id)}
@@ -299,6 +312,7 @@ function QuestSection({
                         checked={isSubstepDone(quest.id, step.id, s.id)}
                         onToggle={() => toggleSubstep(quest.id, step, s.id)}
                         onViewCraftingItem={onViewCraftingItem}
+                        onViewBoss={onViewBoss}
                       />
                     ))}
                   </ul>
@@ -319,12 +333,14 @@ function SubstepRow({
   checked,
   onToggle,
   onViewCraftingItem,
+  onViewBoss,
 }: {
   substep: QuestSubstep;
   locale: Locale;
   checked: boolean;
   onToggle: () => void;
   onViewCraftingItem?: (itemId: string) => void;
+  onViewBoss?: (bossId: string) => void;
 }) {
   const iconSrc = resolveIcon(substep);
   const note = substepNote(substep, locale);
@@ -381,6 +397,16 @@ function SubstepRow({
           onClick={(e) => { e.stopPropagation(); onViewCraftingItem(substep.craftId!); }}
           aria-label="제작 상세 보기"
           title="제작 탭에서 보기"
+          className="shrink-0 px-2 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-surface/60 rounded-md transition-colors"
+        >
+          <ExternalLink className="size-3" />
+        </button>
+      )}
+      {substep.bossId && onViewBoss && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onViewBoss(substep.bossId!); }}
+          aria-label="보스 상세 보기"
+          title="보스 탭에서 보기"
           className="shrink-0 px-2 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-surface/60 rounded-md transition-colors"
         >
           <ExternalLink className="size-3" />

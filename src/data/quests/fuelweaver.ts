@@ -19,9 +19,35 @@ export const fuelweaverQuest: Quest = {
   iconPath: "/images/bosses/stalker_atrium.png",
   steps: [
     { id: "collection_fossil", titleKo: "화석 조각", titleEn: "Fossil Fragments", icon: "fossil_piece.png", count: 8 },
-    { id: "atrium_key",        titleKo: "고대의 열쇠",  titleEn: "Ancient Key",     icon: "atrium_key.png" },
-    { id: "shadowheart",       titleKo: "그림자 심장",  titleEn: "Shadow Atrium",   icon: "shadowheart.png" },
+    {
+      id: "atrium_key",
+      titleKo: "고대의 열쇠",
+      titleEn: "Ancient Key",
+      icon: "atrium_key.png",
+      substeps: [
+        { id: "defeat_minotaur",
+          nameKo: "고대의 수호자 처치",
+          nameEn: "Defeat the Ancient Guardian",
+          iconPath: "/images/bosses/minotaur.png",
+          bossId: "minotaur" },
+      ],
+    },
+    {
+      id: "shadowheart",
+      titleKo: "그림자 심장",
+      titleEn: "Shadow Atrium",
+      icon: "shadowheart.png",
+      substeps: [
+        { id: "defeat_stalker",
+          nameKo: "Stalker 처치",
+          nameEn: "Defeat the Stalker",
+          iconPath: "/images/bosses/stalker_atrium.png",
+          noteKo: "동굴·숲·아트리움 3종 변형 어느 것이든 100% 드롭",
+          noteEn: "Drops 100% from any of the 3 Stalker variants (cave / forest / atrium)" },
+      ],
+    },
     { id: "stalker_atrium",    titleKo: "고대의 연료직공 처치", titleEn: "Defeat the Ancient Fuelweaver",
-      iconPath: "/images/bosses/stalker_atrium.png" },
+      iconPath: "/images/bosses/stalker_atrium.png",
+      bossId: "stalker_atrium" },
   ],
 };

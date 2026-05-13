@@ -46,6 +46,7 @@ export const celestialQuest: Quest = {
       ],
     },
     { id: "alterguardian_phase3", titleKo: "천상의 대변자 처치", titleEn: "Defeat the Celestial Champion",
-      iconPath: "/images/bosses/alterguardian_phase3.png" },
+      iconPath: "/images/bosses/alterguardian_phase3.png",
+      bossId: "alterguardian_phase3" },
   ],
 };

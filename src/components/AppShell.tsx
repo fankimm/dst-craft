@@ -163,6 +163,18 @@ export function AppShell() {
     setPendingLootItemId(null);
   }, []);
 
+  // Quest → Boss detail jump
+  const [pendingBossId, setPendingBossId] = useState<string | null>(null);
+  const handleViewBoss = useCallback((bossId: string) => {
+    const url = `${window.location.pathname}?tab=bosses&boss=${bossId}`;
+    window.history.pushState({ _appNav: true }, "", url);
+    setPendingBossId(bossId);
+    setActiveTab("bosses");
+  }, []);
+  const handleClearPendingBoss = useCallback(() => {
+    setPendingBossId(null);
+  }, []);
+
   const handleSkillClick = useCallback((skillId: string) => {
     // Extract character from skill ID (e.g., "wilson_alchemy_1" → "wilson")
     const charPrefixes = ["wilson", "willow", "wendy", "woodie", "wathgrithr", "wormwood", "winona", "wortox", "wurt", "walter", "wolfgang", "wx78"];
@@ -302,13 +314,13 @@ export function AppShell() {
           <CookpotApp onViewRecipe={handleViewRecipe} />
         </div>
         <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
-          <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} />
+          <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} pendingBossId={pendingBossId} onClearPendingBoss={handleClearPendingBoss} />
         </div>
         <div className={activeTab === "skills" ? "h-full" : "hidden"}>
           <SkillSimulatorApp onViewCraftingItem={handleViewCraftingItem} />
         </div>
         <div className={activeTab === "quests" ? "h-full" : "hidden"}>
-          <QuestsApp onViewCraftingItem={(id) => handleViewCraftingItem(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} />
+          <QuestsApp onViewCraftingItem={(id) => handleViewCraftingItem(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} onViewBoss={handleViewBoss} />
         </div>
         <div className={activeTab === "console" ? "h-full" : "hidden"}>
           <ConsoleApp />

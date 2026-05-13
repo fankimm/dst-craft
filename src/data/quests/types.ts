@@ -27,6 +27,8 @@ export interface QuestSubstep {
   noteEn?: string;
   /** 제작 가능한 아이템의 items.ts id — 클릭 시 제작탭 해당 상세로 점프 */
   craftId?: string;
+  /** bosses.ts id — 클릭 시 보스탭 해당 상세로 점프 */
+  bossId?: string;
 }
 
 export interface QuestStep {
@@ -48,6 +50,8 @@ export interface QuestStep {
   requires?: string[];
   /** 제작 가능한 아이템의 items.ts id — 클릭 시 제작탭 해당 상세로 점프 */
   craftId?: string;
+  /** bosses.ts id — 클릭 시 보스탭 해당 상세로 점프 */
+  bossId?: string;
 }
 
 export interface Quest {
