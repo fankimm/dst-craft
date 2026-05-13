@@ -1,26 +1,29 @@
 import type { Quest } from "./types";
 
 /**
- * 은둔자(Pearl) 17개 퀘스트.
- * Challenge Board 모드의 hermit_task_1..18(13 결번) + prefabs/hermitcrab.lua TASKS enum 순서.
- * 한국어 텍스트는 Challenge Board ko.po (UI:TASK_*) 사용.
+ * 은둔자(Pearl) 퀘스트 17개.
+ *
+ * 출처:
+ *  - Challenge Board challenge_defs.lua ITEMS hermit_task_1..18 (13 결번)
+ *  - Challenge Board locales/ko.po·en.po UI:TASK_* (한국어/영어 그대로 사용)
+ *  - hermithouse 재료: 인게임 recipes.lua 1300-1302의 ["hermithouse_construction1/2/3"]
+ *  - 한국어 재료명: 한글모드 ko.po (STRINGS.NAMES.*)
  */
 export const hermitQuest: Quest = {
   id: "hermit",
-  titleKo: "은둔자",
-  titleEn: "Hermit Pearl",
+  titleKo: "은둔자 퀘스트",       // UI:HERMIT_QUEST (ko)
+  titleEn: "Hermit Quests",       // UI:HERMIT_QUEST (en)
   icon: "hermitcrab_shell.png",
-  summaryKo: "펄(소라게)의 친밀도 퀘스트. 모두 완수하면 친구 레벨 10단계 보상.",
-  summaryEn: "Pearl the Hermit Crab's friendship quests. Complete all to reach Friend Level 10.",
+  summaryKo: "펄(소라게)의 친밀도 퀘스트 17가지.",
+  summaryEn: "Pearl the Hermit Crab's 17 friendship quests.",
   steps: [
     {
-      id: "fix_house_1",
+      id: "hermit_task_1",
       titleKo: "집 수리 1단계",
-      titleEn: "Fix House (Stage 1)",
-      descKo: "허름한 오두막에 자재를 부어 1차 보강.",
-      descEn: "Upgrade hermit's hovel to stage 2.",
+      titleEn: "Repair House (Stage 1)",
       icon: "hermitcrab_lightpost.png",
-      // 출처: recipes.lua 1300 — ["hermithouse_construction1"]
+      count: 3,
+      // recipes.lua 1300
       materials: [
         { id: "cookiecuttershell", nameKo: "과자틀소라 조가비", nameEn: "Cookie Cutter Shell", icon: "cookiecuttershell.png", qty: 10 },
         { id: "boards", nameKo: "나무 판자", nameEn: "Boards", icon: "boards.png", qty: 10 },
@@ -28,13 +31,12 @@ export const hermitQuest: Quest = {
       ],
     },
     {
-      id: "fix_house_2",
+      id: "hermit_task_2",
       titleKo: "집 수리 2단계",
-      titleEn: "Fix House (Stage 2)",
-      descKo: "2차 보강 — 펄이 재료를 더 요구함.",
-      descEn: "Upgrade to stage 3.",
+      titleEn: "Repair House (Stage 2)",
       icon: "hermitcrab_lightpost.png",
-      // 출처: recipes.lua 1301 — ["hermithouse_construction2"]
+      count: 3,
+      // recipes.lua 1301
       materials: [
         { id: "marble", nameKo: "대리석", nameEn: "Marble", icon: "marble.png", qty: 10 },
         { id: "cutstone", nameKo: "석재", nameEn: "Cut Stone", icon: "cutstone.png", qty: 5 },
@@ -42,135 +44,31 @@ export const hermitQuest: Quest = {
       ],
     },
     {
-      id: "fix_house_3",
+      id: "hermit_task_3",
       titleKo: "집 수리 3단계",
-      titleEn: "Fix House (Stage 3)",
-      descKo: "최종 단계 — 펄의 찻집 구조물 완성. 겨울 축제 중이면 찻집 모양 겨울 장식품 1개.",
-      descEn: "Final stage — Pearl's tea shop is built. Drops a Hermit House winter ornament if Winter's Feast is active.",
+      titleEn: "Repair House (Stage 3)",
       icon: "hermitcrab_teashop.png",
-      // 출처: recipes.lua 1302 — ["hermithouse_construction3"]
+      count: 3,
+      // recipes.lua 1302
       materials: [
         { id: "moonrocknugget", nameKo: "월석", nameEn: "Moon Rock", icon: "moonrocknugget.png", qty: 10 },
         { id: "rope", nameKo: "밧줄", nameEn: "Rope", icon: "rope.png", qty: 5 },
         { id: "turf_carpetfloor", nameKo: "카펫 깔린 바닥", nameEn: "Carpeted Flooring", icon: "turf_carpetfloor.png", qty: 5 },
       ],
     },
-    {
-      id: "plant_flowers",
-      titleKo: "꽃 심기",
-      titleEn: "Plant Flowers",
-      descKo: "섬 반경 안에 꽃 10송이를 나비로부터 피워냄.",
-      descEn: "Grow 10 flowers from butterflies on the island.",
-      icon: "petals.png",
-      count: 10,
-    },
-    {
-      id: "remove_trash",
-      titleKo: "바다 쓰레기 제거",
-      titleEn: "Remove Sea Junk",
-      descKo: "주변 바다의 쓰레기를 낚거나 제거.",
-      descEn: "Clean up the polluted water around the island.",
-      icon: "wetgoop.png",
-      count: 10,
-    },
-    {
-      id: "plant_berries",
-      titleKo: "베리 덤불 심고 거름주기",
-      titleEn: "Plant & Fertilize Berries",
-      descKo: "섬에 베리 덤불 8개를 심고 거름까지 줘서 결실 가능 상태로 만듦.",
-      descEn: "Plant and fertilize 8 berry bushes on the island.",
-      icon: "berries.png",
-      count: 8,
-    },
-    {
-      id: "fill_meatracks",
-      titleKo: "건조대에 음식 걸기",
-      titleEn: "Fill Meat Racks",
-      descKo: "섬에 음식을 건조 중인 건조대 6개 이상.",
-      descEn: "Have 6+ meat racks drying near hermit.",
-      icon: "meatrack.png",
-      count: 6,
-    },
-    {
-      id: "give_heavy_fish",
-      titleKo: "큰 물고기 주기",
-      titleEn: "Give Heavy Fish",
-      descKo: "무거운 등급의 바다 물고기 5마리 전달.",
-      descEn: "Give Pearl 5 heavy ocean fish.",
-      icon: "oceanfish_medium_8_inv.png",
-      count: 5,
-    },
-    {
-      id: "remove_lureplant",
-      titleKo: "구근 식물 제거",
-      titleEn: "Remove Lureplant",
-      descKo: "섬에 자란 미끼풀(구근 식물)을 처치.",
-      descEn: "Kill the lureplant infesting the island.",
-      icon: "lureplantbulb.png",
-    },
-    {
-      id: "give_umbrella",
-      titleKo: "우산 가져다주기",
-      titleEn: "Give Umbrella",
-      descKo: "비 오는 날 우산 1개 전달.",
-      descEn: "Bring Pearl an umbrella during rain.",
-      icon: "umbrella.png",
-    },
-    {
-      id: "give_puffy_vest",
-      titleKo: "겨울 코트 가져다주기",
-      titleEn: "Give Puffy Vest",
-      descKo: "겨울 시즌에 푹신한 조끼 1개 전달.",
-      descEn: "Give Pearl a puffy vest in winter.",
-      icon: "trunkvest_winter.png",
-    },
-    {
-      id: "give_flower_salad",
-      titleKo: "샐러드 배달하기",
-      titleEn: "Deliver Flower Salad",
-      descKo: "요리솥에서 만든 꽃 샐러드 1접시 전달.",
-      descEn: "Cook and deliver a Flower Salad.",
-      icon: "flowersalad.png",
-    },
-    {
-      id: "give_big_winter",
-      titleKo: "겨울 물고기 배달하기",
-      titleEn: "Deliver Winter Trophy Fish",
-      descKo: "겨울 시즌의 트로피급 물고기 1마리 전달.",
-      descEn: "Catch and give the winter-season trophy fish.",
-      icon: "oceanfish_medium_8_inv.png",
-    },
-    {
-      id: "give_big_summer",
-      titleKo: "여름 물고기 배달하기",
-      titleEn: "Deliver Summer Trophy Fish",
-      descKo: "여름 시즌의 트로피급 물고기 1마리 전달.",
-      descEn: "Catch and give the summer-season trophy fish.",
-      icon: "oceanfish_small_8_inv.png",
-    },
-    {
-      id: "give_big_spring",
-      titleKo: "봄 물고기 배달하기",
-      titleEn: "Deliver Spring Trophy Fish",
-      descKo: "봄 시즌의 트로피급 물고기 1마리 전달.",
-      descEn: "Catch and give the spring-season trophy fish.",
-      icon: "oceanfish_small_7_inv.png",
-    },
-    {
-      id: "give_big_autumn",
-      titleKo: "가을 물고기 배달하기",
-      titleEn: "Deliver Autumn Trophy Fish",
-      descKo: "가을 시즌의 트로피급 물고기 1마리 전달.",
-      descEn: "Catch and give the autumn-season trophy fish.",
-      icon: "oceanfish_small_6_inv.png",
-    },
-    {
-      id: "make_chair",
-      titleKo: "의자 만들기",
-      titleEn: "Make a Chair",
-      descKo: "섬에서 편안한 의자를 1개 제작 — 목공 작업대 청사진을 받음.",
-      descEn: "Build a comfortable chair on the island.",
-      icon: "wood_chair.png",
-    },
+    { id: "hermit_task_4",  titleKo: "꽃 심기",            titleEn: "Plant Flowers",        icon: "petals.png",                count: 10 },
+    { id: "hermit_task_5",  titleKo: "바다 쓰레기 제거",   titleEn: "Remove Sea Junk",      icon: "wetgoop.png",                count: 10 },
+    { id: "hermit_task_6",  titleKo: "베리 덤불 심고 거름주기", titleEn: "Plant & Fertilize Berries", icon: "berries.png",      count: 8 },
+    { id: "hermit_task_7",  titleKo: "건조대에 음식 걸기",  titleEn: "Hang Meat on Racks",   icon: "meatrack.png",               count: 6 },
+    { id: "hermit_task_8",  titleKo: "큰 물고기 주기",     titleEn: "Give a Big Fish",      icon: "oceanfish_medium_8_inv.png", count: 5 },
+    { id: "hermit_task_9",  titleKo: "구근 식물 제거",     titleEn: "Remove the Lureplant", icon: "lureplantbulb.png" },
+    { id: "hermit_task_10", titleKo: "우산 가져다주기",    titleEn: "Give an Umbrella",     icon: "umbrella.png" },
+    { id: "hermit_task_11", titleKo: "겨울 코트 가져다주기", titleEn: "Give a Winter Coat",  icon: "trunkvest_winter.png" },
+    { id: "hermit_task_12", titleKo: "샐러드 배달하기",    titleEn: "Deliver a Salad",      icon: "flowersalad.png" },
+    { id: "hermit_task_14", titleKo: "겨울 물고기 배달하기", titleEn: "Deliver a Winter Fish", icon: "oceanfish_medium_8_inv.png" },
+    { id: "hermit_task_15", titleKo: "여름 물고기 배달하기", titleEn: "Deliver a Summer Fish", icon: "oceanfish_small_8_inv.png" },
+    { id: "hermit_task_16", titleKo: "봄 물고기 배달하기",   titleEn: "Deliver a Spring Fish", icon: "oceanfish_small_7_inv.png" },
+    { id: "hermit_task_17", titleKo: "가을 물고기 배달하기", titleEn: "Deliver an Autumn Fish", icon: "oceanfish_small_6_inv.png" },
+    { id: "hermit_task_18", titleKo: "의자 만들기",         titleEn: "Make a Chair",         icon: "wood_chair.png" },
   ],
 };
