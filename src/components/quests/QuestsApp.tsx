@@ -136,9 +136,8 @@ function QuestSection({
   const denom = goal;
   const percent = denom === 0 ? 0 : Math.round((effective / denom) * 100);
   const questIconSrc = resolveIcon(quest);
-  // 진행바: effective/goal 기반. goal < total인 경우 goal 위치 마커 표시
+  // 진행바: effective/goal 기반.
   const fillPercent = denom === 0 ? 0 : Math.min(100, Math.round((effective / denom) * 100));
-  const goalMarkerPercent = goal < total ? Math.round((goal / total) * 100) : null;
 
   const handleReset = useCallback(() => {
     if (checkedCount === 0) return;
@@ -211,16 +210,6 @@ function QuestSection({
             )}
             style={{ width: `${fillPercent}%` }}
           />
-          {goalMarkerPercent != null && (
-            <div
-              className={cn(
-                "absolute top-0 bottom-0 w-px",
-                goalReached ? "bg-amber-700/60" : "bg-amber-500/80",
-              )}
-              style={{ left: `${goalMarkerPercent}%` }}
-              aria-hidden
-            />
-          )}
         </div>
       </div>
 
