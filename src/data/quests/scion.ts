@@ -62,11 +62,5 @@ export const scionQuest: Quest = {
         { id: "gestalt_wagpunk_bits",    nameKo: "고철더미",            nameEn: "Scrap",             icon: "wagpunk_bits.png",    qty: 12 },
       ],
     },
-    { id: "alterguardian_phase1_lunarrift_gestalt_capture",
-      // Challenge Board UI:CAPTURE_FMT + STRINGS.NAMES.ALTERGUARDIAN_PHASE1_LUNARRIFT_GESTALT
-      titleKo: "순수한 게슈탈트 포획",
-      titleEn: "Capture Pure Gestalt",
-      iconPath: "/images/bosses/alterguardian_phase1_lunarrift.png",
-      bossId: "alterguardian_phase1_lunarrift" },
   ],
 };
