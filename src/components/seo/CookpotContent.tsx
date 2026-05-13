@@ -131,7 +131,7 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
             {showcaseRecipes.map((r) => {
               const nameKo = ko.foods?.[r.id]?.name;
               const primary = lang === "ko" ? (nameKo ?? r.name) : r.name;
-              const secondary = lang === "ko" ? r.name : nameKo;
+              const secondary = lang === "ko" ? r.name : null;
               return (
                 <Link
                   key={r.id}
@@ -180,7 +180,7 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
                   {recipes.map((r) => {
                     const nameKo = ko.foods?.[r.id]?.name;
                     const primary = lang === "ko" ? (nameKo ?? r.name) : r.name;
-                    const secondary = lang === "ko" ? r.name : nameKo;
+                    const secondary = lang === "ko" ? r.name : null;
                     return (
                       <li key={r.id} className="mb-1 break-inside-avoid">
                         <Link

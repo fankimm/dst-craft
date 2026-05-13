@@ -56,7 +56,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
                   {items.map((item) => {
                     const nameKo = ko.items[item.id]?.name;
                     const primary = lang === "ko" ? (nameKo ?? item.name) : item.name;
-                    const secondary = lang === "ko" ? item.name : nameKo;
+                    const secondary = lang === "ko" ? item.name : null;
                     return (
                       <li key={item.id} className="mb-1 break-inside-avoid">
                         <Link
@@ -84,7 +84,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
             {cookingRecipes.map((r) => {
               const nameKo = ko.foods?.[r.id]?.name;
               const primary = lang === "ko" ? (nameKo ?? r.name) : r.name;
-              const secondary = lang === "ko" ? r.name : nameKo;
+              const secondary = lang === "ko" ? r.name : null;
               return (
                 <li key={r.id} className="mb-1 break-inside-avoid">
                   <Link
@@ -109,7 +109,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
           <ul className="columns-2 sm:columns-3 md:columns-4 gap-x-4 text-sm">
             {bosses.map((b) => {
               const primary = lang === "ko" ? b.nameKo : b.name;
-              const secondary = lang === "ko" ? b.name : b.nameKo;
+              const secondary = lang === "ko" ? b.name : null;
               return (
                 <li key={b.id} className="mb-1 break-inside-avoid">
                   <Link
@@ -134,7 +134,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
           <ul className="columns-2 sm:columns-3 md:columns-4 gap-x-4 text-sm">
             {characters.map((c) => {
               const primary = lang === "ko" ? (c.nameKo ?? c.name) : c.name;
-              const secondary = lang === "ko" ? c.name : c.nameKo;
+              const secondary = lang === "ko" ? c.name : null;
               return (
                 <li key={c.id} className="mb-1 break-inside-avoid">
                   <Link
@@ -161,7 +161,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
           <ul className="columns-2 sm:columns-3 md:columns-4 gap-x-4 text-sm">
             {quests.map((q) => {
               const primary = lang === "ko" ? q.titleKo : q.titleEn;
-              const secondary = lang === "ko" ? q.titleEn : q.titleKo;
+              const secondary = lang === "ko" ? q.titleEn : null;
               return (
                 <li key={q.id} className="mb-1 break-inside-avoid">
                   <Link

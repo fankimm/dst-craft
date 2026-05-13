@@ -18,7 +18,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
   if (!char || !tree) notFound();
 
   const displayName = lang === "ko" ? (char.nameKo ?? char.name) : char.name;
-  const subtitle = lang === "ko" ? char.name : char.nameKo;
+  const subtitle = lang === "ko" ? char.name : null;
 
   const skillNodes = tree.nodes.filter((n) => n.icon);
   const skillCount = skillNodes.length;
@@ -172,7 +172,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
               const groupNameEn = groupTranslations[group.id]?.en ?? group.id;
               const groupNameKo = groupTranslations[group.id]?.ko;
               const primary = lang === "ko" ? (groupNameKo ?? groupNameEn) : groupNameEn;
-              const secondary = lang === "ko" ? groupNameEn : groupNameKo;
+              const secondary = lang === "ko" ? groupNameEn : null;
               return (
                 <div key={group.id} className="rounded-lg border border-border bg-surface px-3 py-3 text-center">
                   <div className="size-3 rounded-full mx-auto mb-1.5" style={{ backgroundColor: group.color }} />
@@ -252,7 +252,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
               {unlockedItems.map((item) => {
                 const itemKo = ko.items[item.id]?.name;
                 const primary = lang === "ko" ? (itemKo ?? item.name) : item.name;
-                const secondary = lang === "ko" ? item.name : itemKo;
+                const secondary = lang === "ko" ? item.name : null;
                 return (
                   <Link
                     key={item.id}
@@ -294,7 +294,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {otherChars.map((c) => {
               const primary = lang === "ko" ? (c.nameKo ?? c.name) : c.name;
-              const secondary = lang === "ko" ? c.name : c.nameKo;
+              const secondary = lang === "ko" ? c.name : null;
               return (
                 <Link
                   key={c.id}

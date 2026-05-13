@@ -27,7 +27,7 @@ export function CharacterPageContent({ slug, lang }: { slug: string; lang: SeoLa
   if (!char) notFound();
 
   const displayName = lang === "ko" ? (char.nameKo ?? char.name) : char.name;
-  const subtitle = lang === "ko" ? char.name : char.nameKo;
+  const subtitle = lang === "ko" ? char.name : null;
   const titleSub = lang === "ko" ? char.titleKo : char.title;
   const motto = lang === "ko" ? char.mottoKo : char.motto;
 
@@ -157,7 +157,7 @@ export function CharacterPageContent({ slug, lang }: { slug: string; lang: SeoLa
           <ul className="space-y-2">
             {char.perks.map((perk, i) => {
               const primary = lang === "ko" ? (char.perksKo[i] ?? perk) : perk;
-              const secondary = lang === "ko" ? perk : char.perksKo[i];
+              const secondary = lang === "ko" ? perk : null;
               return (
                 <li key={i} className="flex gap-3 rounded-lg border border-border bg-surface px-4 py-3">
                   <span className="text-primary font-bold shrink-0">•</span>
@@ -196,7 +196,7 @@ export function CharacterPageContent({ slug, lang }: { slug: string; lang: SeoLa
               {exclusiveItems.map((item) => {
                 const itemKo = ko.items[item.id]?.name;
                 const primary = lang === "ko" ? (itemKo ?? item.name) : item.name;
-                const secondary = lang === "ko" ? item.name : itemKo;
+                const secondary = lang === "ko" ? item.name : null;
                 return (
                   <Link
                     key={item.id}
@@ -238,7 +238,7 @@ export function CharacterPageContent({ slug, lang }: { slug: string; lang: SeoLa
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {otherChars.map((c) => {
               const primary = lang === "ko" ? (c.nameKo ?? c.name) : c.name;
-              const secondary = lang === "ko" ? c.name : c.nameKo;
+              const secondary = lang === "ko" ? c.name : null;
               return (
                 <Link
                   key={c.id}

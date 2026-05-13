@@ -24,17 +24,20 @@ const releases: Release[] = [
       "feat(seo): sitemap.ts에 `/quests` + `/quest/<slug>` 4종 등록 (en/ko 각각). priority/changeFrequency 기존 dynamic 항목과 동일.",
       "feat(seo): SeoFooterLinks + BrowseContent에 quests 진입 링크 추가 — 크롤러 디스커버리 + 사용자 네비게이션 일관화.",
       "feat(i18n): labels.ts에 quest 전용 라벨 12종 추가 (questGuide/questsTitle/questsIntro/stepsLabel/substepsLabel/questStepsBreakdown/questTips/questOverview/goalLabel/totalStepsLabel/otherQuests/seeAllQuests/openQuestChecklist/questChecklistHelper/questsLink/questCardSummary/questCardSummaryNoSubs/goalNote).",
+      "refactor(seo): 전역 SEO 페이지(quest/food/character/boss/item/skill-tree/browse/cookpot)에서 영문 페이지의 한국어 부제목 제거. 영문권 사용자에게 한국어 텍스트가 노출되면 mixed-language 페이지로 인식돼 검색 신뢰도 하락 + 영문 검색 노출 약화. 한국어 페이지의 영어 부제목은 유지(한국 유저가 영문 자료 검색 시 보조용). `secondary/subtitle = lang === \"ko\" ? <영문> : null` 단일 패턴으로 통일 — 27군데 일괄 적용.",
     ],
     changes: {
       ko: [
         "퀘스트 4종 전용 SEO 페이지 + 인덱스 페이지 추가 — 검색엔진에 노출되는 가이드 페이지(`/quests`, `/quest/<slug>`)에서 각 퀘스트의 단계, 필요 자재, 보스, FAQ를 자동 정리.",
         "퀘스트 페이지에서 자재 클릭 시 제작 가이드, 보스 클릭 시 보스 가이드로 바로 이동. 모든 단계는 인게임 출처 검증된 데이터.",
         "둘러보기(`/browse`) 페이지에도 퀘스트 섹션 추가.",
+        "영문 SEO 페이지에서 한국어 부제목 제거 — 영문 사용자에게 깔끔한 영문 전용 페이지를 제공. 한국어 페이지의 영어 부제목은 유지(영문 자료 교차 검색에 유용).",
       ],
       en: [
         "Dedicated SEO pages for all 4 quest checklists + index — `/quests` and `/quest/<slug>` surface each quest's steps, materials, boss kills, and FAQ for search engines.",
         "Material substeps link straight to crafting guides; boss-kill steps link to boss guides. All entries are sourced from the in-game files.",
         "Browse (`/browse`) page now includes a Quest Checklists section.",
+        "Korean subtitles removed from all English SEO pages — cleaner, English-only presentation. Korean pages retain English subtitles since they help Korean users cross-reference English wikis.",
       ],
     },
   },

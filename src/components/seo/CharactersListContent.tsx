@@ -45,7 +45,7 @@ export function CharactersListContent({ lang }: { lang: SeoLang }) {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {playable.map((char) => {
             const primary = lang === "ko" ? (char.nameKo ?? char.name) : char.name;
-            const secondary = lang === "ko" ? char.name : char.nameKo;
+            const secondary = lang === "ko" ? char.name : null;
             return (
               <Link
                 key={char.id}

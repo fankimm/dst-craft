@@ -46,7 +46,7 @@ export function QuestsListContent({ lang }: { lang: SeoLang }) {
           {quests.map((q) => {
             const icon = resolveIcon(q);
             const primary = lang === "ko" ? q.titleKo : q.titleEn;
-            const secondary = lang === "ko" ? q.titleEn : q.titleKo;
+            const secondary = lang === "ko" ? q.titleEn : null;
             const totalSteps = q.steps.length;
             const subCount = countSubsteps(q);
             const summary =

@@ -36,7 +36,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
   if (!boss) notFound();
 
   const displayName = lang === "ko" ? boss.nameKo : boss.name;
-  const subtitle = lang === "ko" ? boss.name : boss.nameKo;
+  const subtitle = lang === "ko" ? boss.name : null;
   const images = Array.isArray(boss.image) ? boss.image : [boss.image];
 
   const primaryCategory = boss.categories[0];
@@ -157,7 +157,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               const nameEn = lootDisplayName(loot.item, "en");
               const nameKoVal = lootDisplayName(loot.item, "ko");
               const lootName = lang === "ko" ? nameKoVal : nameEn;
-              const lootSub = lang === "ko" ? nameEn : (nameKoVal !== nameEn ? nameKoVal : null);
+              const lootSub = lang === "ko" ? nameEn : null;
               const imgSrc = lootImage(loot.item);
               const isBlueprint = loot.blueprint;
               const chanceLabel =
@@ -219,7 +219,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 const nameEn = lootDisplayName(loot.item, "en");
                 const nameKoVal = lootDisplayName(loot.item, "ko");
                 const lootName = lang === "ko" ? nameKoVal : nameEn;
-                const lootSub = lang === "ko" ? nameEn : (nameKoVal !== nameEn ? nameKoVal : null);
+                const lootSub = lang === "ko" ? nameEn : null;
                 const imgSrc = lootImage(loot.item);
                 const isBlueprint = loot.blueprint;
                 const chanceLabel = loot.pool
@@ -313,7 +313,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               {relatedBosses.map((b) => {
                 const img = Array.isArray(b.image) ? b.image[0] : b.image;
                 const rDisplay = lang === "ko" ? b.nameKo : b.name;
-                const rSub = lang === "ko" ? b.name : b.nameKo;
+                const rSub = lang === "ko" ? b.name : null;
                 return (
                   <Link
                     key={b.id}

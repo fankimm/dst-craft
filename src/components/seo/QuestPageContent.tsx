@@ -43,7 +43,7 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
   if (!quest) notFound();
 
   const displayName = questTitle(quest, lang);
-  const subtitle = lang === "ko" ? quest.titleEn : quest.titleKo;
+  const subtitle = lang === "ko" ? quest.titleEn : null;
   const totalSteps = quest.steps.length;
   const subCount = countSubsteps(quest);
   const heroIcon = resolveIcon(quest);
@@ -284,7 +284,7 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
               {otherQuests.map((q) => {
                 const qIcon = resolveIcon(q);
                 const qName = questTitle(q, lang);
-                const qSub = lang === "ko" ? q.titleEn : q.titleKo;
+                const qSub = lang === "ko" ? q.titleEn : null;
                 return (
                   <Link
                     key={q.id}
