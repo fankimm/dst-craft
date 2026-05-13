@@ -34,9 +34,7 @@ export const celestialQuest: Quest = {
       substeps: [
         { id: "craft_construction1", nameKo: "달 공명추출기 (1단계)", nameEn: "Lunar Siphonator (Stage 1)",
           icon: "moon_device_construction1.png",
-          craftId: "moon_device_construction1",
-          noteKo: "wagpunk_bits 4 + moonstorm_spark 5 + transistor 2",
-          noteEn: "wagpunk_bits 4 + moonstorm_spark 5 + transistor 2" },
+          craftId: "moon_device_construction1" },
         { id: "fill_construction1", nameKo: "1단계 자재", nameEn: "Stage 1 materials",
           icon: "wagpunk_bits.png",
           noteKo: "wagpunk_bits 4 + moonstorm_spark 10 + moonglass_charged 10",

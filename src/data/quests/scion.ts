@@ -58,9 +58,7 @@ export const scionQuest: Quest = {
       substeps: [
         { id: "craft_floor_kit", nameKo: "기질 추론기", nameEn: "Substrate Extrapolator",
           icon: "wagpunk_floor_kit.png",
-          craftId: "wagpunk_floor_kit",
-          noteKo: "cutstone 1 + wagpunk_bits 1 (×4 산출)",
-          noteEn: "cutstone 1 + wagpunk_bits 1 (yields 4)" },
+          craftId: "wagpunk_floor_kit" },
       ],
     },
     {
@@ -73,14 +71,10 @@ export const scionQuest: Quest = {
       substeps: [
         { id: "craft_thulecitebugnet", nameKo: "툴레사이트 잠자리채", nameEn: "Thulecite Bug Net",
           icon: "thulecitebugnet.png",
-          craftId: "thulecitebugnet",
-          noteKo: "thulecite 2 + refined_dust 1",
-          noteEn: "thulecite 2 + refined_dust 1" },
+          craftId: "thulecitebugnet" },
         { id: "craft_gestalt_cage", nameKo: "게슈탈트 포획기", nameEn: "Gestalt Cage",
           icon: "gestalt_cage.png",
-          craftId: "gestalt_cage",
-          noteKo: "thulecitebugnet 1 + wagpunk_bits 2",
-          noteEn: "thulecitebugnet 1 + wagpunk_bits 2" },
+          craftId: "gestalt_cage" },
         { id: "capture_gestalts", nameKo: "게슈탈트 포획", nameEn: "Gestalt Capture",
           icon: "gestalt_cage_filled3.png",
           qty: 6 },
