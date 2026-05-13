@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.23.20",
+    date: "2026-05-13",
+    dev: [
+      "feat(skills): 스킬트리 시뮬레이터 \"제한 해제\" 토글 (#28). 헤더에 Infinity 아이콘(앰버 강조), `useSkillUnlimited` 훅이 localStorage(`dst:skills-unlimited`)에 글로벌 영속화. `useSkillTree`에 `unlimited` 파라미터 추가해 `canLearn`의 통찰력 15 캡 분기만 무력화 — parent OR / locks AND / lock_open 게임 규칙은 모두 유지. `Wx78CircuitBoard`도 같은 토글 받아서 슬롯바·detail stepper의 maxSlots 분기 처리 + 켜진 동안 빈 슬롯 렌더 생략. 통찰력 카운터는 ∞ + \"제한 해제\" 텍스트로 전환.",
+      "feat(skills): 공유 URL에 unlimited 상태 포함 (`u=1`). 16+ 스킬 빌드를 공유받은 쪽에서 \"통찰력 남음 0\"으로 보이고 추가 학습이 막혀 헷갈리던 문제 — handleShare가 `unlimited`일 때 `u=1` 부여, 링크 진입 또는 /import 시 자동 ON(localStorage에도 반영). `useSkillUnlimited`에 `setUnlimited(bool)` 셋터 추가.",
+      "chore(workflow): /push 스킬 제거, /beta가 commit + origin push 기능 흡수. 워크플로우 단계 3→5로 축약. `/beta clear` 서브커맨드 신설 — origin/beta를 origin/main 기준으로 리셋(`--force-with-lease`). beta는 staging-only이라 일상 청소 작업으로 포지셔닝. CLAUDE.md + .claude/skills/{beta,task} 동기 갱신.",
+      "fix(ci): beta 배포 워크플로우 robust화 (feat/5 cherry-pick). (1) `Sync source-beta + ~/works (beta)` 단계 추가 — ~/dstcraft/source-beta를 origin/beta에 `reset --hard`로 강제 정렬해서 force-push 후 ff 실패 케이스 복구. (2) `deploy-frontend.sh beta` 호출에 `--force` 추가 — sync 단계로 이미 정렬된 상태라 스크립트의 \"already up to date\" 체크가 빌드를 스킵하던 문제. 이번 /beta clear 직후 origin/beta 강제 리셋 → 첫 deploy 실패 → 두 번째 deploy가 \"already up to date\"로 빌드 스킵해 stale 서빙되던 문제 해결.",
+      "docs(mistakes): SessionStart hook의 divergence 경고(`fatal: Not possible to fast-forward`)를 놓치고 진행한 사례 기록. 향후 `fatal`/`error`/`conflict`/`diverging` 키워드 발견 즉시 사용자에게 보고.",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 시뮬레이터 헤더에 \"제한 해제\" 토글 추가 — 켜면 통찰력 15 캡과 칠팔이 회로 슬롯 캡을 무시. 모드 적용된 환경처럼 모든 통찰력·회로를 자유롭게 찍어볼 수 있음 (선행 스킬·잠금 조건은 게임 규칙대로 유지)",
+        "제한 해제 상태에서 공유 버튼으로 만든 링크를 열면 받는 쪽도 자동으로 제한 해제로 전환 — 16+ 스킬 빌드도 정상적으로 표시됨",
+      ],
+      en: [
+        "Skill tree simulator now has an \"Unlimited\" toggle in the header — when on, the 15-insight cap and the WX-78 circuit slot caps are ignored, letting you assemble any modded-style build. Game-rule prerequisites (parent skills, locks) are still enforced.",
+        "Share links generated while Unlimited is on now carry the flag (`u=1`), so the receiver opens the link with Unlimited automatically enabled — 16+ skill builds display correctly on their side.",
+      ],
+    },
+  },
+  {
     version: "0.23.19",
     date: "2026-05-10",
     dev: [
