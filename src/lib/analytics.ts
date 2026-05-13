@@ -231,6 +231,15 @@ export interface FeedbackItem {
   status: FeedbackStatus;
   reply?: string | null;
   hidden?: boolean;
+  // 번역 메타 (자동/수동 번역 후 채워짐). admin 응답에 노출.
+  messageTranslated?: string | null;
+  messageLang?: string | null;
+  messageTranslatedAt?: number | null;
+  messageTranslatedModel?: string | null;
+  replyTranslated?: string | null;
+  replyLang?: string | null;
+  replyTranslatedAt?: number | null;
+  replyTranslatedModel?: string | null;
 }
 
 /** Fetch feedback list (admin only) */
@@ -270,6 +279,11 @@ export interface PublicFeedbackItem {
   time: string;
   status: FeedbackStatus;
   reply: string | null;
+  // 번역 (KR↔EN 양방향). null = 미번역. 프론트가 locale 따라 선택해 표시.
+  messageTranslated?: string | null;
+  messageLang?: string | null;
+  replyTranslated?: string | null;
+  replyLang?: string | null;
 }
 
 /** Fetch public feedback board */

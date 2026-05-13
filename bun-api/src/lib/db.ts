@@ -17,6 +17,34 @@ db.exec("PRAGMA foreign_keys = ON");
 const schemaPath = fileURLToPath(new URL("./schema.sql", import.meta.url));
 db.exec(readFileSync(schemaPath, "utf8"));
 
+// ─── 멱등 마이그레이션 ───
+// schema.sql의 CREATE TABLE IF NOT EXISTS는 기존 DB의 신규 컬럼을 못 채움.
+// PRAGMA table_info로 컬럼 존재 체크 후 없는 것만 ALTER TABLE ADD.
+function ensureColumns(table: string, cols: { name: string; type: string }[]): void {
+  const existing = new Set(
+    db
+      .query<{ name: string }, []>(`PRAGMA table_info(${table})`)
+      .all()
+      .map((r) => r.name),
+  );
+  for (const c of cols) {
+    if (!existing.has(c.name)) {
+      db.exec(`ALTER TABLE ${table} ADD COLUMN ${c.name} ${c.type}`);
+    }
+  }
+}
+
+ensureColumns("feedback", [
+  { name: "message_translated", type: "TEXT" },
+  { name: "message_lang", type: "TEXT" },
+  { name: "message_translated_at", type: "INTEGER" },
+  { name: "message_translated_model", type: "TEXT" },
+  { name: "reply_translated", type: "TEXT" },
+  { name: "reply_lang", type: "TEXT" },
+  { name: "reply_translated_at", type: "INTEGER" },
+  { name: "reply_translated_model", type: "TEXT" },
+]);
+
 export function nowSec(): number {
   return Math.floor(Date.now() / 1000);
 }
