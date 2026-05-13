@@ -16,6 +16,7 @@ import { fetchAllSkills, saveCharacterSkills } from "@/lib/favorites-api";
 import { cn } from "@/lib/utils";
 import { encodeBuild, decodeBuild } from "@/lib/skill-build-codec";
 import { useWx78Circuits, encodeCircuits, decodeCircuits } from "@/hooks/use-wx78-circuits";
+import { useSkillUnlimited } from "@/hooks/use-skill-unlimited";
 import { SkillCharacterGrid } from "./SkillCharacterGrid";
 import { SkillTreeView } from "./SkillTreeView";
 
@@ -27,6 +28,11 @@ function readSkillUrlState() {
   if (typeof window === "undefined") return { char: null as string | null, build: null as string | null };
   const params = new URLSearchParams(window.location.search);
   return { char: params.get("char"), build: params.get("b") };
+}
+
+function readSkillUnlimitedFromUrl(): boolean {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("u") === "1";
 }
 
 export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
@@ -121,6 +127,23 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
       : null,
   );
 
+  const { unlimited, toggle: toggleUnlimited, setUnlimited } = useSkillUnlimited();
+
+  // Apply unlimited flag from URL once on mount (sender's intent carries over)
+  const unlimitedFromUrlRef = useRef<boolean | null>(null);
+  if (unlimitedFromUrlRef.current === null) {
+    unlimitedFromUrlRef.current = readSkillUnlimitedFromUrl();
+  }
+  const unlimitedAppliedRef = useRef(false);
+  useEffect(() => {
+    if (unlimitedAppliedRef.current) return;
+    if (unlimitedFromUrlRef.current === true && !unlimited) {
+      setUnlimited(true);
+    }
+    unlimitedAppliedRef.current = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const {
     activatedSkills,
     totalPoints,
@@ -132,7 +155,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     toggleSkill,
     resetAll,
     loadBuild,
-  } = useSkillTree(tree, manualLocks, refreshKey, sharedBuildRef.current);
+  } = useSkillTree(tree, manualLocks, refreshKey, sharedBuildRef.current, unlimited);
 
   // WX-78 circuits — lifted up from SkillTreeView so we can include them in share URLs
   const {
@@ -262,6 +285,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     const params = new URLSearchParams({ tab: "skills", char: tree.characterId });
     if (hasSkills) params.set("b", encodeBuild(tree, activatedSkills));
     if (hasCircuits) params.set("c", encodeCircuits(circuitCounts));
+    if (unlimited) params.set("u", "1");
     const url = `${window.location.origin}/?${params.toString()}`;
     try {
       await navigator.clipboard.writeText(url);
@@ -280,7 +304,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
         detail: t(resolvedLocale, "skills_share_copied" as TranslationKey),
       }),
     );
-  }, [tree, activatedSkills, circuitCounts, resolvedLocale]);
+  }, [tree, activatedSkills, circuitCounts, resolvedLocale, unlimited]);
 
   const handleImport = useCallback(async () => {
     const toast = (key: string) =>
@@ -291,6 +315,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
       const build = url.searchParams.get("b");
       const circuits = url.searchParams.get("c");
       const char = url.searchParams.get("char");
+      const unlim = url.searchParams.get("u") === "1";
       if (!char || !CHARACTERS_WITH_SKILLS.includes(char)) {
         toast("skills_import_invalid");
         return;
@@ -304,6 +329,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
         toast("skills_import_invalid");
         return;
       }
+      if (unlim) setUnlimited(true);
       if (char !== selectedChar) {
         sharedBuildRef.current = build;
         sharedCircuitsRef.current = circuits;
@@ -317,7 +343,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
     } catch {
       toast("skills_import_failed");
     }
-  }, [selectedChar, resolvedLocale, loadBuild, circuitLoad]);
+  }, [selectedChar, resolvedLocale, loadBuild, circuitLoad, setUnlimited]);
 
   // Listen to popstate for browser back
   useEffect(() => {
@@ -389,6 +415,8 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
             onCircuitEquip={circuitEquip}
             onCircuitUnequip={circuitUnequip}
             onCircuitReset={circuitReset}
+            unlimited={unlimited}
+            onToggleUnlimited={toggleUnlimited}
           />
         ) : (
           <div className="h-full overflow-y-auto overscroll-contain" data-scroll-container="">

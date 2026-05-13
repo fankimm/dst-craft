@@ -85,13 +85,12 @@ git worktree add ../dst-craft-<issue-num> -b feat/<issue-num>-<slug> origin/main
   - 워크트리: ~/private-works/dst-craft-42
   - 브랜치: feat/42-shadow-chess-fix
 
-  바로 작업 시작합니다. 완료되면 /push (origin) → /beta (staging) → /release (production).
+  바로 작업 시작합니다. 완료되면 /beta (staging) → /release (production).
   ```
 - 이후 곧바로 사용자 요청 작업 진행 — 모든 파일 조작은 워크트리 경로 기준으로
 
-## /push, /beta, /release와의 연동
-- `/push`: feat 워크트리에서 commit + origin push (배포 X)
-- `/beta`: 타겟 브랜치를 beta에 머지·푸시 → beta.dstcraft.com 배포. 인자 없으면 현재 브랜치
+## /beta, /release와의 연동
+- `/beta`: 미커밋이 있으면 자동 commit + origin push 후, 타겟 브랜치를 beta에 머지·푸시 → beta.dstcraft.com 배포. 인자 없으면 현재 브랜치
 - `/release`: 타겟 브랜치를 main에 머지·푸시 → www.dstcraft.com 배포. PR/머지 커밋 메시지에 `Closes #<issue-num>` 자동 포함 → main 머지 시 이슈 자동 close
   - `/release` 스킬도 이 규칙을 알아야 함 — 호출 시 현재 브랜치명에서 이슈 번호 추출(`feat/<num>-...`)해서 commit message에 `Closes #<num>` 추가
 

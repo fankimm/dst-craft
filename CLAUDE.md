@@ -52,17 +52,16 @@
    - `beta`에서 분기하지 말 것 — beta의 in-flight 커밋이 딸려 들어와 main 머지 시 의도치 않은 변경 포함 가능
    - feat끼리 독립 → 한 feat이 다른 feat의 미완성 변경을 끌어들이지 않음
 2. **워크트리 안에서 작업 + 커밋** — `feat/<num>-<slug>` 브랜치에 누적 (`/task`가 현재 세션을 워크트리로 cd 이동시킨 뒤 그대로 진행)
-3. **origin push** — `/push` 호출. feat 워크트리에서 commit + `git push origin feat/<num>-<slug>`. 배포는 안 일어남
-4. **beta 배포 (staging)** — `/beta` 호출. 타겟 브랜치를 `beta`에 머지·푸시 → `beta.dstcraft.com` 자동 배포
+3. **beta 배포 (staging)** — `/beta` 호출. 미커밋 변경이 있으면 자동으로 commit + origin push 한 뒤, 타겟 브랜치를 `beta`에 머지·푸시 → `beta.dstcraft.com` 자동 배포
    - 인자 없으면 현재 워크트리 브랜치. 다른 feat을 빠르게 beta로 올리려면 `/beta <브랜치명|이슈번호|이슈URL|자연어>`
-   - 내부적으로 origin push까지 보장 (=`/push` 생략 가능)
    - 릴리즈노트/버전은 **건드리지 않음** — deploy-only
-5. **테스트 통과** — beta.dstcraft.com에서 의도대로 동작 확인
-6. **main 머지 (production 배포)** — `/release` 호출. 인자 없으면 현재 워크트리 브랜치를 자동 인식.
+   - `/beta clear` 서브커맨드로 누적된 staging 머지를 청산 (origin/beta를 origin/main 기준으로 리셋, 파괴적 — 사용자 확인 필수)
+4. **테스트 통과** — beta.dstcraft.com에서 의도대로 동작 확인
+5. **main 머지 (production 배포)** — `/release` 호출. 인자 없으면 현재 워크트리 브랜치를 자동 인식.
    - `/release`가 그 feat 브랜치 하나만 main에 `--no-ff` merge
    - 머지 커밋에 `Closes #<num>` 자동 포함 → GitHub가 이슈 자동 close
    - main 머지 직전에 릴리즈노트/버전 bump를 한 번에 작성 (그 feat 분량만)
-7. **워크트리 정리** — `/release`가 자동으로 `git worktree remove ../dst-craft-<num>` + `git branch -d` 처리
+6. **워크트리 정리** — `/release`가 자동으로 `git worktree remove ../dst-craft-<num>` + `git branch -d` 처리
 
 ### 메인 워킹 디렉터리 규칙
 - 메인 워킹 디렉터리(`/Users/jihwan-kim3/private-works/dst-craft`)는 항상 `main` 브랜치 유지
@@ -76,17 +75,17 @@
 
 ### 직접 작업 / 머지 방향 규칙
 - **`main` 직접 작업 금지** — 사용자가 *명시적으로* main 작업/푸시를 요청한 경우에만 허용
-- **`beta` 직접 작업 금지** — 메타든 docs든 모두 워크트리 패턴(`/task` → `/push` → `/beta` → `/release`)을 따른다
+- **`beta` 직접 작업 금지** — 메타든 docs든 모두 워크트리 패턴(`/task` → `/beta` → `/release`)을 따른다
 - **`main ← beta` 방향 머지 절대 금지** — beta는 in-flight feat의 합집합 검증용일 뿐 main의 입구가 아니다. `git merge --ff-only beta`(main에서) / `git merge beta` 등 beta를 main으로 흘리는 모든 명령 금지. 어기면 검증 안 끝난 다른 feat의 in-flight 커밋이 production에 따라 들어간다 (2026-05-08 사고, `docs/mistakes.md` 참조)
 - **올바른 머지 방향**: `feat → beta` (=`/beta`), `feat → main` (=`/release`) 두 가지뿐. 두 쪽으로 각각 직접 머지하는 구조
 
 ### beta 브랜치 정리
 - beta는 main + 검증중 feat들의 합집합. 머지된 feat가 main에 들어가도 beta에 남아있음 (no-op)
-- 명시적 정리 불필요 — git 머지가 알아서 처리
+- **언제든 청소 가능** — beta는 staging 배포 전용이라 오염됐다 싶으면 `/beta clear`로 origin/main 기준으로 다시 만들면 됨. 파괴적 작업이 아닌 일상 청소.
 
 ### 슬래시 명령어 의미 정리
-- **`/push [타겟]`**: 타겟 브랜치를 origin에 push (commit 포함, 배포 X). 인자 없으면 현재 워크트리 브랜치. 인자는 브랜치명 / 이슈번호 / 이슈URL / 자연어
-- **`/beta [타겟]`**: 타겟 브랜치를 `beta`에 머지·푸시 → `beta.dstcraft.com` 자동 배포. 인자 형식 동일. origin push 보장
+- **`/beta [타겟]`**: 미커밋 변경이 있으면 자동 commit + origin push, 그다음 타겟 브랜치를 `beta`에 머지·푸시 → `beta.dstcraft.com` 자동 배포. 인자 없으면 현재 워크트리 브랜치. 인자는 브랜치명 / 이슈번호 / 이슈URL / 자연어
+- **`/beta clear`**: origin/beta를 origin/main 기준으로 리셋 (staging 청소). 일상 작업 — 오염됐다 싶으면 호출
 - **`/release [타겟]`**: 타겟 브랜치를 `main`에 머지·푸시 → `www.dstcraft.com` Production 배포. 릴리즈노트/버전 bump 작성. 워크트리 정리
 
 Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).

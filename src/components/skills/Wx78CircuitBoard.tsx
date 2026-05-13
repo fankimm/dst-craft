@@ -32,6 +32,7 @@ interface Props {
   onUnequip: (id: string) => void;
   onReset: () => void;
   onViewItem?: (itemId: string) => void;
+  unlimited?: boolean;
 }
 
 const TYPES: CircuitType[] = ["alpha", "beta", "gamma"];
@@ -52,6 +53,7 @@ export function Wx78CircuitBoard({
   onUnequip,
   onReset,
   onViewItem,
+  unlimited,
 }: Props) {
   const maxSlots = getMaxSlots(activatedSkills);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -77,7 +79,9 @@ export function Wx78CircuitBoard({
           <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
             {locale === "ko" ? "회로 슬롯" : "Circuit Slots"}
             <span className="ml-1.5 opacity-70 font-normal">
-              ({locale === "ko" ? `각 ${maxSlots}칸` : `${maxSlots} per bar`})
+              {unlimited
+                ? (locale === "ko" ? "(제한 해제)" : "(unlimited)")
+                : (locale === "ko" ? `(각 ${maxSlots}칸)` : `(${maxSlots} per bar)`)}
             </span>
           </div>
           {equippedTotal > 0 && (
@@ -98,6 +102,7 @@ export function Wx78CircuitBoard({
               maxSlots={maxSlots}
               counts={counts}
               locale={locale}
+              unlimited={unlimited}
             />
           ))}
         </div>
@@ -116,6 +121,7 @@ export function Wx78CircuitBoard({
                 maxSlots={maxSlots}
                 locale={locale}
                 onSelect={setSelectedId}
+                unlimited={unlimited}
               />
             ))}
           </div>
@@ -138,6 +144,7 @@ export function Wx78CircuitBoard({
             onEquip={() => onEquip(selected.id)}
             onUnequip={() => onUnequip(selected.id)}
             onViewItem={onViewItem ? () => { onViewItem(selected.id); setSelectedId(null); } : undefined}
+            unlimited={unlimited}
           />
         )}
       </DetailPanel>
@@ -151,11 +158,13 @@ function SlotBar({
   maxSlots,
   counts,
   locale,
+  unlimited,
 }: {
   type: CircuitType;
   maxSlots: number;
   counts: CircuitCounts;
   locale: Locale;
+  unlimited?: boolean;
 }) {
   const used = getUsedSlotsByType(counts, type);
   const color = TYPE_COLORS[type];
@@ -171,13 +180,19 @@ function SlotBar({
     const m = WX78_CIRCUITS_BY_ID[id];
     if (!m || m.type !== type) continue;
     for (let i = 0; i < n; i++) {
-      if (used_ + m.slots > maxSlots) break;
+      // unlimited 모드: 캡 무시하고 모두 채움
+      if (!unlimited && used_ + m.slots > maxSlots) break;
       segments.push({ kind: "filled", span: m.slots, key: `f${segIdx++}` });
       used_ += m.slots;
     }
   }
-  for (let i = used_; i < maxSlots; i++) {
-    segments.push({ kind: "empty", span: 1, key: `e${i}` });
+  if (!unlimited) {
+    for (let i = used_; i < maxSlots; i++) {
+      segments.push({ kind: "empty", span: 1, key: `e${i}` });
+    }
+  } else if (segments.length === 0) {
+    // 빈 unlimited 바: placeholder 한 칸 (시각 일관성)
+    segments.push({ kind: "empty", span: 1, key: "e0" });
   }
 
   return (
@@ -191,7 +206,7 @@ function SlotBar({
         </div>
         <span className="tabular-nums text-muted-foreground">
           <span className="text-foreground font-bold">{used}</span>
-          <span className="opacity-60"> / {maxSlots}</span>
+          <span className="opacity-60"> / {unlimited ? "∞" : maxSlots}</span>
         </span>
       </div>
       <div className="flex items-center gap-1">
@@ -234,6 +249,7 @@ function Section({
   maxSlots,
   locale,
   onSelect,
+  unlimited,
 }: {
   type: CircuitType;
   modules: CircuitModule[];
@@ -241,6 +257,7 @@ function Section({
   maxSlots: number;
   locale: Locale;
   onSelect: (id: string) => void;
+  unlimited?: boolean;
 }) {
   const usedInBar = getUsedSlotsByType(counts, type);
   const color = TYPE_COLORS[type];
@@ -257,7 +274,7 @@ function Section({
       <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {modules.map((m) => {
           const count = counts[m.id] ?? 0;
-          const canAdd = m.slots <= maxSlots - usedInBar;
+          const canAdd = unlimited || m.slots <= maxSlots - usedInBar;
           return (
             <CircuitTile
               key={m.id}
@@ -345,6 +362,7 @@ function CircuitDetail({
   onEquip,
   onUnequip,
   onViewItem,
+  unlimited,
 }: {
   module: CircuitModule;
   locale: Locale;
@@ -355,9 +373,10 @@ function CircuitDetail({
   onEquip: () => void;
   onUnequip: () => void;
   onViewItem?: () => void;
+  unlimited?: boolean;
 }) {
   const color = TYPE_COLORS[m.type];
-  const canAdd = m.slots <= maxSlots - usedInBar;
+  const canAdd = unlimited || m.slots <= maxSlots - usedInBar;
 
   return (
     <div className="px-4 pt-4 pb-2">
@@ -434,7 +453,7 @@ function CircuitDetail({
             <span style={{ color }}>
               {locale === "ko" ? TYPE_LABEL[m.type].ko : TYPE_LABEL[m.type].en}
             </span>
-            <span className="opacity-60"> {usedInBar}/{maxSlots}</span>
+            <span className="opacity-60"> {usedInBar}/{unlimited ? "∞" : maxSlots}</span>
             {!canAdd && count === 0 && (
               <span className="ml-2 text-[11px] text-muted-foreground/80">
                 {locale === "ko" ? "슬롯 부족" : "Not enough slots"}

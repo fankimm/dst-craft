@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useCallback, useState } from "react";
 import Image from "next/image";
-import { ClipboardPaste, RotateCcw, Share2 } from "lucide-react";
+import { ClipboardPaste, RotateCcw, Share2, Infinity as InfinityIcon } from "lucide-react";
 import type { CharacterSkillTree, SkillNode, LockCondition } from "@/data/skill-trees/types";
 import { characters } from "@/data/characters";
 import { characterName, characterTitle, t, type Locale, type TranslationKey } from "@/lib/i18n";
@@ -40,6 +40,8 @@ interface Props {
   onCircuitEquip?: (id: string) => void;
   onCircuitUnequip?: (id: string) => void;
   onCircuitReset?: () => void;
+  unlimited?: boolean;
+  onToggleUnlimited?: () => void;
 }
 
 function isLockNode(node: SkillNode): boolean {
@@ -140,6 +142,8 @@ export function SkillTreeView({
   onCircuitEquip,
   onCircuitUnequip,
   onCircuitReset,
+  unlimited,
+  onToggleUnlimited,
 }: Props) {
   const char = characters.find((c) => c.id === tree.characterId);
   const pointsRef = useRef<HTMLDivElement>(null);
@@ -201,14 +205,46 @@ export function SkillTreeView({
               alt=""
               width={16}
               height={16}
-              className="size-4"
+              className={cn("size-4", unlimited && "opacity-50")}
             />
-            <span className="font-semibold text-foreground">{Math.max(0, 15 - totalPoints)}</span>
-            <span>{locale === "ko" ? "통찰력 남음" : "insight left"}</span>
-            <span className="opacity-60">· {locale === "ko" ? `습득 ${totalPoints}` : `learned ${totalPoints}`}</span>
+            {unlimited ? (
+              <>
+                <span className="font-semibold text-foreground">∞</span>
+                <span>{locale === "ko" ? "제한 해제" : "unlimited"}</span>
+                <span className="opacity-60">· {locale === "ko" ? `습득 ${totalPoints}` : `learned ${totalPoints}`}</span>
+              </>
+            ) : (
+              <>
+                <span className="font-semibold text-foreground">{Math.max(0, 15 - totalPoints)}</span>
+                <span>{locale === "ko" ? "통찰력 남음" : "insight left"}</span>
+                <span className="opacity-60">· {locale === "ko" ? `습득 ${totalPoints}` : `learned ${totalPoints}`}</span>
+              </>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-0.5 shrink-0">
+          {onToggleUnlimited && (
+            <button
+              onClick={onToggleUnlimited}
+              title={
+                locale === "ko"
+                  ? unlimited
+                    ? "제한 해제 끄기 (정규 규칙으로 복귀)"
+                    : "제한 해제 (통찰력 15·회로 슬롯 캡 무시)"
+                  : unlimited
+                    ? "Disable unlimited mode"
+                    : "Unlimited mode (ignore insight & circuit caps)"
+              }
+              className={cn(
+                "size-8 flex items-center justify-center rounded-md transition-colors touch-manipulation",
+                unlimited
+                  ? "text-amber-500 bg-amber-500/15 hover:bg-amber-500/25"
+                  : "text-muted-foreground hover:text-foreground hover:bg-surface",
+              )}
+            >
+              <InfinityIcon className="size-4" />
+            </button>
+          )}
           {onImport && (
             <button
               onClick={onImport}
@@ -274,6 +310,7 @@ export function SkillTreeView({
           onUnequip={unequip}
           onReset={resetCircuits}
           onViewItem={onViewItem}
+          unlimited={unlimited}
         />
       ) : isWx78 && wx78SubTab === "status" ? (
         <Wx78StatusPanel
