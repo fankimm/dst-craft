@@ -49,14 +49,15 @@ export const scionQuest: Quest = {
     {
       id: "task_substrate_extrapolator_tiles",
       // Challenge Board UI:INSTALL_FMT + STRINGS.NAMES.WAGPUNK_FLOOR_KIT
-      titleKo: "기질 추론기 설치",
-      titleEn: "Install Substrate Extrapolator",
+      // recipes.lua 998: cutstone 1 + wagpunk_bits 1 → numtogive=4. 76 타일 = 19회 제작
+      titleKo: "기질 추론기 설치 및 제작",
+      titleEn: "Install & Craft Substrate Extrapolator",
       icon: "wagpunk_floor_kit.png",
       craftId: "wagpunk_floor_kit",
+      count: 76,
       substeps: [
-        { id: "craft_floor_kit", nameKo: "기질 추론기", nameEn: "Substrate Extrapolator",
-          icon: "wagpunk_floor_kit.png",
-          craftId: "wagpunk_floor_kit" },
+        { id: "tiles_cutstone",     nameKo: "석재",     nameEn: "Cut Stone", icon: "cutstone.png",     qty: 19, craftId: "cutstone" },
+        { id: "tiles_wagpunk_bits", nameKo: "고철더미", nameEn: "Scrap",     icon: "wagpunk_bits.png", qty: 19 },
       ],
     },
     {
