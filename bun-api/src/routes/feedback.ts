@@ -40,13 +40,27 @@ app.post("/", async (c) => {
 });
 
 // GET /feedback/public — public board (hides IP/country, filters hidden)
+// 번역본도 같이 내려줘서 프론트가 사용자 locale에 맞춰 토글.
 app.get("/public", async (c) => {
   const rows = db
     .query<
-      { id: string; message: string; time: string; status: string; reply: string | null },
+      {
+        id: string;
+        message: string;
+        time: string;
+        status: string;
+        reply: string | null;
+        message_translated: string | null;
+        message_lang: string | null;
+        reply_translated: string | null;
+        reply_lang: string | null;
+      },
       []
     >(
-      `SELECT id, message, time, status, reply FROM feedback
+      `SELECT id, message, time, status, reply,
+              message_translated, message_lang,
+              reply_translated, reply_lang
+       FROM feedback
        WHERE hidden = 0 ORDER BY created_at DESC LIMIT 100`,
     )
     .all();
@@ -58,6 +72,10 @@ app.get("/public", async (c) => {
       time: r.time,
       status: r.status,
       reply: r.reply,
+      messageTranslated: r.message_translated,
+      messageLang: r.message_lang,
+      replyTranslated: r.reply_translated,
+      replyLang: r.reply_lang,
     })),
   });
 });
@@ -70,14 +88,34 @@ app.get("/", async (c) => {
   const limit = Math.min(Number(c.req.query("limit") ?? "50"), 500);
   const rows = db
     .query<any, [number]>(
-      `SELECT id, message, time, country, ip, status, reply, hidden FROM feedback
+      `SELECT id, message, time, country, ip, status, reply, hidden,
+              message_translated, message_lang, message_translated_at, message_translated_model,
+              reply_translated, reply_lang, reply_translated_at, reply_translated_model
+       FROM feedback
        ORDER BY created_at DESC LIMIT ?`,
     )
     .all(limit);
 
   c.header("Cache-Control", "no-store");
   return c.json({
-    items: rows.map((r) => ({ ...r, hidden: !!r.hidden })),
+    items: rows.map((r) => ({
+      id: r.id,
+      message: r.message,
+      time: r.time,
+      country: r.country,
+      ip: r.ip,
+      status: r.status,
+      reply: r.reply,
+      hidden: !!r.hidden,
+      messageTranslated: r.message_translated,
+      messageLang: r.message_lang,
+      messageTranslatedAt: r.message_translated_at,
+      messageTranslatedModel: r.message_translated_model,
+      replyTranslated: r.reply_translated,
+      replyLang: r.reply_lang,
+      replyTranslatedAt: r.reply_translated_at,
+      replyTranslatedModel: r.reply_translated_model,
+    })),
   });
 });
 

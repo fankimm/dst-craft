@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { MessageSquare, Copy, Check, Trash2, Eye, EyeOff } from "lucide-react";
+import { Copy, Check, Trash2, Eye, EyeOff, Languages } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { DetailPanel } from "@/components/ui/DetailPanel";
@@ -28,7 +28,30 @@ type BoardItem = {
   ip?: string;
   country?: string;
   hidden?: boolean;
+  // 번역 메타 (KR↔EN). 사용자 locale에 맞춰 자동 선택, 배지 + 원문 토글 제공.
+  messageTranslated?: string | null;
+  messageLang?: string | null;
+  replyTranslated?: string | null;
+  replyLang?: string | null;
 };
+
+// 사용자 locale 기준으로 표시할 텍스트와 "번역됨" 여부를 결정.
+// - 원문 lang이 user locale과 같으면: 원문 그대로 (번역 사용 안 함)
+// - 원문 lang이 다르고 번역이 있으면: 번역 사용 + isTranslated=true
+// - 원문 lang이 다르고 번역이 없으면: 원문 그대로 (배지 없음)
+function pickDisplay(
+  original: string | null | undefined,
+  translated: string | null | undefined,
+  origLang: string | null | undefined,
+  userLocale: Locale,
+): { text: string; isTranslated: boolean; hasAlternate: boolean } {
+  const orig = (original ?? "").trim();
+  if (!orig) return { text: "", isTranslated: false, hasAlternate: false };
+  const trans = (translated ?? "").trim();
+  const sameLang = origLang === userLocale;
+  if (sameLang || !trans) return { text: orig, isTranslated: false, hasAlternate: !!trans };
+  return { text: trans, isTranslated: true, hasAlternate: true };
+}
 
 const STATUS_LABEL_KO: Record<FeedbackStatus, string> = { new: "확인 중", done: "반영됨", hold: "보류", rejected: "미반영" };
 const STATUS_LABEL_EN: Record<FeedbackStatus, string> = { new: "Pending", done: "Done", hold: "Hold", rejected: "Rejected" };
@@ -85,6 +108,16 @@ export function FeedbackBoard({ locale, newItem }: Props) {
   const [savingReply, setSavingReply] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  // "원문 보기"로 토글된 항목들. 키: `${id}:msg` 또는 `${id}:reply`. 기본은 번역본 표시.
+  const [showOriginal, setShowOriginal] = useState<Set<string>>(new Set());
+  const toggleOriginal = useCallback((key: string) => {
+    setShowOriginal((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }, []);
 
   const isDev = process.env.NODE_ENV === "development";
   const showAdmin = isAdmin || isDev;
@@ -213,7 +246,37 @@ export function FeedbackBoard({ locale, newItem }: Props) {
                       {locale === "ko" ? "내 피드백" : "Mine"}
                     </span>
                   )}
-                  <p className="text-sm text-foreground whitespace-pre-wrap break-words">{fb.message}</p>
+                  {(() => {
+                    const msg = pickDisplay(fb.message, fb.messageTranslated, fb.messageLang, locale);
+                    const key = `${fb.id}:msg`;
+                    const showOrig = showOriginal.has(key);
+                    const text = showOrig ? fb.message : msg.text;
+                    const showingTranslated = msg.isTranslated && !showOrig;
+                    return (
+                      <>
+                        <p className="text-sm text-foreground whitespace-pre-wrap break-words">{text}</p>
+                        {msg.hasAlternate && (
+                          <div className="mt-1 flex items-center gap-1.5">
+                            {showingTranslated && (
+                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                                <Languages className="size-2.5" />
+                                {locale === "ko" ? "자동 번역" : "Auto-translated"}
+                              </span>
+                            )}
+                            <button
+                              type="button"
+                              onClick={(e) => { e.stopPropagation(); toggleOriginal(key); }}
+                              className="text-[10px] text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors"
+                            >
+                              {showOrig
+                                ? (locale === "ko" ? "번역 보기" : "View translation")
+                                : (locale === "ko" ? "원문 보기" : "View original")}
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   {fb.hidden && <EyeOff className="size-3 text-muted-foreground" />}
@@ -222,14 +285,40 @@ export function FeedbackBoard({ locale, newItem }: Props) {
                   </span>
                 </div>
               </div>
-              {fb.reply && (
-                <div className="rounded-md bg-surface border border-border/50 px-3 py-2 text-sm">
-                  <span className="text-[10px] font-semibold text-muted-foreground block mb-0.5">
-                    {locale === "ko" ? "개발자 답변" : "Developer Reply"}
-                  </span>
-                  <p className="text-foreground whitespace-pre-wrap">{fb.reply}</p>
-                </div>
-              )}
+              {fb.reply && (() => {
+                const rep = pickDisplay(fb.reply, fb.replyTranslated, fb.replyLang, locale);
+                const key = `${fb.id}:reply`;
+                const showOrig = showOriginal.has(key);
+                const text = showOrig ? fb.reply : rep.text;
+                const showingTranslated = rep.isTranslated && !showOrig;
+                return (
+                  <div className="rounded-md bg-surface border border-border/50 px-3 py-2 text-sm">
+                    <div className="flex items-center justify-between gap-2 mb-0.5">
+                      <span className="text-[10px] font-semibold text-muted-foreground">
+                        {locale === "ko" ? "개발자 답변" : "Developer Reply"}
+                      </span>
+                      {showingTranslated && (
+                        <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                          <Languages className="size-2.5" />
+                          {locale === "ko" ? "자동 번역" : "Auto-translated"}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-foreground whitespace-pre-wrap">{text}</p>
+                    {rep.hasAlternate && (
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); toggleOriginal(key); }}
+                        className="mt-1 text-[10px] text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors"
+                      >
+                        {showOrig
+                          ? (locale === "ko" ? "번역 보기" : "View translation")
+                          : (locale === "ko" ? "원문 보기" : "View original")}
+                      </button>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           ))}
         </div>

@@ -41,9 +41,21 @@ CREATE TABLE IF NOT EXISTS feedback (
   status TEXT NOT NULL DEFAULT 'new',
   reply TEXT,
   hidden INTEGER NOT NULL DEFAULT 0,
-  created_at INTEGER NOT NULL
+  created_at INTEGER NOT NULL,
+  -- 번역 메타 (KR↔EN 양방향). NULL = 미번역. 자동 워커는 후속 이슈에서 추가.
+  message_translated TEXT,
+  message_lang TEXT,
+  message_translated_at INTEGER,
+  message_translated_model TEXT,
+  reply_translated TEXT,
+  reply_lang TEXT,
+  reply_translated_at INTEGER,
+  reply_translated_model TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_feedback_created ON feedback(created_at DESC);
+-- 배치 워커가 미번역 row를 빠르게 찾기 위한 부분 인덱스
+CREATE INDEX IF NOT EXISTS idx_feedback_untranslated
+  ON feedback(created_at) WHERE message_translated_at IS NULL;
 
 CREATE TABLE IF NOT EXISTS supporters (
   name TEXT PRIMARY KEY,

@@ -15,6 +15,32 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.0",
+    date: "2026-05-14",
+    dev: [
+      "feat(feedback): KR↔EN 양방향 번역 인프라 (#31) — `feedback` 테이블에 대칭 컬럼 8개 추가 (message용 4 + reply용 4): `message_translated`, `message_lang`, `message_translated_at`, `message_translated_model` + 동일 패턴의 reply용 4개. `translated_model`로 향후 모델별 품질 비교 가능 (`claude-opus-4-7` / `deepl-v2` / `gpt-5` 등).",
+      "feat(db): `bun-api/src/lib/db.ts`에 멱등 `ensureColumns()` 헬퍼 — `PRAGMA table_info`로 컬럼 존재 체크 후 누락된 것만 `ALTER TABLE ADD COLUMN`. 부트 시 자동 실행, 기존 DB도 무손실 마이그레이션.",
+      "feat(db): 미번역 row 부분 인덱스 `idx_feedback_untranslated ON feedback(created_at) WHERE message_translated_at IS NULL` — 후속 배치 워커 스캔용.",
+      "feat(api): `/feedback/public` 응답에 `messageTranslated`/`messageLang`/`replyTranslated`/`replyLang` 포함. admin GET `/feedback`도 8개 번역 필드 모두 노출 + snake→camel 정규화(기존 `{...r}` spread 패턴 폐기, 응답 shape 일관성).",
+      "feat(frontend): `FeedbackBoard`에 `pickDisplay()` 헬퍼 — 원문 `lang`을 사용자 locale과 비교해 자동 번역본 선택, 동일 lang이면 원문 그대로. 번역본 표시 시 🌐 \"자동 번역 / Auto-translated\" 배지 + \"원문 보기 / View original\" 토글. `showOriginal` Set으로 row+field 단위 상태 관리 (key: `${id}:msg|reply`).",
+      "feat(frontend): admin·public 응답 둘 다 `messageTranslated`(camel) 사용 — `FeedbackItem` 타입을 snake→camel로 통일. reply 카드에도 동일한 배지/토글.",
+      "chore(backfill): `bun-api/scripts/translate-existing-feedback.ts` — 기존 11개 피드백 message + 7개 reply를 Claude Opus 4.7이 직접 양방향 번역 후 DB에 백필. `WHERE *_translated_at IS NULL` 조건으로 멱등(재실행 안전). 모델은 `claude-opus-4-7`로 기록.",
+      "ops(infra): 프로덕션 DB 백업(`~/dstcraft/data/app.db.bak-pre-translate-20260514-001535`) 후 스키마 마이그레이션 + 백필 적용 완료.",
+    ],
+    changes: {
+      ko: [
+        "피드백 보드의 영문 글이 한국어 모드에서 한국어로, 한국어 글이 영어 모드에서 영어로 자동 표시 — 기존 피드백/답변 전부 번역 적용됨.",
+        "번역된 글에는 🌐 \"자동 번역\" 배지가 붙고, \"원문 보기\" 버튼으로 원문 전환 가능. 답변(개발자 답변)에도 동일하게 적용.",
+        "사용자 언어와 같은 글은 원문 그대로 표시 (불필요한 번역 안 함).",
+      ],
+      en: [
+        "Feedback board now auto-translates entries to your interface language — Korean items appear in English in English mode, and vice versa. All existing feedback and replies have been backfilled.",
+        "Translated entries show a 🌐 \"Auto-translated\" badge with a \"View original\" toggle. Developer replies use the same UX.",
+        "Items already in your language are shown as-is (no unnecessary re-translation).",
+      ],
+    },
+  },
+  {
     version: "0.25.0",
     date: "2026-05-13",
     dev: [
