@@ -106,15 +106,15 @@ function QuestSection({
   const sectionRef = useRef<HTMLElement>(null);
   const wasCollapsedRef = useRef(collapsed);
   // 접을 때만 섹션 헤더를 스크롤 컨테이너 상단으로 끌어올린다.
-  // scrollIntoView를 쓰면 외부(탭바 포함) 컨테이너까지 같이 스크롤되는 사이드이펙트가 있어,
-  // 데이터-스크롤-컨테이너에만 명시적으로 scrollTop을 조정.
+  // scrollBy로 부모 컨테이너에만 한정해 스크롤(외부 탭바 영향 X) + smooth로 높이 애니메이션과 동기.
   useEffect(() => {
     if (!wasCollapsedRef.current && collapsed) {
       const container = sectionRef.current?.closest("[data-scroll-container]") as HTMLElement | null;
       if (container && sectionRef.current) {
         const sectionTop = sectionRef.current.getBoundingClientRect().top;
         const containerTop = container.getBoundingClientRect().top;
-        container.scrollTop += sectionTop - containerTop;
+        const delta = sectionTop - containerTop;
+        if (delta !== 0) container.scrollBy({ top: delta, behavior: "smooth" });
       }
     }
     wasCollapsedRef.current = collapsed;
@@ -224,7 +224,13 @@ function QuestSection({
         </div>
       </div>
 
-      {!collapsed && (
+      <div
+        className={cn(
+          "grid transition-[grid-template-rows] duration-200 ease-out",
+          collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]",
+        )}
+      >
+        <div className="overflow-hidden">
         <ul className="divide-y divide-border/60">
           {(() => {
             const doneIds = new Set(quest.steps.filter((s) => isStepDone(quest.id, s)).map((s) => s.id));
@@ -318,27 +324,37 @@ function QuestSection({
                   )}
                 </div>
 
-                {hasSubsteps && expanded && (
-                  <ul className="pl-12 pr-3 pb-2 space-y-1">
-                    {step.substeps!.map((s) => (
-                      <SubstepRow
-                        key={s.id}
-                        substep={s}
-                        locale={locale}
-                        checked={isSubstepDone(quest.id, step.id, s.id)}
-                        onToggle={() => toggleSubstep(quest.id, step, s.id)}
-                        onViewCraftingItem={onViewCraftingItem}
-                        onViewBoss={onViewBoss}
-                      />
-                    ))}
-                  </ul>
+                {hasSubsteps && (
+                  <div
+                    className={cn(
+                      "grid transition-[grid-template-rows] duration-200 ease-out",
+                      expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+                    )}
+                  >
+                    <div className="overflow-hidden">
+                      <ul className="pl-12 pr-3 pb-2 space-y-1">
+                        {step.substeps!.map((s) => (
+                          <SubstepRow
+                            key={s.id}
+                            substep={s}
+                            locale={locale}
+                            checked={isSubstepDone(quest.id, step.id, s.id)}
+                            onToggle={() => toggleSubstep(quest.id, step, s.id)}
+                            onViewCraftingItem={onViewCraftingItem}
+                            onViewBoss={onViewBoss}
+                          />
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 )}
               </li>
             );
             });
           })()}
         </ul>
-      )}
+        </div>
+      </div>
     </section>
   );
 }
