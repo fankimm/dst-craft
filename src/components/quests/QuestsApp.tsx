@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { RotateCcw, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
 import { useQuestState } from "@/hooks/use-quest-state";
-import { quests, type Quest, type QuestStep, type QuestMaterial } from "@/data/quests";
+import { quests, type Quest, type QuestStep, type QuestSubstep } from "@/data/quests";
 import { t, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
@@ -22,8 +22,10 @@ function questTitle(quest: Quest, locale: Locale): string {
 function questSummary(quest: Quest, locale: Locale): string {
   return locale === "ko" ? quest.summaryKo : quest.summaryEn;
 }
+function substepNote(s: QuestSubstep, locale: Locale): string | undefined {
+  return locale === "ko" ? s.noteKo : s.noteEn;
+}
 
-/** icon(game-items 파일명) vs iconPath(/images/... 전체 경로) 통합 해석 */
 function resolveIcon(item: { icon?: string; iconPath?: string }): string | null {
   if (item.iconPath) return assetPath(item.iconPath);
   if (item.icon) return assetPath(`/images/game-items/${item.icon}`);
@@ -87,7 +89,7 @@ type QuestStateApi = ReturnType<typeof useQuestState>;
 
 function QuestSection({ quest, locale, state }: { quest: Quest; locale: Locale; state: QuestStateApi }) {
   const [collapsed, setCollapsed] = useState(false);
-  const { isStepDone, isMaterialDone, toggleStep, toggleMaterial, resetQuest, countStepsDone } = state;
+  const { isStepDone, isSubstepDone, toggleStep, toggleSubstep, resetQuest, countStepsDone } = state;
 
   const checkedCount = countStepsDone(quest);
   const total = quest.steps.length;
@@ -165,7 +167,7 @@ function QuestSection({ quest, locale, state }: { quest: Quest; locale: Locale; 
         <ul className="divide-y divide-border/60">
           {quest.steps.map((step) => {
             const checked = isStepDone(quest.id, step);
-            const hasMaterials = !!step.materials && step.materials.length > 0;
+            const hasSubsteps = !!step.substeps && step.substeps.length > 0;
             const stepIconSrc = resolveIcon(step);
             return (
               <li key={step.id}>
@@ -187,8 +189,8 @@ function QuestSection({ quest, locale, state }: { quest: Quest; locale: Locale; 
                         loading="lazy"
                       />
                       {step.count && step.count > 1 && (
-                        <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[10px] font-bold bg-surface-hover border border-ring text-foreground/80">
-                          ×{step.count}
+                        <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[10px] font-bold bg-surface-hover border border-ring text-foreground/80 tabular-nums">
+                          {step.count}
                         </span>
                       )}
                     </span>
@@ -216,15 +218,15 @@ function QuestSection({ quest, locale, state }: { quest: Quest; locale: Locale; 
                   </span>
                 </button>
 
-                {hasMaterials && (
+                {hasSubsteps && (
                   <ul className="pl-12 pr-3 pb-2 space-y-1">
-                    {step.materials!.map((m) => (
-                      <MaterialRow
-                        key={m.id}
-                        material={m}
+                    {step.substeps!.map((s) => (
+                      <SubstepRow
+                        key={s.id}
+                        substep={s}
                         locale={locale}
-                        checked={isMaterialDone(quest.id, step.id, m.id)}
-                        onToggle={() => toggleMaterial(quest.id, step, m.id)}
+                        checked={isSubstepDone(quest.id, step.id, s.id)}
+                        onToggle={() => toggleSubstep(quest.id, step, s.id)}
                       />
                     ))}
                   </ul>
@@ -238,46 +240,65 @@ function QuestSection({ quest, locale, state }: { quest: Quest; locale: Locale; 
   );
 }
 
-function MaterialRow({
-  material,
+function SubstepRow({
+  substep,
   locale,
   checked,
   onToggle,
 }: {
-  material: QuestMaterial;
+  substep: QuestSubstep;
   locale: Locale;
   checked: boolean;
   onToggle: () => void;
 }) {
-  const iconSrc = resolveIcon(material);
+  const iconSrc = resolveIcon(substep);
+  const note = substepNote(substep, locale);
   return (
     <li>
       <button
         onClick={onToggle}
         className={cn(
-          "w-full flex items-center gap-2 rounded-md px-2 py-1 text-left transition-colors",
+          "w-full flex items-start gap-2 rounded-md px-2 py-1.5 text-left transition-colors",
           "hover:bg-surface/60 focus:bg-surface/60 focus:outline-none",
         )}
       >
-        <Checkbox checked={checked} small />
+        <span className="pt-0.5">
+          <Checkbox checked={checked} small />
+        </span>
         {iconSrc && (
           <img
             src={iconSrc}
             alt=""
-            className={cn("size-5 object-contain shrink-0", checked && "opacity-50")}
+            className={cn("size-5 object-contain shrink-0 mt-0.5", checked && "opacity-50")}
             loading="lazy"
           />
         )}
-        <span
-          className={cn(
-            "flex-1 min-w-0 text-[11px] truncate",
-            checked ? "line-through text-muted-foreground" : "text-foreground/90",
+        <span className="flex-1 min-w-0">
+          <span className="flex items-baseline gap-2">
+            <span
+              className={cn(
+                "flex-1 min-w-0 text-[11px] truncate",
+                checked ? "line-through text-muted-foreground" : "text-foreground/90",
+              )}
+            >
+              {locale === "ko" ? substep.nameKo : substep.nameEn}
+            </span>
+            {substep.qty != null && (
+              <span className={cn("text-[11px] tabular-nums shrink-0", checked ? "text-muted-foreground/60" : "text-muted-foreground")}>
+                {substep.qty}
+              </span>
+            )}
+          </span>
+          {note && (
+            <span
+              className={cn(
+                "block text-[10px] leading-snug mt-0.5",
+                checked ? "text-muted-foreground/60 line-through" : "text-muted-foreground",
+              )}
+            >
+              {note}
+            </span>
           )}
-        >
-          {locale === "ko" ? material.nameKo : material.nameEn}
-        </span>
-        <span className={cn("text-[11px] tabular-nums shrink-0", checked ? "text-muted-foreground/60" : "text-muted-foreground")}>
-          ×{material.qty}
         </span>
       </button>
     </li>

@@ -1,29 +1,34 @@
 /**
- * Challenge Board 모드(workshop 3565356900) 구조를 차용한 인게임 진행 체크리스트.
- *
- * 출처:
- *  - Challenge Board challenge_defs.lua의 ITEMS / INLINE_GROUPS / GROUPS
- *  - Challenge Board locales/ko.po + en.po (UI 텍스트)
- *  - 한글모드 ko.po (workshop 2391246365, STRINGS.NAMES.*)
- *  - 인게임 prefabs (보스 처치 / 게이트 메커니즘 등)
+ * Challenge Board 모드(workshop 3565356900) 구조 + 인게임 prefabs/recipes/components를 합쳐 만든
+ * 인게임 진행 체크리스트 데이터.
  */
 
-export type QuestId = "hermit" | "stalker_atrium" | "alterguardian_phase3" | "alterguardian_phase4_lunarrift";
+export type QuestId =
+  | "hermit"
+  | "stalker_atrium"
+  | "alterguardian_phase3"
+  | "alterguardian_phase4_lunarrift";
 
-export interface QuestMaterial {
-  /** 게임 prefab id (예: "cookiecuttershell") — 디버그/매핑용 */
+/**
+ * 단계 한 뎁스 아래의 sub-checkbox.
+ * 재료(수량 표시)일 수도, 추가 단계(수량 없음, note만)일 수도 있음.
+ * 저장 키: `<questId>:<stepId>:<id>` — id는 변경 금지.
+ */
+export interface QuestSubstep {
   id: string;
   nameKo: string;
   nameEn: string;
-  /** public/images/game-items/<icon> */
   icon?: string;
-  /** icon보다 우선. 전체 경로(예: "/images/bosses/stalker_atrium.png") */
   iconPath?: string;
-  qty: number;
+  /** 수량 (있으면 라벨 우측에 숫자로 표시) */
+  qty?: number;
+  /** 부가 설명 (한국어) — 라벨 아래 한 줄 */
+  noteKo?: string;
+  noteEn?: string;
 }
 
 export interface QuestStep {
-  /** 안정 ID — localStorage 키로 사용, 변경 금지 */
+  /** 안정 ID — 변경 금지 */
   id: string;
   titleKo: string;
   titleEn: string;
@@ -31,17 +36,16 @@ export interface QuestStep {
   descEn?: string;
   icon?: string;
   iconPath?: string;
-  /** Challenge Board total_count — 표시용 ×N */
+  /** 단계 아이콘 오른쪽 아래 숫자 배지 (예: 펄 퀘스트 plant_flowers = 10) */
   count?: number;
-  /** 한 뎁스 아래 sub-checkbox. 모두 체크되면 상위 자동 완료 */
-  materials?: QuestMaterial[];
+  /** 한 뎁스 아래 sub-checkbox 목록 */
+  substeps?: QuestSubstep[];
 }
 
 export interface Quest {
   id: QuestId;
   titleKo: string;
   titleEn: string;
-  /** 탭 헤더 아이콘 — Challenge Board GROUP의 icon_tex 매핑 */
   icon?: string;
   iconPath?: string;
   summaryKo: string;

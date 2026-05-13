@@ -31,21 +31,17 @@ function persistChecks(checks: QuestChecks) {
 function stepKey(questId: QuestId, stepId: string): string {
   return `${questId}:${stepId}`;
 }
-function materialKey(questId: QuestId, stepId: string, materialId: string): string {
-  return `${questId}:${stepId}:${materialId}`;
+function substepKey(questId: QuestId, stepId: string, substepId: string): string {
+  return `${questId}:${stepId}:${substepId}`;
 }
 
 /**
- * 퀘스트 체크박스 상태 영속화 훅.
- *
  * 저장 키:
- *  - 재료가 없는 단계: `<questId>:<stepId>` → true
- *  - 재료가 있는 단계: 각 재료별 `<questId>:<stepId>:<materialId>` → true.
- *    상위 단계는 모든 재료가 체크되면 자동으로 완료 처리(파생 상태).
- *  - 호환성: 기존에 step 키가 true로 저장된 단계가 이번 업데이트로 재료를 갖게 되면,
- *    그 step 키를 신뢰해 "모든 재료 체크" 상태로 간주(추가 마이그레이션 없이 isStepDone에서 처리).
+ *  - 서브스텝이 없는 단계: `<questId>:<stepId>` → true
+ *  - 서브스텝이 있는 단계: 각 서브스텝별 `<questId>:<stepId>:<substepId>` → true.
+ *    상위 단계는 모든 서브스텝이 체크되면 자동으로 완료 처리.
  *
- * questId / stepId / materialId는 데이터 정의에서 절대 변경하지 말 것 (영속 키).
+ * questId / stepId / substepId는 데이터 정의에서 절대 변경하지 말 것.
  */
 export function useQuestState() {
   const [checks, setChecks] = useState<QuestChecks>({});
@@ -58,44 +54,40 @@ export function useQuestState() {
     (questId: QuestId, step: QuestStep): boolean => {
       const explicit = checks[stepKey(questId, step.id)];
       if (explicit) return true;
-      if (step.materials && step.materials.length > 0) {
-        return step.materials.every((m) => !!checks[materialKey(questId, step.id, m.id)]);
+      if (step.substeps && step.substeps.length > 0) {
+        return step.substeps.every((s) => !!checks[substepKey(questId, step.id, s.id)]);
       }
       return false;
     },
     [checks],
   );
 
-  const isMaterialDone = useCallback(
-    (questId: QuestId, stepId: string, materialId: string): boolean => {
-      // 레거시 step 키가 true면 산하 재료도 모두 체크된 것으로 표시
+  const isSubstepDone = useCallback(
+    (questId: QuestId, stepId: string, substepId: string): boolean => {
+      // 레거시 step 키가 true면 산하 서브스텝도 모두 체크된 것으로 표시
       if (checks[stepKey(questId, stepId)]) return true;
-      return !!checks[materialKey(questId, stepId, materialId)];
+      return !!checks[substepKey(questId, stepId, substepId)];
     },
     [checks],
   );
 
-  /** 단계 자체 토글. 재료가 있으면 전부 같이 set/clear, 없으면 step 키만 토글. */
+  /** 단계 자체 토글. 서브스텝이 있으면 일괄 set/clear, 없으면 step 키만 토글. */
   const toggleStep = useCallback((questId: QuestId, step: QuestStep) => {
     setChecks((prev) => {
       const next = { ...prev };
       const sKey = stepKey(questId, step.id);
 
-      if (step.materials && step.materials.length > 0) {
-        // 현재 완료 상태 계산 (레거시 step 키 포함)
+      if (step.substeps && step.substeps.length > 0) {
         const allDone =
           !!prev[sKey] ||
-          step.materials.every((m) => !!prev[materialKey(questId, step.id, m.id)]);
+          step.substeps.every((s) => !!prev[substepKey(questId, step.id, s.id)]);
 
-        // 레거시 키는 항상 제거 (이제부턴 재료 키가 진실의 원천)
         delete next[sKey];
 
         if (allDone) {
-          // 클리어
-          step.materials.forEach((m) => delete next[materialKey(questId, step.id, m.id)]);
+          step.substeps.forEach((s) => delete next[substepKey(questId, step.id, s.id)]);
         } else {
-          // 모두 체크
-          step.materials.forEach((m) => { next[materialKey(questId, step.id, m.id)] = true; });
+          step.substeps.forEach((s) => { next[substepKey(questId, step.id, s.id)] = true; });
         }
       } else {
         if (next[sKey]) delete next[sKey];
@@ -107,18 +99,17 @@ export function useQuestState() {
     });
   }, []);
 
-  /** 개별 재료 토글. */
-  const toggleMaterial = useCallback((questId: QuestId, step: QuestStep, materialId: string) => {
+  /** 개별 서브스텝 토글. */
+  const toggleSubstep = useCallback((questId: QuestId, step: QuestStep, substepId: string) => {
     setChecks((prev) => {
       const next = { ...prev };
       const sKey = stepKey(questId, step.id);
-      const mKey = materialKey(questId, step.id, materialId);
+      const mKey = substepKey(questId, step.id, substepId);
 
-      // 레거시 step 키를 재료 키로 마이그레이션 (이번이 첫 토글이라면)
-      if (prev[sKey] && step.materials) {
+      if (prev[sKey] && step.substeps) {
         delete next[sKey];
-        step.materials.forEach((m) => {
-          next[materialKey(questId, step.id, m.id)] = true;
+        step.substeps.forEach((s) => {
+          next[substepKey(questId, step.id, s.id)] = true;
         });
       }
 
@@ -149,14 +140,12 @@ export function useQuestState() {
     });
   }, []);
 
-  /** 완료된 step 개수 (재료 단계는 모든 재료가 체크돼야 1로 카운트). */
   const countStepsDone = useCallback(
     (quest: Quest): number => quest.steps.filter((s) => isStepDone(quest.id, s)).length,
     [isStepDone],
   );
 
-  /** 전체 체크가 하나라도 있는지 (전체 초기화 버튼 노출 결정) */
   const hasAnyChecked = Object.keys(checks).length > 0;
 
-  return { isStepDone, isMaterialDone, toggleStep, toggleMaterial, resetQuest, resetAll, countStepsDone, hasAnyChecked };
+  return { isStepDone, isSubstepDone, toggleStep, toggleSubstep, resetQuest, resetAll, countStepsDone, hasAnyChecked };
 }
