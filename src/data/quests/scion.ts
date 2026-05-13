@@ -63,20 +63,15 @@ export const scionQuest: Quest = {
     {
       id: "task_gestalt_cage",
       // Challenge Board UI:RESOURCE_GESTALT_CAGE + STRINGS.NAMES.GESTALT
+      // recipes.lua 999: gestalt_cage = thulecitebugnet 1 + wagpunk_bits 2 → 6개 제작 시 잠자리채 6 + 고철더미 12
       titleKo: "게슈탈트 포획 및 설치",
       titleEn: "Capture & Install Gestalt",
       icon: "gestalt_cage.png",
+      craftId: "gestalt_cage",
       count: 6,
       substeps: [
-        { id: "craft_thulecitebugnet", nameKo: "툴레사이트 잠자리채", nameEn: "Thulecite Bug Net",
-          icon: "thulecitebugnet.png",
-          craftId: "thulecitebugnet" },
-        { id: "craft_gestalt_cage", nameKo: "게슈탈트 포획기", nameEn: "Gestalt Cage",
-          icon: "gestalt_cage.png",
-          craftId: "gestalt_cage" },
-        { id: "capture_gestalts", nameKo: "게슈탈트 포획", nameEn: "Gestalt Capture",
-          icon: "gestalt_cage_filled3.png",
-          qty: 6 },
+        { id: "gestalt_thulecitebugnet", nameKo: "툴레사이트 잠자리채", nameEn: "Thulecite Bug Net", icon: "thulecitebugnet.png", qty: 6,  craftId: "thulecitebugnet" },
+        { id: "gestalt_wagpunk_bits",    nameKo: "고철더미",            nameEn: "Scrap",             icon: "wagpunk_bits.png",    qty: 12 },
       ],
     },
     { id: "alterguardian_phase1_lunarrift_gestalt_capture",
