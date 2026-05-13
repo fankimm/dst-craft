@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { RotateCcw, Check, ChevronDown, ChevronUp, Star, ExternalLink } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
 import { useQuestState } from "@/hooks/use-quest-state";
@@ -103,6 +103,16 @@ function QuestSection({
   onViewBoss?: (bossId: string) => void;
 }) {
   const [collapsed, setCollapsed] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const wasCollapsedRef = useRef(collapsed);
+  // 접을 때만 섹션 헤더를 뷰포트 상단으로 끌어올린다. 그러지 않으면 위쪽 콘텐츠가
+  // 줄어든 만큼 아래 섹션들이 위로 밀려 올라가 사용자가 의도하지 않은 위치로 이동.
+  useEffect(() => {
+    if (!wasCollapsedRef.current && collapsed) {
+      sectionRef.current?.scrollIntoView({ block: "start", behavior: "instant" as ScrollBehavior });
+    }
+    wasCollapsedRef.current = collapsed;
+  }, [collapsed]);
   // 서브스텝이 있는 단계는 기본 펼쳐짐. 사용자가 접고/펼치고 토글 가능 (세션 한정).
   const [collapsedSteps, setCollapsedSteps] = useState<Set<string>>(() => new Set());
   const toggleStepExpand = useCallback((stepId: string) => {
@@ -134,7 +144,7 @@ function QuestSection({
   }, [checkedCount, resetQuest, quest.id, locale]);
 
   return (
-    <section className="rounded-lg border border-border bg-surface/40">
+    <section ref={sectionRef} className="rounded-lg border border-border bg-surface/40">
       <div className="sticky top-0 z-10 rounded-t-lg overflow-hidden">
         <header className="flex items-center gap-3 px-3 py-2.5 bg-background/95 backdrop-blur-sm border-b border-border">
           <button
