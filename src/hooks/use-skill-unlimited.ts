@@ -4,29 +4,38 @@ import { useState, useEffect, useCallback } from "react";
 
 const STORAGE_KEY = "dst:skills-unlimited";
 
+function persist(value: boolean) {
+  try {
+    if (value) localStorage.setItem(STORAGE_KEY, "1");
+    else localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
 export function useSkillUnlimited() {
-  const [unlimited, setUnlimited] = useState(false);
+  const [unlimited, setUnlimitedState] = useState(false);
 
   useEffect(() => {
     try {
-      setUnlimited(localStorage.getItem(STORAGE_KEY) === "1");
+      setUnlimitedState(localStorage.getItem(STORAGE_KEY) === "1");
     } catch {
       /* ignore */
     }
   }, []);
 
   const toggle = useCallback(() => {
-    setUnlimited((prev) => {
+    setUnlimitedState((prev) => {
       const next = !prev;
-      try {
-        if (next) localStorage.setItem(STORAGE_KEY, "1");
-        else localStorage.removeItem(STORAGE_KEY);
-      } catch {
-        /* ignore */
-      }
+      persist(next);
       return next;
     });
   }, []);
 
-  return { unlimited, toggle };
+  const setUnlimited = useCallback((value: boolean) => {
+    setUnlimitedState(value);
+    persist(value);
+  }, []);
+
+  return { unlimited, toggle, setUnlimited };
 }
