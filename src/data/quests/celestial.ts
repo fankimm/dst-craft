@@ -26,15 +26,25 @@ export const celestialQuest: Quest = {
     { id: "collection_scrap",       titleKo: "고철더미",      titleEn: "Scrap",               icon: "wagpunk_bits.png",        count: 8  },
     { id: "moonstorm_static_item",  titleKo: "억제된 정전기", titleEn: "Restrained Static",   icon: "moonstorm_static_item.png" },
     {
-      id: "task_moon_device",
-      titleKo: "달 공명추출기 설치",
-      titleEn: "Install Lunar Siphonator",
+      id: "craft_moon_device",
+      titleKo: "달 공명추출기 제작",
+      titleEn: "Craft Lunar Siphonator",
       icon: "moon_device_construction1.png",
       craftId: "moon_device_construction1",
+      // recipes.lua 583: Recipe2("moon_device_construction1", wagpunk_bits 4 + moonstorm_spark 5 + transistor 2)
       substeps: [
-        { id: "craft_construction1", nameKo: "달 공명추출기 (1단계)", nameEn: "Lunar Siphonator (Stage 1)",
-          icon: "moon_device_construction1.png",
-          craftId: "moon_device_construction1" },
+        { id: "craft_mat_wagpunk_bits",    nameKo: "고철더미",  nameEn: "Scrap",      icon: "wagpunk_bits.png",    qty: 4 },
+        { id: "craft_mat_moonstorm_spark", nameKo: "달빛",      nameEn: "Moongleam",  icon: "moonstorm_spark.png", qty: 5 },
+        { id: "craft_mat_transistor",      nameKo: "전기 장치", nameEn: "Electrical Doodad", icon: "transistor.png", qty: 2, craftId: "transistor" },
+      ],
+    },
+    {
+      id: "upgrade_moon_device",
+      titleKo: "달 공명추출기 업그레이드",
+      titleEn: "Upgrade Lunar Siphonator",
+      icon: "moon_device_construction1.png",
+      // recipes.lua 1306·1307: 단계별 충전 자재
+      substeps: [
         { id: "fill_construction1", nameKo: "1단계 자재", nameEn: "Stage 1 materials",
           icon: "wagpunk_bits.png",
           noteKo: "wagpunk_bits 4 + moonstorm_spark 10 + moonglass_charged 10",
@@ -45,8 +55,5 @@ export const celestialQuest: Quest = {
           noteEn: "moonstorm_static_item 1 + moonglass_charged 20 + moonrockseed 1" },
       ],
     },
-    { id: "alterguardian_phase3", titleKo: "천상의 대변자 처치", titleEn: "Defeat the Celestial Champion",
-      iconPath: "/images/bosses/alterguardian_phase3.png",
-      bossId: "alterguardian_phase3" },
   ],
 };
