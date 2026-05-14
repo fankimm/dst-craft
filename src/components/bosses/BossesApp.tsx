@@ -25,6 +25,7 @@ import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { SortDropdown } from "@/components/ui/SortDropdown";
 import { FavClickBadge } from "@/components/ui/FavClickBadge";
+import { CategoryCard } from "@/components/ui/CategoryCard";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -354,60 +355,25 @@ export function BossesApp({
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
           <div className="flex flex-col min-h-full">
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-              {/* Favorites tile */}
-              <button
-                className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+              <CategoryCard
+                imageSrc={assetPath("/images/ui/health.png")}
+                label={t(resolvedLocale, "favorites")}
+                badgeCount={bossFavCount}
                 onClick={() => handleSelectCategory("favorites")}
-              >
-                <div className="relative flex items-center justify-center size-12 sm:size-14">
-                  <img
-                    src={assetPath("/images/ui/health.png")}
-                    alt=""
-                    className="size-10 sm:size-12 object-contain"
-                  />
-                  {bossFavCount > 0 && (
-                    <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80">
-                      {bossFavCount}
-                    </span>
-                  )}
-                </div>
-                <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
-                  {t(resolvedLocale, "favorites")}
-                </span>
-              </button>
-              {/* Recent tile */}
-              <button
-                className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+              />
+              <CategoryCard
+                imageSrc={assetPath("/images/game-items/pocketwatch_warp.png")}
+                label={t(resolvedLocale, "recent")}
+                badgeCount={recentIds.length}
                 onClick={() => handleSelectCategory("recent")}
-              >
-                <div className="relative flex items-center justify-center size-12 sm:size-14">
-                  <img src={assetPath("/images/game-items/pocketwatch_warp.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
-                  {recentIds.length > 0 && (
-                    <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80">
-                      {recentIds.length}
-                    </span>
-                  )}
-                </div>
-                <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
-                  {t(resolvedLocale, "recent")}
-                </span>
-              </button>
+              />
               {bossCategories.map((cat) => (
-                <button
+                <CategoryCard
                   key={cat.id}
-                  className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+                  imageSrc={assetPath(cat.id === "all" ? ALL_CATEGORY_IMAGE : categoryImage(cat.id))}
+                  label={categoryLabel(cat.id, resolvedLocale)}
                   onClick={() => handleSelectCategory(cat.id)}
-                >
-                  <img
-                    src={assetPath(cat.id === "all" ? ALL_CATEGORY_IMAGE : categoryImage(cat.id))}
-                    alt=""
-                    className="size-12 sm:size-14 object-contain"
-                    draggable={false}
-                  />
-                  <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
-                    {categoryLabel(cat.id, resolvedLocale)}
-                  </span>
-                </button>
+                />
               ))}
             </div>
             <Footer />
