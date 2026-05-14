@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.dstcraft.goaccess-bots</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/fankimm/works/dst-craft/bun-api/infra/goaccess-bots.sh</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <!-- 1시간(3600초)마다 실행. 봇 트래픽은 실시간일 필요 없음. -->
+  <key>StartInterval</key>
+  <integer>3600</integer>
+
+  <key>StandardOutPath</key>
+  <string>/Users/fankimm/dstcraft/logs/goaccess-bots.out.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/fankimm/dstcraft/logs/goaccess-bots.err.log</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>

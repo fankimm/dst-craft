@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono, type Context } from "hono";
 import {
   db,
   nowSec,
@@ -9,13 +9,15 @@ import {
   countUvExcludingCountry,
 } from "../lib/db";
 import { verifyJWT } from "../lib/jwt";
-import { today, isMobile, parseOS, extractIp, extractCountry } from "../lib/util";
+import { today, dateKey, monthKey, isMobile, parseOS, extractIp, extractCountry } from "../lib/util";
 import { checkRateLimit } from "../lib/rate-limit";
 
 const app = new Hono();
 
-// POST /track — page view
-app.post("/track", async (c) => {
+// POST /track (legacy) / POST /_t — page view
+// 두 경로 모두 동일 핸들러. /_t는 광고차단 필터(EasyPrivacy/uBlock 등) 회피용 별칭.
+// 기존 SW가 캐시한 클라이언트 호환을 위해 /track도 유지.
+const trackHandler = async (c: Context) => {
   const ip = extractIp(c);
   if (checkRateLimit(`rl:track:${ip}`, 30, 60)) {
     return c.json({ error: "Too many requests" }, 429);
@@ -84,7 +86,10 @@ app.post("/track", async (c) => {
   ).run(ip, countryCode, ua, device, os, new Date().toISOString());
 
   return c.json({ ok: true });
-});
+};
+
+app.post("/track", trackHandler);
+app.post("/_t", trackHandler);
 
 // POST /event
 app.post("/event", async (c) => {
@@ -226,17 +231,9 @@ app.get("/stats", async (c) => {
   const date = today();
   const daysParam = Math.min(Math.max(parseInt(c.req.query("days") ?? "7", 10) || 7, 1), 365);
   const dates: string[] = [];
-  for (let i = 0; i < daysParam; i++) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    dates.push(d.toISOString().slice(0, 10));
-  }
+  for (let i = 0; i < daysParam; i++) dates.push(dateKey(i));
   const months: string[] = [];
-  for (let i = 0; i < 24; i++) {
-    const d = new Date();
-    d.setMonth(d.getMonth() - i);
-    months.push(d.toISOString().slice(0, 7));
-  }
+  for (let i = 0; i < 24; i++) months.push(monthKey(i));
 
   const excludeCountry = c.req.query("excludeCountry") ?? "";
 

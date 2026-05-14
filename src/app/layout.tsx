@@ -246,7 +246,7 @@ const trackingScript = `
 (function(){
   try {
     var h = location.hostname;
-    var url = h.indexOf('dstcraft.com') !== -1 ? '/api/track' : ${JSON.stringify(ANALYTICS_WORKER ? ANALYTICS_WORKER + "/track" : "")};
+    var url = h.indexOf('dstcraft.com') !== -1 ? '/api/_t' : ${JSON.stringify(ANALYTICS_WORKER ? ANALYTICS_WORKER + "/_t" : "")};
     var eUrl = h.indexOf('dstcraft.com') !== -1 ? '/api/event' : ${JSON.stringify(ANALYTICS_WORKER ? ANALYTICS_WORKER + "/event" : "")};
     if (!url) return;
     if (sessionStorage.getItem('dst:tracked')) return;
