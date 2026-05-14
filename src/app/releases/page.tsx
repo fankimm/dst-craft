@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.3",
+    date: "2026-05-14",
+    dev: [
+      "feat(analytics): 통계 정확도 개선 — daily UV/PV 키를 KST(Asia/Seoul) 기준으로 통일 (#34). `bun-api/src/lib/util.ts`에 `dateKey(daysAgo)` / `monthKey(monthsAgo)` 헬퍼 추가, 기존 `today()`도 KST 기반으로 재작성. `analytics.ts`의 stats 응답 dates/months 생성 루프도 헬퍼로 교체. 이전엔 `toISOString()` UTC라 한국 사용자 자정~오전9시 활동이 다른 날짜 버킷으로 흘러가 daily 그래프가 새던 문제 해결.",
+      "feat(analytics): `/api/_t` 신규 트래킹 엔드포인트 추가, 기존 `/api/track`과 동일 핸들러 공유. `EasyPrivacy`/`uBlock Origin`/`Brave shields` 등 광고차단 필터가 `/track` 키워드를 차단해 클라이언트 fetch 자체가 실패하던 케이스 회피. SW 캐시 호환을 위해 기존 `/api/track`도 유지.",
+      "feat(frontend): `src/app/layout.tsx` 인라인 트래킹 스크립트 + `src/lib/analytics.ts`의 `trackVisit`이 `/api/_t` 호출.",
+      "feat(infra): 봇/크롤러 트래픽 전용 GoAccess 대시보드 추가 — `bun-api/infra/goaccess-bots.sh`(`--crawlers-only` 플래그) + `com.dstcraft.goaccess-bots.plist`(launchd, `StartInterval=3600`). `~/dstcraft/bots.html` 1시간 주기 갱신, 같은 SimpleHTTPServer가 `:7891/bots.html`로 서빙. 사람/봇 트래픽 분리 가시화.",
+      "docs(mistakes): UTC 기준 일별 키의 시간대 누락 + 트래킹 경로명 광고차단 차단 두 교훈 기록.",
+    ],
+    changes: {
+      ko: [
+        "통계 페이지 일별 그래프가 한국 시간(KST) 기준으로 정확히 분류됨 — 이전엔 자정~오전 9시 활동이 전날로 빠지던 작은 새는 구간이 있었음.",
+      ],
+      en: [
+        "Stats page daily charts now bucket activity by Korea Standard Time (KST) — previously midnight–9AM activity was leaking into the previous day's bucket.",
+      ],
+    },
+  },
+  {
     version: "0.26.2",
     date: "2026-05-14",
     dev: [

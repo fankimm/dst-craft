@@ -45,7 +45,8 @@ export interface AnalyticsData {
 
 /** Track a page visit — call once on app load */
 export async function trackVisit(skipTracking?: boolean) {
-  const url = analyticsUrl("/track");
+  // /_t는 광고차단 필터(EasyPrivacy/uBlock 등)에 잘 안 걸리는 별칭. 서버 라우트는 /track과 동일.
+  const url = analyticsUrl("/_t");
   if (!url || skipTracking) return;
 
   if (sessionStorage.getItem("dst:tracked")) return;

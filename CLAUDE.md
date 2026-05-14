@@ -134,6 +134,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `bun-api/infra/nginx-dstcraft-common.conf` — Nginx 공통 룰 (캐시, 프록시, 정규화)
 - `bun-api/infra/com.dstcraft.api.plist` — API 서버 launchd 에이전트
 - `bun-api/infra/com.dstcraft.backup.plist` — DB 백업 launchd 에이전트
+- `bun-api/infra/com.dstcraft.goaccess-bots.plist` + `goaccess-bots.sh` — 봇 전용 GoAccess 대시보드 (1시간마다 `~/dstcraft/bots.html` 생성, `:7891/bots.html`로 접근)
 - `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta)
 - `.github/workflows/deploy-beta.yml` — GitHub Actions 배포 워크플로우 (self-hosted runner, main+beta)
 - `.github/workflows/deploy.yml` — GitHub Pages 배포 (레거시, 미사용)
