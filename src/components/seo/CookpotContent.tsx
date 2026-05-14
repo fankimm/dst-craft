@@ -4,6 +4,7 @@ import { ko } from "@/data/locales/ko";
 import { canonicalForFood } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { JsonLd } from "./JsonLd";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -76,7 +77,7 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={jsonLd} />
 
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">

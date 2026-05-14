@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 import { APP_VERSION } from "@/lib/version";
 import iosSplashDevices from "@/lib/ios-splash-devices.json";
+import { JsonLd } from "@/components/seo/JsonLd";
 import "./globals.css";
 
 const inter = Inter({
@@ -307,33 +308,30 @@ export default function RootLayout({
             href={`/icons/splash/splash-${d.h}x${d.w}${ICON_SUFFIX}.png?v=${APP_VERSION}`}
           />,
         ])}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              name: "Don't Craft Without Recipes",
-              alternateName: "DST Crafting & Cooking Guide",
-              url: SITE_URL,
-              description:
-                "Complete Don't Starve Together crafting & cooking guide with skill tree simulator. Search all crafting recipes, crock pot recipes, skill trees, materials, stations, and character-specific items.",
-              applicationCategory: "GameApplication",
-              operatingSystem: "All",
-              offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-              inLanguage: ["en", "ko", "ja", "zh-CN", "zh-TW", "fr", "de", "it", "pl", "pt-BR", "ru", "es"],
-              availableLanguage: [
-                { "@type": "Language", name: "English", alternateName: "en" },
-                { "@type": "Language", name: "Korean", alternateName: "ko" },
-                { "@type": "Language", name: "Japanese", alternateName: "ja" },
-                { "@type": "Language", name: "Chinese (Simplified)", alternateName: "zh-CN" },
-                { "@type": "Language", name: "Chinese (Traditional)", alternateName: "zh-TW" },
-                { "@type": "Language", name: "French", alternateName: "fr" },
-                { "@type": "Language", name: "German", alternateName: "de" },
-                { "@type": "Language", name: "Spanish", alternateName: "es" },
-                { "@type": "Language", name: "Russian", alternateName: "ru" },
-              ],
-            }),
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "Don't Craft Without Recipes",
+            alternateName: "DST Crafting & Cooking Guide",
+            url: SITE_URL,
+            description:
+              "Complete Don't Starve Together crafting & cooking guide with skill tree simulator. Search all crafting recipes, crock pot recipes, skill trees, materials, stations, and character-specific items.",
+            applicationCategory: "GameApplication",
+            operatingSystem: "All",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            inLanguage: ["en", "ko", "ja", "zh-CN", "zh-TW", "fr", "de", "it", "pl", "pt-BR", "ru", "es"],
+            availableLanguage: [
+              { "@type": "Language", name: "English", alternateName: "en" },
+              { "@type": "Language", name: "Korean", alternateName: "ko" },
+              { "@type": "Language", name: "Japanese", alternateName: "ja" },
+              { "@type": "Language", name: "Chinese (Simplified)", alternateName: "zh-CN" },
+              { "@type": "Language", name: "Chinese (Traditional)", alternateName: "zh-TW" },
+              { "@type": "Language", name: "French", alternateName: "fr" },
+              { "@type": "Language", name: "German", alternateName: "de" },
+              { "@type": "Language", name: "Spanish", alternateName: "es" },
+              { "@type": "Language", name: "Russian", alternateName: "ru" },
+            ],
           }}
         />
       </head>

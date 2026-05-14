@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/AppShell";
 import { SeoFooterLinks } from "@/components/SeoFooterLinks";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -27,10 +28,7 @@ const faqJsonLd = {
 export default function Home() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <JsonLd data={faqJsonLd} />
       <AppShell />
       <SeoFooterLinks />
     </>

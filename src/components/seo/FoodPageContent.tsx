@@ -6,6 +6,7 @@ import { canonicalForFood, resolveFoodSlug } from "@/lib/slug";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { JsonLd } from "./JsonLd";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -80,8 +81,23 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
       url: SITE_URL,
     },
     cookTime: `PT${Math.round(recipe.cookTime * 60)}S`,
+    prepTime: "PT0S",
+    totalTime: `PT${Math.round(recipe.cookTime * 60)}S`,
+    recipeYield: lang === "ko" ? "1인분" : "1 serving",
     recipeCategory: L[foodTypeKey[recipe.foodType]]?.[lang] ?? recipe.foodType,
+    recipeCuisine: "Don't Starve Together",
     recipeIngredient: ingredientList,
+    recipeInstructions: lang === "ko"
+      ? [
+          { "@type": "HowToStep", text: `${stationLabel}에 다음 재료를 넣습니다: ${ingredientList.join(", ")}` },
+          { "@type": "HowToStep", text: `${stationLabel}을 작동시키고 ${Math.round(recipe.cookTime * 60)}초간 조리합니다.` },
+          { "@type": "HowToStep", text: `${displayName} 완성. 효과: 체력 ${recipe.health}, 허기 ${recipe.hunger}, 정신력 ${recipe.sanity}.` },
+        ]
+      : [
+          { "@type": "HowToStep", text: `Add to the ${stationLabel}: ${ingredientList.join(", ")}` },
+          { "@type": "HowToStep", text: `Activate the ${stationLabel} and cook for ${Math.round(recipe.cookTime * 60)} seconds.` },
+          { "@type": "HowToStep", text: `${displayName} is ready. Effects: Health ${recipe.health}, Hunger ${recipe.hunger}, Sanity ${recipe.sanity}.` },
+        ],
     keywords: [
       "Don't Starve Together",
       "DST",
@@ -106,14 +122,8 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
-      />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={faqLd} />
 
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
