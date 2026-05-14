@@ -16,8 +16,12 @@ TMP="${OUT}.new.html"
 # --no-progress: 인터랙티브 진행률 출력 억제 (launchd 환경)
 # --real-os: OS 정확도 향상
 # 회전된 access.log.* 도 함께 분석하려면 인자 더 추가.
+# nginx access.log는 COMBINED 변형이라 date/time 포맷을 명시해야 함.
+# 기존 live.html GoAccess 프로세스와 동일한 플래그 (생략하면 "Token doesn't match specifier '%d'" 에러).
 goaccess "$LOG" \
   --log-format=COMBINED \
+  --date-format=%d/%b/%Y \
+  --time-format=%H:%M:%S \
   --crawlers-only \
   --real-os \
   --no-progress \
