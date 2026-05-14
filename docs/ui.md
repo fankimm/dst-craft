@@ -186,6 +186,13 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **용도**: 메타 정보 표시 — 스테이션, 카테고리, 캐릭터, 음식유형, 스킬, 효과 등
 - **구조**: 아이콘(16×16) + 라벨 텍스트, 둥근 pill 형태 (`rounded-full`)
 
+### CategoryCard (`src/components/ui/CategoryCard.tsx`)
+- **용도**: 카테고리 그리드 타일 (아이콘 + 라벨, 즐겨찾기/최근조회는 우하단 카운트 뱃지)
+- **사용처**: CraftingApp(CategoryGrid), CookingApp, BossesApp
+- **레이아웃 규칙**: 아이콘 영역 size-12 sm:size-14 고정 + 라벨 영역 `min-h-[2lh]` 고정 → 라벨이 1줄이든 2줄이든 모든 카드의 카드 높이 / 아이콘 수직 위치가 동일 (인게임 라벨이 단일 진실 공급원이라 텍스트 줄 수가 가변)
+- **Props**: `imageSrc`, `imageAlt?`, `label`, `badgeCount?`, `onClick`
+- **badge 동작**: `badgeCount === undefined`면 안쪽 이미지 크기를 size-12/14로 확장(뱃지 자리 없이 가득). 정의됐고 > 0이면 우하단에 카운트 뱃지
+
 ### ItemSlot (`src/components/ui/ItemSlot.tsx`)
 - **용도**: 아이템/재료를 아이콘 박스 + 라벨로 표시
 - **구조**: 40×40 아이콘 박스(border + bg-surface) + 하단 라벨(11px) + 뱃지(수량/확률)

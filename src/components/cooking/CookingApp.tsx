@@ -20,6 +20,7 @@ import { Footer } from "../crafting/Footer";
 import { ItemSlot } from "../ui/ItemSlot";
 import { StatBox } from "../ui/StatBox";
 import { TagChip } from "../ui/TagChip";
+import { CategoryCard } from "../ui/CategoryCard";
 import { CookingSearchBar } from "./CookingSearchBar";
 import { useAuth } from "@/hooks/use-auth";
 import { ViewCount } from "@/components/ui/ViewCount";
@@ -355,60 +356,26 @@ export function CookingApp({
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
           <div className="flex flex-col min-h-full">
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-              {/* Favorites tile */}
-              <button
-                className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+              <CategoryCard
+                imageSrc={assetPath("/images/ui/health.png")}
+                label={t(resolvedLocale, "favorites")}
+                badgeCount={cookingFavCount}
                 onClick={() => handleSelectCategory("favorites")}
-              >
-                <div className="relative flex items-center justify-center size-12 sm:size-14">
-                  <img
-                    src={assetPath("/images/ui/health.png")}
-                    alt=""
-                    className="size-10 sm:size-12 object-contain"
-                  />
-                  {cookingFavCount > 0 && (
-                    <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80">
-                      {cookingFavCount}
-                    </span>
-                  )}
-                </div>
-                <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
-                  {t(resolvedLocale, "favorites")}
-                </span>
-              </button>
-              {/* Recent tile */}
-              <button
-                className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+              />
+              <CategoryCard
+                imageSrc={assetPath("/images/game-items/pocketwatch_warp.png")}
+                label={t(resolvedLocale, "recent")}
+                badgeCount={recentIds.length}
                 onClick={() => handleSelectCategory("recent" as CookingCategoryId)}
-              >
-                <div className="relative flex items-center justify-center size-12 sm:size-14">
-                  <img src={assetPath("/images/game-items/pocketwatch_warp.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
-                  {recentIds.length > 0 && (
-                    <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80">
-                      {recentIds.length}
-                    </span>
-                  )}
-                </div>
-                <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
-                  {t(resolvedLocale, "recent")}
-                </span>
-              </button>
+              />
               {cookingCategories.map((cat) => (
-                <button
+                <CategoryCard
                   key={cat.id}
-                  className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
+                  imageSrc={assetPath(`/images/${cat.image}`)}
+                  imageAlt={t(resolvedLocale, cat.labelKey)}
+                  label={t(resolvedLocale, cat.labelKey)}
                   onClick={() => handleSelectCategory(cat.id)}
-                >
-                  <img
-                    src={assetPath(`/images/${cat.image}`)}
-                    alt={t(resolvedLocale, cat.labelKey)}
-                    className="size-12 sm:size-14 object-contain"
-                    draggable={false}
-                  />
-                  <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight">
-                    {t(resolvedLocale, cat.labelKey)}
-                  </span>
-                </button>
+                />
               ))}
             </div>
             <Footer />
