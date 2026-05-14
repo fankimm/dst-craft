@@ -7,6 +7,10 @@
 
 set -euo pipefail
 
+# strptime의 %b(약어 월명)가 ko_KR 로캘에서 영문 월명(May 등)을 거부 → C 로캘 강제.
+# 셸/launchd 환경에 LANG이 무엇이 들어있어도 안전.
+export LC_ALL=C
+
 LOG=/usr/local/var/log/nginx/access.log
 OUT=/Users/fankimm/dstcraft/bots.html
 # GoAccess는 -o 인자 파일명의 마지막 점 뒤를 확장자로 인식해 .csv/.json/.html만 허용.
