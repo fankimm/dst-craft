@@ -9,7 +9,9 @@ set -euo pipefail
 
 LOG=/usr/local/var/log/nginx/access.log
 OUT=/Users/fankimm/dstcraft/bots.html
-TMP=$(mktemp -t bots.html.XXXXXX)
+# GoAccess는 -o 인자 파일명의 마지막 점 뒤를 확장자로 인식해 .csv/.json/.html만 허용.
+# mktemp의 .XXXXXX suffix를 그대로 두면 거부되므로 같은 디렉터리에 .new.html로 쓰고 atomic mv.
+TMP="${OUT}.new.html"
 
 # --no-progress: 인터랙티브 진행률 출력 억제 (launchd 환경)
 # --real-os: OS 정확도 향상
