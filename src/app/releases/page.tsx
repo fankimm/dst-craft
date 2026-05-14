@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.1",
+    date: "2026-05-14",
+    dev: [
+      "feat(bosses): 보스탭 카테고리 선택과 보스 상세 패널을 브라우저 history에 푸시 (#32). 뒤로가기 시 패널 닫기 → 카테고리 목록 → 보스 홈 → 진입 직전 탭 순서로 단계별 복귀.",
+      "feat(hooks): `src/hooks/use-bosses-state.ts` 신규 — `?cat=<id>` / `?boss=<id>` URL 파라미터 단일 진실 공급원. `selectCategory`(push, value=null이면 replace로 cat 제거), `selectBoss`(open=push, close=back if _appNav). `popstate` + `pageshow`(bfcache) 리스너로 양방향 동기화. `syncFromUrl()`은 AppShell이 외부에서 URL을 푸시한 직후 로컬 state 재동기화용.",
+      "refactor(bosses): `BossesApp`의 `selectedCategory`/`selectedBoss` useState를 hook으로 이관. `selectedBoss`는 `selectedBossId`에서 `bosses.find()`로 hydrate. `pendingBossId`/`pendingLootItemId` effect는 직접 setter 호출 대신 `syncFromUrl()`로 통합.",
+      "fix(bosses): `('favorites' as BossCategoryId)` 캐스팅 제거 — hook의 `BossesCategoryValue` 타입(`BossCategoryId | \"favorites\" | \"recent\"`)이 pseudo-category까지 포함.",
+    ],
+    changes: {
+      ko: [
+        "보스탭에서 카테고리(예: 시즌보스)를 선택하거나 보스 상세 패널을 연 뒤 브라우저 뒤로가기를 누르면 한 단계씩 복귀 — 패널 닫기 → 카테고리 목록 → 보스 홈 → 직전 탭. 기존엔 보스탭에서 뒤로가기를 누르면 패널/카테고리를 건너뛰고 곧장 이전 탭으로 빠지던 동작이 보정됨.",
+        "보스 카테고리와 상세 패널이 URL에 반영 — 새로고침이나 URL 공유 시 같은 화면 복원.",
+      ],
+      en: [
+        "Browser back now steps through Boss tab views — open panel → category list → boss home → previous tab. Previously, back would skip categories and panels and jump straight to the prior tab.",
+        "Boss category and detail panel are reflected in the URL — refresh and link sharing restore the same view.",
+      ],
+    },
+  },
+  {
     version: "0.26.0",
     date: "2026-05-14",
     dev: [

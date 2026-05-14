@@ -4,6 +4,7 @@ import React, { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
+import { useBossesState, type BossesCategoryValue } from "@/hooks/use-bosses-state";
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
 import { useSettings } from "@/hooks/use-settings";
@@ -132,8 +133,11 @@ export function BossesApp({
     [favorites],
   );
 
-  const [selectedCategory, setSelectedCategory] = useState<BossCategoryId | null>(null);
-  const [selectedBoss, setSelectedBoss] = useState<Boss | null>(null);
+  const { selectedCategory, selectedBossId, selectCategory, selectBoss, syncFromUrl } = useBossesState();
+  const selectedBoss = useMemo(
+    () => (selectedBossId ? bosses.find((b) => b.id === selectedBossId) ?? null : null),
+    [selectedBossId],
+  );
   const [sortByPopular, setSortByPopular] = useState(false);
 
   // Loot search with tags
@@ -148,14 +152,14 @@ export function BossesApp({
     if (lootItem) {
       const label = resolvedLocale === "ko" ? lootItem.nameKo : lootItem.nameEn;
       setLootTags([{ itemId: lootItem.id, label, image: lootItem.image.replace(/^\/images\//, "") }]);
-      setSelectedCategory(null);
     } else {
       // Blueprint not found in boss loot — search by item name as fallback
       setLootInput(pendingLootItemId.replaceAll("_", " "));
-      setSelectedCategory(null);
     }
+    // AppShell already pushed ?tab=bosses (no cat) — re-sync local state from URL
+    syncFromUrl();
     onClearPendingLoot?.();
-  }, [pendingLootItemId, onClearPendingLoot, resolvedLocale]);
+  }, [pendingLootItemId, onClearPendingLoot, resolvedLocale, syncFromUrl]);
 
   const lootSuggestions = useMemo(
     () => getLootSuggestions(lootInput, resolvedLocale),
@@ -189,37 +193,26 @@ export function BossesApp({
   const { panelItem: panelBoss, panelOpen } = useDetailPanel(selectedBoss);
 
   const handleGoHome = useCallback(() => {
-    setSelectedCategory(null);
-    setSelectedBoss(null);
+    selectCategory(null);
     setLootInput("");
     setLootTags([]);
-  }, []);
+  }, [selectCategory]);
 
-  // URL param deep link: ?tab=bosses&boss={id}
+  // Initial deep link: track recent for ?boss={id} mount.
+  // Hook already hydrates selectedBossId from URL; we only need to log "recent" once.
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const bossId = params.get("boss");
-    if (bossId) {
-      const boss = bosses.find((b) => b.id === bossId);
-      if (boss) {
-        setSelectedBoss(boss);
-        addRecent(boss.id);
-      }
-    }
+    if (selectedBossId) addRecent(selectedBossId);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // External jump: quest tab → boss detail
+  // External jump: quest tab → boss detail.
+  // AppShell already pushed ?tab=bosses&boss=<id> — re-sync local state from URL.
   useEffect(() => {
     if (!pendingBossId) return;
-    const boss = bosses.find((b) => b.id === pendingBossId);
-    if (boss) {
-      setSelectedCategory(null);
-      setSelectedBoss(boss);
-      addRecent(boss.id);
-    }
+    syncFromUrl();
+    addRecent(pendingBossId);
     onClearPendingBoss?.();
-  }, [pendingBossId, onClearPendingBoss, addRecent]);
+  }, [pendingBossId, onClearPendingBoss, addRecent, syncFromUrl]);
 
   // Re-tap active tab → go home
   useEffect(() => {
@@ -232,22 +225,22 @@ export function BossesApp({
     document.querySelector("[data-scroll-container]")?.scrollTo(0, 0);
   }, [selectedCategory]);
 
-  const handleSelectCategory = useCallback((id: BossCategoryId) => {
-    setSelectedCategory(id);
-  }, []);
+  const handleSelectCategory = useCallback((id: BossesCategoryValue) => {
+    selectCategory(id);
+  }, [selectCategory]);
 
   const handleClosePanel = useCallback(() => {
-    setSelectedBoss(null);
+    selectBoss(null);
     onPanelClose?.();
-  }, [onPanelClose]);
+  }, [onPanelClose, selectBoss]);
 
   const filteredBosses = useMemo(() => {
     let result: Boss[];
     if (!selectedCategory || selectedCategory === "all") {
       result = bosses;
-    } else if (selectedCategory === ("favorites" as BossCategoryId)) {
+    } else if (selectedCategory === "favorites") {
       result = bosses.filter((b) => favorites.has(b.id));
-    } else if (selectedCategory === ("recent" as BossCategoryId)) {
+    } else if (selectedCategory === "recent") {
       return recentIds
         .map((id) => bosses.find((b) => b.id === id))
         .filter((b): b is Boss => !!b);
@@ -264,7 +257,7 @@ export function BossesApp({
     <DetailPanel
       open={panelOpen}
       onClose={handleClosePanel}
-      onBack={externalBackLabel && onExternalBack ? () => { setSelectedBoss(null); onExternalBack(); } : undefined}
+      onBack={externalBackLabel && onExternalBack ? () => { selectBoss(null); onExternalBack(); } : undefined}
       backLabel={externalBackLabel ?? undefined}
     >
       <BossDetail boss={panelBoss} locale={resolvedLocale} onViewCraftingItem={onViewCraftingItem} clicks={getClicks(`boss:${panelBoss.id}`)} isFav={isFavorite(panelBoss.id)} onToggleFav={() => toggleFavorite(panelBoss.id)} />
@@ -326,7 +319,7 @@ export function BossesApp({
                     key={boss.id}
                     boss={boss}
                     locale={resolvedLocale}
-                    onClick={() => { setSelectedBoss(boss); addRecent(boss.id); }}
+                    onClick={() => { selectBoss(boss.id); addRecent(boss.id); }}
                     isFav={isFavorite(boss.id)}
                     onToggleFav={() => toggleFavorite(boss.id)}
                   />
@@ -364,7 +357,7 @@ export function BossesApp({
               {/* Favorites tile */}
               <button
                 className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
-                onClick={() => setSelectedCategory("favorites" as BossCategoryId)}
+                onClick={() => handleSelectCategory("favorites")}
               >
                 <div className="relative flex items-center justify-center size-12 sm:size-14">
                   <img
@@ -385,7 +378,7 @@ export function BossesApp({
               {/* Recent tile */}
               <button
                 className="flex flex-col items-center gap-1.5 rounded-lg bg-surface border border-border p-3 sm:p-4 active:bg-surface-hover hover:bg-surface-hover transition-colors"
-                onClick={() => setSelectedCategory("recent" as BossCategoryId)}
+                onClick={() => handleSelectCategory("recent")}
               >
                 <div className="relative flex items-center justify-center size-12 sm:size-14">
                   <img src={assetPath("/images/game-items/pocketwatch_warp.png")} alt="" className="size-10 sm:size-12 object-contain" draggable={false} />
@@ -434,7 +427,7 @@ export function BossesApp({
       <div className="border-b border-border bg-background/80 px-4 py-2.5 flex items-center justify-between gap-2">
         <BossBreadcrumb
           locale={resolvedLocale}
-          categoryLabel={selectedCategory === ("favorites" as BossCategoryId) ? t(resolvedLocale, "favorites") : selectedCategory === ("recent" as BossCategoryId) ? t(resolvedLocale, "recent") : categoryLabel(selectedCategory, resolvedLocale)}
+          categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : selectedCategory === "recent" ? t(resolvedLocale, "recent") : categoryLabel(selectedCategory, resolvedLocale)}
           onHomeClick={handleGoHome}
         />
         <SortDropdown
@@ -452,7 +445,7 @@ export function BossesApp({
                 key={boss.id}
                 boss={boss}
                 locale={resolvedLocale}
-                onClick={() => { setSelectedBoss(boss); trackItemClick(`boss:${boss.id}`); addRecent(boss.id); }}
+                onClick={() => { selectBoss(boss.id); trackItemClick(`boss:${boss.id}`); addRecent(boss.id); }}
                 clicks={sortByPopular ? getClicks(`boss:${boss.id}`) : 0}
                 isFav={isFavorite(boss.id)}
                 onToggleFav={() => toggleFavorite(boss.id)}
