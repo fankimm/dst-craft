@@ -529,3 +529,13 @@
   - **세션 시작 시 SessionStart hook 출력에 `fatal`/`error`/`conflict`/`diverging` 단어가 보이면 즉시 사용자에게 보고하고 작업 보류**. hook이 자동 동기화에 실패했다는 건 working tree와 origin의 모델이 어긋났다는 신호
   - `git status`만으로는 발산 감지 못 함 (clean으로 표시됨). `git rev-parse HEAD origin/<branch>` 비교 또는 `git log @..@{u}` / `@{u}..@` 확인 필요
 - **사후 처리**: 별개로 정리(메인 워크트리를 main으로 전환 + `/beta clear`). 새 `/beta clear` 서브커맨드가 이런 청소에 쓰임
+
+## SEO / 구조화 데이터
+
+### React 18+ server component에서 `dangerouslySetInnerHTML` JSON-LD가 RSC stream에 props로 재직렬화 (2026-05-14, #37)
+- **문제**: `<script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(data)}} />`을 server component에서 직접 출력하면, 정상 `<script>` 태그(1개) 외에 React RSC payload에도 props(`{"dangerouslySetInnerHTML":{"__html":"..."}}`)가 escape된 JSON 문자열로 한 번 더 직렬화돼서 HTML에 포함됨. GSC가 같은 페이지에서 FAQPage schema를 2번으로 카운트 → "FAQPage 입력란이 중복되었습니다" critical 오류 → 27 페이지 리치 결과 차단
+- **확인 방법**: `grep -oE 'FAQPage' built.html | wc -l`이 2 이상이면 의심. 첫 번째 매치는 `<script type="application/ld+json">{...}` 정상, 두 번째 매치는 `\\\"@type\\\":\\\"FAQPage\\\"` 형태(escape된 RSC payload). 둘 다 같은 HTML 파일에 inline으로 들어감
+- **잘못된 fix 시도**: 헬퍼 컴포넌트(`<JsonLd data={...} />`)로 한 단 감싸도 여전히 RSC payload에 props 그대로 들어감. children 패턴(`<script>{JSON.stringify(data)}</script>`)도 children 자체가 RSC stream에 escape돼서 동일 증상 발생
+- **올바른 진단**: 검색엔진 JSON-LD 파서는 `<script type="application/ld+json">` **태그 안의 내용만** 본다. RSC payload escape 문자열은 다른 `<script>`(타입 없음, hydration용) 안에 있어 무시됨. 즉 `<script type="application/ld+json">` 태그 개수 + 각 태그의 `@type` 분포가 진짜 카운트
+- **교훈**: 빌드 결과 검증 시 `grep -oE '<script[^>]*application/ld\+json[^>]*>([^<]*)</script>'`로 실제 JSON-LD 태그 수와 @type 분포를 봐야 함. raw `grep FAQPage`는 RSC payload escape를 카운트해 거짓 양성. 현재 패턴(`<JsonLd data={...}` + children, `suppressHydrationWarning`)이 빌드 결과상 `<script type="application/ld+json">` 태그 1개 + RSC payload escape 1개 = grep으론 2번이지만 검색엔진엔 1개로 보임 → GSC 정상화 예상
+- **검증 스크립트**: `python3` 한 줄로 모든 detail 페이지 빌드 결과의 `<script type="application/ld+json">` 태그 수와 `@type` 분포 출력해서 페이지당 정확히 1 FAQPage인지 확인

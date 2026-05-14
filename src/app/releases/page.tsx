@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.4",
+    date: "2026-05-14",
+    dev: [
+      "fix(seo): FAQPage JSON-LD 중복 출력 제거 (#37) — server component가 `<script type=\"application/ld+json\" dangerouslySetInnerHTML={...}>` 패턴을 쓰면 React 18+ RSC stream에 props도 escape된 형태(`\\\"@type\\\":\\\"FAQPage\\\"`)로 한 번 더 직렬화돼 GSC가 같은 schema를 두 번으로 카운트. 정상 `<script type=\"application/ld+json\">` 태그는 1개지만 RSC payload 안의 escape 문자열까지 합쳐 \"FAQPage 입력란 중복\" critical 오류로 27 페이지의 리치 결과 차단. `src/components/seo/JsonLd.tsx` 헬퍼(`<script>` children 패턴 + `suppressHydrationWarning`) 신설 후 layout/homepage(en+ko)/각 detail page(Character/Boss/Quest/Item/SkillTree/Food/Cookpot) 8곳 통일.",
+      "fix(seo): Recipe schema critical 오류 정정 — Food 페이지 Recipe JSON-LD에 `recipeYield`(필수, GSC \"recipeYield 입력란 누락\" 10페이지 critical 오류) + `prepTime`/`recipeCuisine`/`recipeInstructions`(GSC 권장 17페이지 풍부도 개선) 추가. `recipeInstructions`는 ko/en 각각 3단계 HowToStep(재료 투입 → 조리 → 효과 확인 + health/hunger/sanity 수치)으로 구조화.",
+      "refactor(seo): 사이트 전체 JSON-LD 출력 경로를 `<JsonLd data={...}>` 단일 컴포넌트로 통일 — 향후 schema 추가 시 import 한 줄로 일관 패턴.",
+      "근거: Google Search Console 전수 진단 — 색인 거부 855개 중 692개 실질 문제 분석, FAQ 54건/Recipe 10건 critical 오류 직접 확인. food/figatoni, ko/skill-tree/wigfrid, item/voidcloth-umbrella 등 빌드 결과 HTML에서 `<script type=\"application/ld+json\">` 태그 카운트로 fix 검증(@type별 정확히 1개씩).",
+    ],
+    changes: {
+      ko: [
+        "구글 검색 노출 개선 — 음식·아이템·캐릭터·스킬트리 등 ~30 페이지의 FAQ snippet과 레시피 카드가 차단되던 문제 해결. 빠르면 다음 크롤 사이클부터 검색 결과 리치 카드가 복구됨.",
+      ],
+      en: [
+        "Google search visibility fix — FAQ snippets and recipe cards across ~30 pages (food / item / character / skill tree) were blocked from rich results due to duplicate JSON-LD; resolved. Rich results should recover after Google's next recrawl.",
+      ],
+    },
+  },
+  {
     version: "0.26.3",
     date: "2026-05-14",
     dev: [

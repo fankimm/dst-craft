@@ -7,6 +7,7 @@ import { canonicalForItem } from "@/lib/slug";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { JsonLd } from "./JsonLd";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -81,8 +82,8 @@ export function CharacterPageContent({ slug, lang }: { slug: string; lang: SeoLa
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={faqLd} />
 
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">

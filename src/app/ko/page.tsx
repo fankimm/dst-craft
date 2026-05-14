@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/AppShell";
 import { SeoFooterLinks } from "@/components/SeoFooterLinks";
+import { JsonLd } from "@/components/seo/JsonLd";
 import type { Metadata } from "next";
 
 const SITE_URL = "https://www.dstcraft.com";
@@ -94,10 +95,7 @@ const faqJsonLd = {
 export default function HomeKo() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <JsonLd data={faqJsonLd} />
       <AppShell />
       <SeoFooterLinks />
     </>
