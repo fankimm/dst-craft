@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.2",
+    date: "2026-05-14",
+    dev: [
+      "fix(ui): 제작/요리/보스 탭의 카테고리 그리드 카드 높이 통일 (#33) — \"연구장비와 제작대\"처럼 2줄 라벨이 섞이면 같은 행의 카드 높이가 들쭉날쭉해지던 문제. App Store 스타일(아이콘 영역 고정 + 텍스트 2줄분 고정)로 정렬.",
+      "refactor(ui): `src/components/ui/CategoryCard.tsx` 공통 컴포넌트 신설 — 제작(`CategoryGrid`)·요리(`CookingApp`)·보스(`BossesApp`) 카테고리 타일을 한 곳으로 통합. 텍스트 영역 `min-h-[2lh]`로 2줄분 높이 예약 → 라벨이 1줄이든 2줄이든 카드 높이·아이콘 수직 위치 동일. 인게임 라벨이 단일 진실 공급원이라 텍스트 수정 없이 레이아웃만으로 해결.",
+      "docs(ui): `docs/ui.md` 공유 컴포넌트 목록에 `CategoryCard` 항목 추가.",
+    ],
+    changes: {
+      ko: [
+        "제작·요리·보스 탭의 카테고리 카드 정렬을 통일 — 라벨이 1줄이든 2줄이든 카드 크기와 아이콘 위치가 같아 줄이 흐트러지지 않음.",
+      ],
+      en: [
+        "Category cards now align uniformly across Crafting / Cooking / Bosses tabs — whether the label is one line or two, every card stays the same height with a consistent icon position.",
+      ],
+    },
+  },
+  {
     version: "0.26.1",
     date: "2026-05-14",
     dev: [
