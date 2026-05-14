@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.5",
+    date: "2026-05-14",
+    dev: [
+      "chore(data): 게임 데이터 동기화 자동화 — `scripts/sync-game-data.sh` 추가, `~/dst-game-snapshot/` 로컬 git 레포로 buildid별 `scripts/` + `ko.po` 스냅샷 추적. buildid 비교로 변경 없으면 no-op, 다르면 unzip → 스냅샷 커밋 → convert-scrapbook / extract-raw-foods / verify-skill-trees 일괄 실행 → `src/data/game-version.ts` 자동 갱신 (#39).",
+      "chore(data): 최신 빌드 23206828 (2026-05-13 KST hotfix) 반영 — `src/data/scrapbook-stats.ts`의 wx78_module_* specialinfo 22건 문구 정정 (\"Alpha/Beta/Gamma Circuit Tinkering\" → \"... Circuits Tinkering\" 복수형 통일, armor 항목 마침표 보정). 인게임 텍스트 갱신만 반영하므로 데이터 구조/스키마 변경 없음. raw-foods.ts·skill-tree 데이터에는 변동 없음.",
+      "docs(claude): CLAUDE.md에 통합 sync 파이프라인 안내 추가, 기존 Item Stats/Raw Foods 개별 절차는 단축 표기로 정리.",
+    ],
+    changes: {
+      ko: [
+        "게임 데이터를 최신 hotfix(2026-05-13)로 동기화. WX-78 회로 모듈 22개의 영문 설명 문구가 인게임 최신 표기와 일치하도록 갱신됨.",
+      ],
+      en: [
+        "Synced game data to the latest hotfix (2026-05-13). 22 WX-78 circuit module English descriptions now match the in-game wording from this build.",
+      ],
+    },
+  },
+  {
     version: "0.26.4",
     date: "2026-05-14",
     dev: [

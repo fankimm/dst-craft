@@ -199,13 +199,17 @@ jihwan-kim3 (macOS):
   - `src/data/cookpot-ingredients.ts` — `nameKo` (재료 이름)
   - `src/data/locales/ko.ts` — 로캘 데이터 (아이템/스테이션 이름)
 
+## Game Data Sync Pipeline
+- **단일 진입점**: `bash scripts/sync-game-data.sh` — 게임 데이터 갱신은 이 1커맨드로 끝낸다. 개별 converter (`convert-scrapbook.py`, `extract-raw-foods.py`, `verify-skill-trees.py`)는 sync 스크립트가 호출하므로 평소엔 직접 돌릴 일 없음.
+- 동작: Steam manifest의 buildid를 읽어 `~/dst-game-snapshot/buildid.txt`와 비교 → 같으면 no-op으로 빠르게 종료, 다르면 `scripts.zip`을 스냅샷 레포에 재추출하고 ko.po 복사 → 스냅샷에 `buildid <X> @ <date>` 커밋 → 모든 converter 일괄 실행 → `src/data/game-version.ts`의 `steamBuildId`/`dataUpdatedAt` 자동 갱신 (release 번호는 manifest에 없어 수동).
+- `--force` 플래그로 buildid 같아도 재실행 가능 (스크립트 수정 등 디버깅용).
+- 스냅샷 레포 `~/dst-game-snapshot/`: 로컬 전용 git 레포로 빌드별 `scripts/` + `ko.po` 추적. **원격 푸시 금지** (Klei 자산). `git -C ~/dst-game-snapshot log` 로 빌드 히스토리, `git -C ~/dst-game-snapshot diff HEAD~1 -- scripts/recipes.lua` 같은 식으로 핫픽스별 변경점 직접 검사 가능. 첫 실행 시 자동 생성.
+- 내부 호환: 기존 converter들이 `/tmp/dst-{extract,scrapbook}/scripts/...` 경로를 기대하므로 sync 스크립트가 그 경로를 `~/dst-game-snapshot` 으로 심볼릭 링크. 따라서 converter 스크립트 자체는 무수정으로 동작.
+
 ## Item Stats Pipeline Rules
 - 아이템 스펙은 인게임 `scripts/scrapbookdata.lua` 자동 생성 데이터를 단일 진실 공급원으로 사용 (v0.13.0부터)
 - `src/data/scrapbook-stats.ts`는 `scripts/convert-scrapbook.py`가 자동 생성 — **수동 편집 금지**
-- 게임 업데이트 시 갱신 절차:
-  1. Steam에서 게임 업데이트 후 `scripts.zip` 재추출
-  2. `python3 scripts/convert-scrapbook.py` 실행 → `src/data/scrapbook-stats.ts` 재생성
-  3. diff로 변경점 확인
+- 갱신 절차: 통합 `bash scripts/sync-game-data.sh` 한 번이면 끝. (개별 실행 fallback: Steam 업데이트 후 `python3 scripts/convert-scrapbook.py`)
 - 변환 스크립트는 `scrapbookdata.lua`(수치) + `strings.lua`(영문) + ko.po(한국어 specialinfo + DATA_* 라벨)를 합쳐 `ScrapbookStats` 구조 출력
 - 렌더링 컴포넌트: `src/components/crafting/ItemStatsPanel.tsx` — 인게임 `scrapbookscreen.lua` 렌더 순서 그대로 (피해→내구→방어→수리→방수→보온→정신력→지속→유통기한→진영→specialinfo)
 - 누락된 보조 매핑(set_bonus 상세, skill_tree 효과 등)은 specialinfo 텍스트가 대부분 커버 — 구조화가 필요하면 별도 매핑 테이블로 추가 (코드 외 데이터)
@@ -214,10 +218,7 @@ jihwan-kim3 (macOS):
 ## Raw Foods Pipeline Rules
 - "생식 가능" 카테고리(요리탭)에 표시되는 원재료의 hunger/health/sanity/perish 값은 인게임 `prefabs/{veggies,mushrooms,meats,...}.lua`의 `inst.components.edible` 자동 추출 데이터 사용 (v0.23.14부터, #22)
 - `src/data/raw-foods.ts`는 `scripts/extract-raw-foods.py`가 자동 생성 — **수동 편집 금지**
-- 게임 업데이트 시 갱신 절차:
-  1. `unzip -o "$SCRIPTS_ZIP" 'scripts/prefabs/*.lua' 'scripts/tuning.lua' 'scripts/strings.lua' -d /tmp/dst-extract/`
-  2. `python3 scripts/extract-raw-foods.py` 실행 → `src/data/raw-foods.ts` 재생성
-  3. diff로 변경점 확인 (TUNING.* 상수 변동, 새 prefab 추가 등)
+- 갱신 절차: 통합 `bash scripts/sync-game-data.sh` 한 번이면 끝. (개별 실행 fallback: `python3 scripts/extract-raw-foods.py` — `/tmp/dst-extract/scripts/` 가 스냅샷 심볼릭 링크여야 함)
 - 추출 패턴 3종:
   1. `prefabs/veggies.lua`의 `VEGGIES = { ... }` 테이블 (MakeVegStats 위치 인자 1=seedweight, 2=hunger, 3=health, 4=perish, 5=sanity)
   2. `prefabs/mushrooms.lua`의 pickloot=red/green/blue_cap 블록
