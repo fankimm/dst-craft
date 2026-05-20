@@ -98,6 +98,22 @@ function isLockSatisfied(
     }
     case "disabled":
       return false;
+    case "compound": {
+      const c = node.lockType;
+      if (c.required_skills) {
+        for (const id of c.required_skills) if (!activated.has(id)) return false;
+      }
+      if (c.excluded_skills) {
+        for (const id of c.excluded_skills) if (activated.has(id)) return false;
+      }
+      if (c.tag_counts) {
+        // Mirror the game's `CountTags(a) + CountTags(b) >= N` semantics
+        let sum = 0;
+        for (const tag of c.tag_counts.tags) sum += countTag(tag, activated, nodeMap);
+        if (sum < c.tag_counts.count) return false;
+      }
+      return true;
+    }
     default:
       return true;
   }

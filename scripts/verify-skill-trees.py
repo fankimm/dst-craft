@@ -359,17 +359,29 @@ def parse_ts_nodes(ts_text: str) -> dict[str, dict[str, Any]]:
                 node["group"] = gm.group(1) if gm else None
                 # root
                 node["root"] = bool(re.search(r"\broot\s*:\s*true\b", entry_body))
-                # connects
-                cm = re.search(r"\bconnects\s*:\s*\[([^\]]*)\]", entry_body)
-                node["connects"] = re.findall(r'"([^"]+)"', cm.group(1)) if cm else []
-                # tags
-                tm = re.search(r"\btags\s*:\s*\[([^\]]*)\]", entry_body)
-                node["tags"] = re.findall(r'"([^"]+)"', tm.group(1)) if tm else []
-                # locks
-                lm = re.search(r"\blocks\s*:\s*\[([^\]]*)\]", entry_body)
-                node["locks"] = re.findall(r'"([^"]+)"', lm.group(1)) if lm else []
                 # has lockType (= our representation of has_lock_open)
                 node["has_lock_type"] = bool(re.search(r"\blockType\s*:", entry_body))
+                # Strip nested lockType body so its inner `tags`/`connects`/`locks`
+                # keys (e.g. `tag_counts: { tags: [...] }`) don't shadow the outer
+                # top-level fields when we scan with simple regex.
+                scan_body = entry_body
+                lm_lock = re.search(r"\blockType\s*:\s*\{", scan_body)
+                if lm_lock:
+                    brace_start = lm_lock.end() - 1
+                    try:
+                        brace_end = find_balanced(scan_body, brace_start, "{", "}")
+                        scan_body = scan_body[:lm_lock.start()] + scan_body[brace_end + 1:]
+                    except ValueError:
+                        pass
+                # connects
+                cm = re.search(r"\bconnects\s*:\s*\[([^\]]*)\]", scan_body)
+                node["connects"] = re.findall(r'"([^"]+)"', cm.group(1)) if cm else []
+                # tags
+                tm = re.search(r"\btags\s*:\s*\[([^\]]*)\]", scan_body)
+                node["tags"] = re.findall(r'"([^"]+)"', tm.group(1)) if tm else []
+                # locks
+                lm = re.search(r"\blocks\s*:\s*\[([^\]]*)\]", scan_body)
+                node["locks"] = re.findall(r'"([^"]+)"', lm.group(1)) if lm else []
                 nodes[node["id"]] = node
             i = close + 1
         else:
