@@ -119,6 +119,25 @@ function isLockSatisfied(
     }
     case "disabled":
       return false;
+    case "compound": {
+      if (lockType.required_skills) {
+        for (const id of lockType.required_skills) if (!activatedSkills.has(id)) return false;
+      }
+      if (lockType.excluded_skills) {
+        for (const id of lockType.excluded_skills) if (activatedSkills.has(id)) return false;
+      }
+      if (lockType.tag_counts) {
+        let sum = 0;
+        for (const tag of lockType.tag_counts.tags) {
+          for (const id of activatedSkills) {
+            const n = nodeMap.get(id);
+            if (n?.tags?.includes(tag)) sum++;
+          }
+        }
+        if (sum < lockType.tag_counts.count) return false;
+      }
+      return true;
+    }
     default:
       return true;
   }

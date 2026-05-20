@@ -5,7 +5,25 @@ export type LockCondition =
   | { type: "no_opposing_faction"; faction: "lunar" | "shadow" }
   | { type: "total_skills"; count: number }
   | { type: "manual"; desc_ko: string; desc_en: string }
-  | { type: "disabled"; desc_ko: string; desc_en: string };
+  | { type: "disabled"; desc_ko: string; desc_en: string }
+  /**
+   * Auto-evaluated AND of all provided sub-criteria. Mirrors arbitrary
+   * `lock_open` predicates in the game source (e.g. "skill X activated AND
+   * skill Y NOT activated AND sum of tag-counts ≥ N").
+   *
+   * - `required_skills`: every listed skill ID must be in `activatedSkills`
+   * - `excluded_skills`: none of the listed skill IDs may be in `activatedSkills`
+   * - `tag_counts`: `sum(count of activated skills having tag t for t in tags) ≥ count`
+   *
+   * All omitted criteria are treated as "no constraint". An empty `compound`
+   * is always satisfied. Description text is resolved via `lockTranslations[lockId]`.
+   */
+  | {
+      type: "compound";
+      required_skills?: string[];
+      excluded_skills?: string[];
+      tag_counts?: { tags: string[]; count: number };
+    };
 
 /** A single node in a character's skill tree */
 export interface SkillNode {

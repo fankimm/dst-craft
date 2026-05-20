@@ -266,6 +266,15 @@
   3. 라벨/설명은 임의 작성 금지 — ko.po/strings.lua 원문 사용 필수
 - **해결**: lockLabel에 lockId 파라미터 추가 → lockTranslations 우선 참조, no_opposing_faction 반전 수정, WX-78 잠금 3개로 분리 + disabled 타입 추가
 
+### 복합 lock_open을 `manual` fallback으로 우회 — 자동 해제 끊김 (2026-05-20, #40)
+- **문제**: 위노나 스킬트리에서 찰리·와그스태프 트리(악몽발전기·계몽 발G.E.M.기 4갈래) 진입 스킬이 클릭이 안 됨. 인게임 `winona_midshelf_lock`은 `CountTags("lowshelf") + CountTags("midshelf") > 5` 자동 평가인데, 우리 `winona.ts`는 `manual` + "휴대성 스킬 시 해금" 가짜 설명으로 들어가 있어 사용자가 잠금 아이콘을 직접 클릭해야만 해제. 같은 패턴이 6개 잠금(`midshelf_lock`/`shadow_3_lock`/`lunar_3_lock`/`charlie_2_lock`/`wagstaff_2_lock`/`portable_structures_lock`)에 걸쳐 있었고 일부는 설명까지 인게임과 다르게 임의 작성 (`charlie_2_lock`이 "급속충전 시 해금" 등)
+- **원인**: 위노나 lock_open 함수가 `LockCondition` 타입으로 표현 못 하는 케이스 — `skill_count`는 단일 태그만, "특정 스킬 활성 AND 다른 스킬 미활성" 조건 없음 — 만나서 `manual`로 떼우고 desc도 손으로 적음. 위 "잠금 조건 라벨" 교훈 #2("lua의 복합 lock_open은 개별 typed lock 노드로 분리")를 따랐어야 하나, 타입 자체에 표현 수단이 없어 우회. `verify-skill-trees.py`는 `lock_open` 본문 의미를 스킵해서 자동 탐지 못 함
+- **교훈**:
+  1. lock_open을 `manual`로 우회하지 말 것 — 자동 조건은 자동 typed lock으로 표현해야 사용자 UX가 인게임과 일치
+  2. 표현 수단이 없으면 `LockCondition` 타입 자체를 확장 (#40에서 `compound` 추가: `required_skills` / `excluded_skills` / `tag_counts.tags[]` 합산)
+  3. `verify-skill-trees.py`가 `lock_open` 본문을 검사하지 않으므로, 신규/갱신 캐릭터 작업 시 lock 노드 의미는 lua 원본을 펼쳐서 수동 대조 필수. desc가 ko.po(`STRINGS.SKILLTREE.<CHAR>.<KEY>_LOCK_DESC`)에 있으면 그것이 정답이므로 절대 임의 문구 작성 금지
+- **부수**: TS 파서가 `lockType: { ..., tag_counts: { tags: [...] } }`처럼 nested한 `tags:` 키를 외부 노드 `tags:`보다 먼저 매칭해 verify가 거짓 양성 → `verify-skill-trees.py`에서 lockType 본문을 잘라낸 뒤 top-level 필드 스캔하도록 수정
+
 ### 게임 데이터 소스 선택: 파생 데이터 → 원본으로 3회 회귀
 - **문제**: 콘솔 소환용 아이템 목록을 game-items-db(recipes.lua 기반, 1028개) → Prefab() grep(1130개) → ko.po STRINGS.NAMES(2796개)로 3번 교체
 - **원인**: "가장 완전하고 신뢰할 수 있는 소스는 무엇인가"를 먼저 따지지 않고, 가까이 있는 기존 데이터부터 가져다 씀

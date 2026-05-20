@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.6",
+    date: "2026-05-20",
+    dev: [
+      "fix(skill-tree): 위노나 스킬트리 잠금 6개를 인게임 `lock_open`과 일치시킴 (#40) — 찰리·와그스태프 트리(악몽 발전기·계몽 발G.E.M.기 등 4갈래) 진입 스킬이 클릭되지 않던 문제. `winona.ts`의 `winona_midshelf_lock` / `winona_portable_structures_lock` / `winona_shadow_3_lock` / `winona_lunar_3_lock` / `winona_charlie_2_lock` / `winona_wagstaff_2_lock`가 인게임 자동 평가(`CountTags` / `activatedskills[X] AND NOT activatedskills[Y]`)와 달리 `manual` 타입으로 들어가 있어 사용자가 잠금 아이콘을 직접 눌러야만 해제됐고, 일부 `charlie_2_lock`(\"급속충전 시 해금\") / `wagstaff_2_lock`(\"와그스태프 협력 시 해금\") 같은 desc는 ko.po 정문구와 다르게 임의 작성돼 있었음.",
+      "feat(skill-tree types): `LockCondition`에 `compound` 타입 추가 — `required_skills` + `excluded_skills` + `tag_counts: { tags: string[]; count }` (다중 태그 합산 카운트). 인게임 `lock_open` 함수 본문에 흔한 `skill X 활성 AND skill Y 미활성 AND 태그 합계 ≥ N` 패턴을 무손실로 표현. `isLockSatisfied` 로직 두 군데(`use-skill-tree.ts`, `SkillTreeView.tsx`) 동일하게 처리.",
+      "fix(verify-skill-trees): TS 파서 regex 버그 수정 — `lockType: { ..., tag_counts: { tags: [...] } }`처럼 nested한 `tags:` 키가 외부 노드 `tags:`보다 먼저 매칭돼 위노나 lock 노드에서 거짓 양성. `lockType` 본문을 잘라낸 뒤 top-level 필드 스캔하도록 수정.",
+      "docs(mistakes): \"복합 lock_open을 manual fallback으로 우회 — 자동 해제 끊김\" 사례 기록 (#40).",
+    ],
+    changes: {
+      ko: [
+        "위노나 스킬트리에서 찰리·와그스태프 가지(악몽 발전기·계몽 발G.E.M.기 포함 4갈래)가 인게임처럼 자동으로 해금되도록 수정. 이전엔 잠금 아이콘을 직접 눌러야 했고 일부 잠금 설명도 인게임과 달랐음.",
+      ],
+      en: [
+        "Fixed Winona's skill tree so the Charlie and Wagstaff branches (Nightmare Generator, Enlightened G.E.M.erator, etc. — all four entry skills) unlock automatically as in-game. Previously you had to click the lock icons manually, and a couple of lock descriptions didn't match the in-game text.",
+      ],
+    },
+  },
+  {
     version: "0.26.5",
     date: "2026-05-14",
     dev: [
