@@ -135,7 +135,9 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `bun-api/infra/com.dstcraft.api.plist` — API 서버 launchd 에이전트
 - `bun-api/infra/com.dstcraft.backup.plist` — DB 백업 launchd 에이전트
 - `bun-api/infra/com.dstcraft.goaccess-bots.plist` + `goaccess-bots.sh` — 봇 전용 GoAccess 대시보드 (1시간마다 `~/dstcraft/bots.html` 생성, `:7891/bots.html`로 접근)
-- `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta)
+- `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta). prod 배포 시 IndexNow ping 호출
+- `scripts/indexnow-ping.py` — sitemap.xml의 전체 URL을 IndexNow API에 제출 (Bing 등 즉시 색인 유도). prod 배포에서만, best-effort
+- `public/<key>.txt` — IndexNow 키 파일 (`BingSiteAuth.xml`과 함께 SEO 검증 자산, 삭제 금지). 키 변경 시 `indexnow-ping.py`의 `KEY` 상수도 함께 갱신
 - `.github/workflows/deploy-beta.yml` — GitHub Actions 배포 워크플로우 (self-hosted runner, main+beta)
 - `.github/workflows/deploy.yml` — GitHub Pages 배포 (레거시, 미사용)
 - `.github/workflows/watchdog.yml` — 헬스 모니터링 (5분 주기, Telegram + failover)
