@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.7",
+    date: "2026-05-21",
+    dev: [
+      "feat(seo): IndexNow 연동 (#41) — `public/<key>.txt` 키 파일 + `scripts/indexnow-ping.py` 추가. `sitemap.xml`의 전체 URL(약 2,200개)을 IndexNow API(`api.indexnow.org`)에 POST해 Bing·Yandex·Naver·Seznam의 즉시 색인을 유도. `deploy-frontend.sh`가 prod 배포 symlink swap 직후 호출하며 best-effort(ping 실패해도 배포는 성공 처리), beta 배포에서는 실행하지 않음.",
+      "chore(seo): Bing Webmaster에 중복 등록돼 있던 `http://` 사이트맵 항목 제거 — `https://www.dstcraft.com/sitemap.xml` 단일 항목만 유지.",
+    ],
+    changes: {
+      ko: [
+        "콘텐츠 변경 시 Bing 등 검색엔진에 즉시 알리는 IndexNow를 연동. 게임 데이터 갱신이 검색 결과에 더 빠르게 반영됩니다.",
+      ],
+      en: [
+        "Integrated IndexNow to instantly notify Bing and other search engines of content changes, so game-data updates show up in search results faster.",
+      ],
+    },
+  },
+  {
     version: "0.26.6",
     date: "2026-05-20",
     dev: [

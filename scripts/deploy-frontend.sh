@@ -140,4 +140,16 @@ else
   log "CF purge skipped ($CF_ENV not found)"
 fi
 
+# IndexNow ping — prod 배포에서만. sitemap.xml의 전체 URL을 검색엔진에 즉시 제출.
+# best-effort: 실패해도 deploy는 성공 처리. symlink swap 이후라 키 파일(.txt)도 이미 라이브.
+if [ "$TARGET" = "main" ]; then
+  if [ -f "$NEW_RELEASE/sitemap.xml" ]; then
+    log "IndexNow ping..."
+    python3 "$SOURCE/scripts/indexnow-ping.py" "$NEW_RELEASE/sitemap.xml" \
+      || err "IndexNow ping failed (deploy 성공 처리)"
+  else
+    log "IndexNow skipped (sitemap.xml not found in $NEW_RELEASE)"
+  fi
+fi
+
 log "Done. Verify: curl -I https://${LINK##*/}.dstcraft.com  (beta) | https://www.dstcraft.com (main)"
