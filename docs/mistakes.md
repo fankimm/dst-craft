@@ -522,6 +522,15 @@
 
 ## 워크플로우 / 머지
 
+### 빌드 실패가 source HEAD를 advance시켜 재배포가 "already up to date"로 스킵됨 (2026-05-21, #42)
+- **문제**: v0.26.7(IndexNow) 배포가 1차에서 `next/font/google` 폰트 모듈 에러로 빌드 실패. 실패한 워크플로우를 `gh run rerun --failed`로 재실행했더니 frontend 재빌드 스텝이 `[deploy-main] Already up to date (6b2e844). Use --force to rebuild.`로 끝나며 exit 0. 배포는 성공으로 떴지만 symlink swap이 안 일어나 옛 릴리즈가 그대로 서빙 → 키 파일 404, IndexNow ping 미실행
+- **원인**: `deploy-frontend.sh`는 `source-main`을 `git pull`로 먼저 올린 뒤 `npm run build`를 돈다. 빌드가 실패하면 `source-main` git HEAD만 푸시된 SHA로 advance된 채 남는다. 재실행 시 스크립트의 `CURRENT == TARGET_SHA` 검사가 "이미 최신"으로 판정 → 재빌드 통째 스킵. `deploy-beta.yml`의 main 재빌드 스텝은 `--force` 없이 호출해서 `workflow_dispatch`의 `force_frontend`를 켜도 강제 불가 (beta 스텝은 `--force`를 붙임)
+- **교훈**:
+  - 배포가 "성공"으로 떠도 **로그에서 symlink swap / `Done.` 라인을 확인**할 것. `Already up to date`로 끝났으면 실제 배포 안 된 것
+  - 빌드 실패 후 재배포는 `git pull`이 이미 일어났을 수 있으므로 SHA 기반 idempotency 검사를 신뢰하지 말고 `--force` 경로를 쓸 것
+  - 빌드 전 `git pull`/`git reset` → 빌드 → swap 순서의 스크립트는, 빌드 실패 시 "소스만 advance, 산출물은 옛 것" 상태를 만든다. 재시도 가능성을 항상 `--force`로 열어둘 것
+- **사후 처리**: `deploy-beta.yml` main 재빌드 스텝이 `force_frontend == true`일 때 `deploy-frontend.sh main --force`를 호출하도록 수정 (#42)
+
 ### `main ← beta` 방향 머지로 in-flight feat이 production 배포됨 (2026-05-08)
 - **문제**: 메타 변경(스킬 보강 commit `c89a4d4`)을 메인 워크트리(beta)에서 commit한 뒤, main으로 가져가려 `git checkout main && git merge --ff-only beta && git push origin main` 실행. 그 시점 beta에는 다른 워크트리(`dst-craft-1`)에서 `/push`로 흘려둔 검증 중인 `feat/1-damage-calculator`(`134f2fc`, dev 페이지 `/damage-calc`)가 함께 있었고, ff merge가 그 커밋까지 main으로 가져가 그대로 production(`www.dstcraft.com`)에 배포됨. `/release`를 거치지 않은 채 main에 들어간 사고
 - **원인**: "메타 변경은 beta 우회해서 main 직접 머지 가능"이라는 CLAUDE.md 옛 예외 조항을 잘못 해석. 우회는 "main에서 직접 commit" 또는 "특정 commit cherry-pick"이어야 했는데, "beta에 commit 후 main에 ff merge"로 처리. **beta는 in-flight 합집합 검증용**이지 main의 입구가 아니라는 모델을 잊음

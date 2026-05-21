@@ -109,7 +109,14 @@ jobs:
         if: steps.br.outputs.branch == 'main' && (steps.sync.outputs.frontend == 'true' || inputs.force_frontend == true)
         run: |
           set -euo pipefail
-          ~/works/dst-craft/scripts/deploy-frontend.sh main
+          # force_frontend dispatch 시 --force 전달 — 빌드 실패로 source-main HEAD만
+          # advance된 상태에서 재배포하면 스크립트의 "already up to date" 검사가
+          # 재빌드를 스킵하므로(symlink swap 누락 → 옛 릴리즈 서빙) 명시적으로 강제한다.
+          if [ "${{ inputs.force_frontend }}" = "true" ]; then
+            ~/works/dst-craft/scripts/deploy-frontend.sh main --force
+          else
+            ~/works/dst-craft/scripts/deploy-frontend.sh main
+          fi
 
       - name: bun-api restart (main only)
         if: steps.br.outputs.branch == 'main' && (steps.sync.outputs.bun_api == 'true' || inputs.force_bun_api == true)
