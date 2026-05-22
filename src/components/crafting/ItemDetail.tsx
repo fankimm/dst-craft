@@ -4,7 +4,7 @@ import type { CraftingItem, CraftingStation, CategoryId } from "@/lib/types";
 import { TagChip } from "@/components/ui/TagChip";
 import { MaterialSlot } from "./MaterialSlot";
 import { ItemSlot } from "@/components/ui/ItemSlot";
-import { getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
+import { getCategoryById, getCharacterById, stationImages, getItemsUsingMaterial } from "@/lib/crafting-data";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { useFavorites } from "@/hooks/use-favorites";
@@ -203,6 +203,29 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             />
           )}
         </div>
+
+        {/* "Used in" — items that use the current id as one of their ingredients */}
+        {(() => {
+          const usedIn = getItemsUsingMaterial(item.id);
+          if (usedIn.length === 0) return null;
+          return (
+            <div className="pt-2 space-y-1.5">
+              <h4 className="text-xs font-medium text-muted-foreground">
+                {t(resolvedLocale, "used_in")}
+              </h4>
+              <div className="flex flex-wrap gap-4">
+                {usedIn.map((u) => (
+                  <ItemSlot
+                    key={u.id}
+                    icon={u.image}
+                    label={itemName(u, resolvedLocale)}
+                    onClick={onMaterialClick ? () => onMaterialClick(u) : undefined}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })()}
       </div>
     </div>
   );

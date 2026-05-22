@@ -1,6 +1,6 @@
 "use client";
 
-import { getMaterialById, getItemByMaterialId } from "@/lib/crafting-data";
+import { getMaterialById, getItemById } from "@/lib/crafting-data";
 import { useSettings } from "@/hooks/use-settings";
 import { materialName } from "@/lib/i18n";
 import type { CraftingItem } from "@/lib/types";
@@ -16,11 +16,12 @@ export function MaterialSlot({ materialId, quantity, onMaterialClick }: Material
   const material = getMaterialById(materialId);
   const { resolvedLocale } = useSettings();
 
-  const craftableItem = getItemByMaterialId(materialId);
-  const isClickable = !!craftableItem && !!onMaterialClick;
-
-  const handleClick = isClickable
-    ? () => onMaterialClick(craftableItem)
+  // Every material — craftable or gathered — opens its own ItemDetail so the
+  // user can see "이 재료가 들어가는 제작품". getItemById falls back to a
+  // synthetic CraftingItem for raw materials (flint/twigs/rocks/…).
+  const target = getItemById(materialId);
+  const handleClick = target && onMaterialClick
+    ? () => onMaterialClick(target)
     : undefined;
 
   return (
