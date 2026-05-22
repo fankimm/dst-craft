@@ -16,25 +16,7 @@ export function getItemsByCategory(categoryId: CategoryId): CraftingItem[] {
 }
 
 export function getItemById(id: string): CraftingItem | undefined {
-  const found = allItems.find((item) => item.id === id);
-  if (found) return found;
-  // Fallback: synthesize a CraftingItem from a raw material entry so that
-  // ItemDetail can render "this material's page" (icon + "이 재료가 들어가는
-  // 제작품" 섹션). Used when clicking gathered/dropped materials that aren't
-  // themselves craftable (flint, twigs, rocks, …). Recipe / station / category
-  // sections degrade to empty automatically.
-  const mat = materials.find((m) => m.id === id);
-  if (!mat) return undefined;
-  return {
-    id: mat.id,
-    name: mat.name,
-    description: "",
-    image: mat.image,
-    category: [],
-    station: "none",
-    materials: [],
-    sortOrder: 0,
-  };
+  return allItems.find((item) => item.id === id);
 }
 
 export function getMaterialById(id: string): Material | undefined {
@@ -250,29 +232,6 @@ export function getCharacterItems(characterId: string): CraftingItem[] {
 /** Find a craftable item whose id matches the given material id */
 export function getItemByMaterialId(materialId: string): CraftingItem | undefined {
   return allItems.find((item) => item.id === materialId);
-}
-
-// Reverse index: materialId → items that list it in their `materials`. Lazy-built once.
-let _itemsByMaterial: Map<string, CraftingItem[]> | null = null;
-function getItemsByMaterialIndex(): Map<string, CraftingItem[]> {
-  if (_itemsByMaterial) return _itemsByMaterial;
-  const m = new Map<string, CraftingItem[]>();
-  for (const item of allItems) {
-    for (const mat of item.materials) {
-      const list = m.get(mat.materialId);
-      if (list) list.push(item);
-      else m.set(mat.materialId, [item]);
-    }
-  }
-  _itemsByMaterial = m;
-  return m;
-}
-
-/** All craftable items that use the given material as an ingredient, sorted by in-game sortOrder. */
-export function getItemsUsingMaterial(materialId: string): CraftingItem[] {
-  const list = getItemsByMaterialIndex().get(materialId);
-  if (!list) return [];
-  return [...list].sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export function getCharacterById(characterId: string): Character | undefined {

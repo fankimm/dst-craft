@@ -139,7 +139,6 @@ const translations = {
     skill_tree_required: "스킬트리",
     station_required: "스테이션 필요",
     blueprint_required: "블루프린트 필요",
-    used_in: "이 재료가 들어가는 제작품",
     prototypable: "프로토타입 가능",
     sort_default: "기본",
     sort_popular: "인기순",
@@ -351,7 +350,6 @@ const translations = {
     support_anonymous: "Anonymous",
     support_thanks: "Thanks to",
     health_cost: "Health Cost",
-    used_in: "Used in",
     skill_tree_required: "Skill Tree",
     station_required: "Station Required",
     blueprint_required: "Blueprint Required",
@@ -481,12 +479,7 @@ export function t(locale: Locale, key: TranslationKey): string {
 // Domain-specific localized name helpers (fallback to English name)
 
 export function itemName(item: Pick<CraftingItem, "id" | "name">, locale: string): string {
-  // Materials promoted to ItemDetail via synthetic CraftingItem have no
-  // `items` locale entry — fall through to the materials locale before the
-  // English name on the object itself.
-  return locales[locale]?.items[item.id]?.name
-    ?? locales[locale]?.materials[item.id]?.name
-    ?? item.name;
+  return locales[locale]?.items[item.id]?.name ?? item.name;
 }
 
 export function itemDesc(item: Pick<CraftingItem, "id" | "description">, locale: string): string {

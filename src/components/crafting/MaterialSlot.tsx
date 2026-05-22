@@ -1,27 +1,25 @@
 "use client";
 
-import { getMaterialById, getItemById } from "@/lib/crafting-data";
+import { getMaterialById } from "@/lib/crafting-data";
 import { useSettings } from "@/hooks/use-settings";
 import { materialName } from "@/lib/i18n";
-import type { CraftingItem } from "@/lib/types";
 import { ItemSlot } from "@/components/ui/ItemSlot";
 
 interface MaterialSlotProps {
   materialId: string;
   quantity: number;
-  onMaterialClick?: (item: CraftingItem) => void;
+  /** Click triggers a material-tag search (handled by parent). */
+  onMaterialClick?: (materialId: string) => void;
 }
 
 export function MaterialSlot({ materialId, quantity, onMaterialClick }: MaterialSlotProps) {
   const material = getMaterialById(materialId);
   const { resolvedLocale } = useSettings();
 
-  // Every material — craftable or gathered — opens its own ItemDetail so the
-  // user can see "이 재료가 들어가는 제작품". getItemById falls back to a
-  // synthetic CraftingItem for raw materials (flint/twigs/rocks/…).
-  const target = getItemById(materialId);
-  const handleClick = target && onMaterialClick
-    ? () => onMaterialClick(target)
+  // Clicking a material in the recipe runs a search for "items using this
+  // material" — same pattern as clicking a category/station badge.
+  const handleClick = onMaterialClick
+    ? () => onMaterialClick(materialId)
     : undefined;
 
   return (

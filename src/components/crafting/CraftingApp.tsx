@@ -3,13 +3,13 @@
 import { useMemo, useCallback, useState, useEffect } from "react";
 import { categories } from "@/data/categories";
 import { characters } from "@/data/characters";
-import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById, getItemById, stationImages } from "@/lib/crafting-data";
+import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById, getItemById, getMaterialById, stationImages } from "@/lib/crafting-data";
 import { useCraftingState } from "@/hooks/use-crafting-state";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import { useFavorites } from "@/hooks/use-favorites";
-import { t, categoryName, itemName } from "@/lib/i18n";
+import { t, categoryName, itemName, materialName } from "@/lib/i18n";
 import type { CategoryId } from "@/lib/types";
 import { CategoryGrid } from "./CategoryGrid";
 import { CategoryHeader } from "./CategoryHeader";
@@ -158,6 +158,17 @@ export function CraftingApp({
     setItem(null);
   }, [addSearchTag, setItem, resolvedLocale]);
 
+  const handleMaterialClick = useCallback((materialId: string) => {
+    const mat = getMaterialById(materialId);
+    if (!mat) return;
+    addSearchTag({
+      text: materialName(mat, resolvedLocale),
+      type: "material",
+      image: `game-items/${mat.image}`,
+    });
+    setItem(null);
+  }, [addSearchTag, setItem, resolvedLocale]);
+
   const currentCategory = getCategoryById(selectedCategory);
   const currentCharacter = selectedCharacter ? getCharacterById(selectedCharacter) : null;
 
@@ -201,7 +212,7 @@ export function CraftingApp({
       onBack={previousItem ? goBackToItem : (externalBackLabel && onExternalBack) ? () => { setItem(null); onExternalBack(); } : undefined}
       backLabel={previousItem ? itemName(previousItem, resolvedLocale) : externalBackLabel ?? undefined}
     >
-      <ItemDetail item={panelItem} onMaterialClick={navigateToItem} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} onSkillClick={onSkillClick} />
+      <ItemDetail item={panelItem} onMaterialClick={handleMaterialClick} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} onSkillClick={onSkillClick} />
     </DetailPanel>
   );
 
