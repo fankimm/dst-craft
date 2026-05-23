@@ -27,7 +27,7 @@ const stationUpgrades: Partial<Record<CraftingStation, CraftingStation[]>> = {
 
 interface ItemDetailProps {
   item: CraftingItem | null;
-  onMaterialClick?: (item: CraftingItem) => void;
+  onMaterialClick?: (materialId: string) => void;
   onCategoryClick?: (categoryId: CategoryId) => void;
   onCharacterClick?: (characterId: string) => void;
   onStationClick?: (stationLabel: string, station?: string) => void;

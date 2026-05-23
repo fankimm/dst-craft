@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.8",
+    date: "2026-05-23",
+    dev: [
+      "feat(crafting): 제작 상세 패널에서 재료 슬롯을 누르면 그 재료가 검색 태그로 추가되고 현재 상세가 닫혀, 검색 결과 그리드에 그 재료를 쓰는 모든 제작품이 표시됨 (#44). 카테고리/스테이션 칩 클릭과 동일한 패턴 — `CraftingApp.handleMaterialClick`이 `useSearch.addSearchTag({type:'material'})` + `setItem(null)` 호출.",
+      "feat(crafting): 채집/드롭 재료(부싯돌·잔가지·돌 등) 슬롯도 클릭 가능해짐 — 이전엔 craftable-as-item인 재료(작업대·만능 리모컨 등)만 클릭됐음. `MaterialSlot.onMaterialClick` 시그니처를 `(item: CraftingItem) => void` → `(materialId: string) => void`로 단순화.",
+      "docs(terminology): `재료 슬롯` 항목을 새 동작 반영해 갱신.",
+      "히스토리: 첫 시도(#44 1차 커밋)에서 ItemDetail에 별도 'Used in' 섹션 + raw material → 합성 CraftingItem fallback을 추가했으나, 피드백(\"상세페널 말고 검색함거처럼\") 반영해 검색 태그 추가 방식으로 전환. 합성 fallback / 미사용 헬퍼 등은 모두 제거.",
+    ],
+    changes: {
+      ko: [
+        "제작법 상세에서 재료 아이콘을 누르면 그 재료를 쓰는 모든 제작법이 검색 결과로 보임 — 역방향 레시피 탐색. 부싯돌·잔가지처럼 채집해서 얻는 재료도 클릭 가능.",
+      ],
+      en: [
+        "In the crafting detail panel, tap a material icon to see every recipe that uses it as an ingredient — reverse recipe lookup. Gathered materials like Flint and Twigs are now clickable too.",
+      ],
+    },
+  },
+  {
     version: "0.26.7",
     date: "2026-05-21",
     dev: [

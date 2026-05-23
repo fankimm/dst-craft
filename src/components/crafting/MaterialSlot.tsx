@@ -1,26 +1,25 @@
 "use client";
 
-import { getMaterialById, getItemByMaterialId } from "@/lib/crafting-data";
+import { getMaterialById } from "@/lib/crafting-data";
 import { useSettings } from "@/hooks/use-settings";
 import { materialName } from "@/lib/i18n";
-import type { CraftingItem } from "@/lib/types";
 import { ItemSlot } from "@/components/ui/ItemSlot";
 
 interface MaterialSlotProps {
   materialId: string;
   quantity: number;
-  onMaterialClick?: (item: CraftingItem) => void;
+  /** Click triggers a material-tag search (handled by parent). */
+  onMaterialClick?: (materialId: string) => void;
 }
 
 export function MaterialSlot({ materialId, quantity, onMaterialClick }: MaterialSlotProps) {
   const material = getMaterialById(materialId);
   const { resolvedLocale } = useSettings();
 
-  const craftableItem = getItemByMaterialId(materialId);
-  const isClickable = !!craftableItem && !!onMaterialClick;
-
-  const handleClick = isClickable
-    ? () => onMaterialClick(craftableItem)
+  // Clicking a material in the recipe runs a search for "items using this
+  // material" — same pattern as clicking a category/station badge.
+  const handleClick = onMaterialClick
+    ? () => onMaterialClick(materialId)
     : undefined;
 
   return (
