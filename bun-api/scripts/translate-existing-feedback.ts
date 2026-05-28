@@ -104,6 +104,38 @@ const TRANSLATIONS: Entry[] = [
     replyLang: "ko",
     replyTranslated: "Yes, I'll add it. Thanks for the suggestion.",
   },
+  {
+    id: "1779279710356-r4b5fr",
+    messageLang: "ko",
+    messageTranslated:
+      "I can't take any skills in Winona's Charlie or Wagstaff branches — the Nightmare Generator / Enlightened G.E.M.erator side.",
+    replyLang: "ko",
+    replyTranslated: "Fixed. Thanks for the report ❤️",
+  },
+  {
+    id: "1779446957552-3rgl9y",
+    messageLang: "ko",
+    messageTranslated:
+      "Could you add a way to look up recipes in reverse — tap a material to see everything that can be crafted with it?",
+    replyLang: "ko",
+    replyTranslated: "Done — implemented. Thanks for the great suggestion.",
+  },
+  {
+    id: "1779535886458-v1mko8",
+    messageLang: "ko",
+    messageTranslated: "Please add a Hermit trade list too!",
+  },
+  {
+    id: "1779544094929-424fkv",
+    messageLang: "ko",
+    messageTranslated:
+      "It'd be great to see the sanity gain/loss values for the characters who can read Wickerbottom's books. Thanks for making such a great site.",
+  },
+  {
+    id: "1779971540965-gv1yyh",
+    messageLang: "ko",
+    messageTranslated: "I'd love to see a Pearl home-decoration affinity list.",
+  },
 ];
 
 const db = new Database(DB_PATH);
