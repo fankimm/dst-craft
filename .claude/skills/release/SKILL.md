@@ -19,7 +19,13 @@ description: 특정 feat 브랜치를 main으로 머지 + main 푸시 (Productio
 
 ## 사전 점검
 
-다음을 병렬로 실행하여 상태 확인:
+먼저 메인 워크트리 가드를 실행 (4회 재발한 main↔beta 드리프트 방어 — 이슈 #46):
+```bash
+bash scripts/check-main-worktree.sh
+```
+clean drift는 자동 복구되고 silent로 빠짐. dirty drift면 비파괴 종료하니 사용자에게 보고 후 중단.
+
+이어서 다음을 병렬로 실행하여 상태 확인:
 - `git fetch --all --prune` — 원격 최신화
 - `git status` — 워킹트리 clean 확인 (dirty면 중단하고 사용자에게 알림)
 - `git rev-parse --abbrev-ref HEAD` — 현재 브랜치
@@ -28,6 +34,7 @@ description: 특정 feat 브랜치를 main으로 머지 + main 푸시 (Productio
 - `git branch -a --contains $RELEASE_BRANCH` — 브랜치 존재 확인
 
 **중단 조건**:
+- 메인 워크트리가 main이 아닌데 dirty라 가드가 자동 복구 못함 → 중단, 사용자에게 보고
 - 워킹트리 dirty → 사용자에게 알리고 중단 (먼저 정리)
 - `RELEASE_BRANCH`가 존재하지 않음 → 중단, 사용자에게 알림
 - `main..$RELEASE_BRANCH`가 비어있음 (이미 main에 머지됨, 또는 새 커밋 없음) → 중단

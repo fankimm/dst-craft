@@ -548,6 +548,19 @@
   - `git status`만으로는 발산 감지 못 함 (clean으로 표시됨). `git rev-parse HEAD origin/<branch>` 비교 또는 `git log @..@{u}` / `@{u}..@` 확인 필요
 - **사후 처리**: 별개로 정리(메인 워크트리를 main으로 전환 + `/beta clear`). 새 `/beta clear` 서브커맨드가 이런 청소에 쓰임
 
+### 메인 워크트리가 mid-session에 `beta`로 드리프트 — 4회 재발 (2026-05-13/20/23/28, #46)
+- **문제**: 메인 워크트리(`/Users/fankimm/works/dst-craft`)가 어느 시점엔가 `main` → `beta`로 HEAD가 바뀌어, `/release` 첫 머지가 main 대신 beta 위에 박힘. 매번 `reset --hard origin/beta` + `git switch main` + 재머지로 복구해 origin엔 영향 없었지만 같은 패턴 4회 반복
+- **트리거 미상**: 5-28 사고에서는 `worktree list`가 [main]을 보고한 직후 `git -C ../dst-craft pull --ff-only origin main` 출력에 `$ git reset --hard\n복구됩니다.` 라는 비정상 라인이 섞이며 HEAD가 beta로 바뀜. `.claude/settings.json`, `.git/hooks/`, `~/.zshrc`, git config 어디서도 자동 switch/reset을 유발할 만한 hook/alias 미발견. 어떤 외부 wrapper(Claude Code의 자동 복구·다른 백그라운드 프로세스 등) 의심
+- **원인 (가설)**: 다중 worktree 환경에서 같은 branch ref를 두 worktree가 동시에 가리키게 되는 비정상 상태가 트리거인 듯. dst-craft + dst-craft-beta가 모두 `[beta]`로 표시되는 케이스가 5-20·5-23·5-28 사고에서 공통
+- **교훈**:
+  1. 근본 원인 미상이면 **방어층**으로라도 보호 — 결과 일관성이 더 중요
+  2. 메인 워크트리는 "거기에 main이 있다"는 가정으로 모든 워크플로우가 짜여 있어, 가정이 깨지면 즉시 자동 복구할 것
+  3. 매번 같은 패턴이면 진단 로그를 자동 수집 — 다음 사고 발생 시 reflog/worktree list 스냅샷이 트리거 분석에 결정적
+- **해결 (#46)**:
+  - `scripts/check-main-worktree.sh` 가드 작성 — HEAD!=main이고 clean이면 자동 switch, dirty면 비파괴 종료, drift 발생 시 reflog 스냅샷을 `~/.dstcraft-debug/worktree-drift.log`에 누적
+  - `.claude/settings.json`에 SessionStart hook 등록 (매 세션 시작 시 자동 실행)
+  - `/release` · `/beta` 스킬 사전 점검에도 가드 호출 추가 (안전망 한 겹 더)
+
 ## SEO / 구조화 데이터
 
 ### React 18+ server component에서 `dangerouslySetInnerHTML` JSON-LD가 RSC stream에 props로 재직렬화 (2026-05-14, #37)
