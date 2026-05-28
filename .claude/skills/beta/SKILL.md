@@ -35,12 +35,19 @@ CLAUDE.md의 Branch & Deploy Strategy를 준수.
 
 ## 사전 점검 (공통)
 
-병렬 실행:
+먼저 메인 워크트리 가드 (이슈 #46 — main↔beta 드리프트 방어):
+```bash
+bash scripts/check-main-worktree.sh
+```
+clean drift는 자동 복구. dirty drift면 비파괴 종료하니 사용자에게 보고 후 중단.
+
+이어서 병렬 실행:
 - `git fetch --all --prune`
 - `git rev-parse --verify <TARGET_BRANCH>` (브랜치 존재 확인 — `clear` 모드는 스킵)
 - `git worktree list --porcelain` (타겟 워크트리 + dst-craft-beta 워크트리 위치 파악)
 
 **중단 조건**:
+- 메인 워크트리가 main이 아닌데 dirty라 가드가 자동 복구 못함 → 중단, 사용자에게 보고
 - TARGET_BRANCH가 존재하지 않음 (clear 모드 제외)
 - TARGET_BRANCH가 체크아웃된 워크트리가 dirty + 타겟이 현재 워크트리가 아님 (다른 워크트리에 commit 강요 금지)
 
