@@ -55,6 +55,18 @@ function StatRow({ label, value, sub }: { label: string; value: string; sub?: st
   );
 }
 
+// 무기 weapondamage_max(조건부 최대 피해)의 조건 설명.
+// scrapbookdata.lua의 "X-Y" 표기 출처는 각 prefab의 scrapbook_weapondamage = {min, max} 테이블이며,
+// 무기마다 조건이 다르다 (젖음/대상 종류/탄약/비행거리). game-data가 조건 자체를 안 들고 있어 코드 측에서 매핑.
+const WEAPON_CONDITION_LABELS: Record<string, { ko: string; en: string }> = {
+  spear_wathgrithr_lightning: { ko: "젖은 적", en: "vs wet" },
+  spear_wathgrithr_lightning_charged: { ko: "젖은 적", en: "vs wet" },
+  trident: { ko: "바다 생물", en: "vs ocean creature" },
+  rabbitkingspear: { ko: "토끼인간", en: "vs Bunnyman" },
+  slingshot: { ko: "탄약별", en: "by ammo" },
+  voidcloth_boomerang: { ko: "최대 비행 거리", en: "at max throw distance" },
+};
+
 export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
   const l = locale === "ko" ? "ko" : "en";
 
@@ -66,6 +78,13 @@ export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
     const dmgStr = typeof dmg === "string" ? dmg : String(Math.floor(dmg));
     const planarSub = stats.planardamage ? `+${Math.floor(stats.planardamage)} ${l === "ko" ? "차원" : "planar"}` : undefined;
     rows.push(<StatRow key="dmg" label={l === "ko" ? "공격력" : "Damage"} value={dmgStr} sub={planarSub} />);
+    // 조건부 최대 피해 (젖은 적/바다 생물/탄약 종류/비행 거리 등) — 별도 행으로 분리
+    if (stats.weapondamage_max != null) {
+      const cond = WEAPON_CONDITION_LABELS[itemId];
+      const condText = cond ? cond[l] : (l === "ko" ? "조건부" : "conditional");
+      const maxLabel = l === "ko" ? `${condText} 시` : `${condText}`;
+      rows.push(<StatRow key="dmg-max" label={maxLabel} value={`↑ ${Math.floor(stats.weapondamage_max)}`} />);
+    }
   }
   if (stats.weaponrange) {
     rows.push(<StatRow key="range" label={l === "ko" ? "사거리" : "Range"} value={`+${stats.weaponrange}`} />);

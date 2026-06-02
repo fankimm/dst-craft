@@ -18,15 +18,19 @@ const releases: Release[] = [
     version: "0.26.9",
     date: "2026-06-02",
     dev: [
-      "fix(scrapbook): convert-scrapbook.py가 `weapondamage` 문자열 범위(예: \"59-89\")를 누락하던 버그 수정 (#47). `NUMERIC_FIELDS`에는 들어있었지만 `isinstance(_, (int, float))` 가드로 인해 string 값이 드롭됨 — `damage`/`health`와 동일하게 string fallback 분기를 추가. 6개 무기 데미지 노출 복구: rabbitkingspear(51-71), slingshot(17-68), spear_wathgrithr_lightning(59-89), spear_wathgrithr_lightning_charged(59-89), trident(51-76), voidcloth_boomerang(5-27).",
-      "chore(data): scrapbook-stats.ts 재생성 — 위 6건 외 wx78_module_* 22건 영문 specialinfo 문구 game build 갱신 반영 (\"Alpha Circuits Tinkering\" → \"Alpha Circuit Tinkering\" 단수형 환원). 데이터 갱신만 반영, 구조 변경 없음.",
+      "fix(scrapbook): convert-scrapbook.py가 `weapondamage` 문자열 범위(예: \"59-89\")를 누락하던 버그 수정 (#47). `NUMERIC_FIELDS`에는 들어있었지만 `isinstance(_, (int, float))` 가드로 인해 string 값이 드롭됨.",
+      "feat(scrapbook): 클레이가 `scrapbookdata.lua`에 \"min-max\" 문자열로 박아둔 `weapondamage`를 분해해 `weapondamage`(min, number) + `weapondamage_max`(number)로 구조화. 출처는 각 prefab의 `inst.scrapbook_weapondamage = {min, max}` 테이블 (예: `spear_wathgrithr.lua:465`). 6개 무기 적용: spear_wathgrithr_lightning(59~89), _charged(59~89), trident(51~76), slingshot(17~68), rabbitkingspear(51~71), voidcloth_boomerang(5~27).",
+      "feat(item-stats): `ItemStatsPanel`에 조건부 최대 피해 행 추가. 기본 피해 메인 + 조건별 라벨(`젖은 적 시`/`바다 생물 시`/`토끼인간 시`/`탄약별 시`/`최대 비행 거리 시`)과 함께 `↑ 89` 식으로 표시. 조건 매핑은 `WEAPON_CONDITION_LABELS` 상수 (코드 측 closed set — game-data가 조건 자체를 들고 있지 않아 prefab/tuning 읽고 직접 매핑).",
+      "chore(data): scrapbook-stats.ts 재생성 — 위 6건 외 wx78_module_* 22건 영문 specialinfo 문구 game build 갱신 반영 (\"Alpha Circuits Tinkering\" → \"Alpha Circuit Tinkering\" 단수형 환원).",
     ],
     changes: {
       ko: [
-        "위그프리드 천둥창·삼지창·새총·토끼왕창·까매랑 등 일부 무기의 데미지 수치가 표시되지 않던 버그 수정.",
+        "위그프리드 천둥창·삼지창·새총·토끼왕창·까매랑 등 6개 무기 상세에서 누락돼 있던 데미지가 표시됨.",
+        "범위형 데미지를 기본값 + 조건부 최대치(예: \"공격력 59\" + \"젖은 적 시 ↑89\")로 분해 표기. 인게임 스크랩북의 \"59-89\" 같은 모호한 표기를 조건별로 풀어 보여줍니다.",
       ],
       en: [
-        "Fixed a bug where damage values for certain weapons (Battle Spear/Lightning Spear, Trident, Slingshot, Rabbit King Spear, Gloomerang, etc.) were missing from the detail panel.",
+        "Damage values for six weapons (Battle Spear/Lightning Spear, Trident, Slingshot, Rabbit King Spear, Gloomerang, etc.) now show in the detail panel.",
+        "Range damage is now split into base + conditional max (e.g. \"Damage 59\" + \"vs wet ↑89\"), replacing the in-game scrapbook's opaque \"59-89\" style.",
       ],
     },
   },
