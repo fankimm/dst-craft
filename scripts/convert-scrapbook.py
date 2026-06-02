@@ -229,11 +229,13 @@ def extract_stats(entry: dict) -> dict:
         if f in entry and isinstance(entry[f], (int, float)):
             stats[f] = entry[f]
 
-    # damage/health can be a string range like "15-40"
+    # damage/health/weapondamage can be a string range like "15-40"
     if "damage" in entry and isinstance(entry["damage"], str):
         stats["damage"] = entry["damage"]
     if "health" in entry and isinstance(entry["health"], str):
         stats["health"] = entry["health"]
+    if "weapondamage" in entry and isinstance(entry["weapondamage"], str):
+        stats["weapondamage"] = entry["weapondamage"]
 
     for f in STRING_FIELDS:
         if f in entry and isinstance(entry[f], str):

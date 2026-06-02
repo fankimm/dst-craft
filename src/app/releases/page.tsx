@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.9",
+    date: "2026-06-02",
+    dev: [
+      "fix(scrapbook): convert-scrapbook.py가 `weapondamage` 문자열 범위(예: \"59-89\")를 누락하던 버그 수정 (#47). `NUMERIC_FIELDS`에는 들어있었지만 `isinstance(_, (int, float))` 가드로 인해 string 값이 드롭됨 — `damage`/`health`와 동일하게 string fallback 분기를 추가. 6개 무기 데미지 노출 복구: rabbitkingspear(51-71), slingshot(17-68), spear_wathgrithr_lightning(59-89), spear_wathgrithr_lightning_charged(59-89), trident(51-76), voidcloth_boomerang(5-27).",
+      "chore(data): scrapbook-stats.ts 재생성 — 위 6건 외 wx78_module_* 22건 영문 specialinfo 문구 game build 갱신 반영 (\"Alpha Circuits Tinkering\" → \"Alpha Circuit Tinkering\" 단수형 환원). 데이터 갱신만 반영, 구조 변경 없음.",
+    ],
+    changes: {
+      ko: [
+        "위그프리드 천둥창·삼지창·새총·토끼왕창·까매랑 등 일부 무기의 데미지 수치가 표시되지 않던 버그 수정.",
+      ],
+      en: [
+        "Fixed a bug where damage values for certain weapons (Battle Spear/Lightning Spear, Trident, Slingshot, Rabbit King Spear, Gloomerang, etc.) were missing from the detail panel.",
+      ],
+    },
+  },
+  {
     version: "0.26.8",
     date: "2026-05-23",
     dev: [
