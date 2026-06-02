@@ -201,7 +201,7 @@ NUMERIC_FIELDS = [
     "dapperness", "waterproofer", "insulator",
     "stacksize", "perishable",
     "fueledmax", "fueledrate",
-    "weapondamage", "weaponrange",
+    "weapondamage", "weapondamage_max", "weaponrange",
     "sanityaura",
     "hungervalue", "healthvalue", "sanityvalue",
     "health",
@@ -229,11 +229,18 @@ def extract_stats(entry: dict) -> dict:
         if f in entry and isinstance(entry[f], (int, float)):
             stats[f] = entry[f]
 
-    # damage/health can be a string range like "15-40"
+    # damage/health can be a string range like "15-40" — keep as string for creature display
     if "damage" in entry and isinstance(entry["damage"], str):
         stats["damage"] = entry["damage"]
     if "health" in entry and isinstance(entry["health"], str):
         stats["health"] = entry["health"]
+    # weapondamage can be a string range like "59-89" → split into min/max numbers.
+    # Klei auto-dumps {min, max} tables as "min-max" strings; we restore the structure.
+    if "weapondamage" in entry and isinstance(entry["weapondamage"], str):
+        m = re.match(r"^(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)$", entry["weapondamage"])
+        if m:
+            stats["weapondamage"] = float(m.group(1)) if "." in m.group(1) else int(m.group(1))
+            stats["weapondamage_max"] = float(m.group(2)) if "." in m.group(2) else int(m.group(2))
 
     for f in STRING_FIELDS:
         if f in entry and isinstance(entry[f], str):
@@ -301,7 +308,8 @@ def generate_ts(entries: dict, specialinfo_en: dict, specialinfo_ko: dict) -> st
     lines.append("  damage?: number | string;")
     lines.append("  planardamage?: number;")
     lines.append("  health?: number | string;")
-    lines.append("  weapondamage?: number | string;")
+    lines.append("  weapondamage?: number;")
+    lines.append("  weapondamage_max?: number;")
     lines.append("  weaponrange?: number;")
     lines.append("  finiteuses?: number;")
     lines.append("  // Defense")
@@ -374,7 +382,7 @@ def generate_ts(entries: dict, specialinfo_en: dict, specialinfo_ko: dict) -> st
                 props.append(f"{field}: {to_ts_value(stats[field])}")
         # Then numeric/string/bool fields in order
         field_order = [
-            "damage", "planardamage", "health", "weapondamage", "weaponrange", "finiteuses",
+            "damage", "planardamage", "health", "weapondamage", "weapondamage_max", "weaponrange", "finiteuses",
             "armor", "absorb_percent", "armor_planardefense",
             "dapperness", "waterproofer", "insulator", "insulator_type",
             "stacksize", "perishable", "sanityaura",
