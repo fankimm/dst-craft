@@ -21,16 +21,19 @@ const releases: Release[] = [
       "feat(bosses): `BossCombatStats`(`BossesApp.tsx:544`)에 진영(alignment) 뱃지 표시 — `shadow_aligned`/`lunar_aligned`가 `scrapbookStats`에 이미 있었지만 보스탭에선 누락돼 있었음 (#48). 제작탭 `ItemStatsPanel`과 동일 스타일·라벨 사용. early-return 가드는 `!health && !damage && !hasAlignment`로 확장해 alignment-only 항목도 통과.",
       "fix(i18n): 달 진영 한글 라벨을 인게임 ko.po 기준으로 보정 — `월광 진영` → `달 진영` (`STRINGS.SCRAPBOOK.NOTE_LUNAR_ALIGNED`). 제작탭/보스탭 모두.",
       "refactor(item-stats): 진영 뱃지 색상 변경 — Shadow 보라 → zinc(회색), Lunar 하늘 → emerald. 인게임 분위기 및 사용자 피드백 반영.",
-      "출처: FR 사용자 피드백 (\"Add alignment for mobs?\", 2026-06-10) + 한국 사용자 색/번역 피드백.",
+      "fix(bosses): `BOSS_SCRAPBOOK_MAP`에 `twinsofterror → twinofterror1` 매핑 추가. 인게임 `eyeofterror.lua:595,665`에서 TWIN1/TWIN2 모두 `inst:AddTag(\"shadow_aligned\")` 명시(스크랩북엔 `twinofterror1/2`로 분리 등록)이라 매핑이 없어 진영 누락. 위그프리드 진영 보너스 실제 적용 대상.",
+      "출처: FR 사용자 피드백 (\"Add alignment for mobs?\", 2026-06-10) + 한국 사용자 색/번역 + minotaur/twinsofterror 크로스체크 피드백. 31개 보스 prefab AddTag 전수조사 결과 모두 일치(twinsofterror 매핑 누락 제외).",
     ],
     changes: {
       ko: [
         "보스/몹 상세에서 그림자 진영 / 달 진영 뱃지가 표시됩니다 (제작탭과 동일한 표기).",
         "진영 뱃지 색상을 인게임 분위기에 맞게 회색(그림자) / 에메랄드(달)로 변경. 한글 라벨도 인게임 표기(`달 진영`)로 맞춤.",
+        "공포의 쌍둥이(Twins of Terror) 그림자 진영 누락 수정.",
       ],
       en: [
         "Boss/mob detail panels now show Shadow Aligned / Lunar Aligned badges (same as the crafting tab).",
         "Badge colors updated to gray (Shadow) / emerald (Lunar) to better match the in-game tone.",
+        "Fixed missing Shadow Aligned tag for Twins of Terror.",
       ],
     },
   },

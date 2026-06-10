@@ -539,6 +539,7 @@ function formatSanityAura(perSec: number, locale: Locale): string {
 const BOSS_SCRAPBOOK_MAP: Record<string, string> = {
   shadow_chess: "shadow_rook",
   alterguardian_phase3: "alterguardian_phase1",
+  twinsofterror: "twinofterror1",
 };
 
 function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale }) {
