@@ -174,15 +174,15 @@ export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
     const badges: React.ReactNode[] = [];
     if (stats.shadow_aligned) {
       badges.push(
-        <span key="shadow" className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-violet-500/15 text-violet-600 dark:text-violet-400">
+        <span key="shadow" className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-zinc-500/20 text-zinc-600 dark:text-zinc-300">
           {l === "ko" ? "그림자 진영" : "Shadow Aligned"}
         </span>
       );
     }
     if (stats.lunar_aligned) {
       badges.push(
-        <span key="lunar" className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-600 dark:text-sky-400">
-          {l === "ko" ? "월광 진영" : "Lunar Aligned"}
+        <span key="lunar" className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+          {l === "ko" ? "달 진영" : "Lunar Aligned"}
         </span>
       );
     }

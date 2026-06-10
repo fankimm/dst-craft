@@ -539,6 +539,7 @@ function formatSanityAura(perSec: number, locale: Locale): string {
 const BOSS_SCRAPBOOK_MAP: Record<string, string> = {
   shadow_chess: "shadow_rook",
   alterguardian_phase3: "alterguardian_phase1",
+  twinsofterror: "twinofterror1",
 };
 
 function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale }) {
@@ -550,8 +551,9 @@ function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale })
   const damage = stats.damage;
   const planar = stats.planardamage;
   const sanity = stats.sanityaura;
+  const hasAlignment = stats.shadow_aligned || stats.lunar_aligned;
 
-  if (!health && !damage) return null;
+  if (!health && !damage && !hasAlignment) return null;
 
   const items: { icon: string; label: string; value: string; sub?: string; color: string }[] = [];
 
@@ -587,17 +589,35 @@ function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale })
   }
 
   return (
-    <div className="flex flex-wrap gap-x-4 gap-y-1.5 px-1">
-      {items.map((item) => (
-        <div key={item.label} className="flex items-center gap-1.5 text-xs">
-          <img src={assetPath(item.icon)} alt="" className="size-4 object-contain" />
-          <span className="text-muted-foreground">{item.label}</span>
-          <span className={cn("font-semibold tabular-nums", item.color)}>
-            {item.value}
-            {item.sub && <span className="font-normal text-muted-foreground ml-1">{item.sub}</span>}
-          </span>
+    <div className="space-y-1.5 px-1">
+      {items.length > 0 && (
+        <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+          {items.map((item) => (
+            <div key={item.label} className="flex items-center gap-1.5 text-xs">
+              <img src={assetPath(item.icon)} alt="" className="size-4 object-contain" />
+              <span className="text-muted-foreground">{item.label}</span>
+              <span className={cn("font-semibold tabular-nums", item.color)}>
+                {item.value}
+                {item.sub && <span className="font-normal text-muted-foreground ml-1">{item.sub}</span>}
+              </span>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
+      {hasAlignment && (
+        <div className="flex flex-wrap gap-1">
+          {stats.shadow_aligned && (
+            <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-zinc-500/20 text-zinc-600 dark:text-zinc-300">
+              {locale === "ko" ? "그림자 진영" : "Shadow Aligned"}
+            </span>
+          )}
+          {stats.lunar_aligned && (
+            <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+              {locale === "ko" ? "달 진영" : "Lunar Aligned"}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
