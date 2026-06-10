@@ -606,13 +606,13 @@ function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale })
       {hasAlignment && (
         <div className="flex flex-wrap gap-1">
           {stats.shadow_aligned && (
-            <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-violet-500/15 text-violet-600 dark:text-violet-400">
+            <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-zinc-500/20 text-zinc-600 dark:text-zinc-300">
               {locale === "ko" ? "그림자 진영" : "Shadow Aligned"}
             </span>
           )}
           {stats.lunar_aligned && (
-            <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-600 dark:text-sky-400">
-              {locale === "ko" ? "월광 진영" : "Lunar Aligned"}
+            <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+              {locale === "ko" ? "달 진영" : "Lunar Aligned"}
             </span>
           )}
         </div>

@@ -18,15 +18,19 @@ const releases: Release[] = [
     version: "0.26.10",
     date: "2026-06-10",
     dev: [
-      "feat(bosses): `BossCombatStats`(`BossesApp.tsx:544`)에 진영(alignment) 뱃지 표시 — `shadow_aligned`/`lunar_aligned`가 `scrapbookStats`에 이미 있었지만 보스탭에선 누락돼 있었음 (#48). 제작탭 `ItemStatsPanel`의 보라/하늘 뱃지 스타일 동일 사용. early-return 가드는 `!health && !damage && !hasAlignment`로 확장해 alignment-only 항목도 통과.",
-      "출처: FR 사용자 피드백 (\"Add alignment for mobs?\", 2026-06-10).",
+      "feat(bosses): `BossCombatStats`(`BossesApp.tsx:544`)에 진영(alignment) 뱃지 표시 — `shadow_aligned`/`lunar_aligned`가 `scrapbookStats`에 이미 있었지만 보스탭에선 누락돼 있었음 (#48). 제작탭 `ItemStatsPanel`과 동일 스타일·라벨 사용. early-return 가드는 `!health && !damage && !hasAlignment`로 확장해 alignment-only 항목도 통과.",
+      "fix(i18n): 달 진영 한글 라벨을 인게임 ko.po 기준으로 보정 — `월광 진영` → `달 진영` (`STRINGS.SCRAPBOOK.NOTE_LUNAR_ALIGNED`). 제작탭/보스탭 모두.",
+      "refactor(item-stats): 진영 뱃지 색상 변경 — Shadow 보라 → zinc(회색), Lunar 하늘 → emerald. 인게임 분위기 및 사용자 피드백 반영.",
+      "출처: FR 사용자 피드백 (\"Add alignment for mobs?\", 2026-06-10) + 한국 사용자 색/번역 피드백.",
     ],
     changes: {
       ko: [
-        "보스/몹 상세에서 그림자 진영 / 월광 진영 뱃지가 표시됩니다 (제작탭과 동일한 표기).",
+        "보스/몹 상세에서 그림자 진영 / 달 진영 뱃지가 표시됩니다 (제작탭과 동일한 표기).",
+        "진영 뱃지 색상을 인게임 분위기에 맞게 회색(그림자) / 에메랄드(달)로 변경. 한글 라벨도 인게임 표기(`달 진영`)로 맞춤.",
       ],
       en: [
         "Boss/mob detail panels now show Shadow Aligned / Lunar Aligned badges (same as the crafting tab).",
+        "Badge colors updated to gray (Shadow) / emerald (Lunar) to better match the in-game tone.",
       ],
     },
   },
