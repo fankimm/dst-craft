@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.26.11",
+    date: "2026-06-13",
+    dev: [
+      "fix(data): 인게임 strings.lua + ko.po와 어긋난 보스/아이템 이름 13건 보정 (#49). FR 사용자 피드백(\"Don't translate from Chinese, get the real English names\") 계기로 NAMES 전수조사.",
+      "bosses.ts: warg `Warg→Varg`, mutateddeerclops `Crystalline Deerclops→Crystal Deerclops` / `수정→수정체`, mutatedbearger `무장→무장한`, alterguardian_phase1_lunarrift `Celestial Retinue→Celestial Revenant`.",
+      "game-items-db.ts: chesspiece_moon_builder/sketch 깨진 값(`\\`) → `\"Moon\" Figure`/`\"달\" 조각상` 등, wx78_drone_zap_remote `Zaptrocuter→Zaptrocuter Controller`/`찌릿콥터→찌릿콥터 컨트롤러`, wx78module_light `조명 회로→발광 회로`, mutated 조각상 ko 표기(`무장한`/`수정체`) 정정.",
+      "out of scope: `eyeofterror`(Klei 내부 strings.lua가 `Eye Of Terror`/`Eye of Terror` 혼용 — 손대지 않음).",
+    ],
+    changes: {
+      ko: [
+        "여러 보스/아이템의 영문/한글 이름을 인게임 공식 표기로 보정. 예: Warg→Varg, Crystalline Deerclops→Crystal Deerclops, 수정→수정체 외눈사슴, 발광 회로, 찌릿콥터 컨트롤러 등.",
+        "달 체스말 조각상 2종(Moon Figure / Moon Figure Sketch) 이름이 빈 값으로 표시되던 데이터 손상 수정.",
+      ],
+      en: [
+        "Corrected several boss/item names to match the in-game official strings (e.g. Warg→Varg, Crystalline Deerclops→Crystal Deerclops, Zaptrocuter Controller, Illumination Circuit, Celestial Revenant).",
+        "Fixed broken data where the two \"Moon\" Figure items had empty names.",
+      ],
+    },
+  },
+  {
     version: "0.26.10",
     date: "2026-06-10",
     dev: [

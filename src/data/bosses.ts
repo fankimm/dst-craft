@@ -491,7 +491,7 @@ export const bosses: Boss[] = [
   },
   {
     id: "warg",
-    name: "Warg",
+    name: "Varg",
     nameKo: "바르그",
     categories: ["mini"],
     image: "warg.png",
@@ -533,8 +533,8 @@ export const bosses: Boss[] = [
   },
   {
     id: "mutateddeerclops",
-    name: "Crystalline Deerclops",
-    nameKo: "수정 외눈사슴",
+    name: "Crystal Deerclops",
+    nameKo: "수정체 외눈사슴",
     categories: ["seasonal", "story"],
     image: "mutateddeerclops.png",
     loot: [
@@ -550,7 +550,7 @@ export const bosses: Boss[] = [
   {
     id: "mutatedbearger",
     name: "Armored Bearger",
-    nameKo: "무장 곰소리",
+    nameKo: "무장한 곰소리",
     categories: ["seasonal", "story"],
     image: "mutatedbearger.png",
     loot: [
@@ -563,7 +563,7 @@ export const bosses: Boss[] = [
   },
   {
     id: "alterguardian_phase1_lunarrift",
-    name: "Celestial Retinue",
+    name: "Celestial Revenant",
     nameKo: "천상의 복수자",
     categories: ["story", "raid"],
     image: "alterguardian_phase1_lunarrift.png",
