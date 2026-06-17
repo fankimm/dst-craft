@@ -15,6 +15,34 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.27.0",
+    date: "2026-06-17",
+    dev: [
+      "feat(skins): 아이템 스킨 탭 신규 추가 (#50). 게임 `databundles/images.zip`의 KTEX(DXT5) 인벤토리 아틀라스를 Python(Pillow only)으로 디코드 → `inventoryimages{1..4}.tex/.xml` 파싱 → 스킨 prefab과 매칭되는 961개 PNG를 `public/images/skins/`에 추출. 외부 ktools 의존 없음.",
+      "scripts/extract-skin-icons.py: KTEX 파서 (10-byte mip header, BC3 디코딩 → Pillow `frombytes(\"bcn\", 3)`). `prefabskins.lua` 의 skin_id 집합으로 필터링, level3 변형은 base 이름으로 저장.",
+      "scripts/extract-skins.py: `prefabs/skinprefabs.lua` (CreatePrefabSkin) + `skin_strings.lua` (영문 names/quotes) + ko.po (`STRINGS.SKIN_NAMES`/`SKIN_QUOTES` 약 3,900건) + `skin_set_info.lua` 조인 → `src/data/skins.ts` 자동 생성 (960 entries).",
+      "scripts/sync-game-data.sh: `extract-skin-icons` + `extract-skins` 단계 추가. 게임 buildid 변경 시 자동 재생성.",
+      "src/components/skins/SkinsApp.tsx: 카테고리(캐릭터별/모자/방어구/무기/장신구/지팡이/가방/꽃) + 희귀도 칩 필터 + 한/영 검색 + 그리드 + DetailPanel. 희귀도 색상은 `skinsutils.lua` SKIN_RARITY_COLORS 미러.",
+      "src/components/AppShell.tsx: `tab_skins` 탭 항목 추가 (`?tab=skins`).",
+      "src/lib/i18n.ts: 스킨 탭 라벨, 희귀도(Common~HeirloomElegant 17종), rarity modifier(Woven 등) 한/영 추가.",
+      "Out of scope (phase 2): 캐릭터 본체 풀바디 스킨(body_*/hand_*/legs_*/feet_*). 인벤토리 아틀라스에 아이콘 없음 — 별도 자료원 필요.",
+    ],
+    changes: {
+      ko: [
+        "스킨 탭 신설. 모자·방어구·무기·장신구·지팡이·가방·아비게일 꽃 등 인벤토리 아이콘이 있는 스킨 약 960개를 캐릭터/카테고리별로 그리드 표시.",
+        "희귀도(일반·고급·특수·정교·우아·가보·이벤트 등) 색상과 한국어 라벨을 인게임 그대로 적용. 클릭하면 영문/한국어 이름, 인용구, 세트 정보, 스킨 태그 상세 패널.",
+        "스킨 데이터/아이콘은 게임 빌드와 동기화 — 게임 업데이트가 오면 자동 갱신.",
+        "(다음 단계 예정) 캐릭터 본체가 입는 풀바디 스킨은 게임 안에 정적 이미지가 없어서 별도 작업 필요. 우선 모자·장비 스킨부터 공개.",
+      ],
+      en: [
+        "New Skins tab. ~960 item skins (hats, armor, weapons, amulets, canes, backpacks, Abigail's flower, etc.) displayed in a grid grouped by character/category.",
+        "Rarity colors and labels (Common, Classy, Spiffy, Distinguished, Elegant, Heirloom, Event, …) mirror the in-game palette. Tap a skin to see the English/Korean name, quote, set, and tags.",
+        "Skin data/icons stay in sync with the game build — automatically refreshed on Klei updates.",
+        "(Coming next) Full-body character body skins aren't included yet — no static image exists in the game files. Item skins ship first.",
+      ],
+    },
+  },
+  {
     version: "0.26.11",
     date: "2026-06-13",
     dev: [
