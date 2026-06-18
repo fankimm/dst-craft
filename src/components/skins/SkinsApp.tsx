@@ -165,16 +165,15 @@ const EXCLUSIVE_ITEMS: Record<string, string> = {
   battlesong_shadowallegiance: "wigfrid",
   // Webber — spider companions
   spider_repellent: "webber", spider_warrior: "webber", spider_white: "webber",
-  // Warly — portable cookware + spices
-  portablecookpot: "warly", portablespicer: "warly",
-  spice_garlic: "warly", spice_chili: "warly", spice_sugar: "warly", spice_salt: "warly",
-  // Wortox — souls
-  wortox_soul: "wortox", wortox_souljar: "wortox",
-  // Wormwood — bramble armor + bulb
-  armor_bramble: "wormwood", bramblespike: "wormwood", bramble_bulb: "wormwood",
-  compostwrap: "wormwood", livinglog: "wormwood",
-  // Wurt — merm regalia
-  mermhat: "wurt", mermthrone: "wurt", wurt_lure: "wurt",
+  // Warly — portable cookware + spices (in-game prefab uses `_item` suffix)
+  portablecookpot_item: "warly", portablespicer_item: "warly",
+  portableblender_item: "warly", spicepack: "warly",
+  // Wormwood — bramble armor
+  armor_bramble: "wormwood",
+  // Wurt — merm regalia + merm buildings
+  mermhat: "wurt", mermhouse_crafted: "wurt", mermwatchtower: "wurt",
+  // Wickerbottom — bookstation (advanced book crafting)
+  bookstation: "wickerbottom",
   // Walter — slingshot
   slingshot: "walter", slingshotammo_rock: "walter",
   slingshotammo_gold: "walter", slingshotammo_marble: "walter",
