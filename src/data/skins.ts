@@ -37,6 +37,10 @@ export interface SkinEntry {
   quote_en?: string;
   quote_ko?: string;
   set_id?: string;
+  /** Canonical character key (e.g. "walter", "wigfrid") if the underlying
+   *  prefab is character-locked. Sourced from recipes.lua builder_tag /
+   *  builder_skill, with a fallback to word-boundary match on the prefab name. */
+  character?: string;
   icon: string;
 }
 
@@ -51,7 +55,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Archaic",
     "name_ko": "고대인",
     "icon": "/images/skins/abigail_flower_ancient.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_creepy",
@@ -63,7 +68,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Supernatural",
     "name_ko": "초자연적",
     "icon": "/images/skins/abigail_flower_creepy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_formal",
@@ -75,7 +81,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Ghost of Honor",
     "name_ko": "'귀'빈",
     "icon": "/images/skins/abigail_flower_formal.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_funeral",
@@ -87,7 +94,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Mourned",
     "name_ko": "애도",
     "icon": "/images/skins/abigail_flower_funeral.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_gladiator",
@@ -99,7 +107,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Gladiator",
     "name_ko": "검투사",
     "icon": "/images/skins/abigail_flower_gladiator.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_handmedown",
@@ -111,7 +120,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Nostalgic",
     "name_ko": "향수",
     "icon": "/images/skins/abigail_flower_handmedown.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_ice",
@@ -123,7 +133,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Snowfallen",
     "name_ko": "눈송이",
     "icon": "/images/skins/abigail_flower_ice.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_lunar",
@@ -135,7 +146,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Moonbound",
     "name_ko": "월광",
     "icon": "/images/skins/abigail_flower_lunar.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_lureplant",
@@ -147,7 +159,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Lureplant Costume",
     "name_ko": "미끼식물 코스튬",
     "icon": "/images/skins/abigail_flower_lureplant.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_magma",
@@ -159,7 +172,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Magmatic",
     "name_ko": "용암불꽃",
     "icon": "/images/skins/abigail_flower_magma.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_masquerade",
@@ -171,7 +185,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Masquerader",
     "name_ko": "가면무도회",
     "icon": "/images/skins/abigail_flower_masquerade.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_nature",
@@ -183,7 +198,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Verdant",
     "name_ko": "신록",
     "icon": "/images/skins/abigail_flower_nature.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_pirate",
@@ -195,7 +211,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Swashbuckler",
     "name_ko": "불한당",
     "icon": "/images/skins/abigail_flower_pirate.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_rose",
@@ -207,7 +224,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Roseate",
     "name_ko": "장미꽃",
     "icon": "/images/skins/abigail_flower_rose.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_shadow",
@@ -219,7 +237,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Triumphant",
     "name_ko": "승리자",
     "icon": "/images/skins/abigail_flower_shadow.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_survivor",
@@ -231,7 +250,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Persister",
     "name_ko": "끈질긴 자매",
     "icon": "/images/skins/abigail_flower_survivor.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_victorian",
@@ -243,7 +263,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The Victorian",
     "name_ko": "빅토리아인",
     "icon": "/images/skins/abigail_flower_victorian.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "abigail_flower_yule",
@@ -255,7 +276,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Holiday Spirit",
     "name_ko": "명절의 유령",
     "icon": "/images/skins/abigail_flower_yule.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "alterguardianhat_lastprism",
@@ -501,7 +523,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Overgrowth Husk",
     "name_ko": "웃자란 덩굴 거죽",
     "icon": "/images/skins/armor_bramble_ancient.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wormwood"
   },
   {
     "id": "armor_dragonfly_fangedcollar",
@@ -625,7 +648,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Brambleshade Paladin Armor",
     "name_ko": "빛가시 성기사 갑옷",
     "icon": "/images/skins/armor_lunarplant_husk_brave.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wormwood"
   },
   {
     "id": "armor_lunarplant_husk_knight",
@@ -637,7 +661,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Brambleshade Raider Armor",
     "name_ko": "빛가시 돌격대 갑옷",
     "icon": "/images/skins/armor_lunarplant_husk_knight.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wormwood"
   },
   {
     "id": "armor_lunarplant_knight",
@@ -2146,7 +2171,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Ashley",
     "name_ko": "애슐리",
     "icon": "/images/skins/bernie_cat.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "willow"
   },
   {
     "id": "bernie_dog",
@@ -2161,7 +2187,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Sparky",
     "name_ko": "스파키",
     "icon": "/images/skins/bernie_dog.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "willow"
   },
   {
     "id": "birdcage_adventure",
@@ -2374,7 +2401,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "The End is Nigh: Gilded Edition",
     "name_ko": "종말이 다가온다: 금박본",
     "icon": "/images/skins/book_brimstone_gilded.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wickerbottom"
   },
   {
     "id": "book_research_station_howto",
@@ -2390,7 +2418,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Survival for Geniuses",
     "name_ko": "천재들의 생존비법",
     "icon": "/images/skins/book_research_station_howto.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wickerbottom"
   },
   {
     "id": "book_silviculture_livinglog",
@@ -2406,7 +2435,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Accursed Silviculture",
     "name_ko": "괴이 조림학",
     "icon": "/images/skins/book_silviculture_livinglog.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wickerbottom"
   },
   {
     "id": "book_sleep_magazine",
@@ -2422,7 +2452,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Evening Theater Schedule",
     "name_ko": "야간 공연 일정표",
     "icon": "/images/skins/book_sleep_magazine.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wickerbottom"
   },
   {
     "id": "book_temperature_romance",
@@ -2438,7 +2469,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Mermio and Pigliet",
     "name_ko": "로미옭과 꿀리엣",
     "icon": "/images/skins/book_temperature_romance.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wickerbottom"
   },
   {
     "id": "book_web_tallbird",
@@ -2454,7 +2486,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Monstrous Tome",
     "name_ko": "괴도서",
     "icon": "/images/skins/book_web_tallbird.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wickerbottom"
   },
   {
     "id": "bookstation_house",
@@ -2468,7 +2501,8 @@ export const SKINS: SkinEntry[] = [
     "release_group": 169,
     "name_en": "Bookhouse",
     "name_ko": "서가",
-    "icon": "/images/skins/bookstation_house.png"
+    "icon": "/images/skins/bookstation_house.png",
+    "character": "wickerbottom"
   },
   {
     "id": "boomerang_bananarang",
@@ -5904,7 +5938,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Dampwood Hat",
     "name_ko": "습기찬모",
     "icon": "/images/skins/hat_woodcarved_swamp.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "woodie"
   },
   {
     "id": "heatrock_fantasy",
@@ -6686,7 +6721,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Vintage Lighter",
     "name_ko": "빈티지 라이터",
     "icon": "/images/skins/lighter_glass.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "willow"
   },
   {
     "id": "lighter_haunteddoll",
@@ -6702,7 +6738,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Cursed Sterling Lighter",
     "name_ko": "저주받은 은제 라이터",
     "icon": "/images/skins/lighter_haunteddoll.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "willow"
   },
   {
     "id": "lighter_heart",
@@ -6717,7 +6754,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Rekindling Lighter",
     "name_ko": "회고의 라이터",
     "icon": "/images/skins/lighter_heart.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "willow"
   },
   {
     "id": "lighter_old",
@@ -6732,7 +6770,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Expedition Lighter",
     "name_ko": "탐험용 라이터",
     "icon": "/images/skins/lighter_old.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "willow"
   },
   {
     "id": "lighter_ragged",
@@ -6747,7 +6786,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Forsaken Lighter",
     "name_ko": "저주받은 라이터",
     "icon": "/images/skins/lighter_ragged.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "willow"
   },
   {
     "id": "lighter_rose",
@@ -6762,7 +6802,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Heirloom Lighter",
     "name_ko": "가보 라이터",
     "icon": "/images/skins/lighter_rose.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "willow"
   },
   {
     "id": "lightning_rod_adventure",
@@ -6963,7 +7004,8 @@ export const SKINS: SkinEntry[] = [
     "release_group": 155,
     "name_en": "Nightmarish Magician's Chest",
     "name_ko": "악몽의 마술 상자",
-    "icon": "/images/skins/magician_chest_shadow.png"
+    "icon": "/images/skins/magician_chest_shadow.png",
+    "character": "maxwell"
   },
   {
     "id": "magician_chest_shadow_resurrected",
@@ -6977,7 +7019,8 @@ export const SKINS: SkinEntry[] = [
     "release_group": 180,
     "name_en": "Nightmarish Magician's Chest",
     "name_ko": "악몽의 마술 상자",
-    "icon": "/images/skins/magician_chest_shadow_resurrected.png"
+    "icon": "/images/skins/magician_chest_shadow_resurrected.png",
+    "character": "maxwell"
   },
   {
     "id": "mast_crabking_alt_item",
@@ -7195,7 +7238,8 @@ export const SKINS: SkinEntry[] = [
     "release_group": 165,
     "name_en": "Suspectacles",
     "name_ko": "안수상한 안경",
-    "icon": "/images/skins/mermhat_clown.png"
+    "icon": "/images/skins/mermhat_clown.png",
+    "character": "wurt"
   },
   {
     "id": "mermhouse_crafted_fantasy",
@@ -7211,7 +7255,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Fantasmical Mermhouse",
     "name_ko": "환상의 나라 어인집",
     "icon": "/images/skins/mermhouse_crafted_fantasy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wurt"
   },
   {
     "id": "mermhouse_crafted_mystical",
@@ -7227,7 +7272,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Mystic Mermhouse",
     "name_ko": "신비로운 어인집",
     "icon": "/images/skins/mermhouse_crafted_mystical.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wurt"
   },
   {
     "id": "mermhouse_crafted_swamp",
@@ -7243,7 +7289,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Mossy Mermhouse",
     "name_ko": "이끼 어인집",
     "icon": "/images/skins/mermhouse_crafted_swamp.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wurt"
   },
   {
     "id": "mermwatchtower_mystical",
@@ -7259,7 +7306,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Mystic Merm Flort",
     "name_ko": "신비로운 어인 욣새",
     "icon": "/images/skins/mermwatchtower_mystical.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wurt"
   },
   {
     "id": "mermwatchtower_swamp",
@@ -7275,7 +7323,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Mossy Merm Flort",
     "name_ko": "이끼 어인 욣새",
     "icon": "/images/skins/mermwatchtower_swamp.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wurt"
   },
   {
     "id": "mighty_gym_ancient",
@@ -7291,7 +7340,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Archaic Gym",
     "name_ko": "고대의 체육관",
     "icon": "/images/skins/mighty_gym_ancient.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wolfgang"
   },
   {
     "id": "minerhat_bonnet",
@@ -8506,7 +8556,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Porcelain Grinding Mill",
     "name_ko": "도자기 제분기",
     "icon": "/images/skins/portable_blender_porcelain_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_blender_rustic_item",
@@ -8518,7 +8569,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Cast Iron Grinding Mill",
     "name_ko": "주철 제분기",
     "icon": "/images/skins/portable_blender_rustic_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_blender_silver_item",
@@ -8530,7 +8582,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Silver Grinding Mill",
     "name_ko": "은제 제분기",
     "icon": "/images/skins/portable_blender_silver_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_blender_survivor_item",
@@ -8542,7 +8595,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Stoneware Grinding Mill",
     "name_ko": "석제 제분기",
     "icon": "/images/skins/portable_blender_survivor_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_cook_pot_porcelain_item",
@@ -8554,7 +8608,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Porcelain Crock Pot",
     "name_ko": "도자기 요리솥",
     "icon": "/images/skins/portable_cook_pot_porcelain_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_cook_pot_rustic_item",
@@ -8566,7 +8621,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Cast Iron Crock Pot",
     "name_ko": "주철 요리솥",
     "icon": "/images/skins/portable_cook_pot_rustic_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_cook_pot_silver_item",
@@ -8578,7 +8634,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Silver Crock Pot",
     "name_ko": "은제 요리솥",
     "icon": "/images/skins/portable_cook_pot_silver_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_cook_pot_survivor_item",
@@ -8590,7 +8647,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Stoneware Crock Pot",
     "name_ko": "석제 요리솥",
     "icon": "/images/skins/portable_cook_pot_survivor_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_spicer_porcelain_item",
@@ -8602,7 +8660,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Porcelain Seasoning Station",
     "name_ko": "도자기 양념기",
     "icon": "/images/skins/portable_spicer_porcelain_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_spicer_rustic_item",
@@ -8614,7 +8673,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Cast Iron Seasoning Station",
     "name_ko": "주철 양념기",
     "icon": "/images/skins/portable_spicer_rustic_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_spicer_silver_item",
@@ -8626,7 +8686,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Silver Seasoning Station",
     "name_ko": "은제 양념기",
     "icon": "/images/skins/portable_spicer_silver_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "portable_spicer_survivor_item",
@@ -8638,7 +8699,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Stoneware Seasoning Station",
     "name_ko": "석제 양념기",
     "icon": "/images/skins/portable_spicer_survivor_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "pottedfern_cotl",
@@ -10288,7 +10350,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Beach House Sisturn",
     "name_ko": "해변 별장 헌화당",
     "icon": "/images/skins/sisturn_beachhouse.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "sisturn_nest",
@@ -10303,7 +10366,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Nested Sisturn",
     "name_ko": "둥지 헌화당",
     "icon": "/images/skins/sisturn_nest.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wendy"
   },
   {
     "id": "sisturn_victorian",
@@ -10317,7 +10381,8 @@ export const SKINS: SkinEntry[] = [
     "release_group": 169,
     "name_en": "Victorian Sisturn",
     "name_ko": "빅토리아풍 헌화당",
-    "icon": "/images/skins/sisturn_victorian.png"
+    "icon": "/images/skins/sisturn_victorian.png",
+    "character": "wendy"
   },
   {
     "id": "skeletonhat_mythical",
@@ -10379,7 +10444,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Wasteland Slingshot",
     "name_ko": "황무지 새총",
     "icon": "/images/skins/slingshot_bandaged.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "slingshot_nature",
@@ -10394,7 +10460,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Woodland Slingshot",
     "name_ko": "삼림지 새총",
     "icon": "/images/skins/slingshot_nature.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "slingshot_spiked",
@@ -10409,7 +10476,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Thorny Slingshot",
     "name_ko": "가시 돋친 새총",
     "icon": "/images/skins/slingshot_spiked.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "slingshot_straws",
@@ -10424,7 +10492,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Wicker Slingshot",
     "name_ko": "고리버들 새총",
     "icon": "/images/skins/slingshot_straws.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "spear_bee",
@@ -10573,7 +10642,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Moonlight Elding Spear",
     "name_ko": "월광의 뇌전창",
     "icon": "/images/skins/spear_wathgrithr_lightning_lunar.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "spear_wathgrithr_lightning_northern",
@@ -10585,7 +10655,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Nordic Elding Spear",
     "name_ko": "북방민의 뇌전창",
     "icon": "/images/skins/spear_wathgrithr_lightning_northern.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "spear_wathgrithr_lightning_valkyrie",
@@ -10597,7 +10668,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Winged Elding Spear",
     "name_ko": "날개달린 뇌전창",
     "icon": "/images/skins/spear_wathgrithr_lightning_valkyrie.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "spear_wathgrithr_lightning_wrestle",
@@ -10609,7 +10681,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Ultimate Elding Spear",
     "name_ko": "궁극의 뇌전창",
     "icon": "/images/skins/spear_wathgrithr_lightning_wrestle.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "spear_wathgrithr_lunar",
@@ -10625,7 +10698,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Moonlight Spear",
     "name_ko": "월광창",
     "icon": "/images/skins/spear_wathgrithr_lunar.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "spear_wathgrithr_northern",
@@ -10641,7 +10715,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Nordic Battle Spear",
     "name_ko": "북방민의 전투 창",
     "icon": "/images/skins/spear_wathgrithr_northern.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "spear_wathgrithr_valkyrie",
@@ -10657,7 +10732,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Winged Spear",
     "name_ko": "날개 달린 창",
     "icon": "/images/skins/spear_wathgrithr_valkyrie.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "spear_wathgrithr_wrestle",
@@ -10673,7 +10749,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Ultimate Spear",
     "name_ko": "궁극의 창",
     "icon": "/images/skins/spear_wathgrithr_wrestle.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "spicepack_porcelain",
@@ -10688,7 +10765,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Armoire Nomade",
     "name_ko": "휴대용 보관함",
     "icon": "/images/skins/spicepack_porcelain.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "spicepack_rustic",
@@ -10703,7 +10781,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Twined Chef Pouch",
     "name_ko": "엮어만든 요리사 파우치",
     "icon": "/images/skins/spicepack_rustic.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "spicepack_silver",
@@ -10718,7 +10797,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Fine Chef Pouch",
     "name_ko": "멋진 요리사 파우치",
     "icon": "/images/skins/spicepack_silver.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "spicepack_survivor",
@@ -10733,7 +10813,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Kitchen Scraps Sack",
     "name_ko": "잔반 주머니",
     "icon": "/images/skins/spicepack_survivor.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "warly"
   },
   {
     "id": "starstaff_crystal",
@@ -12639,7 +12720,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Peregrine Toque",
     "name_ko": "송골매 토크",
     "icon": "/images/skins/walterhat_ancient.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_bee",
@@ -12654,7 +12736,8 @@ export const SKINS: SkinEntry[] = [
     "release_group": 124,
     "name_en": "Buzzy Boy Cap",
     "name_ko": "붕붕소년 모자",
-    "icon": "/images/skins/walterhat_bee.png"
+    "icon": "/images/skins/walterhat_bee.png",
+    "character": "walter"
   },
   {
     "id": "walterhat_beep",
@@ -12670,7 +12753,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Buzzy Boy Cap",
     "name_ko": "붕붕소년 모자",
     "icon": "/images/skins/walterhat_beep.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_detective",
@@ -12686,7 +12770,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Deerstalker",
     "name_ko": "사슴잡이 모자",
     "icon": "/images/skins/walterhat_detective.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_formal",
@@ -12702,7 +12787,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Pine Leader Hat",
     "name_ko": "으뜸 소나무 모자",
     "icon": "/images/skins/walterhat_formal.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_ice",
@@ -12719,7 +12805,8 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "포근한 모자",
     "icon": "/images/skins/walterhat_ice.png",
     "rarity_modifier": "Woven",
-    "set_id": "emote_carol"
+    "set_id": "emote_carol",
+    "character": "walter"
   },
   {
     "id": "walterhat_lunar",
@@ -12735,7 +12822,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Lunar Scout Cap",
     "name_ko": "달빛 소년단 모자",
     "icon": "/images/skins/walterhat_lunar.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_nature",
@@ -12751,7 +12839,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Adventurer's Kerchief",
     "name_ko": "모험가의 두건",
     "icon": "/images/skins/walterhat_nature.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_rose",
@@ -12767,7 +12856,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Brimmed Felt Rosarian",
     "name_ko": "테 두른 로자리안",
     "icon": "/images/skins/walterhat_rose.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_shadow",
@@ -12783,7 +12873,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Crooked Cap",
     "name_ko": "비뚤어진 모자",
     "icon": "/images/skins/walterhat_shadow.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_survivor",
@@ -12799,7 +12890,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Cap o' Flage",
     "name_ko": "위장모",
     "icon": "/images/skins/walterhat_survivor.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_ventriloquist",
@@ -12815,7 +12907,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Chatty Hatty",
     "name_ko": "수다쟁이 모자",
     "icon": "/images/skins/walterhat_ventriloquist.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_victorian",
@@ -12831,7 +12924,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Paperboy Cap",
     "name_ko": "신문팔이 소년 모자",
     "icon": "/images/skins/walterhat_victorian.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "walter"
   },
   {
     "id": "walterhat_yule",
@@ -12848,7 +12942,8 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "트리탑 모자",
     "icon": "/images/skins/walterhat_yule.png",
     "rarity_modifier": "Woven",
-    "set_id": "emote_carol"
+    "set_id": "emote_carol",
+    "character": "walter"
   },
   {
     "id": "wardrobe_armoire",
@@ -13027,7 +13122,8 @@ export const SKINS: SkinEntry[] = [
     "release_group": 168,
     "name_en": "Wildflower Helm",
     "name_ko": "야생화 투구",
-    "icon": "/images/skins/wathgrithr_improvedhat_flower.png"
+    "icon": "/images/skins/wathgrithr_improvedhat_flower.png",
+    "character": "wigfrid"
   },
   {
     "id": "wathgrithr_improvedhat_lunar",
@@ -13039,7 +13135,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Moonlight Commander's Diadem",
     "name_ko": "월광의 지휘관의 왕관",
     "icon": "/images/skins/wathgrithr_improvedhat_lunar.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "wathgrithr_improvedhat_valkyrie",
@@ -13051,7 +13148,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Winged Commander's Helm",
     "name_ko": "날개달린 지휘관의 투구",
     "icon": "/images/skins/wathgrithr_improvedhat_valkyrie.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "wathgrithr_improvedhat_western",
@@ -13063,7 +13161,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Renegade Ringleader's Shade",
     "name_ko": "마적단 두목의 셰이드햇",
     "icon": "/images/skins/wathgrithr_improvedhat_western.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "wathgrithr_improvedhat_wrestle",
@@ -13075,7 +13174,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Golden Commander's Helm",
     "name_ko": "황금빛 지휘관의 투구",
     "icon": "/images/skins/wathgrithr_improvedhat_wrestle.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "wathgrithrhat_flower",
@@ -13089,7 +13189,8 @@ export const SKINS: SkinEntry[] = [
     "release_group": 168,
     "name_en": "Wildflower Helm",
     "name_ko": "야생화 투구",
-    "icon": "/images/skins/wathgrithrhat_flower.png"
+    "icon": "/images/skins/wathgrithrhat_flower.png",
+    "character": "wigfrid"
   },
   {
     "id": "wathgrithrhat_lunar",
@@ -13105,7 +13206,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Moonlight Diadem",
     "name_ko": "월광의 왕관",
     "icon": "/images/skins/wathgrithrhat_lunar.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "wathgrithrhat_valkyrie",
@@ -13121,7 +13223,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Winged Helm",
     "name_ko": "날개 달린 투구",
     "icon": "/images/skins/wathgrithrhat_valkyrie.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "wathgrithrhat_western",
@@ -13137,7 +13240,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Wrangler's Wide-Brim",
     "name_ko": "챙 넓은 카우보이 모자",
     "icon": "/images/skins/wathgrithrhat_western.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "wathgrithrhat_wrestle",
@@ -13153,7 +13257,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Golden Helm",
     "name_ko": "황금 투구",
     "icon": "/images/skins/wathgrithrhat_wrestle.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wigfrid"
   },
   {
     "id": "whip_snapthorn",
@@ -13200,7 +13305,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Lavish Launcher",
     "name_ko": "호화로운 발사기",
     "icon": "/images/skins/winona_catapult_fancy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winona_catapult_item_fancy",
@@ -13215,7 +13321,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Lavish Launcher",
     "name_ko": "호화로운 발사기",
     "icon": "/images/skins/winona_catapult_item_fancy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winona_catapult_item_spike",
@@ -13230,7 +13337,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Savage Slinger",
     "name_ko": "야만적인 투석기",
     "icon": "/images/skins/winona_catapult_item_spike.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winona_catapult_spike",
@@ -13245,7 +13353,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Savage Slinger",
     "name_ko": "야만적인 투석기",
     "icon": "/images/skins/winona_catapult_spike.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winona_spotlight_fancy",
@@ -13260,7 +13369,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Splendid Spotlight",
     "name_ko": "인상적인 조명기",
     "icon": "/images/skins/winona_spotlight_fancy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winona_spotlight_item_fancy",
@@ -13275,7 +13385,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Splendid Spotlight",
     "name_ko": "인상적인 조명기",
     "icon": "/images/skins/winona_spotlight_item_fancy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winona_spotlight_item_spike",
@@ -13290,7 +13401,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Spiked Spotlight",
     "name_ko": "가시 달린 조명기",
     "icon": "/images/skins/winona_spotlight_item_spike.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winona_spotlight_spike",
@@ -13305,7 +13417,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Spiked Spotlight",
     "name_ko": "가시 달린 조명기",
     "icon": "/images/skins/winona_spotlight_spike.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winonabattery_high_fancy",
@@ -13320,7 +13433,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Genteel G.E.M.erator",
     "name_ko": "고상한 발G.E.M.기",
     "icon": "/images/skins/winonabattery_high_fancy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winonabattery_high_item_fancy",
@@ -13335,7 +13449,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Genteel G.E.M.erator",
     "name_ko": "고상한 발G.E.M.기",
     "icon": "/images/skins/winonabattery_high_item_fancy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winonabattery_high_item_spike",
@@ -13350,7 +13465,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Jagged G.E.M.erator",
     "name_ko": "가시 박힌 발G.E.M.기",
     "icon": "/images/skins/winonabattery_high_item_spike.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winonabattery_high_spike",
@@ -13365,7 +13481,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Jagged G.E.M.erator",
     "name_ko": "가시 박힌 발G.E.M.기",
     "icon": "/images/skins/winonabattery_high_spike.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winonabattery_low_fancy",
@@ -13380,7 +13497,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Genteel Generator",
     "name_ko": "고상한 발전기",
     "icon": "/images/skins/winonabattery_low_fancy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winonabattery_low_item_fancy",
@@ -13395,7 +13513,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Genteel Generator",
     "name_ko": "고상한 발전기",
     "icon": "/images/skins/winonabattery_low_item_fancy.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winonabattery_low_item_spike",
@@ -13410,7 +13529,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Jagged Generator",
     "name_ko": "가시 박힌 발전기",
     "icon": "/images/skins/winonabattery_low_item_spike.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winonabattery_low_spike",
@@ -13425,7 +13545,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Jagged Generator",
     "name_ko": "가시 박힌 발전기",
     "icon": "/images/skins/winonabattery_low_spike.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "winona"
   },
   {
     "id": "winterhat_black_davys",
@@ -13765,7 +13886,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Dark Delivery Drone",
     "name_ko": "암흑 배달 드론",
     "icon": "/images/skins/wx78_dronedelivery_item_gothic.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_dronedelivery_item_jewelbox",
@@ -13777,7 +13899,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Rococo Courier",
     "name_ko": "로코코 배달기",
     "icon": "/images/skins/wx78_dronedelivery_item_jewelbox.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_dronedeliverysmall_item_gothic",
@@ -13789,7 +13912,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Dark Delivery Drone",
     "name_ko": "어둠의 배달 드론",
     "icon": "/images/skins/wx78_dronedeliverysmall_item_gothic.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_dronedeliverysmall_item_jewelbox",
@@ -13801,7 +13925,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Rococo Courier",
     "name_ko": "로코코 배달기",
     "icon": "/images/skins/wx78_dronedeliverysmall_item_jewelbox.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_dronescout_gothic",
@@ -13817,7 +13942,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Macabre Mapper",
     "name_ko": "으스스한 탐사기",
     "icon": "/images/skins/wx78_dronescout_gothic.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_dronescout_jewelbox",
@@ -13833,7 +13959,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Rococo Reconnaissance",
     "name_ko": "로코코 정찰기",
     "icon": "/images/skins/wx78_dronescout_jewelbox.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_dronezapremote_gothic",
@@ -13849,7 +13976,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Gloomy Loomer Controller",
     "name_ko": "우울한 관조자 컨트롤러",
     "icon": "/images/skins/wx78_dronezapremote_gothic.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_dronezapremote_jewelbox",
@@ -13865,7 +13993,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Lacquered 'Lectrocuter Controller",
     "name_ko": "유광 전격기 컨트롤러",
     "icon": "/images/skins/wx78_dronezapremote_jewelbox.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_moduleremover_gothic",
@@ -13881,7 +14010,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Crimson-Forged Extractor",
     "name_ko": "피에 담근 추출기",
     "icon": "/images/skins/wx78_moduleremover_gothic.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_moduleremover_jewelbox",
@@ -13897,7 +14027,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Accented Extractor",
     "name_ko": "돋보이는 추출기",
     "icon": "/images/skins/wx78_moduleremover_jewelbox.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_scanner_catcoon_item",
@@ -13908,7 +14039,8 @@ export const SKINS: SkinEntry[] = [
     "release_group": 169,
     "name_en": "Catcoonalyzer",
     "name_ko": "캣쿤 분석기",
-    "icon": "/images/skins/wx78_scanner_catcoon_item.png"
+    "icon": "/images/skins/wx78_scanner_catcoon_item.png",
+    "character": "wx78"
   },
   {
     "id": "wx78_scanner_fancy_item",
@@ -13920,7 +14052,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Lavish Scanalyzer",
     "name_ko": "호화로운 스캔 분석기",
     "icon": "/images/skins/wx78_scanner_fancy_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_scanner_gothic_item",
@@ -13932,7 +14065,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Somber Scanalyzer",
     "name_ko": "음침한 스캔분석기",
     "icon": "/images/skins/wx78_scanner_gothic_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_scanner_jewelbox_item",
@@ -13944,7 +14078,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Sumptuous Scanalyzer",
     "name_ko": "호화로운 스캔분석기",
     "icon": "/images/skins/wx78_scanner_jewelbox_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_scanner_junky_item",
@@ -13956,7 +14091,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Utility Scanalyzer",
     "name_ko": "다목적 스캔 분석기",
     "icon": "/images/skins/wx78_scanner_junky_item.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_shadowdrone_debuffer_gothic",
@@ -13972,7 +14108,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Ominous Exploiterator",
     "name_ko": "Ominous Exploiterator",
     "icon": "/images/skins/wx78_shadowdrone_debuffer_gothic.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_shadowdrone_debuffer_jewelbox",
@@ -13988,7 +14125,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Elegant Exploiterator",
     "name_ko": "Elegant Exploiterator",
     "icon": "/images/skins/wx78_shadowdrone_debuffer_jewelbox.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_shadowdrone_harvester_gothic",
@@ -14004,7 +14142,8 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Gloomy Auto-Grabber",
     "name_ko": "Gloomy Auto-Grabber",
     "icon": "/images/skins/wx78_shadowdrone_harvester_gothic.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   },
   {
     "id": "wx78_shadowdrone_harvester_jewelbox",
@@ -14020,6 +14159,7 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Opulent Auto-Grabber",
     "name_ko": "Opulent Auto-Grabber",
     "icon": "/images/skins/wx78_shadowdrone_harvester_jewelbox.png",
-    "rarity_modifier": "Woven"
+    "rarity_modifier": "Woven",
+    "character": "wx78"
   }
 ];

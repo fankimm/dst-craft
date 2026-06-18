@@ -96,94 +96,9 @@ const CHARACTER_ORDER = [
   "winona", "warly", "wortox", "wormwood", "wurt", "walter", "wanda",
 ];
 
-// In-game prefab token → canonical character key. Same key as itself for most;
-// aliases for the two characters whose internal prefab name differs from display.
-const CHARACTER_ALIAS: Record<string, string> = {
-  wilson: "wilson",
-  willow: "willow",
-  wolfgang: "wolfgang",
-  wendy: "wendy",
-  abigail: "wendy",      // Abigail is Wendy's sister — group with her
-  wickerbottom: "wickerbottom",
-  wx78: "wx78",
-  wes: "wes",
-  waxwell: "maxwell",     // in-game prefab is "waxwell", display "Maxwell"
-  maxwell: "maxwell",
-  woodie: "woodie",
-  wathgrithr: "wigfrid",  // in-game prefab "wathgrithr", display "Wigfrid"
-  wigfrid: "wigfrid",
-  webber: "webber",
-  winona: "winona",
-  warly: "warly",
-  wortox: "wortox",
-  wormwood: "wormwood",
-  wurt: "wurt",
-  walter: "walter",
-  wanda: "wanda",
-};
-
-// Pre-built regex: matches a character prefab token as word-boundary in base_prefab.
-// e.g. matches "walter" in "walterhat_ancient" / "body_walter_lunar" / "spear_wathgrithr".
-const CHARACTER_RE = new RegExp(
-  `(?:^|_)(${Object.keys(CHARACTER_ALIAS).join("|")})(?:_|$|hat)`,
-);
-
-// base_prefab → canonical character key for items whose prefab name doesn't
-// contain the character's id but is exclusive to that character in-game.
-// Curated from DST community knowledge (Don't Starve wiki + scripts/prefabs/).
-const EXCLUSIVE_ITEMS: Record<string, string> = {
-  // Wendy — Abigail's flower + Sister's Urn
-  abigail_flower: "wendy", sisturn: "wendy",
-  // Wickerbottom — her books
-  book_brimstone: "wickerbottom", book_birds: "wickerbottom",
-  book_silviculture: "wickerbottom", book_sleep: "wickerbottom",
-  book_tentacles: "wickerbottom", book_horticulture: "wickerbottom",
-  book_fish: "wickerbottom", book_research_station: "wickerbottom",
-  book_temperature: "wickerbottom", book_light: "wickerbottom",
-  book_fossil: "wickerbottom", book_web: "wickerbottom",
-  book_moon: "wickerbottom", book_elemental: "wickerbottom",
-  book_horticulture_upgraded: "wickerbottom", book_rain: "wickerbottom",
-  book_bees: "wickerbottom", book_gardening: "wickerbottom",
-  book_meteor: "wickerbottom",
-  // Willow — Bernie + lighter
-  bernie_inactive: "willow", bernie_active: "willow", bernie_big: "willow",
-  lighter: "willow", willow_ember: "willow",
-  // Wolfgang — dumbbells
-  dumbbell: "wolfgang", dumbbell_bluegem: "wolfgang", dumbbell_redgem: "wolfgang",
-  dumbbell_marble: "wolfgang", dumbbell_golden: "wolfgang", dumbbell_gem: "wolfgang",
-  // Wes — balloons
-  balloon: "wes", balloon_speed: "wes", balloon_party: "wes",
-  balloon_vest: "wes", balloons_empty: "wes",
-  // Maxwell — nightsword + sanity armor
-  nightsword: "maxwell", armor_sanity: "maxwell",
-  // Woodie — Lucy axe
-  lucy: "woodie",
-  // Wigfrid — battlesongs
-  battlesong_attack: "wigfrid", battlesong_healthgain: "wigfrid",
-  battlesong_sanitygain: "wigfrid", battlesong_sanityaura: "wigfrid",
-  battlesong_fireresistance: "wigfrid", battlesong_lunarallegiance: "wigfrid",
-  battlesong_shadowallegiance: "wigfrid",
-  // Webber — spider companions
-  spider_repellent: "webber", spider_warrior: "webber", spider_white: "webber",
-  // Warly — portable cookware + spices (in-game prefab uses `_item` suffix)
-  portablecookpot_item: "warly", portablespicer_item: "warly",
-  portableblender_item: "warly", spicepack: "warly",
-  // Wormwood — bramble armor
-  armor_bramble: "wormwood",
-  // Wurt — merm regalia + merm buildings
-  mermhat: "wurt", mermhouse_crafted: "wurt", mermwatchtower: "wurt",
-  // Wickerbottom — bookstation (advanced book crafting)
-  bookstation: "wickerbottom",
-  // Walter — slingshot
-  slingshot: "walter", slingshotammo_rock: "walter",
-  slingshotammo_gold: "walter", slingshotammo_marble: "walter",
-  slingshotammo_freeze: "walter", trusty_shooter: "walter",
-  // Wanda — pocketwatches
-  pocketwatch_warp: "wanda", pocketwatch_recall: "wanda",
-  pocketwatch_revive: "wanda", pocketwatch_heal: "wanda",
-  pocketwatch_dial: "wanda", pocketwatch_inactive: "wanda",
-  pocketwatch_bomb: "wanda",
-};
+// Per-skin character is supplied by the build-time pipeline (extract-skins.py),
+// sourced from recipes.lua builder_tag/builder_skill — the same data the game
+// uses to gate crafting. UI just reads `skin.character` directly here.
 
 const CATEGORY_LABELS_KO: Record<string, string> = {
   hat: "모자",
@@ -211,16 +126,10 @@ const CATEGORY_LABELS_EN: Record<string, string> = {
 
 /** Map a skin row to a coarse category key for grouping/filtering. */
 function classify(skin: SkinEntry): { key: string; isCharacter: boolean } {
+  if (skin.character) {
+    return { key: skin.character, isCharacter: true };
+  }
   const base = skin.base_prefab ?? "";
-  const exclusive = EXCLUSIVE_ITEMS[base];
-  if (exclusive) {
-    return { key: exclusive, isCharacter: true };
-  }
-  const charMatch = CHARACTER_RE.exec(base);
-  if (charMatch) {
-    const canonical = CHARACTER_ALIAS[charMatch[1]] ?? charMatch[1];
-    return { key: canonical, isCharacter: true };
-  }
   if (base.includes("hat")) return { key: "hat", isCharacter: false };
   if (base.startsWith("armor")) return { key: "armor", isCharacter: false };
   if (base.startsWith("amulet")) return { key: "amulet", isCharacter: false };

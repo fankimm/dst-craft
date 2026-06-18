@@ -6,6 +6,8 @@ Sources (all under ~/dst-game-snapshot/scripts/, set up by sync-game-data.sh):
   - prefabs/skinprefabs.lua : CreatePrefabSkin(id, { rarity, rarity_modifier, type, base_prefab, skin_tags, release_group, ... })
   - skin_strings.lua        : SKIN_NAMES / SKIN_QUOTES (English)
   - skin_set_info.lua       : sets like emote_carol → ["wendy_ice", ...]
+  - recipes.lua             : builder_tag / builder_skill → character-exclusive crafting (authoritative
+                              source for "which character can craft this prefab")
   - ../ko.po                : msgctxt "STRINGS.SKIN_NAMES.<id>" / SKIN_QUOTES
 
 Only emits skins that have a matching PNG in public/images/skins/ — so
@@ -29,6 +31,7 @@ SNAPSHOT = Path.home() / "dst-game-snapshot"
 SKINPREFABS_LUA = SNAPSHOT / "scripts" / "prefabs" / "skinprefabs.lua"
 SKIN_STRINGS_LUA = SNAPSHOT / "scripts" / "skin_strings.lua"
 SKIN_SET_INFO_LUA = SNAPSHOT / "scripts" / "skin_set_info.lua"
+RECIPES_LUA = SNAPSHOT / "scripts" / "recipes.lua"
 KO_PO = SNAPSHOT / "ko.po"
 
 # Fallback to ad-hoc dump dir used during initial dev.
@@ -139,6 +142,120 @@ def parse_skin_sets(path: Path) -> dict[str, str]:
     return out
 
 
+# Builder tag (in recipes.lua) → canonical character key. Source: game source
+# scripts/components/builder.lua (each character adds these tags via their character
+# component). One curated tag → character lookup, no app-side guessing.
+BUILDER_TAG_CHAR: dict[str, str] = {
+    "pyromaniac": "willow",
+    "ghostlyfriend": "wendy",
+    "elixirbrewer": "wendy",
+    "bookbuilder": "wickerbottom",
+    "strongman": "wolfgang",
+    "balloonomancer": "wes",
+    "shadowmagic": "maxwell",
+    "werehuman": "woodie",
+    "cancarveboards": "woodie",
+    "valkyrie": "wigfrid",
+    "battlesinger": "wigfrid",
+    "spiderwhisperer": "webber",
+    "handyperson": "winona",
+    "portableengineer": "winona",
+    "masterchef": "warly",
+    "professionalchef": "warly",
+    "plantkin": "wormwood",
+    "merm_builder": "wurt",
+    "pinetreepioneer": "walter",
+    "pebblemaker": "walter",
+    "clockmaker": "wanda",
+    "upgrademoduleowner": "wx78",
+}
+
+# builder_skill prefix → character (for skill-tree-locked recipes like walter_ammo_*).
+BUILDER_SKILL_CHAR_PREFIXES: dict[str, str] = {
+    "walter_": "walter",
+    "wanda_": "wanda",
+    "wickerbottom_": "wickerbottom",
+    "wx78_": "wx78",
+    "winona_": "winona",
+    "wendy_": "wendy",
+    "willow_": "willow",
+    "wormwood_": "wormwood",
+    "wurt_": "wurt",
+    "warly_": "warly",
+    "wolfgang_": "wolfgang",
+    "wigfrid_": "wigfrid",
+    "wathgrithr_": "wigfrid",
+    "maxwell_": "maxwell",
+    "waxwell_": "maxwell",
+    "webber_": "webber",
+    "wortox_": "wortox",
+    "wilson_": "wilson",
+    "woodie_": "woodie",
+    "wes_": "wes",
+}
+
+
+def parse_recipes_character_map(path: Path) -> dict[str, str]:
+    """
+    Map base_prefab → character key for recipes restricted to one character.
+
+    Reads scripts/recipes.lua and pulls Recipe("<prefab>", …) lines that have
+    builder_tag="…" or builder_skill="<char>_…" anywhere on the same line.
+    Authoritative: same source the game uses to enforce crafting permission.
+    """
+    out: dict[str, str] = {}
+    recipe_name_re = re.compile(r'^\s*Recipe2?\(\s*"([a-z0-9_]+)"')
+    tag_re = re.compile(r'builder_tag\s*=\s*"([^"]+)"')
+    skill_re = re.compile(r'builder_skill\s*=\s*"([^"]+)"')
+    for line in path.read_text(encoding="utf-8").splitlines():
+        name_m = recipe_name_re.match(line)
+        if not name_m:
+            continue
+        prefab = name_m.group(1)
+        char: str | None = None
+        tag_m = tag_re.search(line)
+        if tag_m:
+            char = BUILDER_TAG_CHAR.get(tag_m.group(1))
+        if not char:
+            skill_m = skill_re.search(line)
+            if skill_m:
+                for prefix, c in BUILDER_SKILL_CHAR_PREFIXES.items():
+                    if skill_m.group(1).startswith(prefix):
+                        char = c
+                        break
+        if char:
+            out[prefab] = char
+    return out
+
+
+# Prefab-name → character (for items without recipes — character base outfits,
+# innate hats, etc.). Word boundary match: "walter" anywhere in base_prefab as a
+# token. Aliases map in-game prefab names to canonical display ids.
+PREFAB_NAME_CHAR_ALIAS: dict[str, str] = {
+    "wilson": "wilson", "willow": "willow", "wolfgang": "wolfgang",
+    "wendy": "wendy", "abigail": "wendy",  # Wendy's sister, grouped with Wendy
+    "wickerbottom": "wickerbottom", "wx78": "wx78", "wes": "wes",
+    "waxwell": "maxwell", "maxwell": "maxwell",
+    "woodie": "woodie", "wathgrithr": "wigfrid", "wigfrid": "wigfrid",
+    "webber": "webber", "winona": "winona", "warly": "warly",
+    "wortox": "wortox", "wormwood": "wormwood", "wurt": "wurt",
+    "walter": "walter", "wanda": "wanda",
+}
+PREFAB_NAME_CHAR_RE = re.compile(
+    r'(?:^|_)(' + "|".join(PREFAB_NAME_CHAR_ALIAS.keys()) + r')(?:_|$|hat)'
+)
+
+
+def character_for(base_prefab: str, recipes_map: dict[str, str]) -> str | None:
+    """Authoritative lookup first (recipes.lua), then prefab-name word boundary."""
+    if base_prefab in recipes_map:
+        return recipes_map[base_prefab]
+    m = PREFAB_NAME_CHAR_RE.search(base_prefab)
+    if m:
+        return PREFAB_NAME_CHAR_ALIAS[m.group(1)]
+    return None
+
+
 # ─── builder ────────────────────────────────────────────────────────────────
 
 
@@ -146,6 +263,7 @@ def main() -> None:
     skinprefabs_path = _resolve(SKINPREFABS_LUA, FALLBACK_DIR / "skinprefabs.lua")
     skin_strings_path = _resolve(SKIN_STRINGS_LUA, FALLBACK_DIR / "skin_strings.lua")
     skin_sets_path = _resolve(SKIN_SET_INFO_LUA, FALLBACK_DIR / "skin_set_info.lua")
+    recipes_path = _resolve(RECIPES_LUA, FALLBACK_DIR / "recipes.lua")
     kopo_path = _resolve(KO_PO, KOPO_FALLBACK)
 
     if not SKINS_DIR.exists():
@@ -168,7 +286,11 @@ def main() -> None:
     skin_to_set = parse_skin_sets(skin_sets_path)
     print(f"Skin sets: {len(skin_to_set)} skin→set mappings")
 
+    recipes_map = parse_recipes_character_map(recipes_path)
+    print(f"Recipe character map: {len(recipes_map)} prefabs assigned to a character via builder_tag/skill")
+
     rows = []
+    char_counts: dict[str, int] = {}
     for skin_id in sorted(available_icons):
         meta = skin_meta.get(skin_id)
         if not meta:
@@ -195,7 +317,15 @@ def main() -> None:
             row["quote_ko"] = quotes_ko[skin_id]
         if skin_id in skin_to_set:
             row["set_id"] = skin_to_set[skin_id]
+        char = character_for(meta["base_prefab"], recipes_map)
+        if char:
+            row["character"] = char
+            char_counts[char] = char_counts.get(char, 0) + 1
         rows.append(row)
+
+    print(f"Character coverage: {sum(char_counts.values())} skins across {len(char_counts)} characters")
+    for c, n in sorted(char_counts.items(), key=lambda x: -x[1]):
+        print(f"  {c}: {n}")
 
     print(f"Emitting {len(rows)} skin entries → {OUTPUT_TS.relative_to(REPO_ROOT)}")
 
@@ -238,6 +368,10 @@ export interface SkinEntry {
   quote_en?: string;
   quote_ko?: string;
   set_id?: string;
+  /** Canonical character key (e.g. "walter", "wigfrid") if the underlying
+   *  prefab is character-locked. Sourced from recipes.lua builder_tag /
+   *  builder_skill, with a fallback to word-boundary match on the prefab name. */
+  character?: string;
   icon: string;
 }
 
