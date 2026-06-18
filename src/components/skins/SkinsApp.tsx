@@ -65,21 +65,19 @@ const RARITY_HEX: Record<SkinRarity, string> = {
 // Character / category detection from base_prefab
 // ---------------------------------------------------------------------------
 
-// Character prefab prefix → display names (ko/en).
-// Use the in-game prefab id as the key; ko/en mirror src/data/characters.ts.
+// Canonical character key → display names (ko/en).
+// "wigfrid" and "maxwell" are the canonical app-side ids; "wathgrithr" and
+// "waxwell" are in-game prefab aliases that route to the canonical key.
 const CHARACTERS: Record<string, { ko: string; en: string }> = {
   wilson: { ko: "윌슨", en: "Wilson" },
   willow: { ko: "윌로우", en: "Willow" },
   wolfgang: { ko: "볼프강", en: "Wolfgang" },
   wendy: { ko: "웬디", en: "Wendy" },
-  abigail: { ko: "애비게일", en: "Abigail" },
   wickerbottom: { ko: "위커바텀", en: "Wickerbottom" },
   wx78: { ko: "WX-78", en: "WX-78" },
   wes: { ko: "웨스", en: "Wes" },
-  waxwell: { ko: "맥스웰", en: "Maxwell" },
   maxwell: { ko: "맥스웰", en: "Maxwell" },
   woodie: { ko: "우디", en: "Woodie" },
-  wathgrithr: { ko: "위그프리드", en: "Wigfrid" },
   wigfrid: { ko: "위그프리드", en: "Wigfrid" },
   webber: { ko: "웨버", en: "Webber" },
   winona: { ko: "위노나", en: "Winona" },
@@ -93,17 +91,100 @@ const CHARACTERS: Record<string, { ko: string; en: string }> = {
 
 // Order characters appear in the chip row. Mirrors the in-game roster order.
 const CHARACTER_ORDER = [
-  "wilson", "willow", "wolfgang", "wendy", "abigail", "wx78", "wickerbottom",
-  "woodie", "wes", "waxwell", "maxwell", "wathgrithr", "wigfrid", "webber",
+  "wilson", "willow", "wolfgang", "wendy", "wx78", "wickerbottom",
+  "woodie", "wes", "maxwell", "wigfrid", "webber",
   "winona", "warly", "wortox", "wormwood", "wurt", "walter", "wanda",
 ];
 
-// Pre-built regex: matches a character prefab name as a word-boundary token in base_prefab.
-// e.g. matches "walter" in "walterhat_ancient" / "body_walter_lunar" / "spear_wathgrithr",
-// but not "wal" or "winterhat".
+// In-game prefab token → canonical character key. Same key as itself for most;
+// aliases for the two characters whose internal prefab name differs from display.
+const CHARACTER_ALIAS: Record<string, string> = {
+  wilson: "wilson",
+  willow: "willow",
+  wolfgang: "wolfgang",
+  wendy: "wendy",
+  abigail: "wendy",      // Abigail is Wendy's sister — group with her
+  wickerbottom: "wickerbottom",
+  wx78: "wx78",
+  wes: "wes",
+  waxwell: "maxwell",     // in-game prefab is "waxwell", display "Maxwell"
+  maxwell: "maxwell",
+  woodie: "woodie",
+  wathgrithr: "wigfrid",  // in-game prefab "wathgrithr", display "Wigfrid"
+  wigfrid: "wigfrid",
+  webber: "webber",
+  winona: "winona",
+  warly: "warly",
+  wortox: "wortox",
+  wormwood: "wormwood",
+  wurt: "wurt",
+  walter: "walter",
+  wanda: "wanda",
+};
+
+// Pre-built regex: matches a character prefab token as word-boundary in base_prefab.
+// e.g. matches "walter" in "walterhat_ancient" / "body_walter_lunar" / "spear_wathgrithr".
 const CHARACTER_RE = new RegExp(
-  `(?:^|_)(${Object.keys(CHARACTERS).join("|")})(?:_|$|hat)`,
+  `(?:^|_)(${Object.keys(CHARACTER_ALIAS).join("|")})(?:_|$|hat)`,
 );
+
+// base_prefab → canonical character key for items whose prefab name doesn't
+// contain the character's id but is exclusive to that character in-game.
+// Curated from DST community knowledge (Don't Starve wiki + scripts/prefabs/).
+const EXCLUSIVE_ITEMS: Record<string, string> = {
+  // Wendy — sister Abigail's flower
+  abigail_flower: "wendy",
+  // Wickerbottom — her books
+  book_brimstone: "wickerbottom", book_birds: "wickerbottom",
+  book_silviculture: "wickerbottom", book_sleep: "wickerbottom",
+  book_tentacles: "wickerbottom", book_horticulture: "wickerbottom",
+  book_fish: "wickerbottom", book_research_station: "wickerbottom",
+  book_temperature: "wickerbottom", book_light: "wickerbottom",
+  book_fossil: "wickerbottom", book_web: "wickerbottom",
+  book_moon: "wickerbottom", book_elemental: "wickerbottom",
+  book_horticulture_upgraded: "wickerbottom", book_rain: "wickerbottom",
+  book_bees: "wickerbottom", book_gardening: "wickerbottom",
+  book_meteor: "wickerbottom",
+  // Willow — Bernie + lighter
+  bernie_inactive: "willow", bernie_active: "willow", bernie_big: "willow",
+  lighter: "willow", willow_ember: "willow",
+  // Wolfgang — dumbbells
+  dumbbell: "wolfgang", dumbbell_bluegem: "wolfgang", dumbbell_redgem: "wolfgang",
+  dumbbell_marble: "wolfgang", dumbbell_golden: "wolfgang", dumbbell_gem: "wolfgang",
+  // Wes — balloons
+  balloon: "wes", balloon_speed: "wes", balloon_party: "wes",
+  balloon_vest: "wes", balloons_empty: "wes",
+  // Maxwell — nightsword + sanity armor
+  nightsword: "maxwell", armor_sanity: "maxwell",
+  // Woodie — Lucy axe
+  lucy: "woodie",
+  // Wigfrid — battlesongs
+  battlesong_attack: "wigfrid", battlesong_healthgain: "wigfrid",
+  battlesong_sanitygain: "wigfrid", battlesong_sanityaura: "wigfrid",
+  battlesong_fireresistance: "wigfrid", battlesong_lunarallegiance: "wigfrid",
+  battlesong_shadowallegiance: "wigfrid",
+  // Webber — spider companions
+  spider_repellent: "webber", spider_warrior: "webber", spider_white: "webber",
+  // Warly — portable cookware + spices
+  portablecookpot: "warly", portablespicer: "warly",
+  spice_garlic: "warly", spice_chili: "warly", spice_sugar: "warly", spice_salt: "warly",
+  // Wortox — souls
+  wortox_soul: "wortox", wortox_souljar: "wortox",
+  // Wormwood — bramble armor + bulb
+  armor_bramble: "wormwood", bramblespike: "wormwood", bramble_bulb: "wormwood",
+  compostwrap: "wormwood", livinglog: "wormwood",
+  // Wurt — merm regalia
+  mermhat: "wurt", mermthrone: "wurt", wurt_lure: "wurt",
+  // Walter — slingshot
+  slingshot: "walter", slingshotammo_rock: "walter",
+  slingshotammo_gold: "walter", slingshotammo_marble: "walter",
+  slingshotammo_freeze: "walter", trusty_shooter: "walter",
+  // Wanda — pocketwatches
+  pocketwatch_warp: "wanda", pocketwatch_recall: "wanda",
+  pocketwatch_revive: "wanda", pocketwatch_heal: "wanda",
+  pocketwatch_dial: "wanda", pocketwatch_inactive: "wanda",
+  pocketwatch_bomb: "wanda",
+};
 
 const CATEGORY_LABELS_KO: Record<string, string> = {
   hat: "모자",
@@ -132,9 +213,14 @@ const CATEGORY_LABELS_EN: Record<string, string> = {
 /** Map a skin row to a coarse category key for grouping/filtering. */
 function classify(skin: SkinEntry): { key: string; isCharacter: boolean } {
   const base = skin.base_prefab ?? "";
+  const exclusive = EXCLUSIVE_ITEMS[base];
+  if (exclusive) {
+    return { key: exclusive, isCharacter: true };
+  }
   const charMatch = CHARACTER_RE.exec(base);
   if (charMatch) {
-    return { key: charMatch[1], isCharacter: true };
+    const canonical = CHARACTER_ALIAS[charMatch[1]] ?? charMatch[1];
+    return { key: canonical, isCharacter: true };
   }
   if (base.includes("hat")) return { key: "hat", isCharacter: false };
   if (base.startsWith("armor")) return { key: "armor", isCharacter: false };
