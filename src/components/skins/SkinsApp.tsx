@@ -65,12 +65,45 @@ const RARITY_HEX: Record<SkinRarity, string> = {
 // Character / category detection from base_prefab
 // ---------------------------------------------------------------------------
 
-const CHARACTER_PREFIXES = [
-  "wilson", "willow", "wendy", "abigail", "wickerbottom", "wolfgang",
-  "wx78", "wes", "waxwell", "woodie", "maxwell",
-  "wathgrithr", "wigfrid", "webber", "winona", "warly", "wortox",
-  "wormwood", "wurt", "walter", "wanda",
-] as const;
+// Character prefab prefix → display names (ko/en).
+// Use the in-game prefab id as the key; ko/en mirror src/data/characters.ts.
+const CHARACTERS: Record<string, { ko: string; en: string }> = {
+  wilson: { ko: "윌슨", en: "Wilson" },
+  willow: { ko: "윌로우", en: "Willow" },
+  wolfgang: { ko: "볼프강", en: "Wolfgang" },
+  wendy: { ko: "웬디", en: "Wendy" },
+  abigail: { ko: "애비게일", en: "Abigail" },
+  wickerbottom: { ko: "위커바텀", en: "Wickerbottom" },
+  wx78: { ko: "WX-78", en: "WX-78" },
+  wes: { ko: "웨스", en: "Wes" },
+  waxwell: { ko: "맥스웰", en: "Maxwell" },
+  maxwell: { ko: "맥스웰", en: "Maxwell" },
+  woodie: { ko: "우디", en: "Woodie" },
+  wathgrithr: { ko: "위그프리드", en: "Wigfrid" },
+  wigfrid: { ko: "위그프리드", en: "Wigfrid" },
+  webber: { ko: "웨버", en: "Webber" },
+  winona: { ko: "위노나", en: "Winona" },
+  warly: { ko: "왈리", en: "Warly" },
+  wortox: { ko: "워톡스", en: "Wortox" },
+  wormwood: { ko: "웜우드", en: "Wormwood" },
+  wurt: { ko: "워트", en: "Wurt" },
+  walter: { ko: "월터", en: "Walter" },
+  wanda: { ko: "완다", en: "Wanda" },
+};
+
+// Order characters appear in the chip row. Mirrors the in-game roster order.
+const CHARACTER_ORDER = [
+  "wilson", "willow", "wolfgang", "wendy", "abigail", "wx78", "wickerbottom",
+  "woodie", "wes", "waxwell", "maxwell", "wathgrithr", "wigfrid", "webber",
+  "winona", "warly", "wortox", "wormwood", "wurt", "walter", "wanda",
+];
+
+// Pre-built regex: matches a character prefab name as a word-boundary token in base_prefab.
+// e.g. matches "walter" in "walterhat_ancient" / "body_walter_lunar" / "spear_wathgrithr",
+// but not "wal" or "winterhat".
+const CHARACTER_RE = new RegExp(
+  `(?:^|_)(${Object.keys(CHARACTERS).join("|")})(?:_|$|hat)`,
+);
 
 const CATEGORY_LABELS_KO: Record<string, string> = {
   hat: "모자",
@@ -82,7 +115,6 @@ const CATEGORY_LABELS_KO: Record<string, string> = {
   backpack: "가방",
   item: "기타 아이템",
   beefalo: "비팔로",
-  abigail_flower: "아비게일 꽃",
 };
 
 const CATEGORY_LABELS_EN: Record<string, string> = {
@@ -95,17 +127,14 @@ const CATEGORY_LABELS_EN: Record<string, string> = {
   backpack: "Backpack",
   item: "Other items",
   beefalo: "Beefalo",
-  abigail_flower: "Abigail's flower",
 };
 
 /** Map a skin row to a coarse category key for grouping/filtering. */
 function classify(skin: SkinEntry): { key: string; isCharacter: boolean } {
   const base = skin.base_prefab ?? "";
-  for (const c of CHARACTER_PREFIXES) {
-    if (base === c || base.startsWith(`${c}hat`)) {
-      // character hat (walterhat, wandahat …) still belongs to the character
-      return { key: c, isCharacter: true };
-    }
+  const charMatch = CHARACTER_RE.exec(base);
+  if (charMatch) {
+    return { key: charMatch[1], isCharacter: true };
   }
   if (base.includes("hat")) return { key: "hat", isCharacter: false };
   if (base.startsWith("armor")) return { key: "armor", isCharacter: false };
@@ -117,7 +146,6 @@ function classify(skin: SkinEntry): { key: string; isCharacter: boolean } {
   if (base.startsWith("beefalo") || base.startsWith("saddle") || base.startsWith("bell")) {
     return { key: "beefalo", isCharacter: false };
   }
-  if (base === "abigail_flower") return { key: "abigail_flower", isCharacter: false };
   // weapons heuristic
   if (
     /^(spear|sword|axe|hammer|pickaxe|shovel|pitchfork|bat|boomerang|blowdart|nightsword|firestaff|icestaff|telestaff|orangestaff|greenstaff|yellowstaff|opalstaff|reskin_tool|tropical_fan|featherfan|bugnet|fishingrod|whip|trident|saltrock_hammer|multitool_axe_pickaxe)/.test(base)
@@ -128,14 +156,8 @@ function classify(skin: SkinEntry): { key: string; isCharacter: boolean } {
 }
 
 function categoryLabel(key: string, locale: Locale): string {
-  if (CHARACTER_PREFIXES.includes(key as typeof CHARACTER_PREFIXES[number])) {
-    // Surfaces character display name from the same i18n keys used in skill tree
-    const charKey = `character_${key}` as TranslationKey;
-    // Some characters have alternate IDs in our app — fall back to capitalized raw
-    const raw = t(locale, charKey);
-    if (raw && raw !== charKey) return raw;
-    return key.charAt(0).toUpperCase() + key.slice(1);
-  }
+  const ch = CHARACTERS[key];
+  if (ch) return locale === "ko" ? ch.ko : ch.en;
   return (locale === "ko" ? CATEGORY_LABELS_KO : CATEGORY_LABELS_EN)[key] ?? key;
 }
 
@@ -163,12 +185,12 @@ const SKIN_INDEX: SkinIndex = (() => {
   const rarities = Array.from(raritySet).sort(
     (a, b) => RARITY_ORDER[a] - RARITY_ORDER[b],
   );
-  // Order categories: characters first (alphabetical), then item categories
-  const charKeys = CHARACTER_PREFIXES.filter((c) => byCat.has(c));
+  // Order categories: characters first (roster order), then item categories
+  const charKeys = CHARACTER_ORDER.filter((c) => byCat.has(c));
   const otherKeys = Array.from(byCat.keys())
-    .filter((k) => !CHARACTER_PREFIXES.includes(k as typeof CHARACTER_PREFIXES[number]))
+    .filter((k) => !(k in CHARACTERS))
     .sort((a, b) => {
-      const order = ["hat", "armor", "weapon", "tool", "amulet", "cane", "backpack", "abigail_flower", "beefalo", "item"];
+      const order = ["hat", "armor", "weapon", "tool", "amulet", "cane", "backpack", "beefalo", "item"];
       const ai = order.indexOf(a);
       const bi = order.indexOf(b);
       if (ai === -1 && bi === -1) return a.localeCompare(b);
