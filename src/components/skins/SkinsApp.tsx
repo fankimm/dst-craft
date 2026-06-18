@@ -132,8 +132,8 @@ const CHARACTER_RE = new RegExp(
 // contain the character's id but is exclusive to that character in-game.
 // Curated from DST community knowledge (Don't Starve wiki + scripts/prefabs/).
 const EXCLUSIVE_ITEMS: Record<string, string> = {
-  // Wendy — sister Abigail's flower
-  abigail_flower: "wendy",
+  // Wendy — Abigail's flower + Sister's Urn
+  abigail_flower: "wendy", sisturn: "wendy",
   // Wickerbottom — her books
   book_brimstone: "wickerbottom", book_birds: "wickerbottom",
   book_silviculture: "wickerbottom", book_sleep: "wickerbottom",
