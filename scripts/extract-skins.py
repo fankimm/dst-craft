@@ -199,30 +199,45 @@ def parse_recipes_character_map(path: Path) -> dict[str, str]:
     """
     Map base_prefab → character key for recipes restricted to one character.
 
-    Reads scripts/recipes.lua and pulls Recipe("<prefab>", …) lines that have
-    builder_tag="…" or builder_skill="<char>_…" anywhere on the same line.
+    Two formats coexist in recipes.lua and we handle both:
+      - Recipe2("name", …, {builder_tag="X", builder_skill="Y_…"})  — new style
+      - Recipe("name",  …, nil, nil, true, nil, "X")                 — old positional style
+        (builder_tag is one of the trailing positional args; we detect it
+         as any bare quoted string on the line that matches a known tag)
+
     Authoritative: same source the game uses to enforce crafting permission.
     """
     out: dict[str, str] = {}
     recipe_name_re = re.compile(r'^\s*Recipe2?\(\s*"([a-z0-9_]+)"')
-    tag_re = re.compile(r'builder_tag\s*=\s*"([^"]+)"')
-    skill_re = re.compile(r'builder_skill\s*=\s*"([^"]+)"')
+    tag_kv_re = re.compile(r'builder_tag\s*=\s*"([^"]+)"')
+    skill_kv_re = re.compile(r'builder_skill\s*=\s*"([^"]+)"')
+    # Match any "tag" that is a known builder_tag — used to catch old-style
+    # positional Recipe() args where the tag is just a quoted string.
+    known_tag_re = re.compile(
+        r'"(' + "|".join(re.escape(t) for t in BUILDER_TAG_CHAR.keys()) + r')"'
+    )
     for line in path.read_text(encoding="utf-8").splitlines():
         name_m = recipe_name_re.match(line)
         if not name_m:
             continue
         prefab = name_m.group(1)
         char: str | None = None
-        tag_m = tag_re.search(line)
+        tag_m = tag_kv_re.search(line)
         if tag_m:
             char = BUILDER_TAG_CHAR.get(tag_m.group(1))
         if not char:
-            skill_m = skill_re.search(line)
+            skill_m = skill_kv_re.search(line)
             if skill_m:
                 for prefix, c in BUILDER_SKILL_CHAR_PREFIXES.items():
                     if skill_m.group(1).startswith(prefix):
                         char = c
                         break
+        if not char:
+            # Fall back to old-style positional: any known builder_tag literal.
+            # Safe because tag names like "shadowmagic" don't collide with prefab/ingredient names.
+            bare_m = known_tag_re.search(line)
+            if bare_m:
+                char = BUILDER_TAG_CHAR.get(bare_m.group(1))
         if char:
             out[prefab] = char
     return out
