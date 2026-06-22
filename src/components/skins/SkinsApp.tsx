@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback, useEffect, useRef } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { Search, X } from "lucide-react";
 import {
@@ -251,83 +251,6 @@ function SkinCard({ skin, locale, onClick }: SkinCardProps) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Body-skin carousel — wiki in_game.png often stacks N poses horizontally,
-// so we show one pose at a time with swipe + indicator dots.
-// ---------------------------------------------------------------------------
-
-interface BodyCarouselProps {
-  src: string;
-  panels: number;
-  alt: string;
-  borderColor: string;
-}
-
-function BodyCarousel({ src, panels, alt, borderColor }: BodyCarouselProps) {
-  const [idx, setIdx] = useState(0);
-  const touchStart = useRef<number | null>(null);
-  // Reset index when the skin (src) changes — otherwise an out-of-range idx
-  // from a previously-viewed skin could persist.
-  useEffect(() => { setIdx(0); }, [src]);
-
-  const goTo = useCallback((i: number) => {
-    setIdx(Math.max(0, Math.min(panels - 1, i)));
-  }, [panels]);
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStart.current = e.touches[0].clientX;
-  };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart.current == null) return;
-    const dx = e.changedTouches[0].clientX - touchStart.current;
-    if (Math.abs(dx) > 30) {
-      goTo(idx + (dx < 0 ? 1 : -1));
-    }
-    touchStart.current = null;
-  };
-
-  // CSS background-* lets us slice an N-pose horizontal strip into N slides
-  // without preloading or measuring each pose's exact width.
-  const bgPos = panels > 1 ? `${(idx / (panels - 1)) * 100}% center` : "center";
-
-  return (
-    <div
-      className="w-full max-w-[280px] mx-auto select-none"
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-    >
-      <div
-        role="img"
-        aria-label={alt}
-        className="w-full aspect-square rounded-md border-2 bg-black/70 transition-[background-position] duration-200 ease-out"
-        style={{
-          borderColor,
-          backgroundImage: `url(${assetPath(src)})`,
-          backgroundSize: `${panels * 100}% 100%`,
-          backgroundPosition: bgPos,
-          backgroundRepeat: "no-repeat",
-        }}
-      />
-      {panels > 1 && (
-        <div className="flex justify-center gap-1.5 mt-2">
-          {Array.from({ length: panels }).map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`pose ${i + 1}`}
-              className={cn(
-                "size-2 rounded-full transition-colors",
-                i === idx ? "bg-foreground" : "bg-muted-foreground/30 hover:bg-muted-foreground/60",
-              )}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 interface SkinDetailProps {
   skin: SkinEntry;
   locale: Locale;
@@ -344,34 +267,28 @@ function SkinDetail({ skin, locale, onClose }: SkinDetailProps) {
     : null;
 
   const isBody = !!skin.body_image;
-  const panels = skin.body_panels ?? 1;
+  const heroSrc = skin.body_image ?? skin.icon ?? "";
   return (
     <div className="px-4 pt-3 pb-6 space-y-4">
       <div className={cn("flex gap-4", isBody ? "flex-col items-center" : "items-start")}>
-        {isBody && skin.body_image ? (
-          <BodyCarousel
-            src={skin.body_image}
-            panels={panels}
-            alt={name}
-            borderColor={color}
-          />
-        ) : (
-          <div
-            className="shrink-0 flex items-center justify-center size-24 rounded-md border-2 bg-black/70 overflow-hidden"
-            style={{ borderColor: color }}
-          >
-            {skin.icon ? (
-              <Image
-                src={assetPath(skin.icon)}
-                alt={name}
-                width={88}
-                height={88}
-                className="size-20 object-contain"
-                unoptimized
-              />
-            ) : null}
-          </div>
-        )}
+        <div
+          className={cn(
+            "shrink-0 flex items-center justify-center rounded-md border-2 bg-black/70 overflow-hidden",
+            isBody ? "w-full max-w-[280px] aspect-square" : "size-24",
+          )}
+          style={{ borderColor: color }}
+        >
+          {heroSrc ? (
+            <Image
+              src={assetPath(heroSrc)}
+              alt={name}
+              width={isBody ? 250 : 88}
+              height={isBody ? 250 : 88}
+              className={cn("object-contain", isBody ? "size-full p-2" : "size-20")}
+              unoptimized
+            />
+          ) : null}
+        </div>
         <div className={cn("flex-1 min-w-0", isBody && "w-full text-center")}>{/* center on body skin */}
           <div
             className="text-[11px] font-bold uppercase tracking-wider mb-0.5"
