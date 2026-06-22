@@ -213,6 +213,10 @@ interface SkinCardProps {
 function SkinCard({ skin, locale, onClick }: SkinCardProps) {
   const color = RARITY_HEX[skin.rarity];
   const name = locale === "ko" ? skin.name_ko : skin.name_en;
+  // Body skins (character outfits) get a wider card so the in-game silhouette
+  // is readable; inventory icons stay compact.
+  const isBody = !!skin.body_image;
+  const imgSrc = skin.body_image ?? skin.icon ?? "";
   return (
     <button
       type="button"
@@ -220,18 +224,25 @@ function SkinCard({ skin, locale, onClick }: SkinCardProps) {
       className="group flex flex-col items-center gap-1 p-2 rounded-lg border border-border bg-card hover:bg-accent/40 hover:border-foreground/30 transition-colors text-left"
     >
       <div
-        className="relative flex items-center justify-center size-16 rounded-md border-2 bg-black/70"
+        className={cn(
+          "relative flex items-center justify-center rounded-md border-2 bg-black/70 overflow-hidden",
+          isBody ? "w-full aspect-square" : "size-16",
+        )}
         style={{ borderColor: color }}
       >
-        <Image
-          src={assetPath(skin.icon)}
-          alt={name}
-          width={56}
-          height={56}
-          className="size-14 object-contain"
-          loading="lazy"
-          unoptimized
-        />
+        {imgSrc ? (
+          <Image
+            src={assetPath(imgSrc)}
+            alt={name}
+            width={isBody ? 120 : 56}
+            height={isBody ? 120 : 56}
+            className={cn("object-contain", isBody ? "size-full p-1" : "size-14")}
+            loading="lazy"
+            unoptimized
+          />
+        ) : (
+          <span className="text-[10px] text-muted-foreground">?</span>
+        )}
       </div>
       <span className="text-[11px] leading-tight text-center line-clamp-2 w-full text-foreground">
         {name}
@@ -255,23 +266,30 @@ function SkinDetail({ skin, locale, onClose }: SkinDetailProps) {
     ? t(locale, `skins_rarity_modifier_${skin.rarity_modifier}` as TranslationKey)
     : null;
 
+  const isBody = !!skin.body_image;
+  const heroSrc = skin.body_image ?? skin.icon ?? "";
   return (
     <div className="px-4 pt-3 pb-6 space-y-4">
-      <div className="flex items-start gap-4">
+      <div className={cn("flex gap-4", isBody ? "flex-col items-center" : "items-start")}>
         <div
-          className="shrink-0 flex items-center justify-center size-24 rounded-md border-2 bg-black/70"
+          className={cn(
+            "shrink-0 flex items-center justify-center rounded-md border-2 bg-black/70 overflow-hidden",
+            isBody ? "w-full max-w-[280px] aspect-square" : "size-24",
+          )}
           style={{ borderColor: color }}
         >
-          <Image
-            src={assetPath(skin.icon)}
-            alt={name}
-            width={88}
-            height={88}
-            className="size-20 object-contain"
-            unoptimized
-          />
+          {heroSrc ? (
+            <Image
+              src={assetPath(heroSrc)}
+              alt={name}
+              width={isBody ? 250 : 88}
+              height={isBody ? 250 : 88}
+              className={cn("object-contain", isBody ? "size-full p-2" : "size-20")}
+              unoptimized
+            />
+          ) : null}
         </div>
-        <div className="flex-1 min-w-0">
+        <div className={cn("flex-1 min-w-0", isBody && "w-full text-center")}>{/* center on body skin */}
           <div
             className="text-[11px] font-bold uppercase tracking-wider mb-0.5"
             style={{ color }}
@@ -460,16 +478,30 @@ export function SkinsApp() {
             {t(locale, "skins_no_results")}
           </div>
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-2 px-3 pb-6">
-            {filtered.map((skin) => (
-              <SkinCard
-                key={skin.id}
-                skin={skin}
-                locale={locale}
-                onClick={() => setSelected(skin)}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-2 px-3 pb-4">
+              {filtered.map((skin) => (
+                <SkinCard
+                  key={skin.id}
+                  skin={skin}
+                  locale={locale}
+                  onClick={() => setSelected(skin)}
+                />
+              ))}
+            </div>
+            <p className="px-3 pb-6 text-[10px] leading-relaxed text-muted-foreground">
+              {t(locale, "skins_body_attribution")}{" "}
+              <a
+                href="https://dontstarve.wiki.gg/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-foreground"
+              >
+                dontstarve.wiki.gg
+              </a>{" "}
+              (CC BY-SA)
+            </p>
+          </>
         )}
       </div>
 

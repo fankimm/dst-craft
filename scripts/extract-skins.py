@@ -25,7 +25,31 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SKINS_DIR = REPO_ROOT / "public" / "images" / "skins"
+BODY_SKINS_DIR = REPO_ROOT / "public" / "images" / "skins-body"
 OUTPUT_TS = REPO_ROOT / "src" / "data" / "skins.ts"
+
+# Character key → display name used by wiki.gg file names. WX-78 hyphen
+# becomes an underscore on the wiki side.
+WIKI_CHAR_NAME: dict[str, str] = {
+    "wilson": "Wilson", "willow": "Willow", "wolfgang": "Wolfgang",
+    "wendy": "Wendy", "wickerbottom": "Wickerbottom", "wx78": "WX_78",
+    "wes": "Wes", "maxwell": "Maxwell", "woodie": "Woodie",
+    "wigfrid": "Wigfrid", "webber": "Webber", "winona": "Winona",
+    "warly": "Warly", "wortox": "Wortox", "wormwood": "Wormwood",
+    "wurt": "Wurt", "walter": "Walter", "wanda": "Wanda",
+}
+
+# In-game prefab → canonical character key. Some prefabs use the legacy
+# spelling (waxwell, wathgrithr) while the wiki uses the modern display name.
+BASE_PREFAB_TO_CHARACTER: dict[str, str] = {
+    "wilson": "wilson", "willow": "willow", "wolfgang": "wolfgang",
+    "wendy": "wendy", "wickerbottom": "wickerbottom", "wx78": "wx78",
+    "wes": "wes", "waxwell": "maxwell", "maxwell": "maxwell",
+    "woodie": "woodie", "wathgrithr": "wigfrid", "wigfrid": "wigfrid",
+    "webber": "webber", "winona": "winona", "warly": "warly",
+    "wortox": "wortox", "wormwood": "wormwood", "wurt": "wurt",
+    "walter": "walter", "wanda": "wanda",
+}
 
 SNAPSHOT = Path.home() / "dst-game-snapshot"
 SKINPREFABS_LUA = SNAPSHOT / "scripts" / "prefabs" / "skinprefabs.lua"
@@ -284,7 +308,12 @@ def main() -> None:
     if not SKINS_DIR.exists():
         sys.exit(f"skin icons not extracted yet. Run scripts/extract-skin-icons.py first ({SKINS_DIR}).")
     available_icons = {p.stem for p in SKINS_DIR.glob("*.png")}
-    print(f"Available icons: {len(available_icons)}")
+    print(f"Available inventory icons: {len(available_icons)}")
+
+    body_files: set[str] = set()
+    if BODY_SKINS_DIR.exists():
+        body_files = {p.name for p in BODY_SKINS_DIR.glob("*.png")}
+    print(f"Available body images: {len(body_files)}")
 
     skin_meta = parse_skinprefabs(skinprefabs_path)
     print(f"Parsed {len(skin_meta)} CreatePrefabSkin entries")
@@ -304,15 +333,64 @@ def main() -> None:
     recipes_map = parse_recipes_character_map(recipes_path)
     print(f"Recipe character map: {len(recipes_map)} prefabs assigned to a character via builder_tag/skill")
 
+    # ── Body image matching ──────────────────────────────────────────────
+    # Wiki uses character_display + skin_label, e.g. "Wilson_Guest_of_Honor_in_game.png".
+    # Build a lookup once and try a few label variants per skin.
+    def wiki_label(name_en: str) -> str:
+        """Strip 'The ' prefix, replace spaces with underscores. Handle 'Beard' detection."""
+        s = name_en
+        if s.lower().startswith("the "):
+            s = s[4:]
+        return s.replace(" ", "_").replace("'", "")
+
+    def find_body_image(char_key: str, skin_id: str, name_en: str) -> str | None:
+        wiki_char = WIKI_CHAR_NAME.get(char_key)
+        if not wiki_char:
+            return None
+        # Mob-costume skin pieces (_d head, _p variant) reuse the main costume's
+        # body image — strip the trailing _d/_p and look up the parent.
+        parent_id = skin_id
+        if skin_id.endswith("_d") or skin_id.endswith("_p"):
+            parent_id = skin_id[:-2]
+        # _none = the character's default look; wiki labels it "Original".
+        if skin_id.endswith("_none"):
+            return f"/images/skins-body/{wiki_char}_Original_in_game.png" \
+                if f"{wiki_char}_Original_in_game.png" in body_files else None
+        candidates = [
+            f"{wiki_char}_{wiki_label(name_en)}_in_game.png",
+            # Raw name without "The" stripping
+            f"{wiki_char}_{name_en.replace(' ', '_').replace(chr(39), '')}_in_game.png",
+            # skin_id-suffix fallback (wilson_formal → Formal)
+            f"{wiki_char}_{skin_id.split('_', 1)[1].title()}_in_game.png" if "_" in skin_id else None,
+            # parent (without _d/_p) — for mob-costume mask/legs variants
+            f"{wiki_char}_{parent_id.split('_', 1)[1].title()}_in_game.png" if parent_id != skin_id and "_" in parent_id else None,
+        ]
+        for c in candidates:
+            if c and c in body_files:
+                return f"/images/skins-body/{c}"
+        return None
+
     rows = []
     char_counts: dict[str, int] = {}
-    for skin_id in sorted(available_icons):
-        meta = skin_meta.get(skin_id)
-        if not meta:
-            # No CreatePrefabSkin row — likely a tiered icon for an item skin we still want
-            # to surface (e.g. abigail_flower_lunar). Look up by base prefab heuristics later
-            # if needed; for now skip silently to keep schema tight.
-            continue
+    body_count = 0
+    # Iterate over every skin in skinprefabs.lua. Emit if we have an inventory
+    # icon OR a wiki body image — either gives the user something to look at.
+    for skin_id in sorted(skin_meta.keys()):
+        meta = skin_meta[skin_id]
+        has_icon = skin_id in available_icons
+        # Determine character first so we can probe for a body image.
+        char = character_for(meta["base_prefab"], recipes_map)
+        # If base_prefab is just the character name (legacy `wilson`/`waxwell` etc),
+        # the recipe map won't have it. Use the explicit base→character mapping.
+        if not char:
+            char = BASE_PREFAB_TO_CHARACTER.get(meta["base_prefab"])
+        body_image = None
+        if char and meta["type"] == "base":
+            body_image = find_body_image(char, skin_id, names_en.get(skin_id, ""))
+
+        if not has_icon and not body_image:
+            continue  # nothing to show
+
         row = {
             "id": skin_id,
             "base_prefab": meta["base_prefab"],
@@ -322,8 +400,12 @@ def main() -> None:
             "release_group": meta["release_group"],
             "name_en": names_en.get(skin_id, skin_id),
             "name_ko": names_ko.get(skin_id, names_en.get(skin_id, skin_id)),
-            "icon": f"/images/skins/{skin_id}.png",
         }
+        if has_icon:
+            row["icon"] = f"/images/skins/{skin_id}.png"
+        if body_image:
+            row["body_image"] = body_image
+            body_count += 1
         if meta["rarity_modifier"]:
             row["rarity_modifier"] = meta["rarity_modifier"]
         if skin_id in quotes_en:
@@ -332,7 +414,6 @@ def main() -> None:
             row["quote_ko"] = quotes_ko[skin_id]
         if skin_id in skin_to_set:
             row["set_id"] = skin_to_set[skin_id]
-        char = character_for(meta["base_prefab"], recipes_map)
         if char:
             row["character"] = char
             char_counts[char] = char_counts.get(char, 0) + 1
@@ -341,6 +422,7 @@ def main() -> None:
     print(f"Character coverage: {sum(char_counts.values())} skins across {len(char_counts)} characters")
     for c, n in sorted(char_counts.items(), key=lambda x: -x[1]):
         print(f"  {c}: {n}")
+    print(f"Body images matched: {body_count}")
 
     print(f"Emitting {len(rows)} skin entries → {OUTPUT_TS.relative_to(REPO_ROOT)}")
 
@@ -387,7 +469,13 @@ export interface SkinEntry {
    *  prefab is character-locked. Sourced from recipes.lua builder_tag /
    *  builder_skill, with a fallback to word-boundary match on the prefab name. */
   character?: string;
-  icon: string;
+  /** Inventory icon (extracted from the game's KTEX atlas). Present for item
+   *  skins; usually absent for character body skins. */
+  icon?: string;
+  /** Full-body in-game screenshot scraped from dontstarve.wiki.gg. Present for
+   *  character body (base) skins. Wiki content is CC BY-SA — attribution shown
+   *  in the Skins tab footer. */
+  body_image?: string;
 }
 
 export const SKINS: SkinEntry[] = '''

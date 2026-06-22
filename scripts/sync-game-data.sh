@@ -122,6 +122,10 @@ echo "═══ extract-skin-icons ═══"
 python3 scripts/extract-skin-icons.py
 
 echo
+echo "═══ download-body-skins (wiki.gg, idempotent) ═══"
+python3 scripts/download-body-skins.py || echo "(body-skin download failed — check network; existing images remain)"
+
+echo
 echo "═══ extract-skins ═══"
 python3 scripts/extract-skins.py
 

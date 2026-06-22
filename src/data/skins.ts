@@ -41,7 +41,13 @@ export interface SkinEntry {
    *  prefab is character-locked. Sourced from recipes.lua builder_tag /
    *  builder_skill, with a fallback to word-boundary match on the prefab name. */
   character?: string;
-  icon: string;
+  /** Inventory icon (extracted from the game's KTEX atlas). Present for item
+   *  skins; usually absent for character body skins. */
+  icon?: string;
+  /** Full-body in-game screenshot scraped from dontstarve.wiki.gg. Present for
+   *  character body (base) skins. Wiki content is CC BY-SA — attribution shown
+   *  in the Skins tab footer. */
+  body_image?: string;
 }
 
 export const SKINS: SkinEntry[] = [
@@ -12707,6 +12713,269 @@ export const SKINS: SkinEntry[] = [
     "icon": "/images/skins/walrushat_party.png"
   },
   {
+    "id": "walter_ancient",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ANCIENT",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 164,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Walter_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Where should we go on our next adventure, Woby?\"",
+    "quote_ko": "\"다음 모험은 어디로 가 볼까, 워비?\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_bee",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 124,
+    "name_en": "Bee Costume",
+    "name_ko": "벌 코스튬",
+    "body_image": "/images/skins-body/Walter_Bee_Costume_in_game.png",
+    "quote_en": "\"Maybe if I dress like them, they won't sting me!\"",
+    "quote_ko": "\"이렇게 입으면 아마 안 쏘겠지!\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_detective",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "DETECTIVE",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 98,
+    "name_en": "The Boy Detective",
+    "name_ko": "소년 탐정",
+    "body_image": "/images/skins-body/Walter_Boy_Detective_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Don't worry Sirs and Madams, Woby and I are on the case!\"",
+    "quote_ko": "\"여러분들, 걱정 마세요. 이 사건은 저와 워비가 맡을게요!\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_formal",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 98,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Walter_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I'd wear it more often, but it's so heavy with all these badges...\"",
+    "quote_ko": "\"자주 입고 싶긴 한데, 배지가 너무 많아서 무거워...\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_ice",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 109,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Walter_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Brrr... it's a good thing you already have your own winter coat, Woby!\"",
+    "quote_ko": "\"흐드드... 넌 외투가 따로 없어도 돼서 다행이야, 워비!\"",
+    "set_id": "emote_carol",
+    "character": "walter"
+  },
+  {
+    "id": "walter_lunar",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 136,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Walter_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Look out evildoers, I've got the moon on my side!\"",
+    "quote_ko": "\"악당들아, 달의 이름으로 용서하지 않겠다!\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_nature",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 121,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Walter_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Every story needs a fearless adventurer and their trusty steed!\"",
+    "quote_ko": "\"모든 이야기에는 용감한 모험가와 믿음직한 충마가 함께하는 법이지!\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_none",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 98,
+    "name_en": "Walter",
+    "name_ko": "월터",
+    "body_image": "/images/skins-body/Walter_Original_in_game.png",
+    "character": "walter"
+  },
+  {
+    "id": "walter_rose",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 158,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Walter_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I think I really rose to the occasion! Eh, Woby?\"",
+    "quote_ko": "\"어울리게 꽃단장을 해 봤어! 어때, 워비?\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_shadow",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 145,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Walter_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I don't need a handbook telling me what to do - I make the rules now!\"",
+    "quote_ko": "\"교범 따위로 이래라저래라 하지 마. 이제 규칙은 내가 만든다!\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_survivor",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 98,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Walter_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I hope I don't lose any points for the state of my uniform.\"",
+    "quote_ko": "\"복장 불량으로 벌점 안 받았으면 좋겠는데.\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_ventriloquist",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 106,
+    "name_en": "The Chatterbox",
+    "name_ko": "수다쟁이",
+    "body_image": "/images/skins-body/Walter_Chatterbox_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Want to hear a really scary story?\"",
+    "quote_ko": "\"정말 무시무시한 이야기 들어보지 않을래?\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_victorian",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 115,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Walter_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Extra, extra! Read all about it!\"",
+    "quote_ko": "\"호외요, 호외! 다들 읽어 보세요!\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_yule",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 150,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Walter_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Come on Woby, that Winter's Feast tree won't decorate itself!\"",
+    "quote_ko": "\"어서 가자, 워비, 겨울 축제 트리는 알아서 장식되는 게 아니라고!\"",
+    "set_id": "emote_carol",
+    "character": "walter"
+  },
+  {
     "id": "walterhat_ancient",
     "base_prefab": "walterhat",
     "type": "item",
@@ -12946,6 +13215,233 @@ export const SKINS: SkinEntry[] = [
     "character": "walter"
   },
   {
+    "id": "wanda_bishop",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 124,
+    "name_en": "Clockwork Bishop Costume",
+    "name_ko": "시계태엽 비숍 코스튬",
+    "body_image": "/images/skins-body/Wanda_Clockwork_Bishop_Costume_in_game.png",
+    "quote_en": "\"This match will require a few more adjournments.\"",
+    "quote_ko": "\"이번 대국은 봉수 좀 몇 번 해야겠는데.\"",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_formal",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 123,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wanda_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Nothing is more fashionable than punctuality.\"",
+    "quote_ko": "\"시간 잘 지키는 것보다 멋있는 것도 없지.\"",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_ice",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 138,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wanda_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Oh botheration, where have I gotten myself this time?\"",
+    "quote_ko": "\"아이고 이런, 이번엔 여긴 또 어디야?\"",
+    "set_id": "emote_carol",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_lunar",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 136,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wanda_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"My future will reveal itself in the phases of the moon.\"",
+    "quote_ko": "\"달이 차고 기움 속에 내 미래도 드러날 거야.\"",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_masquerade",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 151,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Wanda_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Starlight is a blast from the past.\"",
+    "quote_ko": "\"별빛은 과거의 메아리지.\"",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_nature",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 144,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wanda_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Time seems to move slower in the depths of the forest.\"",
+    "quote_ko": "\"숲 한가운데서는 시간이 더 느리게 흐르는 것 같아.\"",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_none",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "CHARACTER",
+      "WANDA"
+    ],
+    "release_group": 123,
+    "name_en": "Essential Wanda",
+    "name_ko": "기본 완다",
+    "body_image": "/images/skins-body/Wanda_Original_in_game.png",
+    "rarity_modifier": "CharacterModifier",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_rose",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 158,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wanda_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I suppose I should make time to stop and smell the roses every so often.\"",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_shadow",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 123,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wanda_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"There is nothing but dark times ahead.\"",
+    "quote_ko": "\"미래에는 오직 어둠의 시간만이 있을 뿐.\"",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_steampunk",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "STEAMPUNK",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 123,
+    "name_en": "The Tinkersmith",
+    "name_ko": "땜장이",
+    "body_image": "/images/skins-body/Wanda_Tinkersmith_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Not enough people appreciate the minutiae of temporal tinkering.\"",
+    "quote_ko": "\"시공간 공학을 깊이 좋아하는 사람이 영 드물단 말이지.\"",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_western",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "WESTERN",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 167,
+    "name_en": "The Stampeder",
+    "name_ko": "무법자",
+    "body_image": "/images/skins-body/Wanda_Stampeder_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"There's always more to do than there is time to do it.\"",
+    "quote_ko": "\"항상 일거리에 비해 시간은 턱없이 모자르단 말이지.\"",
+    "set_id": "emote_tiphat",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_yule",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 127,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wanda_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"So many toys to build, and so little time!\"",
+    "quote_ko": "\"만들 장난감은 많은데 시간이 모자라!\"",
+    "set_id": "emote_carol",
+    "character": "wanda"
+  },
+  {
     "id": "wardrobe_armoire",
     "base_prefab": "wardrobe",
     "type": "item",
@@ -13038,6 +13534,307 @@ export const SKINS: SkinEntry[] = [
     "icon": "/images/skins/wardrobe_yule.png"
   },
   {
+    "id": "warly_candyman",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 77,
+    "name_en": "The Candy Man",
+    "name_ko": "사탕 장수",
+    "body_image": "/images/skins-body/Warly_Candy_Man_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I'm thinking of opening a chocolate factory.\"",
+    "quote_ko": "\"초콜릿 공장을 열까 생각 중이랍니다.\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_carrat",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 124,
+    "name_en": "Carrat Costume",
+    "name_ko": "당근이쥐 코스튬",
+    "body_image": "/images/skins-body/Warly_Carrat_Costume_in_game.png",
+    "quote_en": "\"I must train for the races!\"",
+    "quote_ko": "\"경주를 이기려면 훈련해야 해!\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_chef",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "CHEF",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 100,
+    "name_en": "The Head Chef",
+    "name_ko": "주방장",
+    "body_image": "/images/skins-body/Warly_Head_Chef_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"It's a fine day for some fine dining, non?\"",
+    "quote_ko": "\"오늘은 고급 식당에서 한 끼 어떠신가요?\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_fisherman",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FISHERMAN",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 70,
+    "name_en": "The Trawler",
+    "name_ko": "어부",
+    "body_image": "/images/skins-body/Warly_Trawler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I'm on a see-food diet.\"",
+    "quote_ko": "\"요즘은 쉬기-요법을 하고 있어요.\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_formal",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 148,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Warly_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"What a treat it is to rub shoulders with the creme de la creme!\"",
+    "quote_ko": "\"일류 인사들과 이렇게 어깨를 나란히 하게 되다니 참으로 특별한 일이군요!\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_ice",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 109,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Warly_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I'd say this look is best served cold.\"",
+    "quote_ko": "\"찬바람 불 때 내놓아야 좋은 옷 같군요.\"",
+    "set_id": "emote_carol",
+    "character": "warly"
+  },
+  {
+    "id": "warly_lunar",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 154,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Warly_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Nothing beats a golden croissant... I mean crescent.\"",
+    "quote_ko": "\"역시 황금빛 크루아상... 아니, 초승달이 최고죠.\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_masquerade",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 140,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Warly_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"An air of mystery is the secret ingredient for any good soiree.\"",
+    "quote_ko": "\"신비스러운 분위기가 바로 훌륭한 파티의 비법이랍니다.\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_nature",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 121,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Warly_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I only cook with natural ingredients.\"",
+    "quote_ko": "\"전 오직 천연 재료만 사용한답니다.\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_none",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 70,
+    "name_en": "Warly",
+    "name_ko": "왈리",
+    "body_image": "/images/skins-body/Warly_Original_in_game.png",
+    "character": "warly"
+  },
+  {
+    "id": "warly_pirate",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 133,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Warly_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I seem to have developed quite a taste for treasure.\"",
+    "quote_ko": "\"보물 모으는 맛이 쏠쏠한 것 같네요.\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_rose",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 70,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Warly_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"And just a dash of sweet rosewater.\"",
+    "quote_ko": "\"달콤한 장미수 약간.\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_shadow",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 145,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Warly_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I've cooked up something frightful, just for you!\"",
+    "quote_ko": "\"너만을 위해 무서운 요리를 만들어 봤어!\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_survivor",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 171,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Warly_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"All can be lost except my taste!\"",
+    "quote_ko": "\"다른 것은 다 잃어도 미각만큼은 잃을 수 없지!\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_victorian",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 70,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Warly_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I actually just work in the galley.\"",
+    "quote_ko": "\"사실 난 조리실에서 일할 뿐이에요.\"",
+    "character": "warly"
+  },
+  {
+    "id": "warly_yule",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WARLY"
+    ],
+    "release_group": 160,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Warly_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I wonder if Maman missed my holiday baking.\"",
+    "quote_ko": "\"어머니가 내 명절 요리를 그리워하지 않으시려나.\"",
+    "set_id": "emote_carol",
+    "character": "warly"
+  },
+  {
     "id": "wateringcan_cactus",
     "base_prefab": "wateringcan",
     "type": "item",
@@ -13114,6 +13911,192 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "wathgrithr_ancient",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ANCIENT",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 156,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Wigfrid_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Let us remember the days öf öld!\"",
+    "quote_ko": "\"옛날을 기억하세나!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_combatant",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Wigfrid_Challenger_in_game.png",
+    "quote_en": "\"I yearn för my chance ön the pröving gröunds!\"",
+    "quote_ko": "\"지금껏 내 능력을 증명할 수 있는 기회를 갈망해 왔나니!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_cook",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Wigfrid_Culinarian_in_game.png",
+    "quote_en": "\"MEEEEEAT.\"",
+    "quote_ko": "\"신선한 고기.\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_deerclops",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 15,
+    "name_en": "Deerclops Costume",
+    "name_ko": "외눈사슴 의상",
+    "body_image": "/images/skins-body/Wigfrid_Deerclops_in_game.png",
+    "quote_en": "\"I cöuld take yöu curs with öne eye behind my mask!\"",
+    "quote_ko": "\"내 가면 뒤의 눈 하나로도 네놈들은 끝장이다!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_deerclops_d",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 31,
+    "name_en": "Deerfrid Mask",
+    "name_ko": "외눈프리드 가면",
+    "body_image": "/images/skins-body/Wigfrid_Deerclops_in_game.png",
+    "quote_en": "\"I cöuld take yöu curs with öne eye behind my mask!\"",
+    "quote_ko": "\"내 가면 뒤의 눈 하나로도 네놈들은 끝장이다!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_deerclops_p",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 105,
+    "name_en": "Deerfrid Mask",
+    "name_ko": "외눈프리드 가면",
+    "body_image": "/images/skins-body/Wigfrid_Deerclops_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I cöuld take yöu curs with öne eye behind my mask!\"",
+    "quote_ko": "\"내 가면 뒤의 눈 하나로도 네놈들은 끝장이다!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_formal",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 2,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wigfrid_Guest_of_Honor_in_game.png",
+    "quote_en": "\"We will celebrate as if we were in Valhalla!\"",
+    "quote_ko": "\"우리 모두 발할라에 있는 듯이 축하하세나!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_formalp",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 103,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wigfrid_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We will celebrate as if we were in Valhalla!\"",
+    "quote_ko": "\"우리 모두 발할라에 있는 듯이 축하하세나!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_gladiator",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Wigfrid_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"My skill in battle is withöut peer.\"",
+    "quote_ko": "\"나의 전술에 견줄 자 누구더냐.\"",
+    "set_id": "emote_fistshake",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_ice",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 138,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wigfrid_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Call förth the höwling winds and biting cöld, the jötnar fear them nöt!\"",
+    "set_id": "emote_carol",
+    "character": "wigfrid"
+  },
+  {
     "id": "wathgrithr_improvedhat_flower",
     "base_prefab": "wathgrithr_improvedhat",
     "type": "item",
@@ -13175,6 +14158,324 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "황금빛 지휘관의 투구",
     "icon": "/images/skins/wathgrithr_improvedhat_wrestle.png",
     "rarity_modifier": "Woven",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_lunar",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 145,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wigfrid_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Behöld Mani's chösen warriör!\"",
+    "quote_ko": "\"보라, 마니에게 선택받은 전사를!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_magma",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Wigfrid_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I fear nöt Surtr's flames!\"",
+    "quote_ko": "\"수르트의 불꽃 따위 두렵지 않다!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_masquerade",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 151,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Wigfrid_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Let this be the party tö end all parties!\"",
+    "quote_ko": "\"이 연회가 마지막인 듯이 즐기세!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_nature",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 40,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wigfrid_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I shall fight för the förest!\"",
+    "quote_ko": "\"숲을 위해 싸우리라!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_none",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 0,
+    "name_en": "Wigfrid",
+    "name_ko": "위그프리드",
+    "body_image": "/images/skins-body/Wigfrid_Original_in_game.png",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_pirate",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 133,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Wigfrid_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"My name shall live ön förever, as the scöurge öf the seven seas!\"",
+    "quote_ko": "\"내 이름은 일곱 바다의 무법자로서 길이 남으리라!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_rose",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wigfrid_Roseate_in_game.png",
+    "quote_en": "\"Applause röars as red, red röses flööd my stage!\"",
+    "quote_ko": "\"붉디 붉은 장미가 무대를 메우고 우레 같은 박수가 전당에 울린다!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_rosep",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 103,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wigfrid_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Applause röars as red, red röses flööd my stage!\"",
+    "quote_ko": "\"붉디 붉은 장미가 무대를 메우고 우레 같은 박수가 전당에 울린다!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_shadow",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 6,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wigfrid_Triumphant_in_game.png",
+    "quote_en": "\"I will deströy my enemies!\"",
+    "quote_ko": "\"내 나의 적들을 쓰러트릴지니!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_shadowp",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 103,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wigfrid_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I will deströy my enemies!\"",
+    "quote_ko": "\"내 나의 적들을 쓰러트릴지니!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_survivor",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 4,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wigfrid_Survivor_in_game.png",
+    "quote_en": "\"Yöu have tö try harder than this tö defeat me!\"",
+    "quote_ko": "\"날 쓰러트리기에는 이 정도론 역부족이다!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_survivorp",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 103,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wigfrid_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Yöu have tö try harder than this tö defeat me!\"",
+    "quote_ko": "\"날 쓰러트리기에는 이 정도론 역부족이다!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_valkyrie",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VALKYRIE",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 103,
+    "name_en": "Winged Victory",
+    "name_ko": "승리의 여신",
+    "body_image": "/images/skins-body/Wigfrid_Winged_Victory_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The stage is set för my rise tö glöry!\"",
+    "quote_ko": "\"영광을 향해 비상할 준비를 마쳤노라!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_victorian",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wigfrid_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Wörds, wörds, wörds.\"",
+    "quote_ko": "\"글자일세, 글자야, 글자.\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_western",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "WESTERN",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 167,
+    "name_en": "The Stampeder",
+    "name_ko": "무법자",
+    "body_image": "/images/skins-body/Wigfrid_Stampeder_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"No beast withstandeth the will of one whose heart runneth wild.\"",
+    "quote_ko": "\"거칠게 뛰는 심장을 지닌 자, 그 의지를 거스를 짐승 하나 없더라.\"",
+    "set_id": "emote_tiphat",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_wrestler",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YOTP",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 56,
+    "name_en": "The Ultimate Performer",
+    "name_ko": "궁극의 공연자",
+    "body_image": "/images/skins-body/Wigfrid_Ultimate_Performer_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I am the best that ever was!!\"",
+    "quote_ko": "\"내가 바로 사상 최강이다!!\"",
+    "character": "wigfrid"
+  },
+  {
+    "id": "wathgrithr_yule",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WATHGRITHR"
+    ],
+    "release_group": 82,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wigfrid_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Gööd tidings to all!\"",
+    "quote_ko": "\"모두에게 즐거운 일이 있기를!\"",
+    "set_id": "emote_carol",
     "character": "wigfrid"
   },
   {
@@ -13261,6 +14562,1875 @@ export const SKINS: SkinEntry[] = [
     "character": "wigfrid"
   },
   {
+    "id": "waxwell_combatant",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Maxwell_Challenger_in_game.png",
+    "quote_en": "\"I've faced worse ordeals.\"",
+    "quote_ko": "\"이보다 더한 시련도 겪어 봤는걸.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_cook",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Maxwell_Culinarian_in_game.png",
+    "quote_en": "\"Everything I make is magnificent.\"",
+    "quote_ko": "\"내가 만든 건 뭐든 아름답지.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_formal",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 5,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Maxwell_Guest_of_Honor_in_game.png",
+    "quote_en": "\"I just need to find my beautiful assistant.\"",
+    "quote_ko": "\"이제 아름다운 조수만 있으면 되겠어.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_formalp",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 137,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Maxwell_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I just need to find my beautiful assistant.\"",
+    "quote_ko": "\"이제 아름다운 조수만 있으면 되겠어.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_gladiator",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Maxwell_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"All those who oppose me shall perish!\"",
+    "quote_ko": "\"나에게 대적하는 자, 쓰러지리라!\"",
+    "set_id": "emote_fistshake",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_ice",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 138,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Maxwell_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Nothing personal pal, the ice industry's a cold business.\"",
+    "quote_ko": "\"사적인 감정은 없다네. 얼음 산업이란 게 얼음장 같은 곳 아니겠나.\"",
+    "set_id": "emote_carol",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_krampus",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 15,
+    "name_en": "Krampus Costume",
+    "name_ko": "크람푸스 코스튬",
+    "body_image": "/images/skins-body/Maxwell_Krampus_in_game.png",
+    "quote_en": "\"Naughty. Definitely naughty.\"",
+    "quote_ko": "\"넌 말썽꾸러기가 분명하군.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_krampus_d",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 31,
+    "name_en": "Krampwell Head",
+    "name_ko": "크람프웰 머리",
+    "body_image": "/images/skins-body/Maxwell_Krampus_in_game.png",
+    "quote_en": "\"Naughty. Definitely naughty.\"",
+    "quote_ko": "\"넌 말썽꾸러기가 분명하군.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_krampus_p",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 105,
+    "name_en": "Krampwell Head",
+    "name_ko": "크람프웰 머리",
+    "body_image": "/images/skins-body/Maxwell_Krampus_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Naughty. Definitely naughty.\"",
+    "quote_ko": "\"넌 말썽꾸러기가 분명하군.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_lunar",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 136,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Maxwell_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Perhaps I was wrong to dismiss the moon's power so quickly...\"",
+    "quote_ko": "\"달의 힘을 그렇게 빨리 포기한 건 잘못이었던 것 같군...\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_magma",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Maxwell_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Volcanic power is intoxicating.\"",
+    "quote_ko": "\"화산의 힘은 독하다네.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_masquerade",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 151,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Maxwell_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"You expect me to mingle? I was assured I'd have my own private box seat!\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_nature",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 40,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Maxwell_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"There is magic in the trees.\"",
+    "quote_ko": "\"나무들 속에는 마법이 잠들어 있지.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_none",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 0,
+    "name_en": "Maxwell",
+    "name_ko": "맥스웰",
+    "body_image": "/images/skins-body/Maxwell_Original_in_game.png",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_pirate",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 158,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Maxwell_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The sea shows no mercy to fools - and neither will I.\"",
+    "quote_ko": "\"바다 위에서 어리석은 자에게 자비는 없다. 그것이 내 철칙이다.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_rose",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Maxwell_Roseate_in_game.png",
+    "quote_en": "\"The thorned rose cannot help but prick. It is its nature.\"",
+    "quote_ko": "\"가시 많은 장미는 따끔거릴 수밖에 없지. 그것이 본성이니.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_rosep",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 137,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Maxwell_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The thorned rose cannot help but prick. It is its nature.\"",
+    "quote_ko": "\"가시 많은 장미는 따끔거릴 수밖에 없지. 그것이 본성이니.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_spring",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SPRING",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 177,
+    "name_en": "The Equinor",
+    "name_ko": "봄마을",
+    "body_image": "/images/skins-body/Maxwell_Equinor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"One must either offer a tribute, or become the tribute.\"",
+    "quote_ko": "\"제물을 바치거나, 제물이 되거나, 둘 중 하나지.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_survivor",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 5,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Maxwell_Survivor_in_game.png",
+    "quote_en": "\"Say, pal, I don't look so good.\"",
+    "quote_ko": "\"이보게, 친구, 내 안색이 좋지 않군.",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_survivorp",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 137,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Maxwell_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Say, pal, I don't look so good.\"",
+    "quote_ko": "\"이보게, 친구, 내 안색이 좋지 않군.",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_unshadow",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 6,
+    "name_en": "The Untriumphant",
+    "name_ko": "비승리자",
+    "body_image": "/images/skins-body/Maxwell_Untriumphant_in_game.png",
+    "quote_en": "\"The poor unsuspecting fool has no idea what's coming.\"",
+    "quote_ko": "\"불쌍하고 눈치없고 어리석게도 무슨 일이 일어날지 전혀 몰랐지.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_unshadowp",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 137,
+    "name_en": "The Untriumphant",
+    "name_ko": "비승리자",
+    "body_image": "/images/skins-body/Maxwell_Untriumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The poor unsuspecting fool has no idea what's coming.\"",
+    "quote_ko": "\"불쌍하고 눈치없고 어리석게도 무슨 일이 일어날지 전혀 몰랐지.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_vampire",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 77,
+    "name_en": "The Vampiric",
+    "name_ko": "흡혈귀",
+    "body_image": "/images/skins-body/Maxwell_Vampiric_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I never was one to shy away from theatrics, or a good suit.\"",
+    "quote_ko": "\"나는 한 번도 연극이나 좋은 옷을 꺼려 본 적이 없다네.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_victorian",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Maxwell_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Hmph.\"",
+    "quote_ko": "\"흠.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_wizard",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "WIZARD",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 137,
+    "name_en": "The Dark Wizard",
+    "name_ko": "흑마법사",
+    "body_image": "/images/skins-body/Maxwell_Dark_Wizard_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"So few dare to delve into the secrets of dark magic.\"",
+    "quote_ko": "\"흑마술의 비밀을 파헤치려는 사람은 몇 없는 법이지.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_yule",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 82,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Maxwell_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Hmph. It's cold out.\"",
+    "quote_ko": "\"흥. 밖이 춥군.\"",
+    "set_id": "emote_carol",
+    "character": "maxwell"
+  },
+  {
+    "id": "webber_boy",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BOY",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 120,
+    "name_en": "The Farmspider",
+    "name_ko": "시골거미",
+    "body_image": "/images/skins-body/Webber_Farmspider_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We were so lonely back then...\"",
+    "quote_ko": "\"그 때의 우린 너무나도 외로웠어...\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_combatant",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Webber_Challenger_in_game.png",
+    "quote_en": "\"We don't want to fight if we don't have to.\"",
+    "quote_ko": "\"우린 될 수 있으면 안 싸우고 싶어.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_cook",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Webber_Culinarian_in_game.png",
+    "quote_en": "\"Let's get cooking!\"",
+    "quote_ko": "\"우리 요리하자!\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_formal",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 2,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Webber_Guest_of_Honor_in_game.png",
+    "quote_en": "\"We like parties!\"",
+    "quote_ko": "\"우린 파티 좋아해!\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_formalp",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 120,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Webber_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We like parties!\"",
+    "quote_ko": "\"우린 파티 좋아해!\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_gladiator",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Webber_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"If you fight us, you will lose.\"",
+    "quote_ko": "\"우리랑 싸우면 네가 질 걸.\"",
+    "set_id": "emote_fistshake",
+    "character": "webber"
+  },
+  {
+    "id": "webber_ice",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 36,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Webber_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We love playing in the snow!\"",
+    "quote_ko": "\"우린 눈 속에서 노는 게 좋아!\"",
+    "set_id": "emote_carol",
+    "character": "webber"
+  },
+  {
+    "id": "webber_lunar",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 136,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Webber_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The moon made us... different.\"",
+    "quote_ko": "\"달이 우릴... 바꿔놨어.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_magma",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Webber_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We're like a walking volcano.\"",
+    "quote_ko": "\"우리는 걸어다니는 화산과 같지.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_masquerade",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 161,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Webber_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We'll be on our best behavior... probably.\"",
+    "quote_ko": "\"최대한 겸손하게 행동하자... 아마도.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_nature",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 121,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Webber_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Only the strongest spiders survive out here!\"",
+    "quote_ko": "\"오직 강한 거미만이 살아남는 거야!\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_none",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 0,
+    "name_en": "Webber",
+    "name_ko": "웨버",
+    "body_image": "/images/skins-body/Webber_Original_in_game.png",
+    "character": "webber"
+  },
+  {
+    "id": "webber_pirate",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 158,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Webber_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"It's good that we know how to make silk, our claws keep catching on the sail...\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_punk",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 49,
+    "name_en": "The Rebel",
+    "name_ko": "반항아",
+    "body_image": "/images/skins-body/Webber_Rebel_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Don't mess with us.\"",
+    "quote_ko": "\"우리한테 까불지 마.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_rose",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Webber_Roseate_in_game.png",
+    "quote_en": "\"The rose shelters our fur from the morning dew.\"",
+    "quote_ko": "\"장미가 털에 아침 이슬 내리는 걸 막아줘.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_rosep",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 120,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Webber_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The rose shelters our fur from the morning dew.\"",
+    "quote_ko": "\"장미가 털에 아침 이슬 내리는 걸 막아줘.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_shadow",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 6,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Webber_Triumphant_in_game.png",
+    "quote_en": "\"Come closer - we are hungry!\"",
+    "quote_ko": "\"가까이 와, 우리 배고파!\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_shadowp",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 120,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Webber_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Come closer - we are hungry!\"",
+    "quote_ko": "\"가까이 와, 우리 배고파!\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_spring",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SPRING",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 177,
+    "name_en": "The Equinor",
+    "name_ko": "봄마을",
+    "body_image": "/images/skins-body/Webber_Equinor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We're going to play until the sun goes down, and then we're going to play some more.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_survivor",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 4,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Webber_Survivor_in_game.png",
+    "quote_en": "\"I want to go home, but we can't find the way.\"",
+    "quote_ko": "\"나 집에 가고 싶어. 근데 우리 길을 못 찾겠어.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_survivorp",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 120,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Webber_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I want to go home, but we can't find the way.\"",
+    "quote_ko": "\"나 집에 가고 싶어. 근데 우리 길을 못 찾겠어.\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_victorian",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Webber_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Look, we lost a tooth!\"",
+    "quote_ko": "\"이거 봐, 이가 하나 빠졌어!\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_wrestler",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YOTP",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 80,
+    "name_en": "El Tigre Cub",
+    "name_ko": "엘 티그레 소년",
+    "body_image": "/images/skins-body/Webber_El_Tigre_Cub_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Grrrr... We're scary!\"",
+    "quote_ko": "\"그르르... 우리는 무섭다!\"",
+    "character": "webber"
+  },
+  {
+    "id": "webber_yule",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WEBBER"
+    ],
+    "release_group": 150,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Webber_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We are what we eat... sweet!\"",
+    "quote_ko": "\"먹은 게 뼈와 살이 돼서... 달콤해졌어!\"",
+    "set_id": "emote_carol",
+    "character": "webber"
+  },
+  {
+    "id": "wendy_ancient",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ANCIENT",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 164,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Wendy_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"At times we sacrifice, at times we're sacrificed.\"",
+    "quote_ko": "\"제물을 바치는 그 때, 우리 역시 바쳐지겠지.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_combatant",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Wendy_Challenger_in_game.png",
+    "quote_en": "\"Abigail and I never fight.\"",
+    "quote_ko": "\"아비게일과 난 절대 싸우지 않아.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_cook",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Wendy_Culinarian_in_game.png",
+    "quote_en": "\"Every meal ends in an empty plate.\"",
+    "quote_ko": "\"모든 식사는 빈 접시로 끝나는 법.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_creepy",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 49,
+    "name_en": "The Supernatural",
+    "name_ko": "초자연적",
+    "body_image": "/images/skins-body/Wendy_Supernatural_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I am coming for you!\"",
+    "quote_ko": "\"찾아간다!\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_formal",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 2,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wendy_Guest_of_Honor_in_game.png",
+    "quote_en": "\"I'll only go to the party if Abigail comes too.\"",
+    "quote_ko": "\"아비게일도 같이 가야만 파티에 갈 거야.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_formalp",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 92,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wendy_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I'll only go to the party if Abigail comes too.\"",
+    "quote_ko": "\"아비게일도 같이 가야만 파티에 갈 거야.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_gladiator",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Wendy_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I take no pleasure in this.\"",
+    "quote_ko": "\"난 이런 거 안 좋아하는데.\"",
+    "set_id": "emote_fistshake",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_handmedown",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HANDMEDOWN",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 92,
+    "name_en": "The Nostalgic",
+    "name_ko": "향수",
+    "body_image": "/images/skins-body/Wendy_Nostalgic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Abigail and I shared everything.\"",
+    "quote_ko": "\"아비게일과 난 모든 것을 나눴었지.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_ice",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 36,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wendy_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We all turn cold in time.\"",
+    "quote_ko": "\"우리 모두 언젠가 싸늘해지는 법이야.\"",
+    "set_id": "emote_carol",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_lunar",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 136,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wendy_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Where are you Abigail? I thought I'd find you among the stars...\"",
+    "quote_ko": "\"너는 어디 있을까, 아비게일? 별들 속에서도 찾을 수 없고...\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_lureplant",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 15,
+    "name_en": "Lureplant Costume",
+    "name_ko": "미끼식물 코스튬",
+    "body_image": "/images/skins-body/Wendy_Lureplant_in_game.png",
+    "quote_en": "\"So alluring...\"",
+    "quote_ko": "\"너무 매혹적이야...\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_lureplant_d",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 31,
+    "name_en": "Wendyflower Head",
+    "name_ko": "웬디꽃 머리",
+    "body_image": "/images/skins-body/Wendy_Lureplant_in_game.png",
+    "quote_en": "\"So alluring...\"",
+    "quote_ko": "\"너무 매혹적이야...\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_lureplant_p",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 105,
+    "name_en": "Wendyflower Head",
+    "name_ko": "웬디꽃 머리",
+    "body_image": "/images/skins-body/Wendy_Lureplant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"So alluring...\"",
+    "quote_ko": "\"너무 매혹적이야...\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_magma",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Wendy_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"My volcanic smoke shall encase the world in darkness.\"",
+    "quote_ko": "\"나의 화산 연기가 세상을 어둠으로 덮으리니.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_masquerade",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 161,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Wendy_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The night is young, but not for long.\"",
+    "quote_ko": "\"밤은 아직 이슥하지만 길지는 않겠지.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_nature",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 121,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wendy_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Do you believe in fairies? If you believe, clap your hands.\"",
+    "quote_ko": "\"너 요정 믿니? 믿는다면 손뼉을 쳐 보렴.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_none",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 0,
+    "name_en": "Wendy",
+    "name_ko": "웬디",
+    "body_image": "/images/skins-body/Wendy_Original_in_game.png",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_pirate",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 171,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Wendy_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Do you ever feel adrift like a vessel without mooring?\"",
+    "quote_ko": "\"홋줄 없이 표류하는 배가 된 듯한 기분, 느껴본 적 있어?\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_rose",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wendy_Roseate_in_game.png",
+    "quote_en": "\"A sickly, sweet rose, plucked in its prime. Why?\"",
+    "quote_ko": "\"가련하디 향긋하던 한 송이 꽃, 어이 마저 못 피우고 꺾였던가?\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_rosep",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 92,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wendy_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"A sickly, sweet rose, plucked in its prime. Why?\"",
+    "quote_ko": "\"가련하디 향긋하던 한 송이 꽃, 어이 마저 못 피우고 꺾였던가?\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_shadow",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 6,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wendy_Triumphant_in_game.png",
+    "quote_en": "\"Shadows are as black as ink, or night, or nightmares.\"",
+    "quote_ko": "\"그림자 검기는 잉크와 같이, 칠흑과 같이, 혹은 악몽과 같이.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_shadowp",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 92,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wendy_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Shadows are as black as ink, or night, or nightmares.\"",
+    "quote_ko": "\"그림자 검기는 잉크와 같이, 칠흑과 같이, 혹은 악몽과 같이.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_survivor",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 4,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wendy_Survivor_in_game.png",
+    "quote_en": "\"I carry on for Abigail's sake.\"",
+    "quote_ko": "\"아비게일을 위해서라도 계속 살아갈 거야.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_survivorp",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 92,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wendy_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I carry on for Abigail's sake.\"",
+    "quote_ko": "\"아비게일을 위해서라도 계속 살아갈 거야.\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_victorian",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wendy_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I am in deepest mourning...\"",
+    "quote_ko": "\"나의 깊디깊은 비탄이여...\"",
+    "character": "wendy"
+  },
+  {
+    "id": "wendy_yule",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WENDY"
+    ],
+    "release_group": 150,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wendy_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I will try to summon up some holiday spirit... if I must.\"",
+    "quote_ko": "\"명절 기분을 끌어는 내 볼게... 굳이 해야 한다면야.\"",
+    "set_id": "emote_carol",
+    "character": "wendy"
+  },
+  {
+    "id": "wes_clown",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 49,
+    "name_en": "The Pierrot",
+    "name_ko": "광대",
+    "body_image": "/images/skins-body/Wes_Pierrot_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_combatant",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Wes_Challenger_in_game.png",
+    "character": "wes"
+  },
+  {
+    "id": "wes_cook",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Wes_Culinarian_in_game.png",
+    "character": "wes"
+  },
+  {
+    "id": "wes_formal",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 2,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wes_Guest_of_Honor_in_game.png",
+    "character": "wes"
+  },
+  {
+    "id": "wes_formalp",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 116,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wes_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_gladiator",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Wes_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "set_id": "emote_fistshake",
+    "character": "wes"
+  },
+  {
+    "id": "wes_harlequin",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FOOLS",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 116,
+    "name_en": "The Fool",
+    "name_ko": "어릿광대",
+    "body_image": "/images/skins-body/Wes_Fool_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_ice",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 138,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wes_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "set_id": "emote_carol",
+    "character": "wes"
+  },
+  {
+    "id": "wes_lunar",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 154,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wes_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_magma",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Wes_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_mandrake",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 15,
+    "name_en": "Mandrake Costume",
+    "name_ko": "맨드레이크 코스튬",
+    "body_image": "/images/skins-body/Wes_Mandrake_in_game.png",
+    "character": "wes"
+  },
+  {
+    "id": "wes_mandrake_d",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 31,
+    "name_en": "Wesdrake Makeup",
+    "name_ko": "웨스드레이크 분장",
+    "body_image": "/images/skins-body/Wes_Mandrake_in_game.png",
+    "character": "wes"
+  },
+  {
+    "id": "wes_mandrake_p",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 105,
+    "name_en": "Wesdrake Makeup",
+    "name_ko": "웨스드레이크 분장",
+    "body_image": "/images/skins-body/Wes_Mandrake_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_masquerade",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 140,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Wes_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_nature",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 40,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wes_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_none",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WES"
+    ],
+    "release_group": 0,
+    "name_en": "Wes",
+    "name_ko": "웨스",
+    "body_image": "/images/skins-body/Wes_Original_in_game.png",
+    "character": "wes"
+  },
+  {
+    "id": "wes_pirate",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 133,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Wes_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_rose",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wes_Roseate_in_game.png",
+    "character": "wes"
+  },
+  {
+    "id": "wes_rosep",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 116,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wes_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_shadow",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 6,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wes_Triumphant_in_game.png",
+    "character": "wes"
+  },
+  {
+    "id": "wes_shadowp",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 116,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wes_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_survivor",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 4,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wes_Survivor_in_game.png",
+    "character": "wes"
+  },
+  {
+    "id": "wes_survivorp",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 116,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wes_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_victorian",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wes_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_western",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "WESTERN",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 167,
+    "name_en": "The Stampeder",
+    "name_ko": "무법자",
+    "body_image": "/images/skins-body/Wes_Stampeder_in_game.png",
+    "rarity_modifier": "Woven",
+    "set_id": "emote_tiphat",
+    "character": "wes"
+  },
+  {
+    "id": "wes_wrestler",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YOTP",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 56,
+    "name_en": "The Lover",
+    "name_ko": "사랑꾼",
+    "body_image": "/images/skins-body/Wes_Lover_in_game.png",
+    "rarity_modifier": "Woven",
+    "character": "wes"
+  },
+  {
+    "id": "wes_yule",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WES"
+    ],
+    "release_group": 82,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wes_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "set_id": "emote_carol",
+    "character": "wes"
+  },
+  {
     "id": "whip_snapthorn",
     "base_prefab": "whip",
     "type": "item",
@@ -13277,6 +16447,1345 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "wickerbottom_combatant",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Wickerbottom_Challenger_in_game.png",
+    "quote_en": "\"Combat is all about technique, dear.\"",
+    "quote_ko": "\"전투는 다 기교란다.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_cook",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Wickerbottom_Culinarian_in_game.png",
+    "quote_en": "\"Just follow the recipe, dear.\"",
+    "quote_ko": "\"그냥 조리법만 따라하거라.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_formal",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 2,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wickerbottom_Guest_of_Honor_in_game.png",
+    "quote_en": "\"Even I let my hair down occasionally.\"",
+    "quote_ko": "\"가끔은 나도 머리를 풀어헤칠 때가 있지.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_formalp",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 134,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wickerbottom_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Even I let my hair down occasionally.\"",
+    "quote_ko": "\"가끔은 나도 머리를 풀어헤칠 때가 있지.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_gladiator",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Wickerbottom_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Goodness gracious, it seems you've been annihilated.\"",
+    "quote_ko": "\"이런 세상에, 너희들은 전멸인 것 같군.\"",
+    "set_id": "emote_fistshake",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_ice",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 36,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wickerbottom_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Would you like a sweetie, dear?\"",
+    "quote_ko": "\"달콤한 거 먹으련, 아가?\"",
+    "set_id": "emote_carol",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_lunar",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 136,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wickerbottom_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"This lunar knowledge has been quite... eye-opening.\"",
+    "quote_ko": "\"이 달의 지식 덕분에... 눈이 트였어.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_magma",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Wickerbottom_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Watch for my extrusive igneous rocks, dear.\"",
+    "quote_ko": "\"내 화성암 분출물을 조심하려무나.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_masquerade",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 161,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Wickerbottom_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I delight in an elegant soirée, provided it concludes at a sensible hour.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_nature",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 144,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wickerbottom_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Honestly, a working knowledge of medicinal botany is hardly witchcraft!\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_none",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 0,
+    "name_en": "Wickerbottom",
+    "name_ko": "위커바텀",
+    "body_image": "/images/skins-body/Wickerbottom_Original_in_game.png",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_ornate",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ORNATE",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 134,
+    "name_en": "The Nom de Plume",
+    "name_ko": "필명",
+    "body_image": "/images/skins-body/Wickerbottom_The_Nom_de_Plume_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Ah, the reckless abandon of youth. To think I used to dabble in fiction...\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_pirate",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 171,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Wickerbottom_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Let the pursuit of knowledge stretch beyond every horizon.\"",
+    "quote_ko": "\"지식을 추구하며 모든 수평선 너머를 향해.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_rose",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wickerbottom_Roseate_in_game.png",
+    "quote_en": "\"Ah, to see the world through rose-colored glasses.\"",
+    "quote_ko": "\"아, 세상을 장밋빛 안경으로 보는 기분이란.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_rosep",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 134,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wickerbottom_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Ah, to see the world through rose-colored glasses.\"",
+    "quote_ko": "\"아, 세상을 장밋빛 안경으로 보는 기분이란.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_shadow",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 6,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wickerbottom_Triumphant_in_game.png",
+    "quote_en": "\"Knowledge is power!\"",
+    "quote_ko": "\"지식이 곧 힘이다!\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_shadowp",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 134,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wickerbottom_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Knowledge is power!\"",
+    "quote_ko": "\"지식이 곧 힘이다!\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_spiderwitch",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 77,
+    "name_en": "The Bewitched",
+    "name_ko": "황홀함",
+    "body_image": "/images/skins-body/Wickerbottom_Bewitched_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Magic is merely science that hasn't been categorized yet.\"",
+    "quote_ko": "\"마법은 아직 분류되지 않은 과학일 뿐이야.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_survivor",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 4,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wickerbottom_Survivor_in_game.png",
+    "quote_en": "\"I hope I don't break my glasses.\"",
+    "quote_ko": "\"내 안경을 깨 먹으면 안 될 텐데.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_survivorp",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 134,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wickerbottom_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I hope I don't break my glasses.\"",
+    "quote_ko": "\"내 안경을 깨 먹으면 안 될 텐데.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_victorian",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wickerbottom_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Manners, my dear.\"",
+    "quote_ko": "\"예의를 지키시지요.\"",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_yule",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WICKERBOTTOM"
+    ],
+    "release_group": 127,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wickerbottom_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"As usual, the responsibility of organizing the seasonal festivities falls to me.\"",
+    "set_id": "emote_carol",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "willow_ancient",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ANCIENT",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 156,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Willow_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Sometimes the old ways need to crash and burn to make way for the new.\"",
+    "quote_ko": "\"가끔은 새 것을 만들려면 옛 것을 부수고 불태워야 해.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_combatant",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Willow_Challenger_in_game.png",
+    "quote_en": "\"I can handle myself.\"",
+    "quote_ko": "\"내 몸은 내가 알아서 챙겨.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_cook",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Willow_Culinarian_in_game.png",
+    "quote_en": "\"My food's always burned to perfection!\"",
+    "quote_ko": "\"내 음식은 항상 완벽하게 구워져 있지!\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_dowdy",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 49,
+    "name_en": "The Woeful",
+    "name_ko": "울적한 아이",
+    "body_image": "/images/skins-body/Willow_Woeful_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I didn't do it. Really.\"",
+    "quote_ko": "\"내가 안 그랬다니까. 진짜야.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_dragonfly",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 15,
+    "name_en": "Dragonfly Costume",
+    "name_ko": "용파리 코스튬",
+    "body_image": "/images/skins-body/Willow_Dragonfly_in_game.png",
+    "quote_en": "\"Woah, I'm smokin'! (No, really!)\"",
+    "quote_ko": "\"우와, 후끈한데! 농담 아니고!\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_dragonfly_d",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 31,
+    "name_en": "Willowfly Head",
+    "name_ko": "윌로우파리 머리",
+    "body_image": "/images/skins-body/Willow_Dragonfly_in_game.png",
+    "quote_en": "\"Woah, I'm smokin'! (No, really!)\"",
+    "quote_ko": "\"우와, 후끈한데! 농담 아니고!\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_dragonfly_p",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 105,
+    "name_en": "Willowfly Head",
+    "name_ko": "윌로우파리 머리",
+    "body_image": "/images/skins-body/Willow_Dragonfly_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Woah, I'm smokin'! (No, really!)\"",
+    "quote_ko": "\"우와, 후끈한데! 농담 아니고!\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_formal",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 2,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Willow_Guest_of_Honor_in_game.png",
+    "quote_en": "\"He died before getting to see these beautiful flames.\"",
+    "quote_ko": "\"그 사람은 이 아름다운 불꽃을 보기도 전에 세상을 떠났지.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_formalp",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 65,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Willow_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"He died before getting to see these beautiful flames.\"",
+    "quote_ko": "\"그 사람은 이 아름다운 불꽃을 보기도 전에 세상을 떠났지.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_gladiator",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Willow_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Play with fire and you'll get burned.\"",
+    "quote_ko": "\"불장난 하면 한 대 데일걸.\"",
+    "set_id": "emote_fistshake",
+    "character": "willow"
+  },
+  {
+    "id": "willow_haunteddoll",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HAUNTEDDOLL",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 65,
+    "name_en": "The Forlorn Doll",
+    "name_ko": "버려진 인형",
+    "body_image": "/images/skins-body/Willow_Forlorn_Doll_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Why did you leave me?\"",
+    "quote_ko": "\"왜 날 버린 거야?\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_ice",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 36,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Willow_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Why couldn't it be warm fire?\"",
+    "quote_ko": "\"왜 따뜻한 불이 아닌 거람?\"",
+    "set_id": "emote_carol",
+    "character": "willow"
+  },
+  {
+    "id": "willow_lunar",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 154,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Willow_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I have an urge to dance around a fire in the moonlight.\"",
+    "quote_ko": "\"달밤에 불 피우고 춤 추고 싶어졌어.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_magma",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Willow_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"All fire, all the time!!\"",
+    "quote_ko": "\"모든 것이 불타오르고 있어!\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_masquerade",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 140,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Willow_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The flames taught me how to dance.\"",
+    "quote_ko": "\"불꽃에게 춤을 배웠지.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_nature",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 144,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Willow_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Golden fields of hay, ripe for burning... I mean harvesting.\"",
+    "quote_ko": "\"황금빛 들녘이 타기 좋게... 아니, 거두기 좋게 익었구나.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_none",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 0,
+    "name_en": "Willow",
+    "name_ko": "윌로우",
+    "body_image": "/images/skins-body/Willow_Original_in_game.png",
+    "character": "willow"
+  },
+  {
+    "id": "willow_pirate",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 133,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Willow_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Come onnnn, let me fire the cannon!\"",
+    "quote_ko": "\"아 왜 그랭, 나도 대포 쏴 보자!\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_rose",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Willow_Roseate_in_game.png",
+    "quote_en": "\"A rose to symbolize the flames of passion.\"",
+    "quote_ko": "\"장미는 정열의 불꽃을 상징하지.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_rosep",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 65,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Willow_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"A rose to symbolize the flames of passion.\"",
+    "quote_ko": "\"장미는 정열의 불꽃을 상징하지.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_shadow",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 6,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Willow_Triumphant_in_game.png",
+    "quote_en": "\"Shadows are just inverted flames.\"",
+    "quote_ko": "\"그림자? 그냥 불꽃을 뒤집은 거지.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_shadowp",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 65,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Willow_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Shadows are just inverted flames.\"",
+    "quote_ko": "\"그림자? 그냥 불꽃을 뒤집은 거지.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_spring",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SPRING",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 177,
+    "name_en": "The Equinor",
+    "name_ko": "봄마을",
+    "body_image": "/images/skins-body/Willow_Equinor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"That village was burnt before I got there.\"",
+    "quote_ko": "\"내가 와 보니까 마을이 불타 있더라고.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_survivor",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 4,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Willow_Survivor_in_game.png",
+    "quote_en": "\"Surviving just requires strength of will. (And fire.)\"",
+    "quote_ko": "\"살아남는 건 강한 의지만 있으면 돼. 불도 조금 필요하고.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_survivorp",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 65,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Willow_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Surviving just requires strength of will. (And fire.)\"",
+    "quote_ko": "\"살아남는 건 강한 의지만 있으면 돼. 불도 조금 필요하고.\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_victorian",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Willow_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Fancy a matchstick, sir?\"",
+    "quote_ko": "\"성냥 사 가시지 않으시겠어요, 선생님?\"",
+    "character": "willow"
+  },
+  {
+    "id": "willow_yule",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WILLOW"
+    ],
+    "release_group": 127,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Willow_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"It's the perfect time of year for sitting in front of a roaring fire.\"",
+    "quote_ko": "\"활활 타는 모닥불 쬐기 좋은 계절이 돌아왔네.\"",
+    "set_id": "emote_carol",
+    "character": "willow"
+  },
+  {
+    "id": "wilson_barber",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BARBER",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 142,
+    "name_en": "The Barber",
+    "name_ko": "이발사",
+    "body_image": "/images/skins-body/Wilson_Barber_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"You, sir! How about a shave?\"",
+    "quote_ko": "\"거기 당신! 면도하시겠어요?\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_combatant",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Wilson_Challenger_in_game.png",
+    "quote_en": "\"This may prove to be my most dangerous experiment yet.\"",
+    "quote_ko": "\"내 사상 최고로 위험한 실험이 되겠어.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_cook",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Wilson_Culinarian_in_game.png",
+    "quote_en": "\"Oh yes, I'm cooking something up.\"",
+    "quote_ko": "\"아 맞다, 나 요리를 좀 해보고 있어.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_formal",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 2,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wilson_Guest_of_Honor_in_game.png",
+    "quote_en": "\"I hate parties.\"",
+    "quote_ko": "\"난 파티가 싫어.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_formalp",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 142,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wilson_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I hate parties.\"",
+    "quote_ko": "\"난 파티가 싫어.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_gladiator",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Wilson_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I've the brains AND the brawn.\"",
+    "quote_ko": "\"난 두뇌파이면서 육체파이기도 하지.\"",
+    "set_id": "emote_fistshake",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_ice",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 36,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wilson_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Brrrrr!\"",
+    "quote_ko": "\"흐드드드드!\"",
+    "set_id": "emote_carol",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_lunar",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 136,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wilson_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The cosmos are filled with limitless scientific possibilities!\"",
+    "quote_ko": "\"우주는 무한한 과학적 가능성으로 가득 차 있지!\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_madscience",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 49,
+    "name_en": "The Mad Scientist",
+    "name_ko": "미치광이 과학자",
+    "body_image": "/images/skins-body/Wilson_Mad_Scientist_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Stand back. I'm going to do SCIENCE!\"",
+    "quote_ko": "\"물러서라. 실험을 시작할 테니!\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_magma",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Wilson_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I've harnessed the power of the earth's core!\"",
+    "quote_ko": "\"지구의 핵의 힘을 내 손 안에!\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_masquerade",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 151,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Wilson_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I am feeling the chemistry!\"",
+    "quote_ko": "\"화학 반응이 느껴져!\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_nature",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 100,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wilson_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Field botany isn't my specialty... but it's growing on me.\"",
+    "quote_ko": "\"현장 연구는 내 전공이 아니지만... 그래도 점점 좋아지는 것 같아.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_none",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 0,
+    "name_en": "Wilson",
+    "name_ko": "윌슨",
+    "body_image": "/images/skins-body/Wilson_Original_in_game.png",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_pirate",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 158,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Wilson_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I've discovered a lot of things at sea... that I'm prone to seasickness, for one.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_rose",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wilson_Roseate_in_game.png",
+    "quote_en": "\"Perhaps I'll retire to a life of rose breeding.\"",
+    "quote_ko": "\"어쩌면 은퇴한 뒤엔 장미 육종이나 할까 봐.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_rosep",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 142,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wilson_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Perhaps I'll retire to a life of rose breeding.\"",
+    "quote_ko": "\"어쩌면 은퇴한 뒤엔 장미 육종이나 할까 봐.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_shadow",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 6,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wilson_Triumphant_in_game.png",
+    "quote_en": "\"Mwahahaha!\"",
+    "quote_ko": "\"음하하하!\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_shadowp",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 142,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wilson_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Mwahahaha!\"",
+    "quote_ko": "\"음하하하!\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_spring",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SPRING",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 177,
+    "name_en": "The Equinor",
+    "name_ko": "봄마을",
+    "body_image": "/images/skins-body/Wilson_Equinor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"No! I'm the village GENIUS!\"",
+    "quote_ko": "\"아니! 난 산책꾼이 아니라 천재라고!\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_survivor",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 4,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wilson_Survivor_in_game.png",
+    "quote_en": "\"There is a scientific solution, here. I know it.\"",
+    "quote_ko": "\"분명 과학적 해결책이 있을 거야. 확실해.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_survivorp",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 142,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wilson_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"There is a scientific solution, here. I know it.\"",
+    "quote_ko": "\"분명 과학적 해결책이 있을 거야. 확실해.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_victorian",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wilson_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The root of all malady lies in an imbalance of the humors.\"",
+    "quote_ko": "\"모든 질병의 근원은 체액의 불균형이야.\"",
+    "character": "wilson"
+  },
+  {
+    "id": "wilson_yule",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 127,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wilson_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"After some experimentation, I've discovered the perfect ratio of holly and jolly.\"",
+    "set_id": "emote_carol",
+    "character": "wilson"
+  },
+  {
     "id": "winch_pirate",
     "base_prefab": "winch",
     "type": "item",
@@ -13291,6 +17800,24 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "좀도둑 도르레",
     "icon": "/images/skins/winch_pirate.png",
     "rarity_modifier": "Woven"
+  },
+  {
+    "id": "winona_ancient",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ANCIENT",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 156,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Winona_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I ain't one to keep up with trends, but isn't this a bit old-fashioned?\"",
+    "character": "winona"
   },
   {
     "id": "winona_catapult_fancy",
@@ -13357,6 +17884,341 @@ export const SKINS: SkinEntry[] = [
     "character": "winona"
   },
   {
+    "id": "winona_combatant",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Winona_Challenger_in_game.png",
+    "quote_en": "\"I can tough anything out.\"",
+    "quote_ko": "\"난 뭐든 견딜 수 있어.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_cook",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Winona_Culinarian_in_game.png",
+    "quote_en": "\"Let ol'Winnie fix ya up somethin' special.\"",
+    "quote_ko": "\"이 위노나 언니가 널 위해 특별한 걸 준비했지.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_factory",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "NEXTKIN",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 60,
+    "name_en": "The Industrious",
+    "name_ko": "공업가",
+    "body_image": "/images/skins-body/Winona_Industrious_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Time to roll up my sleeves.\"",
+    "quote_ko": "\"소매를 걷어 붙일 시간이군.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_formal",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 30,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Winona_Guest_of_Honor_in_game.png",
+    "quote_en": "\"The life of the party has arrived!\"",
+    "quote_ko": "\"파티의 꽃 여기 등장!\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_formalp",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 60,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Winona_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The life of the party has arrived!\"",
+    "quote_ko": "\"파티의 꽃 여기 등장!\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_frankenstein",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 77,
+    "name_en": "The Creature",
+    "name_ko": "피조물",
+    "body_image": "/images/skins-body/Winona_Creature_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Ha ha! Did I scare ya?\"",
+    "quote_ko": "\"하하! 겁먹었니?\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_gladiator",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Winona_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"You seem to think you got a chance. Let's fix that.\"",
+    "quote_ko": "\"네가 상대가 된다고 생각하나 보지. 그 생각, 바로잡아 주지.\"",
+    "set_id": "emote_fistshake",
+    "character": "winona"
+  },
+  {
+    "id": "winona_ice",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 109,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Winona_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"There'll be no slip-ups while I'm in charge!\"",
+    "quote_ko": "\"책임을 맡은 한 내게 실족은 없다!\"",
+    "set_id": "emote_carol",
+    "character": "winona"
+  },
+  {
+    "id": "winona_lunar",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 145,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Winona_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"It's a nice view from the top.\"",
+    "quote_ko": "\"위에서 보니 경치 좋네.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_magma",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Winona_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Tough as obsidian.\"",
+    "quote_ko": "\"흑요석처럼 단단하게.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_masquerade",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 161,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Winona_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Well, what d'ya know? I scrub up mighty fine when I feel like it.\"",
+    "quote_ko": "\"뭐, 어쩌겠어? 느낌이 왔으면 열심히 즐겨야지.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_nature",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 40,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Winona_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"There's few things more satisfying than watchin' something grow.\"",
+    "quote_ko": "\"뭔가 자라는 걸 바라보는 것보다 재밌는 것도 드물지.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_none",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 0,
+    "name_en": "Winona",
+    "name_ko": "위노나",
+    "body_image": "/images/skins-body/Winona_Original_in_game.png",
+    "character": "winona"
+  },
+  {
+    "id": "winona_pirate",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 133,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Winona_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Honest work will only get ya so far.\"",
+    "quote_ko": "\"정직하게 일했으니 여기까지 온 거지.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_rose",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 30,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Winona_Roseate_in_game.png",
+    "quote_en": "\"Thought and conscientiousness nips all problems in the bud.\"",
+    "quote_ko": "\"깊은 생각과 성실함이 꽃눈부터 문제를 해결해줄 거야.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_rosep",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 60,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Winona_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Thought and conscientiousness nips all problems in the bud.\"",
+    "quote_ko": "\"깊은 생각과 성실함이 꽃눈부터 문제를 해결해줄 거야.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_shadow",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 30,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Winona_Triumphant_in_game.png",
+    "quote_en": "\"You are but a cog in my machine.\"",
+    "quote_ko": "\"너는 내 기계의 한낱 부속품일 뿐.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_shadowp",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 60,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Winona_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"You are but a cog in my machine.\"",
+    "quote_ko": "\"너는 내 기계의 한낱 부속품일 뿐.\"",
+    "character": "winona"
+  },
+  {
     "id": "winona_spotlight_fancy",
     "base_prefab": "winona_spotlight",
     "type": "item",
@@ -13418,6 +18280,119 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "가시 달린 조명기",
     "icon": "/images/skins/winona_spotlight_spike.png",
     "rarity_modifier": "Woven",
+    "character": "winona"
+  },
+  {
+    "id": "winona_spring",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SPRING",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 177,
+    "name_en": "The Equinor",
+    "name_ko": "봄마을",
+    "body_image": "/images/skins-body/Winona_Equinor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"So... does anyone work around here, or is it all festival all the time?\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_survivor",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 30,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Winona_Survivor_in_game.png",
+    "quote_en": "\"I don't break down easy.\"",
+    "quote_ko": "\"난 그렇게 쉽게 무너지지 않아.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_survivorp",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 60,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Winona_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I don't break down easy.\"",
+    "quote_ko": "\"난 그렇게 쉽게 무너지지 않아.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_victorian",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Winona_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Honest work makes an honest woman.\"",
+    "quote_ko": "\"정직한 일이 정직한 여자를 만들지.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_wrestler",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YOTP",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 80,
+    "name_en": "The Fixer",
+    "name_ko": "해결사",
+    "body_image": "/images/skins-body/Winona_Fixer_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Come on. Give it your best shot.\"",
+    "quote_ko": "\"들어와. 어디 덤벼 보라고.\"",
+    "character": "winona"
+  },
+  {
+    "id": "winona_yule",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 82,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Winona_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Whaddya say we get the gang together for some carols?\"",
+    "quote_ko": "\"우리 모두 즐겁게 캐롤을 불러보는 건 어때?\"",
+    "set_id": "emote_carol",
     "character": "winona"
   },
   {
@@ -13717,6 +18692,418 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "wolfgang_ancient",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ANCIENT",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 146,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Wolfgang_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Wolfgang is learning much about history.\"",
+    "quote_ko": "\"볼프강 역사 공부 많이 하고 있다.\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_cook",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Wolfgang_Culinarian_in_game.png",
+    "quote_en": "\"Wolfgang will cook for you!\"",
+    "quote_ko": "\"볼프강이 널 위해 요리할 거야!\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_formal",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 2,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wolfgang_Guest_of_Honor_in_game.png",
+    "quote_en": "\"I used my special moustache wax.\"",
+    "quote_ko": "\"콧수염에 특별한 왁스를 좀 썼다.\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_formalp",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 126,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wolfgang_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I used my special moustache wax.\"",
+    "quote_ko": "\"콧수염에 특별한 왁스를 좀 썼다.\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_gladiator",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Wolfgang_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"You will kneel before might of Wolfgang!\"",
+    "quote_ko": "\"넌 볼프강의 강력함 앞에 무릎 꿇게 될 거다!\"",
+    "set_id": "emote_fistshake",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_ice",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 36,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wolfgang_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Cold does not bother Wolfgang!\"",
+    "quote_ko": "\"추위 따윈 볼프강에게 아무 것도 아니지!\"",
+    "set_id": "emote_carol",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_lunar",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 145,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wolfgang_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Wolfgang will carry moon to victory!\"",
+    "quote_ko": "\"볼프강이 달을 승리로 이끈다!\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_magma",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Wolfgang_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Wolfgang is on the fire.\"",
+    "quote_ko": "\"볼프강 불 붙었다.\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_nature",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 100,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wolfgang_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"The hills will ring with Wolfgang's mighty yodels!\"",
+    "quote_ko": "\"볼프강의 힘찬 요들이 언덕을 울릴 거다!\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_none",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 0,
+    "name_en": "Wolfgang",
+    "name_ko": "볼프강",
+    "body_image": "/images/skins-body/Wolfgang_Original_in_game.png",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_pirate",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 133,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Wolfgang_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Wolfgang is mightiest pirate on the sea!\"",
+    "quote_ko": "\"볼프강은 이 바다에서 가장 강한 해적이다!\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_rose",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wolfgang_Roseate_in_game.png",
+    "quote_en": "\"Dainty rose make Wolfgang strong, cultured man.\"",
+    "quote_ko": "\"우아한 장미가 볼프강을 힘 세고 교양 있는 남자로 만들어주지.\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_rosep",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 126,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wolfgang_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Dainty rose make Wolfgang strong, cultured man.\"",
+    "quote_ko": "\"우아한 장미가 볼프강을 힘 세고 교양 있는 남자로 만들어주지.\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_shadow",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 6,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wolfgang_Triumphant_in_game.png",
+    "quote_en": "\"Do not challenge the Mighty Wolfgang!\"",
+    "quote_ko": "\"강력한 볼프강에게 함부로 덤비지 마라!\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_shadowp",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 126,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wolfgang_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Do not challenge the Mighty Wolfgang!\"",
+    "quote_ko": "\"강력한 볼프강에게 함부로 덤비지 마라!\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_strongman",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "STRONGMAN",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 126,
+    "name_en": "The Incredible Strongman",
+    "name_ko": "놀라운 차력사",
+    "body_image": "/images/skins-body/Wolfgang_Incredible_Strongman_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Wolfgang is strongest there ever was!\"",
+    "quote_ko": "\"볼프강은 세상 누구보다도 강하다!\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_survivor",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 4,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wolfgang_Survivor_in_game.png",
+    "quote_en": "\"Wolfgang is tough. Lots of muscle.\"",
+    "quote_ko": "\"볼프강은 거칠다. 근육 많다.\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_survivorp",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 126,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wolfgang_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Wolfgang is tough. Lots of muscle.\"",
+    "quote_ko": "\"볼프강은 거칠다. 근육 많다.\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_victorian",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wolfgang_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Sir Wolfgang is strongest boxer!\"",
+    "quote_ko": "\"볼프강 경이 최강의 권투 선수다!\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_wolfman",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 106,
+    "name_en": "The Wolfman",
+    "name_ko": "늑대인간",
+    "body_image": "/images/skins-body/Wolfgang_Wolfman_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Something is different... Wolfgang's head feels fuzzy...\"",
+    "quote_ko": "\"뭔가 이상해... 볼프강 머릿속이 흐려진다...\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_wrestler",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YOTP",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 56,
+    "name_en": "The Giant",
+    "name_ko": "거인",
+    "body_image": "/images/skins-body/Wolfgang_Giant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Mightiest Wolfgang is no heel!\"",
+    "quote_ko": "\"최강 볼프강은 물러서지 않는다!\"",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_yule",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 160,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wolfgang_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Winter Feast is Wolfgang favorite time of year.\"",
+    "quote_ko": "\"볼프강은 한 해에서 겨울 축제 때가 가장 좋다.\"",
+    "set_id": "emote_carol",
+    "character": "wolfgang"
+  },
+  {
     "id": "wood_chair_cawnival",
     "base_prefab": "wood_chair",
     "type": "item",
@@ -13875,6 +19262,1362 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "응접실 사각 탁자",
     "icon": "/images/skins/wood_table_western.png",
     "rarity_modifier": "Woven"
+  },
+  {
+    "id": "woodie_ancient",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ANCIENT",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 146,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Woodie_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"These old threads I dug up aren't half bad, eh?\"",
+    "quote_ko": "\"이 파낸 옷가지들 나름 괜찮은데?\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_combatant",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Woodie_Challenger_in_game.png",
+    "quote_en": "\"I've been in scraps before, eh?\"",
+    "quote_ko": "\"난 여태까지 쭉 싸우면서 살아왔단 말이지.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_cook",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 43,
+    "name_en": "The Culinarian",
+    "name_ko": "요리사",
+    "body_image": "/images/skins-body/Woodie_Culinarian_in_game.png",
+    "quote_en": "\"Lucy is my sous chef.\"",
+    "quote_ko": "\"루시가 내 부주방장이야.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_formal",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 2,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Woodie_Guest_of_Honor_in_game.png",
+    "quote_en": "\"I clean up pretty good, eh?\"",
+    "quote_ko": "\"나 꽤 깨끗하게 다듬지 않았어?\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_formalp",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 73,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Woodie_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I clean up pretty good, eh?\"",
+    "quote_ko": "\"나 꽤 깨끗하게 다듬지 않았어?\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_gladiator",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 32,
+    "name_en": "The Gladiator",
+    "name_ko": "검투사",
+    "body_image": "/images/skins-body/Woodie_Gladiator_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Don't start a tussle you can't finish.\"",
+    "quote_ko": "\"감당 못 할 시비는 안 거는 게 좋아.\"",
+    "set_id": "emote_fistshake",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_hippie",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 106,
+    "name_en": "The Tree Hugger",
+    "name_ko": "환경운동가",
+    "body_image": "/images/skins-body/Woodie_Tree_Hugger_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Well, at least Lucy thinks it's scary!\"",
+    "quote_ko": "\"뭐, 적어도 루시가 무서워 하잖아!\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_hockey",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HOCKEY",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 73,
+    "name_en": "The Team Player",
+    "name_ko": "팀 플레이어",
+    "body_image": "/images/skins-body/Woodie_Team_Player_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"It's the best game you can name!\"",
+    "quote_ko": "\"이름 있는 것 중엔 최고의 게임이야!\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_ice",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 138,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Woodie_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Snowy peaks are a Canadian's natural habitat.\"",
+    "quote_ko": "\"눈 덮인 산봉우리는 캐나다인의 주 서식지란 말씀.\"",
+    "set_id": "emote_carol",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_lunar",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 167,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Woodie_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "Arrrooooooooo... eh?",
+    "quote_ko": "\"아우우우우우우... 엥?\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_magma",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 51,
+    "name_en": "The Magmatic",
+    "name_ko": "용암불꽃",
+    "body_image": "/images/skins-body/Woodie_Magmatic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Hope I don't burn the trees.\"",
+    "quote_ko": "\"산불 안 났으면 좋겠네.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_masquerade",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 140,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Woodie_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"If Lucy's the belle of the ball, I guess that makes me the beast.\"",
+    "quote_ko": "\"루시가 미녀라 한다면, 내가 야수라는 거겠지.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_nature",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 40,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Woodie_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Even the most majestic tree's gotta start as a seed.\"",
+    "quote_ko": "\"그 어떤 훌륭한 나무라도 씨앗에서부터 자라기 마련이지.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_none",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 0,
+    "name_en": "Woodie",
+    "name_ko": "우디",
+    "body_image": "/images/skins-body/Woodie_Original_in_game.png",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_pirate",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 133,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Woodie_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"It takes a lot of lumber to keep a boat ship-shape, eh?\"",
+    "quote_ko": "\"배가 배 구실하려면 나무가 얼마나 많이 필요한지나 알아?\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_rose",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 10,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Woodie_Roseate_in_game.png",
+    "quote_en": "\"I grow, untamed and untended.\"",
+    "quote_ko": "\"난 자라나지. 길들여지지도, 길러지지도 않고서.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_rosep",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 73,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Woodie_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I grow, untamed and untended.\"",
+    "quote_ko": "\"난 자라나지. 길들여지지도, 길러지지도 않고서.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_shadow",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 6,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Woodie_Triumphant_in_game.png",
+    "quote_en": "\"Forests are full of shadows, eh?\"",
+    "quote_ko": "\"숲은 그림자로 가득하단 말이지.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_shadowp",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 73,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Woodie_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Forests are full of shadows, eh?\"",
+    "quote_ko": "\"숲은 그림자로 가득하단 말이지.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_survivor",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 4,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Woodie_Survivor_in_game.png",
+    "quote_en": "\"I could do with a haircut and a cup of tea, eh?\"",
+    "quote_ko": "\"머리 좀 깎고 차 한 잔 했으면 좋겠는데 말이야.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_survivorp",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 73,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Woodie_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I could do with a haircut and a cup of tea, eh?\"",
+    "quote_ko": "\"머리 좀 깎고 차 한 잔 했으면 좋겠는데 말이야.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_treeguard",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 15,
+    "name_en": "Treeguard Costume",
+    "name_ko": "트리가드 의상",
+    "body_image": "/images/skins-body/Woodie_Treeguard_in_game.png",
+    "quote_en": "\"To chop the tree, you must be the tree.\"",
+    "quote_ko": "\"나무를 베려면, 먼저 나무가 되어야 해.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_treeguard_d",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "HeirloomElegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 31,
+    "name_en": "Woodguard Head",
+    "name_ko": "우드가드 머리",
+    "body_image": "/images/skins-body/Woodie_Treeguard_in_game.png",
+    "quote_en": "\"To chop the tree, you must be the tree.\"",
+    "quote_ko": "\"나무를 베려면, 먼저 나무가 되어야 해.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_treeguard_p",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 105,
+    "name_en": "Woodguard Head",
+    "name_ko": "우드가드 머리",
+    "body_image": "/images/skins-body/Woodie_Treeguard_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"To chop the tree, you must be the tree.\"",
+    "quote_ko": "\"나무를 베려면, 먼저 나무가 되어야 해.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_victorian",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 43,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Woodie_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"They ain't beaver pelts, I'll tell ya that much.\"",
+    "quote_ko": "\"몇 번을 말해야 하겠나, 비버 가죽 아니래도.\"",
+    "character": "woodie"
+  },
+  {
+    "id": "woodie_yule",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WOODIE"
+    ],
+    "release_group": 82,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Woodie_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Quiet your voice here. The trees slumber.\"",
+    "quote_ko": "\"목소리 좀 낮춰. 나무들이 잠자고 있잖아.\"",
+    "set_id": "emote_carol",
+    "character": "woodie"
+  },
+  {
+    "id": "wormwood_ancient",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORMWOOD",
+      "ANCIENT"
+    ],
+    "release_group": 146,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Wormwood_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"New grown from old\"",
+    "quote_ko": "\"오래된 거에서 새 거\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_cactus",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORMWOOD",
+      "CACTUS"
+    ],
+    "release_group": 67,
+    "name_en": "The Oasis Bound",
+    "name_ko": "오아시스 토박이",
+    "body_image": "/images/skins-body/Wormwood_Oasis_Bound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Hug?\"",
+    "quote_ko": "\"안아줘?\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_formal",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORMWOOD",
+      "FORMAL"
+    ],
+    "release_group": 148,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wormwood_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Much, much handsome\"",
+    "quote_ko": "\"아주아주 멋져\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_ice",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WORMWOOD"
+    ],
+    "release_group": 138,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wormwood_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Ch-chilly...\"",
+    "quote_ko": "\"추-추워...\"",
+    "set_id": "emote_carol",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_lunar",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WORMWOOD"
+    ],
+    "release_group": 136,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wormwood_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Ahhh. Home\"",
+    "quote_ko": "\"아아. 집\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_mushroom",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORMWOOD",
+      "MUSHROOM"
+    ],
+    "release_group": 67,
+    "name_en": "The Hollow",
+    "name_ko": "그루터기",
+    "body_image": "/images/skins-body/Wormwood_Hollow_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Cave lonely\"",
+    "quote_ko": "\"동굴 쓸쓸해\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_nature",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WORMWOOD"
+    ],
+    "release_group": 144,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wormwood_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Into woods, follow!\"",
+    "quote_ko": "\"숲 가자, 따라와!\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_none",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "CHARACTER",
+      "WORMWOOD"
+    ],
+    "release_group": 67,
+    "name_en": "Essential Wormwood",
+    "name_ko": "기본 웜우드",
+    "body_image": "/images/skins-body/Wormwood_Original_in_game.png",
+    "rarity_modifier": "CharacterModifier",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_rose",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORMWOOD",
+      "ROSE"
+    ],
+    "release_group": 67,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wormwood_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Feel big fancy\"",
+    "quote_ko": "\"무지 예뻐졌어\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_saladmander",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WORMWOOD"
+    ],
+    "release_group": 124,
+    "name_en": "Saladmander Costume",
+    "name_ko": "샐러도롱뇽 코스튬",
+    "body_image": "/images/skins-body/Wormwood_Saladmander_Costume_in_game.png",
+    "quote_en": "\"Hot bath sound nice...\"",
+    "quote_ko": "\"목욕 좋아...\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_shadow",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORMWOOD",
+      "SHADOW"
+    ],
+    "release_group": 100,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wormwood_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"All... will rot...\"",
+    "quote_ko": "\"모두... 썩어...\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_survivor",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORMWOOD",
+      "SURVIVOR"
+    ],
+    "release_group": 171,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wormwood_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Here much long... much long\"",
+    "quote_ko": "\"여기 엄청 오래... 엄청 오래\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_victorian",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORMWOOD",
+      "VICTORIAN"
+    ],
+    "release_group": 115,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wormwood_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Swirly shiny!\"",
+    "quote_ko": "\"빙글빙글 반짝반짝!\"",
+    "character": "wormwood"
+  },
+  {
+    "id": "wormwood_yule",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORMWOOD",
+      "YULE"
+    ],
+    "release_group": 127,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wormwood_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Feel pretty\"",
+    "quote_ko": "\"예뻐 보여\"",
+    "set_id": "emote_carol",
+    "character": "wormwood"
+  },
+  {
+    "id": "wortox_ancient",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "ANCIENT"
+    ],
+    "release_group": 164,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Wortox_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I've been told, my blood can run cold!\"",
+    "quote_ko": "\"나 보고, 냉혈동물이라나 뭐라나!\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_dragon",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "HALLOWED"
+    ],
+    "release_group": 77,
+    "name_en": "The Draconic",
+    "name_ko": "드래곤",
+    "body_image": "/images/skins-body/Wortox_Draconic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Don't get between me and my hoard of souls.\"",
+    "quote_ko": "\"내가 모아둔 영혼에 손 대지 마.\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_formal",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "FORMAL"
+    ],
+    "release_group": 148,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wortox_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Charmed, I'm sure.\"",
+    "quote_ko": "\"풍채는 확실히 좋군.\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_ice",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "ICE"
+    ],
+    "release_group": 109,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wortox_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Don't slip up or you might get a face full of snow, hyuyu!\"",
+    "quote_ko": "\"넘어지면 온통 눈투성이가 될 거야, 흐유유!\"",
+    "set_id": "emote_carol",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_lunar",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "LUNAR"
+    ],
+    "release_group": 167,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wortox_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"A princely guise, with moonlit ties!\"",
+    "quote_ko": "\"달빛 넥타이를 매니 달의 대공 같아라!\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_masquerade",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "MASQUERADE"
+    ],
+    "release_group": 140,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Wortox_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"These masked events are the playgrounds of merry mischief-makers!\"",
+    "quote_ko": "\"끼쟁이 장난꾼에게 가면무도회는 그야말로 기회라니까!\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_minotaur",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "MINOTAUR"
+    ],
+    "release_group": 62,
+    "name_en": "The Minotaur",
+    "name_ko": "미노타우르스",
+    "body_image": "/images/skins-body/Wortox_Minotaur_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Won't you visit me at the heart of the labyrinth?\"",
+    "quote_ko": "\"날 만나러 미궁의 심장부로 와 주지 않겠어?\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_nature",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "VARG"
+    ],
+    "release_group": 121,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wortox_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Follow me into the forest deep, where impish sorts frolic and play!\"",
+    "quote_ko": "\"나랑 같이 숲 속 가자, 임프 따라 같이 놀자!\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_none",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "CHARACTER",
+      "WORTOX"
+    ],
+    "release_group": 62,
+    "name_en": "Essential Wortox",
+    "name_ko": "기본 워톡스",
+    "body_image": "/images/skins-body/Wortox_Original_in_game.png",
+    "rarity_modifier": "CharacterModifier",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_original",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "ORIGINAL"
+    ],
+    "release_group": 62,
+    "name_en": "The Uncorrupted",
+    "name_ko": "타락하지 않은 자",
+    "body_image": "/images/skins-body/Wortox_Uncorrupted_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Ol'Kramps says my powers should grow in soon. Hyuyu!\"",
+    "quote_ko": "\"크람푸스 아저씨가 내 능력이 곧 트일 거랬어. 흐유유!\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_pirate",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WORTOX"
+    ],
+    "release_group": 133,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Wortox_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"We impish sorts do love our gold, hyuyu!\"",
+    "quote_ko": "\"우리 같은 소악마들은 금을 좋아한다구, 흐유유!\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_rose",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "ROSE"
+    ],
+    "release_group": 158,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wortox_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I'm simply tickled pink, hyuyu!\"",
+    "quote_ko": "\"간지러워서 얼굴이 붉어졌네, 흐유유!\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_shadow",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "SHADOW"
+    ],
+    "release_group": 145,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wortox_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I let in darkness once before, what's the harm in a little more?\"",
+    "quote_ko": "\"한 번 받아들인 어둠, 다시 받아들인다고 해롭겠어?\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_survivor",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WORTOX"
+    ],
+    "release_group": 62,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wortox_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Try not to cower in fear, my dear!\"",
+    "quote_ko": "\"무섭다고 움츠리지 마, 귀염둥아!\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_victorian",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "VICTORIAN"
+    ],
+    "release_group": 115,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wortox_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Ol'Kramps did always say; if I kept making a funny face it'd get stuck that way.\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_yule",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BASE",
+      "WORTOX",
+      "YULE"
+    ],
+    "release_group": 160,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wortox_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I'm absolutely adorable!\"",
+    "quote_ko": "\"나 완전 귀여워졌는걸!\"",
+    "set_id": "emote_carol",
+    "character": "wortox"
+  },
+  {
+    "id": "wurt_ancient",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ANCIENT",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 156,
+    "name_en": "The Archaic",
+    "name_ko": "고대인",
+    "body_image": "/images/skins-body/Wurt_Archaic_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Mermfolk ancestors definitely look like this, florp!\"",
+    "quote_ko": "\"어인족 조상들 분명 이렇게 생겼어, 뽀륵!\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_cave",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "CAVE",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 78,
+    "name_en": "The Abyssal",
+    "name_ko": "심해생물",
+    "body_image": "/images/skins-body/Wurt_Abyssal_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"It called bye-oh-loomy...loominess...loomin-essence... GLOWY!\"",
+    "quote_ko": "\"이건 쌔앵-체...방관...방-광... 빛나는 거야!\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_formal",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FORMAL",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 78,
+    "name_en": "Guest of Honor",
+    "name_ko": "귀빈",
+    "body_image": "/images/skins-body/Wurt_Guest_of_Honor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Frilly and gilly, florp!\"",
+    "quote_ko": "\"하늘하늘 팔랑팔랑, 뽀륵!\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_ice",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ICE",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 138,
+    "name_en": "The Snowfallen",
+    "name_ko": "눈송이",
+    "body_image": "/images/skins-body/Wurt_Snowfallen_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Maybe fluff okay for wintertime, but scales better all other times!\"",
+    "quote_ko": "\"털도 겨울엔 괜찮지만 봄여름가을엔 비늘이 훨씬 좋아!\"",
+    "set_id": "emote_carol",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_lunar",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "LUNAR",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 167,
+    "name_en": "The Moonbound",
+    "name_ko": "월광",
+    "body_image": "/images/skins-body/Wurt_Moonbound_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Me look radiant on moonlit swim.\"",
+    "quote_ko": "\"나 달 밑에서 수영하면 빛나.\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_masquerade",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "MASQUERADE",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 151,
+    "name_en": "The Masquerader",
+    "name_ko": "가면무도회",
+    "body_image": "/images/skins-body/Wurt_Masquerader_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Me feel fancy, florp!\"",
+    "quote_ko": "\"나 멋진 것 같아, 뽀륵!\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_nature",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VARG",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 144,
+    "name_en": "The Verdant",
+    "name_ko": "신록",
+    "body_image": "/images/skins-body/Wurt_Verdant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Me scary dragon! Gonna gobble up all the princesses, hee-hee!\"",
+    "quote_ko": "\"나 무서운 용이다! 공주들 다 먹어치운다, 히히!\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_none",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Character",
+    "skin_tags": [
+      "BASE",
+      "CHARACTER",
+      "WURT"
+    ],
+    "release_group": 78,
+    "name_en": "Essential Wurt",
+    "name_ko": "기본 워트",
+    "body_image": "/images/skins-body/Wurt_Original_in_game.png",
+    "rarity_modifier": "CharacterModifier",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_pirate",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 133,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Wurt_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Glurgh, no call me shrimp! Me big scary pirate!!\"",
+    "quote_ko": "\"꾸르록, 나 새우 아냐! 나 크고 무서운 해적이야!!\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_rose",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ROSE",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 100,
+    "name_en": "The Roseate",
+    "name_ko": "장미꽃",
+    "body_image": "/images/skins-body/Wurt_Roseate_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Dressing up not so bad sometimes.\"",
+    "quote_ko": "\"가끔은 옷 입기도 나쁘지 않아.\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_shadow",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SHADOW",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 78,
+    "name_en": "The Triumphant",
+    "name_ko": "승리자",
+    "body_image": "/images/skins-body/Wurt_Triumphant_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Come closer... won't bite! (Hee-hee...)\"",
+    "quote_ko": "\"가까이 와... 안 물을게! 히히...\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_squid",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 106,
+    "name_en": "The Little Sinker",
+    "name_ko": "꼬마 바다괴물",
+    "body_image": "/images/skins-body/Wurt_Little_Sinker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Not from fairy story... from scary story!\"",
+    "quote_ko": "\"동화 아니야... 무서운 이야기야!\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_survivor",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 171,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wurt_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Me ready fight dirty.\"",
+    "quote_ko": "\"나 더럽게 싸울 준비 됐어.\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_toadstool",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "COSTUME",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 124,
+    "name_en": "Toadstool Costume",
+    "name_ko": "독꺼비버섯 코스튬",
+    "body_image": "/images/skins-body/Wurt_Toadstool_Costume_in_game.png",
+    "quote_en": "\"Am poison, no eat!\"",
+    "quote_ko": "\"나 독 있어, 먹지 마!\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_victorian",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 115,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wurt_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"What... happening...? Feel... strange...\"",
+    "quote_ko": "\"무슨... 일이지...? 뭔가... 이상해...\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_yule",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YULE",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 127,
+    "name_en": "The Merrymaker",
+    "name_ko": "겨울의 행복",
+    "body_image": "/images/skins-body/Wurt_Merrymaker_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Am sugarplum fairy, florp. Gimme plums!\"",
+    "quote_ko": "\"나 설탕요정이야, 뽀륵. 나 사탕 줘!\"",
+    "set_id": "emote_carol",
+    "character": "wurt"
   },
   {
     "id": "wx78_dronedelivery_item_gothic",
