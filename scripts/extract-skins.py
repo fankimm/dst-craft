@@ -23,6 +23,11 @@ import re
 import sys
 from pathlib import Path
 
+try:
+    from PIL import Image
+except ImportError:
+    Image = None  # body-panel detection becomes a no-op without Pillow
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SKINS_DIR = REPO_ROOT / "public" / "images" / "skins"
 BODY_SKINS_DIR = REPO_ROOT / "public" / "images" / "skins-body"
@@ -311,9 +316,22 @@ def main() -> None:
     print(f"Available inventory icons: {len(available_icons)}")
 
     body_files: set[str] = set()
+    body_panels: dict[str, int] = {}  # filename → number of horizontal poses
     if BODY_SKINS_DIR.exists():
-        body_files = {p.name for p in BODY_SKINS_DIR.glob("*.png")}
-    print(f"Available body images: {len(body_files)}")
+        for p in BODY_SKINS_DIR.glob("*.png"):
+            body_files.add(p.name)
+            if Image is not None:
+                try:
+                    with Image.open(p) as img:
+                        w, h = img.size
+                    # wiki in_game images stack N square-ish poses horizontally;
+                    # round to nearest integer, clamp [1, 6].
+                    if h > 0:
+                        n = max(1, min(6, round(w / h)))
+                        body_panels[p.name] = n
+                except Exception:
+                    pass
+    print(f"Available body images: {len(body_files)} (with panel counts: {len(body_panels)})")
 
     skin_meta = parse_skinprefabs(skinprefabs_path)
     print(f"Parsed {len(skin_meta)} CreatePrefabSkin entries")
@@ -406,6 +424,11 @@ def main() -> None:
         if body_image:
             row["body_image"] = body_image
             body_count += 1
+            # the body_image value is "/images/skins-body/<filename>"; pull filename
+            bf = body_image.rsplit("/", 1)[-1]
+            panels = body_panels.get(bf)
+            if panels and panels > 1:
+                row["body_panels"] = panels
         if meta["rarity_modifier"]:
             row["rarity_modifier"] = meta["rarity_modifier"]
         if skin_id in quotes_en:
@@ -476,6 +499,10 @@ export interface SkinEntry {
    *  character body (base) skins. Wiki content is CC BY-SA — attribution shown
    *  in the Skins tab footer. */
   body_image?: string;
+  /** Number of horizontal poses inside body_image (e.g. 3 for Wigfrid Stampeder).
+   *  Omitted when the image is a single pose. UI splits the PNG into this many
+   *  slides with a carousel + indicator dots. */
+  body_panels?: number;
 }
 
 export const SKINS: SkinEntry[] = '''
