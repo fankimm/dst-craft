@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState, useCallback, useEffect } from "react";
+import { useMemo, useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Search, X } from "lucide-react";
+import { Search, X, ArrowUpDown } from "lucide-react";
 import {
   SKINS,
   type SkinEntry,
@@ -100,103 +100,125 @@ const CHARACTER_ORDER = [
 // sourced from recipes.lua builder_tag/builder_skill — the same data the game
 // uses to gate crafting. UI just reads `skin.character` directly here.
 
-const CATEGORY_LABELS_KO: Record<string, string> = {
+// Item kinds — independent from character. Character chip and kind chip
+// compose (e.g. "Wigfrid + weapon" = wathgrithr spears only).
+const KIND_ORDER = [
+  "body", "hat", "armor", "weapon", "staff", "tool", "amulet",
+  "backpack", "beefalo", "item",
+] as const;
+type KindKey = (typeof KIND_ORDER)[number];
+
+const KIND_LABEL_KO: Record<KindKey, string> = {
+  body: "본체",
   hat: "모자",
   armor: "방어구",
   weapon: "무기",
+  staff: "지팡이",
   tool: "도구",
   amulet: "부적/장신구",
-  cane: "지팡이",
   backpack: "가방",
-  item: "기타 아이템",
   beefalo: "비팔로",
+  item: "기타",
 };
-
-const CATEGORY_LABELS_EN: Record<string, string> = {
+const KIND_LABEL_EN: Record<KindKey, string> = {
+  body: "Body",
   hat: "Hat",
   armor: "Armor",
   weapon: "Weapon",
+  staff: "Staff",
   tool: "Tool",
   amulet: "Amulet",
-  cane: "Cane",
   backpack: "Backpack",
-  item: "Other items",
   beefalo: "Beefalo",
+  item: "Other",
 };
 
-/** Map a skin row to a coarse category key for grouping/filtering. */
-function classify(skin: SkinEntry): { key: string; isCharacter: boolean } {
-  if (skin.character) {
-    return { key: skin.character, isCharacter: true };
-  }
+/** Coarse kind for a skin, decoupled from character. */
+function itemKind(skin: SkinEntry): KindKey {
+  if (skin.type === "base") return "body";
   const base = skin.base_prefab ?? "";
-  if (base.includes("hat")) return { key: "hat", isCharacter: false };
-  if (base.startsWith("armor")) return { key: "armor", isCharacter: false };
-  if (base.startsWith("amulet")) return { key: "amulet", isCharacter: false };
-  if (base.startsWith("cane")) return { key: "cane", isCharacter: false };
+  if (/staff$/.test(base) || /^(firestaff|icestaff|telestaff|orangestaff|greenstaff|yellowstaff|opalstaff)/.test(base)) {
+    return "staff";
+  }
+  if (base.includes("hat")) return "hat";
+  if (base.startsWith("armor")) return "armor";
+  if (base.startsWith("amulet")) return "amulet";
+  if (base.startsWith("cane")) return "staff";
   if (base.includes("backpack") || base.includes("krampus_sack") || base.includes("piggyback")) {
-    return { key: "backpack", isCharacter: false };
+    return "backpack";
   }
   if (base.startsWith("beefalo") || base.startsWith("saddle") || base.startsWith("bell")) {
-    return { key: "beefalo", isCharacter: false };
+    return "beefalo";
   }
-  // weapons heuristic
   if (
-    /^(spear|sword|axe|hammer|pickaxe|shovel|pitchfork|bat|boomerang|blowdart|nightsword|firestaff|icestaff|telestaff|orangestaff|greenstaff|yellowstaff|opalstaff|reskin_tool|tropical_fan|featherfan|bugnet|fishingrod|whip|trident|saltrock_hammer|multitool_axe_pickaxe)/.test(base)
+    /^(spear|sword|axe|hammer|pickaxe|shovel|pitchfork|bat|boomerang|blowdart|nightsword|reskin_tool|tropical_fan|featherfan|bugnet|fishingrod|whip|trident|saltrock_hammer|multitool_axe_pickaxe|slingshot)/.test(base)
   ) {
-    return { key: "weapon", isCharacter: false };
+    // axe/hammer/pickaxe/shovel are also tools — keep them under "tool"; the
+    // pure weapons (spear/sword/etc.) stay under "weapon".
+    if (/^(axe|hammer|pickaxe|shovel|pitchfork|bugnet|fishingrod|multitool_axe_pickaxe|saltrock_hammer|reskin_tool)/.test(base)) {
+      return "tool";
+    }
+    return "weapon";
   }
-  return { key: "item", isCharacter: false };
+  return "item";
 }
 
-function categoryLabel(key: string, locale: Locale): string {
+function kindLabel(key: KindKey, locale: Locale): string {
+  return (locale === "ko" ? KIND_LABEL_KO : KIND_LABEL_EN)[key];
+}
+
+function characterLabel(key: string, locale: Locale): string {
   const ch = CHARACTERS[key];
   if (ch) return locale === "ko" ? ch.ko : ch.en;
-  return (locale === "ko" ? CATEGORY_LABELS_KO : CATEGORY_LABELS_EN)[key] ?? key;
+  return key;
 }
 
 // ---------------------------------------------------------------------------
-// Filters
+// Pre-indexed dimensions for chip counts.
 // ---------------------------------------------------------------------------
+
+type SkinSort = "rarity" | "name" | "release_new" | "release_old";
 
 interface SkinIndex {
   all: SkinEntry[];
-  byCategory: Map<string, SkinEntry[]>;
-  rarities: SkinRarity[];
-  categories: string[];
+  characters: string[];           // in roster order, only those present
+  charCount: Record<string, number>;
+  kinds: KindKey[];               // present kinds, in KIND_ORDER
+  kindCount: Record<KindKey, number>;
+  rarities: SkinRarity[];         // present rarities, by rarity order
+  rarityCount: Record<string, number>;
+  kindByEntry: Map<SkinEntry, KindKey>; // memoized
 }
 
 const SKIN_INDEX: SkinIndex = (() => {
-  const byCat = new Map<string, SkinEntry[]>();
-  for (const skin of SKINS) {
-    const { key } = classify(skin);
-    const arr = byCat.get(key) ?? [];
-    arr.push(skin);
-    byCat.set(key, arr);
+  const kindByEntry = new Map<SkinEntry, KindKey>();
+  const charCount: Record<string, number> = {};
+  const kindCount: Record<string, number> = {};
+  const rarityCount: Record<string, number> = {};
+
+  for (const s of SKINS) {
+    const k = itemKind(s);
+    kindByEntry.set(s, k);
+    kindCount[k] = (kindCount[k] ?? 0) + 1;
+    if (s.character) charCount[s.character] = (charCount[s.character] ?? 0) + 1;
+    rarityCount[s.rarity] = (rarityCount[s.rarity] ?? 0) + 1;
   }
-  const raritySet = new Set<SkinRarity>();
-  for (const s of SKINS) raritySet.add(s.rarity);
-  const rarities = Array.from(raritySet).sort(
+
+  const characters = CHARACTER_ORDER.filter((c) => charCount[c]);
+  const kinds = KIND_ORDER.filter((k) => kindCount[k]) as KindKey[];
+  const rarities = (Object.keys(rarityCount) as SkinRarity[]).sort(
     (a, b) => RARITY_ORDER[a] - RARITY_ORDER[b],
   );
-  // Order categories: characters first (roster order), then item categories
-  const charKeys = CHARACTER_ORDER.filter((c) => byCat.has(c));
-  const otherKeys = Array.from(byCat.keys())
-    .filter((k) => !(k in CHARACTERS))
-    .sort((a, b) => {
-      const order = ["hat", "armor", "weapon", "tool", "amulet", "cane", "backpack", "beefalo", "item"];
-      const ai = order.indexOf(a);
-      const bi = order.indexOf(b);
-      if (ai === -1 && bi === -1) return a.localeCompare(b);
-      if (ai === -1) return 1;
-      if (bi === -1) return -1;
-      return ai - bi;
-    });
+
   return {
     all: SKINS,
-    byCategory: byCat,
+    characters,
+    charCount,
+    kinds,
+    kindCount: kindCount as Record<KindKey, number>,
     rarities,
-    categories: [...charKeys, ...otherKeys],
+    rarityCount,
+    kindByEntry,
   };
 })();
 
@@ -347,21 +369,41 @@ export function SkinsApp() {
   const locale = resolvedLocale;
 
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<string>("__all__");
-  const [rarityFilter, setRarityFilter] = useState<SkinRarity | "__all__">("__all__");
+  // Character chip: single select (a skin belongs to at most one character).
+  const [character, setCharacter] = useState<string | null>(null);
+  // Kind + rarity chips: multi-select (empty set = no filter).
+  const [kinds, setKinds] = useState<Set<KindKey>>(new Set());
+  const [rarities, setRarities] = useState<Set<SkinRarity>>(new Set());
+  const [sort, setSort] = useState<SkinSort>("rarity");
 
   const [selected, setSelected] = useState<SkinEntry | null>(null);
   const { panelItem, panelOpen } = useDetailPanel(selected);
 
+  const toggleKind = useCallback((k: KindKey) => {
+    setKinds((prev) => {
+      const next = new Set(prev);
+      if (next.has(k)) next.delete(k); else next.add(k);
+      return next;
+    });
+  }, []);
+  const toggleRarity = useCallback((r: SkinRarity) => {
+    setRarities((prev) => {
+      const next = new Set(prev);
+      if (next.has(r)) next.delete(r); else next.add(r);
+      return next;
+    });
+  }, []);
+
   const filtered = useMemo(() => {
-    let pool: SkinEntry[];
-    if (category === "__all__") {
-      pool = SKIN_INDEX.all;
-    } else {
-      pool = SKIN_INDEX.byCategory.get(category) ?? [];
+    let pool: SkinEntry[] = SKIN_INDEX.all;
+    if (character) {
+      pool = pool.filter((s) => s.character === character);
     }
-    if (rarityFilter !== "__all__") {
-      pool = pool.filter((s) => s.rarity === rarityFilter);
+    if (kinds.size > 0) {
+      pool = pool.filter((s) => kinds.has(SKIN_INDEX.kindByEntry.get(s) ?? "item"));
+    }
+    if (rarities.size > 0) {
+      pool = pool.filter((s) => rarities.has(s.rarity));
     }
     if (query.trim()) {
       const q = query.trim().toLowerCase();
@@ -372,34 +414,60 @@ export function SkinsApp() {
         s.base_prefab.toLowerCase().includes(q),
       );
     }
-    return pool
-      .slice()
-      .sort((a, b) => {
-        const r = RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity];
-        if (r !== 0) return r;
-        return a.name_ko.localeCompare(b.name_ko);
-      });
-  }, [category, rarityFilter, query]);
+    const sorted = pool.slice();
+    switch (sort) {
+      case "name":
+        sorted.sort((a, b) => {
+          const an = locale === "ko" ? a.name_ko : a.name_en;
+          const bn = locale === "ko" ? b.name_ko : b.name_en;
+          return an.localeCompare(bn, locale);
+        });
+        break;
+      case "release_new":
+        sorted.sort((a, b) => b.release_group - a.release_group ||
+          (locale === "ko" ? a.name_ko : a.name_en).localeCompare(
+            locale === "ko" ? b.name_ko : b.name_en, locale));
+        break;
+      case "release_old":
+        sorted.sort((a, b) => a.release_group - b.release_group ||
+          (locale === "ko" ? a.name_ko : a.name_en).localeCompare(
+            locale === "ko" ? b.name_ko : b.name_en, locale));
+        break;
+      case "rarity":
+      default:
+        sorted.sort((a, b) => {
+          const r = RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity];
+          if (r !== 0) return r;
+          return (locale === "ko" ? a.name_ko : a.name_en).localeCompare(
+            locale === "ko" ? b.name_ko : b.name_en, locale);
+        });
+    }
+    return sorted;
+  }, [character, kinds, rarities, query, sort, locale]);
+
+  const activeFilterCount =
+    (character ? 1 : 0) + kinds.size + rarities.size + (query.trim() ? 1 : 0);
 
   const resetFilters = useCallback(() => {
     setQuery("");
-    setCategory("__all__");
-    setRarityFilter("__all__");
+    setCharacter(null);
+    setKinds(new Set());
+    setRarities(new Set());
   }, []);
 
   // Tab home — react to tab re-tap (AppShell broadcasts this)
   useEffect(() => {
-    const handler = () => resetFilters();
+    const handler = () => { resetFilters(); setSort("rarity"); };
     window.addEventListener("dst-tab-go-home", handler);
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, [resetFilters]);
 
   return (
     <div className="flex flex-col h-full">
-      {/* Filter bar — search + chips */}
+      {/* Filter bar — search + sort + chips */}
       <div className="shrink-0 border-b border-border bg-background">
-        <div className="px-3 pt-2 pb-1">
-          <div className="relative">
+        <div className="px-3 pt-2 pb-1 flex items-center gap-2">
+          <div className="relative flex-1">
             <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <input
               type="text"
@@ -418,40 +486,45 @@ export function SkinsApp() {
               </button>
             )}
           </div>
+          <SortMenu value={sort} onChange={setSort} locale={locale} />
         </div>
 
-        {/* Category chips */}
+        {/* Character chips (single) */}
         <div className="flex gap-1.5 overflow-x-auto px-3 py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <ChipButton
-            active={category === "__all__"}
-            onClick={() => setCategory("__all__")}
+            active={character === null}
+            onClick={() => setCharacter(null)}
             label={`${t(locale, "skins_filter_all")} (${SKIN_INDEX.all.length})`}
           />
-          {SKIN_INDEX.categories.map((key) => {
-            const list = SKIN_INDEX.byCategory.get(key) ?? [];
-            return (
-              <ChipButton
-                key={key}
-                active={category === key}
-                onClick={() => setCategory(key)}
-                label={`${categoryLabel(key, locale)} (${list.length})`}
-              />
-            );
-          })}
+          {SKIN_INDEX.characters.map((c) => (
+            <ChipButton
+              key={c}
+              active={character === c}
+              onClick={() => setCharacter(character === c ? null : c)}
+              label={`${characterLabel(c, locale)} (${SKIN_INDEX.charCount[c]})`}
+            />
+          ))}
         </div>
 
-        {/* Rarity chips */}
+        {/* Kind chips (multi) */}
         <div className="flex gap-1.5 overflow-x-auto px-3 py-1.5 border-t border-border/50 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <ChipButton
-            active={rarityFilter === "__all__"}
-            onClick={() => setRarityFilter("__all__")}
-            label={t(locale, "skins_filter_all")}
-          />
+          {SKIN_INDEX.kinds.map((k) => (
+            <ChipButton
+              key={k}
+              active={kinds.has(k)}
+              onClick={() => toggleKind(k)}
+              label={`${kindLabel(k, locale)} (${SKIN_INDEX.kindCount[k]})`}
+            />
+          ))}
+        </div>
+
+        {/* Rarity chips (multi) */}
+        <div className="flex gap-1.5 overflow-x-auto px-3 py-1.5 border-t border-border/50 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {SKIN_INDEX.rarities.map((r) => (
             <ChipButton
               key={r}
-              active={rarityFilter === r}
-              onClick={() => setRarityFilter(r)}
+              active={rarities.has(r)}
+              onClick={() => toggleRarity(r)}
               label={t(locale, `rarity_${r}` as TranslationKey)}
               color={RARITY_HEX[r]}
             />
@@ -462,14 +535,18 @@ export function SkinsApp() {
       {/* Grid */}
       <div className="flex-1 min-h-0 overflow-y-auto" data-scroll-container>
         <div className="px-3 pt-3 pb-2 text-xs text-muted-foreground">
-          {filtered.length}{locale === "ko" ? ` ${t(locale, "skins_count")}` : ` ${t(locale, "skins_count")}`}
-          {(query || category !== "__all__" || rarityFilter !== "__all__") && (
-            <button
-              onClick={resetFilters}
-              className="ml-2 underline hover:text-foreground"
-            >
-              {t(locale, "skins_filter_clear")}
-            </button>
+          {filtered.length} {t(locale, "skins_count")}
+          {activeFilterCount > 0 && (
+            <>
+              <span className="ml-2">·</span>
+              <span className="ml-2">{t(locale, "skins_filter_active").replace("{n}", String(activeFilterCount))}</span>
+              <button
+                onClick={resetFilters}
+                className="ml-2 underline hover:text-foreground"
+              >
+                {t(locale, "skins_filter_clear")}
+              </button>
+            </>
           )}
         </div>
 
@@ -538,5 +615,69 @@ function ChipButton({
     >
       {label}
     </button>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// SortMenu — small dropdown next to the search input
+// ---------------------------------------------------------------------------
+
+function SortMenu({
+  value,
+  onChange,
+  locale,
+}: {
+  value: SkinSort;
+  onChange: (v: SkinSort) => void;
+  locale: Locale;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  const options: { key: SkinSort; label: string }[] = [
+    { key: "rarity", label: t(locale, "skins_sort_rarity") },
+    { key: "name", label: t(locale, "skins_sort_name") },
+    { key: "release_new", label: t(locale, "skins_sort_release_new") },
+    { key: "release_old", label: t(locale, "skins_sort_release_old") },
+  ];
+  const current = options.find((o) => o.key === value)!;
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-1 px-2 py-2 rounded-md border border-input bg-card text-xs font-medium text-foreground hover:bg-accent/50 transition-colors"
+        aria-label={t(locale, "skins_sort_aria")}
+      >
+        <ArrowUpDown className="size-3.5" />
+        <span className="hidden sm:inline">{current.label}</span>
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 z-50 min-w-[140px] rounded-md border border-border bg-popover shadow-md py-1">
+          {options.map((opt) => (
+            <button
+              key={opt.key}
+              onClick={() => { onChange(opt.key); setOpen(false); }}
+              className={cn(
+                "w-full text-left px-3 py-1.5 text-xs transition-colors",
+                value === opt.key
+                  ? "bg-accent text-accent-foreground font-medium"
+                  : "text-popover-foreground hover:bg-accent/50",
+              )}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
