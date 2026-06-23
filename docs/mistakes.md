@@ -570,3 +570,16 @@
 - **올바른 진단**: 검색엔진 JSON-LD 파서는 `<script type="application/ld+json">` **태그 안의 내용만** 본다. RSC payload escape 문자열은 다른 `<script>`(타입 없음, hydration용) 안에 있어 무시됨. 즉 `<script type="application/ld+json">` 태그 개수 + 각 태그의 `@type` 분포가 진짜 카운트
 - **교훈**: 빌드 결과 검증 시 `grep -oE '<script[^>]*application/ld\+json[^>]*>([^<]*)</script>'`로 실제 JSON-LD 태그 수와 @type 분포를 봐야 함. raw `grep FAQPage`는 RSC payload escape를 카운트해 거짓 양성. 현재 패턴(`<JsonLd data={...}` + children, `suppressHydrationWarning`)이 빌드 결과상 `<script type="application/ld+json">` 태그 1개 + RSC payload escape 1개 = grep으론 2번이지만 검색엔진엔 1개로 보임 → GSC 정상화 예상
 - **검증 스크립트**: `python3` 한 줄로 모든 detail 페이지 빌드 결과의 `<script type="application/ld+json">` 태그 수와 `@type` 분포 출력해서 페이지당 정확히 1 FAQPage인지 확인
+
+## UI / 탭 구조
+
+### 새 탭에서 TabScrollArea를 안 쓰고 외곽 구조를 인라인 복붙 (2026-06-23, #50)
+- **문제**: SkinsApp 작성 시 docs/ui.md에 명시된 "새 탭은 `TabScrollArea` 무조건 사용" 규정을 무시하고, 각 view(home/characters/list)마다 별도 return으로 `<div className="flex-1 min-h-0 overflow-y-auto">...<Footer /></div>` 패턴을 손으로 복붙. view 전환마다 Footer가 unmount → mount 다시 되어 깜빡임 + SupportPill 상태 리셋 + ko-fi ticker 재로딩
+- **원인**: 새 컴포넌트 만들기 전 docs/ui.md 안 읽음. 보스 탭 코드를 참고하긴 했지만 TabScrollArea 컴포넌트 자체는 무시하고 내부 구조만 인라인으로 베낌. 첫 결과만 동작하면 OK라고 넘긴 게 누적 오류로 발전
+- **사용자 분노 트리거**: 푸터 깜빡임 패턴이 view 전환 시마다 반복되니까 사용자가 "내가 분명 푸터랑 그런거 퍼음 도입할때 그지럴하지 말라고 말했거늘"이라고 분노. 이미 한 번 명시적으로 듣고 docs/ui.md에 적었던 룰을 또 어김
+- **교훈**:
+  1. 새 탭/페이지/모달 작성 전 **반드시** docs/ui.md 읽기. 1줄 변경 아닌 경우 예외 없음
+  2. 가장 가까운 기존 탭의 import + return 외곽을 그대로 베낄 것. 인라인으로 같은 클래스명 손으로 다시 쓰지 말 것
+  3. `flex-1 min-h-0 overflow-y-auto` + `flex flex-col min-h-full` + `Footer` 조합을 인라인으로 쓰는 모든 코드는 자동으로 `<TabScrollArea scrollContainer>{...}</TabScrollArea>` 로 교체
+  4. 사용자가 "통일감 없다 / 쌩뚱맞다 / 버그난다" 코멘트 → docs/ui.md 다시 읽고 공용 컴포넌트 누락 여부 점검이 1순위
+- **해결 (#50)**: SkinsApp 외곽을 단일 wrapper + `TabScrollArea` 한 번 + DetailPanel 한 번으로 통합. view 분기는 헤더/그리드 콘텐츠 변수만. Footer는 더 이상 재마운트되지 않음

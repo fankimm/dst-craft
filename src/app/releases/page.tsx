@@ -15,6 +15,47 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.27.0",
+    date: "2026-06-23",
+    dev: [
+      "feat(skins): 스킨 탭 신규 추가 (#50). 1단계(인벤토리 아이콘) + 2단계(캐릭터 본체 풀바디)까지 묶어서 릴리즈. 총 18 캐릭터 / 1300+ 스킨 entry / 961 인벤토리 아이콘 + 529 본체 이미지.",
+
+      "Phase 1 — 인벤토리 아이콘 추출 파이프라인: 게임 `databundles/images.zip`의 KTEX(DXT5) 인벤토리 아틀라스를 Pillow만 의존하는 파이썬으로 디코드. `scripts/extract-skin-icons.py`가 `inventoryimages{1..4}.tex/.xml` 4장에서 `prefabskins.lua`의 skin_id 집합으로 필터링된 961 PNG를 `public/images/skins/`에 추출. 외부 ktools 의존 없음. level3 변형은 base 이름으로 저장.",
+      "Phase 1 — 메타데이터: `scripts/extract-skins.py`가 `prefabs/skinprefabs.lua` (CreatePrefabSkin) + `skin_strings.lua` (영문 names/quotes) + ko.po (`STRINGS.SKIN_NAMES`/`SKIN_QUOTES` 약 3,900건) + `skin_set_info.lua` 조인 → `src/data/skins.ts` 자동 생성. SkinEntry 인터페이스에 character/body_image/body_panels 필드 포함.",
+      "Phase 1 — 캐릭터 매핑 게임 소스 기반 (recipes.lua): 기존엔 위키+개발자 지식으로 EXCLUSIVE_ITEMS 룩업을 하드코딩했는데 부정확. `recipes.lua`의 `builder_tag` (22종, e.g. pyromaniac=Willow, bookbuilder=Wickerbottom) + `builder_skill` (walter_ammo_* 등)로 일원화. 구식 `Recipe(...)` 위치 인자 형식도 인식. 결과적으로 257 prefab → 캐릭터 매핑 자동 추출, 13 캐릭터 분류. nightsword/armor_sanity 등 부정확했던 매핑 정정 (Maxwell 전용 아님).",
+
+      "Phase 2 — wiki.gg 풀바디 이미지: `scripts/download-body-skins.py`가 dontstarve.wiki.gg의 18 캐릭터 갤러리 페이지에서 in_game.png 썸네일을 받아 `public/images/skins-body/`에 저장. curl 기반, rate-limited(0.5s), idempotent (이미 받은 파일 스킵). 529 PNG / 16MB. User-Agent에 출처 명시.",
+      "Phase 2 — 매칭: `extract-skins.py`가 SKIN_NAMES 영문값 → wiki 파일명 패턴 변환으로 자동 매칭. `_none`/`_d`/`_p` 변형은 parent skin 이미지로 fallback. 매칭률 18 캐릭터 모두 80~85%. 결과: body_image 363건 필드 부착, 499 캐릭터 스킨 분류.",
+      "Phase 2 — `body_panels` 자동 측정: wiki in_game.png는 캐릭터마다 가로로 2~3 포즈가 나란히 들어있어서 PIL로 가로/세로 비율 측정 → round(w/h)로 패널 수 추정. 315 스킨 2-panel / 48 스킨 3-panel.",
+      "sync-game-data.sh: extract-skin-icons + download-body-skins + extract-skins 3단계 통합. 게임 buildid 변경 시 자동 재생성.",
+
+      "UI — 3-depth 네비게이션 (BossesApp 패턴 그대로):\n  1단계 홈 = 카테고리 그리드(전체/최근/캐릭터 타일/모자/방어구/무기/지팡이/도구/부적·장신구/가방/비팔로/기타/본체 의상)\n  2단계 캐릭터 목록 = 18 캐릭터 그리드 (스킬 탭과 동일한 portrait 이미지 사용: `/images/category-icons/characters/<key>.png`)\n  3단계 리스트 = 그 카테고리/캐릭터의 스킨들 + 우상단 정렬 드롭다운",
+      "UI — view 상태 URL 동기화 (`?tab=skins&view=characters` / `&cat=<id>`)로 시스템 백버튼이 한 depth씩 거꾸로 가게. pushState/popstate/replaceState 처리.",
+      "UI — TabScrollArea 공용 컴포넌트로 통합. 외곽 wrapper + 스크롤 영역 + Footer를 한 번만 마운트해서 view 전환 시 Footer 깜빡임 + SupportPill 리셋 해결 (`docs/ui.md` 규정 준수).",
+      "UI — SkinBreadcrumb (3 depth: 스킨 > 캐릭터 > 위그프리드 또는 스킨 > 모자), SkinCard (BossCard 스타일), SkinDetail (DetailPanel 내부 풀바디 + 메타 + 인용구 + 세트 + 태그).",
+      "UI — 정렬 드롭다운: 희귀도순(기본) / 이름순 / 최신순(release_group ↓) / 오래된순. 희귀도 기본 정렬은 (희귀도 → 종류 → 이름) 묶음으로 본체/모자 혼재 완화.",
+
+      "i18n: 스킨 탭 라벨, 희귀도 17종 (Common~HeirloomElegant), rarity modifier (Woven/CharacterModifier/Inspired/Lustrous), 종류 카테고리 (모자/방어구/무기 등 10종 + 본체 의상), 정렬 옵션 한/영 추가.",
+      "src/components/AppShell.tsx: `tab_skins` 탭 항목 추가 (`?tab=skins`).",
+    ],
+    changes: {
+      ko: [
+        "**스킨 탭 신설** — 18 캐릭터의 본체 의상(약 360종)과 모자·방어구·무기·지팡이·부적·장신구·가방 등 인벤토리 스킨(약 960종)을 함께 볼 수 있습니다.",
+        "3단계 탐색: 홈에서 종류(모자/방어구/무기 등) 또는 \"캐릭터\" 누르기 → 캐릭터 누르면 18명 목록 → 캐릭터/종류 선택하면 그 스킨들이 쭉.",
+        "정렬: 희귀도순 / 이름순 / 출시 최신순·오래된순. 클릭하면 풀바디 이미지 + 인게임 인용구 + 희귀도 + 세트·태그 상세.",
+        "캐릭터 본체 이미지는 [dontstarve.wiki.gg](https://dontstarve.wiki.gg/) 갤러리에서 받아옵니다 (CC BY-SA). 모자·무기 같은 아이템 스킨은 게임 데이터에서 직접 추출.",
+        "다른 탭(보스/제작 등)과 동일한 카테고리 그리드 → 리스트 → 상세 패턴. 시스템 뒤로가기로 한 단계씩 거슬러 갑니다.",
+      ],
+      en: [
+        "**New Skins tab** — browse ~360 character body outfits across 18 survivors plus ~960 item skins (hats, armor, weapons, staves, amulets, canes, backpacks, etc.) in one place.",
+        "Three-level navigation: pick a kind (hats / armor / weapons / …) or the Characters tile on the home grid → tap a character → see all skins for that character or kind.",
+        "Sort by rarity / name / newest / oldest. Tap a skin for the full-body image, in-game quote, rarity, set membership, and tags.",
+        "Character body images come from [dontstarve.wiki.gg](https://dontstarve.wiki.gg/) (CC BY-SA). Item icons are extracted directly from the game's KTEX atlases.",
+        "Same category grid → list → detail pattern as the Bosses / Crafting tabs. System back button steps through the navigation depth.",
+      ],
+    },
+  },
+  {
     version: "0.26.11",
     date: "2026-06-13",
     dev: [

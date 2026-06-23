@@ -117,6 +117,18 @@ echo
 echo "═══ verify-skill-trees ═══"
 python3 scripts/verify-skill-trees.py || echo "(verify-skill-trees reported divergences — review above)"
 
+echo
+echo "═══ extract-skin-icons ═══"
+python3 scripts/extract-skin-icons.py
+
+echo
+echo "═══ download-body-skins (wiki.gg, idempotent) ═══"
+python3 scripts/download-body-skins.py || echo "(body-skin download failed — check network; existing images remain)"
+
+echo
+echo "═══ extract-skins ═══"
+python3 scripts/extract-skins.py
+
 # ─── 10. Update game-version.ts (preserve `release`, bump buildid + date) ─
 TODAY=$(date "+%Y-%m-%d")
 GAME_VER="$REPO_ROOT/src/data/game-version.ts"
