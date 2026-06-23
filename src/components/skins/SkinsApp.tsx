@@ -65,7 +65,7 @@ const RARITY_HEX: Record<SkinRarity, string> = {
 };
 
 // ---------------------------------------------------------------------------
-// Categories — characters (18) + item kinds (10)
+// Characters + kinds
 // ---------------------------------------------------------------------------
 
 const CHARACTERS: Record<string, { ko: string; en: string }> = {
@@ -95,26 +95,24 @@ const CHARACTER_ORDER = [
 ];
 
 const KIND_ORDER = [
-  "body", "hat", "armor", "weapon", "staff", "tool", "amulet",
+  "hat", "armor", "weapon", "staff", "tool", "amulet",
   "backpack", "beefalo", "item",
 ] as const;
 type KindKey = (typeof KIND_ORDER)[number];
 
 const KIND_LABEL_KO: Record<KindKey, string> = {
-  body: "본체", hat: "모자", armor: "방어구", weapon: "무기", staff: "지팡이",
-  tool: "도구", amulet: "부적·장신구", backpack: "가방", beefalo: "비팔로", item: "기타",
+  hat: "모자", armor: "방어구", weapon: "무기", staff: "지팡이", tool: "도구",
+  amulet: "부적·장신구", backpack: "가방", beefalo: "비팔로", item: "기타",
 };
 const KIND_LABEL_EN: Record<KindKey, string> = {
-  body: "Body", hat: "Hat", armor: "Armor", weapon: "Weapon", staff: "Staff",
-  tool: "Tool", amulet: "Amulet", backpack: "Backpack", beefalo: "Beefalo", item: "Other",
+  hat: "Hat", armor: "Armor", weapon: "Weapon", staff: "Staff", tool: "Tool",
+  amulet: "Amulet", backpack: "Backpack", beefalo: "Beefalo", item: "Other",
 };
 
-function itemKind(skin: SkinEntry): KindKey {
+function itemKind(skin: SkinEntry): KindKey | "body" {
   if (skin.type === "base") return "body";
   const base = skin.base_prefab ?? "";
-  if (/staff$/.test(base) || /^(firestaff|icestaff|telestaff|orangestaff|greenstaff|yellowstaff|opalstaff)/.test(base)) {
-    return "staff";
-  }
+  if (/staff$/.test(base) || /^(firestaff|icestaff|telestaff|orangestaff|greenstaff|yellowstaff|opalstaff)/.test(base)) return "staff";
   if (base.includes("hat")) return "hat";
   if (base.startsWith("armor")) return "armor";
   if (base.startsWith("amulet")) return "amulet";
@@ -126,36 +124,31 @@ function itemKind(skin: SkinEntry): KindKey {
   return "item";
 }
 
-// Pre-compute kind and grouping once.
-const KIND_BY_SKIN = new Map<SkinEntry, KindKey>();
+// Pre-computed indexes
+const KIND_BY_SKIN = new Map<SkinEntry, KindKey | "body">();
 const CHAR_COUNT: Record<string, number> = {};
-const KIND_COUNT: Record<KindKey, number> = {} as Record<KindKey, number>;
+const KIND_COUNT: Record<string, number> = {};
+let CHARACTERS_TOTAL = 0;
 for (const s of SKINS) {
   const k = itemKind(s);
   KIND_BY_SKIN.set(s, k);
   KIND_COUNT[k] = (KIND_COUNT[k] ?? 0) + 1;
-  if (s.character) CHAR_COUNT[s.character] = (CHAR_COUNT[s.character] ?? 0) + 1;
+  if (s.character) {
+    CHAR_COUNT[s.character] = (CHAR_COUNT[s.character] ?? 0) + 1;
+    CHARACTERS_TOTAL += 1;
+  }
 }
 
-// Representative image per category (used on the home grid tiles).
-const CHAR_TILE_IMG: Record<string, string> = {};
-for (const s of SKINS) {
-  const c = s.character;
-  if (!c || CHAR_TILE_IMG[c]) continue;
-  // Prefer a body image for character tiles; fall back to first available icon.
-  if (s.body_image) CHAR_TILE_IMG[c] = s.body_image;
+// ---------------------------------------------------------------------------
+// Tile images — use skill-tab portraits for characters; first available
+// inventory icon for kinds.
+// ---------------------------------------------------------------------------
+
+function charPortrait(charKey: string): string {
+  return `/images/category-icons/characters/${charKey}.png`;
 }
-for (const s of SKINS) {
-  const c = s.character;
-  if (!c || CHAR_TILE_IMG[c]) continue;
-  if (s.icon) CHAR_TILE_IMG[c] = s.icon;
-}
-const KIND_TILE_IMG: Record<KindKey, string> = {} as Record<KindKey, string>;
-for (const s of SKINS) {
-  const k = KIND_BY_SKIN.get(s)!;
-  if (KIND_TILE_IMG[k]) continue;
-  if (s.body_image) KIND_TILE_IMG[k] = s.body_image;
-}
+
+const KIND_TILE_IMG: Record<string, string> = {};
 for (const s of SKINS) {
   const k = KIND_BY_SKIN.get(s)!;
   if (KIND_TILE_IMG[k]) continue;
@@ -171,31 +164,32 @@ function kindLabel(key: KindKey, locale: Locale): string {
 }
 
 // ---------------------------------------------------------------------------
-// Category state — "categoryId" is one of:
-//   null            → home view
-//   "all"           → every skin
-//   "favorites"     → (reserved; not yet wired to favorites store)
-//   "recent"        → recently viewed skins (per-device)
-//   "<char>"        → character key (wilson, walter, …)
-//   "kind:<kind>"   → item kind (hat, body, weapon, …)
+// View / navigation state
 // ---------------------------------------------------------------------------
 
-type CategoryId = string | null;
+/**
+ * Three depths:
+ *   "home"        → top-level categories (characters tile + kind tiles)
+ *   "characters"  → 18 character grid (after tapping the "Characters" tile)
+ *   "list:<id>"   → skins grid for a single category. id forms:
+ *                     "all" | "recent" | "char:<key>" | "kind:<key>"
+ */
+type View = "home" | "characters" | { kind: "list"; id: string };
 type SkinSort = "rarity" | "name" | "release_new" | "release_old";
 
-function categoryMatches(cat: string, skin: SkinEntry): boolean {
-  if (cat === "all") return true;
-  if (cat.startsWith("kind:")) return KIND_BY_SKIN.get(skin) === cat.slice(5);
-  // character key
-  return skin.character === cat;
+function listCategoryMatches(id: string, skin: SkinEntry): boolean {
+  if (id === "all") return true;
+  if (id.startsWith("char:")) return skin.character === id.slice(5);
+  if (id.startsWith("kind:")) return KIND_BY_SKIN.get(skin) === id.slice(5);
+  return false;
 }
 
-function categoryDisplayLabel(cat: string, locale: Locale): string {
-  if (cat === "all") return t(locale, "skins_filter_all");
-  if (cat === "recent") return t(locale, "recent");
-  if (cat === "favorites") return t(locale, "favorites");
-  if (cat.startsWith("kind:")) return kindLabel(cat.slice(5) as KindKey, locale);
-  return characterLabel(cat, locale);
+function listCategoryLabel(id: string, locale: Locale): string {
+  if (id === "all") return t(locale, "skins_filter_all");
+  if (id === "recent") return t(locale, "recent");
+  if (id.startsWith("char:")) return characterLabel(id.slice(5), locale);
+  if (id.startsWith("kind:")) return kindLabel(id.slice(5) as KindKey, locale);
+  return id;
 }
 
 // ---------------------------------------------------------------------------
@@ -207,35 +201,44 @@ export function SkinsApp() {
   const locale = resolvedLocale;
   const { recentIds, addRecent } = useRecent("skins");
 
-  const [selectedCategory, setSelectedCategory] = useState<CategoryId>(null);
+  const [view, setView] = useState<View>("home");
   const [selectedSkin, setSelectedSkin] = useState<SkinEntry | null>(null);
   const [sort, setSort] = useState<SkinSort>("rarity");
 
   const { panelItem, panelOpen } = useDetailPanel(selectedSkin);
-  const slideClass = useSlideAnimation(selectedCategory, (v) => v === null);
+  // Animate "home <-> not-home" transitions (mirrors BossesApp behavior).
+  const slideKey = view === "home" ? null : view === "characters" ? "characters" : (view as any).id;
+  const slideClass = useSlideAnimation(slideKey, (v) => v === null);
 
-  const handleGoHome = useCallback(() => setSelectedCategory(null), []);
-  const handleSelectCategory = useCallback((id: string) => {
-    setSelectedCategory(id);
+  const handleGoHome = useCallback(() => {
+    setView("home");
+  }, []);
+  const handleOpenCharacters = useCallback(() => {
+    setView("characters");
+    setSort("rarity");
+  }, []);
+  const handleOpenList = useCallback((id: string) => {
+    setView({ kind: "list", id });
     setSort("rarity");
   }, []);
 
-  // Re-tap active tab → go home
+  // Re-tap active tab → go home, close panel
   useEffect(() => {
-    const handler = () => { setSelectedCategory(null); setSelectedSkin(null); };
+    const handler = () => { setView("home"); setSelectedSkin(null); };
     window.addEventListener("dst-tab-go-home", handler);
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, []);
 
-  // List view: filter + sort
+  // List view: filtered + sorted
   const listSkins = useMemo(() => {
-    if (selectedCategory === null) return [];
+    if (typeof view === "string") return [];
+    const id = view.id;
     let pool: SkinEntry[];
-    if (selectedCategory === "recent") {
+    if (id === "recent") {
       const idx = new Map(SKINS.map((s) => [s.id, s] as const));
       pool = recentIds.map((id) => idx.get(id)).filter((s): s is SkinEntry => !!s);
     } else {
-      pool = SKINS.filter((s) => categoryMatches(selectedCategory, s));
+      pool = SKINS.filter((s) => listCategoryMatches(id, s));
     }
     const cmpName = (a: SkinEntry, b: SkinEntry) =>
       (locale === "ko" ? a.name_ko : a.name_en).localeCompare(
@@ -253,18 +256,18 @@ export function SkinsApp() {
         break;
       case "rarity":
       default:
-        // Within rarity, group by kind so body/hat/weapon don't shuffle together.
         sorted.sort((a, b) => {
           const r = RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity];
           if (r !== 0) return r;
-          const ka = KIND_ORDER.indexOf(KIND_BY_SKIN.get(a)!);
-          const kb = KIND_ORDER.indexOf(KIND_BY_SKIN.get(b)!);
+          // group by kind within same rarity so body/hat don't mix
+          const ka = (KIND_ORDER as readonly string[]).indexOf(KIND_BY_SKIN.get(a) ?? "item");
+          const kb = (KIND_ORDER as readonly string[]).indexOf(KIND_BY_SKIN.get(b) ?? "item");
           if (ka !== kb) return ka - kb;
           return cmpName(a, b);
         });
     }
     return sorted;
-  }, [selectedCategory, recentIds, sort, locale]);
+  }, [view, recentIds, sort, locale]);
 
   const handleSelectSkin = useCallback((skin: SkinEntry) => {
     addRecent(skin.id);
@@ -273,16 +276,14 @@ export function SkinsApp() {
 
   const detailPanel = (
     <DetailPanel open={panelOpen} onClose={() => setSelectedSkin(null)}>
-      {panelItem && (
-        <SkinDetail skin={panelItem} locale={locale} />
-      )}
+      {panelItem && <SkinDetail skin={panelItem} locale={locale} />}
     </DetailPanel>
   );
 
   // -----------------------------------------------------------------------
-  // Home view — category grid (characters + kinds)
+  // Home view — top-level categories: Characters + kinds
   // -----------------------------------------------------------------------
-  if (selectedCategory === null) {
+  if (view === "home") {
     return (
       <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
         <div className="border-b border-border bg-background/80 px-4 py-2.5">
@@ -291,54 +292,81 @@ export function SkinsApp() {
 
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
           <div className="flex flex-col min-h-full">
-            <div className="px-3 sm:px-4 max-w-4xl mx-auto w-full">
-              {/* Quick access: All + Recent */}
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 pt-3 sm:pt-4">
-                <CategoryCard
-                  imageSrc={assetPath("/images/skins/walterhat_ancient.png")}
-                  label={t(locale, "skins_filter_all")}
-                  badgeCount={SKINS.length}
-                  onClick={() => handleSelectCategory("all")}
-                />
-                <CategoryCard
-                  imageSrc={assetPath("/images/game-items/pocketwatch_warp.png")}
-                  label={t(locale, "recent")}
-                  badgeCount={recentIds.length}
-                  onClick={() => handleSelectCategory("recent")}
-                />
-              </div>
-
-              {/* Characters section */}
-              <h3 className="mt-5 mb-2 px-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                {t(locale, "skins_section_characters")}
-              </h3>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3">
-                {CHARACTER_ORDER.filter((c) => CHAR_COUNT[c]).map((c) => (
-                  <CategoryCard
-                    key={c}
-                    imageSrc={assetPath(CHAR_TILE_IMG[c] ?? "/images/skins/walterhat_ancient.png")}
-                    label={characterLabel(c, locale)}
-                    badgeCount={CHAR_COUNT[c]}
-                    onClick={() => handleSelectCategory(c)}
-                  />
-                ))}
-              </div>
-
-              {/* Kinds section */}
-              <h3 className="mt-5 mb-2 px-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                {t(locale, "skins_section_kinds")}
-              </h3>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 pb-4">
-                {KIND_ORDER.filter((k) => KIND_COUNT[k]).map((k) => (
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+              <CategoryCard
+                imageSrc={assetPath("/images/category-icons/all.png")}
+                label={t(locale, "skins_filter_all")}
+                badgeCount={SKINS.length}
+                onClick={() => handleOpenList("all")}
+              />
+              <CategoryCard
+                imageSrc={assetPath("/images/game-items/pocketwatch_warp.png")}
+                label={t(locale, "recent")}
+                badgeCount={recentIds.length}
+                onClick={() => handleOpenList("recent")}
+              />
+              <CategoryCard
+                imageSrc={assetPath("/images/category-icons/character.png")}
+                label={t(locale, "skins_section_characters")}
+                badgeCount={CHARACTERS_TOTAL}
+                onClick={handleOpenCharacters}
+              />
+              {KIND_ORDER.map((k) =>
+                KIND_COUNT[k] ? (
                   <CategoryCard
                     key={k}
-                    imageSrc={assetPath(KIND_TILE_IMG[k] ?? "/images/skins/walterhat_ancient.png")}
+                    imageSrc={assetPath(KIND_TILE_IMG[k] ?? "/images/category-icons/all.png")}
                     label={kindLabel(k, locale)}
                     badgeCount={KIND_COUNT[k]}
-                    onClick={() => handleSelectCategory(`kind:${k}`)}
+                    onClick={() => handleOpenList(`kind:${k}`)}
                   />
-                ))}
-              </div>
+                ) : null,
+              )}
+              {/* Body skins as a kind tile (separate so users can browse all character outfits in one place) */}
+              {KIND_COUNT["body"] && (
+                <CategoryCard
+                  imageSrc={assetPath("/images/category-icons/clothing.png")}
+                  label={t(locale, "skins_kind_body")}
+                  badgeCount={KIND_COUNT["body"]}
+                  onClick={() => handleOpenList("kind:body")}
+                />
+              )}
+            </div>
+            <Footer />
+          </div>
+        </div>
+
+        {detailPanel}
+      </div>
+    );
+  }
+
+  // -----------------------------------------------------------------------
+  // Characters view — 18 character grid (after tapping "Characters" tile)
+  // -----------------------------------------------------------------------
+  if (view === "characters") {
+    return (
+      <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
+        <div className="border-b border-border bg-background/80 px-4 py-2.5">
+          <SkinBreadcrumb
+            locale={locale}
+            categoryLabel={t(locale, "skins_section_characters")}
+            onHomeClick={handleGoHome}
+          />
+        </div>
+
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
+          <div className="flex flex-col min-h-full">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+              {CHARACTER_ORDER.filter((c) => CHAR_COUNT[c]).map((c) => (
+                <CategoryCard
+                  key={c}
+                  imageSrc={assetPath(charPortrait(c))}
+                  label={characterLabel(c, locale)}
+                  badgeCount={CHAR_COUNT[c]}
+                  onClick={() => handleOpenList(`char:${c}`)}
+                />
+              ))}
             </div>
             <Footer />
           </div>
@@ -352,12 +380,19 @@ export function SkinsApp() {
   // -----------------------------------------------------------------------
   // List view — skins in the selected category
   // -----------------------------------------------------------------------
+  const id = view.id;
+  const isFromCharacters = id.startsWith("char:");
+  const handleBack = isFromCharacters ? handleOpenCharacters : handleGoHome;
+  const backLabel = isFromCharacters ? t(locale, "skins_section_characters") : undefined;
+
   return (
     <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
       <div className="border-b border-border bg-background/80 px-4 py-2.5 flex items-center justify-between gap-2">
         <SkinBreadcrumb
           locale={locale}
-          categoryLabel={categoryDisplayLabel(selectedCategory, locale)}
+          parentLabel={backLabel}
+          onParentClick={isFromCharacters ? handleBack : undefined}
+          categoryLabel={listCategoryLabel(id, locale)}
           onHomeClick={handleGoHome}
         />
         <SortMenu value={sort} onChange={setSort} locale={locale} />
@@ -366,7 +401,7 @@ export function SkinsApp() {
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
         <div className="flex flex-col min-h-full">
           {listSkins.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground">
+            <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground py-8">
               {t(locale, "skins_no_results")}
             </div>
           ) : (
@@ -391,19 +426,23 @@ export function SkinsApp() {
 }
 
 // ---------------------------------------------------------------------------
-// SkinBreadcrumb (mirrors BossBreadcrumb)
+// Breadcrumb (3 depths: home > parent? > current)
 // ---------------------------------------------------------------------------
 
 function SkinBreadcrumb({
   locale,
+  parentLabel,
+  onParentClick,
   categoryLabel: catLabel,
   onHomeClick,
 }: {
   locale: Locale;
+  parentLabel?: string;
+  onParentClick?: () => void;
   categoryLabel?: string;
   onHomeClick: () => void;
 }) {
-  const iconSrc = assetPath("/images/skins/walterhat_ancient.png");
+  const iconSrc = assetPath("/images/category-icons/characters/wigfrid.png");
   const isHome = !catLabel;
 
   return (
@@ -431,6 +470,17 @@ function SkinBreadcrumb({
             {t(locale, "tab_skins")}
           </button>
           <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
+          {parentLabel && onParentClick ? (
+            <>
+              <button
+                onClick={onParentClick}
+                className="text-muted-foreground hover:text-foreground transition-colors truncate"
+              >
+                {parentLabel}
+              </button>
+              <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
+            </>
+          ) : null}
           <span className="font-semibold text-foreground truncate">{catLabel}</span>
         </>
       )}
@@ -565,7 +615,7 @@ function SkinDetail({ skin, locale }: { skin: SkinEntry; locale: Locale }) {
 }
 
 // ---------------------------------------------------------------------------
-// SortMenu (inline dropdown — 4 sort options for skins)
+// SortMenu (inline dropdown — 4 sort options)
 // ---------------------------------------------------------------------------
 
 function SortMenu({
