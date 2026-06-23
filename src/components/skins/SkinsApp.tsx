@@ -196,12 +196,50 @@ function listCategoryLabel(id: string, locale: Locale): string {
 // Main
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// URL helpers — keep view + cat synced with `?tab=skins&...` so the system
+// Back button steps through the navigation depth (home ← characters ← list).
+// ---------------------------------------------------------------------------
+
+function getParams(): URLSearchParams {
+  if (typeof window === "undefined") return new URLSearchParams();
+  return new URLSearchParams(window.location.search);
+}
+function isSkinsTab(): boolean {
+  return getParams().get("tab") === "skins";
+}
+function viewFromUrl(): View {
+  const p = getParams();
+  if (p.get("tab") !== "skins") return "home";
+  const v = p.get("view");
+  if (v === "characters") return "characters";
+  const cat = p.get("cat");
+  if (cat) return { kind: "list", id: cat };
+  return "home";
+}
+function buildUrlForView(v: View): string {
+  const params = getParams();
+  params.set("tab", "skins");
+  params.delete("view");
+  params.delete("cat");
+  if (v === "home") {
+    // leave only ?tab=skins
+  } else if (v === "characters") {
+    params.set("view", "characters");
+  } else {
+    params.set("cat", v.id);
+  }
+  return `${window.location.pathname}?${params.toString()}`;
+}
+
 export function SkinsApp() {
   const { resolvedLocale } = useSettings();
   const locale = resolvedLocale;
   const { recentIds, addRecent } = useRecent("skins");
 
-  const [view, setView] = useState<View>("home");
+  const [view, setView] = useState<View>(() =>
+    typeof window === "undefined" ? "home" : viewFromUrl(),
+  );
   const [selectedSkin, setSelectedSkin] = useState<SkinEntry | null>(null);
   const [sort, setSort] = useState<SkinSort>("rarity");
 
@@ -210,24 +248,43 @@ export function SkinsApp() {
   const slideKey = view === "home" ? null : view === "characters" ? "characters" : (view as any).id;
   const slideClass = useSlideAnimation(slideKey, (v) => v === null);
 
-  const handleGoHome = useCallback(() => {
-    setView("home");
+  // Replace state on the current entry without spawning a new history step.
+  // Used when navigating "up" (the user pressed Back-equivalent in the UI).
+  const replaceView = useCallback((v: View) => {
+    if (typeof window !== "undefined" && isSkinsTab()) {
+      window.history.replaceState({ _appNav: true }, "", buildUrlForView(v));
+    }
+    setView(v);
   }, []);
-  const handleOpenCharacters = useCallback(() => {
-    setView("characters");
-    setSort("rarity");
-  }, []);
-  const handleOpenList = useCallback((id: string) => {
-    setView({ kind: "list", id });
+  // Push a new history entry so system Back returns to the previous depth.
+  const pushView = useCallback((v: View) => {
+    if (typeof window !== "undefined" && isSkinsTab()) {
+      window.history.pushState({ _appNav: true }, "", buildUrlForView(v));
+    }
+    setView(v);
     setSort("rarity");
   }, []);
 
+  // Sync from URL on popstate (system Back/Forward).
+  useEffect(() => {
+    const onPop = () => {
+      if (!isSkinsTab()) return;
+      setView(viewFromUrl());
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const handleGoHome = useCallback(() => replaceView("home"), [replaceView]);
+  const handleOpenCharacters = useCallback(() => pushView("characters"), [pushView]);
+  const handleOpenList = useCallback((id: string) => pushView({ kind: "list", id }), [pushView]);
+
   // Re-tap active tab → go home, close panel
   useEffect(() => {
-    const handler = () => { setView("home"); setSelectedSkin(null); };
+    const handler = () => { replaceView("home"); setSelectedSkin(null); };
     window.addEventListener("dst-tab-go-home", handler);
     return () => window.removeEventListener("dst-tab-go-home", handler);
-  }, []);
+  }, [replaceView]);
 
   // List view: filtered + sorted
   const listSkins = useMemo(() => {
