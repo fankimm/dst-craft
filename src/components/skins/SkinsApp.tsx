@@ -1,21 +1,24 @@
 "use client";
 
-import { useMemo, useState, useCallback, useEffect, useRef } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Search, X, ArrowUpDown } from "lucide-react";
+import { ChevronRight, ArrowUpDown } from "lucide-react";
 import {
   SKINS,
   type SkinEntry,
   type SkinRarity,
-  type SkinRarityModifier,
 } from "@/data/skins";
 import { useSettings } from "@/hooks/use-settings";
 import { t, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
+import { useSlideAnimation } from "@/hooks/use-slide-animation";
+import { useRecent } from "@/hooks/use-recent";
 import { DetailPanel } from "@/components/ui/DetailPanel";
+import { CategoryCard } from "@/components/ui/CategoryCard";
 import { TagChip } from "@/components/ui/TagChip";
+import { Footer } from "../crafting/Footer";
 
 // ---------------------------------------------------------------------------
 // Rarity ordering + colors (mirrors skinsutils.lua SKIN_RARITY_COLORS)
@@ -62,12 +65,9 @@ const RARITY_HEX: Record<SkinRarity, string> = {
 };
 
 // ---------------------------------------------------------------------------
-// Character / category detection from base_prefab
+// Categories — characters (18) + item kinds (10)
 // ---------------------------------------------------------------------------
 
-// Canonical character key → display names (ko/en).
-// "wigfrid" and "maxwell" are the canonical app-side ids; "wathgrithr" and
-// "waxwell" are in-game prefab aliases that route to the canonical key.
 const CHARACTERS: Record<string, { ko: string; en: string }> = {
   wilson: { ko: "윌슨", en: "Wilson" },
   willow: { ko: "윌로우", en: "Willow" },
@@ -88,20 +88,12 @@ const CHARACTERS: Record<string, { ko: string; en: string }> = {
   walter: { ko: "월터", en: "Walter" },
   wanda: { ko: "완다", en: "Wanda" },
 };
-
-// Order characters appear in the chip row. Mirrors the in-game roster order.
 const CHARACTER_ORDER = [
   "wilson", "willow", "wolfgang", "wendy", "wx78", "wickerbottom",
   "woodie", "wes", "maxwell", "wigfrid", "webber",
   "winona", "warly", "wortox", "wormwood", "wurt", "walter", "wanda",
 ];
 
-// Per-skin character is supplied by the build-time pipeline (extract-skins.py),
-// sourced from recipes.lua builder_tag/builder_skill — the same data the game
-// uses to gate crafting. UI just reads `skin.character` directly here.
-
-// Item kinds — independent from character. Character chip and kind chip
-// compose (e.g. "Wigfrid + weapon" = wathgrithr spears only).
 const KIND_ORDER = [
   "body", "hat", "armor", "weapon", "staff", "tool", "amulet",
   "backpack", "beefalo", "item",
@@ -109,31 +101,14 @@ const KIND_ORDER = [
 type KindKey = (typeof KIND_ORDER)[number];
 
 const KIND_LABEL_KO: Record<KindKey, string> = {
-  body: "본체",
-  hat: "모자",
-  armor: "방어구",
-  weapon: "무기",
-  staff: "지팡이",
-  tool: "도구",
-  amulet: "부적/장신구",
-  backpack: "가방",
-  beefalo: "비팔로",
-  item: "기타",
+  body: "본체", hat: "모자", armor: "방어구", weapon: "무기", staff: "지팡이",
+  tool: "도구", amulet: "부적·장신구", backpack: "가방", beefalo: "비팔로", item: "기타",
 };
 const KIND_LABEL_EN: Record<KindKey, string> = {
-  body: "Body",
-  hat: "Hat",
-  armor: "Armor",
-  weapon: "Weapon",
-  staff: "Staff",
-  tool: "Tool",
-  amulet: "Amulet",
-  backpack: "Backpack",
-  beefalo: "Beefalo",
-  item: "Other",
+  body: "Body", hat: "Hat", armor: "Armor", weapon: "Weapon", staff: "Staff",
+  tool: "Tool", amulet: "Amulet", backpack: "Backpack", beefalo: "Beefalo", item: "Other",
 };
 
-/** Coarse kind for a skin, decoupled from character. */
 function itemKind(skin: SkinEntry): KindKey {
   if (skin.type === "base") return "body";
   const base = skin.base_prefab ?? "";
@@ -144,142 +119,374 @@ function itemKind(skin: SkinEntry): KindKey {
   if (base.startsWith("armor")) return "armor";
   if (base.startsWith("amulet")) return "amulet";
   if (base.startsWith("cane")) return "staff";
-  if (base.includes("backpack") || base.includes("krampus_sack") || base.includes("piggyback")) {
-    return "backpack";
-  }
-  if (base.startsWith("beefalo") || base.startsWith("saddle") || base.startsWith("bell")) {
-    return "beefalo";
-  }
-  if (
-    /^(spear|sword|axe|hammer|pickaxe|shovel|pitchfork|bat|boomerang|blowdart|nightsword|reskin_tool|tropical_fan|featherfan|bugnet|fishingrod|whip|trident|saltrock_hammer|multitool_axe_pickaxe|slingshot)/.test(base)
-  ) {
-    // axe/hammer/pickaxe/shovel are also tools — keep them under "tool"; the
-    // pure weapons (spear/sword/etc.) stay under "weapon".
-    if (/^(axe|hammer|pickaxe|shovel|pitchfork|bugnet|fishingrod|multitool_axe_pickaxe|saltrock_hammer|reskin_tool)/.test(base)) {
-      return "tool";
-    }
-    return "weapon";
-  }
+  if (base.includes("backpack") || base.includes("krampus_sack") || base.includes("piggyback")) return "backpack";
+  if (base.startsWith("beefalo") || base.startsWith("saddle") || base.startsWith("bell")) return "beefalo";
+  if (/^(axe|hammer|pickaxe|shovel|pitchfork|bugnet|fishingrod|multitool_axe_pickaxe|saltrock_hammer|reskin_tool)/.test(base)) return "tool";
+  if (/^(spear|sword|bat|boomerang|blowdart|nightsword|tropical_fan|featherfan|whip|trident|slingshot)/.test(base)) return "weapon";
   return "item";
 }
 
-function kindLabel(key: KindKey, locale: Locale): string {
-  return (locale === "ko" ? KIND_LABEL_KO : KIND_LABEL_EN)[key];
+// Pre-compute kind and grouping once.
+const KIND_BY_SKIN = new Map<SkinEntry, KindKey>();
+const CHAR_COUNT: Record<string, number> = {};
+const KIND_COUNT: Record<KindKey, number> = {} as Record<KindKey, number>;
+for (const s of SKINS) {
+  const k = itemKind(s);
+  KIND_BY_SKIN.set(s, k);
+  KIND_COUNT[k] = (KIND_COUNT[k] ?? 0) + 1;
+  if (s.character) CHAR_COUNT[s.character] = (CHAR_COUNT[s.character] ?? 0) + 1;
+}
+
+// Representative image per category (used on the home grid tiles).
+const CHAR_TILE_IMG: Record<string, string> = {};
+for (const s of SKINS) {
+  const c = s.character;
+  if (!c || CHAR_TILE_IMG[c]) continue;
+  // Prefer a body image for character tiles; fall back to first available icon.
+  if (s.body_image) CHAR_TILE_IMG[c] = s.body_image;
+}
+for (const s of SKINS) {
+  const c = s.character;
+  if (!c || CHAR_TILE_IMG[c]) continue;
+  if (s.icon) CHAR_TILE_IMG[c] = s.icon;
+}
+const KIND_TILE_IMG: Record<KindKey, string> = {} as Record<KindKey, string>;
+for (const s of SKINS) {
+  const k = KIND_BY_SKIN.get(s)!;
+  if (KIND_TILE_IMG[k]) continue;
+  if (s.body_image) KIND_TILE_IMG[k] = s.body_image;
+}
+for (const s of SKINS) {
+  const k = KIND_BY_SKIN.get(s)!;
+  if (KIND_TILE_IMG[k]) continue;
+  if (s.icon) KIND_TILE_IMG[k] = s.icon;
 }
 
 function characterLabel(key: string, locale: Locale): string {
   const ch = CHARACTERS[key];
-  if (ch) return locale === "ko" ? ch.ko : ch.en;
-  return key;
+  return ch ? (locale === "ko" ? ch.ko : ch.en) : key;
+}
+function kindLabel(key: KindKey, locale: Locale): string {
+  return (locale === "ko" ? KIND_LABEL_KO : KIND_LABEL_EN)[key];
 }
 
 // ---------------------------------------------------------------------------
-// Pre-indexed dimensions for chip counts.
+// Category state — "categoryId" is one of:
+//   null            → home view
+//   "all"           → every skin
+//   "favorites"     → (reserved; not yet wired to favorites store)
+//   "recent"        → recently viewed skins (per-device)
+//   "<char>"        → character key (wilson, walter, …)
+//   "kind:<kind>"   → item kind (hat, body, weapon, …)
 // ---------------------------------------------------------------------------
 
+type CategoryId = string | null;
 type SkinSort = "rarity" | "name" | "release_new" | "release_old";
 
-interface SkinIndex {
-  all: SkinEntry[];
-  characters: string[];           // in roster order, only those present
-  charCount: Record<string, number>;
-  kinds: KindKey[];               // present kinds, in KIND_ORDER
-  kindCount: Record<KindKey, number>;
-  rarities: SkinRarity[];         // present rarities, by rarity order
-  rarityCount: Record<string, number>;
-  kindByEntry: Map<SkinEntry, KindKey>; // memoized
+function categoryMatches(cat: string, skin: SkinEntry): boolean {
+  if (cat === "all") return true;
+  if (cat.startsWith("kind:")) return KIND_BY_SKIN.get(skin) === cat.slice(5);
+  // character key
+  return skin.character === cat;
 }
 
-const SKIN_INDEX: SkinIndex = (() => {
-  const kindByEntry = new Map<SkinEntry, KindKey>();
-  const charCount: Record<string, number> = {};
-  const kindCount: Record<string, number> = {};
-  const rarityCount: Record<string, number> = {};
+function categoryDisplayLabel(cat: string, locale: Locale): string {
+  if (cat === "all") return t(locale, "skins_filter_all");
+  if (cat === "recent") return t(locale, "recent");
+  if (cat === "favorites") return t(locale, "favorites");
+  if (cat.startsWith("kind:")) return kindLabel(cat.slice(5) as KindKey, locale);
+  return characterLabel(cat, locale);
+}
 
-  for (const s of SKINS) {
-    const k = itemKind(s);
-    kindByEntry.set(s, k);
-    kindCount[k] = (kindCount[k] ?? 0) + 1;
-    if (s.character) charCount[s.character] = (charCount[s.character] ?? 0) + 1;
-    rarityCount[s.rarity] = (rarityCount[s.rarity] ?? 0) + 1;
-  }
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
 
-  const characters = CHARACTER_ORDER.filter((c) => charCount[c]);
-  const kinds = KIND_ORDER.filter((k) => kindCount[k]) as KindKey[];
-  const rarities = (Object.keys(rarityCount) as SkinRarity[]).sort(
-    (a, b) => RARITY_ORDER[a] - RARITY_ORDER[b],
+export function SkinsApp() {
+  const { resolvedLocale } = useSettings();
+  const locale = resolvedLocale;
+  const { recentIds, addRecent } = useRecent("skins");
+
+  const [selectedCategory, setSelectedCategory] = useState<CategoryId>(null);
+  const [selectedSkin, setSelectedSkin] = useState<SkinEntry | null>(null);
+  const [sort, setSort] = useState<SkinSort>("rarity");
+
+  const { panelItem, panelOpen } = useDetailPanel(selectedSkin);
+  const slideClass = useSlideAnimation(selectedCategory, (v) => v === null);
+
+  const handleGoHome = useCallback(() => setSelectedCategory(null), []);
+  const handleSelectCategory = useCallback((id: string) => {
+    setSelectedCategory(id);
+    setSort("rarity");
+  }, []);
+
+  // Re-tap active tab → go home
+  useEffect(() => {
+    const handler = () => { setSelectedCategory(null); setSelectedSkin(null); };
+    window.addEventListener("dst-tab-go-home", handler);
+    return () => window.removeEventListener("dst-tab-go-home", handler);
+  }, []);
+
+  // List view: filter + sort
+  const listSkins = useMemo(() => {
+    if (selectedCategory === null) return [];
+    let pool: SkinEntry[];
+    if (selectedCategory === "recent") {
+      const idx = new Map(SKINS.map((s) => [s.id, s] as const));
+      pool = recentIds.map((id) => idx.get(id)).filter((s): s is SkinEntry => !!s);
+    } else {
+      pool = SKINS.filter((s) => categoryMatches(selectedCategory, s));
+    }
+    const cmpName = (a: SkinEntry, b: SkinEntry) =>
+      (locale === "ko" ? a.name_ko : a.name_en).localeCompare(
+        locale === "ko" ? b.name_ko : b.name_en, locale);
+    const sorted = pool.slice();
+    switch (sort) {
+      case "name":
+        sorted.sort(cmpName);
+        break;
+      case "release_new":
+        sorted.sort((a, b) => b.release_group - a.release_group || cmpName(a, b));
+        break;
+      case "release_old":
+        sorted.sort((a, b) => a.release_group - b.release_group || cmpName(a, b));
+        break;
+      case "rarity":
+      default:
+        // Within rarity, group by kind so body/hat/weapon don't shuffle together.
+        sorted.sort((a, b) => {
+          const r = RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity];
+          if (r !== 0) return r;
+          const ka = KIND_ORDER.indexOf(KIND_BY_SKIN.get(a)!);
+          const kb = KIND_ORDER.indexOf(KIND_BY_SKIN.get(b)!);
+          if (ka !== kb) return ka - kb;
+          return cmpName(a, b);
+        });
+    }
+    return sorted;
+  }, [selectedCategory, recentIds, sort, locale]);
+
+  const handleSelectSkin = useCallback((skin: SkinEntry) => {
+    addRecent(skin.id);
+    setSelectedSkin(skin);
+  }, [addRecent]);
+
+  const detailPanel = (
+    <DetailPanel open={panelOpen} onClose={() => setSelectedSkin(null)}>
+      {panelItem && (
+        <SkinDetail skin={panelItem} locale={locale} />
+      )}
+    </DetailPanel>
   );
 
-  return {
-    all: SKINS,
-    characters,
-    charCount,
-    kinds,
-    kindCount: kindCount as Record<KindKey, number>,
-    rarities,
-    rarityCount,
-    kindByEntry,
-  };
-})();
+  // -----------------------------------------------------------------------
+  // Home view — category grid (characters + kinds)
+  // -----------------------------------------------------------------------
+  if (selectedCategory === null) {
+    return (
+      <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
+        <div className="border-b border-border bg-background/80 px-4 py-2.5">
+          <SkinBreadcrumb locale={locale} onHomeClick={handleGoHome} />
+        </div>
+
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
+          <div className="flex flex-col min-h-full">
+            <div className="px-3 sm:px-4 max-w-4xl mx-auto w-full">
+              {/* Quick access: All + Recent */}
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 pt-3 sm:pt-4">
+                <CategoryCard
+                  imageSrc={assetPath("/images/skins/walterhat_ancient.png")}
+                  label={t(locale, "skins_filter_all")}
+                  badgeCount={SKINS.length}
+                  onClick={() => handleSelectCategory("all")}
+                />
+                <CategoryCard
+                  imageSrc={assetPath("/images/game-items/pocketwatch_warp.png")}
+                  label={t(locale, "recent")}
+                  badgeCount={recentIds.length}
+                  onClick={() => handleSelectCategory("recent")}
+                />
+              </div>
+
+              {/* Characters section */}
+              <h3 className="mt-5 mb-2 px-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                {t(locale, "skins_section_characters")}
+              </h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3">
+                {CHARACTER_ORDER.filter((c) => CHAR_COUNT[c]).map((c) => (
+                  <CategoryCard
+                    key={c}
+                    imageSrc={assetPath(CHAR_TILE_IMG[c] ?? "/images/skins/walterhat_ancient.png")}
+                    label={characterLabel(c, locale)}
+                    badgeCount={CHAR_COUNT[c]}
+                    onClick={() => handleSelectCategory(c)}
+                  />
+                ))}
+              </div>
+
+              {/* Kinds section */}
+              <h3 className="mt-5 mb-2 px-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                {t(locale, "skins_section_kinds")}
+              </h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 pb-4">
+                {KIND_ORDER.filter((k) => KIND_COUNT[k]).map((k) => (
+                  <CategoryCard
+                    key={k}
+                    imageSrc={assetPath(KIND_TILE_IMG[k] ?? "/images/skins/walterhat_ancient.png")}
+                    label={kindLabel(k, locale)}
+                    badgeCount={KIND_COUNT[k]}
+                    onClick={() => handleSelectCategory(`kind:${k}`)}
+                  />
+                ))}
+              </div>
+            </div>
+            <Footer />
+          </div>
+        </div>
+
+        {detailPanel}
+      </div>
+    );
+  }
+
+  // -----------------------------------------------------------------------
+  // List view — skins in the selected category
+  // -----------------------------------------------------------------------
+  return (
+    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
+      <div className="border-b border-border bg-background/80 px-4 py-2.5 flex items-center justify-between gap-2">
+        <SkinBreadcrumb
+          locale={locale}
+          categoryLabel={categoryDisplayLabel(selectedCategory, locale)}
+          onHomeClick={handleGoHome}
+        />
+        <SortMenu value={sort} onChange={setSort} locale={locale} />
+      </div>
+
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
+        <div className="flex flex-col min-h-full">
+          {listSkins.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground">
+              {t(locale, "skins_no_results")}
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+              {listSkins.map((skin) => (
+                <SkinCard
+                  key={skin.id}
+                  skin={skin}
+                  locale={locale}
+                  onClick={() => handleSelectSkin(skin)}
+                />
+              ))}
+            </div>
+          )}
+          <Footer />
+        </div>
+      </div>
+
+      {detailPanel}
+    </div>
+  );
+}
 
 // ---------------------------------------------------------------------------
-// Components
+// SkinBreadcrumb (mirrors BossBreadcrumb)
 // ---------------------------------------------------------------------------
 
-interface SkinCardProps {
+function SkinBreadcrumb({
+  locale,
+  categoryLabel: catLabel,
+  onHomeClick,
+}: {
+  locale: Locale;
+  categoryLabel?: string;
+  onHomeClick: () => void;
+}) {
+  const iconSrc = assetPath("/images/skins/walterhat_ancient.png");
+  const isHome = !catLabel;
+
+  return (
+    <nav className="flex items-center gap-1 min-w-0 text-sm">
+      {isHome ? (
+        <Image src={iconSrc} alt="Home" width={20} height={20} className="size-5 rounded-sm" />
+      ) : (
+        <button onClick={onHomeClick} className="shrink-0 rounded-sm hover:opacity-70 transition-opacity">
+          <Image src={iconSrc} alt="Home" width={20} height={20} className="size-5 rounded-sm" />
+        </button>
+      )}
+
+      <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
+
+      {isHome ? (
+        <span className="font-semibold text-foreground truncate">
+          {t(locale, "tab_skins")}
+        </span>
+      ) : (
+        <>
+          <button
+            onClick={onHomeClick}
+            className="text-muted-foreground hover:text-foreground transition-colors truncate"
+          >
+            {t(locale, "tab_skins")}
+          </button>
+          <ChevronRight className="size-3.5 shrink-0 text-muted-foreground/60" />
+          <span className="font-semibold text-foreground truncate">{catLabel}</span>
+        </>
+      )}
+    </nav>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// SkinCard (mirrors BossCard styling)
+// ---------------------------------------------------------------------------
+
+function SkinCard({
+  skin,
+  locale,
+  onClick,
+}: {
   skin: SkinEntry;
   locale: Locale;
   onClick: () => void;
-}
-
-function SkinCard({ skin, locale, onClick }: SkinCardProps) {
+}) {
   const color = RARITY_HEX[skin.rarity];
   const name = locale === "ko" ? skin.name_ko : skin.name_en;
-  // Body skins (character outfits) get a wider card so the in-game silhouette
-  // is readable; inventory icons stay compact.
-  const isBody = !!skin.body_image;
-  const imgSrc = skin.body_image ?? skin.icon ?? "";
+  const src = skin.body_image ?? skin.icon ?? "";
   return (
     <button
-      type="button"
       onClick={onClick}
-      className="group flex flex-col items-center gap-1 p-2 rounded-lg border border-border bg-card hover:bg-accent/40 hover:border-foreground/30 transition-colors text-left"
+      className="relative flex flex-col items-center gap-1.5 rounded-lg border bg-surface p-3 sm:p-4 transition-colors active:bg-surface-hover hover:bg-surface-hover border-border hover:border-ring"
     >
       <div
-        className={cn(
-          "relative flex items-center justify-center rounded-md border-2 bg-black/70 overflow-hidden",
-          isBody ? "w-full aspect-square" : "size-16",
-        )}
+        className="flex items-center justify-center size-12 sm:size-14 rounded-sm border bg-black/60 overflow-hidden"
         style={{ borderColor: color }}
       >
-        {imgSrc ? (
-          <Image
-            src={assetPath(imgSrc)}
+        {src ? (
+          <img
+            src={assetPath(src)}
             alt={name}
-            width={isBody ? 120 : 56}
-            height={isBody ? 120 : 56}
-            className={cn("object-contain", isBody ? "size-full p-1" : "size-14")}
+            className="size-full object-contain p-0.5"
             loading="lazy"
-            unoptimized
+            draggable={false}
           />
         ) : (
           <span className="text-[10px] text-muted-foreground">?</span>
         )}
       </div>
-      <span className="text-[11px] leading-tight text-center line-clamp-2 w-full text-foreground">
+      <span className="text-xs sm:text-sm text-foreground/80 font-medium text-center leading-tight line-clamp-2">
         {name}
       </span>
     </button>
   );
 }
 
-interface SkinDetailProps {
-  skin: SkinEntry;
-  locale: Locale;
-  onClose: () => void;
-}
+// ---------------------------------------------------------------------------
+// SkinDetail (bottom sheet content)
+// ---------------------------------------------------------------------------
 
-function SkinDetail({ skin, locale, onClose }: SkinDetailProps) {
+function SkinDetail({ skin, locale }: { skin: SkinEntry; locale: Locale }) {
   const color = RARITY_HEX[skin.rarity];
   const name = locale === "ko" ? skin.name_ko : skin.name_en;
   const quote = locale === "ko" ? skin.quote_ko : skin.quote_en;
@@ -287,44 +494,41 @@ function SkinDetail({ skin, locale, onClose }: SkinDetailProps) {
   const modifierLabel = skin.rarity_modifier
     ? t(locale, `skins_rarity_modifier_${skin.rarity_modifier}` as TranslationKey)
     : null;
-
+  const heroSrc = skin.body_image ?? skin.icon;
   const isBody = !!skin.body_image;
-  const heroSrc = skin.body_image ?? skin.icon ?? "";
+
   return (
     <div className="px-4 pt-3 pb-6 space-y-4">
-      <div className={cn("flex gap-4", isBody ? "flex-col items-center" : "items-start")}>
+      {heroSrc && (
         <div
           className={cn(
-            "shrink-0 flex items-center justify-center rounded-md border-2 bg-black/70 overflow-hidden",
+            "mx-auto rounded-md border-2 bg-black/70 overflow-hidden flex items-center justify-center",
             isBody ? "w-full max-w-[280px] aspect-square" : "size-24",
           )}
           style={{ borderColor: color }}
         >
-          {heroSrc ? (
-            <Image
-              src={assetPath(heroSrc)}
-              alt={name}
-              width={isBody ? 250 : 88}
-              height={isBody ? 250 : 88}
-              className={cn("object-contain", isBody ? "size-full p-2" : "size-20")}
-              unoptimized
-            />
-          ) : null}
+          <Image
+            src={assetPath(heroSrc)}
+            alt={name}
+            width={isBody ? 250 : 88}
+            height={isBody ? 250 : 88}
+            className={cn("object-contain", isBody ? "size-full p-2" : "size-20")}
+            unoptimized
+          />
         </div>
-        <div className={cn("flex-1 min-w-0", isBody && "w-full text-center")}>{/* center on body skin */}
-          <div
-            className="text-[11px] font-bold uppercase tracking-wider mb-0.5"
-            style={{ color }}
-          >
-            {modifierLabel ? `${modifierLabel} · ${rarityLabel}` : rarityLabel}
-          </div>
-          <h2 className="text-lg font-bold text-foreground leading-tight break-words pr-6">
-            {name}
-          </h2>
-          <div className="text-xs text-muted-foreground mt-1 font-mono">
-            {skin.id}
-          </div>
+      )}
+
+      <div className={cn("min-w-0", isBody && "text-center")}>
+        <div
+          className="text-[11px] font-bold uppercase tracking-wider mb-0.5"
+          style={{ color }}
+        >
+          {modifierLabel ? `${modifierLabel} · ${rarityLabel}` : rarityLabel}
         </div>
+        <h2 className="text-lg font-bold text-foreground leading-tight break-words pr-6">
+          {name}
+        </h2>
+        <div className="text-xs text-muted-foreground mt-1 font-mono">{skin.id}</div>
       </div>
 
       {quote && (
@@ -361,265 +565,7 @@ function SkinDetail({ skin, locale, onClose }: SkinDetailProps) {
 }
 
 // ---------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------
-
-export function SkinsApp() {
-  const { resolvedLocale } = useSettings();
-  const locale = resolvedLocale;
-
-  const [query, setQuery] = useState("");
-  // Character chip: single select (a skin belongs to at most one character).
-  const [character, setCharacter] = useState<string | null>(null);
-  // Kind + rarity chips: multi-select (empty set = no filter).
-  const [kinds, setKinds] = useState<Set<KindKey>>(new Set());
-  const [rarities, setRarities] = useState<Set<SkinRarity>>(new Set());
-  const [sort, setSort] = useState<SkinSort>("rarity");
-
-  const [selected, setSelected] = useState<SkinEntry | null>(null);
-  const { panelItem, panelOpen } = useDetailPanel(selected);
-
-  const toggleKind = useCallback((k: KindKey) => {
-    setKinds((prev) => {
-      const next = new Set(prev);
-      if (next.has(k)) next.delete(k); else next.add(k);
-      return next;
-    });
-  }, []);
-  const toggleRarity = useCallback((r: SkinRarity) => {
-    setRarities((prev) => {
-      const next = new Set(prev);
-      if (next.has(r)) next.delete(r); else next.add(r);
-      return next;
-    });
-  }, []);
-
-  const filtered = useMemo(() => {
-    let pool: SkinEntry[] = SKIN_INDEX.all;
-    if (character) {
-      pool = pool.filter((s) => s.character === character);
-    }
-    if (kinds.size > 0) {
-      pool = pool.filter((s) => kinds.has(SKIN_INDEX.kindByEntry.get(s) ?? "item"));
-    }
-    if (rarities.size > 0) {
-      pool = pool.filter((s) => rarities.has(s.rarity));
-    }
-    if (query.trim()) {
-      const q = query.trim().toLowerCase();
-      pool = pool.filter((s) =>
-        s.name_ko.toLowerCase().includes(q) ||
-        s.name_en.toLowerCase().includes(q) ||
-        s.id.toLowerCase().includes(q) ||
-        s.base_prefab.toLowerCase().includes(q),
-      );
-    }
-    const sorted = pool.slice();
-    switch (sort) {
-      case "name":
-        sorted.sort((a, b) => {
-          const an = locale === "ko" ? a.name_ko : a.name_en;
-          const bn = locale === "ko" ? b.name_ko : b.name_en;
-          return an.localeCompare(bn, locale);
-        });
-        break;
-      case "release_new":
-        sorted.sort((a, b) => b.release_group - a.release_group ||
-          (locale === "ko" ? a.name_ko : a.name_en).localeCompare(
-            locale === "ko" ? b.name_ko : b.name_en, locale));
-        break;
-      case "release_old":
-        sorted.sort((a, b) => a.release_group - b.release_group ||
-          (locale === "ko" ? a.name_ko : a.name_en).localeCompare(
-            locale === "ko" ? b.name_ko : b.name_en, locale));
-        break;
-      case "rarity":
-      default:
-        sorted.sort((a, b) => {
-          const r = RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity];
-          if (r !== 0) return r;
-          return (locale === "ko" ? a.name_ko : a.name_en).localeCompare(
-            locale === "ko" ? b.name_ko : b.name_en, locale);
-        });
-    }
-    return sorted;
-  }, [character, kinds, rarities, query, sort, locale]);
-
-  const activeFilterCount =
-    (character ? 1 : 0) + kinds.size + rarities.size + (query.trim() ? 1 : 0);
-
-  const resetFilters = useCallback(() => {
-    setQuery("");
-    setCharacter(null);
-    setKinds(new Set());
-    setRarities(new Set());
-  }, []);
-
-  // Tab home — react to tab re-tap (AppShell broadcasts this)
-  useEffect(() => {
-    const handler = () => { resetFilters(); setSort("rarity"); };
-    window.addEventListener("dst-tab-go-home", handler);
-    return () => window.removeEventListener("dst-tab-go-home", handler);
-  }, [resetFilters]);
-
-  return (
-    <div className="flex flex-col h-full">
-      {/* Filter bar — search + sort + chips */}
-      <div className="shrink-0 border-b border-border bg-background">
-        <div className="px-3 pt-2 pb-1 flex items-center gap-2">
-          <div className="relative flex-1">
-            <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={t(locale, "skins_search_placeholder")}
-              className="w-full pl-8 pr-8 py-2 rounded-md border border-input bg-card text-base focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-            {query && (
-              <button
-                onClick={() => setQuery("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 rounded-sm text-muted-foreground hover:text-foreground"
-                aria-label="clear"
-              >
-                <X className="size-4" />
-              </button>
-            )}
-          </div>
-          <SortMenu value={sort} onChange={setSort} locale={locale} />
-        </div>
-
-        {/* Character chips (single) */}
-        <div className="flex gap-1.5 overflow-x-auto px-3 py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <ChipButton
-            active={character === null}
-            onClick={() => setCharacter(null)}
-            label={`${t(locale, "skins_filter_all")} (${SKIN_INDEX.all.length})`}
-          />
-          {SKIN_INDEX.characters.map((c) => (
-            <ChipButton
-              key={c}
-              active={character === c}
-              onClick={() => setCharacter(character === c ? null : c)}
-              label={`${characterLabel(c, locale)} (${SKIN_INDEX.charCount[c]})`}
-            />
-          ))}
-        </div>
-
-        {/* Kind chips (multi) */}
-        <div className="flex gap-1.5 overflow-x-auto px-3 py-1.5 border-t border-border/50 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {SKIN_INDEX.kinds.map((k) => (
-            <ChipButton
-              key={k}
-              active={kinds.has(k)}
-              onClick={() => toggleKind(k)}
-              label={`${kindLabel(k, locale)} (${SKIN_INDEX.kindCount[k]})`}
-            />
-          ))}
-        </div>
-
-        {/* Rarity chips (multi) */}
-        <div className="flex gap-1.5 overflow-x-auto px-3 py-1.5 border-t border-border/50 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {SKIN_INDEX.rarities.map((r) => (
-            <ChipButton
-              key={r}
-              active={rarities.has(r)}
-              onClick={() => toggleRarity(r)}
-              label={t(locale, `rarity_${r}` as TranslationKey)}
-              color={RARITY_HEX[r]}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Grid */}
-      <div className="flex-1 min-h-0 overflow-y-auto" data-scroll-container>
-        <div className="px-3 pt-3 pb-2 text-xs text-muted-foreground">
-          {filtered.length} {t(locale, "skins_count")}
-          {activeFilterCount > 0 && (
-            <>
-              <span className="ml-2">·</span>
-              <span className="ml-2">{t(locale, "skins_filter_active").replace("{n}", String(activeFilterCount))}</span>
-              <button
-                onClick={resetFilters}
-                className="ml-2 underline hover:text-foreground"
-              >
-                {t(locale, "skins_filter_clear")}
-              </button>
-            </>
-          )}
-        </div>
-
-        {filtered.length === 0 ? (
-          <div className="flex items-center justify-center h-40 text-sm text-muted-foreground">
-            {t(locale, "skins_no_results")}
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-2 px-3 pb-4">
-              {filtered.map((skin) => (
-                <SkinCard
-                  key={skin.id}
-                  skin={skin}
-                  locale={locale}
-                  onClick={() => setSelected(skin)}
-                />
-              ))}
-            </div>
-            <p className="px-3 pb-6 text-[10px] leading-relaxed text-muted-foreground">
-              {t(locale, "skins_body_attribution")}{" "}
-              <a
-                href="https://dontstarve.wiki.gg/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-foreground"
-              >
-                dontstarve.wiki.gg
-              </a>{" "}
-              (CC BY-SA)
-            </p>
-          </>
-        )}
-      </div>
-
-      <DetailPanel open={panelOpen} onClose={() => setSelected(null)}>
-        {panelItem && (
-          <SkinDetail skin={panelItem} locale={locale} onClose={() => setSelected(null)} />
-        )}
-      </DetailPanel>
-    </div>
-  );
-}
-
-function ChipButton({
-  active,
-  onClick,
-  label,
-  color,
-}: {
-  active: boolean;
-  onClick: () => void;
-  label: string;
-  color?: string;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        "shrink-0 px-2.5 py-1 rounded-full text-xs font-medium border transition-colors whitespace-nowrap",
-        active
-          ? "bg-foreground text-background border-foreground"
-          : "bg-card text-foreground border-border hover:border-foreground/40",
-      )}
-      style={active && color ? { backgroundColor: color, borderColor: color, color: "#fff" } : undefined}
-    >
-      {label}
-    </button>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// SortMenu — small dropdown next to the search input
+// SortMenu (inline dropdown — 4 sort options for skins)
 // ---------------------------------------------------------------------------
 
 function SortMenu({
@@ -654,14 +600,13 @@ function SortMenu({
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex items-center gap-1 px-2 py-2 rounded-md border border-input bg-card text-xs font-medium text-foreground hover:bg-accent/50 transition-colors"
-        aria-label={t(locale, "skins_sort_aria")}
+        className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
       >
         <ArrowUpDown className="size-3.5" />
-        <span className="hidden sm:inline">{current.label}</span>
+        {current.label}
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 z-50 min-w-[140px] rounded-md border border-border bg-popover shadow-md py-1">
+        <div className="absolute right-0 top-full mt-1 z-50 min-w-[120px] rounded-md border border-border bg-popover shadow-md py-1">
           {options.map((opt) => (
             <button
               key={opt.key}
