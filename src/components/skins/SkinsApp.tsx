@@ -17,8 +17,8 @@ import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { useRecent } from "@/hooks/use-recent";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { CategoryCard } from "@/components/ui/CategoryCard";
+import { TabScrollArea } from "@/components/ui/TabScrollArea";
 import { TagChip } from "@/components/ui/TagChip";
-import { Footer } from "../crafting/Footer";
 
 // ---------------------------------------------------------------------------
 // Rarity ordering + colors (mirrors skinsutils.lua SKIN_RARITY_COLORS)
@@ -338,145 +338,123 @@ export function SkinsApp() {
   );
 
   // -----------------------------------------------------------------------
-  // Home view — top-level categories: Characters + kinds
+  // Header + main content split by view. Outer wrapper + Footer/scroll area
+  // are shared (TabScrollArea), so Footer doesn't unmount/remount on view
+  // changes — that was the source of the "footer breaks on each page" bug.
   // -----------------------------------------------------------------------
+
+  let header: React.ReactNode;
+  let content: React.ReactNode;
+
   if (view === "home") {
-    return (
-      <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
-        <div className="border-b border-border bg-background/80 px-4 py-2.5">
-          <SkinBreadcrumb locale={locale} onHomeClick={handleGoHome} />
-        </div>
-
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-          <div className="flex flex-col min-h-full">
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-              <CategoryCard
-                imageSrc={assetPath("/images/category-icons/all.png")}
-                label={t(locale, "skins_filter_all")}
-                badgeCount={SKINS.length}
-                onClick={() => handleOpenList("all")}
-              />
-              <CategoryCard
-                imageSrc={assetPath("/images/game-items/pocketwatch_warp.png")}
-                label={t(locale, "recent")}
-                badgeCount={recentIds.length}
-                onClick={() => handleOpenList("recent")}
-              />
-              <CategoryCard
-                imageSrc={assetPath("/images/category-icons/character.png")}
-                label={t(locale, "skins_section_characters")}
-                badgeCount={CHARACTERS_TOTAL}
-                onClick={handleOpenCharacters}
-              />
-              {KIND_ORDER.map((k) =>
-                KIND_COUNT[k] ? (
-                  <CategoryCard
-                    key={k}
-                    imageSrc={assetPath(KIND_TILE_IMG[k] ?? "/images/category-icons/all.png")}
-                    label={kindLabel(k, locale)}
-                    badgeCount={KIND_COUNT[k]}
-                    onClick={() => handleOpenList(`kind:${k}`)}
-                  />
-                ) : null,
-              )}
-              {/* Body skins as a kind tile (separate so users can browse all character outfits in one place) */}
-              {KIND_COUNT["body"] && (
-                <CategoryCard
-                  imageSrc={assetPath("/images/category-icons/clothing.png")}
-                  label={t(locale, "skins_kind_body")}
-                  badgeCount={KIND_COUNT["body"]}
-                  onClick={() => handleOpenList("kind:body")}
-                />
-              )}
-            </div>
-            <Footer />
-          </div>
-        </div>
-
-        {detailPanel}
+    header = (
+      <div className="border-b border-border bg-background/80 px-4 py-2.5">
+        <SkinBreadcrumb locale={locale} onHomeClick={handleGoHome} />
       </div>
     );
-  }
-
-  // -----------------------------------------------------------------------
-  // Characters view — 18 character grid (after tapping "Characters" tile)
-  // -----------------------------------------------------------------------
-  if (view === "characters") {
-    return (
-      <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
-        <div className="border-b border-border bg-background/80 px-4 py-2.5">
-          <SkinBreadcrumb
-            locale={locale}
-            categoryLabel={t(locale, "skins_section_characters")}
-            onHomeClick={handleGoHome}
+    content = (
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+        <CategoryCard
+          imageSrc={assetPath("/images/category-icons/all.png")}
+          label={t(locale, "skins_filter_all")}
+          badgeCount={SKINS.length}
+          onClick={() => handleOpenList("all")}
+        />
+        <CategoryCard
+          imageSrc={assetPath("/images/game-items/pocketwatch_warp.png")}
+          label={t(locale, "recent")}
+          badgeCount={recentIds.length}
+          onClick={() => handleOpenList("recent")}
+        />
+        <CategoryCard
+          imageSrc={assetPath("/images/category-icons/character.png")}
+          label={t(locale, "skins_section_characters")}
+          badgeCount={CHARACTERS_TOTAL}
+          onClick={handleOpenCharacters}
+        />
+        {KIND_ORDER.map((k) =>
+          KIND_COUNT[k] ? (
+            <CategoryCard
+              key={k}
+              imageSrc={assetPath(KIND_TILE_IMG[k] ?? "/images/category-icons/all.png")}
+              label={kindLabel(k, locale)}
+              badgeCount={KIND_COUNT[k]}
+              onClick={() => handleOpenList(`kind:${k}`)}
+            />
+          ) : null,
+        )}
+        {KIND_COUNT["body"] && (
+          <CategoryCard
+            imageSrc={assetPath("/images/category-icons/clothing.png")}
+            label={t(locale, "skins_kind_body")}
+            badgeCount={KIND_COUNT["body"]}
+            onClick={() => handleOpenList("kind:body")}
           />
-        </div>
-
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-          <div className="flex flex-col min-h-full">
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-              {CHARACTER_ORDER.filter((c) => CHAR_COUNT[c]).map((c) => (
-                <CategoryCard
-                  key={c}
-                  imageSrc={assetPath(charPortrait(c))}
-                  label={characterLabel(c, locale)}
-                  badgeCount={CHAR_COUNT[c]}
-                  onClick={() => handleOpenList(`char:${c}`)}
-                />
-              ))}
-            </div>
-            <Footer />
-          </div>
-        </div>
-
-        {detailPanel}
+        )}
       </div>
     );
-  }
-
-  // -----------------------------------------------------------------------
-  // List view — skins in the selected category
-  // -----------------------------------------------------------------------
-  const id = view.id;
-  const isFromCharacters = id.startsWith("char:");
-  const handleBack = isFromCharacters ? handleOpenCharacters : handleGoHome;
-  const backLabel = isFromCharacters ? t(locale, "skins_section_characters") : undefined;
-
-  return (
-    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
+  } else if (view === "characters") {
+    header = (
+      <div className="border-b border-border bg-background/80 px-4 py-2.5">
+        <SkinBreadcrumb
+          locale={locale}
+          categoryLabel={t(locale, "skins_section_characters")}
+          onHomeClick={handleGoHome}
+        />
+      </div>
+    );
+    content = (
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+        {CHARACTER_ORDER.filter((c) => CHAR_COUNT[c]).map((c) => (
+          <CategoryCard
+            key={c}
+            imageSrc={assetPath(charPortrait(c))}
+            label={characterLabel(c, locale)}
+            badgeCount={CHAR_COUNT[c]}
+            onClick={() => handleOpenList(`char:${c}`)}
+          />
+        ))}
+      </div>
+    );
+  } else {
+    const id = view.id;
+    const isFromCharacters = id.startsWith("char:");
+    const parentLabel = isFromCharacters ? t(locale, "skins_section_characters") : undefined;
+    header = (
       <div className="border-b border-border bg-background/80 px-4 py-2.5 flex items-center justify-between gap-2">
         <SkinBreadcrumb
           locale={locale}
-          parentLabel={backLabel}
-          onParentClick={isFromCharacters ? handleBack : undefined}
+          parentLabel={parentLabel}
+          onParentClick={isFromCharacters ? handleOpenCharacters : undefined}
           categoryLabel={listCategoryLabel(id, locale)}
           onHomeClick={handleGoHome}
         />
         <SortMenu value={sort} onChange={setSort} locale={locale} />
       </div>
-
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-        <div className="flex flex-col min-h-full">
-          {listSkins.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground py-8">
-              {t(locale, "skins_no_results")}
-            </div>
-          ) : (
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-              {listSkins.map((skin) => (
-                <SkinCard
-                  key={skin.id}
-                  skin={skin}
-                  locale={locale}
-                  onClick={() => handleSelectSkin(skin)}
-                />
-              ))}
-            </div>
-          )}
-          <Footer />
+    );
+    content =
+      listSkins.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center text-sm text-muted-foreground py-8">
+          {t(locale, "skins_no_results")}
         </div>
-      </div>
+      ) : (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+          {listSkins.map((skin) => (
+            <SkinCard
+              key={skin.id}
+              skin={skin}
+              locale={locale}
+              onClick={() => handleSelectSkin(skin)}
+            />
+          ))}
+        </div>
+      );
+  }
 
+  return (
+    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
+      {header}
+      <TabScrollArea scrollContainer>{content}</TabScrollArea>
       {detailPanel}
     </div>
   );
