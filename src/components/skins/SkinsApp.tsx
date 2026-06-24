@@ -477,7 +477,7 @@ function SkinBreadcrumb({
   categoryLabel?: string;
   onHomeClick: () => void;
 }) {
-  const iconSrc = assetPath("/images/category-icons/characters/wigfrid.png");
+  const iconSrc = assetPath("/images/skins/axe_heart.png");
   const isHome = !catLabel;
 
   return (
