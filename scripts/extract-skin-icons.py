@@ -23,9 +23,30 @@ import zipfile
 from pathlib import Path
 
 try:
-    from PIL import Image
+    from PIL import Image, ImageChops
 except ImportError:
     sys.exit("Pillow is required: pip3 install Pillow")
+
+
+def _same_pixels(path: "Path", img: "Image.Image") -> bool:
+    """기존 파일이 새 이미지와 픽셀 단위로 동일한지 검사.
+
+    PIL의 PNG 인코딩(optimize)이 비결정적이라 같은 픽셀도 매번 다른
+    바이트로 저장된다. 그대로 덮어쓰면 git diff에 수백 개의 가짜 변경이
+    쌓이므로, 픽셀이 같으면 저장을 건너뛴다.
+    """
+    if not path.exists():
+        return False
+    try:
+        existing = Image.open(path)
+        existing.load()
+    except Exception:
+        return False
+    a = existing.convert("RGBA")
+    b = img.convert("RGBA")
+    if a.size != b.size:
+        return False
+    return ImageChops.difference(a, b).getbbox() is None
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = REPO_ROOT / "public" / "images" / "skins"
@@ -102,9 +123,16 @@ def extract_atlas(
     zf: zipfile.ZipFile,
     name: str,
     skin_ids: set[str],
-    chosen: dict[str, int],
+    chosen: "dict[str, tuple[int, Image.Image]]",
 ) -> int:
-    """Decode one atlas and emit a PNG per matching skin element. Returns count."""
+    """Decode one atlas and collect the best crop per matching skin element.
+
+    Crops are kept in memory (not written here): the same stem can appear in
+    multiple atlases, and a later atlas may carry a higher-priority source.
+    Writing immediately would make the in-run rewrite compare against the
+    file just written rather than the original, leaking re-encode noise.
+    Returns the number of (re)selected crops.
+    """
     tex_blob = zf.read(f"images/{name}.tex")
     xml_blob = zf.read(f"images/{name}.xml")
 
@@ -122,7 +150,7 @@ def extract_atlas(
         if resolved is None:
             continue
         out_stem, priority = resolved
-        if out_stem in chosen and chosen[out_stem] <= priority:
+        if out_stem in chosen and chosen[out_stem][0] <= priority:
             continue  # already have a same-or-better source for this skin id
 
         u1 = float(elem.get("u1"))
@@ -139,9 +167,8 @@ def extract_atlas(
             continue
 
         cropped = atlas.crop((left, top, right, bottom))
-        out_path = OUTPUT_DIR / f"{out_stem}.png"
-        cropped.save(out_path, "PNG", optimize=True)
-        chosen[out_stem] = priority
+        cropped.load()  # detach from the atlas before it goes out of scope
+        chosen[out_stem] = (priority, cropped)
         count += 1
     return count
 
@@ -155,14 +182,26 @@ def main() -> None:
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    chosen: dict[str, int] = {}
+    chosen: dict[str, tuple[int, Image.Image]] = {}
     total = 0
     with zipfile.ZipFile(IMAGES_ZIP) as zf:
         for name in ATLAS_NAMES:
             n = extract_atlas(zf, name, skin_ids, chosen)
             print(f"  {name}: {n} skin icons matched")
             total += n
-    print(f"Total: {len(chosen)} unique skin icons → {OUTPUT_DIR.relative_to(REPO_ROOT)}")
+
+    # Write each stem's final crop exactly once. Skip when pixels are unchanged
+    # so re-encode churn doesn't flood git with hundreds of identical-image diffs.
+    written = 0
+    for stem, (_priority, img) in chosen.items():
+        out_path = OUTPUT_DIR / f"{stem}.png"
+        if not _same_pixels(out_path, img):
+            img.save(out_path, "PNG", optimize=True)
+            written += 1
+    print(
+        f"Total: {len(chosen)} unique skin icons → {OUTPUT_DIR.relative_to(REPO_ROOT)} "
+        f"({written} written, {len(chosen) - written} unchanged)"
+    )
     missing = skin_ids - chosen.keys()
     print(f"({len(missing)} skin ids have no inventory icon — expected for character body skins, will be handled in phase 2)")
 

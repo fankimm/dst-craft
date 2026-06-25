@@ -2,6 +2,13 @@
 
 ## 게임 데이터
 
+### extract-skin-icons가 매 sync마다 PNG를 재인코딩해 957개 가짜 diff 생성 (2026-06-25, #53)
+- **문제**: `bash scripts/sync-game-data.sh` 실행 시 `public/images/skins/*.png` 957개가 modified로 잡힘. 전수 픽셀 비교(PIL `ImageChops.difference`) 결과 **957개 전부 픽셀 동일** — 실제 에셋 변화 0건. `extract-skin-icons.py`가 KTEX 아틀라스에서 아이콘을 매번 `cropped.save(..., optimize=True)`로 무조건 덮어쓰는데, PIL의 PNG optimize 인코딩이 비결정적이라 같은 픽셀도 매 실행마다 다른 바이트로 저장됨 → git이 전부 변경으로 인식
+- **영향**: 매 게임 데이터 sync마다 957개 노이즈 커밋이 쌓여 리포 비대 + 진짜 신규 아이콘이 노이즈에 묻힘
+- **1차 수정의 함정**: "기존 파일과 픽셀 같으면 save skip"을 저장 직전에 넣었더니 957→11로 줄었지만 11개(전부 abigail_flower_*)가 잔존. 원인은 **같은 stem이 한 sync 안에서 2번 저장**되는 경우(priority 충돌: 첫 매칭은 낮은 우선순위 소스, 두 번째 매칭이 더 나은 소스로 덮어씀) — 두 번째 save의 픽셀 비교 대상이 **원본이 아니라 방금 첫 번째가 덮어쓴 파일**이라 노이즈가 새어나옴
+- **올바른 해결**: 저장을 루프 안에서 하지 말고, stem당 최종 crop을 메모리(`chosen: dict[str, tuple[priority, Image]]`)에 모은 뒤 **모든 아틀라스 처리가 끝난 다음 stem당 정확히 1회만** 저장. 이때만 픽셀 비교 대상이 항상 "이번 sync에서 아직 안 건드린 원본"으로 고정됨 → `985 unique skin icons (0 written, 985 unchanged)`로 노이즈 0 달성
+- **교훈**: (1) 바이너리 자동 생성물은 "내용 동일 시 미저장" 가드가 없으면 비결정적 인코더 때문에 거대한 가짜 diff를 만든다. (2) 멱등성 가드를 넣을 땐 **같은 실행 내 다중 쓰기**가 비교 기준을 오염시키지 않는지 확인 — 비교 기준은 항상 "쓰기 전 원본"이어야 한다. (3) sync 후 이미지가 대량 modified면 커밋 전 픽셀 비교로 노이즈 여부부터 검증
+
 ### station 정보를 인게임 recipes.lua 검증 없이 작성
 - **문제**: 와그펑크 작업장(`TECH.WAGPUNK_WORKSTATION_TWO`) 레시피 8종이 모두 `station: "none"`으로 등록됨 (기질 추론기, 게슈탈트 포획기, W.A.R.B.O.T. 키트 2종, 청사진 2종, 정전기 억제기, 방전 방주). 인게임에서는 와그펑크 작업장(관념 조립기) 근처에서만 제작 가능하나 우리 앱은 "맨손 제작"으로 표시
 - **원인**: 레시피 데이터 작성 시 `recipes.lua`의 `Recipe2(...)` 세 번째 인자(TECH 레벨)를 확인하지 않음
