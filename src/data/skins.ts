@@ -1140,6 +1140,22 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "axe_rose",
+    "base_prefab": "axe",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "AXE",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Blooming Axe",
+    "name_ko": "꽃피는 도끼",
+    "icon": "/images/skins/axe_rose.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "axe_victorian",
     "base_prefab": "axe",
     "type": "item",
@@ -2118,6 +2134,20 @@ export const SKINS: SkinEntry[] = [
     "icon": "/images/skins/beehat_mourning.png"
   },
   {
+    "id": "beehat_ninja",
+    "base_prefab": "beehat",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "BEEHAT",
+      "CRAFTABLE"
+    ],
+    "release_group": 182,
+    "name_en": "Bee-Stealthy Cowl",
+    "name_ko": "은-밀 두건",
+    "icon": "/images/skins/beehat_ninja.png"
+  },
+  {
     "id": "beehat_sunhat",
     "base_prefab": "beehat",
     "type": "item",
@@ -3016,6 +3046,22 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "chair_stool_rose",
+    "base_prefab": "wood_stool",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "WOOD_STOOL",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Rosewood Stool",
+    "name_ko": "나무장미 스툴",
+    "icon": "/images/skins/chair_stool_rose.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "chair_stool_western",
     "base_prefab": "wood_stool",
     "type": "item",
@@ -3343,6 +3389,22 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "decor_centerpiece_rose",
+    "base_prefab": "decor_centerpiece",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "DECOR_CENTERPIECE",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Triple Bloom",
+    "name_ko": "세 송이 꽃",
+    "icon": "/images/skins/decor_centerpiece_rose.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "decor_centerpiece_western",
     "base_prefab": "decor_centerpiece",
     "type": "item",
@@ -3420,6 +3482,22 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Artisanal Vase",
     "name_ko": "장인의 화병",
     "icon": "/images/skins/decor_flowervase_handmade.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "decor_flowervase_rose",
+    "base_prefab": "decor_flowervase",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "DECOR_FLOWERVASE",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "A Singular Vase",
+    "name_ko": "한 송이 화병",
+    "icon": "/images/skins/decor_flowervase_rose.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -3503,6 +3581,22 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "decor_lamp_rose",
+    "base_prefab": "decor_lamp",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "DECOR_LAMP",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Kitbloom Lamp",
+    "name_ko": "꽃냥이 램프",
+    "icon": "/images/skins/decor_lamp_rose.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "decor_lamp_western",
     "base_prefab": "decor_lamp",
     "type": "item",
@@ -3580,6 +3674,22 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Rustic Record Spinner",
     "name_ko": "소박한 전축",
     "icon": "/images/skins/decor_phonograph_handmade.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "decor_phonograph_rose",
+    "base_prefab": "phonograph",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "PHONOGRAPH",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Gilded Rose Gramophone",
+    "name_ko": "금박 장미 축음기",
+    "icon": "/images/skins/decor_phonograph_rose.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -3663,6 +3773,22 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "decor_pictureframe_rose",
+    "base_prefab": "decor_pictureframe",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "DECOR_PICTUREFRAME",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Rose Tinted Frame",
+    "name_ko": "장밋빛 액자",
+    "icon": "/images/skins/decor_pictureframe_rose.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "decor_pictureframe_western",
     "base_prefab": "decor_pictureframe",
     "type": "item",
@@ -3740,6 +3866,22 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Merm with a Pearl Earring",
     "name_ko": "진주 귀걸이를 한 어인",
     "icon": "/images/skins/decor_portraitframe_handmade.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "decor_portraitframe_rose",
+    "base_prefab": "decor_portraitframe",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "DECOR_PORTRAITFRAME",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "The Wain",
+    "name_ko": "꽃수레",
+    "icon": "/images/skins/decor_portraitframe_rose.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -4199,6 +4341,20 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "eets_e_basic",
+    "base_prefab": "critter_eets",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "EETS",
+      "CRAFTABLE"
+    ],
+    "release_group": 182,
+    "name_en": "Eets",
+    "name_ko": "이츠",
+    "icon": "/images/skins/eets_e_basic.png"
+  },
+  {
     "id": "endtable_carpet",
     "base_prefab": "endtable",
     "type": "item",
@@ -4576,6 +4732,18 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "fence_rose_item",
+    "base_prefab": "fence_item",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "Rosy Fence",
+    "name_ko": "장밋빛 울타리",
+    "icon": "/images/skins/fence_rose_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "fence_shell_item",
     "base_prefab": "fence_item",
     "type": "item",
@@ -4693,6 +4861,18 @@ export const SKINS: SkinEntry[] = [
     "name_en": "White Garden Gate",
     "name_ko": "하얀 정원 문",
     "icon": "/images/skins/fencegate_picketwhite_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "fencegate_rose_item",
+    "base_prefab": "fence_gate_item",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "Rosy Gate",
+    "name_ko": "장밋빛 대문",
+    "icon": "/images/skins/fencegate_rose_item.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -5896,7 +6076,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 181,
     "name_en": "Pengull Ice Cube",
-    "name_ko": "Pengull Ice Cube",
+    "name_ko": "펭갈매기 얼음 모자",
     "icon": "/images/skins/hat_ice_pengulls.png"
   },
   {
@@ -8224,6 +8404,21 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "panflute_insect",
+    "base_prefab": "panflute",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "PANFLUTE",
+      "CRAFTABLE",
+      "INSECT"
+    ],
+    "release_group": 182,
+    "name_en": "Butterflute",
+    "name_ko": "나비 플룻",
+    "icon": "/images/skins/panflute_insect.png"
+  },
+  {
     "id": "panflute_swamp",
     "base_prefab": "panflute",
     "type": "item",
@@ -8550,6 +8745,22 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Pantomimed Pitchfork",
     "name_ko": "팬터마임 쇠스랑",
     "icon": "/images/skins/pitchfork_invisible.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "pitchfork_rose",
+    "base_prefab": "pitchfork",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "PITCHFORK",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Blooming Pitchfork",
+    "name_ko": "꽃피는 쇠스랑",
+    "icon": "/images/skins/pitchfork_rose.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -9895,6 +10106,22 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "round_table_rose",
+    "base_prefab": "wood_table_round",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "WOOD_TABLE_ROUND",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Rosewood Round Table",
+    "name_ko": "나무장미 둥근 탁자",
+    "icon": "/images/skins/round_table_rose.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "round_table_western",
     "base_prefab": "wood_table_round",
     "type": "item",
@@ -10277,6 +10504,22 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Nordic Shovel",
     "name_ko": "북방민의 삽",
     "icon": "/images/skins/shovel_northern.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "shovel_rose",
+    "base_prefab": "shovel",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "SHOVEL",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Blooming Shovel",
+    "name_ko": "꽃피는 삽",
+    "icon": "/images/skins/shovel_rose.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -10920,6 +11163,22 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "stone_chair_rose",
+    "base_prefab": "stone_chair",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "STONE_CHAIR",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Stone Rose Chair",
+    "name_ko": "돌장미 의자",
+    "icon": "/images/skins/stone_chair_rose.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "stone_chair_shell",
     "base_prefab": "stone_chair",
     "type": "item",
@@ -11112,6 +11371,22 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "stonetable_square_rose",
+    "base_prefab": "stone_table_square",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "STONE_TABLE_SQUARE",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Stone Rose Table",
+    "name_ko": "돌장미 탁자",
+    "icon": "/images/skins/stonetable_square_rose.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "stonetable_square_shell",
     "base_prefab": "stone_table_square",
     "type": "item",
@@ -11250,6 +11525,20 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Bearger's Paw Succulent",
     "name_ko": "훤웅동자",
     "icon": "/images/skins/succulent_potted_bearclaw.png"
+  },
+  {
+    "id": "succulent_potted_kleimug",
+    "base_prefab": "succulent_potted",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "SUCCULENT_POTTED",
+      "CRAFTABLE"
+    ],
+    "release_group": 182,
+    "name_en": "Clay-potted Succulent",
+    "name_ko": "클레이-식 다육식물 화분",
+    "icon": "/images/skins/succulent_potted_kleimug.png"
   },
   {
     "id": "supertacklecontainer_shell",
@@ -12601,7 +12890,7 @@ export const SKINS: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 158,
     "name_en": "Nouveau Stone Wall",
-    "name_ko": "눕보 돌 벽",
+    "name_ko": "누보 돌 벽",
     "icon": "/images/skins/wall_stone_anitem.png",
     "rarity_modifier": "Woven"
   },
@@ -12615,6 +12904,18 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Gothic Pillar",
     "name_ko": "고딕 기둥",
     "icon": "/images/skins/wall_stone_gothicitem.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "wall_stone_roseitem",
+    "base_prefab": "wall_stone_item",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "Rose Petaled Pillar",
+    "name_ko": "장미덤불 기둥",
+    "icon": "/images/skins/wall_stone_roseitem.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -12711,6 +13012,25 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Ceilidh Tammie",
     "name_ko": "연회용 태미",
     "icon": "/images/skins/walrushat_party.png"
+  },
+  {
+    "id": "walter_20s",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "TWENTIES",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 182,
+    "name_en": "The Roarer",
+    "name_ko": "광란의 시대",
+    "body_image": "/images/skins-body/Walter_Roarer_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Eyes on the horizon, Woby!\"",
+    "quote_ko": "\"지평선을 향해 가자, 워비!\"",
+    "character": "walter"
   },
   {
     "id": "walter_ancient",
@@ -12973,6 +13293,23 @@ export const SKINS: SkinEntry[] = [
     "quote_en": "\"Come on Woby, that Winter's Feast tree won't decorate itself!\"",
     "quote_ko": "\"어서 가자, 워비, 겨울 축제 트리는 알아서 장식되는 게 아니라고!\"",
     "set_id": "emote_carol",
+    "character": "walter"
+  },
+  {
+    "id": "walterhat_20s",
+    "base_prefab": "walterhat",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "TWENTIES",
+      "WALTERHAT",
+      "CRAFTABLE"
+    ],
+    "release_group": 182,
+    "name_en": "Aviator Cap",
+    "name_ko": "비행사 모자",
+    "icon": "/images/skins/walterhat_20s.png",
+    "rarity_modifier": "Woven",
     "character": "walter"
   },
   {
@@ -15004,6 +15341,25 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven",
     "quote_en": "\"Hmph.\"",
     "quote_ko": "\"흠.\"",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_western",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "WESTERN",
+      "BASE",
+      "WAXWELL"
+    ],
+    "release_group": 182,
+    "name_en": "The Stampeder",
+    "name_ko": "무법자",
+    "body_image": "/images/skins-body/Maxwell_Stampeder_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"You live fast out here... or not at all.\"",
+    "quote_ko": "\"이런 인생, 짧은 법이지... 아닐 수도 있지만.\"",
     "character": "maxwell"
   },
   {
@@ -17802,6 +18158,25 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "winona_20s",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "TWENTIES",
+      "BASE",
+      "WINONA"
+    ],
+    "release_group": 182,
+    "name_en": "The Roarer",
+    "name_ko": "광란의 시대",
+    "body_image": "/images/skins-body/Winona_Roarer_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"There's a time to work, and a time to Charleston!\"",
+    "quote_ko": "\"일할 때 있고, 춤출 때 있는 거지!\"",
+    "character": "winona"
+  },
+  {
     "id": "winona_ancient",
     "base_prefab": "winona",
     "type": "base",
@@ -19046,6 +19421,25 @@ export const SKINS: SkinEntry[] = [
     "character": "wolfgang"
   },
   {
+    "id": "wolfgang_western",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "WESTERN",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 182,
+    "name_en": "The Stampeder",
+    "name_ko": "무법자",
+    "body_image": "/images/skins-body/Wolfgang_Stampeder_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Wolfgang is mighty man of the land!\"",
+    "quote_ko": "\"볼프강은 이 땅의 강한 사나이다!\"",
+    "character": "wolfgang"
+  },
+  {
     "id": "wolfgang_wolfman",
     "base_prefab": "wolfgang",
     "type": "base",
@@ -19168,6 +19562,22 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "wood_chair_rose",
+    "base_prefab": "wood_chair",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "WOOD_CHAIR",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Briarwood Chair",
+    "name_ko": "들장미나무 의자",
+    "icon": "/images/skins/wood_chair_rose.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "wood_chair_western",
     "base_prefab": "wood_chair",
     "type": "item",
@@ -19245,6 +19655,22 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Cozy Square Table",
     "name_ko": "아늑한 사각 탁자",
     "icon": "/images/skins/wood_table_handmade.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "wood_table_rose",
+    "base_prefab": "wood_table_square",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "WOOD_TABLE_SQUARE",
+      "CRAFTABLE",
+      "ROSE"
+    ],
+    "release_group": 182,
+    "name_en": "Briarwood Table",
+    "name_ko": "들장미나무 탁자",
+    "icon": "/images/skins/wood_table_rose.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -20600,6 +21026,25 @@ export const SKINS: SkinEntry[] = [
     "character": "wurt"
   },
   {
+    "id": "wurt_western",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "WESTERN",
+      "BASE",
+      "WURT"
+    ],
+    "release_group": 182,
+    "name_en": "The Stampeder",
+    "name_ko": "무법자",
+    "body_image": "/images/skins-body/Wurt_Stampeder_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Yeee-flurp!\"",
+    "quote_ko": "\"이랴-오옭!\"",
+    "character": "wurt"
+  },
+  {
     "id": "wurt_yule",
     "base_prefab": "wurt",
     "type": "base",
@@ -20849,7 +21294,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 181,
     "name_en": "Ominous Exploiterator",
-    "name_ko": "Ominous Exploiterator",
+    "name_ko": "불길한 약점 탐색기",
     "icon": "/images/skins/wx78_shadowdrone_debuffer_gothic.png",
     "rarity_modifier": "Woven",
     "character": "wx78"
@@ -20866,7 +21311,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 181,
     "name_en": "Elegant Exploiterator",
-    "name_ko": "Elegant Exploiterator",
+    "name_ko": "우아한 약점 탐색기",
     "icon": "/images/skins/wx78_shadowdrone_debuffer_jewelbox.png",
     "rarity_modifier": "Woven",
     "character": "wx78"
@@ -20883,7 +21328,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 181,
     "name_en": "Gloomy Auto-Grabber",
-    "name_ko": "Gloomy Auto-Grabber",
+    "name_ko": "우울한 자동 회수기",
     "icon": "/images/skins/wx78_shadowdrone_harvester_gothic.png",
     "rarity_modifier": "Woven",
     "character": "wx78"
@@ -20900,7 +21345,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 181,
     "name_en": "Opulent Auto-Grabber",
-    "name_ko": "Opulent Auto-Grabber",
+    "name_ko": "부유한 자동 회수기",
     "icon": "/images/skins/wx78_shadowdrone_harvester_jewelbox.png",
     "rarity_modifier": "Woven",
     "character": "wx78"

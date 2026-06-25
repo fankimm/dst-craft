@@ -44,6 +44,7 @@ export const rawFoods: RawFood[] = [
   { id: "honey", name: "Honey", nameKo: "꿀", foodType: "goodies", hunger: 9.375, health: 3, sanity: 0.0, perishDays: 40.0 },
   { id: "kelp", name: "Kelp", nameKo: "다시마 잎", foodType: "veggie", hunger: 9.375, health: -1, sanity: -10, perishDays: 10.0 },
   { id: "meat", name: "Meat", nameKo: "고기", foodType: "meat", hunger: 25.0, health: 1, sanity: -10, perishDays: 6.0 },
+  { id: "mitegland", name: "Mitegland", nameKo: "열샘", foodType: "meat", hunger: 18.75, health: 8, sanity: -10, perishDays: 6.0 },
   { id: "monstermeat", name: "Monstermeat", nameKo: "괴물고기", foodType: "meat", secondaryFoodType: "monster", hunger: 18.75, health: -20, sanity: -15, perishDays: 6.0 },
   { id: "onion", name: "Onion", nameKo: "양파", foodType: "veggie", hunger: 9.375, health: 0.0, sanity: -10, perishDays: 15.0, image: "quagmire_onion.png" },
   { id: "pepper", name: "Pepper", nameKo: "고추", foodType: "veggie", hunger: 9.375, health: -20, sanity: -15, perishDays: 15.0 },
