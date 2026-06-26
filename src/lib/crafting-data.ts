@@ -95,11 +95,13 @@ function itemNameMatches(item: CraftingItem, lowerQuery: string): boolean {
   return false;
 }
 
-// 정식 이름에 없는 통칭 검색 별칭 (예: Vault 콘텐츠를 "볼트"/"vault"로)
+// 정식 이름에 없는 통칭 검색 별칭. Sanctum(성소) 콘텐츠는 코드명이 vault_*라
+// "성소"/"sanctum"(게임 한글/영문명)과 "볼트"/"vault"(코드 통칭) 모두로 찾게 한다.
+const SANCTUM_ALIASES = ["성소", "sanctum", "vault", "볼트"];
 const SEARCH_ALIASES: Record<string, string[]> = {
-  vault_orb_refined: ["볼트", "vault"],
-  vault_pillar_guard_constr_plans: ["볼트", "vault"],
-  chesspiece_vault_pillar_guard_builder: ["볼트", "vault"],
+  vault_orb_refined: SANCTUM_ALIASES,
+  vault_pillar_guard_constr_plans: SANCTUM_ALIASES,
+  chesspiece_vault_pillar_guard_builder: SANCTUM_ALIASES,
 };
 
 function itemMatchesQuery(item: CraftingItem, lowerQuery: string, matNameMap: Map<string, string[]>): boolean {
