@@ -2,6 +2,8 @@ import type { LocaleData } from "./types";
 
 export const ko: LocaleData = {
   items: {
+    "wx78_shadowdrone_harvester": { name: "자동 회수기", desc: "일단 집고 보세요." },
+    "wx78_shadowdrone_debuffer": { name: "약점 탐색기", desc: "적을 알고... 부숴버리세요!" },
     "fumaroleaxe": { name: "열성 도끼", desc: "포근하게 벌목하세요." },
     "fumarolepickaxe": { name: "발열 곡괭이", desc: "광산에서 가장 핫한 물건." },
     "fumarolehammer": { name: "고열 망치", desc: "뜨겁게 부숴버리세요." },
