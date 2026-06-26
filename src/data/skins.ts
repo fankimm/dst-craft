@@ -1596,6 +1596,22 @@ export const SKINS: SkinEntry[] = [
     "icon": "/images/skins/backpack_mandrake_resurrected.png"
   },
   {
+    "id": "backpack_minigolf",
+    "base_prefab": "backpack",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "CAWNIVAL",
+      "BACKPACK",
+      "CRAFTABLE"
+    ],
+    "release_group": 183,
+    "name_en": "Cawnival Putter's Pack",
+    "name_ko": "Cawnival Putter's Pack",
+    "icon": "/images/skins/backpack_minigolf.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "backpack_mushy",
     "base_prefab": "backpack",
     "type": "item",
@@ -7577,6 +7593,30 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "minisign_cawnival_drawn",
+    "base_prefab": "minisign_drawn",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 183,
+    "name_en": "Cawnival Plaque",
+    "name_ko": "Cawnival Plaque",
+    "icon": "/images/skins/minisign_cawnival_drawn.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "minisign_cawnival_item",
+    "base_prefab": "minisign_item",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 183,
+    "name_en": "Cawnival Plaque",
+    "name_ko": "Cawnival Plaque",
+    "icon": "/images/skins/minisign_cawnival_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "minisign_fantasy_drawn",
     "base_prefab": "minisign_drawn",
     "type": "item",
@@ -7990,6 +8030,22 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Mosaic Mushlamp",
     "name_ko": "모자이크 버섯등",
     "icon": "/images/skins/mushroom_light_an.png"
+  },
+  {
+    "id": "mushroom_light_cawnival",
+    "base_prefab": "mushroom_light",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "MUSHROOM_LIGHT",
+      "CAWNIVAL",
+      "CRAFTABLE"
+    ],
+    "release_group": 183,
+    "name_en": "Cawnival Egg Lamp",
+    "name_ko": "Cawnival Egg Lamp",
+    "icon": "/images/skins/mushroom_light_cawnival.png",
+    "rarity_modifier": "Woven"
   },
   {
     "id": "mushroom_light_festive",
@@ -9678,6 +9734,42 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Merchantator",
     "name_ko": "상인모자 장치",
     "icon": "/images/skins/researchlab4_merchant.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "researchlab4_minigolf_green",
+    "base_prefab": "researchlab4",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 183,
+    "name_en": "Egg Caddycapatator",
+    "name_ko": "Egg Caddycapatator",
+    "icon": "/images/skins/researchlab4_minigolf_green.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "researchlab4_minigolf_purple",
+    "base_prefab": "researchlab4",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 183,
+    "name_en": "Bow Caddycapatator",
+    "name_ko": "Bow Caddycapatator",
+    "icon": "/images/skins/researchlab4_minigolf_purple.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "researchlab4_minigolf_red",
+    "base_prefab": "researchlab4",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 183,
+    "name_en": "Flag Caddycapatator",
+    "name_ko": "Flag Caddycapatator",
+    "icon": "/images/skins/researchlab4_minigolf_red.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -11930,6 +12022,54 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "tophat_minigolf_green",
+    "base_prefab": "tophat",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "CAWNIVAL",
+      "TOPHAT",
+      "CRAFTABLE"
+    ],
+    "release_group": 183,
+    "name_en": "Egg Caddy Cap",
+    "name_ko": "Egg Caddy Cap",
+    "icon": "/images/skins/tophat_minigolf_green.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "tophat_minigolf_purple",
+    "base_prefab": "tophat",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "CAWNIVAL",
+      "TOPHAT",
+      "CRAFTABLE"
+    ],
+    "release_group": 183,
+    "name_en": "Bow Caddy Cap",
+    "name_ko": "Bow Caddy Cap",
+    "icon": "/images/skins/tophat_minigolf_purple.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "tophat_minigolf_red",
+    "base_prefab": "tophat",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "CAWNIVAL",
+      "TOPHAT",
+      "CRAFTABLE"
+    ],
+    "release_group": 183,
+    "name_en": "Flag Caddy Cap",
+    "name_ko": "Flag Caddy Cap",
+    "icon": "/images/skins/tophat_minigolf_red.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "tophat_spiked",
     "base_prefab": "tophat",
     "type": "item",
@@ -12035,6 +12175,22 @@ export const SKINS: SkinEntry[] = [
     "name_en": "Carrat Torch",
     "name_ko": "당근이쥐 횃불",
     "icon": "/images/skins/torch_carrat_alt.png"
+  },
+  {
+    "id": "torch_cawnival",
+    "base_prefab": "torch",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "CAWNIVAL",
+      "TORCH",
+      "CRAFTABLE"
+    ],
+    "release_group": 183,
+    "name_en": "Cawnival Torch",
+    "name_ko": "Cawnival Torch",
+    "icon": "/images/skins/torch_cawnival.png",
+    "rarity_modifier": "Woven"
   },
   {
     "id": "torch_nautical",
@@ -15360,6 +15516,7 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven",
     "quote_en": "\"You live fast out here... or not at all.\"",
     "quote_ko": "\"이런 인생, 짧은 법이지... 아닐 수도 있지만.\"",
+    "set_id": "emote_tiphat",
     "character": "maxwell"
   },
   {
@@ -19437,6 +19594,7 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven",
     "quote_en": "\"Wolfgang is mighty man of the land!\"",
     "quote_ko": "\"볼프강은 이 땅의 강한 사나이다!\"",
+    "set_id": "emote_tiphat",
     "character": "wolfgang"
   },
   {
@@ -21042,6 +21200,7 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven",
     "quote_en": "\"Yeee-flurp!\"",
     "quote_ko": "\"이랴-오옭!\"",
+    "set_id": "emote_tiphat",
     "character": "wurt"
   },
   {
