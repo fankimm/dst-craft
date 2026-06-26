@@ -2,6 +2,16 @@ import type { LocaleData } from "./types";
 
 export const ko: LocaleData = {
   items: {
+    "fumaroleaxe": { name: "열성 도끼", desc: "포근하게 벌목하세요." },
+    "fumarolepickaxe": { name: "발열 곡괭이", desc: "광산에서 가장 핫한 물건." },
+    "fumarolehammer": { name: "고열 망치", desc: "뜨겁게 부숴버리세요." },
+    "fumaroleshovel": { name: "작열 삽", desc: "뻘겋게 달군 삽입니다. 알겠삽니까?" },
+    "fumarole_farm_hoe": { name: "가열 괭이", desc: "농사 중에도 포근하게." },
+    "trap_fumarole": { name: "석탄", desc: "적들을 숯더미 위에서 구르게 하세요." },
+    "healingsalve_fumarole": { name: "방열 연고", desc: "내 몸에 바르는 방열수단." },
+    "vault_orb_refined": { name: "이동의 보주 조각", desc: "쪼개면 기분이 좋습니다." },
+    "vault_pillar_guard_constr_plans": { name: "수호탑 키트", desc: "큰 게 옵니다!" },
+    "chesspiece_vault_pillar_guard_builder": { name: "고대의 수호탑 조각상" },
     "lighter": { name: "윌로우의 라이터", desc: "밤에도 비에도 빛을 냅니다." },
     "bernie_inactive": { name: "버니", desc: "미쳐가는 세상 속 반가운 얼굴." },
     "portablecookpot_item": { name: "휴대용 요리솥", desc: "떠돌이 미식가들을 위해." },
@@ -912,6 +922,11 @@ export const ko: LocaleData = {
   },
 
   materials: {
+    "mitegland": { name: "열샘" },
+    "vault_orb": { name: "이동의 보주" },
+    "vault_pillar_guard_piece_1": { name: "수호탑 핵" },
+    "vault_pillar_guard_piece_2": { name: "방전 소켓" },
+    "vault_pillar_guard_piece_3": { name: "기이한 조음 기관" },
     "acorn": { name: "버치넛" },
     "alterguardianhatshard": { name: "계몽의 조각" },
     "amulet": { name: "생명의 부적" },
@@ -1217,6 +1232,7 @@ export const ko: LocaleData = {
     "lunar_forge": { name: "대황간" },
     "shadow_forge": { name: "그림자 공예" },
     "critter_lab": { name: "동물 친구" },
+    "vault_refiner": { name: "성소 대장간" },
     "character": { name: "캐릭터 고유" },
   },
   foods: {

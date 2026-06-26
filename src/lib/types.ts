@@ -17,6 +17,7 @@ export type CraftingStation =
   | "carpentry_station"
   | "turfcraftingstation"
   | "wagpunk_workstation"
+  | "vault_refiner"
   | "critter_lab"
   | "character";
 

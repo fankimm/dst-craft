@@ -2,6 +2,21 @@
 
 ## 게임 데이터
 
+### 게임 데이터 sync 후 "새 아이템 반영 완료"로 성급히 보고 — 제작 탭은 수작업 카탈로그 (2026-06-26, #53)
+- **문제**: `sync-game-data.sh` 실행 후 scrapbook-stats.ts에 신규 아이템(fumaroleaxe 등)이 들어온 것만 보고 "새 아이템 반영 완료"라 보고. 실제로는 제작 탭에서 `fumaroleaxe` 검색 시 "아이템이 없습니다" — sync는 반영의 절반만 한 것
+- **근본 원인**: "게임 데이터"는 단일 소스가 아니라 **두 갈래**다.
+  1. **자동(sync 스크립트)**: `scrapbook-stats.ts`(아이템 상세 스펙), `raw-foods.ts`, `skills`, `skins.ts` — converter가 game 파일에서 자동 생성
+  2. **수작업**: `src/data/items.ts`(제작 탭 검색 소스 = 아이템 카탈로그, 12500줄), `materials.ts`(재료), `src/data/locales/*.ts`(다국어 이름/설명), `public/images/game-items/*.png`(아이콘) — **전부 사람이 손으로 관리**. sync 파이프라인이 건드리지 않음
+- **함정**: scrapbook-stats(상세 스펙)와 items.ts(제작 카탈로그)가 **별개 데이터**라는 걸 놓침. scrapbook에 있어도 items.ts에 없으면 제작 탭/검색에 안 뜸. 데브 페이지용 `game-items-db.ts`(item-list.md 기반)도 또 다른 별개 수작업 데이터
+- **신규 제작 아이템 추가 시 연쇄 작업** (1개 추가에 6곳+):
+  1. `src/data/items.ts` — CraftingItem 객체 (id/name(영)/desc(영)/image/category/station/materials/sortOrder)
+  2. `src/data/materials.ts` — 신규 재료 (없으면 추가)
+  3. `src/data/locales/ko.ts` — items 블록 + materials 블록 한국어 (ko.po의 STRINGS.NAMES/RECIPE_DESC)
+  4. `public/images/game-items/<id>.png` — 게임 `images.zip`의 inventoryimages 아틀라스에서 KTEX 추출 (extract-skin-icons.py의 decode_ktex 재사용)
+  5. station이 `CraftingStation` enum에 없으면(예: vault 정제소): `src/lib/types.ts` + `i18n.ts`(ko/en station_X) + `crafting-data.ts`의 `stationImages` Record + `locales/ko.ts` stations 블록까지 — Record<CraftingStation,_> 라 하나라도 빠지면 tsc 에러
+- **신규 레시피 식별법**: 스냅샷 git diff — `git -C ~/dst-game-snapshot diff HEAD~1 -- scripts/recipes.lua` 에서 추가된 `Recipe2("<id>"`를 뽑고, items.ts의 기존 id와 차집합. 단 carnival/이벤트성 kit은 보통 제외 판단
+- **교훈**: (1) "새 아이템 반영"은 sync 한 방이 아니다 — 제작 탭 카탈로그(items.ts)는 수작업이라 별도. (2) 반영 작업은 **반드시 실제 제작 탭에서 검색되는지** 확인하고 보고. scrapbook 추가만으로 "완료" 단정 금지. (3) sync 후 새 빌드 신규 레시피는 recipes.lua diff로 교차 확인
+
 ### extract-skin-icons가 매 sync마다 PNG를 재인코딩해 957개 가짜 diff 생성 (2026-06-25, #53)
 - **문제**: `bash scripts/sync-game-data.sh` 실행 시 `public/images/skins/*.png` 957개가 modified로 잡힘. 전수 픽셀 비교(PIL `ImageChops.difference`) 결과 **957개 전부 픽셀 동일** — 실제 에셋 변화 0건. `extract-skin-icons.py`가 KTEX 아틀라스에서 아이콘을 매번 `cropped.save(..., optimize=True)`로 무조건 덮어쓰는데, PIL의 PNG optimize 인코딩이 비결정적이라 같은 픽셀도 매 실행마다 다른 바이트로 저장됨 → git이 전부 변경으로 인식
 - **영향**: 매 게임 데이터 sync마다 957개 노이즈 커밋이 쌓여 리포 비대 + 진짜 신규 아이콘이 노이즈에 묻힘
