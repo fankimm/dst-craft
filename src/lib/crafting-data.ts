@@ -47,7 +47,7 @@ export const stationImages: Record<CraftingStation, string | null> = {
   carpentry_station: "game-items/carpentry_station.png",
   turfcraftingstation: "game-items/turfcraftingstation.png",
   wagpunk_workstation: null,
-  vault_refiner: null,
+  vault_refiner: "game-items/Sanctum_Smithy.png",
   critter_lab: "category-icons/critter_lab.png",
   character: null,
 };
@@ -95,7 +95,18 @@ function itemNameMatches(item: CraftingItem, lowerQuery: string): boolean {
   return false;
 }
 
+// 정식 이름에 없는 통칭 검색 별칭 (예: Vault 콘텐츠를 "볼트"/"vault"로)
+const SEARCH_ALIASES: Record<string, string[]> = {
+  vault_orb_refined: ["볼트", "vault"],
+  vault_pillar_guard_constr_plans: ["볼트", "vault"],
+  chesspiece_vault_pillar_guard_builder: ["볼트", "vault"],
+};
+
 function itemMatchesQuery(item: CraftingItem, lowerQuery: string, matNameMap: Map<string, string[]>): boolean {
+  // Check item id (코드로 검색 — 개발/디버그 편의)
+  if (item.id.toLowerCase().includes(lowerQuery)) return true;
+  // Check search aliases (정식명에 없는 통칭)
+  if ((SEARCH_ALIASES[item.id] ?? []).some((a) => a.includes(lowerQuery))) return true;
   // Check item name (English + all locales)
   if (itemNameMatches(item, lowerQuery)) return true;
   // Check description (English only — locale descriptions are for display, not search)
