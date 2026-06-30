@@ -15,6 +15,33 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.28.0",
+    date: "2026-06-30",
+    dev: [
+      "feat: 게임 빌드 23206828 → 23922378 동기화 (#53). From Beyond — Cursed Confrontation Part 1 + Midsummer Cawnival 반영. scrapbook-stats / raw-foods / skins converter 일괄 재실행, game-version.ts buildid 갱신.",
+      "fix(scripts): extract-skin-icons.py 재인코딩 노이즈 제거. PNG optimize 인코딩이 비결정적이라 매 sync마다 957개 픽셀-동일 가짜 diff가 생기던 문제를, stem당 최종 crop만 메모리에 모아 픽셀 동일 시 미저장하도록 수정 (985 icons, 0 written). 같은 stem 다중 저장 시 비교 기준이 원본이 아니게 되는 함정도 회피.",
+      "feat(crafting): 제작 카탈로그(items.ts)에 신규 19종 추가 — Fumarole 열 도구 7(열성 도끼/발열 곡괭이/고열 망치/작열 삽/가열 괭이/석탄/방열 연고), 성소(Vault) 3(이동의 보주 조각/수호탑 키트/고대의 수호탑 조각상), WX-78 그림자 드론 2(자동 회수기/약점 탐색기), 카니발 7(빨강 미스터리 박스/미니 놀이기구 2/미니골프 키트 4).",
+      "feat(data): 신규 재료 5종(열샘·이동의 보주·수호탑 조각 3) + game-items 아이콘 24개를 게임 images.zip 인벤토리 아틀라스에서 KTEX 추출. ko.po 기반 한국어 번역(카니발은 게임 미번역 → 영문 fallback).",
+      "feat(crafting): vault_refiner(성소 대장간) CraftingStation 신규 추가 (types/i18n/stationImages/locales). station 아이콘은 wiki.gg에서.",
+      "feat(search): itemMatchesQuery에 item.id 부분일치 추가(코드 검색) + Vault 콘텐츠 별칭(성소/sanctum/볼트/vault).",
+      "제작 카탈로그·WX-78 회로 데이터가 sync 밖 수작업이란 점 docs/mistakes.md 기록. WX-78 회로/현황·스킬트리는 verify 결과 최신 빌드와 일치 확인(업데이트 불필요).",
+    ],
+    changes: {
+      ko: [
+        "**From Beyond 신규 제작 아이템 추가** — 성소(Sanctum) 콘텐츠(이동의 보주 조각·수호탑 키트·고대의 수호탑 조각상), Fumarole 열 도구(열성 도끼·발열 곡괭이·고열 망치·작열 삽·가열 괭이 등), WX-78 그림자 드론(자동 회수기·약점 탐색기)을 제작 탭에서 볼 수 있습니다.",
+        "여름 축제(Midsummer Cawnival) 제작품 추가 — 빨강 미스터리 박스, 미니 놀이기구, 미니골프 키트.",
+        "검색 개선 — 아이템 코드(예: fumaroleaxe)로도 검색되고, \"성소\"·\"볼트\"로 성소(Vault) 아이템을 찾을 수 있습니다.",
+        "최신 게임 빌드(23922378) 데이터 동기화 — 아이템 스펙·스킨 갱신.",
+      ],
+      en: [
+        "**New craftables from the From Beyond update** — Sanctum content (Portation Orb Fragment, Guard Tower Kit, Ancient Guard Tower Figure), Fumarole heat tools (Ardent Axe, Pyretic Pickaxe, Hotheaded Hammer, Searing Shovel, Heated Garden Hoe, and more), and WX-78 shadow drones (Auto-Grabber, Exploiterator) now appear in the Crafting tab.",
+        "Added Midsummer Cawnival craftables — Red Mystery Box, mini rides, and mini-golf kits.",
+        "Search improvements — find items by their code (e.g. fumaroleaxe), and look up Sanctum/Vault items by typing \"vault\".",
+        "Synced to the latest game build (23922378) — item stats and skins updated.",
+      ],
+    },
+  },
+  {
     version: "0.27.0",
     date: "2026-06-23",
     dev: [
