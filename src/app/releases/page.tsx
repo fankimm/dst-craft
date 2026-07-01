@@ -15,6 +15,19 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.29.1",
+    date: "2026-07-01",
+    dev: [
+      "feat(ads): Ezoic 심사용 JS 통합 (#55). `src/app/layout.tsx` `<head>` 최상단에 gatekeeper CMP 2종(privacy, data-cfasync=false) + ezojs sa.min.js(async) + ezstandalone 초기화 + ezoicanalytics 스크립트. Ezoic이 사이트를 인식·심사하도록 연동.",
+      "nginx common conf에 `location = /ads.txt` → 301 `srv.adstxtmanager.com/19390/dstcraft.com` (managed ads.txt). nginx 수동 reload 필요.",
+      "광고 placement(Step 3) 미포함 → 광고 렌더 안 됨. Klei 저작권 문의(#128018) OK + Ezoic 승인 후 placement 추가로 광고 ON 예정. 현재는 심사 파이프라인만 작동(방문자 노출 변화 없음).",
+    ],
+    changes: {
+      ko: [],
+      en: [],
+    },
+  },
+  {
     version: "0.29.0",
     date: "2026-07-01",
     dev: [
