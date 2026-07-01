@@ -291,6 +291,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Ezoic — privacy/consent (CMP) scripts. Must load before the header script.
+            data-cfasync="false" keeps Cloudflare from reordering them. */}
+        <script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js" />
+        <script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js" />
+        {/* Ezoic — ad system header script. No ad placements are defined yet, so no
+            ads render; this only connects the site for Ezoic's review. Enable ads by
+            adding placement code after approval (see #55). */}
+        <script async src="https://www.ezojs.com/ezoic/sa.min.js" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "window.ezstandalone = window.ezstandalone || {}; ezstandalone.cmd = ezstandalone.cmd || [];",
+          }}
+        />
+        <script src="https://ezoicanalytics.com/analytics.js" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />
