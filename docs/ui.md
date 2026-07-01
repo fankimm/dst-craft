@@ -217,6 +217,15 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **사용처**: RecipeDetail (cookpot 레시피), RawFoodDetail (생식 음식)
 - **데이터 소스**: `getAffinityCharacters(foodId, foodType)` — prefab 보너스가 캐릭터의 foodtype 기본을 *초과*할 때만 표시 (예: 워트는 두리안만, 카테고리 ×1.33 일치 항목은 노출 안 됨)
 
+### LegalDoc (`src/components/ui/LegalDoc.tsx`)
+- **용도**: 법적 고지 문서(개인정보처리방침·이용약관) 공통 레이아웃 — `BackToHome` + `max-w-2xl` 본문 + 섹션 리스트
+- **입력**: `LegalDocContent`(title/updated/intro/sections) + `locale`. 페이지는 locale별 콘텐츠 객체만 넘김
+- **사용처**: `/privacy`(`src/app/privacy/page.tsx`), `/terms`(`src/app/terms/page.tsx`)
+
+### FooterLegalLinks (`src/components/ui/FooterLegalLinks.tsx`)
+- **용도**: Footer 하단에 노출되는 개인정보처리방침·이용약관 링크 (client, `useSettings`로 locale 반영)
+- **사용처**: `src/components/crafting/Footer.tsx`
+
 ---
 
 ## 공유 훅
