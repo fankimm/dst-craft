@@ -15,6 +15,28 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.29.0",
+    date: "2026-07-01",
+    dev: [
+      "feat(legal): `/privacy`(개인정보처리방침)·`/terms`(이용약관) 페이지 신설 (#54). `\"use client\"` + `useSettings().resolvedLocale`로 ko/en 콘텐츠 분기.",
+      "공통화: 두 페이지의 렌더 레이아웃을 `src/components/ui/LegalDoc.tsx`(BackToHome + max-w-2xl 본문 + 섹션 리스트, `LegalDocContent` 타입)로 추출. 페이지는 locale별 콘텐츠 객체만 보유.",
+      "feat: `FooterLegalLinks`(client) 컴포넌트 → `crafting/Footer.tsx`에 개인정보처리방침·이용약관 링크 노출. `i18n.ts`에 `privacy_policy`/`terms_of_service` 키(ko/en) 추가.",
+      "privacy 내용은 실제 수집 항목 기반: analytics(IP·국가·User-Agent·device·OS·referrer·페이지뷰), Google 로그인 email, favorites/skills_builds, feedback(IP·국가), 로컬스토리지. 제3자(Google Identity/Cloudflare/Ko-fi/향후 광고) + 쿠키 고지.",
+      "terms: 비영리 팬사이트 성격, 게임 콘텐츠 Klei Entertainment 저작권 귀속, 위키 이미지 CC BY-SA 출처, 면책·이용자 의무.",
+      "docs/ui.md에 LegalDoc·FooterLegalLinks 공유 컴포넌트 등록.",
+    ],
+    changes: {
+      ko: [
+        "**개인정보처리방침·이용약관 페이지 추가** — 하단 푸터에서 언제든 열 수 있습니다. 수집하는 정보(방문 통계·로그인 이메일 등)와 이용 목적, 문의처를 투명하게 안내합니다.",
+        "이용약관에 이 사이트가 Klei Entertainment 비공식 팬 가이드이며 게임 콘텐츠 저작권이 Klei에 있음을 명시했습니다.",
+      ],
+      en: [
+        "**Added Privacy Policy and Terms of Service pages** — accessible anytime from the footer. They transparently explain what data is collected (visit analytics, sign-in email, etc.), how it's used, and how to contact us.",
+        "The Terms clarify that this is an unofficial fan guide not affiliated with Klei Entertainment, and that game content is copyright Klei.",
+      ],
+    },
+  },
+  {
     version: "0.28.0",
     date: "2026-06-30",
     dev: [
