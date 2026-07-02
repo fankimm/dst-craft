@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BackToHome } from "@/components/ui/BackToHome";
 import { useSettings } from "@/hooks/use-settings";
 import { assetPath } from "@/lib/asset-path";
@@ -114,10 +114,19 @@ const CONTENT: { ko: AboutDoc; en: AboutDoc } = {
   },
 };
 
-/** Owner portrait. Falls back to initials if the image file isn't present yet. */
+/** Owner portrait. Falls back to initials if the image fails to load. */
 function OwnerPhoto({ name }: { name: string }) {
   const [failed, setFailed] = useState(false);
+  const ref = useRef<HTMLImageElement>(null);
   const initials = "JK";
+
+  // Static export + next/image: an image that 404s before hydration never fires
+  // React's onError, so the fallback wouldn't show. Re-check load state on mount.
+  useEffect(() => {
+    const img = ref.current;
+    if (img && img.complete && img.naturalWidth === 0) setFailed(true);
+  }, []);
+
   if (failed) {
     return (
       <div className="flex size-20 shrink-0 items-center justify-center rounded-full bg-surface text-lg font-semibold text-muted-foreground">
@@ -127,6 +136,7 @@ function OwnerPhoto({ name }: { name: string }) {
   }
   return (
     <Image
+      ref={ref}
       src={assetPath("/images/about-owner.jpg")}
       alt={name}
       width={80}
