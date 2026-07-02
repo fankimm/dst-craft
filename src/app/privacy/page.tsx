@@ -137,5 +137,10 @@ const CONTENT: { ko: LegalDocContent; en: LegalDocContent } = {
 export default function PrivacyPage() {
   const { resolvedLocale } = useSettings();
   const doc = resolvedLocale === "ko" ? CONTENT.ko : CONTENT.en;
-  return <LegalDoc doc={doc} locale={resolvedLocale} />;
+  return (
+    <LegalDoc doc={doc} locale={resolvedLocale}>
+      {/* Ezoic이 이 앵커 위치에 자기네 고지문(파트너·쿠키 목록)을 자동 주입 (대시보드 Privacy Policy URL 등록됨) */}
+      <span id="ezoic-privacy-policy-embed"></span>
+    </LegalDoc>
+  );
 }
