@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.30.0",
+    date: "2026-07-02",
+    dev: [
+      "feat(about): `/about` 소개 페이지 신설 (#56). `\"use client\"` + `useSettings().resolvedLocale`로 ko/en 분기. 사이트 목적·운영자 소개(실명 김지환·개발자 배경 스토리)·데이터 출처/정확성·저작권/출처·제작 동기 블록. 운영자 프로필 사진(원형 아바타) 포함.",
+      "feat(privacy): 개인정보처리방침에 Ezoic 광고 조항 추가 (ko/en). 2번 쿠키 섹션에 Ezoic 광고 서빙·CMP 동의 배너 고지, 3번 제3자 서비스에 Ezoic 항목(IP·기기·쿠키 처리 + Ezoic privacy 링크). 기존 '향후 광고' 문구를 현재형으로 교체. Ezoic 반려(2026-07-01) 1차 대응.",
+      "feat: `FooterLegalLinks`에 About 링크 추가, `i18n.ts`에 `about` 키(ko/en).",
+      "fix(about): `OwnerPhoto` — next/image `onError`가 static export 하이드레이션 전 404를 못 잡아 fallback이 안 뜨던 문제를, 마운트 시 `img.complete && naturalWidth===0` 재확인으로 이니셜 fallback 보장.",
+      "asset: `public/images/about-owner.jpg` (얼굴 중심 400x400 크롭).",
+    ],
+    changes: {
+      ko: [
+        "**소개(About) 페이지 추가** — 하단 푸터에서 열 수 있습니다. 이 사이트가 무엇인지, 누가 만들고 운영하는지, 데이터를 어디서 가져와 어떻게 정확성을 유지하는지 안내합니다.",
+        "개인정보처리방침에 **광고 파트너(Ezoic) 관련 안내**를 추가했습니다 — 광고·쿠키 사용과 동의(CMP) 방식을 투명하게 밝힙니다.",
+      ],
+      en: [
+        "**Added an About page** — accessible from the footer. It explains what this site is, who builds and runs it, and where the data comes from and how its accuracy is maintained.",
+        "Added **advertising partner (Ezoic) disclosures** to the Privacy Policy — transparently covering ad/cookie use and how consent (CMP) works.",
+      ],
+    },
+  },
+  {
     version: "0.29.1",
     date: "2026-07-01",
     dev: [
