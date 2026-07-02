@@ -25,16 +25,17 @@ const CONTENT: { ko: LegalDocContent; en: LegalDocContent } = {
         h: "2. 쿠키 및 유사 기술",
         body: [
           "서비스는 로그인 세션 유지와 설정 저장을 위해 쿠키·로컬 저장소를 사용합니다.",
-          "향후 광고를 도입하는 경우, 광고 제공사가 광고 노출·측정을 위해 쿠키를 사용할 수 있으며, 그 시점에 본 방침을 갱신하고 관련 고지를 추가합니다.",
+          "이 사이트는 광고 게재와 콘텐츠 최적화를 위해 Ezoic을 사용합니다. Ezoic 및 그 광고 파트너(Google 등)는 쿠키·유사 기술을 사용해 관련 광고를 제공하고 성과를 측정할 수 있습니다.",
+          "EU·영국 등 개인정보 규제 지역의 방문자에게는 광고·쿠키 사용에 대한 동의를 묻는 배너(CMP)가 표시되며, 동의 여부에 따라 광고 개인화가 조정됩니다.",
         ],
       },
       {
         h: "3. 제3자 서비스",
         body: [
+          "Ezoic — 광고 서빙·최적화 및 사이트 분석 플랫폼. Ezoic과 그 광고 파트너(Google 등)가 IP·기기 정보·쿠키 등 방문 데이터를 처리해 광고를 제공·측정할 수 있습니다. Ezoic의 데이터 처리는 Ezoic 개인정보처리방침(https://g.ezoic.net/privacy/dstcraft.com)을 따릅니다.",
           "Google Identity Services — 로그인 인증(이메일). Google의 개인정보처리방침이 함께 적용됩니다.",
           "Cloudflare — CDN·보안·트래픽 라우팅. 접속 과정에서 IP 등 기술 정보가 처리될 수 있습니다.",
           "Ko-fi — 후원 결제. 결제 정보는 Ko-fi가 처리하며 서비스는 카드·계좌 정보를 저장하지 않습니다.",
-          "(향후) 광고 네트워크 — 광고를 도입하면 해당 제공사가 쿠키 기반으로 광고를 제공·측정할 수 있습니다.",
         ],
       },
       {
@@ -87,16 +88,17 @@ const CONTENT: { ko: LegalDocContent; en: LegalDocContent } = {
         h: "2. Cookies and Similar Technologies",
         body: [
           "The Service uses cookies and local storage to keep you signed in and to remember your settings.",
-          "If advertising is introduced in the future, ad providers may use cookies to serve and measure ads. This policy will be updated with the relevant disclosures at that time.",
+          "This site uses Ezoic to serve ads and optimize content. Ezoic and its advertising partners (including Google) may use cookies and similar technologies to serve relevant ads and measure their performance.",
+          "Visitors in regions with data-protection regulations (e.g. the EU and UK) are shown a consent banner (CMP) for advertising and cookie use; ad personalization is adjusted based on your choice.",
         ],
       },
       {
         h: "3. Third-Party Services",
         body: [
+          "Ezoic — ad serving / optimization and site analytics. Ezoic and its advertising partners (including Google) may process visit data such as IP, device information, and cookies to serve and measure ads. Ezoic's data handling follows Ezoic's privacy policy (https://g.ezoic.net/privacy/dstcraft.com).",
           "Google Identity Services — sign-in authentication (email). Google's own privacy policy also applies.",
           "Cloudflare — CDN, security, and traffic routing. Technical data such as IP may be processed during access.",
           "Ko-fi — donation payments. Payment details are handled by Ko-fi; the Service does not store card or bank information.",
-          "(Future) Ad networks — if ads are introduced, the provider may serve and measure ads using cookies.",
         ],
       },
       {
