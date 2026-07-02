@@ -219,11 +219,11 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 ### LegalDoc (`src/components/ui/LegalDoc.tsx`)
 - **용도**: 법적 고지 문서(개인정보처리방침·이용약관) 공통 레이아웃 — `BackToHome` + `max-w-2xl` 본문 + 섹션 리스트
-- **입력**: `LegalDocContent`(title/updated/intro/sections) + `locale`. 페이지는 locale별 콘텐츠 객체만 넘김
+- **입력**: `LegalDocContent`(title/updated/intro/sections) + `locale` + 선택적 `children`(본문 섹션 뒤 렌더 — 예: privacy의 Ezoic 고지문 주입 앵커). 페이지는 locale별 콘텐츠 객체만 넘김
 - **사용처**: `/privacy`(`src/app/privacy/page.tsx`), `/terms`(`src/app/terms/page.tsx`)
 
 ### FooterLegalLinks (`src/components/ui/FooterLegalLinks.tsx`)
-- **용도**: Footer 하단에 노출되는 개인정보처리방침·이용약관 링크 (client, `useSettings`로 locale 반영)
+- **용도**: Footer 하단에 노출되는 소개(About)·개인정보처리방침·이용약관 링크 (client, `useSettings`로 locale 반영)
 - **사용처**: `src/components/crafting/Footer.tsx`
 
 ---
