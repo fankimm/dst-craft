@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.30.1",
+    date: "2026-07-02",
+    dev: [
+      "feat(privacy): Ezoic 고지문 주입 앵커 추가 (#57). `LegalDoc`에 선택적 `children` 슬롯(본문 섹션 뒤 렌더), privacy 페이지에 `<span id=\"ezoic-privacy-policy-embed\">` — Ezoic JS가 파트너·쿠키 목록 고지문을 이 위치에 자동 주입.",
+      "Ezoic 대시보드 설정: Consent Geo(Country=South Korea), Privacy Policy URL(https://www.dstcraft.com/privacy) 등록. docs/ui.md에 LegalDoc children·FooterLegalLinks About 링크 반영.",
+    ],
+    changes: {
+      ko: [
+        "개인정보처리방침 하단에 광고 파트너(Ezoic)의 상세 고지문(파트너·쿠키 목록)이 자동으로 표시됩니다.",
+      ],
+      en: [
+        "The Privacy Policy now automatically shows the advertising partner's (Ezoic) detailed disclosures, including partner and cookie lists, at the bottom of the page.",
+      ],
+    },
+  },
+  {
     version: "0.30.0",
     date: "2026-07-02",
     dev: [
