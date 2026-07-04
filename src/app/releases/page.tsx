@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.30.2",
+    date: "2026-07-04",
+    dev: [
+      "chore(ads): Ezoic/CMP 스크립트 임시 비활성화 (#58). `src/app/layout.tsx` 헤드의 gatekeeperconsent CMP 2종 + `ezojs sa.min.js` + `ezstandalone` init + `ezoicanalytics.js` 다섯 개를 JSX 주석으로 묶음.",
+      "원인: iOS Safari에서 CMP JS가 body 높이 계산에 영향을 주고 AppShell의 `visualViewport.height` 하이잭(iOS 키보드 대응)과 충돌 → 크래프팅 탭 카테고리 그리드 하단이 잘리고 큰 흰 공간이 남는 증상. 사용자 스크린샷 + 베타 검증으로 원인 확정.",
+      "후속: 별도 이슈에서 CMP 로드 후 `visualViewport` 이벤트 재구독 훅을 붙여 안전하게 재통합 예정. 광고 심사(#55)는 그동안 일시 중단.",
+    ],
+    changes: {
+      ko: [
+        "제작 탭에서 카테고리 카드 하단이 잘리고 큰 빈 공간이 남는 문제 임시 조치.",
+      ],
+      en: [
+        "Temporary fix for the Crafting tab where category cards were being clipped at the bottom with a large empty gap below.",
+      ],
+    },
+  },
+  {
     version: "0.30.1",
     date: "2026-07-02",
     dev: [

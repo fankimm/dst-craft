@@ -291,13 +291,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Ezoic — privacy/consent (CMP) scripts. Must load before the header script.
-            data-cfasync="false" keeps Cloudflare from reordering them. */}
+        {/* Ezoic — privacy/consent (CMP) + ad system scripts.
+            #58: temporarily disabled to verify whether CMP JS is what shifts the
+            layout on iOS Safari (large white gap below content on the crafting
+            grid). Re-enable with a proper viewport-recalc handler once confirmed.
+
         <script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js" />
         <script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js" />
-        {/* Ezoic — ad system header script. No ad placements are defined yet, so no
-            ads render; this only connects the site for Ezoic's review. Enable ads by
-            adding placement code after approval (see #55). */}
         <script async src="https://www.ezojs.com/ezoic/sa.min.js" />
         <script
           dangerouslySetInnerHTML={{
@@ -306,6 +306,7 @@ export default function RootLayout({
           }}
         />
         <script src="https://ezoicanalytics.com/analytics.js" />
+        */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />
