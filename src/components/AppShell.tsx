@@ -262,11 +262,16 @@ export function AppShell() {
 
     let prevHeight = vv.height;
     const syncHeight = () => {
-      shell.style.height = `${vv.height}px`;
+      // 키보드로 인한 대폭 축소일 때만 px로 고정한다. 그 외의 vv 변동
+      // (URL바 확장/축소, CMP 스크립트가 유발하는 미세 진동 — #58/#60)은
+      // 기본값 100dvh가 브라우저 기준으로 항상 옳으므로 덮어쓰지 않는다.
+      // iOS에서 키보드는 innerHeight를 안 바꾸고 vv.height만 줄이므로
+      // 그 차이(>150px)로 키보드 여부를 판별할 수 있다.
+      const keyboardOpen = window.innerHeight - vv.height > 150;
+      shell.style.height = keyboardOpen ? `${vv.height}px` : "";
       if (vv.height > prevHeight) window.scrollTo(0, 0);
       prevHeight = vv.height;
     };
-    syncHeight();
     vv.addEventListener("resize", syncHeight);
     return () => {
       vv.removeEventListener("resize", syncHeight);
@@ -279,8 +284,7 @@ export function AppShell() {
   return (
     <div
       ref={shellRef}
-      className="fixed inset-x-0 top-0 flex flex-col bg-background text-foreground overflow-hidden"
-      style={{ height: "100dvh" }}
+      className="fixed inset-x-0 top-0 h-dvh flex flex-col bg-background text-foreground overflow-hidden"
     >
       {/* Status bar cover — sits above overlays so status bar area never dims */}
       <div
