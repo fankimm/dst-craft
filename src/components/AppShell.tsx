@@ -441,6 +441,13 @@ function ViewportDebugOverlay() {
           `shell top ${r?.top.toFixed(1)} bot ${r?.bottom.toFixed(1)} h ${r?.height.toFixed(1)} inline "${shell?.style.height}"`,
           `doc sh ${document.documentElement.scrollHeight} body sh ${document.body.scrollHeight}`,
           `kids ${kids}`,
+          // 화면 하단 지점에 실제로 그려진 요소 — 흰 띠의 주인 특정용
+          ...[8, 40, 70].map((off) => {
+            const el = document.elementFromPoint(window.innerWidth / 2, window.innerHeight - off);
+            const er = el?.getBoundingClientRect();
+            const cs = el ? getComputedStyle(el) : null;
+            return `@-${off}: ${el?.tagName}${el?.id ? "#" + el.id : ""}.${(el?.className || "").toString().slice(0, 30)} bot ${er?.bottom.toFixed(0)} pb ${cs?.paddingBottom}`;
+          }),
         ].join("\n"),
       );
     };
