@@ -250,34 +250,50 @@ export function AppShell() {
     const body = document.body;
     root.style.overflow = "hidden";
     body.style.overflow = "hidden";
+    // 문서 높이를 CSS 동적 단위로 잠근다 (px 스냅샷 금지 — #60에서 iOS
+    // 흰 공간의 원인이 스냅샷 고정이었음). CMP가 body에 뭘 붙여도
+    // scrollHeight가 뷰포트를 넘지 않아 iOS의 문서 스크롤 자체가 안 생긴다.
+    root.style.height = "100dvh";
+    body.style.height = "100dvh";
+
+    // iOS는 overflow:hidden을 무시하고 문서를 밀 때가 있다 (CMP의 hidden
+    // iframe focus 등). 문서 오프셋이 생기면 fixed 요소도 같이 밀려 하단이
+    // 노출되므로, 스크롤을 항상 (0,0)으로 되돌린다.
+    const pinScroll = () => {
+      if (window.scrollY !== 0 || window.scrollX !== 0) window.scrollTo(0, 0);
+    };
+    window.addEventListener("scroll", pinScroll, { passive: true });
 
     const vv = window.visualViewport;
     const shell = shellRef.current;
-    if (!vv || !shell) {
-      return () => {
-        root.style.overflow = "";
-        body.style.overflow = "";
+    let cleanupVv = () => {};
+    if (vv && shell) {
+      let prevHeight = vv.height;
+      const syncHeight = () => {
+        // 키보드로 인한 대폭 축소일 때만 px로 고정한다. 그 외의 vv 변동
+        // (URL바 확장/축소, CMP 스크립트가 유발하는 미세 진동 — #58/#60)은
+        // 기본값 100dvh가 브라우저 기준으로 항상 옳으므로 덮어쓰지 않는다.
+        // iOS에서 키보드는 innerHeight를 안 바꾸고 vv.height만 줄이므로
+        // 그 차이(>150px)로 키보드 여부를 판별할 수 있다.
+        const keyboardOpen = window.innerHeight - vv.height > 150;
+        shell.style.height = keyboardOpen ? `${vv.height}px` : "";
+        if (vv.height > prevHeight) window.scrollTo(0, 0);
+        prevHeight = vv.height;
+      };
+      vv.addEventListener("resize", syncHeight);
+      cleanupVv = () => {
+        vv.removeEventListener("resize", syncHeight);
+        shell.style.height = "";
       };
     }
 
-    let prevHeight = vv.height;
-    const syncHeight = () => {
-      // 키보드로 인한 대폭 축소일 때만 px로 고정한다. 그 외의 vv 변동
-      // (URL바 확장/축소, CMP 스크립트가 유발하는 미세 진동 — #58/#60)은
-      // 기본값 100dvh가 브라우저 기준으로 항상 옳으므로 덮어쓰지 않는다.
-      // iOS에서 키보드는 innerHeight를 안 바꾸고 vv.height만 줄이므로
-      // 그 차이(>150px)로 키보드 여부를 판별할 수 있다.
-      const keyboardOpen = window.innerHeight - vv.height > 150;
-      shell.style.height = keyboardOpen ? `${vv.height}px` : "";
-      if (vv.height > prevHeight) window.scrollTo(0, 0);
-      prevHeight = vv.height;
-    };
-    vv.addEventListener("resize", syncHeight);
     return () => {
-      vv.removeEventListener("resize", syncHeight);
-      shell.style.height = "";
+      cleanupVv();
+      window.removeEventListener("scroll", pinScroll);
       root.style.overflow = "";
+      root.style.height = "";
       body.style.overflow = "";
+      body.style.height = "";
     };
   }, []);
 
