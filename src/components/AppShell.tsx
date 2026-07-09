@@ -307,6 +307,7 @@ export function AppShell() {
         className="fixed top-0 inset-x-0 bg-background z-[60]"
         style={{ height: "env(safe-area-inset-top, 0px)" }}
       />
+      <ViewportDebugOverlay />
       {/* Tab bar */}
       <div
         className="flex items-center justify-between gap-4 border-b border-border bg-background shrink-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-3"
@@ -407,6 +408,58 @@ export function AppShell() {
  * Pure label — not interactive. Sticks to the left during horizontal scroll
  * via `sticky left-0` so it remains visible regardless of tab bar scroll.
  */
+/** #60 임시 디버그 — beta에서만 뷰포트 수치 실시간 표시. 원인 확정 후 제거. */
+function ViewportDebugOverlay() {
+  const [dbg, setDbg] = useState("");
+  useEffect(() => {
+    if (!window.location.hostname.startsWith("beta.")) return;
+    const probe = document.createElement("div");
+    probe.style.cssText =
+      "position:fixed;top:0;left:0;width:0;height:100dvh;pointer-events:none;visibility:hidden";
+    document.body.appendChild(probe);
+    const safeProbe = document.createElement("div");
+    safeProbe.style.cssText =
+      "position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-bottom,0px);pointer-events:none;visibility:hidden";
+    document.body.appendChild(safeProbe);
+
+    const tick = () => {
+      const vv = window.visualViewport;
+      const shell = document.querySelector<HTMLElement>("div.fixed.inset-x-0.top-0");
+      const r = shell?.getBoundingClientRect();
+      const kids = [...document.body.children]
+        .map((el) => {
+          const h = Math.round(el.getBoundingClientRect().height);
+          return h > 0 ? `${el.tagName}${el.id ? "#" + el.id : ""}:${h}` : null;
+        })
+        .filter(Boolean)
+        .join(" ");
+      setDbg(
+        [
+          `scrollY ${window.scrollY.toFixed(1)} scrollX ${window.scrollX.toFixed(1)}`,
+          `vv h ${vv?.height.toFixed(1)} top ${vv?.offsetTop.toFixed(1)} pageTop ${vv?.pageTop.toFixed(1)} scale ${vv?.scale.toFixed(2)}`,
+          `innerH ${window.innerHeight} dvh ${probe.getBoundingClientRect().height.toFixed(1)} safeB ${safeProbe.getBoundingClientRect().height.toFixed(1)} screenH ${window.screen.height}`,
+          `shell top ${r?.top.toFixed(1)} bot ${r?.bottom.toFixed(1)} h ${r?.height.toFixed(1)} inline "${shell?.style.height}"`,
+          `doc sh ${document.documentElement.scrollHeight} body sh ${document.body.scrollHeight}`,
+          `kids ${kids}`,
+        ].join("\n"),
+      );
+    };
+    tick();
+    const iv = setInterval(tick, 500);
+    return () => {
+      clearInterval(iv);
+      probe.remove();
+      safeProbe.remove();
+    };
+  }, []);
+  if (!dbg) return null;
+  return (
+    <pre className="fixed top-24 left-1 z-[100] max-w-[95vw] whitespace-pre-wrap break-all rounded bg-black/75 p-1.5 text-[9px] leading-tight text-green-300 pointer-events-none">
+      {dbg}
+    </pre>
+  );
+}
+
 function BetaTabIndicator() {
   const [show, setShow] = useState(false);
   useEffect(() => {
