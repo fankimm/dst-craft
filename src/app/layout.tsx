@@ -292,12 +292,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Ezoic — privacy/consent (CMP) + ad system scripts.
-            #58: temporarily disabled to verify whether CMP JS is what shifts the
-            layout on iOS Safari (large white gap below content on the crafting
-            grid). Re-enable with a proper viewport-recalc handler once confirmed.
-
+            #58에서 iOS Safari 하단 흰 공간 원인으로 확정 → #60에서 재활성화.
+            CMP가 body에 삽입하는 iframe/div가 레이아웃을 못 흔들도록 AppShell이
+            fixed-position 컨테이너를 쓴다 (AppShell.tsx 뷰포트 로직 참조).
+            data-cfasync="false" keeps Cloudflare from reordering them. */}
         <script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js" />
         <script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js" />
+        {/* Ezoic — ad system header script. No ad placements are defined yet, so no
+            ads render. Enable ads by adding placement code (see #55). */}
         <script async src="https://www.ezojs.com/ezoic/sa.min.js" />
         <script
           dangerouslySetInnerHTML={{
@@ -306,7 +308,6 @@ export default function RootLayout({
           }}
         />
         <script src="https://ezoicanalytics.com/analytics.js" />
-        */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />

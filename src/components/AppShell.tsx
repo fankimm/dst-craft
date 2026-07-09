@@ -239,6 +239,12 @@ export function AppShell() {
   // iOS Safari doesn't properly recalculate 100dvh when the virtual keyboard
   // opens/closes, leaving a white gap. Using visualViewport.height directly
   // ensures the layout always matches the actual visible area.
+  //
+  // #58/#60: 높이는 body가 아니라 앱 루트 컨테이너(fixed)에 건다.
+  // body height를 잠그는 방식은 서드파티(Ezoic CMP 등)가 body에 iframe/div를
+  // flow로 삽입하면 앱이 밀려 하단이 잘리고 흰 공간이 생겼다. fixed 컨테이너는
+  // body 형제 요소의 영향을 받지 않으므로 구조적으로 면역.
+  const shellRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
@@ -246,22 +252,17 @@ export function AppShell() {
     body.style.overflow = "hidden";
 
     const vv = window.visualViewport;
-    if (!vv) {
-      root.style.height = "100dvh";
-      body.style.height = "100dvh";
+    const shell = shellRef.current;
+    if (!vv || !shell) {
       return () => {
         root.style.overflow = "";
-        root.style.height = "";
         body.style.overflow = "";
-        body.style.height = "";
       };
     }
 
     let prevHeight = vv.height;
     const syncHeight = () => {
-      const h = `${vv.height}px`;
-      root.style.height = h;
-      body.style.height = h;
+      shell.style.height = `${vv.height}px`;
       if (vv.height > prevHeight) window.scrollTo(0, 0);
       prevHeight = vv.height;
     };
@@ -269,15 +270,18 @@ export function AppShell() {
     vv.addEventListener("resize", syncHeight);
     return () => {
       vv.removeEventListener("resize", syncHeight);
+      shell.style.height = "";
       root.style.overflow = "";
-      root.style.height = "";
       body.style.overflow = "";
-      body.style.height = "";
     };
   }, []);
 
   return (
-    <div className="flex flex-col h-full bg-background text-foreground overflow-hidden">
+    <div
+      ref={shellRef}
+      className="fixed inset-x-0 top-0 flex flex-col bg-background text-foreground overflow-hidden"
+      style={{ height: "100dvh" }}
+    >
       {/* Status bar cover — sits above overlays so status bar area never dims */}
       <div
         className="fixed top-0 inset-x-0 bg-background z-[60]"
