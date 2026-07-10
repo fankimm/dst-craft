@@ -441,13 +441,33 @@ function ViewportDebugOverlay() {
           `shell top ${r?.top.toFixed(1)} bot ${r?.bottom.toFixed(1)} h ${r?.height.toFixed(1)} inline "${shell?.style.height}"`,
           `doc sh ${document.documentElement.scrollHeight} body sh ${document.body.scrollHeight}`,
           `kids ${kids}`,
-          // 화면 하단 지점에 실제로 그려진 요소 — 흰 띠의 주인 특정용
-          ...[8, 40, 70].map((off) => {
-            const el = document.elementFromPoint(window.innerWidth / 2, window.innerHeight - off);
-            const er = el?.getBoundingClientRect();
-            const cs = el ? getComputedStyle(el) : null;
-            return `@-${off}: ${el?.tagName}${el?.id ? "#" + el.id : ""}.${(el?.className || "").toString().slice(0, 30)} bot ${er?.bottom.toFixed(0)} pb ${cs?.paddingBottom}`;
-          }),
+          // 하단 50px 영역과 겹치는 모든 페인트 요소 전수 스캔 (pointer-events:none 포함)
+          // — elementFromPoint가 못 보는 흰 띠의 주인 특정용
+          ...(() => {
+            const ih = window.innerHeight;
+            const hits: string[] = [];
+            document.querySelectorAll<HTMLElement>("body *").forEach((el) => {
+              if (hits.length >= 8) return;
+              const b = el.getBoundingClientRect();
+              if (b.bottom <= ih - 50 || b.top >= ih || b.height < 10 || b.width < 100) return;
+              const cs = getComputedStyle(el);
+              const bg = cs.backgroundColor;
+              const opaque = bg && !bg.includes("0)") && bg !== "transparent";
+              if (!opaque && el.tagName !== "IFRAME") return;
+              hits.push(
+                `${el.tagName}${el.id ? "#" + el.id : ""}.${(el.className || "").toString().slice(0, 22)} y${b.top.toFixed(0)}-${b.bottom.toFixed(0)} ${cs.position} z${cs.zIndex} pe:${cs.pointerEvents} bg:${bg.slice(0, 18)}`,
+              );
+            });
+            return hits.length ? ["-- bottom50 paint --", ...hits] : ["-- bottom50 paint: (none) --"];
+          })(),
+          // 모든 iframe 나열 (Ezoic 앵커/CMP 탐지)
+          ...(() => {
+            const ifr = [...document.querySelectorAll("iframe")].map((f) => {
+              const b = f.getBoundingClientRect();
+              return `IFR ${(f.id || f.src || "?").slice(0, 34)} y${b.top.toFixed(0)} h${b.height.toFixed(0)}`;
+            });
+            return ifr.length ? ifr.slice(0, 6) : ["IFR (none)"];
+          })(),
         ].join("\n"),
       );
     };
