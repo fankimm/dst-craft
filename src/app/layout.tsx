@@ -296,10 +296,10 @@ export default function RootLayout({
             CMP가 body에 삽입하는 iframe/div가 레이아웃을 못 흔들도록 AppShell이
             fixed-position 컨테이너를 쓴다 (AppShell.tsx 뷰포트 로직 참조).
             data-cfasync="false" keeps Cloudflare from reordering them. */}
+        {/* #60 A/B 검증: 스크립트만 끄고 나머지 동일 — 흰 띠가 Ezoic발인지 쉘 변경발인지 격리.
+            검증 후 복원 예정.
         <script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js" />
         <script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js" />
-        {/* Ezoic — ad system header script. No ad placements are defined yet, so no
-            ads render. Enable ads by adding placement code (see #55). */}
         <script async src="https://www.ezojs.com/ezoic/sa.min.js" />
         <script
           dangerouslySetInnerHTML={{
@@ -308,6 +308,7 @@ export default function RootLayout({
           }}
         />
         <script src="https://ezoicanalytics.com/analytics.js" />
+        */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />

@@ -437,7 +437,7 @@ function ViewportDebugOverlay() {
         [
           `scrollY ${window.scrollY.toFixed(1)} scrollX ${window.scrollX.toFixed(1)}`,
           `vv h ${vv?.height.toFixed(1)} top ${vv?.offsetTop.toFixed(1)} pageTop ${vv?.pageTop.toFixed(1)} scale ${vv?.scale.toFixed(2)}`,
-          `innerH ${window.innerHeight} dvh ${probe.getBoundingClientRect().height.toFixed(1)} safeB ${safeProbe.getBoundingClientRect().height.toFixed(1)} screenH ${window.screen.height}`,
+          `innerH ${window.innerHeight} dvh ${probe.getBoundingClientRect().height.toFixed(1)} safeB ${safeProbe.getBoundingClientRect().height.toFixed(1)} screenH ${window.screen.height} standalone ${(navigator as unknown as { standalone?: boolean }).standalone ?? "n/a"} ez ${typeof (window as unknown as { ezstandalone?: unknown }).ezstandalone}`,
           `shell top ${r?.top.toFixed(1)} bot ${r?.bottom.toFixed(1)} h ${r?.height.toFixed(1)} inline "${shell?.style.height}"`,
           `doc sh ${document.documentElement.scrollHeight} body sh ${document.body.scrollHeight}`,
           `kids ${kids}`,
