@@ -120,7 +120,11 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    // #60: iOS 26 웹앱 셸이 black-translucent를 legacy로 취급 — 뷰포트를
+    // (화면-상태바) 높이로 자르고 하단 62pt를 캔버스색 죽은 영역으로 남긴다
+    // (홈 화면 앱에서 하단 흰 띠). default면 웹뷰가 상태바 아래~화면 끝까지
+    // 정상 배치된다. 시뮬레이터(iOS 26.5)에서 검증.
+    statusBarStyle: "default",
     title: "dstcraft.com",
   },
   icons: {
@@ -296,10 +300,10 @@ export default function RootLayout({
             CMP가 body에 삽입하는 iframe/div가 레이아웃을 못 흔들도록 AppShell이
             fixed-position 컨테이너를 쓴다 (AppShell.tsx 뷰포트 로직 참조).
             data-cfasync="false" keeps Cloudflare from reordering them. */}
-        {/* #60 A/B 검증: 스크립트만 끄고 나머지 동일 — 흰 띠가 Ezoic발인지 쉘 변경발인지 격리.
-            검증 후 복원 예정.
         <script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js" />
         <script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js" />
+        {/* Ezoic — ad system header script. No ad placements are defined yet, so no
+            ads render. Enable ads by adding placement code (see #55). */}
         <script async src="https://www.ezojs.com/ezoic/sa.min.js" />
         <script
           dangerouslySetInnerHTML={{
@@ -308,7 +312,6 @@ export default function RootLayout({
           }}
         />
         <script src="https://ezoicanalytics.com/analytics.js" />
-        */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />
