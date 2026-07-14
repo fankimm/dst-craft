@@ -307,7 +307,6 @@ export function AppShell() {
         className="fixed top-0 inset-x-0 bg-background z-[60]"
         style={{ height: "env(safe-area-inset-top, 0px)" }}
       />
-      <ViewportDebugOverlay />
       {/* Tab bar */}
       <div
         className="flex items-center justify-between gap-4 border-b border-border bg-background shrink-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-3"
@@ -408,85 +407,6 @@ export function AppShell() {
  * Pure label — not interactive. Sticks to the left during horizontal scroll
  * via `sticky left-0` so it remains visible regardless of tab bar scroll.
  */
-/** #60 임시 디버그 — beta에서만 뷰포트 수치 실시간 표시. 원인 확정 후 제거. */
-function ViewportDebugOverlay() {
-  const [dbg, setDbg] = useState("");
-  useEffect(() => {
-    if (!window.location.hostname.startsWith("beta.")) return;
-    const probe = document.createElement("div");
-    probe.style.cssText =
-      "position:fixed;top:0;left:0;width:0;height:100dvh;pointer-events:none;visibility:hidden";
-    document.body.appendChild(probe);
-    const safeProbe = document.createElement("div");
-    safeProbe.style.cssText =
-      "position:fixed;top:0;left:0;width:0;height:env(safe-area-inset-bottom,0px);pointer-events:none;visibility:hidden";
-    document.body.appendChild(safeProbe);
-
-    const tick = () => {
-      const vv = window.visualViewport;
-      const shell = document.querySelector<HTMLElement>("div.fixed.inset-x-0.top-0");
-      const r = shell?.getBoundingClientRect();
-      const kids = [...document.body.children]
-        .map((el) => {
-          const h = Math.round(el.getBoundingClientRect().height);
-          return h > 0 ? `${el.tagName}${el.id ? "#" + el.id : ""}:${h}` : null;
-        })
-        .filter(Boolean)
-        .join(" ");
-      setDbg(
-        [
-          `scrollY ${window.scrollY.toFixed(1)} scrollX ${window.scrollX.toFixed(1)}`,
-          `vv h ${vv?.height.toFixed(1)} top ${vv?.offsetTop.toFixed(1)} pageTop ${vv?.pageTop.toFixed(1)} scale ${vv?.scale.toFixed(2)}`,
-          `innerH ${window.innerHeight} dvh ${probe.getBoundingClientRect().height.toFixed(1)} safeB ${safeProbe.getBoundingClientRect().height.toFixed(1)} screenH ${window.screen.height} standalone ${(navigator as unknown as { standalone?: boolean }).standalone ?? "n/a"} ez ${typeof (window as unknown as { ezstandalone?: unknown }).ezstandalone}`,
-          `shell top ${r?.top.toFixed(1)} bot ${r?.bottom.toFixed(1)} h ${r?.height.toFixed(1)} inline "${shell?.style.height}"`,
-          `doc sh ${document.documentElement.scrollHeight} body sh ${document.body.scrollHeight}`,
-          `kids ${kids}`,
-          // 하단 50px 영역과 겹치는 모든 페인트 요소 전수 스캔 (pointer-events:none 포함)
-          // — elementFromPoint가 못 보는 흰 띠의 주인 특정용
-          ...(() => {
-            const ih = window.innerHeight;
-            const hits: string[] = [];
-            document.querySelectorAll<HTMLElement>("body *").forEach((el) => {
-              if (hits.length >= 8) return;
-              const b = el.getBoundingClientRect();
-              if (b.bottom <= ih - 50 || b.top >= ih || b.height < 10 || b.width < 100) return;
-              const cs = getComputedStyle(el);
-              const bg = cs.backgroundColor;
-              const opaque = bg && !bg.includes("0)") && bg !== "transparent";
-              if (!opaque && el.tagName !== "IFRAME") return;
-              hits.push(
-                `${el.tagName}${el.id ? "#" + el.id : ""}.${(el.className || "").toString().slice(0, 22)} y${b.top.toFixed(0)}-${b.bottom.toFixed(0)} ${cs.position} z${cs.zIndex} pe:${cs.pointerEvents} bg:${bg.slice(0, 18)}`,
-              );
-            });
-            return hits.length ? ["-- bottom50 paint --", ...hits] : ["-- bottom50 paint: (none) --"];
-          })(),
-          // 모든 iframe 나열 (Ezoic 앵커/CMP 탐지)
-          ...(() => {
-            const ifr = [...document.querySelectorAll("iframe")].map((f) => {
-              const b = f.getBoundingClientRect();
-              return `IFR ${(f.id || f.src || "?").slice(0, 34)} y${b.top.toFixed(0)} h${b.height.toFixed(0)}`;
-            });
-            return ifr.length ? ifr.slice(0, 6) : ["IFR (none)"];
-          })(),
-        ].join("\n"),
-      );
-    };
-    tick();
-    const iv = setInterval(tick, 500);
-    return () => {
-      clearInterval(iv);
-      probe.remove();
-      safeProbe.remove();
-    };
-  }, []);
-  if (!dbg) return null;
-  return (
-    <pre className="fixed top-24 left-1 z-[100] max-w-[95vw] whitespace-pre-wrap break-all rounded bg-black/75 p-1.5 text-[9px] leading-tight text-green-300 pointer-events-none">
-      {dbg}
-    </pre>
-  );
-}
-
 function BetaTabIndicator() {
   const [show, setShow] = useState(false);
   useEffect(() => {

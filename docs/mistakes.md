@@ -605,3 +605,18 @@
   3. `flex-1 min-h-0 overflow-y-auto` + `flex flex-col min-h-full` + `Footer` 조합을 인라인으로 쓰는 모든 코드는 자동으로 `<TabScrollArea scrollContainer>{...}</TabScrollArea>` 로 교체
   4. 사용자가 "통일감 없다 / 쌩뚱맞다 / 버그난다" 코멘트 → docs/ui.md 다시 읽고 공용 컴포넌트 누락 여부 점검이 1순위
 - **해결 (#50)**: SkinsApp 외곽을 단일 wrapper + `TabScrollArea` 한 번 + DetailPanel 한 번으로 통합. view 분기는 헤더/그리드 콘텐츠 변수만. Footer는 더 이상 재마운트되지 않음
+
+## 디버깅 프로세스
+
+### 증상이 비슷한 별개 버그 2개를 하나로 착각 + 원격 왕복 디버깅 낭비 (2026-07-09~14, #60)
+- **문제**: "iOS 하단 흰 공간"이라는 증상에 실제로는 원인이 다른 버그 2개가 겹쳐 있었음. ① #58: Ezoic/CMP가 body에 flow 요소 삽입 → body-height 하이잭 구조에서 앱이 밀려 대형 흰 공간 (Ezoic 원인 맞음). ② iOS 26 웹앱 셸이 `apple-mobile-web-app-status-bar-style: black-translucent`를 legacy 취급 → 뷰포트를 (화면-상태바)로 잘라 하단 62pt 죽은 영역 (Ezoic 무관, 신규 설치 웹클립에서만 발생). ①을 고친 뒤 ②가 계속 보이자 "수정 실패"로 오판, 같은 가설(뷰포트 계산)만 3차례 변주하며 사용자 아이폰 스샷 왕복으로 며칠 소모
+- **왜 갇혔나**:
+  1. 증상 동일 = 원인 동일이라는 무의식적 가정. A/B 격리(스크립트만 끄기)를 3번째 실패 후에야 실행 — 첫 실패 직후 했어야 함
+  2. 사용자 기기 스샷 왕복은 1회당 반나절 — iOS 시뮬레이터 재현(xcrun simctl + 웹클립 파일 직접 설치 + 픽셀 프로파일링)으로 전환하자 30분 만에 원인 확정. 재현 환경 로컬화가 가설 3개 소비보다 싸다
+  3. 장기 세션(여러 날)에서 로컬 git ref가 낡아 "다른 세션이 7/4에 스크립트를 뺐다"는 결정적 사실을 놓친 채 서빙/빌드 diff를 헤맴 — 진단 시작 전 `git fetch` 필수
+- **교훈**:
+  1. 수정이 "안 먹었"으면 가설 변주 전에 **변수 격리(A/B)부터** — 원인이라 믿는 것만 끄고 나머지 동일하게
+  2. 원격 기기 왕복 2회 실패 시 **로컬 재현 환경 구축으로 전환** (iOS: 시뮬레이터 + `~/Library/Developer/CoreSimulator/Devices/<UDID>/data/Library/WebClips/`에 웹클립 심기 + `simctl launch booted com.apple.webapp` + 스크린샷 픽셀 프로파일)
+  3. 진단성 결론(서빙이 이상하다, 빌드가 다르다) 내리기 전 `git fetch --all` — 세션이 날짜를 넘겼으면 무조건
+  4. 뷰포트류 버그는 눈보다 수치 — 디버그 오버레이(scrollY/vv/dvh/shell rect/elementFromPoint/전수 페인트 스캔)를 첫 수로 심으면 왕복당 정보량이 몇 배
+- **해결 (#60)**: ① fixed 쉘 + 문서 100dvh 잠금 + 스크롤 핀 (서드파티 body 삽입 면역), ② `statusBarStyle: "default"` (기존 설치본은 박제된 스타일이라 무영향, 신규/재설치부터 정상)
