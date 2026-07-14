@@ -13,6 +13,7 @@ import { ConsoleApp } from "./console/ConsoleApp";
 import { QuestsApp } from "./quests/QuestsApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { FloatingSupportPill } from "./ui/FloatingSupportPill";
+import { LegacyPwaNotice } from "./ui/LegacyPwaNotice";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
 import { t } from "@/lib/i18n";
@@ -380,6 +381,9 @@ export function AppShell() {
 
       {/* Floating ko-fi pill — docks into Footer when Footer is in view */}
       <FloatingSupportPill />
+
+      {/* legacy PWA 설치본(하단 흰 띠) 재설치 안내 — 해당 설치본에서만 표시 (#61) */}
+      <LegacyPwaNotice />
 
       {/* Dev menu */}
       {showDevMenu && (
