@@ -226,6 +226,10 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **용도**: Footer 하단에 노출되는 소개(About)·개인정보처리방침·이용약관 링크 (client, `useSettings`로 locale 반영)
 - **사용처**: `src/components/crafting/Footer.tsx`
 
+### LegacyPwaNotice (`src/components/ui/LegacyPwaNotice.tsx`)
+- **용도**: iOS 26 legacy 웹클립 설치본(#60 이전 black-translucent 박제 → 하단 흰 띠)에만 뜨는 재설치 안내 배너. standalone + (screen-innerHeight>20) + safe-area-inset-top>0 시그니처로 감지, 닫기 시 localStorage 영구 dismiss. 해당 설치본이 소멸하면 자연히 안 뜨는 자기소멸형
+- **사용처**: `src/components/AppShell.tsx`
+
 ---
 
 ## 공유 훅

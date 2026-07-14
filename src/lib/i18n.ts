@@ -116,6 +116,9 @@ const translations = {
     account: "계정",
     release_notes: "릴리즈 노트",
     about: "소개",
+    legacy_pwa_notice:
+      "화면 하단이 흰 여백으로 잘려 보이는 문제를 고쳤습니다. 홈 화면에서 앱을 삭제한 뒤 다시 추가하면 적용됩니다.",
+    notice_dismiss: "닫기",
     privacy_policy: "개인정보처리방침",
     terms_of_service: "이용약관",
     insight: "통계",
@@ -374,6 +377,9 @@ const translations = {
     account: "Account",
     release_notes: "Release Notes",
     about: "About",
+    legacy_pwa_notice:
+      "We fixed an issue where the bottom of the screen was cut off with blank space. Remove the app from your Home Screen and add it again to apply the fix.",
+    notice_dismiss: "Dismiss",
     privacy_policy: "Privacy Policy",
     terms_of_service: "Terms of Service",
     insight: "Insight",
