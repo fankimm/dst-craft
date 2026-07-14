@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.31.0",
+    date: "2026-07-14",
+    dev: [
+      "feat(ads): #58에서 임시 비활성화했던 Ezoic/CMP 스크립트 재활성화 (#60). Ezoic 승인 완료(7/8) — placement는 아직 없어 광고 렌더는 없음.",
+      "refactor(shell): AppShell 뷰포트 전략 재설계 — body height 하이잭 → 앱 루트 `fixed inset-x-0 top-0 h-dvh` 컨테이너. 서드파티(CMP 등)가 body에 flow 요소를 삽입해도 앱 레이아웃 불변 (#58 대형 흰 공간의 구조적 해결). 문서 높이 CSS 100dvh 잠금 + 스크롤 (0,0) 핀 + 키보드 열림 시(innerHeight-vv.height>150px)만 vv px 오버라이드.",
+      "fix(pwa): iOS 26 홈 화면 앱 하단 흰 띠 — `appleWebApp.statusBarStyle`을 black-translucent → default로. iOS 26 웹앱 셸이 black-translucent를 legacy 취급해 뷰포트를 (화면-상태바) 높이로 자르고 하단 62pt를 캔버스색 죽은 영역으로 노출. 웹클립 Info.plist의 `WebClipStatusBarStyle` 치환 실험(iOS 26.5 시뮬레이터)으로 원인·해법 검증. 기존 설치본은 설치 시점 스타일 박제라 무영향, 신규/재설치부터 적용.",
+      "docs: mistakes.md에 디버깅 프로세스 오답노트(증상 동일≠원인 동일, A/B 격리 우선, 시뮬레이터 재현 전환 기준) 추가.",
+    ],
+    changes: {
+      ko: [
+        "**iOS에서 화면 하단이 잘리고 흰 공간이 남던 버그를 수정했습니다.** 홈 화면에 추가한 앱에서 증상이 남아 있다면 앱을 삭제 후 다시 추가해 주세요.",
+        "광고 파트너(Ezoic) 연동을 다시 활성화했습니다. 광고는 아직 표시되지 않습니다.",
+      ],
+      en: [
+        "**Fixed a bug on iOS where the bottom of the screen was cut off with leftover blank space.** If you still see it in the Home Screen app, please remove and re-add the app.",
+        "Re-enabled our advertising partner (Ezoic) integration. No ads are shown yet.",
+      ],
+    },
+  },
+  {
     version: "0.30.2",
     date: "2026-07-04",
     dev: [
