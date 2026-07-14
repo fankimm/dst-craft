@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.31.1",
+    date: "2026-07-14",
+    dev: [
+      "feat(pwa): legacy 웹클립 설치본 감지 재설치 안내 배너 `LegacyPwaNotice` (#61). 감지 시그니처: `navigator.standalone` + `screen.height-innerHeight>20` + `safe-area-inset-top>0` — #60 이전 iOS 26 설치본(하단 흰 띠)만 타게팅, 닫기 시 localStorage 영구 dismiss. iOS 26.5 시뮬레이터에서 WebClipStatusBarStyle legacy/default 치환으로 표시/미표시 양방향 검증.",
+      "i18n: legacy_pwa_notice / notice_dismiss (ko/en). docs/ui.md 공유 컴포넌트 등록.",
+    ],
+    changes: {
+      ko: [
+        "이전에 홈 화면에 추가한 앱에서 화면 하단이 잘려 보이는 경우, 앱 안에서 재설치 안내를 표시합니다. 앱을 삭제 후 다시 추가하면 해결됩니다.",
+      ],
+      en: [
+        "If the app was added to your Home Screen earlier and the bottom of the screen appears cut off, an in-app notice now guides you to remove and re-add the app to fix it.",
+      ],
+    },
+  },
+  {
     version: "0.31.0",
     date: "2026-07-14",
     dev: [
