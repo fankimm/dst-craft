@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.31.2",
+    date: "2026-07-19",
+    dev: [
+      "fix(stats): `/stats` 페이지가 프로덕션에서 crash (#62). `countryName()`이 `Intl.DisplayNames.of(code)`를 호출하는데 analytics API가 반환한 countries에 표준 ISO 3166-1이 아닌 `T1`(Tor 트래픽 태그) 코드가 섞여 있어 스펙대로 RangeError → 렌더 전체 죽음. try-catch로 감싸 예외 시 원 코드 그대로 반환.",
+    ],
+    changes: {
+      ko: [
+        "통계 페이지가 열리지 않던 문제 수정.",
+      ],
+      en: [
+        "Fixed the Stats page failing to load.",
+      ],
+    },
+  },
+  {
     version: "0.31.1",
     date: "2026-07-14",
     dev: [
