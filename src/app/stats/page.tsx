@@ -26,8 +26,15 @@ const regionNames = new Intl.DisplayNames(["ko"], { type: "region" });
 
 function countryName(code: string): string {
   const upper = code.toUpperCase();
-  const ko = regionNames.of(upper);
-  return ko && ko !== upper ? ko : upper;
+  // Intl.DisplayNames throws RangeError on non-ISO codes (e.g. "T1" for Tor
+  // traffic surfaces occasionally in analytics). Fall back to the raw code
+  // instead of crashing the whole page.
+  try {
+    const ko = regionNames.of(upper);
+    return ko && ko !== upper ? ko : upper;
+  } catch {
+    return upper;
+  }
 }
 
 const osIcons: Record<string, string> = {
