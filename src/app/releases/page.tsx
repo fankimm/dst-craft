@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.32.0",
+    date: "2026-07-26",
+    dev: [
+      "feat(stats): OS 분류에 `Bot` / `Unknown` / `HarmonyOS` 버킷 추가 (#63). `parseOS()`가 6종 정규식(iOS/Windows/macOS/Android/Linux/ChromeOS)에 안 걸리는 UA를 전부 `Other`로 떨궈서, 플랫폼 토큰이 아예 없는 중국계 크롤러 UA(`(compatible; Baiduspider/2.0; +http://...)`, `Sogou web spider/4.0(...)`, `YisouSpider`)와 UA 미전송 요청, 화웨이 HarmonyOS NEXT(`(Phone; OpenHarmony 5.0)`)가 한 버킷에 뭉쳐 원인 진단이 불가능했음. 이제 `Other`는 '정말 규칙에 없는 UA'만 의미.",
+      "봇 판정(`isBot`)을 OS 판정보다 **먼저** 수행 — Bytespider(Android 토큰 포함), 헤드리스 크롬 스크래퍼(Windows NT 로테이션)처럼 정상 플랫폼 토큰을 달고 오는 봇이 Android/Windows 집계를 부풀리던 것도 함께 분리됨.",
+      "봇 오탐 방지: 네이버/다음은 브랜드명이 아니라 크롤러 이름(`Yeti`/`Daumoa`)으로만 매칭 — 네이버 앱 인앱 브라우저 UA에 `NAVER` 문자열이 있어 브랜드명으로 잡으면 실사용자가 통째로 봇 처리됨. `CUBOT` 등 `bot\\b`에 걸리는 실제 기기명은 `BOT_FALSE_POSITIVE` 예외 처리.",
+      "test: `bun-api/src/lib/util.test.ts` 신규 — 실측 UA 23종(정상 브라우저/인앱 브라우저/크롤러/HarmonyOS/오탐 기기) 고정. `cd bun-api && bun run test`.",
+      "feat(stats/ui): 접속자 로그 행 클릭 시 원본 UA 전문 펼침 + OS 셀 아이콘·툴팁. 터치 환경에서 `title` 툴팁이 안 떠서 확장 행 방식으로 구현.",
+      "chore: `bun-api/scripts/reparse-visitor-os.ts` — 접속자 로그(롤링 200건)의 os 컬럼을 새 규칙으로 재계산 + 국가×OS 상위 20 요약 출력(멱등, `--dry-run` 지원). 집계 카운터(`analytics_counters` scope='os')는 원본 UA를 보관하지 않아 백필 불가 → 새 버킷 수치는 배포 이후 유입분부터 누적.",
+    ],
+    changes: {
+      ko: [
+        "접속 통계의 운영체제 집계에서 검색엔진·크롤러 봇 트래픽을 따로 분리하고, HarmonyOS를 별도 항목으로 표시합니다. 기존에는 이런 접속이 모두 '기타'로 묶여 있었습니다.",
+      ],
+      en: [
+        "The OS breakdown in site stats now separates search-engine and crawler bot traffic, and shows HarmonyOS as its own entry. These were previously all lumped into “Other”.",
+      ],
+    },
+  },
+  {
     version: "0.31.2",
     date: "2026-07-19",
     dev: [
