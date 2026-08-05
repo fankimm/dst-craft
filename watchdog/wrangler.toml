@@ -8,6 +8,10 @@ compatibility_date = "2026-07-28"
 [triggers]
 crons = ["* * * * *"]
 
+# console.log를 대시보드/`wrangler tail`에서 볼 수 있게. 무료 플랜 포함.
+[observability]
+enabled = true
+
 [vars]
 HEALTH_URL = "https://www.dstcraft.com/api/_debug/health"
 # 3/3 실패 시 눌러줄 GitHub Actions 복구 워크플로우 (DNS failover 담당)
@@ -19,7 +23,7 @@ GH_REF = "main"
 # 생성: npx wrangler kv namespace create WATCHDOG_STATE
 [[kv_namespaces]]
 binding = "STATE"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "54ff92b67d5745de8a1d6e83b1b63cdf"
 
 # secrets (wrangler secret put <NAME>):
 #   TELEGRAM_BOT_TOKEN

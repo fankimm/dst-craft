@@ -34,38 +34,45 @@ Worker가 3/3 실패를 확인하면 `workflow_dispatch`로 GitHub Actions를 �
 
 ## 배포
 
-### 1) 최초 1회 — KV 네임스페이스 생성
+KV 네임스페이스(`54ff92b6...`)와 텔레그램 시크릿은 2026-08-05에 등록 완료. 평소 배포는 이것뿐이다:
+
+```bash
+cd watchdog && npx wrangler deploy
+```
+
+**시크릿을 새로 넣었다면 배포 후 `npx wrangler triggers deploy`도 실행할 것** — 아래 트러블슈팅 참고.
+
+### 처음부터 다시 세팅해야 할 때
 
 ```bash
 cd watchdog
 npm install
-npx wrangler login          # 브라우저 인증. 이미 로그인돼 있으면 생략
-npx wrangler kv namespace create WATCHDOG_STATE
-```
-
-출력된 `id` 값을 `wrangler.toml`의 `REPLACE_WITH_KV_NAMESPACE_ID` 자리에 넣는다.
-
-### 2) 시크릿 등록
-
-```bash
-npx wrangler secret put TELEGRAM_BOT_TOKEN   # GH secrets와 동일한 값
+npx wrangler login                                  # 브라우저 인증
+npx wrangler kv namespace create WATCHDOG_STATE     # 출력된 id를 wrangler.toml에 반영
+npx wrangler secret put TELEGRAM_BOT_TOKEN
 npx wrangler secret put TELEGRAM_CHAT_ID
-npx wrangler secret put GH_TOKEN             # 선택 — 없으면 복구 트리거만 생략
+npx wrangler deploy
+npx wrangler triggers deploy
 ```
 
-`GH_TOKEN`은 `actions: write` 권한이 있는 fine-grained PAT. `fankimm/dst-craft` 하나만 대상으로 발급하면 된다. 없어도 감지·알림은 정상 동작하고 복구 트리거만 건너뛴다.
+텔레그램 봇은 `@fk_dst_dev_bot`. 토큰/chat_id는 Mac mini의 `~/works/dst-craft/bun-api/.env`에도 같은 값이 있다 (bun-api 피드백 알림이 같은 봇을 쓴다). GitHub secrets에도 등록돼 있지만 그쪽은 값을 다시 읽을 수 없다.
 
-### 3) 배포
+### GH_TOKEN (선택)
 
 ```bash
-npx wrangler deploy
+npx wrangler secret put GH_TOKEN
 ```
+
+`actions: write` 권한의 fine-grained PAT. `fankimm/dst-craft` 하나만 대상으로 발급하면 된다. **없어도 감지·알림은 정상 동작하고 복구 트리거만 건너뛴다.**
 
 ## 확인
 
 ```bash
-# 현재 판정 상태 (배포 후 workers.dev 주소로)
-curl https://dstcraft-watchdog.<계정>.workers.dev/status
+# 현재 판정 상태
+curl https://dstcraft-watchdog.fankimm.workers.dev/status
+
+# 판정 로직 강제 실행 (크론과 무관하게 즉시 1회). 알림 규칙도 그대로 적용됨
+curl https://dstcraft-watchdog.fankimm.workers.dev/run
 
 # 실시간 로그
 npx wrangler tail
@@ -73,6 +80,21 @@ npx wrangler tail
 # 로컬에서 cron 핸들러 강제 실행
 npx wrangler dev --test-scheduled
 curl "http://localhost:8787/__scheduled"
+```
+
+### 크론이 안 도는 것 같을 때
+
+`/run`은 되는데 `/status`가 몇 분째 그대로면 cron trigger가 빠진 것이다. 실제로 **시크릿을 추가해 워커 버전이 새로 생긴 뒤 크론이 멈춘 사례**가 있었다 (2026-08-05, 최초 구축 시). 이때는 트리거만 다시 붙이면 된다:
+
+```bash
+npx wrangler triggers deploy
+```
+
+확인법: `HEALTH_URL`을 없는 주소로 잠깐 배포하고 1~2분 뒤 `/status`가 `down`으로 바뀌는지 본다. 안 바뀌면 크론이 죽은 것.
+
+```bash
+npx wrangler deploy --var HEALTH_URL:https://www.dstcraft.com/api/_debug/nope   # 가짜 장애
+npx wrangler deploy                                                              # 원복
 ```
 
 ## 비용

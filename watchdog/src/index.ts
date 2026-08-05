@@ -77,6 +77,12 @@ export default {
   /** 상태 확인용. 비밀값은 노출하지 않는다. */
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
+    // 크론이 도는지와 무관하게 판정 로직을 강제 실행해볼 수 있는 경로.
+    // 배포 검증용이며, 알림 규칙은 크론과 동일하게 적용된다.
+    if (url.pathname === "/run") {
+      await runCheck(env);
+      return Response.json({ ran: true, state: await readState(env) });
+    }
     if (url.pathname === "/status") {
       const state = await readState(env);
       return Response.json({
