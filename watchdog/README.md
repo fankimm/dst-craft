@@ -1,0 +1,82 @@
+# dstcraft-watchdog
+
+prod `/api` 헬스 감시용 Cloudflare Worker. **1분마다** `https://www.dstcraft.com/api/_debug/health`를 3회 찔러 상태를 판정하고, 상태가 바뀔 때만 텔레그램으로 알린다.
+
+## 왜 Worker인가 (#64)
+
+감시는 원래 `.github/workflows/watchdog.yml`이 `cron: */5`로 하고 있었다. 그런데 GitHub이 예약 실행을 대부분 드랍해서 **실측 간격이 1~3시간**이었다 (2026-07-26~28 기준). 감시 로직은 멀쩡했고 실행 환경이 문제였으므로, Cron Trigger가 예약대로 도는 CF Worker로 감지를 옮겼다.
+
+역할 분담:
+
+| | 감지 주기 | 알림 | 복구 |
+|---|---|---|---|
+| **CF Worker** (여기) | 1분, 정확 | 2/3·3/3 실패, 복구 | ✗ (SSH 불가) |
+| **GitHub Actions** (`watchdog.yml`) | */5 예약이나 실제론 드문드문 (백업) | 3/3 실패만 | ✓ DNS failover, SSH kickstart |
+
+Worker가 3/3 실패를 확인하면 `workflow_dispatch`로 GitHub Actions를 눌러 복구를 맡긴다.
+
+## 판정과 알림 규칙
+
+3회 시도(각 5초 타임아웃, 2초 간격)의 실패 수로 판정한다.
+
+- `0~1` → **ok** (1회 실패는 transient noise로 무시)
+- `2` → **degraded**
+- `3` → **down**
+
+알림은 **상태가 바뀔 때만** 보낸다. 직전 상태를 KV에 저장해두기 때문에 장애가 이어져도 매분 텔레그램이 오지 않는다.
+
+- ok → degraded : ⚠️ 경고 1회
+- ok/degraded → down : 🔥 긴급 1회 + GitHub 복구 워크플로우 트리거 (구간당 1회)
+- down → ok : ✅ 복구 알림 (중단 시간 포함)
+- degraded → ok : 알림 없음 (경미한 지연까지 알리면 시끄러움)
+- down 지속 : 30분마다 재알림
+- degraded 지속 : 10분 넘어가면 1회만 추가 알림
+
+## 배포
+
+### 1) 최초 1회 — KV 네임스페이스 생성
+
+```bash
+cd watchdog
+npm install
+npx wrangler login          # 브라우저 인증. 이미 로그인돼 있으면 생략
+npx wrangler kv namespace create WATCHDOG_STATE
+```
+
+출력된 `id` 값을 `wrangler.toml`의 `REPLACE_WITH_KV_NAMESPACE_ID` 자리에 넣는다.
+
+### 2) 시크릿 등록
+
+```bash
+npx wrangler secret put TELEGRAM_BOT_TOKEN   # GH secrets와 동일한 값
+npx wrangler secret put TELEGRAM_CHAT_ID
+npx wrangler secret put GH_TOKEN             # 선택 — 없으면 복구 트리거만 생략
+```
+
+`GH_TOKEN`은 `actions: write` 권한이 있는 fine-grained PAT. `fankimm/dst-craft` 하나만 대상으로 발급하면 된다. 없어도 감지·알림은 정상 동작하고 복구 트리거만 건너뛴다.
+
+### 3) 배포
+
+```bash
+npx wrangler deploy
+```
+
+## 확인
+
+```bash
+# 현재 판정 상태 (배포 후 workers.dev 주소로)
+curl https://dstcraft-watchdog.<계정>.workers.dev/status
+
+# 실시간 로그
+npx wrangler tail
+
+# 로컬에서 cron 핸들러 강제 실행
+npx wrangler dev --test-scheduled
+curl "http://localhost:8787/__scheduled"
+```
+
+## 비용
+
+무료 플랜 안에서 돈다. 하루 1440회 실행, KV 읽기 1440회 (무료 한도 10만/일).
+
+KV **쓰기**는 무료 한도가 하루 1000회라 매분 쓰면 넘긴다. 그래서 평시(ok 유지)에는 저장할 내용이 직전과 같으므로 아예 쓰지 않는다. 쓰기가 발생하는 건 상태가 바뀌거나 알림을 보낸 순간뿐이라 하루 수 회 수준이다.

@@ -517,6 +517,16 @@
 - **검증**: `curl -sI http://127.0.0.1/ | grep -i server` → `Server: nginx` 가 아니면 즉시 정지하고 포트 재확인. 또는 nginx 단독 테스트는 항상 `127.0.0.1:8080`
 - **부수**: Apache가 떠있는 자체는 dstcraft 서비스에 영향 없음 (CF Tunnel은 8080으로만 매핑). 다만 origin 디버깅 시 잡음. 향후 비활성 검토 가능 (`sudo apachectl stop` + launchd 비활성화)
 
+### GitHub Actions cron으로 헬스 감시를 걸어두고 5분 주기라고 믿음 (2026-07-28, #64)
+- **문제**: `watchdog.yml`에 `cron: "*/5 * * * *"`를 걸고 "5분마다 감시 중"이라고 여겼으나, 실제 실행 이력은 **1~3시간에 한 번**이었다. 2026-07-26~28 최근 20회 실행 간격을 실측해서야 드러남. 그동안 진짜 장애가 났다면 몇 시간 뒤에나 알았을 상태
+- **원인**: GitHub Actions의 schedule은 best-effort다. 러너가 붐비면 예약 실행을 지연시키거나 **아예 건너뛴다**(드랍된 실행은 재시도되지 않음). 공개 저장소·무료 러너일수록 심함. cron 표기가 통과했다고 그 주기로 돈다는 보장이 전혀 없다
+- **왜 못 알아챘나**: 워크플로우가 매번 초록불(success)이라 정상으로 보였다. "실패했나"만 봤지 "몇 번 돌았나"는 본 적이 없음. 감시 도구 자체의 동작 여부를 감시하지 않은 것
+- **교훈**:
+  1. **주기가 의미 있는 작업(헬스 감시, 백업, 정기 동기화)을 GH Actions schedule에 의존하지 말 것.** 정확한 주기가 필요하면 Cloudflare Cron Trigger나 launchd처럼 실행이 보장되는 스케줄러로
+  2. 정기 작업은 **실행 간격 자체를 주기적으로 검증**. `gh run list --workflow=<f> --json createdAt`로 간격을 눈으로 확인 — 초록불은 "돌았을 때 성공했다"는 뜻일 뿐
+  3. GH Actions에 남겨도 되는 것: 실행 시점이 정확할 필요 없는 백업 감지, 또는 외부에서 `workflow_dispatch`로 불러 쓰는 복구 액션
+- **해결 (#64)**: 감지는 CF Worker(`watchdog/`, Cron 1분)로 이전. GH Actions는 복구 담당(DNS failover, SSH kickstart)으로 축소하고 Worker가 `workflow_dispatch`로 호출. GH schedule은 Worker 자체 장애 대비 백업으로만 유지
+
 ## 분석 / 통계
 
 ### Redis 일별 키에 TTL을 걸어 통계 데이터 영구 손실
