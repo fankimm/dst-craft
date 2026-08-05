@@ -2,6 +2,11 @@
 
 `watchdog.yml`이 사용하는 secrets/vars 일람. GitHub UI 또는 `gh` CLI로 설정.
 
+> **감지는 CF Worker가 맡는다 (#64).** GitHub schedule이 대부분 드랍돼 실측 1~3시간 간격이었으므로
+> 1분 주기 감지는 `watchdog/`(Cloudflare Worker)로 옮겼다. 이 워크플로우는 복구 담당이고,
+> Worker가 3/3 실패를 확인하면 `workflow_dispatch`로 호출한다.
+> Worker 쪽 시크릿(텔레그램 토큰, GH_TOKEN)은 `watchdog/README.md` 참고.
+
 ## Telegram 알림 (즉시 활성화 권장 — 5/7 사고 때 미설정으로 알림 안 갔음)
 
 ```bash

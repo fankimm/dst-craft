@@ -104,7 +104,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - **데이터 저장**: SQLite (Upstash Redis → SQLite 마이그레이션 완료, `bun-api/scripts/migrate-upstash.ts`)
 - **백업**: 매일 04:00 UTC, `~/Backups/dstcraft/app-$TS.db.gz` (14일 보관)
 - **인증**: Google Identity Services (GIS) — 클라이언트 측 renderButton 방식
-- **모니터링**: GitHub Actions watchdog (5분 주기) → 장애 시 Telegram 알림 + Vercel 자동 failover
+- **모니터링**: Cloudflare Worker `watchdog/` (Cron Trigger 1분 주기)가 prod `/api` 헬스 감지 + Telegram 알림. 3/3 실패 시 GitHub Actions watchdog을 `workflow_dispatch`로 호출 → Vercel 자동 failover 등 복구 수행 (Worker는 SSH 불가). GitHub schedule은 Worker 장애 대비 백업 감지로만 유지
 
 ## TODO Management
 - `todo.md` — 프로젝트 전체 TODO (진행중/대기/완료)
@@ -140,7 +140,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `public/<key>.txt` — IndexNow 키 파일 (`BingSiteAuth.xml`과 함께 SEO 검증 자산, 삭제 금지). 키 변경 시 `indexnow-ping.py`의 `KEY` 상수도 함께 갱신
 - `.github/workflows/deploy-beta.yml` — GitHub Actions 배포 워크플로우 (self-hosted runner, main+beta)
 - `.github/workflows/deploy.yml` — GitHub Pages 배포 (레거시, 미사용)
-- `.github/workflows/watchdog.yml` — 헬스 모니터링 (5분 주기, Telegram + failover)
+- `watchdog/` — 헬스 감지 Cloudflare Worker (Cron 1분, Telegram 알림, KV로 중복 알림 억제). 배포/시크릿 절차는 `watchdog/README.md`
+- `.github/workflows/watchdog.yml` — 헬스 복구 담당 (3/3 실패 시 Telegram 긴급 + DNS failover). schedule은 백업 감지
 - `worker/index.ts` — Cloudflare Worker (레거시, 일부 analytics)
 - `worker/wrangler.toml` — Worker 설정 (레거시)
 - `docs/terminology.md` — UI 용어집
@@ -155,10 +156,11 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 2. **bun-api**: `bun-api/` 변경 시 push하면 GitHub Actions가 자동 재시작 (main만, beta는 무시)
 3. **Nginx 설정**: `bun-api/infra/nginx-*.conf` 변경 시 Mac Mini에서 수동 `nginx -s reload` 필요
    - **Drift 주의**: 실서버 `/usr/local/etc/nginx/snippets/dstcraft-common.conf` ↔ 레포 `bun-api/infra/nginx-dstcraft-common.conf`. 실서버를 직접 편집했으면 반드시 레포에도 동일하게 반영해 단일 진실 공급원 유지 (안 그러면 다음 push 때 롤백됨)
-4. **환경변수**: `.env.local`에 새 `NEXT_PUBLIC_*` 변수 추가 시 Mac Mini의 빌드 환경에도 반영 확인
-5. **Cloudflare 캐시**: 배포 스크립트가 자동 purge (`~/.cf-env` 필요). 수동 purge 필요 시 CF 대시보드
-6. **Google Cloud Console**: 새 도메인 추가 시 승인된 JavaScript 원본에 등록 확인
-7. **릴리즈 노트 + 버전**: 아래 Release Notes Rules 참고
+4. **watchdog Worker**: `watchdog/` 변경 시 자동 배포 없음 — `cd watchdog && npx wrangler deploy` 수동 실행 필요
+5. **환경변수**: `.env.local`에 새 `NEXT_PUBLIC_*` 변수 추가 시 Mac Mini의 빌드 환경에도 반영 확인
+6. **Cloudflare 캐시**: 배포 스크립트가 자동 purge (`~/.cf-env` 필요). 수동 purge 필요 시 CF 대시보드
+7. **Google Cloud Console**: 새 도메인 추가 시 승인된 JavaScript 원본에 등록 확인
+8. **릴리즈 노트 + 버전**: 아래 Release Notes Rules 참고
 
 ## Game & Mod Paths (per machine)
 ```

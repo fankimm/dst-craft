@@ -1,0 +1,31 @@
+name = "dstcraft-watchdog"
+main = "src/index.ts"
+compatibility_date = "2026-07-28"
+
+# 1분마다 prod /api 헬스체크.
+# GitHub Actions의 schedule은 대부분 드랍돼 실제 1~3시간 간격으로만 돌았음 (#64).
+# Cloudflare Cron Trigger는 예약대로 실행되므로 감지 주기를 여기로 옮긴다.
+[triggers]
+crons = ["* * * * *"]
+
+# console.log를 대시보드/`wrangler tail`에서 볼 수 있게. 무료 플랜 포함.
+[observability]
+enabled = true
+
+[vars]
+HEALTH_URL = "https://www.dstcraft.com/api/_debug/health"
+# 3/3 실패 시 눌러줄 GitHub Actions 복구 워크플로우 (DNS failover 담당)
+GH_REPO = "fankimm/dst-craft"
+GH_WORKFLOW = "watchdog.yml"
+GH_REF = "main"
+
+# 알림 중복 억제 상태 저장.
+# 생성: npx wrangler kv namespace create WATCHDOG_STATE
+[[kv_namespaces]]
+binding = "STATE"
+id = "54ff92b67d5745de8a1d6e83b1b63cdf"
+
+# secrets (wrangler secret put <NAME>):
+#   TELEGRAM_BOT_TOKEN
+#   TELEGRAM_CHAT_ID
+#   GH_TOKEN            — actions:write 스코프. 없으면 복구 트리거만 건너뛰고 알림은 정상 동작

@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+/watchdog/node_modules
+/watchdog/.wrangler
+/watchdog/.dev.vars
 /.pnp
 .pnp.*
 .yarn/*
