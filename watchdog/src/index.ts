@@ -80,8 +80,8 @@ export default {
     // 크론이 도는지와 무관하게 판정 로직을 강제 실행해볼 수 있는 경로.
     // 배포 검증용이며, 알림 규칙은 크론과 동일하게 적용된다.
     if (url.pathname === "/run") {
-      await runCheck(env);
-      return Response.json({ ran: true, state: await readState(env) });
+      const probes = await runCheck(env);
+      return Response.json({ ran: true, probes, state: await readState(env) });
     }
     if (url.pathname === "/status") {
       const state = await readState(env);
@@ -141,6 +141,7 @@ async function runCheck(env: Env) {
     await env.STATE.put(STATE_KEY, serialized);
   }
   console.log(`level=${level} fails=${fails}/${TRIES} timing=${timing} alerted=${!!alert}`);
+  return probes;
 }
 
 /** 보낼 메시지가 있으면 문구 생성 함수를, 없으면 null을 돌려준다. */
