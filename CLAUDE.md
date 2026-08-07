@@ -141,7 +141,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `.github/workflows/deploy-beta.yml` — GitHub Actions 배포 워크플로우 (self-hosted runner, main+beta)
 - `.github/workflows/deploy.yml` — GitHub Pages 배포 (레거시, 미사용)
 - `watchdog/` — 헬스 감지 Cloudflare Worker (Cron 1분, Telegram 알림, KV로 중복 알림 억제). 배포/시크릿 절차는 `watchdog/README.md`
-- `.github/workflows/watchdog.yml` — 헬스 복구 담당 (3/3 실패 시 Telegram 긴급 + DNS failover). schedule은 백업 감지
+- `.github/workflows/watchdog.yml` — 헬스 복구 담당 (3/3 실패 시 Telegram 긴급 + DNS failover). schedule은 백업 감지. Mac mini 복구 후 DNS 복귀는 수동: `gh workflow run watchdog.yml -f failback=true`
 - `worker/index.ts` — Cloudflare Worker (레거시, 일부 analytics)
 - `worker/wrangler.toml` — Worker 설정 (레거시)
 - `docs/terminology.md` — UI 용어집

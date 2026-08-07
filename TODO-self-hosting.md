@@ -491,7 +491,13 @@ CF Dashboard → DNS → 각 record를 `cf-dns-snapshot-pre-phase6.txt`의 값�
 - GH UI에서 paste한 변수 값에 trailing newline이 묻어 CF API 9207 (Request body invalid) → workflow에서 `tr -d '[:space:]'`로 trim
 - curl `-fsS`는 4xx body swallow. 디버그 시 `-sS -w "\nHTTP:%{http_code}"`로 body+status 같이
 
-**리커버리 정책**: auto-failover 트리거 후 Mac mini 복구 시 DNS는 자동 복귀 안 됨. 사용자가 수동으로 다시 tunnel로 swap 필요 (CF UI 또는 watchdog 워크플로 수정).
+**리커버리 정책**: auto-failover 트리거 후 Mac mini 복구 시 DNS는 자동 복귀 안 됨. 복귀는 사람이 시점을 정해 수동으로 트리거한다 (#65):
+
+```bash
+gh workflow run watchdog.yml -f failback=true
+```
+
+pre-flight(터널 경유 origin 헬스) → CNAME swap → Vercel 헤더 소멸 확인 → 텔레그램 순서로 돌고, origin이 죽어 있으면 swap 전에 중단한다. 필요한 GH Variable: `WATCHDOG_TUNNEL_CNAME`. 상세는 `watchdog/README.md`.
 
 ⚠️ **TODO 보안**: 디버깅 중 사용자가 채팅에 노출한 CF API token (`cfut_YVtj0...`) 폐기 + 새 토큰 발급 후 GH Secret 갱신.
 
