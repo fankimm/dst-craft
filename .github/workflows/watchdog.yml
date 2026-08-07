@@ -16,6 +16,12 @@ name: watchdog (prod /api health)
 #
 # Phase 6 (CF DNS swap) 활성 시: vars.WATCHDOG_FAILOVER=1 + secrets.CF_API_TOKEN/CF_ZONE_ID 등록
 #   → 3/3 실패 시 dstcraft.com / www CNAME을 Vercel 대상으로 자동 rollback (Phase 6 후속).
+#
+# failback (#65): failover는 자동이지만 복귀는 수동이다. Mac mini가 살아난 뒤
+#   `gh workflow run watchdog.yml -f failback=true` 로 호출하면 헬스 프로브를 건너뛰고
+#   dstcraft.com / www CNAME을 CF 터널(vars.WATCHDOG_TUNNEL_CNAME)로 되돌린다.
+#   자동 복귀로 만들지 않은 이유: origin이 오르내릴 때 DNS가 왔다갔다(flapping)하면
+#   캐시·인증서·세션이 더 지저분해진다. 복귀 시점은 사람이 정한다.
 
 on:
   schedule:
@@ -27,6 +33,11 @@ on:
         description: "호출 사유 (CF Worker가 자동 호출 시 장애 상세를 전달)"
         required: false
         default: "manual"
+      failback:
+        description: "Mac mini 복구 후 DNS를 CF 터널로 되돌린다 (헬스 프로브는 건너뜀)"
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -41,8 +52,11 @@ jobs:
     timeout-minutes: 3
 
     steps:
+      # failback 실행일 때는 감지·복구 경로를 통째로 건너뛴다. 이 스텝이 스킵되면
+      # 아래 스텝들의 조건(steps.check.outputs.fails == '3')이 모두 거짓이 되어 자연히 함께 스킵된다.
       - name: Probe https://www.dstcraft.com/api/_debug/health
         id: check
+        if: ${{ !inputs.failback }}
         run: |
           set +e
           fails=0
@@ -245,5 +259,154 @@ jobs:
         run: |
           [ -z "$TG_TOKEN" ] || [ -z "$TG_CHAT" ] && exit 0
           text="🚨 watchdog: DNS auto-failover 실행됨 — dstcraft.com / www → Vercel"
+          curl -sS -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="$TG_CHAT" --data-urlencode "text=$text" >/dev/null
+
+      # ── failback (#65): Vercel → CF 터널 수동 복귀 ──────────────────────────
+      # 호출: gh workflow run watchdog.yml -f failback=true
+      #
+      # 사전 확인이 중요하다. www는 지금 Vercel을 향하고 있어서 www 헬스가 200이어도
+      # 그건 Vercel이 살아있다는 뜻일 뿐 Mac mini 상태와 무관하다. 그래서 터널을 그대로
+      # 쓰고 있는 beta 호스트로 origin이 실제 살아있는지 먼저 찔러본다.
+      - name: Pre-flight — origin(터널 경유) 헬스 확인
+        if: ${{ inputs.failback }}
+        env:
+          PROBE_URL: ${{ vars.WATCHDOG_ORIGIN_PROBE_URL || 'https://beta.dstcraft.com/api/_debug/health' }}
+        run: |
+          set -uo pipefail
+          echo "probe: $PROBE_URL"
+          for i in 1 2 3; do
+            if curl -fsS -m 10 -H "Cache-Control: no-cache" "$PROBE_URL" >/dev/null 2>&1; then
+              echo "[pre-flight #$i] origin alive"
+              exit 0
+            fi
+            echo "[pre-flight #$i] FAIL"
+            sleep 5
+          done
+          echo "::error::origin(터널)이 아직 응답하지 않는다. 죽은 origin으로 되돌리면 사이트가 통째로 내려가므로 중단."
+          exit 1
+
+      - name: DNS failback to CF Tunnel
+        id: failback
+        if: ${{ inputs.failback }}
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          TUNNEL_TARGET: ${{ vars.WATCHDOG_TUNNEL_CNAME }}
+        run: |
+          set -euo pipefail
+          # failover 스텝과 같은 이유로 whitespace trim (GH UI 붙여넣기 시 개행 혼입 → CF API 400)
+          CF_API_TOKEN=$(printf '%s' "$CF_API_TOKEN" | tr -d '[:space:]')
+          CF_ZONE_ID=$(printf '%s' "$CF_ZONE_ID" | tr -d '[:space:]')
+          TUNNEL_TARGET=$(printf '%s' "$TUNNEL_TARGET" | tr -d '[:space:]')
+          if [ -z "$CF_API_TOKEN" ] || [ -z "$CF_ZONE_ID" ] || [ -z "$TUNNEL_TARGET" ]; then
+            echo "::error::failback에는 CF_API_TOKEN / CF_ZONE_ID / vars.WATCHDOG_TUNNEL_CNAME 이 모두 필요하다"
+            exit 1
+          fi
+          echo "config: zone=${CF_ZONE_ID:0:8}... target=$TUNNEL_TARGET"
+
+          cf_cname() {
+            curl -fsS -H "Authorization: Bearer $CF_API_TOKEN" \
+              "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records?name=$1&type=CNAME"
+          }
+
+          # 터널 ID가 재생성되면 설정값이 낡는다. beta는 failover 대상이 아니라 항상 터널을
+          # 가리키므로, 그 값과 대조해 낡은 타깃으로 복귀하는 사고를 막는다.
+          BETA_TARGET=$(cf_cname beta.dstcraft.com | grep -oE '"content":"[^"]+"' | head -1 | cut -d'"' -f4)
+          echo "beta.dstcraft.com → ${BETA_TARGET:-<none>}"
+          case "$BETA_TARGET" in
+            *.cfargotunnel.com)
+              if [ "$BETA_TARGET" != "$TUNNEL_TARGET" ]; then
+                echo "::error::WATCHDOG_TUNNEL_CNAME($TUNNEL_TARGET)이 실제 터널($BETA_TARGET)과 다르다. 변수를 갱신할 것."
+                exit 1
+              fi
+              ;;
+            *) echo "  (beta가 터널을 가리키지 않음 — 대조 생략)" ;;
+          esac
+
+          swapped=0
+          for HOST in dstcraft.com www.dstcraft.com; do
+            echo "::group::$HOST"
+            REC=$(cf_cname "$HOST")
+            ID=$(printf '%s' "$REC" | grep -oE '"id":"[^"]+"' | head -1 | cut -d'"' -f4)
+            CURRENT=$(printf '%s' "$REC" | grep -oE '"content":"[^"]+"' | head -1 | cut -d'"' -f4)
+            echo "  id=$ID  current=$CURRENT"
+            if [ -z "$ID" ]; then
+              echo "  no CNAME record found, skip"
+              echo "::endgroup::"
+              continue
+            fi
+            if [ "$CURRENT" = "$TUNNEL_TARGET" ]; then
+              echo "  이미 터널을 가리킴 — no-op"
+              echo "::endgroup::"
+              continue
+            fi
+            echo "  swap $CURRENT → $TUNNEL_TARGET"
+            BODY=$(printf '{"content":"%s","proxied":true}' "$TUNNEL_TARGET")
+            PATCH_RES=$(curl -sS -X PATCH \
+              -H "Authorization: Bearer $CF_API_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "$BODY" \
+              -w "\nHTTP:%{http_code}" \
+              "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records/$ID")
+            printf '%s\n' "$PATCH_RES" | sed 's/^/    /'
+            if printf '%s' "$PATCH_RES" | grep -q '"success":true'; then
+              echo "  ✓ swap success"
+              swapped=$((swapped + 1))
+            else
+              echo "::error::PATCH failed for $HOST"
+              echo "::endgroup::"
+              exit 1
+            fi
+            echo "::endgroup::"
+          done
+          echo "swapped=$swapped" >> "$GITHUB_OUTPUT"
+
+      # www 헬스만으로는 판정할 수 없다 — Vercel도 같은 경로에 200을 준다.
+      # Vercel이 붙이는 x-vercel-id 헤더가 사라졌는지로 origin 전환을 확정한다.
+      - name: Verify prod is served from tunnel
+        if: ${{ inputs.failback }}
+        run: |
+          set -uo pipefail
+          for i in 1 2 3 4 5 6; do
+            HEADERS=$(curl -sSI -m 10 "https://www.dstcraft.com/" 2>/dev/null || true)
+            HEALTH=$(curl -s -o /dev/null -w '%{http_code}' -m 10 \
+              -H "Cache-Control: no-cache" \
+              "https://www.dstcraft.com/api/_debug/health?cb=$i" || true)
+            if printf '%s' "$HEADERS" | grep -qi '^x-vercel-id'; then
+              echo "[verify #$i] 아직 Vercel 응답 — 전파 대기"
+            elif [ "$HEALTH" = "200" ]; then
+              echo "[verify #$i] ✓ 터널 origin 응답 + 헬스 200"
+              exit 0
+            else
+              echo "[verify #$i] Vercel은 벗어났지만 헬스가 $HEALTH"
+            fi
+            sleep 10
+          done
+          echo "::error::복귀 후 60초 안에 터널 origin 정상 응답을 확인하지 못했다. CF 대시보드에서 DNS 상태 확인 필요."
+          exit 1
+
+      - name: Telegram alert (failback result)
+        if: ${{ always() && inputs.failback }}
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+          JOB_STATUS: ${{ job.status }}
+          SWAPPED: ${{ steps.failback.outputs.swapped }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "${TG_TOKEN:-}" ] || [ -z "${TG_CHAT:-}" ]; then
+            echo "no telegram secrets, skipping alert"
+            exit 0
+          fi
+          if [ "$JOB_STATUS" = "success" ]; then
+            if [ "${SWAPPED:-0}" = "0" ]; then
+              text="✅ watchdog failback: 이미 터널을 가리키고 있어 변경 없음 (dstcraft.com / www)"
+            else
+              text="✅ watchdog failback: DNS 복귀 완료 — dstcraft.com / www → Cloudflare 터널 (Mac mini)"
+            fi
+          else
+            text="⚠️ watchdog failback 실패 — DNS가 중간 상태일 수 있다. 수동 확인 필요."$'\n'"run: ${RUN_URL}"
+          fi
           curl -sS -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
             -d chat_id="$TG_CHAT" --data-urlencode "text=$text" >/dev/null

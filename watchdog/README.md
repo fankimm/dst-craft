@@ -97,6 +97,22 @@ npx wrangler deploy --var HEALTH_URL:https://www.dstcraft.com/api/_debug/nope   
 npx wrangler deploy                                                              # 원복
 ```
 
+## 장애가 끝난 뒤 되돌리기 (failback)
+
+3/3 실패가 확인되면 GitHub Actions 쪽이 `dstcraft.com` / `www` CNAME을 Vercel로 넘긴다. **복귀는 자동이 아니다.** Mac mini가 살아난 걸 확인한 뒤 직접 눌러야 한다:
+
+```bash
+gh workflow run watchdog.yml -f failback=true
+```
+
+하는 일: 헬스 프로브를 건너뛰고 → `beta.dstcraft.com`(항상 터널을 가리킴)을 찔러 origin이 실제로 살아있는지 확인 → 두 CNAME을 `vars.WATCHDOG_TUNNEL_CNAME`으로 되돌림 → prod 응답에서 Vercel 헤더가 사라졌는지까지 확인 → 텔레그램 알림.
+
+되돌릴 게 없으면(이미 터널) 아무것도 바꾸지 않고 끝난다. origin이 아직 죽어 있으면 스왑 전에 멈춘다 — 죽은 origin으로 되돌려 사이트를 통째로 내리는 사고 방지.
+
+자동 복귀로 만들지 않은 이유: origin이 오르내릴 때 DNS가 따라서 왔다갔다하면 캐시·세션이 더 지저분해진다. 복귀 시점은 사람이 정한다.
+
+필요한 설정: secrets `CF_API_TOKEN` / `CF_ZONE_ID`, variable `WATCHDOG_TUNNEL_CNAME`(터널 CNAME 타깃). 터널을 새로 만들면 이 변수도 같이 갱신할 것 — 워크플로우가 beta의 실제 CNAME과 대조해 다르면 실행을 거부한다.
+
 ## 비용
 
 무료 플랜 안에서 돈다. 하루 1440회 실행, KV 읽기 1440회 (무료 한도 10만/일).
