@@ -19,7 +19,7 @@ log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
 # 검증 실패: 산출물을 지우고 중단. prune 에 도달하지 않으므로 기존 백업은 그대로 남는다.
 fail() {
   log "ERROR: $1" >&2
-  rm -f "$OUT" "${OUT}.gz"
+  rm -f "$OUT" "${OUT}.gz" "${OUT}-wal" "${OUT}-shm"
   log "aborted — 기존 백업 보존 (prune 미실행)" >&2
   exit 1
 }
@@ -38,8 +38,13 @@ sqlite3 "$DB_PATH" ".backup '$OUT'"
 [[ -s "$OUT" ]] || fail "backup file missing or empty: $OUT"
 
 # 1) 백업본 무결성 — 손상된 페이지가 섞여 들어왔는지 확인
-CHECK=$(sqlite3 "$OUT" "PRAGMA integrity_check;" 2>&1) || fail "integrity_check 실행 실패: $CHECK"
+#    immutable=1 로 열지 않으면 WAL 모드 백업본을 여는 순간 -wal/-shm 사이드카가 생기고,
+#    아래 prune 은 'app-*.db.gz' 만 지우므로 그 잔재가 영구 누적된다.
+#    .backup 산출물은 체크포인트가 끝난 단일 파일이라 WAL 을 무시해도 안전하다.
+CHECK=$(sqlite3 "file:${OUT}?immutable=1" "PRAGMA integrity_check;" 2>&1) || fail "integrity_check 실행 실패: $CHECK"
 [[ "$CHECK" == "ok" ]] || fail "integrity_check 실패: $CHECK"
+# BACKUP_DIR 경로에 URI 특수문자가 있어 immutable 이 안 먹은 경우를 대비한 안전망
+rm -f "${OUT}-wal" "${OUT}-shm"
 log "integrity_check ok"
 
 gzip -9 "$OUT"
