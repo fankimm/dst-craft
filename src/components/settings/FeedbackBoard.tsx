@@ -106,11 +106,10 @@ function ReplyAuthorLabel({ author, locale }: { author?: ReplyAuthor | null; loc
   }
   return (
     <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-violet-600 dark:text-violet-400">
-      {/* 아이콘은 캐릭터 초상화에서 얼굴만 잘라낸 것 — scripts/make-wx78-face.py */}
       <img
-        src={assetPath("/images/ui/wx78-face.png")}
+        src={assetPath("/images/category-icons/characters/wx78.png")}
         alt=""
-        className="size-4 rounded-full object-cover shrink-0 ring-1 ring-violet-500/30"
+        className="size-4 object-contain shrink-0"
         loading="lazy"
       />
       {locale === "ko" ? "Claude 답변" : "Reply from Claude"}
