@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Ezoic 광고 자리(placement) — #75.
@@ -140,7 +140,51 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
 
   return (
     <div className={`flex justify-center py-2 shrink-0 ${className}`} data-ad-slot={variant}>
-      <div id={`ezoic-pub-ad-placeholder-${id}`} className={SLOT_BOX[variant]} />
+      <AdCard placeholderId={id} box={SLOT_BOX[variant]} />
+    </div>
+  );
+}
+
+/**
+ * 광고를 앱 카드 스타일로 감싸는 껍데기.
+ *
+ * 광고 소재 자체는 iframe 안에 완성된 이미지로 오므로 손댈 수 없다. 대신 주변을
+ * 앱의 카드(둥근 모서리 + 카드 배경 + 여백)와 같은 언어로 맞춰 이질감을 줄인다.
+ * "AD" 라벨은 광고임을 밝히는 것이라 정책상으로도 권장된다 — 콘텐츠로 오인하게
+ * 만드는 형태는 금지되므로 라벨을 빼지 말 것.
+ *
+ * 광고가 안 오면 Ezoic이 placeholder를 `display:none`으로 접는다. 그때 껍데기만 남아
+ * 빈 카드가 보이면 안 되므로, 채워졌는지 직접 감시해서 그때만 카드 옷을 입힌다.
+ */
+function AdCard({ placeholderId, box }: { placeholderId: number; box: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [filled, setFilled] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const check = () => {
+      setFilled(getComputedStyle(el).display !== "none" && el.childElementCount > 0);
+    };
+    // Ezoic은 스타일과 자식을 여러 번에 걸쳐 갈아끼운다 (입찰 → 렌더 → 리프레시)
+    const mo = new MutationObserver(check);
+    mo.observe(el, { attributes: true, attributeFilter: ["style", "class"], childList: true });
+    check();
+    return () => mo.disconnect();
+  }, []);
+
+  return (
+    <div
+      className={
+        filled ? "rounded-xl border border-border/50 bg-muted/30 px-2 pb-2 pt-1" : undefined
+      }
+    >
+      {filled && (
+        <div className="px-0.5 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
+          AD
+        </div>
+      )}
+      <div ref={ref} id={`ezoic-pub-ad-placeholder-${placeholderId}`} className={box} />
     </div>
   );
 }
@@ -178,13 +222,19 @@ function AdSlotMock({
       data-ad-size={key}
       aria-hidden="true"
     >
-      <div
-        style={{ width: size.w, height: size.h }}
-        className="flex flex-col items-center justify-center gap-0.5 rounded-md border border-dashed border-muted-foreground/40 bg-muted/40 text-muted-foreground/70 select-none overflow-hidden"
-      >
-        <span className="text-[10px] font-bold tracking-widest uppercase">Advertisement</span>
-        <span className="text-[10px]">{MOCK_LABEL[variant]}</span>
-        <span className="text-[10px] tabular-nums opacity-70">{key}</span>
+      {/* 실제 광고와 같은 카드 껍데기 — 목업에서 최종 모습을 그대로 보기 위함 */}
+      <div className="rounded-xl border border-border/50 bg-muted/30 px-2 pb-2 pt-1">
+        <div className="px-0.5 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
+          AD
+        </div>
+        <div
+          style={{ width: size.w, height: size.h }}
+          className="flex flex-col items-center justify-center gap-0.5 rounded-md border border-dashed border-muted-foreground/40 bg-muted/40 text-muted-foreground/70 select-none overflow-hidden"
+        >
+          <span className="text-[10px] font-bold tracking-widest uppercase">Advertisement</span>
+          <span className="text-[10px]">{MOCK_LABEL[variant]}</span>
+          <span className="text-[10px] tabular-nums opacity-70">{key}</span>
+        </div>
       </div>
     </div>
   );
