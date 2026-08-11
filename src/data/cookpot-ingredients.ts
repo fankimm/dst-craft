@@ -114,7 +114,8 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "nightmarefuel", name: "Nightmare Fuel", nameKo: "악몽 연료", tags: { inedible: 1, magic: 1 }, category: "misc" },
   { id: "boneshard", name: "Bone Shards", nameKo: "뼛조각", tags: { inedible: 1 }, category: "misc" },
   { id: "refined_dust", name: "Collected Dust", nameKo: "먼지 덩어리", tags: { decoration: 2 }, category: "misc" },
-  { id: "forgetmelots", name: "Forget-Me-Lots", nameKo: "건망초", tags: { decoration: 1 }, category: "misc", dryable: true },
+  // dryable 플래그를 켜지 말 것 — 말린 형태는 아래 "Dried-only ingredients"에 명시 등록됨 (중복 방지, #69)
+  { id: "forgetmelots", name: "Forget-Me-Lots", nameKo: "건망초", tags: { decoration: 1 }, category: "misc" },
   // Dried-only ingredients (raw forms are NOT cooking ingredients in the game)
   { id: "petals_dried", name: "Dried Petals", nameKo: "말린 꽃잎", tags: { decoration: 1, dried: 1 }, category: "misc" },
   { id: "petals_evil_dried", name: "Dried Dark Petals", nameKo: "말린 어둠의 꽃잎", tags: { decoration: 1, magic: 0.5, dried: 1 }, category: "misc" },
@@ -214,10 +215,33 @@ const variants = generateVariants(baseIngredients);
 // Export: all ingredients (base + variants)
 // ---------------------------------------------------------------------------
 
-export const cookpotIngredients: CookpotIngredient[] = [
+// 같은 id가 base와 자동 생성 variant 양쪽에 들어가면 재료 목록·즐겨찾기에 중복 표시된다 (#69).
+// 첫 등장만 남기고, 개발 중에는 어느 id가 겹쳤는지 경고로 알린다.
+function dedupeById(list: CookpotIngredient[]): CookpotIngredient[] {
+  const seen = new Set<string>();
+  const dupes: string[] = [];
+  const unique = list.filter((ing) => {
+    if (seen.has(ing.id)) {
+      dupes.push(ing.id);
+      return false;
+    }
+    seen.add(ing.id);
+    return true;
+  });
+
+  if (dupes.length > 0 && process.env.NODE_ENV !== "production") {
+    console.warn(
+      `[cookpot-ingredients] duplicate ingredient id(s) dropped: ${dupes.join(", ")}`,
+    );
+  }
+
+  return unique;
+}
+
+export const cookpotIngredients: CookpotIngredient[] = dedupeById([
   ...baseIngredients,
   ...variants,
-];
+]);
 
 /** Lookup by id */
 const ingredientMap = new Map(cookpotIngredients.map((i) => [i.id, i]));
