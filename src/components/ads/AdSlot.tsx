@@ -63,7 +63,7 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
  *
  * 폭과 최소 높이를 분리해 두는 이유는 `AdCard` 주석 참조 (폭은 항상, 높이는 채워졌을 때만).
  */
-const BAND_BOX = { w: "w-full max-w-[320px] sm:max-w-[728px]", minH: "min-h-[90px]" };
+const BAND_BOX = { w: "w-full max-w-[320px] sm:max-w-[728px]", minH: "min-h-[50px]" };
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
 const MOCK_SIZES: Record<string, { w: number; h: number }> = {
@@ -80,7 +80,7 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 };
 
 /** 목업 기본 규격 (모바일 / 데스크탑) — 실제 광고는 컨테이너 폭에 맞춰 Ezoic이 고른다 */
-const BAND_MOCK = { mobile: "320x50", desktop: "728x90" };
+const BAND_MOCK = { mobile: "320x50", desktop: "468x60" };
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
   "top-crafting": BAND_MOCK,
   "top-cooking": BAND_MOCK,
@@ -158,21 +158,47 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
   const isMock = mocks.has(variant) || mocks.has("all");
   const id = AD_PLACEHOLDER_ID[variant];
 
-  // 실제 광고 요청 — 목업 모드에서는 건너뛴다
+  const hostRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  // 자리가 화면에 가까워질 때까지 광고를 요청하지 않는다.
+  // 페이지를 열자마자 모든 자리를 한꺼번에 요청하면 첫 로딩이 눈에 띄게 느려진다 (#75).
   useEffect(() => {
     if (isMock) return;
+    const el = hostRef.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "300px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [isMock]);
+
+  // 실제 광고 요청 — 목업 모드에서는 건너뛴다
+  useEffect(() => {
+    if (isMock || !inView) return;
     const ez = (window as unknown as { ezstandalone?: EzStandalone }).ezstandalone;
     if (!ez?.cmd) return;
     ez.cmd.push(() => ez.showAds(id));
     return () => {
       ez.cmd.push(() => ez.destroyPlaceholders(id));
     };
-  }, [id, isMock]);
+  }, [id, isMock, inView]);
 
   if (isMock) return <AdSlotMock variant={variant} sizeKey={mocks.get(variant) ?? null} className={className} />;
 
   return (
-    <div className={`flex justify-center py-2 shrink-0 ${className}`} data-ad-slot={variant}>
+    <div ref={hostRef} className={`flex justify-center py-2 shrink-0 ${className}`} data-ad-slot={variant}>
       <AdCard placeholderId={id} box={SLOT_BOX[variant]} />
     </div>
   );

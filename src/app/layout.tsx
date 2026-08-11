@@ -311,7 +311,9 @@ export default function RootLayout({
               "window.ezstandalone = window.ezstandalone || {}; ezstandalone.cmd = ezstandalone.cmd || [];",
           }}
         />
-        <script src="https://ezoicanalytics.com/analytics.js" />
+        {/* async — 동기 로드면 이 스크립트를 받는 동안 페이지 렌더가 멈춘다 (#75).
+            광고 서빙과 무관한 분석 스크립트라 순서 보장이 필요 없다. */}
+        <script async src="https://ezoicanalytics.com/analytics.js" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />
