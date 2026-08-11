@@ -56,7 +56,7 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 /** 목업 기본 규격 (모바일 / 데스크탑) — 실제 광고는 컨테이너 폭에 맞춰 Ezoic이 고른다 */
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
   infeed: { mobile: "320x100", desktop: "728x90" },
-  sheet: { mobile: "320x100", desktop: "336x280" },
+  sheet: { mobile: "320x100", desktop: "728x90" },
   "rail-left": { mobile: "", desktop: "300x600" },
   "rail-right": { mobile: "", desktop: "300x600" },
 };
@@ -82,8 +82,10 @@ const MOCK_LABEL: Record<AdVariant, string> = {
 const SLOT_BOX: Record<AdVariant, string> = {
   // 그리드 한 행 — 320×100 / 300×250 / 728×90 모두 폭 728 안에 들어온다
   infeed: "w-full max-w-[728px] min-h-[100px]",
-  // 상세 시트 안 — 본문 계열 자리는 336×280까지 오므로 폭을 336으로 잡는다
-  sheet: "w-[336px] max-w-full min-h-[100px]",
+  // 상세 시트 안 — 시트는 가로로 넓고 세로가 아까운 자리라 띠 형태가 맞다.
+  // 폭을 336으로 좁혀 두면 336×280처럼 세로로 큰 광고가 와서 시트 아래를 잠식하고
+  // 스크롤을 유발했다 (#75 실측). 인피드와 같은 폭을 주면 728×90 계열 띠가 온다.
+  sheet: "w-full max-w-[728px] min-h-[100px]",
   // 데스크탑 레일 — 실측상 sidebar 자리에도 336폭(336×280 계열)이 배달되므로
   // 폭을 336으로 잡는다. 300으로 두면 36px씩 옆 컨텐츠를 침범했다.
   // 세로로 여러 유닛이 쌓여 뷰포트보다 길어지는 경우가 있어 래퍼에서 높이를 흡수한다
