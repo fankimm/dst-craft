@@ -62,10 +62,15 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
 };
 
 /**
- * 가로 띠 자리 공통 규격 — 320×100 / 336×280 / 728×90 모두 폭 728 안에 들어온다.
+ * 가로 띠 자리 공통 규격.
+ *
+ * **모바일 폭을 320으로 좁히는 게 핵심.** 폭을 728까지 열어 두면 모바일에서도 Ezoic이
+ * 300×250·336×280 같은 사각형을 넣어 높이가 250~280까지 치솟는다 (#75 실측, 사용자
+ * 지적). 320으로 좁히면 320×100·320×50 계열 띠가 온다.
+ *
  * 폭과 최소 높이를 분리해 두는 이유는 `AdCard` 주석 참조 (폭은 항상, 높이는 채워졌을 때만).
  */
-const BAND_BOX = { w: "w-full max-w-[728px]", minH: "min-h-[100px]" };
+const BAND_BOX = { w: "w-full max-w-[320px] sm:max-w-[728px]", minH: "min-h-[100px]" };
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
 const MOCK_SIZES: Record<string, { w: number; h: number }> = {
