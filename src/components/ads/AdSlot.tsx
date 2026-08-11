@@ -84,11 +84,12 @@ const SLOT_BOX: Record<AdVariant, string> = {
   infeed: "w-full max-w-[728px] min-h-[100px]",
   // 상세 시트 안 — 본문 계열 자리는 336×280까지 오므로 폭을 336으로 잡는다
   sheet: "w-[336px] max-w-full min-h-[100px]",
-  // 데스크탑 레일 — 300 계열이 들어와도 넘치지 않게 폭 300 고정.
-  // 아이템 그리드 최대폭 896 + 좌우 300씩 = 1496이라 1500 이상에서만 켠다
-  // (AppShell에서 `hidden min-[1500px]:flex`로 표시 조건을 맞춘다)
-  "rail-left": "w-[300px] min-h-[600px]",
-  "rail-right": "w-[300px] min-h-[600px]",
+  // 데스크탑 레일 — 실측상 sidebar 자리에도 336폭(336×280 계열)이 배달되므로
+  // 폭을 336으로 잡는다. 300으로 두면 36px씩 옆 컨텐츠를 침범했다.
+  // 세로로 여러 유닛이 쌓여 뷰포트보다 길어지는 경우가 있어 래퍼에서 높이를 흡수한다
+  // (AppShell의 `max-h-full overflow-y-auto` 참조).
+  "rail-left": "w-[336px] min-h-[600px]",
+  "rail-right": "w-[336px] min-h-[600px]",
 };
 
 const MOCK_DESKTOP_MIN_WIDTH = 768;
