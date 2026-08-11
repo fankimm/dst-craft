@@ -35,6 +35,8 @@ function ensureColumns(table: string, cols: { name: string; type: string }[]): v
 }
 
 ensureColumns("feedback", [
+  // NOT NULL + 기본값이라 기존 행도 ALTER 시점에 'human'으로 채워진다 (SQLite 동작).
+  { name: "reply_author", type: "TEXT NOT NULL DEFAULT 'human'" },
   { name: "message_translated", type: "TEXT" },
   { name: "message_lang", type: "TEXT" },
   { name: "message_translated_at", type: "INTEGER" },

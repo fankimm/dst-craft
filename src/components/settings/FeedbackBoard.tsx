@@ -14,8 +14,10 @@ import {
   type FeedbackItem,
   type FeedbackStatus,
   type PublicFeedbackItem,
+  type ReplyAuthor,
 } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
+import { assetPath } from "@/lib/asset-path";
 import type { Locale } from "@/lib/i18n";
 
 type BoardItem = {
@@ -24,6 +26,7 @@ type BoardItem = {
   time: string;
   status: FeedbackStatus;
   reply?: string | null;
+  replyAuthor?: ReplyAuthor | null;
   // Admin-only fields
   ip?: string;
   country?: string;
@@ -87,6 +90,32 @@ function formatRelative(iso: string): string {
   if (diff < 7 * day) return `${Math.floor(diff / day)}일 전`;
   const d = new Date(iso);
   return `${d.getMonth() + 1}/${d.getDate()}`;
+}
+
+/**
+ * 답변 블록 제목. 작성자가 Claude면 WX-78(게임 내 로봇 캐릭터) 아이콘과 함께 "Claude 답변"으로,
+ * 사람이 쓴 답변이면 기존과 동일하게 "개발자 답변"으로 표시한다.
+ */
+function ReplyAuthorLabel({ author, locale }: { author?: ReplyAuthor | null; locale: Locale }) {
+  if (author !== "claude") {
+    return (
+      <span className="text-[10px] font-semibold text-muted-foreground">
+        {locale === "ko" ? "개발자 답변" : "Developer Reply"}
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-violet-600 dark:text-violet-400">
+      {/* 아이콘은 캐릭터 초상화에서 얼굴만 잘라낸 것 — scripts/make-wx78-face.py */}
+      <img
+        src={assetPath("/images/ui/wx78-face.png")}
+        alt=""
+        className="size-4 rounded-full object-cover shrink-0 ring-1 ring-violet-500/30"
+        loading="lazy"
+      />
+      {locale === "ko" ? "Claude 답변" : "Reply from Claude"}
+    </span>
+  );
 }
 
 interface Props {
@@ -294,9 +323,7 @@ export function FeedbackBoard({ locale, newItem }: Props) {
                 return (
                   <div className="rounded-md bg-surface border border-border/50 px-3 py-2 text-sm">
                     <div className="flex items-center justify-between gap-2 mb-0.5">
-                      <span className="text-[10px] font-semibold text-muted-foreground">
-                        {locale === "ko" ? "개발자 답변" : "Developer Reply"}
-                      </span>
+                      <ReplyAuthorLabel author={fb.replyAuthor} locale={locale} />
                       {showingTranslated && (
                         <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400">
                           <Languages className="size-2.5" />

@@ -7,6 +7,15 @@ import { checkRateLimit } from "../lib/rate-limit";
 
 const app = new Hono();
 
+// 답변 작성자. 'human' = 관리자가 화면(FeedbackBoard)에서 직접 작성, 'claude' = Claude가 API로 작성.
+// PATCH의 replyAuthor로 지정하며, 값이 없거나 알 수 없는 값이면 'human'으로 떨어진다.
+const REPLY_AUTHORS = ["human", "claude"] as const;
+type ReplyAuthor = (typeof REPLY_AUTHORS)[number];
+
+function normalizeReplyAuthor(value: unknown): ReplyAuthor {
+  return REPLY_AUTHORS.includes(value as ReplyAuthor) ? (value as ReplyAuthor) : "human";
+}
+
 // POST /feedback — submit anonymous feedback (1/hour per IP)
 app.post("/", async (c) => {
   const ip = extractIp(c);
@@ -50,6 +59,7 @@ app.get("/public", async (c) => {
         time: string;
         status: string;
         reply: string | null;
+        reply_author: string | null;
         message_translated: string | null;
         message_lang: string | null;
         reply_translated: string | null;
@@ -57,7 +67,7 @@ app.get("/public", async (c) => {
       },
       []
     >(
-      `SELECT id, message, time, status, reply,
+      `SELECT id, message, time, status, reply, reply_author,
               message_translated, message_lang,
               reply_translated, reply_lang
        FROM feedback
@@ -72,6 +82,7 @@ app.get("/public", async (c) => {
       time: r.time,
       status: r.status,
       reply: r.reply,
+      replyAuthor: normalizeReplyAuthor(r.reply_author),
       messageTranslated: r.message_translated,
       messageLang: r.message_lang,
       replyTranslated: r.reply_translated,
@@ -88,7 +99,7 @@ app.get("/", async (c) => {
   const limit = Math.min(Number(c.req.query("limit") ?? "50"), 500);
   const rows = db
     .query<any, [number]>(
-      `SELECT id, message, time, country, ip, status, reply, hidden,
+      `SELECT id, message, time, country, ip, status, reply, reply_author, hidden,
               message_translated, message_lang, message_translated_at, message_translated_model,
               reply_translated, reply_lang, reply_translated_at, reply_translated_model
        FROM feedback
@@ -106,6 +117,7 @@ app.get("/", async (c) => {
       ip: r.ip,
       status: r.status,
       reply: r.reply,
+      replyAuthor: normalizeReplyAuthor(r.reply_author),
       hidden: !!r.hidden,
       messageTranslated: r.message_translated,
       messageLang: r.message_lang,
@@ -143,6 +155,10 @@ app.patch("/", async (c) => {
   if (reply) {
     sets.push("reply = ?");
     params.push(reply);
+    // 작성자는 답변과 항상 한 세트로 갱신 — 답변을 새로 쓰면 그 답변을 쓴 주체로 덮인다.
+    // (화면에서 Claude 답변을 사람이 고쳐 저장하면 'human'으로 바뀌는 게 맞다.)
+    sets.push("reply_author = ?");
+    params.push(normalizeReplyAuthor(body.replyAuthor));
   }
   if (hidden === true) sets.push("hidden = 1");
   if (hidden === false) sets.push("hidden = 0");

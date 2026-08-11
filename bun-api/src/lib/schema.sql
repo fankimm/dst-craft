@@ -40,6 +40,9 @@ CREATE TABLE IF NOT EXISTS feedback (
   ip TEXT NOT NULL DEFAULT '',
   status TEXT NOT NULL DEFAULT 'new',
   reply TEXT,
+  -- 답변 작성자. 'human' = 관리자가 화면에서 직접 작성(기본), 'claude' = Claude가 API로 작성.
+  -- 공개 보드가 이 값으로 "개발자 답변" / "Claude 답변" 표시를 가른다.
+  reply_author TEXT NOT NULL DEFAULT 'human',
   hidden INTEGER NOT NULL DEFAULT 0,
   created_at INTEGER NOT NULL,
   -- 번역 메타 (KR↔EN 양방향). NULL = 미번역. 자동 워커는 후속 이슈에서 추가.
