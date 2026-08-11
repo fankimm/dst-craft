@@ -1,8 +1,10 @@
-// 기존 피드백/답변에 대한 수동 번역 백필 (Claude Opus 4.7 직접 작성).
+// 기존 피드백/답변에 대한 수동 번역 백필 (Claude가 직접 작성).
 // 이슈 #31의 1단계: 자동 워커 구축 전, 현재 DB에 들어 있는 row들만 우선 양방향 번역.
+// 새 피드백이 쌓이면 아래 TRANSLATIONS에 항목을 추가하고 다시 실행한다 (이슈 #70).
 //
 // 멱등성: WHERE message_translated_at IS NULL (또는 reply 측 동일) 조건으로만 UPDATE.
 //   → 이미 번역된 row는 덮어쓰지 않음. 같은 스크립트 두 번 돌려도 안전.
+//   → 따라서 MODEL 상수를 바꿔도 기존 row의 model 값은 그대로 유지된다.
 // 실행:  bun run bun-api/scripts/translate-existing-feedback.ts
 // 환경:  DB_PATH (기본 ~/dstcraft/data/app.db)
 
@@ -11,7 +13,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DB_PATH = process.env.DB_PATH ?? join(homedir(), "dstcraft", "data", "app.db");
-const MODEL = "claude-opus-4-7"; // 이 스크립트의 모든 번역은 Claude Opus 4.7(1M)이 직접 작성.
+const MODEL = "claude-opus-5"; // 이번 실행분(2026-08-11 추가)의 번역 작성자. 이전 row들은 claude-opus-4-7로 기록돼 있고 덮어쓰지 않는다.
 
 type Lang = "ko" | "en";
 interface Entry {
@@ -135,6 +137,25 @@ const TRANSLATIONS: Entry[] = [
     id: "1779971540965-gv1yyh",
     messageLang: "ko",
     messageTranslated: "I'd love to see a Pearl home-decoration affinity list.",
+  },
+  // --- 2026-08-11 추가분 (이슈 #70) ---
+  {
+    // "감시합니당" — "감사합니당"(고맙습니당)의 오타. 귀여운 어미 + 오타 맛을 살려 초월번역.
+    id: "1785109461858-gxkotz",
+    messageLang: "ko",
+    messageTranslated: "Thank ewe! 🐑",
+  },
+  {
+    id: "1785440343749-p1wxms",
+    messageLang: "ko",
+    messageTranslated: "You're an absolute legend.",
+  },
+  {
+    // v0.31.3에서 고친 요리솥 재료 중복 버그 제보.
+    id: "1786395320853-r2i66t",
+    messageLang: "ko",
+    messageTranslated:
+      "If you favorite Dried Forget-Me-Lots, they breed endlessly — just like the real thing.",
   },
 ];
 
