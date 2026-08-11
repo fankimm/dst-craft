@@ -223,7 +223,7 @@ function AdCard({ placeholderId, box }: { placeholderId: number; box: { w: strin
     <div
       className={
         filled
-          ? `${box.w} overflow-hidden rounded-xl border border-border/50 bg-muted/30 pb-1 pt-1`
+          ? `${box.w} overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 pb-1 pt-1`
           : box.w
       }
     >
@@ -277,7 +277,7 @@ function AdSlotMock({
       aria-hidden="true"
     >
       {/* 실제 광고와 같은 카드 껍데기 — 목업에서 최종 모습을 그대로 보기 위함 */}
-      <div className="overflow-hidden rounded-xl border border-border/50 bg-muted/30 pb-1 pt-1">
+      <div className="overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 pb-1 pt-1">
         <div className="px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
           AD
         </div>
