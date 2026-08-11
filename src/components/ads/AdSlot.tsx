@@ -69,6 +69,7 @@ const BAND_BOX = { w: "w-full max-w-[320px] sm:max-w-[728px]", minH: "min-h-[50p
 const MOCK_SIZES: Record<string, { w: number; h: number }> = {
   "320x50": { w: 320, h: 50 },
   "320x100": { w: 320, h: 100 },
+  "468x60": { w: 468, h: 60 },
   "728x90": { w: 728, h: 90 },
   "300x250": { w: 300, h: 250 },
   "336x280": { w: 336, h: 280 },
@@ -285,8 +286,18 @@ function AdSlotMock({
   if (isDesktop === null) return null;
 
   const key = sizeKey ?? (isDesktop ? MOCK_DEFAULT[variant].desktop : MOCK_DEFAULT[variant].mobile);
+  if (!key) return null; // 규격이 비어 있는 건 의도된 것 — 레일은 모바일에 자리를 두지 않는다
+
+  // 반면 규격 이름이 있는데 표에 없으면 실수다. 예전에 기본값만 468×60으로 바꾸고 표에
+  // 항목을 안 넣어 데스크탑 띠 목업이 통째로 사라진 적이 있다 (#75, bf9bbf07).
+  // 조용히 지우지 말고 눈에 띄게 알린 뒤 최소 크기로라도 그린다.
   const size = MOCK_SIZES[key];
-  if (!size) return null; // 레일은 모바일 기본 규격이 없다
+  if (!size) {
+    if (typeof console !== "undefined") {
+      console.warn(`[AdSlotMock] 알 수 없는 규격 "${key}" (자리: ${variant}) — MOCK_SIZES에 추가할 것`);
+    }
+    return null;
+  }
 
   return (
     <div
