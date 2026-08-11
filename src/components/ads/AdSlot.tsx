@@ -46,8 +46,8 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
   infeed: { mobile: "320x100", desktop: "728x90" },
   sheet: { mobile: "300x100", desktop: "300x100" },
-  "rail-left": { mobile: "", desktop: "160x600" },
-  "rail-right": { mobile: "", desktop: "160x600" },
+  "rail-left": { mobile: "", desktop: "300x600" },
+  "rail-right": { mobile: "", desktop: "300x600" },
 };
 
 const MOCK_LABEL: Record<AdVariant, string> = {
@@ -60,18 +60,24 @@ const MOCK_LABEL: Record<AdVariant, string> = {
 /**
  * 자리별 컨테이너 규격.
  *
- * 광고 크기를 코드로 못 박지 않고 자리의 최대 폭·최소 높이만 준다. 그러면 Ezoic이
- * 그 폭에 맞는 규격(예: 좁은 화면 320×100, 넓은 화면 728×90)을 알아서 채운다.
- * 최소 높이를 주는 이유는 광고가 늦게 도착할 때 컨텐츠가 밀리지 않게 하기 위함.
+ * **Ezoic은 컨테이너 폭을 존중하지 않는다** — 160폭 자리에 300×250을 넣어 옆 컨텐츠와
+ * 겹치는 것을 실측했다(#75, beta). 그래서 자리 폭은 "그 자리에 올 수 있는 광고 규격의
+ * 최대치"로 잡는다. 잘라내기(overflow:hidden)는 쓰지 않는다 — 광고를 일부 가리는 건
+ * 광고 정책 위반이라 계정이 위험해진다.
+ *
+ * 높이는 최소값만 준다. 예상보다 큰 규격이 와도 자리가 아래로 늘어나면 될 뿐이고,
+ * 최소 높이가 있어야 광고가 늦게 도착할 때 컨텐츠가 튀지 않는다.
  */
 const SLOT_BOX: Record<AdVariant, string> = {
-  // 그리드 한 행을 통째로 — 모바일 320×100 ~ 데스크탑 728×90
-  infeed: "w-full max-w-[728px] min-h-[100px] sm:min-h-[90px]",
-  // 상세 시트 안 — 300×100 고정
+  // 그리드 한 행 — 320×100 / 300×250 / 728×90 모두 폭 728 안에 들어온다
+  infeed: "w-full max-w-[728px] min-h-[100px]",
+  // 상세 시트 안 — 300 계열(300×100, 300×250)까지 폭이 감당된다
   sheet: "w-[300px] min-h-[100px]",
-  // 데스크탑 레일 — 1280~1600은 160폭, 1600 이상은 300폭 (그 아래 화면은 아예 미표시)
-  "rail-left": "w-[160px] min-[1600px]:w-[300px] min-h-[600px]",
-  "rail-right": "w-[160px] min-[1600px]:w-[300px] min-h-[600px]",
+  // 데스크탑 레일 — 300 계열이 들어와도 넘치지 않게 폭 300 고정.
+  // 아이템 그리드 최대폭 896 + 좌우 300씩 = 1496이라 1500 이상에서만 켠다
+  // (AppShell에서 `hidden min-[1500px]:flex`로 표시 조건을 맞춘다)
+  "rail-left": "w-[300px] min-h-[600px]",
+  "rail-right": "w-[300px] min-h-[600px]",
 };
 
 const MOCK_DESKTOP_MIN_WIDTH = 768;
@@ -147,14 +153,7 @@ function AdSlotMock({
 
   if (isDesktop === null) return null;
 
-  // 레일 기본 규격은 실제 컨테이너 규칙(1600 이상은 300폭)을 그대로 따라간다
-  const isWide = isDesktop && window.innerWidth >= 1600;
-  const fallback = isDesktop
-    ? variant.startsWith("rail") && isWide
-      ? "300x600"
-      : MOCK_DEFAULT[variant].desktop
-    : MOCK_DEFAULT[variant].mobile;
-  const key = sizeKey ?? fallback;
+  const key = sizeKey ?? (isDesktop ? MOCK_DEFAULT[variant].desktop : MOCK_DEFAULT[variant].mobile);
   const size = MOCK_SIZES[key];
   if (!size) return null; // 레일은 모바일 기본 규격이 없다
 

@@ -350,7 +350,7 @@ export function AppShell() {
           레일은 컨텐츠와 나란한 flex 아이템이라 본문을 가리지 않고, 모바일에서는
           AdSlot이 규격 없음으로 판단해 아무것도 렌더하지 않는다. */}
       <div className="flex-1 min-h-0 flex overflow-hidden">
-        <AdSlot variant="rail-left" className="hidden xl:flex items-center self-center" />
+        <AdSlot variant="rail-left" className="hidden min-[1500px]:flex items-center self-center" />
         <div className="flex-1 min-w-0 h-full overflow-hidden">
         <div className={activeTab === "crafting" ? "h-full" : "hidden"}>
           <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} externalBackLabel={craftingBack?.label ?? null} onExternalBack={craftingBack ? handleExternalBack : undefined} onPanelClose={() => setCraftingBack(null)} />
@@ -380,7 +380,7 @@ export function AppShell() {
           <SettingsPage />
         </div>
         </div>
-        <AdSlot variant="rail-right" className="hidden xl:flex items-center self-center" />
+        <AdSlot variant="rail-right" className="hidden min-[1500px]:flex items-center self-center" />
       </div>
 
       {/* Review Prompt */}
