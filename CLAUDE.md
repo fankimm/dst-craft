@@ -117,24 +117,26 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 
 ### Claude가 답변하는 절차
 
-1. **관리자 토큰 확보** — 사용자에게 요청한다. 로그인한 브라우저 콘솔에서:
-   ```js
-   localStorage.getItem("dst-auth-token")
-   ```
-   JWT는 발급 후 30일 유효. **비밀값이므로 레포·메모리·로그에 남기지 말 것.** 매번 사용자에게 받아 그 자리에서만 쓴다.
+**사용자에게 토큰을 받지 않는다.** 맥미니 안에서 `.env`의 `JWT_SECRET`으로 단기(10분) 관리자 토큰을 만들어 로컬 API로만 호출한다 — 시크릿도 토큰도 서버 밖으로 나가지 않는다.
 
-2. **답변할 피드백 id 확인** — `curl -s https://www.dstcraft.com/api/feedback/public | jq '.items[] | {id, message, reply}'`
-
-3. **답변 작성** — 답변 문구는 반드시 사용자 확인을 받고 보낸다 (공개 게시판에 그대로 노출됨):
+1. **답변할 피드백 id 확인**
    ```bash
-   curl -X PATCH https://www.dstcraft.com/api/feedback \
-     -H "Authorization: Bearer $TOKEN" \
-     -H "Content-Type: application/json" \
-     -d '{"id":"<피드백 id>","status":"done","reply":"<답변 본문>","replyAuthor":"claude"}'
+   curl -s https://www.dstcraft.com/api/feedback/public | jq '.items[] | {id, message, reply, replyAuthor}'
    ```
-   - `replyAuthor`를 빼면 `human`으로 저장된다 — Claude가 쓴 답변이면 반드시 명시
-   - `status`는 `new` / `done` / `hold` / `rejected` 중 하나. 생략 가능하지만 답변과 함께 상태도 정리하는 게 보통
+
+2. **답변 문구를 사용자에게 확인받는다** — 공개 게시판에 그대로 노출되므로 예외 없음
+
+3. **등록** — 맥미니에서 `bun-api/scripts/reply-as-claude.ts` 실행 (`replyAuthor=claude` 고정):
+   ```bash
+   ssh fankimm@100.85.118.4 '~/.bun/bin/bun run ~/works/dst-craft/bun-api/scripts/reply-as-claude.ts "<피드백 id>" "<답변 본문>" done'
+   ```
+   - 3번째 인자는 status — `new` / `done` / `hold` / `rejected` (생략 시 `done`)
    - 답변은 500자에서 잘림
+   - 공개 목록 캐시가 60초라 사이트 반영에 최대 1분
+
+4. **확인** — 1번 curl을 다시 돌려 `replyAuthor: "claude"`로 저장됐는지 본다
+
+맥미니 접속이 안 될 때만 대안으로, 사용자에게 로그인한 브라우저의 `localStorage.getItem("dst-auth-token")`을 받아 `PATCH https://www.dstcraft.com/api/feedback`에 `{id, status, reply, replyAuthor:"claude"}`를 직접 보낸다. 그 토큰은 30일짜리 비밀값이므로 레포·메모리·로그에 남기지 말 것.
 
 ## TODO Management
 - `todo.md` — 프로젝트 전체 TODO (진행중/대기/완료)
