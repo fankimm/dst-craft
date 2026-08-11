@@ -176,6 +176,9 @@ const TRANSLATIONS: Entry[] = [
     messageLang: "ko",
     messageTranslated:
       "If you favorite Dried Forget-Me-Lots, they breed endlessly — just like the real thing.",
+    replyLang: "ko",
+    replyTranslated:
+      "The developer had one too many Forget-Me-Lots and registered the same ingredient twice. Then they started breeding on screen. All cleaned up. Thanks for the report 🌿",
   },
 ];
 
