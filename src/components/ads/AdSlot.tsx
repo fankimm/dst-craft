@@ -18,7 +18,16 @@ import { useEffect, useRef, useState } from "react";
  *   ?admock=all                      모든 자리 기본 규격
  *   ?admock=infeed,sheet:250x250     인피드 + 시트(250×250)
  */
-export type AdVariant = "top" | "infeed" | "sheet" | "rail-left" | "rail-right";
+export type AdVariant =
+  | "top-crafting"
+  | "top-cooking"
+  | "top-bosses"
+  | "infeed-crafting"
+  | "infeed-cooking"
+  | "infeed-bosses"
+  | "sheet"
+  | "rail-left"
+  | "rail-right";
 
 /**
  * 자리별 Ezoic placeholder id.
@@ -33,12 +42,25 @@ export type AdVariant = "top" | "infeed" | "sheet" | "rail-left" | "rail-right";
  * 번호를 바꾸면 대시보드 리포트의 연속성이 끊기므로 한 번 정한 뒤엔 유지한다.
  */
 export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
-  top: 102, // under_page_title — 검색바(제목 격) 바로 아래 첫 줄
-  infeed: 111, // mid_content — 본문 중간, 그리드 행 사이와 성격이 같다
-  sheet: 115, // incontent_5 — 본문 안 독립 자리
-  "rail-left": 107, // sidebar_floating_1 — 스크롤과 무관하게 옆에 붙어 있는 사이드바
+  // 목록 맨 위 (검색바 바로 아래) — 탭마다 다른 번호를 써야 한다.
+  // 탭은 hidden 상태로 동시에 마운트돼 있어서 같은 번호를 두 탭이 쓰면 한쪽만 채워지고
+  // 대시보드 리포트도 섞인다.
+  "top-crafting": 102, // under_page_title
+  "top-cooking": 109, // under_first_paragraph
+  "top-bosses": 110, // under_second_paragraph
+  // 그리드 18칸마다 한 행
+  "infeed-crafting": 111, // mid_content
+  "infeed-cooking": 112, // long_content
+  "infeed-bosses": 113, // longer_content
+  // 상세 시트는 한 번에 하나만 열리므로 탭 구분 없이 한 번호를 공유한다
+  sheet: 115, // incontent_5
+  // 데스크탑 레일은 AppShell에 한 쌍만 있다
+  "rail-left": 107, // sidebar_floating_1
   "rail-right": 108, // sidebar_floating_2
 };
+
+/** 가로 띠 자리 공통 규격 — 320×100 / 336×280 / 728×90 모두 폭 728 안에 들어온다 */
+const BAND_BOX = "w-full max-w-[728px] min-h-[100px]";
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
 const MOCK_SIZES: Record<string, { w: number; h: number }> = {
@@ -55,17 +77,26 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 };
 
 /** 목업 기본 규격 (모바일 / 데스크탑) — 실제 광고는 컨테이너 폭에 맞춰 Ezoic이 고른다 */
+const BAND_MOCK = { mobile: "320x100", desktop: "728x90" };
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
-  top: { mobile: "320x100", desktop: "728x90" },
-  infeed: { mobile: "320x100", desktop: "728x90" },
-  sheet: { mobile: "320x100", desktop: "728x90" },
+  "top-crafting": BAND_MOCK,
+  "top-cooking": BAND_MOCK,
+  "top-bosses": BAND_MOCK,
+  "infeed-crafting": BAND_MOCK,
+  "infeed-cooking": BAND_MOCK,
+  "infeed-bosses": BAND_MOCK,
+  sheet: BAND_MOCK,
   "rail-left": { mobile: "", desktop: "300x600" },
   "rail-right": { mobile: "", desktop: "300x600" },
 };
 
 const MOCK_LABEL: Record<AdVariant, string> = {
-  top: "목록 첫 줄",
-  infeed: "그리드 사이",
+  "top-crafting": "제작 목록 첫 줄",
+  "top-cooking": "요리 목록 첫 줄",
+  "top-bosses": "보스 목록 첫 줄",
+  "infeed-crafting": "제작 그리드 사이",
+  "infeed-cooking": "요리 그리드 사이",
+  "infeed-bosses": "보스 그리드 사이",
   sheet: "상세 시트 안",
   "rail-left": "왼쪽 레일",
   "rail-right": "오른쪽 레일",
@@ -83,14 +114,17 @@ const MOCK_LABEL: Record<AdVariant, string> = {
  * 최소 높이가 있어야 광고가 늦게 도착할 때 컨텐츠가 튀지 않는다.
  */
 const SLOT_BOX: Record<AdVariant, string> = {
-  // 목록 맨 위 한 행 — 검색바 바로 아래. 인피드와 같은 가로 띠 규격
-  top: "w-full max-w-[728px] min-h-[100px]",
-  // 그리드 한 행 — 320×100 / 300×250 / 728×90 모두 폭 728 안에 들어온다
-  infeed: "w-full max-w-[728px] min-h-[100px]",
+  // 목록 맨 위 한 행 (검색바 바로 아래) + 그리드 사이 한 행 — 모두 가로 띠
+  "top-crafting": BAND_BOX,
+  "top-cooking": BAND_BOX,
+  "top-bosses": BAND_BOX,
+  "infeed-crafting": BAND_BOX,
+  "infeed-cooking": BAND_BOX,
+  "infeed-bosses": BAND_BOX,
   // 상세 시트 안 — 시트는 가로로 넓고 세로가 아까운 자리라 띠 형태가 맞다.
   // 폭을 336으로 좁혀 두면 336×280처럼 세로로 큰 광고가 와서 시트 아래를 잠식하고
-  // 스크롤을 유발했다 (#75 실측). 인피드와 같은 폭을 주면 728×90 계열 띠가 온다.
-  sheet: "w-full max-w-[728px] min-h-[100px]",
+  // 스크롤을 유발했다 (#75 실측).
+  sheet: BAND_BOX,
   // 데스크탑 레일 — 실측상 sidebar 자리에도 336폭(336×280 계열)이 배달되므로
   // 폭을 336으로 잡는다. 300으로 두면 36px씩 옆 컨텐츠를 침범했다.
   // 세로로 여러 유닛이 쌓여 뷰포트보다 길어지는 경우가 있어 래퍼에서 높이를 흡수한다

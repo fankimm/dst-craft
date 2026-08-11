@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { Fragment, useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { trackItemClick, fetchCombos } from "@/lib/analytics";
@@ -35,6 +35,10 @@ import { DetailPanel } from "@/components/ui/DetailPanel";
 import { SortDropdown } from "@/components/ui/SortDropdown";
 import { FavClickBadge } from "@/components/ui/FavClickBadge";
 import { statColor, formatStat } from "@/lib/stat-utils";
+import { AdSlot } from "@/components/ads/AdSlot";
+
+/** 광고 한 행을 끼우는 간격 (카드 칸 수) */
+const AD_EVERY = 18;
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -576,16 +580,23 @@ function RecipeGrid({
 
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-      {visible.map((recipe) => (
-        <RecipeCard
-          key={recipe.id}
-          recipe={recipe}
-          locale={locale}
-          onClick={() => onSelect(recipe)}
-          isFav={isFavorite(recipe.id)}
-          onToggleFav={() => onToggleFav(recipe.id)}
-          clicks={getClicks?.(recipe.id)}
-        />
+      {/* 목록 맨 위 한 줄 — 검색바 바로 아래 (#75) */}
+      <AdSlot variant="top-cooking" className="col-span-full" />
+      {visible.map((recipe, i) => (
+        <Fragment key={recipe.id}>
+          <RecipeCard
+            recipe={recipe}
+            locale={locale}
+            onClick={() => onSelect(recipe)}
+            isFav={isFavorite(recipe.id)}
+            onToggleFav={() => onToggleFav(recipe.id)}
+            clicks={getClicks?.(recipe.id)}
+          />
+          {/* 한 화면(약 18칸) 지나칠 때마다 한 행 (#75) */}
+          {(i + 1) % AD_EVERY === 0 && i + 1 < visible.length && (
+            <AdSlot variant="infeed-cooking" className="col-span-full" />
+          )}
+        </Fragment>
       ))}
       {visibleCount < recipes.length && (
         <div ref={sentinelRef} className="col-span-full flex justify-center py-4">
@@ -728,6 +739,8 @@ function RawFoodGrid({
 
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+      {/* 생식 목록도 같은 자리 번호를 쓴다 — 레시피 목록과 동시에 렌더되지 않는다 (#75) */}
+      <AdSlot variant="top-cooking" className="col-span-full" />
       {visible.map((food) => (
         <RawFoodCard
           key={food.id}

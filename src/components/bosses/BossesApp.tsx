@@ -26,6 +26,7 @@ import { DetailPanel } from "@/components/ui/DetailPanel";
 import { SortDropdown } from "@/components/ui/SortDropdown";
 import { FavClickBadge } from "@/components/ui/FavClickBadge";
 import { CategoryCard } from "@/components/ui/CategoryCard";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -406,6 +407,8 @@ export function BossesApp({
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
         <div className="flex flex-col min-h-full">
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
+            {/* 목록 맨 위 한 줄 — 검색바 바로 아래 (#75) */}
+            <AdSlot variant="top-bosses" className="col-span-full" />
             {filteredBosses.map((boss) => (
               <BossCard
                 key={boss.id}

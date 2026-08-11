@@ -70,7 +70,7 @@ export function ItemGrid({
   return (
     <div className={cn("grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full", className)}>
       {/* 목록 맨 위 한 줄 — 검색바 바로 아래 (#75) */}
-      <AdSlot variant="top" className="col-span-full" />
+      <AdSlot variant="top-crafting" className="col-span-full" />
       {visibleItems.map((item, i) => (
         <Fragment key={item.id}>
           <ItemIcon
@@ -82,7 +82,7 @@ export function ItemGrid({
           {/* 광고 자리 — 그리드 행 사이에 한 행을 통째로 쓴다 (#75).
               한 화면(모바일 3열×6행 / 데스크탑 6열×3행 ≈ 18칸) 지나칠 때마다 한 번. */}
           {(i + 1) % AD_EVERY === 0 && i + 1 < visibleItems.length && (
-            <AdSlot variant="infeed" className="col-span-full" />
+            <AdSlot variant="infeed-crafting" className="col-span-full" />
           )}
         </Fragment>
       ))}
