@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.31.3",
+    date: "2026-08-11",
+    dev: [
+      "fix(cookpot): 요리솥 재료 목록에 `forgetmelots_dried`가 2건 존재 (#69). `forgetmelots`의 `dryable: true`로 자동 생성되는 variant와 \"Dried-only ingredients\" 블록의 수동 등록이 겹침. base 쪽 `dryable` 플래그 제거로 해소.",
+      "fix(cookpot): 데이터 중복 2건이 화면에서는 무한 증식으로 증폭. `IngredientPicker` 그리드가 `key={ing.id}`를 쓰는데 형제 key가 겹쳐 검색 필터 갱신마다 노드가 정리되지 않고 누적 — 헤드리스 재현으로 검색 6회 반복 시 3→5→7→9→11→13 확인.",
+      "chore(cookpot): `cookpotIngredients` export 시점에 `dedupeById()` 가드 추가 (첫 등장만 유지, 개발 모드에서 중복 id 콘솔 경고). 재료 132 → 131건.",
+      "docs(mistakes): 자동 생성 variant와 수동 등록의 ID 충돌 + 화면 증폭 메커니즘 기록.",
+    ],
+    changes: {
+      ko: [
+        "요리솥 재료 고르기에서 '말린 건망초'가 여러 개로 늘어나던 문제 수정. 기존 즐겨찾기는 그대로 유지됩니다.",
+      ],
+      en: [
+        "Fixed 'Dried Forget-Me-Lots' multiplying in the cookpot ingredient picker. Existing favorites are unaffected.",
+      ],
+    },
+  },
+  {
     version: "0.31.2",
     date: "2026-07-19",
     dev: [
