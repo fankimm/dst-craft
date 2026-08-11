@@ -18,7 +18,7 @@ import { useEffect, useRef, useState } from "react";
  *   ?admock=all                      모든 자리 기본 규격
  *   ?admock=infeed,sheet:250x250     인피드 + 시트(250×250)
  */
-export type AdVariant = "infeed" | "sheet" | "rail-left" | "rail-right";
+export type AdVariant = "top" | "infeed" | "sheet" | "rail-left" | "rail-right";
 
 /**
  * 자리별 Ezoic placeholder id.
@@ -33,6 +33,7 @@ export type AdVariant = "infeed" | "sheet" | "rail-left" | "rail-right";
  * 번호를 바꾸면 대시보드 리포트의 연속성이 끊기므로 한 번 정한 뒤엔 유지한다.
  */
 export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
+  top: 102, // under_page_title — 검색바(제목 격) 바로 아래 첫 줄
   infeed: 111, // mid_content — 본문 중간, 그리드 행 사이와 성격이 같다
   sheet: 115, // incontent_5 — 본문 안 독립 자리
   "rail-left": 107, // sidebar_floating_1 — 스크롤과 무관하게 옆에 붙어 있는 사이드바
@@ -55,6 +56,7 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 
 /** 목업 기본 규격 (모바일 / 데스크탑) — 실제 광고는 컨테이너 폭에 맞춰 Ezoic이 고른다 */
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
+  top: { mobile: "320x100", desktop: "728x90" },
   infeed: { mobile: "320x100", desktop: "728x90" },
   sheet: { mobile: "320x100", desktop: "728x90" },
   "rail-left": { mobile: "", desktop: "300x600" },
@@ -62,6 +64,7 @@ const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
 };
 
 const MOCK_LABEL: Record<AdVariant, string> = {
+  top: "목록 첫 줄",
   infeed: "그리드 사이",
   sheet: "상세 시트 안",
   "rail-left": "왼쪽 레일",
@@ -80,6 +83,8 @@ const MOCK_LABEL: Record<AdVariant, string> = {
  * 최소 높이가 있어야 광고가 늦게 도착할 때 컨텐츠가 튀지 않는다.
  */
 const SLOT_BOX: Record<AdVariant, string> = {
+  // 목록 맨 위 한 행 — 검색바 바로 아래. 인피드와 같은 가로 띠 규격
+  top: "w-full max-w-[728px] min-h-[100px]",
   // 그리드 한 행 — 320×100 / 300×250 / 728×90 모두 폭 728 안에 들어온다
   infeed: "w-full max-w-[728px] min-h-[100px]",
   // 상세 시트 안 — 시트는 가로로 넓고 세로가 아까운 자리라 띠 형태가 맞다.

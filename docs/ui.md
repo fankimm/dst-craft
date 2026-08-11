@@ -233,6 +233,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **자리(variant)와 placeholder id** — 번호는 임의로 고르면 안 된다. Ezoic 대시보드에 위치 유형이 정해진 placeholder가 이미 등록돼 있어 **번호가 곧 위치 유형**이다 (100=Adhesion, 101=top_of_page, 102=under_page_title, 103=bottom_of_page, 104~108=sidebar 계열, 109~115=본문 계열). 우리 자리의 성격과 같은 유형을 골라 쓴다:
   | variant | id (Ezoic 유형) | 위치 | 규격 |
   |---|---|---|---|
+  | `top` | 102 (`under_page_title`) | 아이템 목록 맨 위 한 줄, 검색바 바로 아래 (`ItemGrid`) | 폭 728까지 (가로 띠) |
   | `infeed` | 111 (`mid_content`) | 아이템 그리드 18칸마다 한 행 (`ItemGrid`) | 폭 728까지 (320×100 / 336×280 / 728×90) |
   | `sheet` | 115 (`incontent_5`) | 상세 시트 컨텐츠 끝, `SupportPill` 위 (`DetailPanel`) | 폭 728까지 — 시트는 세로가 아까운 자리라 띠 형태를 받는다 |
   | `rail-left` / `rail-right` | 107 / 108 (`sidebar_floating_1·2`) | 탭 컨텐츠 좌우 (`AppShell`) | 300×600 계열. 화면 1500 미만은 미표시 |
