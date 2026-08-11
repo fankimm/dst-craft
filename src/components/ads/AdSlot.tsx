@@ -223,15 +223,17 @@ function AdCard({ placeholderId, box }: { placeholderId: number; box: { w: strin
     <div
       className={
         filled
-          ? `${box.w} rounded-xl border border-border/50 bg-muted/30 px-2 pb-2 pt-1`
+          ? `${box.w} overflow-hidden rounded-xl border border-border/50 bg-muted/30 pb-1 pt-1`
           : box.w
       }
     >
       {filled && (
-        <div className="px-0.5 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
+        <div className="px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
           AD
         </div>
       )}
+      {/* 좌우 패딩을 주지 않는다 — 패딩만큼 안쪽 폭이 줄면 광고가 카드를 삐져나온다
+          (#75 실측: 카드 px-2 때문에 336 광고가 318 자리를 18px 넘쳤다) */}
       <div
         ref={ref}
         id={`ezoic-pub-ad-placeholder-${placeholderId}`}
@@ -275,8 +277,8 @@ function AdSlotMock({
       aria-hidden="true"
     >
       {/* 실제 광고와 같은 카드 껍데기 — 목업에서 최종 모습을 그대로 보기 위함 */}
-      <div className="rounded-xl border border-border/50 bg-muted/30 px-2 pb-2 pt-1">
-        <div className="px-0.5 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
+      <div className="overflow-hidden rounded-xl border border-border/50 bg-muted/30 pb-1 pt-1">
+        <div className="px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
           AD
         </div>
         <div
