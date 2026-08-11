@@ -223,6 +223,12 @@ export async function submitFeedback(message: string): Promise<string | null> {
 
 export type FeedbackStatus = "new" | "done" | "hold" | "rejected";
 
+/**
+ * 답변 작성자. "human" = 관리자가 화면에서 직접 작성, "claude" = Claude가 API로 작성.
+ * 화면에서 저장하는 답변은 항상 "human"이며, "claude"는 API 직접 호출로만 기록된다.
+ */
+export type ReplyAuthor = "human" | "claude";
+
 export interface FeedbackItem {
   id: string;
   message: string;
@@ -231,6 +237,7 @@ export interface FeedbackItem {
   ip: string;
   status: FeedbackStatus;
   reply?: string | null;
+  replyAuthor?: ReplyAuthor | null;
   hidden?: boolean;
   // 번역 메타 (자동/수동 번역 후 채워짐). admin 응답에 노출.
   messageTranslated?: string | null;
@@ -257,14 +264,18 @@ export async function fetchFeedback(token: string): Promise<FeedbackItem[]> {
   }
 }
 
-/** Update feedback status + optional reply (admin only) */
+/**
+ * Update feedback status + optional reply (admin only).
+ * 화면에서 저장하는 답변은 사람이 쓴 것이므로 replyAuthor를 항상 "human"으로 명시한다
+ * (Claude가 쓴 답변을 화면에서 고쳐 저장하면 사람 답변으로 바뀌는 게 맞다).
+ */
 export async function updateFeedbackStatus(token: string, id: string, status: FeedbackStatus, reply?: string): Promise<boolean> {
   if (!WORKER_URL) return false;
   try {
     const res = await apiFetch(`${WORKER_URL}/feedback`, token, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status, ...(reply ? { reply } : {}) }),
+      body: JSON.stringify({ id, status, ...(reply ? { reply, replyAuthor: "human" as ReplyAuthor } : {}) }),
     });
     return res.ok;
   } catch (e) {
@@ -280,6 +291,7 @@ export interface PublicFeedbackItem {
   time: string;
   status: FeedbackStatus;
   reply: string | null;
+  replyAuthor?: ReplyAuthor | null;
   // 번역 (KR↔EN 양방향). null = 미번역. 프론트가 locale 따라 선택해 표시.
   messageTranslated?: string | null;
   messageLang?: string | null;

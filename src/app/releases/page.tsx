@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.32.0",
+    date: "2026-08-11",
+    dev: [
+      "feat(feedback): 답변 작성자 구분 추가 (#71). `feedback.reply_author` (TEXT NOT NULL DEFAULT 'human') — `schema.sql` + `ensureColumns()` 양쪽에 넣어 신규/기존 DB 모두 커버. 기존 행은 ALTER 시점에 'human'으로 채워져 표시가 그대로 유지됨.",
+      "feat(api): `PATCH /feedback`이 `replyAuthor`를 받아 답변과 한 세트로 저장. 알 수 없는 값은 `normalizeReplyAuthor()`가 'human'으로 정규화. 공개/관리자 목록 응답에도 `replyAuthor` 포함.",
+      "feat(ui): `FeedbackBoard`에 `ReplyAuthorLabel` 추가 — `claude`면 WX-78 얼굴 아이콘 + \"Claude 답변\", 그 외엔 기존 \"개발자 답변\". 작성자 선택 UI는 두지 않고 화면 저장은 항상 `replyAuthor: \"human\"` 명시.",
+      "docs: CLAUDE.md에 \"Feedback Replies\" 섹션 추가 (Claude가 답변하는 절차 — 토큰 확보 → PATCH 호출). docs/ui.md의 `AdminFeedbackSection` 항목을 실제 파일명 `FeedbackBoard`로 현행화.",
+      "docs(ui): 캐릭터 이미지 사용 규칙 명문화 — 앱 UI는 `category-icons/characters/`(배경 투명 얼굴), 액자 포함 `characters/`는 SEO·OG 전용. 작게 줄이면 액자만 남아 뭉개짐.",
+      "검증: 기존 DB 모양을 SQLite로 재현해 ALTER 후 기존 행이 'human'으로 채워지는 것과 신규 스키마 생성을 확인. 헤드리스로 라이트/다크 렌더 확인.",
+    ],
+    changes: {
+      ko: [
+        "피드백 답변에 작성자를 표시합니다. AI가 작성한 답변은 WX-78 아이콘과 함께 'Claude 답변'으로 구분되어 보입니다.",
+      ],
+      en: [
+        "Feedback replies now show who wrote them. Replies written by AI appear as \"Reply from Claude\" with a WX-78 icon.",
+      ],
+    },
+  },
+  {
     version: "0.31.3",
     date: "2026-08-11",
     dev: [

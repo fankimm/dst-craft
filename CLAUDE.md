@@ -106,6 +106,36 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - **인증**: Google Identity Services (GIS) — 클라이언트 측 renderButton 방식
 - **모니터링**: Cloudflare Worker `watchdog/` (Cron Trigger 1분 주기)가 prod `/api` 헬스 감지 + Telegram 알림. 3/3 실패 시 GitHub Actions watchdog을 `workflow_dispatch`로 호출 → Vercel 자동 failover 등 복구 수행 (Worker는 SSH 불가). GitHub schedule은 Worker 장애 대비 백업 감지로만 유지
 
+## Feedback Replies (Claude가 답변 달기)
+
+피드백 답변은 작성자를 구분해 저장한다 (`feedback.reply_author`).
+
+- `human` (기본) — 관리자가 설정 탭의 피드백 보드에서 직접 작성. 화면에는 "개발자 답변"으로 표시
+- `claude` — Claude가 API로 직접 작성. 화면에는 WX-78 아이콘 + "Claude 답변"으로 표시
+
+**UI에는 작성자 선택 스위치가 없다.** 화면에서 저장하면 항상 `human`으로 기록되고, `claude`는 아래처럼 API를 직접 호출할 때만 붙는다. Claude가 쓴 답변을 사람이 화면에서 고쳐 저장하면 `human`으로 바뀐다 (답변과 작성자는 항상 한 세트로 갱신).
+
+### Claude가 답변하는 절차
+
+1. **관리자 토큰 확보** — 사용자에게 요청한다. 로그인한 브라우저 콘솔에서:
+   ```js
+   localStorage.getItem("dst-auth-token")
+   ```
+   JWT는 발급 후 30일 유효. **비밀값이므로 레포·메모리·로그에 남기지 말 것.** 매번 사용자에게 받아 그 자리에서만 쓴다.
+
+2. **답변할 피드백 id 확인** — `curl -s https://www.dstcraft.com/api/feedback/public | jq '.items[] | {id, message, reply}'`
+
+3. **답변 작성** — 답변 문구는 반드시 사용자 확인을 받고 보낸다 (공개 게시판에 그대로 노출됨):
+   ```bash
+   curl -X PATCH https://www.dstcraft.com/api/feedback \
+     -H "Authorization: Bearer $TOKEN" \
+     -H "Content-Type: application/json" \
+     -d '{"id":"<피드백 id>","status":"done","reply":"<답변 본문>","replyAuthor":"claude"}'
+   ```
+   - `replyAuthor`를 빼면 `human`으로 저장된다 — Claude가 쓴 답변이면 반드시 명시
+   - `status`는 `new` / `done` / `hold` / `rejected` 중 하나. 생략 가능하지만 답변과 함께 상태도 정리하는 게 보통
+   - 답변은 500자에서 잘림
+
 ## TODO Management
 - `todo.md` — 프로젝트 전체 TODO (진행중/대기/완료)
 - `/todo` 스킬로 세션 시작 시 상태 확인 + 작업 재개

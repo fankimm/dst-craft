@@ -157,11 +157,13 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **짝 훅**: `useDetailPanel` — 패널 open/close 애니메이션 상태 관리
 - **Props**: `open`, `onClose`, `children`
 
-### AdminFeedbackSection (`src/components/settings/AdminFeedbackSection.tsx`)
-- **용도**: 어드민 전용 사용자 피드백 관리 (설정 탭에 임베드)
-- **구조**: 상태 필터 칩 + 한 줄 리스트(상태점/메시지 truncate/상대시간) → 탭 시 DetailPanel(전체 메시지/메타/상태 변경/복사)
+### FeedbackBoard (`src/components/settings/FeedbackBoard.tsx`)
+- **용도**: 사용자 피드백 게시판 (설정 탭에 임베드). 공개 목록 + 어드민 관리 UI를 한 컴포넌트에서 분기
+- **구조(공개)**: 피드백 카드 리스트(본문/상태 뱃지/자동 번역 배지+원문 토글) + 답변이 있으면 답변 블록
+- **구조(어드민)**: 상태 필터 칩 추가 + 항목 탭 시 DetailPanel(전체 메시지/메타/답변 작성/상태 변경/숨김/삭제)
+- **답변 작성자 표시**: 답변 블록 제목은 `ReplyAuthorLabel`이 그린다. `replyAuthor === "claude"`면 WX-78 얼굴 아이콘 + 보라색 "Claude 답변", 그 외에는 기존 회색 "개발자 답변". 작성자 선택 UI는 두지 않는다 — 화면 저장은 항상 `human`, `claude`는 API 직접 호출로만 (CLAUDE.md "Feedback Replies" 참조)
 - **모바일 최적화**: 좌우 스크롤 없음, 한 줄당 최소 정보만 노출
-- **권한**: `useAuth().isAdmin === false`면 자동 숨김
+- **권한**: 어드민 UI는 `useAuth().isAdmin` 또는 개발 모드에서만 노출
 
 ### SortDropdown (`src/components/ui/SortDropdown.tsx`)
 - **용도**: 기본/인기순 정렬 드롭다운
@@ -271,6 +273,12 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - 그리드 레이아웃: `grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full`
 - 아이콘 크기: 그리드 타일 48-56px, 카드 내 48-56px, 상세 헤더 64px, 뱃지/슬롯 내 32px
 - 텍스트: 카드 라벨 `text-xs sm:text-sm`, 상세 제목 `text-base font-semibold`
+
+### 캐릭터 이미지 — 앱 UI에는 `category-icons/characters/` 만 쓴다
+
+- **앱 화면**: `/images/category-icons/characters/<portrait>.png` — 배경 투명한 얼굴 아이콘. 작게 줄여도 식별되고, 이미 스킬/요리/제작/스킨 탭이 전부 이걸 쓴다
+- **`/images/characters/<portrait>.png` 는 앱 UI에 쓰지 말 것** — 액자(프레임)가 포함된 큰 초상화라 작게 줄이면 액자만 남아 어두운 덩어리로 뭉개진다. SEO 페이지의 큰 이미지와 OG 이미지 전용
+- 액자 이미지를 잘라 아이콘을 새로 만들지도 말 것 — 얼굴 아이콘이 이미 있다
 
 ## 상세(바텀시트) 패턴
 
