@@ -230,12 +230,12 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 ### AdSlot (`src/components/ads/AdSlot.tsx`)
 - **용도**: Ezoic 광고 자리. placeholder div를 그리고 `ezstandalone.showAds(<id>)`로 광고를 요청, 언마운트 시 `destroyPlaceholders`로 정리
-- **자리(variant)와 placeholder id** — 대시보드 리포트 기준값이라 변경 금지:
-  | variant | id | 위치 | 규격 |
+- **자리(variant)와 placeholder id** — 번호는 임의로 고르면 안 된다. Ezoic 대시보드에 위치 유형이 정해진 placeholder가 이미 등록돼 있어 **번호가 곧 위치 유형**이다 (100=Adhesion, 101=top_of_page, 102=under_page_title, 103=bottom_of_page, 104~108=sidebar 계열, 109~115=본문 계열). 우리 자리의 성격과 같은 유형을 골라 쓴다:
+  | variant | id (Ezoic 유형) | 위치 | 규격 |
   |---|---|---|---|
-  | `infeed` | 101 | 아이템 그리드 18칸마다 한 행 (`ItemGrid`) | 모바일 320×100 / 데스크탑 728×90 |
-  | `sheet` | 102 | 상세 시트 컨텐츠 끝, `SupportPill` 위 (`DetailPanel`) | 300×100 |
-  | `rail-left` / `rail-right` | 103 / 104 | 탭 컨텐츠 좌우 (`AppShell`) | 300×600. 화면 1500 미만은 미표시 |
+  | `infeed` | 111 (`mid_content`) | 아이템 그리드 18칸마다 한 행 (`ItemGrid`) | 폭 728까지 (320×100 / 336×280 / 728×90) |
+  | `sheet` | 115 (`incontent_5`) | 상세 시트 컨텐츠 끝, `SupportPill` 위 (`DetailPanel`) | 폭 336까지 |
+  | `rail-left` / `rail-right` | 107 / 108 (`sidebar_floating_1·2`) | 탭 컨텐츠 좌우 (`AppShell`) | 300×600 계열. 화면 1500 미만은 미표시 |
 - **자리 폭은 "그 자리에 올 수 있는 최대 규격"으로 잡는다** — Ezoic은 컨테이너 폭을 존중하지 않는다. 160폭 자리에 300×250을 넣어 옆 컨텐츠와 겹치는 것을 실측했다(#75). 잘라내기(`overflow:hidden`)는 금지 — 광고를 일부 가리면 정책 위반이라 계정이 위험하다
 - **높이는 최소값만** — 큰 규격이 와도 아래로 늘어나면 되고, 최소 높이가 늦게 온 광고의 레이아웃 시프트를 막는다
 - **레일 브레이크포인트 근거**: 아이템 그리드 최대폭 896 + 좌우 300씩 = 1496 → `min-[1500px]`

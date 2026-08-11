@@ -605,6 +605,11 @@
   - 규격 검증은 **실제 브라우저**에서만 가능하다. 헤드리스는 봇으로 판정돼 광고가 아예 채워지지 않으므로 "자리는 잡혔다"까지만 확인된다. 겹침·넘침은 실브라우저에서 `ezaw`/`ezah` 속성과 자식 요소의 `getBoundingClientRect`를 직접 비교해야 잡힌다
 - **해결**: 레일 폭 300 고정 + 표시 조건을 `min-[1500px]`(그리드 896 + 좌우 300 = 1496)로 조정
 
+### placeholder 번호를 임의로 골라 Ezoic 기본 자리와 충돌 (2026-08-11, #75)
+- **문제**: `showAds(101~104)`로 우리 자리를 임의 번호에 붙였다. 그런데 Ezoic 대시보드에는 번호마다 위치 유형이 이미 정의돼 있었다 — 100=Adhesion, 101=top_of_page, 102=under_page_title, **103=bottom_of_page**, 104~108=sidebar 계열, 109~115=본문 계열. 왼쪽 레일로 쓴 103이 Ezoic에게는 "페이지 맨 아래"였으므로 970×105 가로 배너가 배달됐다
+- **교훈**: Ezoic에서 **placeholder 번호는 곧 위치 유형**이다. 임의 번호를 쓰면 안 되고, 대시보드(`EzoicAds → Ad Positions → Placeholders`)에서 기존 목록을 먼저 확인해 우리 자리의 성격과 같은 유형의 번호를 골라 쓴다. 새 유형이 필요하면 `NEW PLACEHOLDER`로 만들어 발급된 번호를 코드에 쓴다 — 코드가 번호를 발명하는 방향은 항상 틀린다
+- **해결**: infeed=111(mid_content), sheet=115(incontent_5), rail-left/right=107/108(sidebar_floating_1·2)로 재배치
+
 ### Ezoic 자동 배치가 전면·하단 고정 광고를 제멋대로 삽입 (2026-08-11, #75)
 - **문제**: 우리가 정의한 자리(101~104)와 별개로 Ezoic이 ① 하단 고정 배너(`Adhesion`, placeholder 100, `position:fixed; z-index:100000`으로 화면 하단 91px 점유) ② 이탈 후 복귀 시 전면 광고(Vignette/Interstitial) ③ 카드 그리드 칸 안에 끼어드는 광고를 자동 삽입했다. 하단 고정 배너는 우리가 UX 이유로 후보에서 **제외한** 형태였다
 - **원인**: Ezoic Ad Tester의 자동 배치(auto-insert) 기능. 스크립트만 붙어 있으면 대시보드 설정에 따라 서버 쪽에서 알아서 심는다

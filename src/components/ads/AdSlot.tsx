@@ -20,12 +20,23 @@ import { useEffect, useState } from "react";
  */
 export type AdVariant = "infeed" | "sheet" | "rail-left" | "rail-right";
 
-/** 자리별 Ezoic placeholder id — 대시보드 리포트 기준값, 변경 금지 */
+/**
+ * 자리별 Ezoic placeholder id.
+ *
+ * **번호를 임의로 고르면 안 된다.** Ezoic 대시보드에는 위치 유형이 이미 정해진
+ * placeholder가 등록돼 있고(101=top_of_page, 102=under_page_title, 103=bottom_of_page,
+ * 104=sidebar, 105~108=sidebar 계열, 109~115=본문 계열, 100=Adhesion), 번호가 곧
+ * "어떤 위치의 광고인지"다. 처음 101~104를 임의로 쓴 결과 왼쪽 레일(103=bottom_of_page)에
+ * 970×105 가로 배너가 와서 옆 컨텐츠와 겹쳤다 (#75).
+ *
+ * 그래서 우리 자리의 실제 성격과 같은 유형의 번호를 골라 쓴다.
+ * 번호를 바꾸면 대시보드 리포트의 연속성이 끊기므로 한 번 정한 뒤엔 유지한다.
+ */
 export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
-  infeed: 101,
-  sheet: 102,
-  "rail-left": 103,
-  "rail-right": 104,
+  infeed: 111, // mid_content — 본문 중간, 그리드 행 사이와 성격이 같다
+  sheet: 115, // incontent_5 — 본문 안 독립 자리
+  "rail-left": 107, // sidebar_floating_1 — 스크롤과 무관하게 옆에 붙어 있는 사이드바
+  "rail-right": 108, // sidebar_floating_2
 };
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
@@ -45,7 +56,7 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 /** 목업 기본 규격 (모바일 / 데스크탑) — 실제 광고는 컨테이너 폭에 맞춰 Ezoic이 고른다 */
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
   infeed: { mobile: "320x100", desktop: "728x90" },
-  sheet: { mobile: "300x100", desktop: "300x100" },
+  sheet: { mobile: "320x100", desktop: "336x280" },
   "rail-left": { mobile: "", desktop: "300x600" },
   "rail-right": { mobile: "", desktop: "300x600" },
 };
@@ -71,8 +82,8 @@ const MOCK_LABEL: Record<AdVariant, string> = {
 const SLOT_BOX: Record<AdVariant, string> = {
   // 그리드 한 행 — 320×100 / 300×250 / 728×90 모두 폭 728 안에 들어온다
   infeed: "w-full max-w-[728px] min-h-[100px]",
-  // 상세 시트 안 — 300 계열(300×100, 300×250)까지 폭이 감당된다
-  sheet: "w-[300px] min-h-[100px]",
+  // 상세 시트 안 — 본문 계열 자리는 336×280까지 오므로 폭을 336으로 잡는다
+  sheet: "w-[336px] max-w-full min-h-[100px]",
   // 데스크탑 레일 — 300 계열이 들어와도 넘치지 않게 폭 300 고정.
   // 아이템 그리드 최대폭 896 + 좌우 300씩 = 1496이라 1500 이상에서만 켠다
   // (AppShell에서 `hidden min-[1500px]:flex`로 표시 조건을 맞춘다)
