@@ -1,6 +1,7 @@
 // 기존 피드백/답변에 대한 수동 번역 백필 (Claude가 직접 작성).
 // 이슈 #31의 1단계: 자동 워커 구축 전, 현재 DB에 들어 있는 row들만 우선 양방향 번역.
 // 새 피드백이 쌓이면 아래 TRANSLATIONS에 항목을 추가하고 다시 실행한다 (이슈 #70).
+// Claude가 API로 단 답변(reply_author='claude')의 번역도 여기서 같이 백필한다 (이슈 #72).
 //
 // 멱등성: WHERE message_translated_at IS NULL (또는 reply 측 동일) 조건으로만 UPDATE.
 //   → 이미 번역된 row는 덮어쓰지 않음. 같은 스크립트 두 번 돌려도 안전.
@@ -31,22 +32,35 @@ const TRANSLATIONS: Entry[] = [
     messageLang: "en",
     messageTranslated:
       "스킬 트리 탭이 추가됐으면 좋겠어요. 자주 참고하고 싶을 때가 많거든요. 트리를 보여주는 탭에서 각 스킬을 탭하면 인게임 설명이 뜨는 정도면 완벽할 것 같습니다 :)",
+    // 원문이 영어인 유일한 건 — 답변도 영어로 달았으므로 번역본은 한국어.
+    replyLang: "en",
+    replyTranslated:
+      "스킬 트리 탭 올라갔습니다 — 트리는 전부 들어있고, 스킬을 누르면 인게임 설명이 뜹니다. 주문하신 그대로요 :) 좋은 제안 감사합니다!",
   },
   {
     id: "1776320439982-2c3l55",
     messageLang: "ko",
     messageTranslated: "Klaus and Dragonfly rewards feel a bit underwhelming.",
+    replyLang: "ko",
+    replyTranslated:
+      "Reward lists filled in. Whether they're worth dying for is your call now 🐉",
   },
   {
     id: "1776513016880-gjstfl",
     messageLang: "ko",
     messageTranslated: "Yo, who even are you?",
+    replyLang: "ko",
+    replyTranslated:
+      "Just a survivor who took too many notes and accidentally shipped a website 🌲",
   },
   {
     id: "1777368330773-3xc7ft",
     messageLang: "ko",
     messageTranslated:
       "Mobile crockpot simulator bug: when a recipe randomly resolves between two dishes, clicking the final ingredient can also trigger the recipe-detail view because the tap target overlaps with the detail-view button.",
+    replyLang: "ko",
+    replyTranslated:
+      "Fixed — one tap no longer counts as two. The last ingredient goes in without dragging the detail view along. Thanks for the report!",
   },
   {
     id: "1777628959489-z8hdzt",
@@ -144,11 +158,17 @@ const TRANSLATIONS: Entry[] = [
     id: "1785109461858-gxkotz",
     messageLang: "ko",
     messageTranslated: "Thank ewe! 🐑",
+    // 답변도 같은 말장난을 받아친다 — 한국어는 "감시/감사" 오타를, 영어는 ewe(양)를 이어받음.
+    replyLang: "ko",
+    replyTranslated: "Ewe've got my word — I'll keep it worth watching 🐑",
   },
   {
     id: "1785440343749-p1wxms",
     messageLang: "ko",
     messageTranslated: "You're an absolute legend.",
+    replyLang: "ko",
+    replyTranslated:
+      "Legend's a stretch — I just keep the crockpot lit 🔥 That one line is worth a few more late nights.",
   },
   {
     // v0.31.3에서 고친 요리솥 재료 중복 버그 제보.
