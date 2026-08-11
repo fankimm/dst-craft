@@ -351,10 +351,13 @@ export function AppShell() {
           여러 유닛을 쌓아 뷰포트보다 길어지는 경우가 있어(실측 1068px vs 뷰포트 772px)
           `max-h-full overflow-y-auto`로 레일 안에서 높이를 흡수한다 — 잘라내면 광고
           정책 위반이라 스크롤로 접근 가능하게 둔다.
-          1500px 미만에서는 아예 렌더하지 않는다 (그리드 896 + 좌우 336). */}
-      <div className="flex-1 min-h-0 flex overflow-hidden">
+          1500px 미만에서는 아예 렌더하지 않는다 (그리드 896 + 좌우 336).
+          넓은 화면에서는 컨텐츠 폭을 1024로 묶고 전체를 가운데 정렬한다 — 안 그러면
+          컨텐츠가 flex-1로 늘어나 레일만 화면 양 끝으로 밀려나고 사이가 텅 빈다
+          (QHD 2560에서 좌우 500px씩 공백). */}
+      <div className="flex-1 min-h-0 flex justify-center overflow-hidden">
         <AdSlot variant="rail-left" className="hidden min-[1500px]:flex items-start self-stretch max-h-full overflow-y-auto overscroll-contain" />
-        <div className="flex-1 min-w-0 h-full overflow-hidden">
+        <div className="flex-1 min-w-0 max-w-[1024px] h-full overflow-hidden">
         <div className={activeTab === "crafting" ? "h-full" : "hidden"}>
           <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} externalBackLabel={craftingBack?.label ?? null} onExternalBack={craftingBack ? handleExternalBack : undefined} onPanelClose={() => setCraftingBack(null)} />
         </div>

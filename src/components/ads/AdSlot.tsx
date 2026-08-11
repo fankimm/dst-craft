@@ -22,9 +22,6 @@ export type AdVariant =
   | "top-crafting"
   | "top-cooking"
   | "top-bosses"
-  | "infeed-crafting"
-  | "infeed-cooking"
-  | "infeed-bosses"
   | "sheet"
   | "rail-left"
   | "rail-right";
@@ -47,13 +44,9 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
   // 대시보드 리포트도 섞인다.
   // 102(under_page_title)·109(under_first_paragraph)는 beta 실측에서 계속 비어 있었다.
   // 같은 조건에서 110~113(본문 계열)은 잘 채워졌으므로 그쪽으로 옮겼다 (#75).
-  "top-crafting": 113, // longer_content
-  "top-cooking": 114, // longest_content
+  "top-crafting": 111, // mid_content — 실측에서 가장 안정적으로 채워졌다
+  "top-cooking": 112, // long_content
   "top-bosses": 110, // under_second_paragraph — 실측에서 채워짐 확인
-  // 그리드 18칸마다 한 행
-  "infeed-crafting": 111, // mid_content
-  "infeed-cooking": 112, // long_content
-  "infeed-bosses": 106, // sidebar_bottom — 보스 목록엔 현재 미사용
   // 상세 시트는 한 번에 하나만 열리므로 탭 구분 없이 한 번호를 공유한다
   sheet: 115, // incontent_5
   // 데스크탑 레일은 AppShell에 한 쌍만 있다
@@ -70,7 +63,7 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
  *
  * 폭과 최소 높이를 분리해 두는 이유는 `AdCard` 주석 참조 (폭은 항상, 높이는 채워졌을 때만).
  */
-const BAND_BOX = { w: "w-full max-w-[320px] sm:max-w-[728px]", minH: "min-h-[100px]" };
+const BAND_BOX = { w: "w-full max-w-[320px] sm:max-w-[728px]", minH: "min-h-[90px]" };
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
 const MOCK_SIZES: Record<string, { w: number; h: number }> = {
@@ -87,14 +80,11 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 };
 
 /** 목업 기본 규격 (모바일 / 데스크탑) — 실제 광고는 컨테이너 폭에 맞춰 Ezoic이 고른다 */
-const BAND_MOCK = { mobile: "320x100", desktop: "728x90" };
+const BAND_MOCK = { mobile: "320x50", desktop: "728x90" };
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
   "top-crafting": BAND_MOCK,
   "top-cooking": BAND_MOCK,
   "top-bosses": BAND_MOCK,
-  "infeed-crafting": BAND_MOCK,
-  "infeed-cooking": BAND_MOCK,
-  "infeed-bosses": BAND_MOCK,
   sheet: BAND_MOCK,
   "rail-left": { mobile: "", desktop: "300x600" },
   "rail-right": { mobile: "", desktop: "300x600" },
@@ -104,9 +94,6 @@ const MOCK_LABEL: Record<AdVariant, string> = {
   "top-crafting": "제작 목록 첫 줄",
   "top-cooking": "요리 목록 첫 줄",
   "top-bosses": "보스 목록 첫 줄",
-  "infeed-crafting": "제작 그리드 사이",
-  "infeed-cooking": "요리 그리드 사이",
-  "infeed-bosses": "보스 그리드 사이",
   sheet: "상세 시트 안",
   "rail-left": "왼쪽 레일",
   "rail-right": "오른쪽 레일",
@@ -124,13 +111,10 @@ const MOCK_LABEL: Record<AdVariant, string> = {
  * 최소 높이가 있어야 광고가 늦게 도착할 때 컨텐츠가 튀지 않는다.
  */
 const SLOT_BOX: Record<AdVariant, { w: string; minH: string }> = {
-  // 목록 맨 위 한 행 (검색바 바로 아래) + 그리드 사이 한 행 — 모두 가로 띠
+  // 목록 맨 위 한 행 (검색바 바로 아래) — 길고 얇은 띠
   "top-crafting": BAND_BOX,
   "top-cooking": BAND_BOX,
   "top-bosses": BAND_BOX,
-  "infeed-crafting": BAND_BOX,
-  "infeed-cooking": BAND_BOX,
-  "infeed-bosses": BAND_BOX,
   // 상세 시트 안 — 시트는 가로로 넓고 세로가 아까운 자리라 띠 형태가 맞다.
   // 폭을 336으로 좁혀 두면 336×280처럼 세로로 큰 광고가 와서 시트 아래를 잠식하고
   // 스크롤을 유발했다 (#75 실측).
@@ -225,27 +209,29 @@ function AdCard({ placeholderId, box }: { placeholderId: number; box: { w: strin
   // **폭은 광고가 오기 전에도 반드시 유지해야 한다.** 카드 옷을 입힐 때만 폭을 주면
   // 미충전 상태에서 자리 폭이 0으로 붕괴하고, Ezoic은 폭 0인 자리에 광고를 넣지 못해
   // 영원히 안 채워진다 (#75에서 top 자리가 이 상태로 죽어 있었다).
-  // 반대로 최소 높이와 카드 옷은 채워졌을 때만 — 안 그러면 빈 카드가 남는다.
+  //
+  // 바깥(자리)은 폭을 잡아 두고, 카드 옷은 안쪽에서 `w-fit`으로 실제 광고 크기에만
+  // 맞춘다. 카드를 자리 폭 전체로 그리면 728 광고 주위로 카드가 864까지 벌어져 헐렁하다.
   return (
-    <div
-      className={
-        filled
-          ? `${box.w} overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 pb-1 pt-1`
-          : box.w
-      }
-    >
-      {filled && (
-        <div className="px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
-          AD
-        </div>
-      )}
-      {/* 좌우 패딩을 주지 않는다 — 패딩만큼 안쪽 폭이 줄면 광고가 카드를 삐져나온다
-          (#75 실측: 카드 px-2 때문에 336 광고가 318 자리를 18px 넘쳤다) */}
+    <div className={`${box.w} flex justify-center`}>
       <div
-        ref={ref}
-        id={`ezoic-pub-ad-placeholder-${placeholderId}`}
-        className={filled ? `w-full ${box.minH}` : "w-full"}
-      />
+        className={
+          filled
+            ? "w-fit overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 pb-1 pt-1"
+            : "w-full"
+        }
+      >
+        {filled && (
+          <div className="px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
+            AD
+          </div>
+        )}
+        <div
+          ref={ref}
+          id={`ezoic-pub-ad-placeholder-${placeholderId}`}
+          className={filled ? box.minH : "w-full"}
+        />
+      </div>
     </div>
   );
 }
