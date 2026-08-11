@@ -59,8 +59,11 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
   "rail-right": 108, // sidebar_floating_2
 };
 
-/** 가로 띠 자리 공통 규격 — 320×100 / 336×280 / 728×90 모두 폭 728 안에 들어온다 */
-const BAND_BOX = "w-full max-w-[728px] min-h-[100px]";
+/**
+ * 가로 띠 자리 공통 규격 — 320×100 / 336×280 / 728×90 모두 폭 728 안에 들어온다.
+ * 폭과 최소 높이를 분리해 두는 이유는 `AdCard` 주석 참조 (폭은 항상, 높이는 채워졌을 때만).
+ */
+const BAND_BOX = { w: "w-full max-w-[728px]", minH: "min-h-[100px]" };
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
 const MOCK_SIZES: Record<string, { w: number; h: number }> = {
@@ -113,7 +116,7 @@ const MOCK_LABEL: Record<AdVariant, string> = {
  * 높이는 최소값만 준다. 예상보다 큰 규격이 와도 자리가 아래로 늘어나면 될 뿐이고,
  * 최소 높이가 있어야 광고가 늦게 도착할 때 컨텐츠가 튀지 않는다.
  */
-const SLOT_BOX: Record<AdVariant, string> = {
+const SLOT_BOX: Record<AdVariant, { w: string; minH: string }> = {
   // 목록 맨 위 한 행 (검색바 바로 아래) + 그리드 사이 한 행 — 모두 가로 띠
   "top-crafting": BAND_BOX,
   "top-cooking": BAND_BOX,
@@ -129,8 +132,8 @@ const SLOT_BOX: Record<AdVariant, string> = {
   // 폭을 336으로 잡는다. 300으로 두면 36px씩 옆 컨텐츠를 침범했다.
   // 세로로 여러 유닛이 쌓여 뷰포트보다 길어지는 경우가 있어 래퍼에서 높이를 흡수한다
   // (AppShell의 `max-h-full overflow-y-auto` 참조).
-  "rail-left": "w-[336px] min-h-[600px]",
-  "rail-right": "w-[336px] min-h-[600px]",
+  "rail-left": { w: "w-[336px]", minH: "min-h-[600px]" },
+  "rail-right": { w: "w-[336px]", minH: "min-h-[600px]" },
 };
 
 const MOCK_DESKTOP_MIN_WIDTH = 768;
@@ -195,7 +198,7 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
  * 광고가 안 오면 Ezoic이 placeholder를 `display:none`으로 접는다. 그때 껍데기만 남아
  * 빈 카드가 보이면 안 되므로, 채워졌는지 직접 감시해서 그때만 카드 옷을 입힌다.
  */
-function AdCard({ placeholderId, box }: { placeholderId: number; box: string }) {
+function AdCard({ placeholderId, box }: { placeholderId: number; box: { w: string; minH: string } }) {
   const ref = useRef<HTMLDivElement>(null);
   const [filled, setFilled] = useState(false);
 
@@ -212,10 +215,16 @@ function AdCard({ placeholderId, box }: { placeholderId: number; box: string }) 
     return () => mo.disconnect();
   }, []);
 
+  // **폭은 광고가 오기 전에도 반드시 유지해야 한다.** 카드 옷을 입힐 때만 폭을 주면
+  // 미충전 상태에서 자리 폭이 0으로 붕괴하고, Ezoic은 폭 0인 자리에 광고를 넣지 못해
+  // 영원히 안 채워진다 (#75에서 top 자리가 이 상태로 죽어 있었다).
+  // 반대로 최소 높이와 카드 옷은 채워졌을 때만 — 안 그러면 빈 카드가 남는다.
   return (
     <div
       className={
-        filled ? "rounded-xl border border-border/50 bg-muted/30 px-2 pb-2 pt-1" : undefined
+        filled
+          ? `${box.w} rounded-xl border border-border/50 bg-muted/30 px-2 pb-2 pt-1`
+          : box.w
       }
     >
       {filled && (
@@ -223,7 +232,11 @@ function AdCard({ placeholderId, box }: { placeholderId: number; box: string }) 
           AD
         </div>
       )}
-      <div ref={ref} id={`ezoic-pub-ad-placeholder-${placeholderId}`} className={box} />
+      <div
+        ref={ref}
+        id={`ezoic-pub-ad-placeholder-${placeholderId}`}
+        className={filled ? `w-full ${box.minH}` : "w-full"}
+      />
     </div>
   );
 }
