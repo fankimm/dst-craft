@@ -16,6 +16,7 @@ import { FloatingSupportPill } from "./ui/FloatingSupportPill";
 import { LegacyPwaNotice } from "./ui/LegacyPwaNotice";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
+import { useUrlStateSync } from "@/hooks/use-url-state";
 import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -43,7 +44,9 @@ function readTabFromUrl(): TabId {
 }
 
 export function AppShell() {
+  // 첫 렌더는 서버와 동일한 "crafting", layout effect에서 URL의 tab을 반영한다.
   const [activeTab, setActiveTab] = useState<TabId>("crafting");
+  useUrlStateSync(readTabFromUrl, setActiveTab);
   const { resolvedLocale, devMenuEnabled } = useSettings();
   const { isAdmin, token } = useAuth();
   const isDev = process.env.NODE_ENV === "development";
@@ -53,11 +56,6 @@ export function AppShell() {
   const [pendingRecipeId, setPendingRecipeId] = useState<string | null>(null);
   const [pendingItemId, setPendingItemId] = useState<string | null>(null);
   const [showReview, setShowReview] = useState(false);
-
-  // Sync active tab from URL on mount (SSR-safe)
-  useEffect(() => {
-    setActiveTab(readTabFromUrl());
-  }, []);
 
   // Listen to popstate — sync tab from URL (browser back/forward)
   useEffect(() => {

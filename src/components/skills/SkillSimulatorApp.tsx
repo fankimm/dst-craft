@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { encodeBuild, decodeBuild } from "@/lib/skill-build-codec";
 import { useWx78Circuits, encodeCircuits, decodeCircuits } from "@/hooks/use-wx78-circuits";
 import { useSkillUnlimited } from "@/hooks/use-skill-unlimited";
+import { useUrlStateSync } from "@/hooks/use-url-state";
 import { SkillCharacterGrid } from "./SkillCharacterGrid";
 import { SkillTreeView } from "./SkillTreeView";
 
@@ -30,6 +31,12 @@ function readSkillUrlState() {
   return { char: params.get("char"), build: params.get("b") };
 }
 
+/** URL의 char 파라미터 중 스킬트리가 있는 캐릭터만 통과시킨다. */
+function readSelectedCharFromUrl(): string | null {
+  const { char } = readSkillUrlState();
+  return char && CHARACTERS_WITH_SKILLS.includes(char) ? char : null;
+}
+
 function readSkillUnlimitedFromUrl(): boolean {
   if (typeof window === "undefined") return false;
   return new URLSearchParams(window.location.search).get("u") === "1";
@@ -38,7 +45,9 @@ function readSkillUnlimitedFromUrl(): boolean {
 export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   const { resolvedLocale } = useSettings();
   const { token } = useAuth();
+  // 첫 렌더는 서버와 동일한 null, layout effect에서 URL의 char를 반영한다.
   const [selectedChar, setSelectedChar] = useState<string | null>(null);
+  useUrlStateSync(readSelectedCharFromUrl, setSelectedChar);
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Manual lock state (for lockType: "manual" / "boss_kill" nodes) — must be before useSkillTree
@@ -196,14 +205,6 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
   }, [token, selectedChar, activatedSkills, manualLocks]);
 
   const slideClass = useSlideAnimation(selectedChar, (v) => v === null);
-
-  // Sync character from URL on mount
-  useEffect(() => {
-    const { char } = readSkillUrlState();
-    if (char && CHARACTERS_WITH_SKILLS.includes(char)) {
-      setSelectedChar(char);
-    }
-  }, []);
 
   // When shared build is applied: infer manual locks + show toast
   const toastShownRef = useRef(false);
