@@ -302,8 +302,8 @@ export default function RootLayout({
             data-cfasync="false" keeps Cloudflare from reordering them. */}
         <script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js" />
         <script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js" />
-        {/* Ezoic — ad system header script. No ad placements are defined yet, so no
-            ads render. Enable ads by adding placement code (see #55). */}
+        {/* Ezoic — ad system header script. 실제 광고 자리는 `AdSlot`(components/ads)이
+            placeholder div + showAds()로 요청한다 (#75). */}
         <script async src="https://www.ezojs.com/ezoic/sa.min.js" />
         <script
           dangerouslySetInnerHTML={{

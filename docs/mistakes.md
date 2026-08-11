@@ -597,6 +597,12 @@
 
 ## 워크플로우 / 머지
 
+### feat 워크트리에서 dev 서버를 띄우려다 두 번 헛발질 (2026-08-11, #75)
+- **문제 1 — node_modules 심볼릭 링크**: 워크트리에 `ln -s ../dst-craft/node_modules`로 링크를 걸었더니 Next 16이 `Symlink node_modules is invalid, it points out of the filesystem root`로 거부. 절대 경로 링크도 동일하게 실패
+- **해결**: 하드링크 복사 `cp -Rpl <메인>/node_modules <워크트리>/node_modules` — 557MB가 10초, 디스크 추가 사용은 사실상 0. `npm install` 재실행보다 훨씬 싸다
+- **문제 2 — dev 서버가 Bash 호출 사이에 죽음**: `(npx next dev &)` / `nohup ... & disown` / 백그라운드 툴 모두 다음 Bash 호출 시점엔 프로세스가 사라져 `ERR_CONNECTION_REFUSED`. 게다가 백그라운드 툴 경유로는 `-p`/`--port` 옵션이 `unknown option`으로 튕겼다 (명령이 rtk 프록시로 재작성되며 인자가 유실)
+- **교훈**: 로컬 서버가 필요한 검증은 **한 번의 Bash 호출 안에서 서버 기동 → 준비 대기 루프 → 스크립트 실행까지 전부 끝낼 것**. 호출을 쪼개면 매번 서버가 죽어 있다. 캡처/E2E 스크립트를 먼저 파일로 써두고 마지막에 한 방에 돌리는 순서가 맞다
+
 ### 빌드 실패가 source HEAD를 advance시켜 재배포가 "already up to date"로 스킵됨 (2026-05-21, #42)
 - **문제**: v0.26.7(IndexNow) 배포가 1차에서 `next/font/google` 폰트 모듈 에러로 빌드 실패. 실패한 워크플로우를 `gh run rerun --failed`로 재실행했더니 frontend 재빌드 스텝이 `[deploy-main] Already up to date (6b2e844). Use --force to rebuild.`로 끝나며 exit 0. 배포는 성공으로 떴지만 symlink swap이 안 일어나 옛 릴리즈가 그대로 서빙 → 키 파일 404, IndexNow ping 미실행
 - **원인**: `deploy-frontend.sh`는 `source-main`을 `git pull`로 먼저 올린 뒤 `npm run build`를 돈다. 빌드가 실패하면 `source-main` git HEAD만 푸시된 SHA로 advance된 채 남는다. 재실행 시 스크립트의 `CURRENT == TARGET_SHA` 검사가 "이미 최신"으로 판정 → 재빌드 통째 스킵. `deploy-beta.yml`의 main 재빌드 스텝은 `--force` 없이 호출해서 `workflow_dispatch`의 `force_frontend`를 켜도 강제 불가 (beta 스텝은 `--force`를 붙임)

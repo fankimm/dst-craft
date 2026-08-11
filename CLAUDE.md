@@ -152,6 +152,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `src/components/console/` — 콘솔 명령어 탭 컴포넌트
 - `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지
+- `src/components/ads/AdSlot.tsx` — Ezoic 광고 자리 (자리별 placeholder id 고정, `?admock=`로 목업 미리보기). 자리 목록·규격은 `docs/ui.md` 참조
 - `src/data/skill-trees/` — 스킬트리 데이터 (11캐릭터, 번역, 타입)
 - `src/hooks/` — 커스텀 훅 (use-crafting-state, use-settings, use-search, use-auth, use-favorites, use-skill-tree)
 - `src/lib/` — 유틸리티 (types, i18n, crafting-data, utils, favorites-api)

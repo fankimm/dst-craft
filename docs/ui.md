@@ -228,6 +228,19 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **용도**: Footer 하단에 노출되는 소개(About)·개인정보처리방침·이용약관 링크 (client, `useSettings`로 locale 반영)
 - **사용처**: `src/components/crafting/Footer.tsx`
 
+### AdSlot (`src/components/ads/AdSlot.tsx`)
+- **용도**: Ezoic 광고 자리. placeholder div를 그리고 `ezstandalone.showAds(<id>)`로 광고를 요청, 언마운트 시 `destroyPlaceholders`로 정리
+- **자리(variant)와 placeholder id** — 대시보드 리포트 기준값이라 변경 금지:
+  | variant | id | 위치 | 규격 |
+  |---|---|---|---|
+  | `infeed` | 101 | 아이템 그리드 18칸마다 한 행 (`ItemGrid`) | 모바일 320×100 / 데스크탑 728×90 |
+  | `sheet` | 102 | 상세 시트 컨텐츠 끝, `SupportPill` 위 (`DetailPanel`) | 300×100 |
+  | `rail-left` / `rail-right` | 103 / 104 | 탭 컨텐츠 좌우 (`AppShell`) | 1280↑ 160×600, 1600↑ 300×600, 1280↓ 미표시 |
+- **규격을 코드로 못 박지 않는다** — 자리의 최대 폭 + 최소 높이만 주고 그 폭에 맞는 광고는 Ezoic이 고른다. 최소 높이는 늦게 도착한 광고가 컨텐츠를 밀지 않게 하는 용도
+- **좌우 레일은 반드시 다른 id** — 같은 번호를 두 곳에 쓰면 한쪽만 채워짐
+- **상세 시트는 `open`일 때만 렌더** — 시트가 탭마다 상시 마운트돼 있어 그냥 두면 안 보이는 노출이 쌓임
+- **목업 모드**: `?admock=<자리>[:<규격>]` (쉼표로 복수, `all` 지원). 실제 광고 대신 규격만큼의 점선 박스를 그린다. 자리를 옮기거나 규격을 비교할 때 사용 — 예 `?admock=all`, `?admock=infeed,sheet:250x250`
+
 ### LegacyPwaNotice (`src/components/ui/LegacyPwaNotice.tsx`)
 - **용도**: iOS 26 legacy 웹클립 설치본(#60 이전 black-translucent 박제 → 하단 흰 띠)에만 뜨는 재설치 안내 배너. standalone + (screen-innerHeight>20) + safe-area-inset-top>0 시그니처로 감지, 닫기 시 localStorage 영구 dismiss. 해당 설치본이 소멸하면 자연히 안 뜨는 자기소멸형
 - **사용처**: `src/components/AppShell.tsx`
