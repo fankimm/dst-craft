@@ -45,13 +45,15 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
   // 목록 맨 위 (검색바 바로 아래) — 탭마다 다른 번호를 써야 한다.
   // 탭은 hidden 상태로 동시에 마운트돼 있어서 같은 번호를 두 탭이 쓰면 한쪽만 채워지고
   // 대시보드 리포트도 섞인다.
-  "top-crafting": 102, // under_page_title
-  "top-cooking": 109, // under_first_paragraph
-  "top-bosses": 110, // under_second_paragraph
+  // 102(under_page_title)·109(under_first_paragraph)는 beta 실측에서 계속 비어 있었다.
+  // 같은 조건에서 110~113(본문 계열)은 잘 채워졌으므로 그쪽으로 옮겼다 (#75).
+  "top-crafting": 113, // longer_content
+  "top-cooking": 114, // longest_content
+  "top-bosses": 110, // under_second_paragraph — 실측에서 채워짐 확인
   // 그리드 18칸마다 한 행
   "infeed-crafting": 111, // mid_content
   "infeed-cooking": 112, // long_content
-  "infeed-bosses": 113, // longer_content
+  "infeed-bosses": 106, // sidebar_bottom — 보스 목록엔 현재 미사용
   // 상세 시트는 한 번에 하나만 열리므로 탭 구분 없이 한 번호를 공유한다
   sheet: 115, // incontent_5
   // 데스크탑 레일은 AppShell에 한 쌍만 있다

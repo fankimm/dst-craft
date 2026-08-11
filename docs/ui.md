@@ -233,12 +233,12 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **자리(variant)와 placeholder id** — 번호는 임의로 고르면 안 된다. Ezoic 대시보드에 위치 유형이 정해진 placeholder가 이미 등록돼 있어 **번호가 곧 위치 유형**이다 (100=Adhesion, 101=top_of_page, 102=under_page_title, 103=bottom_of_page, 104~108=sidebar 계열, 109~115=본문 계열). 우리 자리의 성격과 같은 유형을 골라 쓴다:
   | variant | id (Ezoic 유형) | 위치 | 규격 |
   |---|---|---|---|
-  | `top-crafting` | 102 (`under_page_title`) | 제작 목록 맨 위 한 줄, 검색바 바로 아래 (`ItemGrid`) | 폭 728까지 (가로 띠) |
-  | `top-cooking` | 109 (`under_first_paragraph`) | 요리 목록 맨 위 (`CookingApp` > RecipeGrid·RawFoodGrid) | 폭 728까지 |
+  | `top-crafting` | 113 (`longer_content`) | 제작 목록 맨 위 한 줄, 검색바 바로 아래 (`ItemGrid`) | 폭 728까지 (가로 띠) |
+  | `top-cooking` | 114 (`longest_content`) | 요리 목록 맨 위 (`CookingApp` > RecipeGrid·RawFoodGrid) | 폭 728까지 |
   | `top-bosses` | 110 (`under_second_paragraph`) | 보스 목록 맨 위 (`BossesApp`) | 폭 728까지 |
   | `infeed-crafting` | 111 (`mid_content`) | 제작 그리드 18칸마다 한 행 | 폭 728까지 |
   | `infeed-cooking` | 112 (`long_content`) | 요리 그리드 18칸마다 한 행 | 폭 728까지 |
-  | `infeed-bosses` | 113 (`longer_content`) | 보스 목록 — 현재 top만 (목록이 짧아 인피드 생략) | — |
+  | `infeed-bosses` | 106 (`sidebar_bottom`) | 보스 목록 — 현재 top만 (목록이 짧아 인피드 생략) | — |
   | `sheet` | 115 (`incontent_5`) | 상세 시트 컨텐츠 끝, `SupportPill` 위 (`DetailPanel`) | 폭 728까지 — 시트는 세로가 아까운 자리라 띠 형태를 받는다 |
   | `rail-left` / `rail-right` | 107 / 108 (`sidebar_floating_1·2`) | 탭 컨텐츠 좌우 (`AppShell`) | 300×600 계열. 화면 1500 미만은 미표시 |
 - **자리 폭은 "그 자리에 올 수 있는 최대 규격"으로 잡는다** — Ezoic은 컨테이너 폭을 존중하지 않는다. 160폭 자리에 300×250을 넣어 옆 컨텐츠와 겹치는 것을 실측했다(#75). 잘라내기(`overflow:hidden`)는 금지 — 광고를 일부 가리면 정책 위반이라 계정이 위험하다
