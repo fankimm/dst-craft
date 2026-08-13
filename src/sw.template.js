@@ -49,6 +49,13 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(event.request.url);
 
+  // 교차 출처는 손대지 않는다 (#75).
+  // 이 가드가 없으면 광고·분석 요청까지 아래 stale-while-revalidate로 흘러가
+  // ① SW를 한 번 더 거치는 지연이 붙고(DevTools에서 initiator가 `sw.js`로 찍힌다)
+  // ② 입찰/광고 응답이 캐시에 들어가 다음 로드에 stale 응답이 서빙될 수 있다.
+  // SW가 다뤄야 할 건 우리 자산뿐이다.
+  if (url.origin !== self.location.origin) return;
+
   // Images + icons: persistent cache-first (survives app updates)
   if (url.pathname.startsWith(BASE + "/images/") || url.pathname.startsWith(BASE + "/icons/")) {
     event.respondWith(

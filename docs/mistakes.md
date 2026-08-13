@@ -650,6 +650,14 @@
   - SPA에서 광고망 SDK는 "id 문자열"로 DOM을 기억한다. React가 그 DOM을 갈아끼우는 순간 SDK의 기억과 실제가 어긋나므로, 마운트/언마운트 경계마다 SDK에 알려야 한다
 - **해결**: 요청 큐를 참조 수 → 주인 토큰(`desiredOwner`/`shownOwner`) 비교로 교체
 
+### 서비스워커가 서드파티(광고) 요청까지 가로채고 있었음 (2026-08-13, #75)
+- **문제**: `sw.template.js`의 fetch 핸들러에 same-origin 가드가 없어, 우리 자산 분기에 안 걸린 **모든 교차 출처 요청**이 맨 아래 stale-while-revalidate로 흘렀다. 광고가 붙자 Ezoic·Google 요청 수백 건이 SW를 거치게 됐고, DevTools에서 `ads?pvsid=...`의 initiator가 `sw.js`로 찍혔다. SW 홉이 추가돼 느려지는 데다, `response.ok`인 서드파티 응답은 캐시에 들어가 다음 로드에 stale 광고 응답이 나갈 수 있었다
+- **원인**: 최종 분기가 "그 외 전부"였고, 그 전제(우리 자산만 온다)가 광고 도입으로 깨졌다. 광고 이전에는 교차 출처 요청이 거의 없어 드러나지 않았다
+- **교훈**:
+  - SW fetch 핸들러는 **맨 앞에 `if (url.origin !== self.location.origin) return;`**. "그 외 전부"를 우리 것으로 가정하지 말 것
+  - 서드파티 스크립트를 새로 붙이면 SW·CSP·프록시처럼 **"전부"를 받는 계층**을 다시 점검한다. 전제가 조용히 깨진다
+- **함정**: `public/sw.js`는 `.gitignore` 대상 **빌드 산출물**이다 (`src/sw.template.js` → `scripts/generate-sw.cjs`). 생성물을 고치면 다음 빌드에 사라진다 — 원본은 `src/sw.template.js`
+
 ## 워크플로우 / 머지
 
 ### feat 워크트리에서 dev 서버를 띄우려다 두 번 헛발질 (2026-08-11, #75)

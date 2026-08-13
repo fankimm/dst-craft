@@ -181,25 +181,33 @@ function flushAdQueue() {
   const show: number[] = [];
   const destroy: number[] = [];
   const ids = new Set([...desiredOwner.keys(), ...shownOwner.keys()]);
-  let changed = false;
   for (const id of ids) {
     const want = desiredOwner.get(id);
     const have = shownOwner.get(id);
-    if (want !== have) {
-      changed = true;
-      if (have) destroy.push(id);
-      if (!want) shownOwner.delete(id);
-    }
-    if (want) {
-      // **살아 있어야 할 자리는 매번 전부 다시 요청한다.** Ezoic은 한 번호를
-      // destroy/show 할 때 다른 자리의 내용까지 비워 버린다 (#75 beta 실측:
-      // 탭 전환으로 상단 띠를 재배치하자 레일 두 개가 빈 div가 됐다).
-      // 이미 비워진 자리를 다시 요청하는 것이므로 노출을 부풀리는 것과는 다르다.
+    if (want && want !== have) {
+      // 주인이 바뀐 자리(탭 전환·목록 전환) — **destroy 없이 show만.**
+      // Ezoic은 새 div를 찾아 다시 채우고, 다른 자리는 건드리지 않는다 (#75 실측).
       show.push(id);
       shownOwner.set(id, want);
+    } else if (!want && have) {
+      // 자리가 아예 사라졌다 (시트 닫힘, 광고 자리 없는 탭) — 이때만 해제한다.
+      // 안 지우면 화면에서 사라진 자리에 리프레시가 계속 걸려 유령 노출이 쌓인다.
+      destroy.push(id);
+      shownOwner.delete(id);
     }
   }
-  if (!changed) return;
+  if (!show.length && !destroy.length) return;
+  if (destroy.length) {
+    // **destroy는 다른 자리의 내용까지 비운다** (#75 실측: `destroy(111); showAds(111)`
+    // 한 번에 레일 두 개가 빈 div가 됐다). 그래서 해제가 낀 배치에서만 살아 있는
+    // 나머지를 함께 다시 요청한다. 주인만 바뀐 경우에는 이 비용을 치르지 않는다.
+    for (const [id, owner] of desiredOwner) {
+      if (!show.includes(id)) {
+        show.push(id);
+        shownOwner.set(id, owner);
+      }
+    }
+  }
   ez.cmd.push(() => {
     if (destroy.length) ez.destroyPlaceholders(...destroy);
     if (show.length) ez.showAds(...show);
