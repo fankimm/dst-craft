@@ -62,7 +62,14 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
  *
  * 폭과 최소 높이를 분리해 두는 이유는 `AdCard` 주석 참조 (폭은 항상, 높이는 채워졌을 때만).
  */
-const BAND_BOX = { w: "w-full max-w-[320px] sm:max-w-[728px]", minH: "min-h-[50px]", reserve: "min-h-[50px]" };
+const BAND_BOX = {
+  w: "w-full max-w-[320px] sm:max-w-[728px]",
+  minH: "min-h-[50px]",
+  // 예약 높이는 **그 폭에 올 수 있는 가장 높은 소재**에 맞춘다.
+  // 50px로 잡았더니 데스크탑에 728×90이 도착할 때마다 40px씩 밀렸다 — CLS를 막으려고
+  // 예약해 놓고 절반만 막던 상태였다. 모바일은 320×100, 데스크탑은 728×90이 상한.
+  reserve: "min-h-[100px] sm:min-h-[90px]",
+};
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
 const MOCK_SIZES: Record<string, { w: number; h: number }> = {
@@ -140,6 +147,33 @@ interface EzStandalone {
   cmd: Array<() => void>;
   showAds: (...ids: number[]) => void;
   destroyPlaceholders: (...ids: number[]) => void;
+  config?: (opts: Record<string, unknown>) => void;
+}
+
+/**
+ * Ezoic 동작 설정 (#75).
+ *
+ * **첫 `showAds()`보다 먼저 들어가야 적용된다.** `cmd`는 FIFO라 아래 `flushAdQueue`가
+ * 첫 요청을 밀어 넣기 전에 한 번만 밀어 둔다.
+ *
+ * `limitCookies`는 Ezoic이 필수 쿠키만 쓰게 해 수요처들의 ID 싱크 픽셀을 줄인다.
+ * 실측에서 서드파티 요청 277건 중 상당수가 id5-sync·adsrvr·ccgateway 같은 매칭 픽셀이었다.
+ * 다만 매칭률이 떨어지면 단가도 같이 내려갈 수 있어 **beta에서만 켜서 요청 감소폭을
+ * 먼저 재고**, 수익 영향은 prod 데이터가 쌓인 뒤 판단한다.
+ *
+ * 전면 광고(Vignette)는 지금 유지하기로 했으므로 `disableInterstitial`·`vignette*`는
+ * 건드리지 않는다. 끄기로 하면 여기에 옵션을 추가하면 된다 —
+ * 대시보드 전용이 아니라 코드로 제어 가능하다(실측으로 `config()` 존재 확인).
+ */
+let ezConfigured = false;
+
+function ensureEzoicConfig(ez: EzStandalone) {
+  if (ezConfigured) return;
+  ezConfigured = true;
+  if (typeof window === "undefined") return;
+  const isBeta = window.location.hostname.startsWith("beta.");
+  if (!isBeta) return;
+  ez.cmd.push(() => ez.config?.({ limitCookies: true }));
 }
 
 /**
@@ -178,6 +212,7 @@ function flushAdQueue() {
   flushScheduled = false;
   const ez = (window as unknown as { ezstandalone?: EzStandalone }).ezstandalone;
   if (!ez?.cmd) return;
+  ensureEzoicConfig(ez);
   const show: number[] = [];
   const destroy: number[] = [];
   const ids = new Set([...desiredOwner.keys(), ...shownOwner.keys()]);
