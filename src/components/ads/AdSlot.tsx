@@ -181,19 +181,25 @@ function flushAdQueue() {
   const show: number[] = [];
   const destroy: number[] = [];
   const ids = new Set([...desiredOwner.keys(), ...shownOwner.keys()]);
+  let changed = false;
   for (const id of ids) {
     const want = desiredOwner.get(id);
     const have = shownOwner.get(id);
-    if (want === have) continue;
-    if (have) destroy.push(id);
+    if (want !== have) {
+      changed = true;
+      if (have) destroy.push(id);
+      if (!want) shownOwner.delete(id);
+    }
     if (want) {
+      // **살아 있어야 할 자리는 매번 전부 다시 요청한다.** Ezoic은 한 번호를
+      // destroy/show 할 때 다른 자리의 내용까지 비워 버린다 (#75 beta 실측:
+      // 탭 전환으로 상단 띠를 재배치하자 레일 두 개가 빈 div가 됐다).
+      // 이미 비워진 자리를 다시 요청하는 것이므로 노출을 부풀리는 것과는 다르다.
       show.push(id);
       shownOwner.set(id, want);
-    } else {
-      shownOwner.delete(id);
     }
   }
-  if (!show.length && !destroy.length) return;
+  if (!changed) return;
   ez.cmd.push(() => {
     if (destroy.length) ez.destroyPlaceholders(...destroy);
     if (show.length) ez.showAds(...show);
