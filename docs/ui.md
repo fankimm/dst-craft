@@ -246,6 +246,12 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **활성 판정** — 교차하면 활성, 안 교차해도 레이아웃 박스가 있으면 활성 유지(스크롤로 벗어난 것), 박스가 0이면 비활성(탭이 숨겨진 것). 스크롤로 벗어날 때마다 해제하면 되돌아올 때 새 노출이 생겨 노출이 부풀려진다
 - **요청 큐는 "주인" 단위** — 상단 띠는 모든 탭이 같은 번호를 쓰므로 탭 전환 때 placeholder div가 교체된다. 번호만 세면 아무 요청도 안 나가 Ezoic이 사라진 div에 광고를 든 채로 남고(새 자리는 영영 빔, 레일까지 동반 사망), 그래서 번호를 쥔 엘리먼트가 바뀌면 `destroyPlaceholders → showAds`로 다시 붙인다. 해제는 자기가 주인일 때만 반영해 순서 뒤집힘에도 안전
 - **상세 시트는 `open`일 때만 렌더** — 시트가 탭마다 상시 마운트돼 있어 그냥 두면 안 보이는 노출이 쌓임
+- **회귀 검증 스크립트** — 자리를 건드렸으면 반드시 돌린다 (`npm i -D playwright-core` 필요, 설치된 Chrome 사용):
+  ```bash
+  node scripts/check-ad-slots.mjs https://beta.dstcraft.com          # 탭 순회·카테고리→목록·상세 시트
+  node scripts/check-ad-slots-stress.mjs https://beta.dstcraft.com   # 연타·모바일·뒤로가기·스크롤·왕복 20회·검색·자리 없는 탭
+  ```
+  Ezoic 스크립트를 차단하고 같은 인터페이스의 가짜를 심어 **우리가 무엇을 요청하는지**만 본다. 실제 광고는 세션·스로틀에 따라 왔다 갔다 하고 백그라운드 탭에서는 아예 안 뜨므로, 채움 여부로 판정하면 테스트가 매번 흔들린다. 판정 항목: 중복 placeholder 없음 / 숨은 탭이 자리를 들고 있지 않음 / 보이는 자리에 placeholder 있음 / 화면 전환당 `show` 배치 1회
 - **목업 모드**: `?admock=<자리>[:<규격>]` (쉼표로 복수, `all` 지원). 실제 광고 대신 규격만큼의 점선 박스를 그린다. 자리를 옮기거나 규격을 비교할 때 사용 — 예 `?admock=all`, `?admock=infeed,sheet:250x250`
 
 ### LegacyPwaNotice (`src/components/ui/LegacyPwaNotice.tsx`)
