@@ -206,11 +206,34 @@ function flushAdQueue() {
   });
 }
 
+/**
+ * 배치 창 — 한 번의 화면 전환에서 생기는 해제·요청을 **한 배치로** 묶는다.
+ *
+ * 0ms로 두면 안 된다. 화면 안에서 자리가 옮겨갈 때(카테고리 → 목록) 옛 자리의 해제는
+ * React 커밋에서, 새 자리의 요청은 그다음 프레임의 IntersectionObserver 콜백에서 온다.
+ * 두 틱으로 갈리면 배치가 두 번 나가고, 그때마다 살아 있는 다른 자리(레일)까지 다시
+ * 요청돼 노출이 헛돈다 (#75 실측: `destroy(111) / show(107,108) / show(107,108,111)`).
+ *
+ * 250ms면 그 간극을 덮으면서 광고 표시가 늦어지는 체감은 없다. 변화가 계속 들어오면
+ * 창을 미루되, 첫 예약으로부터 1초가 지나면 굶지 않도록 그대로 내보낸다.
+ */
+const FLUSH_DEBOUNCE_MS = 250;
+const FLUSH_MAX_WAIT_MS = 1000;
+let flushTimer: ReturnType<typeof setTimeout> | undefined;
+let firstScheduledAt = 0;
+
 function scheduleAdFlush() {
-  if (flushScheduled) return;
-  flushScheduled = true;
-  // 같은 틱에 마운트·교차한 자리들을 한 배치로 묶는다
-  setTimeout(flushAdQueue, 0);
+  const now = performance.now();
+  if (!flushScheduled) {
+    flushScheduled = true;
+    firstScheduledAt = now;
+  } else if (now - firstScheduledAt >= FLUSH_MAX_WAIT_MS) {
+    return; // 이미 최대 대기를 넘겼다 — 예약된 타이머가 곧 나간다
+  } else {
+    clearTimeout(flushTimer);
+  }
+  const wait = Math.min(FLUSH_DEBOUNCE_MS, Math.max(0, FLUSH_MAX_WAIT_MS - (now - firstScheduledAt)));
+  flushTimer = setTimeout(flushAdQueue, wait);
 }
 
 function requestAd(token: SlotToken) {
