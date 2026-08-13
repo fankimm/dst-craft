@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
  * placeholder 번호는 Ezoic 대시보드 리포트와 1:1로 대응하므로 한 번 정하면 바꾸지 않는다.
  * 좌우 레일은 서로 다른 번호여야 한다 — 같은 번호를 두 곳에 쓰면 한쪽만 채워진다.
  *
- * **번호는 탭이 아니라 "자리 역할"(상단 띠 / 하단 띠 / 시트 / 레일) 단위로 공유한다.**
+ * **번호는 탭이 아니라 "자리 역할"(상단 띠 / 시트 / 레일) 단위로 공유한다.**
  * 탭은 전부 동시에 마운트돼 있지만, 아래 활성 판정 덕분에 **보이는 탭의 자리만** id를
  * 가진 div를 그린다. 그래서 문서 안에 같은 번호가 둘 이상 존재하는 일이 없다.
  * (탭마다 번호를 따로 쓰면 탭이 늘어날 때마다 번호가 고갈된다 — 대시보드에 등록된
@@ -24,7 +24,7 @@ import { useEffect, useRef, useState } from "react";
  *   ?admock=all                      모든 자리 기본 규격
  *   ?admock=infeed,sheet:250x250     인피드 + 시트(250×250)
  */
-export type AdVariant = "top" | "bottom" | "sheet" | "rail-left" | "rail-right";
+export type AdVariant = "top" | "sheet" | "rail-left" | "rail-right";
 
 /**
  * 자리별 Ezoic placeholder id.
@@ -43,8 +43,6 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
   // 102(under_page_title)·109(under_first_paragraph)는 beta 실측에서 계속 비어 있었다.
   // 같은 조건에서 110~113(본문 계열)은 잘 채워졌으므로 그쪽을 쓴다 (#75).
   top: 111, // mid_content — 실측에서 가장 안정적으로 채워졌다
-  // 컨텐츠 끝, Footer 바로 위 — 모든 탭이 공유
-  bottom: 113, // longer_content
   // 상세 시트는 한 번에 하나만 열린다.
   // 115(incontent_5)는 300×600·336×280 같은 세로로 긴 소재를 배달해 시트를 잡아먹었다
   // (#75, 사용자 지적). 103(bottom_of_page)은 실측에서 970×105 가로 띠가 왔고, 시트
@@ -85,7 +83,6 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 const BAND_MOCK = { mobile: "320x50", desktop: "468x60" };
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
   top: BAND_MOCK,
-  bottom: BAND_MOCK,
   sheet: BAND_MOCK,
   "rail-left": { mobile: "", desktop: "300x600" },
   "rail-right": { mobile: "", desktop: "300x600" },
@@ -93,7 +90,6 @@ const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
 
 const MOCK_LABEL: Record<AdVariant, string> = {
   top: "목록 첫 줄",
-  bottom: "컨텐츠 끝",
   sheet: "상세 시트 안",
   "rail-left": "왼쪽 레일",
   "rail-right": "오른쪽 레일",
@@ -123,8 +119,6 @@ const MOCK_LABEL: Record<AdVariant, string> = {
 const SLOT_BOX: Record<AdVariant, { w: string; minH: string; reserve?: string }> = {
   // 목록 맨 위 한 행 (검색바 바로 아래) — 길고 얇은 띠
   top: BAND_BOX,
-  // 컨텐츠 끝, Footer 바로 위. 아래에 밀릴 컨텐츠가 Footer뿐이라 높이를 예약하지 않는다
-  bottom: { w: BAND_BOX.w, minH: BAND_BOX.minH },
   // 상세 시트 안 — 시트는 가로로 넓고 세로가 아까운 자리라 띠 형태가 맞다.
   // 폭을 336으로 좁혀 두면 336×280처럼 세로로 큰 광고가 와서 시트 아래를 잠식하고
   // 스크롤을 유발했다 (#75 실측).

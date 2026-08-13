@@ -233,8 +233,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **자리(variant)와 placeholder id** — 번호는 임의로 고르면 안 된다. Ezoic 대시보드에 위치 유형이 정해진 placeholder가 이미 등록돼 있어 **번호가 곧 위치 유형**이다 (100=Adhesion, 101=top_of_page, 102=under_page_title, 103=bottom_of_page, 104~108=sidebar 계열, 109~115=본문 계열). 우리 자리의 성격과 같은 유형을 골라 쓴다:
   | variant | id (Ezoic 유형) | 위치 | 규격 |
   |---|---|---|---|
-  | `top` | 111 (`mid_content`) | 모든 탭의 목록/컨텐츠 첫 줄 (제작·요리 카테고리 화면과 목록, 보스, 스킬 캐릭터 그리드, 스킨, 퀘스트, 콘솔) | 폭 728까지 (가로 띠) |
-  | `bottom` | 113 (`longer_content`) | 컨텐츠 끝 — `Footer` 맨 위에 한 번만 넣어 **모든 탭**에 적용 | 폭 728까지 |
+  | `top` | 111 (`mid_content`) | 모든 탭의 목록/컨텐츠 첫 줄 (제작·요리 카테고리 화면과 목록, 보스, 스킬 캐릭터 그리드·스킬 트리, 스킨, 퀘스트, 콘솔) | 폭 728까지 (가로 띠) |
   | `sheet` | 103 (`bottom_of_page`) | 상세 시트 컨텐츠 끝, `SupportPill` 위 (`DetailPanel`) | 가로 띠. 넓은 화면은 970까지 (103이 970×105를 배달) |
   | `rail-left` / `rail-right` | 107 / 108 (`sidebar_floating_1·2`) | 탭 컨텐츠 좌우 (`AppShell`) | 336폭, 세로. 화면 1500 미만은 미표시 |
 - **요청은 반드시 배칭** — 자리마다 따로 `showAds(id)`를 부르면 Ezoic이 앞선 사이클 도중 들어온 호출을 흘려버려 그 자리가 조용히 빈 채로 남는다. `AdSlot` 모듈의 배치 큐(`requestAd`/`releaseAd`)에 등록만 하고, 같은 틱의 요청을 `showAds(...ids)` 한 번으로 내보낸다. 자리를 추가할 때 개별 호출을 복붙하지 말 것
