@@ -374,13 +374,14 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
 
   return (
     <div ref={hostRef} className={`flex justify-center py-2 shrink-0 ${className}`} data-ad-slot={variant}>
-      {/* placeholder div는 활성일 때만 — 숨은 탭에도 그리면 같은 id가 문서에 여러 개
-          생겨 Ezoic이 보이지 않는 쪽을 채운다. 자리 폭·예약 높이는 그대로 유지한다. */}
-      {active ? (
-        <AdCard placeholderId={id} box={box} />
-      ) : (
-        <div className={`${box.w} ${box.reserve ?? ""}`} />
-      )}
+      {/* **비활성일 때도 같은 껍데기를 그린다.** 예전에는 빈 div만 뒀는데, 그러면
+          활성으로 바뀌는 순간 껍데기(라벨 줄 + 상하 패딩 ≈27px)가 새로 생겨 컨텐츠가
+          밀린다. 활성 전환이 첫 페인트보다 늦는 경우 — 백그라운드 탭에서 로드된 뒤
+          포커스가 오면 IntersectionObserver가 그제야 돈다 — 그대로 CLS다
+          (#75, beta 실측: 116px → 143px).
+          id는 활성일 때만 붙인다. 그래야 숨은 탭까지 포함해 문서에 같은 번호가
+          둘 이상 생기지 않는다 — 자리 자체는 그리되 Ezoic 눈에는 안 띈다. */}
+      <AdCard placeholderId={active ? id : null} box={box} />
     </div>
   );
 }
@@ -418,7 +419,8 @@ function AdCard({
   placeholderId,
   box,
 }: {
-  placeholderId: number;
+  /** `null`이면 자리만 잡는 상태 — id를 안 붙여 Ezoic이 이 div를 못 찾는다 */
+  placeholderId: number | null;
   box: { w: string; minH: string; reserve?: string };
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -426,7 +428,7 @@ function AdCard({
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || placeholderId === null) return;
     const check = () => {
       setFilled(getComputedStyle(el).display !== "none" && hasCreative(el));
     };
@@ -501,7 +503,7 @@ function AdCard({
         </div>
         <div
           ref={ref}
-          id={`ezoic-pub-ad-placeholder-${placeholderId}`}
+          id={placeholderId === null ? undefined : `ezoic-pub-ad-placeholder-${placeholderId}`}
           className={filled ? bodyH : `w-full ${bodyH}`}
         />
       </div>

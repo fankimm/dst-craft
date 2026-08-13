@@ -83,6 +83,41 @@ for (const p of PAGES) {
     continue;
   }
 
+  // 활성 전환 시프트 — placeholder가 그려지기 **전** 높이가 그려진 뒤와 같아야 한다.
+  // IntersectionObserver를 절대 안 fire하는 스텁으로 갈아끼워 비활성 상태를 고정한다.
+  // 실제로 이 경로가 문제였다: 비활성일 때 빈 div만 그리는 바람에 활성으로 바뀌는
+  // 순간 껍데기 27px이 새로 생겼다(백그라운드 탭 로드 후 포커스가 오는 경우 등).
+  const inactive = await browser.newPage({ viewport: { width: p.vw, height: 900 } });
+  await inactive.route(/(ezojs|ezoic|gatekeeperconsent|ezodn|ezoicanalytics|googlesyndication|doubleclick)/i, (r) =>
+    r.abort(),
+  );
+  await inactive.addInitScript(() => {
+    window.ezstandalone = { cmd: [], showAds() {}, destroyPlaceholders() {}, config() {} };
+    setInterval(() => window.ezstandalone.cmd.splice(0).forEach((f) => f()), 50);
+    window.IntersectionObserver = class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    };
+  });
+  await inactive.goto(BASE + p.path, { waitUntil: "domcontentloaded" });
+  await inactive.waitForTimeout(2000);
+  const inactiveH = await inactive.evaluate(() => {
+    const slot = document.querySelector('[data-ad-slot="top"]');
+    const ph = document.querySelector('[id^="ezoic-pub-ad-placeholder-"]');
+    return { h: slot ? Math.round(slot.getBoundingClientRect().height) : null, hasPh: !!ph };
+  });
+  await inactive.close();
+  if (inactiveH.hasPh) {
+    problems.push(`${p.name}: 비활성인데 placeholder에 id가 붙어 있다 (숨은 자리 중복 위험)`);
+  }
+  base.inactiveH = inactiveH.h;
+  if (inactiveH.h !== base.emptyH) {
+    problems.push(
+      `${p.name}: 자리 활성화만으로 ${inactiveH.h} → ${base.emptyH}px (${base.emptyH - inactiveH.h > 0 ? "+" : ""}${base.emptyH - inactiveH.h}) 시프트`,
+    );
+  }
+
   const rows = [];
   for (const [w, h] of [...BANDS, ...SQUARES]) {
     const filledH = await page.evaluate(
@@ -122,7 +157,9 @@ for (const r of report) {
     console.log("  광고 자리 없음");
     continue;
   }
-  console.log(`  미충전 높이 ${r.emptyH}px / placeholder 폭 ${r.phW}px`);
+  console.log(
+    `  비활성 ${r.inactiveH}px → 활성·미충전 ${r.emptyH}px / placeholder 폭 ${r.phW}px`,
+  );
   for (const x of r.rows) {
     const tag = !x.isBand ? "참고 " : x.shift === 0 ? "OK   " : "시프트";
     const d = x.shift === 0 ? "" : ` (${x.shift > 0 ? "+" : ""}${x.shift})`;
