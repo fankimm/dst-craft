@@ -156,14 +156,22 @@ interface EzStandalone {
  * 해제도 같은 배치에서 먼저 처리한다 — Ezoic 문서가 권하는 SPA 패턴(destroy 후 show).
  */
 /**
- * 원하는 상태는 **참조 수**로 센다. "요청/해제"를 그대로 큐에 넣으면 탭 전환처럼
- * 한 자리가 사라지면서 다른 자리가 같은 번호를 잡는 상황에서 순서가 뒤집힐 수 있고
- * (해제가 나중에 도착하면 방금 요청한 광고가 지워진다), 그러면 그 자리는 영영 빈다.
- * 참조 수로 두면 순서와 무관하게 "지금 이 번호를 쓰는 자리가 있는가"만 남는다.
+ * 번호마다 **어느 자리(컴포넌트 인스턴스)가 그 번호를 쥐고 있는지**를 추적한다.
+ *
+ * 단순히 "이 번호를 쓰는 자리가 있는가"만 세면 탭 전환에서 광고가 죽는다. 상단 띠는
+ * 모든 탭이 같은 번호를 쓰므로, 탭을 바꾸면 A탭의 placeholder div가 언마운트되고
+ * B탭의 새 div가 마운트된다. 참조 수는 계속 1이라 아무 요청도 안 나가고, Ezoic은
+ * 이미 DOM에서 사라진 옛 div에 광고를 들고 있는 상태가 된다 — 새 자리는 영영 비고,
+ * 그 상태에서 다음 사이클이 돌면 레일 광고까지 함께 날아갔다 (#75 beta 실측).
+ *
+ * 그래서 주인이 바뀌면 `destroy → show`로 그 번호를 새 div에 다시 붙인다.
+ * 해제는 **자기가 주인일 때만** 반영하므로, 언마운트(해제)가 새 자리의 요청보다
+ * 늦게 도착해도 방금 잡은 자리를 빼앗지 않는다.
  */
-const adRefs = new Map<number, number>();
-/** 지금 Ezoic에 요청돼 있는 번호 — 이미 뜬 광고를 다시 요청해 새 노출을 만들지 않는다 */
-const shownIds = new Set<number>();
+type SlotToken = { id: number };
+const desiredOwner = new Map<number, SlotToken>();
+/** 지금 Ezoic이 광고를 붙여 둔 주인 — 같은 주인이면 다시 요청하지 않는다 (노출 부풀리기 방지) */
+const shownOwner = new Map<number, SlotToken>();
 let flushScheduled = false;
 
 function flushAdQueue() {
@@ -172,13 +180,17 @@ function flushAdQueue() {
   if (!ez?.cmd) return;
   const show: number[] = [];
   const destroy: number[] = [];
-  for (const [id, refs] of adRefs) {
-    if (refs > 0 && !shownIds.has(id)) {
+  const ids = new Set([...desiredOwner.keys(), ...shownOwner.keys()]);
+  for (const id of ids) {
+    const want = desiredOwner.get(id);
+    const have = shownOwner.get(id);
+    if (want === have) continue;
+    if (have) destroy.push(id);
+    if (want) {
       show.push(id);
-      shownIds.add(id);
-    } else if (refs <= 0 && shownIds.has(id)) {
-      destroy.push(id);
-      shownIds.delete(id);
+      shownOwner.set(id, want);
+    } else {
+      shownOwner.delete(id);
     }
   }
   if (!show.length && !destroy.length) return;
@@ -195,13 +207,14 @@ function scheduleAdFlush() {
   setTimeout(flushAdQueue, 0);
 }
 
-function requestAd(id: number) {
-  adRefs.set(id, (adRefs.get(id) ?? 0) + 1);
+function requestAd(token: SlotToken) {
+  desiredOwner.set(token.id, token);
   scheduleAdFlush();
 }
 
-function releaseAd(id: number) {
-  adRefs.set(id, Math.max(0, (adRefs.get(id) ?? 0) - 1));
+function releaseAd(token: SlotToken) {
+  // 이미 다른 자리가 이 번호를 가져갔다면 건드리지 않는다
+  if (desiredOwner.get(token.id) === token) desiredOwner.delete(token.id);
   scheduleAdFlush();
 }
 
@@ -270,8 +283,11 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
   // 개별 호출이 아니라 배치 큐를 거친다 (위 `requestAd` 주석 참조).
   useEffect(() => {
     if (isMock || !active) return;
-    requestAd(id);
-    return () => releaseAd(id);
+    // effect마다 새 토큰 = "이번에 그려진 placeholder div"의 신분증.
+    // 같은 번호라도 div가 새로 생기면 토큰이 달라져 destroy → show가 나간다.
+    const token = { id };
+    requestAd(token);
+    return () => releaseAd(token);
   }, [id, isMock, active]);
 
   if (isMock) return <AdSlotMock variant={variant} sizeKey={mocks.get(variant) ?? null} className={className} />;
