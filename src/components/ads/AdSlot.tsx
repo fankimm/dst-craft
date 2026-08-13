@@ -218,22 +218,40 @@ function flushAdQueue() {
  * 창을 미루되, 첫 예약으로부터 1초가 지나면 굶지 않도록 그대로 내보낸다.
  */
 const FLUSH_DEBOUNCE_MS = 250;
-const FLUSH_MAX_WAIT_MS = 1000;
+/**
+ * 해제만 쌓인 상태는 더 기다린다.
+ *
+ * 화면 안에서 자리가 옮겨갈 때(카테고리 → 목록, 검색 결과 전환) 옛 자리의 해제가
+ * 먼저 오고 새 자리의 요청은 렌더·교차 판정을 거쳐 한참 뒤에 온다. 250ms 안에 못 들어오면
+ * 배치가 둘로 갈리고, 그 사이 살아 있는 레일까지 다시 요청돼 노출이 헛돈다
+ * (#75 실측: 검색에서 `destroy(111) / show(107,108) / show(107,108,111)`).
+ *
+ * 어차피 그 순간 화면에는 그 자리가 없으므로 해제를 조금 늦춰도 사용자에겐 차이가 없다.
+ */
+const FLUSH_RELEASE_ONLY_MS = 900;
+const FLUSH_MAX_WAIT_MS = 1500;
 let flushTimer: ReturnType<typeof setTimeout> | undefined;
 let firstScheduledAt = 0;
+
+/** 새로 자리를 잡으려는 요청이 하나라도 있는가 (해제만 남은 상태와 구분) */
+function hasPendingClaim(): boolean {
+  for (const [id, want] of desiredOwner) {
+    if (shownOwner.get(id) !== want) return true;
+  }
+  return false;
+}
 
 function scheduleAdFlush() {
   const now = performance.now();
   if (!flushScheduled) {
     flushScheduled = true;
     firstScheduledAt = now;
-  } else if (now - firstScheduledAt >= FLUSH_MAX_WAIT_MS) {
-    return; // 이미 최대 대기를 넘겼다 — 예약된 타이머가 곧 나간다
   } else {
     clearTimeout(flushTimer);
   }
-  const wait = Math.min(FLUSH_DEBOUNCE_MS, Math.max(0, FLUSH_MAX_WAIT_MS - (now - firstScheduledAt)));
-  flushTimer = setTimeout(flushAdQueue, wait);
+  const base = hasPendingClaim() ? FLUSH_DEBOUNCE_MS : FLUSH_RELEASE_ONLY_MS;
+  const remaining = FLUSH_MAX_WAIT_MS - (now - firstScheduledAt);
+  flushTimer = setTimeout(flushAdQueue, Math.max(0, Math.min(base, remaining)));
 }
 
 function requestAd(token: SlotToken) {
