@@ -233,19 +233,19 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **자리(variant)와 placeholder id** — 번호는 임의로 고르면 안 된다. Ezoic 대시보드에 위치 유형이 정해진 placeholder가 이미 등록돼 있어 **번호가 곧 위치 유형**이다 (100=Adhesion, 101=top_of_page, 102=under_page_title, 103=bottom_of_page, 104~108=sidebar 계열, 109~115=본문 계열). 우리 자리의 성격과 같은 유형을 골라 쓴다:
   | variant | id (Ezoic 유형) | 위치 | 규격 |
   |---|---|---|---|
-  | `top-crafting` | 113 (`longer_content`) | 제작 목록 맨 위 한 줄, 검색바 바로 아래 (`ItemGrid`) | 폭 728까지 (가로 띠) |
-  | `top-cooking` | 114 (`longest_content`) | 요리 목록 맨 위 (`CookingApp` > RecipeGrid·RawFoodGrid) | 폭 728까지 |
-  | `top-bosses` | 110 (`under_second_paragraph`) | 보스 목록 맨 위 (`BossesApp`) | 폭 728까지 |
-  | `infeed-crafting` | 111 (`mid_content`) | 제작 그리드 18칸마다 한 행 | 폭 728까지 |
-  | `infeed-cooking` | 112 (`long_content`) | 요리 그리드 18칸마다 한 행 | 폭 728까지 |
-  | `infeed-bosses` | 106 (`sidebar_bottom`) | 보스 목록 — 현재 top만 (목록이 짧아 인피드 생략) | — |
-  | `sheet` | 115 (`incontent_5`) | 상세 시트 컨텐츠 끝, `SupportPill` 위 (`DetailPanel`) | 폭 728까지 — 시트는 세로가 아까운 자리라 띠 형태를 받는다 |
-  | `rail-left` / `rail-right` | 107 / 108 (`sidebar_floating_1·2`) | 탭 컨텐츠 좌우 (`AppShell`) | 300×600 계열. 화면 1500 미만은 미표시 |
+  | `top-crafting` | 111 (`mid_content`) | 제작 — 카테고리 첫 화면(`CategoryGrid`)과 아이템 목록(`ItemGrid`) 첫 줄 | 폭 728까지 (가로 띠) |
+  | `top-cooking` | 112 (`long_content`) | 요리 — 카테고리 화면 + 목록(RecipeGrid·RawFoodGrid) 첫 줄 | 폭 728까지 |
+  | `top-bosses` | 110 (`under_second_paragraph`) | 보스 — 카테고리 화면 + 목록 첫 줄 | 폭 728까지 |
+  | `sheet` | 103 (`bottom_of_page`) | 상세 시트 컨텐츠 끝, `SupportPill` 위 (`DetailPanel`) | 가로 띠. 넓은 화면은 970까지 (103이 970×105를 배달) |
+  | `rail-left` / `rail-right` | 107 / 108 (`sidebar_floating_1·2`) | 탭 컨텐츠 좌우 (`AppShell`) | 336폭, 세로. 화면 1500 미만은 미표시 |
+- **요청은 반드시 배칭** — 자리마다 따로 `showAds(id)`를 부르면 Ezoic이 앞선 사이클 도중 들어온 호출을 흘려버려 그 자리가 조용히 빈 채로 남는다. `AdSlot` 모듈의 배치 큐(`requestAd`/`releaseAd`)에 등록만 하고, 같은 틱의 요청을 `showAds(...ids)` 한 번으로 내보낸다. 자리를 추가할 때 개별 호출을 복붙하지 말 것
+- **도착 판정은 소재 기준** — no-fill이어도 Ezoic이 18×18 뱃지 이미지를 넣기 때문에 "자식이 있으면 채워짐"으로 보면 빈 회색 AD 카드가 그려진다. iframe / 뱃지보다 큰 이미지 / 텍스트가 있을 때만 채워진 것으로 친다
+- **가로 띠만 50px 상시 예약(`reserve`)** — 띠는 컨텐츠 위에 있어 늦게 도착하면 목록이 밀린다(CLS, 유입 65%가 구글). 최소 규격 320×50만큼 미리 비워 둔다. 레일(옆)·시트(아래)는 밀릴 컨텐츠가 없어 예약하지 않는다
 - **자리 폭은 "그 자리에 올 수 있는 최대 규격"으로 잡는다** — Ezoic은 컨테이너 폭을 존중하지 않는다. 160폭 자리에 300×250을 넣어 옆 컨텐츠와 겹치는 것을 실측했다(#75). 잘라내기(`overflow:hidden`)는 금지 — 광고를 일부 가리면 정책 위반이라 계정이 위험하다
 - **높이는 최소값만** — 큰 규격이 와도 아래로 늘어나면 되고, 최소 높이가 늦게 온 광고의 레이아웃 시프트를 막는다
 - **레일 브레이크포인트 근거**: 아이템 그리드 최대폭 896 + 좌우 300씩 = 1496 → `min-[1500px]`
 - **탭마다 다른 id를 써야 한다** — 탭은 `hidden` 상태로 동시에 마운트돼 있어서 같은 번호를 두 탭이 쓰면 한쪽만 채워지고 대시보드 리포트도 섞인다. 좌우 레일도 서로 다른 번호
-- **예외: 상세 시트(115)는 공유** — 시트는 한 번에 하나만 열리고 `open`일 때만 렌더되므로 탭 구분이 불필요. 요리탭 생식 목록도 레시피 목록과 동시에 렌더되지 않아 `top-cooking`을 공유
+- **예외: 상세 시트(103)는 공유** — 시트는 한 번에 하나만 열리고 `open`일 때만 렌더되므로 탭 구분이 불필요. 같은 탭의 카테고리 화면과 목록 화면도 서로 배타적이라 `top-*` 번호를 공유한다
 - **상세 시트는 `open`일 때만 렌더** — 시트가 탭마다 상시 마운트돼 있어 그냥 두면 안 보이는 노출이 쌓임
 - **목업 모드**: `?admock=<자리>[:<규격>]` (쉼표로 복수, `all` 지원). 실제 광고 대신 규격만큼의 점선 박스를 그린다. 자리를 옮기거나 규격을 비교할 때 사용 — 예 `?admock=all`, `?admock=infeed,sheet:250x250`
 

@@ -66,7 +66,7 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
  *
  * 폭과 최소 높이를 분리해 두는 이유는 `AdCard` 주석 참조 (폭은 항상, 높이는 채워졌을 때만).
  */
-const BAND_BOX = { w: "w-full max-w-[320px] sm:max-w-[728px]", minH: "min-h-[50px]" };
+const BAND_BOX = { w: "w-full max-w-[320px] sm:max-w-[728px]", minH: "min-h-[50px]", reserve: "min-h-[50px]" };
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
 const MOCK_SIZES: Record<string, { w: number; h: number }> = {
@@ -114,7 +114,17 @@ const MOCK_LABEL: Record<AdVariant, string> = {
  * 높이는 최소값만 준다. 예상보다 큰 규격이 와도 자리가 아래로 늘어나면 될 뿐이고,
  * 최소 높이가 있어야 광고가 늦게 도착할 때 컨텐츠가 튀지 않는다.
  */
-const SLOT_BOX: Record<AdVariant, { w: string; minH: string }> = {
+/**
+ * `reserve` — 광고가 오기 전에도 비워 둘 최소 높이.
+ *
+ * 가로 띠는 컨텐츠 **위**에 있어서, 광고가 늦게 도착하면 목록이 통째로 아래로 밀린다
+ * (CLS). 유입의 65%가 구글이라 순위에 직접 영향이 있으므로, 최소 규격인 320×50만큼은
+ * 미리 비워 둔다. 재고가 없는 세션에서는 그 50px이 빈 줄로 남지만, 상하 여백과 섞여
+ * "간격이 조금 넓다" 정도로만 보인다.
+ *
+ * 레일은 컨텐츠 **옆**이라 늦게 도착해도 본문이 밀리지 않는다 → 예약하지 않는다.
+ */
+const SLOT_BOX: Record<AdVariant, { w: string; minH: string; reserve?: string }> = {
   // 목록 맨 위 한 행 (검색바 바로 아래) — 길고 얇은 띠
   "top-crafting": BAND_BOX,
   "top-cooking": BAND_BOX,
@@ -124,6 +134,7 @@ const SLOT_BOX: Record<AdVariant, { w: string; minH: string }> = {
   // 스크롤을 유발했다 (#75 실측).
   // 넓은 화면에서 970까지 열어 두는 건 103(bottom_of_page)이 970×105 띠를 배달하기
   // 때문이다 — 728로 묶어 두면 그 규격이 자리를 삐져나온다.
+  // 시트 광고는 본문 아래라 밀릴 컨텐츠가 없다 → 예약 불필요
   sheet: { w: "w-full max-w-[320px] sm:max-w-[728px] lg:max-w-[970px]", minH: "min-h-[50px]" },
   // 데스크탑 레일 — 실측상 sidebar 자리에도 336폭(336×280 계열)이 배달되므로
   // 폭을 336으로 잡는다. 300으로 두면 36px씩 옆 컨텐츠를 침범했다.
@@ -289,7 +300,13 @@ function hasCreative(el: HTMLElement): boolean {
   const BADGE_MAX = 40; // Ezoic 뱃지는 18×18
   return [...el.querySelectorAll("img")].some((img) => img.getBoundingClientRect().width > BADGE_MAX);
 }
-function AdCard({ placeholderId, box }: { placeholderId: number; box: { w: string; minH: string } }) {
+function AdCard({
+  placeholderId,
+  box,
+}: {
+  placeholderId: number;
+  box: { w: string; minH: string; reserve?: string };
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [filled, setFilled] = useState(false);
 
@@ -335,7 +352,7 @@ function AdCard({ placeholderId, box }: { placeholderId: number; box: { w: strin
         <div
           ref={ref}
           id={`ezoic-pub-ad-placeholder-${placeholderId}`}
-          className={filled ? box.minH : "w-full"}
+          className={filled ? box.minH : `w-full ${box.reserve ?? ""}`}
         />
       </div>
     </div>
