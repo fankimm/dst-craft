@@ -271,6 +271,24 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
  * 광고가 안 오면 Ezoic이 placeholder를 `display:none`으로 접는다. 그때 껍데기만 남아
  * 빈 카드가 보이면 안 되므로, 채워졌는지 직접 감시해서 그때만 카드 옷을 입힌다.
  */
+
+/**
+ * 자리에 **실제 소재**가 들어왔는지 판정한다.
+ *
+ * "자식이 하나라도 있으면 채워진 것"으로 보면 안 된다 — 재고가 안 붙어도(no-fill) Ezoic은
+ * 규격만큼 공간을 잡고 18×18 자사 뱃지 이미지 하나만 넣는다. 그 상태를 채워진 것으로
+ * 오판해서 카드 옷을 입히는 바람에, 사용자 화면에 **텅 빈 회색 "AD" 박스**가 728×90,
+ * 336×250 크기로 그려졌다 (#75 beta 실측).
+ *
+ * 그래서 소재로 볼 만한 것 — iframe, 뱃지보다 큰 이미지, 텍스트 — 이 있을 때만 채워진
+ * 것으로 친다.
+ */
+function hasCreative(el: HTMLElement): boolean {
+  if (el.querySelector("iframe")) return true;
+  if (el.innerText.trim().length > 0) return true;
+  const BADGE_MAX = 40; // Ezoic 뱃지는 18×18
+  return [...el.querySelectorAll("img")].some((img) => img.getBoundingClientRect().width > BADGE_MAX);
+}
 function AdCard({ placeholderId, box }: { placeholderId: number; box: { w: string; minH: string } }) {
   const ref = useRef<HTMLDivElement>(null);
   const [filled, setFilled] = useState(false);
@@ -279,13 +297,19 @@ function AdCard({ placeholderId, box }: { placeholderId: number; box: { w: strin
     const el = ref.current;
     if (!el) return;
     const check = () => {
-      setFilled(getComputedStyle(el).display !== "none" && el.childElementCount > 0);
+      setFilled(getComputedStyle(el).display !== "none" && hasCreative(el));
     };
-    // Ezoic은 스타일과 자식을 여러 번에 걸쳐 갈아끼운다 (입찰 → 렌더 → 리프레시)
+    // Ezoic은 스타일과 자식을 여러 번에 걸쳐 갈아끼운다 (입찰 → 렌더 → 리프레시).
+    // 소재는 placeholder 바로 아래가 아니라 몇 겹 안쪽에 들어오므로 subtree까지 본다.
     const mo = new MutationObserver(check);
-    mo.observe(el, { attributes: true, attributeFilter: ["style", "class"], childList: true });
+    mo.observe(el, { attributes: true, attributeFilter: ["style", "class"], childList: true, subtree: true });
     check();
-    return () => mo.disconnect();
+    // 이미지 소재는 로드 전 크기가 0이라 첫 판정에서 놓친다 — 몇 번 더 확인한다
+    const timers = [300, 1000, 2500, 5000].map((ms) => window.setTimeout(check, ms));
+    return () => {
+      mo.disconnect();
+      timers.forEach(clearTimeout);
+    };
   }, []);
 
   // **폭은 광고가 오기 전에도 반드시 유지해야 한다.** 카드 옷을 입힐 때만 폭을 주면
