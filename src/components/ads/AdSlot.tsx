@@ -47,8 +47,11 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
   "top-crafting": 111, // mid_content — 실측에서 가장 안정적으로 채워졌다
   "top-cooking": 112, // long_content
   "top-bosses": 110, // under_second_paragraph — 실측에서 채워짐 확인
-  // 상세 시트는 한 번에 하나만 열리므로 탭 구분 없이 한 번호를 공유한다
-  sheet: 115, // incontent_5
+  // 상세 시트는 한 번에 하나만 열리므로 탭 구분 없이 한 번호를 공유한다.
+  // 115(incontent_5)는 300×600·336×280 같은 세로로 긴 소재를 배달해 시트를 잡아먹었다
+  // (#75, 사용자 지적). 103(bottom_of_page)은 실측에서 970×105 가로 띠가 왔고, 시트
+  // 본문 끝이라는 위치 성격과도 맞아 이쪽으로 옮겼다.
+  sheet: 103, // bottom_of_page — 가로 띠 계열
   // 데스크탑 레일은 AppShell에 한 쌍만 있다
   "rail-left": 107, // sidebar_floating_1
   "rail-right": 108, // sidebar_floating_2
@@ -119,7 +122,9 @@ const SLOT_BOX: Record<AdVariant, { w: string; minH: string }> = {
   // 상세 시트 안 — 시트는 가로로 넓고 세로가 아까운 자리라 띠 형태가 맞다.
   // 폭을 336으로 좁혀 두면 336×280처럼 세로로 큰 광고가 와서 시트 아래를 잠식하고
   // 스크롤을 유발했다 (#75 실측).
-  sheet: BAND_BOX,
+  // 넓은 화면에서 970까지 열어 두는 건 103(bottom_of_page)이 970×105 띠를 배달하기
+  // 때문이다 — 728로 묶어 두면 그 규격이 자리를 삐져나온다.
+  sheet: { w: "w-full max-w-[320px] sm:max-w-[728px] lg:max-w-[970px]", minH: "min-h-[50px]" },
   // 데스크탑 레일 — 실측상 sidebar 자리에도 336폭(336×280 계열)이 배달되므로
   // 폭을 336으로 잡는다. 300으로 두면 36px씩 옆 컨텐츠를 침범했다.
   // 세로로 여러 유닛이 쌓여 뷰포트보다 길어지는 경우가 있어 래퍼에서 높이를 흡수한다
@@ -134,6 +139,57 @@ interface EzStandalone {
   cmd: Array<() => void>;
   showAds: (...ids: number[]) => void;
   destroyPlaceholders: (...ids: number[]) => void;
+}
+
+/**
+ * 광고 요청 배칭 (#75).
+ *
+ * **자리마다 따로 `showAds(id)`를 부르면 안 된다.** Ezoic은 한 번의 요청을 입찰→렌더
+ * 사이클로 처리하는데, 그 사이클이 도는 중에 들어온 다음 `showAds`는 그냥 흘려버린다.
+ * 레일은 마운트 즉시, 목록 첫 줄 띠는 IntersectionObserver가 걸린 뒤 — 이렇게 시점이
+ * 어긋난 탓에 어느 쪽이든 늦게 들어온 자리가 빈 채로 남았다 (사용자 지적: "양옆이
+ * 언젠 뜨고 언젠 안 뜨고", "상단 가로 긴 게 뜨다 안 뜨다").
+ *
+ * 그래서 같은 틱에 생긴 요청을 한 번의 `showAds(...ids)`로 모은다. 사이클이 한 번만
+ * 돌기 때문에 자리가 누락되지 않고, 광고가 붙는 시점도 빨라진다.
+ * 해제도 같은 배치에서 먼저 처리한다 — Ezoic 문서가 권하는 SPA 패턴(destroy 후 show).
+ */
+const pendingShow = new Set<number>();
+const pendingDestroy = new Set<number>();
+let flushScheduled = false;
+
+function flushAdQueue() {
+  flushScheduled = false;
+  const ez = (window as unknown as { ezstandalone?: EzStandalone }).ezstandalone;
+  if (!ez?.cmd) return;
+  const show = [...pendingShow];
+  const destroy = [...pendingDestroy];
+  pendingShow.clear();
+  pendingDestroy.clear();
+  if (!show.length && !destroy.length) return;
+  ez.cmd.push(() => {
+    if (destroy.length) ez.destroyPlaceholders(...destroy);
+    if (show.length) ez.showAds(...show);
+  });
+}
+
+function scheduleAdFlush() {
+  if (flushScheduled) return;
+  flushScheduled = true;
+  // 같은 틱에 마운트·교차한 자리들을 한 배치로 묶는다
+  setTimeout(flushAdQueue, 0);
+}
+
+function requestAd(id: number) {
+  pendingDestroy.delete(id);
+  pendingShow.add(id);
+  scheduleAdFlush();
+}
+
+function releaseAd(id: number) {
+  pendingShow.delete(id);
+  pendingDestroy.add(id);
+  scheduleAdFlush();
 }
 
 /** `?admock=` 파싱 — 자리 → 규격 오버라이드. 쿼리가 없으면 빈 맵(=실제 광고) */
@@ -162,8 +218,10 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
   const hostRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
 
-  // 자리가 화면에 가까워질 때까지 광고를 요청하지 않는다.
-  // 페이지를 열자마자 모든 자리를 한꺼번에 요청하면 첫 로딩이 눈에 띄게 느려진다 (#75).
+  // 자리가 화면에 들어왔을 때만 광고를 요청한다.
+  // 탭은 전부 동시에 마운트돼 있고 비활성 탭은 `display:none`이라, 무조건 요청하면
+  // 아무도 볼 수 없는 노출이 쌓인다 (광고 정책 위반). 활성 탭의 자리는 첫 콜백에서
+  // 바로 교차 판정이 나므로 이 게이트가 표시를 늦추지는 않는다.
   useEffect(() => {
     if (isMock) return;
     const el = hostRef.current;
@@ -185,15 +243,12 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
     return () => io.disconnect();
   }, [isMock]);
 
-  // 실제 광고 요청 — 목업 모드에서는 건너뛴다
+  // 실제 광고 요청 — 목업 모드에서는 건너뛴다.
+  // 개별 호출이 아니라 배치 큐를 거친다 (위 `requestAd` 주석 참조).
   useEffect(() => {
     if (isMock || !inView) return;
-    const ez = (window as unknown as { ezstandalone?: EzStandalone }).ezstandalone;
-    if (!ez?.cmd) return;
-    ez.cmd.push(() => ez.showAds(id));
-    return () => {
-      ez.cmd.push(() => ez.destroyPlaceholders(id));
-    };
+    requestAd(id);
+    return () => releaseAd(id);
   }, [id, isMock, inView]);
 
   if (isMock) return <AdSlotMock variant={variant} sizeKey={mocks.get(variant) ?? null} className={className} />;
