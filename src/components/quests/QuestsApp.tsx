@@ -9,6 +9,7 @@ import { t, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { TabScrollArea } from "@/components/ui/TabScrollArea";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 function stepTitle(step: QuestStep, locale: Locale): string {
   return locale === "ko" ? step.titleKo : step.titleEn;
@@ -70,6 +71,7 @@ export function QuestsApp({ onViewCraftingItem, onViewBoss }: { onViewCraftingIt
       </div>
 
       <TabScrollArea scrollContainer>
+        <AdSlot variant="top" />
         <div className="max-w-3xl mx-auto px-3 py-3 space-y-3 w-full">
           {quests.map((quest) => (
             <QuestSection

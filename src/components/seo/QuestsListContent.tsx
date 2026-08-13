@@ -2,6 +2,7 @@ import { quests, type Quest } from "@/data/quests";
 import { canonicalForQuest } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -41,6 +42,8 @@ export function QuestsListContent({ lang }: { lang: SeoLang }) {
             {L.questsIntro[lang]}
           </p>
         </section>
+
+        <AdSlot variant="top" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {quests.map((q) => {

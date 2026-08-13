@@ -18,6 +18,7 @@ import { encodeBuild, decodeBuild } from "@/lib/skill-build-codec";
 import { useWx78Circuits, encodeCircuits, decodeCircuits } from "@/hooks/use-wx78-circuits";
 import { useSkillUnlimited } from "@/hooks/use-skill-unlimited";
 import { SkillCharacterGrid } from "./SkillCharacterGrid";
+import { AdSlot } from "@/components/ads/AdSlot";
 import { SkillTreeView } from "./SkillTreeView";
 
 interface Props {
@@ -420,6 +421,7 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
           />
         ) : (
           <div className="h-full overflow-y-auto overscroll-contain" data-scroll-container="">
+            <AdSlot variant="top" />
             <SkillCharacterGrid
               locale={resolvedLocale}
               onSelect={handleSelectChar}
