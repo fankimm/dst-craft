@@ -305,10 +305,23 @@ export default function RootLayout({
         {/* Ezoic — ad system header script. 실제 광고 자리는 `AdSlot`(components/ads)이
             placeholder div + showAds()로 요청한다 (#75). */}
         <script async src="https://www.ezojs.com/ezoic/sa.min.js" />
+        {/* `config()`는 큐를 만드는 이 자리에서 바로 밀어야 한다 (#75).
+            Ezoic 본체는 위 `sa.min.js`가 뜨는 즉시 자동 유닛(anchor·vignette·video)과
+            쿠키 싱크를 시작하므로, AdSlot이 첫 배치를 내보내는 시점(마운트 → 교차 판정
+            → 250ms 디바운스)에 넣으면 초기 픽셀에는 이미 늦다.
+            `limitCookies`는 수요처들의 ID 싱크 픽셀을 줄인다 — 실측에서 서드파티 요청
+            277건 중 상당수가 id5-sync·adsrvr·ccgateway 같은 매칭 픽셀이었다. 매칭률이
+            떨어지면 단가도 같이 내려갈 수 있어 **beta에서만 켜서 요청 감소폭을 먼저 재고**,
+            수익 영향은 prod 데이터가 쌓인 뒤 판단한다.
+            전면 광고(Vignette)는 유지하기로 했으므로 `disableInterstitial`·`vignette*`는
+            건드리지 않는다 — 끄기로 하면 여기에 옵션을 추가하면 된다. */}
         <script
           dangerouslySetInnerHTML={{
-            __html:
-              "window.ezstandalone = window.ezstandalone || {}; ezstandalone.cmd = ezstandalone.cmd || [];",
+            __html: `window.ezstandalone = window.ezstandalone || {}; ezstandalone.cmd = ezstandalone.cmd || [];${
+              IS_BETA
+                ? " ezstandalone.cmd.push(function(){ ezstandalone.config && ezstandalone.config({ limitCookies: true }); });"
+                : ""
+            }`,
           }}
         />
         {/* async — 동기 로드면 이 스크립트를 받는 동안 페이지 렌더가 멈춘다 (#75).

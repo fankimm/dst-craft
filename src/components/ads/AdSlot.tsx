@@ -7,8 +7,9 @@ import { useEffect, useRef, useState } from "react";
  *
  * `layout.tsx`가 이미 Ezoic 본체 스크립트와 `ezstandalone.cmd` 큐를 준비해 두므로,
  * 여기서는 자리별 placeholder div를 그리고 `showAds(<id>)`로 그 자리에 광고를 요청한다.
- * 언마운트 시에는 `destroyPlaceholders`로 정리해야 SPA 전환 후 같은 번호를 다시 쓸 때
- * Ezoic이 빈 자리를 그대로 들고 있지 않는다.
+ * 같은 번호를 쥔 자리가 바뀔 때는 `destroyPlaceholders` 없이 `showAds`만 다시 부른다 —
+ * destroy는 지목하지 않은 다른 자리의 광고까지 비운다 (`flushAdQueue` 주석 참조).
+ * 자리가 화면에서 아예 사라질 때만 해제한다.
  *
  * placeholder 번호는 Ezoic 대시보드 리포트와 1:1로 대응하므로 한 번 정하면 바꾸지 않는다.
  * 좌우 레일은 서로 다른 번호여야 한다 — 같은 번호를 두 곳에 쓰면 한쪽만 채워진다.
@@ -65,10 +66,11 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
 const BAND_BOX = {
   w: "w-full max-w-[320px] sm:max-w-[728px]",
   minH: "min-h-[50px]",
-  // 예약 높이는 **그 폭에 올 수 있는 가장 높은 소재**에 맞춘다.
-  // 50px로 잡았더니 데스크탑에 728×90이 도착할 때마다 40px씩 밀렸다 — CLS를 막으려고
-  // 예약해 놓고 절반만 막던 상태였다. 모바일은 320×100, 데스크탑은 728×90이 상한.
-  reserve: "min-h-[100px] sm:min-h-[90px]",
+  // 예약 높이는 **띠 계열 소재 중 가장 높은 것**에 맞춘다 = 320×100의 100px.
+  // 50px로 잡았더니 728×90이 도착할 때마다 40px씩 밀렸고, 데스크탑만 90px로 좁혔더니
+  // 이번엔 데스크탑에 320×100이 와서 10px 밀렸다 (실측 `measure-cls`). 브레이크포인트를
+  // 나눠 봐야 10px 아끼고 시프트를 만드는 꼴이라 100px 하나로 고정한다.
+  reserve: "min-h-[100px]",
 };
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
@@ -117,9 +119,13 @@ const MOCK_LABEL: Record<AdVariant, string> = {
  * `reserve` — 광고가 오기 전에도 비워 둘 최소 높이.
  *
  * 가로 띠는 컨텐츠 **위**에 있어서, 광고가 늦게 도착하면 목록이 통째로 아래로 밀린다
- * (CLS). 유입의 65%가 구글이라 순위에 직접 영향이 있으므로, 최소 규격인 320×50만큼은
- * 미리 비워 둔다. 재고가 없는 세션에서는 그 50px이 빈 줄로 남지만, 상하 여백과 섞여
- * "간격이 조금 넓다" 정도로만 보인다.
+ * (CLS). 유입의 65%가 구글이라 순위에 직접 영향이 있으므로 미리 비워 둔다.
+ *
+ * **예약 높이는 광고가 도착한 뒤에도 그대로 유지한다.** 채워졌을 때만 `minH`로 줄이면,
+ * 100px 예약한 자리에 320×50이 오는 순간 컨텐츠가 위로 50px 당겨진다 — 위로 당기는
+ * 것도 CLS로 잡히므로 예약해 놓고 예약을 무효로 만드는 꼴이다 (#75).
+ * 같은 이유로 카드 껍데기(AD 라벨 + 상하 패딩)도 `filled`와 무관하게 항상 그린다.
+ * 그래서 이 값은 "그 폭에 올 수 있는 가장 높은 소재" 하나로 고정한다.
  *
  * 레일은 컨텐츠 **옆**이라 늦게 도착해도 본문이 밀리지 않는다 → 예약하지 않는다.
  */
@@ -147,34 +153,17 @@ interface EzStandalone {
   cmd: Array<() => void>;
   showAds: (...ids: number[]) => void;
   destroyPlaceholders: (...ids: number[]) => void;
-  config?: (opts: Record<string, unknown>) => void;
 }
 
 /**
- * Ezoic 동작 설정 (#75).
+ * Ezoic 동작 설정(`config()`)은 여기가 아니라 `layout.tsx`의 인라인 스크립트에 있다.
  *
- * **첫 `showAds()`보다 먼저 들어가야 적용된다.** `cmd`는 FIFO라 아래 `flushAdQueue`가
- * 첫 요청을 밀어 넣기 전에 한 번만 밀어 둔다.
- *
- * `limitCookies`는 Ezoic이 필수 쿠키만 쓰게 해 수요처들의 ID 싱크 픽셀을 줄인다.
- * 실측에서 서드파티 요청 277건 중 상당수가 id5-sync·adsrvr·ccgateway 같은 매칭 픽셀이었다.
- * 다만 매칭률이 떨어지면 단가도 같이 내려갈 수 있어 **beta에서만 켜서 요청 감소폭을
- * 먼저 재고**, 수익 영향은 prod 데이터가 쌓인 뒤 판단한다.
- *
- * 전면 광고(Vignette)는 지금 유지하기로 했으므로 `disableInterstitial`·`vignette*`는
- * 건드리지 않는다. 끄기로 하면 여기에 옵션을 추가하면 된다 —
- * 대시보드 전용이 아니라 코드로 제어 가능하다(실측으로 `config()` 존재 확인).
+ * 예전에는 첫 배치를 내보내기 직전에 밀어 넣었다. 우리 `showAds`보다는 앞이지만,
+ * Ezoic 본체는 head에서 async로 먼저 떠서 **자동 유닛(anchor·vignette·video)과 초기
+ * 쿠키 싱크를 그 전에 이미 시작**한다. 마운트 → 교차 판정 → 250ms 디바운스를 기다리는
+ * 위치라 `limitCookies` 같은 초기 픽셀 대상 옵션이 늦어 안 먹었다 (#75).
+ * `cmd` 큐를 만드는 자리 바로 뒤가 유일하게 확실한 시점이다.
  */
-let ezConfigured = false;
-
-function ensureEzoicConfig(ez: EzStandalone) {
-  if (ezConfigured) return;
-  ezConfigured = true;
-  if (typeof window === "undefined") return;
-  const isBeta = window.location.hostname.startsWith("beta.");
-  if (!isBeta) return;
-  ez.cmd.push(() => ez.config?.({ limitCookies: true }));
-}
 
 /**
  * 광고 요청 배칭 (#75).
@@ -212,7 +201,6 @@ function flushAdQueue() {
   flushScheduled = false;
   const ez = (window as unknown as { ezstandalone?: EzStandalone }).ezstandalone;
   if (!ez?.cmd) return;
-  ensureEzoicConfig(ez);
   const show: number[] = [];
   const destroy: number[] = [];
   const ids = new Set([...desiredOwner.keys(), ...shownOwner.keys()]);
@@ -258,7 +246,7 @@ function flushAdQueue() {
  * 요청돼 노출이 헛돈다 (#75 실측: `destroy(111) / show(107,108) / show(107,108,111)`).
  *
  * 250ms면 그 간극을 덮으면서 광고 표시가 늦어지는 체감은 없다. 변화가 계속 들어오면
- * 창을 미루되, 첫 예약으로부터 1초가 지나면 굶지 않도록 그대로 내보낸다.
+ * 창을 미루되, 첫 예약으로부터 `FLUSH_MAX_WAIT_MS`가 지나면 굶지 않도록 그대로 내보낸다.
  */
 const FLUSH_DEBOUNCE_MS = 250;
 /**
@@ -442,18 +430,47 @@ function AdCard({
     const check = () => {
       setFilled(getComputedStyle(el).display !== "none" && hasCreative(el));
     };
+    // 판정 자체가 `getComputedStyle` + `innerText` + `getBoundingClientRect`라 전부
+    // 강제 레이아웃을 유발한다. mutation마다 동기로 돌리면 광고 렌더 한 번에 수십~수백
+    // 번씩 리플로우가 걸리고, 넓은 화면에서는 자리 네 곳이 동시에 그걸 한다 (INP 악화).
+    // 프레임당 한 번으로 모은다 — 판정 결과는 달라지지 않는다.
+    let raf = 0;
+    const schedule = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        check();
+      });
+    };
     // Ezoic은 스타일과 자식을 여러 번에 걸쳐 갈아끼운다 (입찰 → 렌더 → 리프레시).
     // 소재는 placeholder 바로 아래가 아니라 몇 겹 안쪽에 들어오므로 subtree까지 본다.
-    const mo = new MutationObserver(check);
+    const mo = new MutationObserver(schedule);
     mo.observe(el, { attributes: true, attributeFilter: ["style", "class"], childList: true, subtree: true });
     check();
     // 이미지 소재는 로드 전 크기가 0이라 첫 판정에서 놓친다 — 몇 번 더 확인한다
     const timers = [300, 1000, 2500, 5000].map((ms) => window.setTimeout(check, ms));
+    // 같은 placeholder id가 문서에 둘 이상 있으면 Ezoic이 어느 쪽을 채울지 예측할 수
+    // 없다(Ezoic 문서 명시). 지금은 "보이는 자리만 렌더" 규칙으로 막고 있지만, 탭이나
+    // 화면이 하나 늘 때 조용히 깨진다 — 개발 빌드에서 실제 DOM을 세어 즉시 드러낸다.
+    // 전환 도중 옛 자리와 새 자리가 한 프레임 겹칠 수 있어 잠시 뒤에 센다.
+    if (process.env.NODE_ENV !== "production") {
+      timers.push(
+        window.setTimeout(() => {
+          const n = document.querySelectorAll(`[id="ezoic-pub-ad-placeholder-${placeholderId}"]`).length;
+          if (n > 1) {
+            console.error(
+              `[AdSlot] placeholder ${placeholderId} 가 문서에 ${n}개 있다 — 같은 자리가 한 화면에 둘 이상 보인다`,
+            );
+          }
+        }, 600),
+      );
+    }
     return () => {
       mo.disconnect();
+      if (raf) cancelAnimationFrame(raf);
       timers.forEach(clearTimeout);
     };
-  }, []);
+  }, [placeholderId]);
 
   // **폭은 광고가 오기 전에도 반드시 유지해야 한다.** 카드 옷을 입힐 때만 폭을 주면
   // 미충전 상태에서 자리 폭이 0으로 붕괴하고, Ezoic은 폭 0인 자리에 광고를 넣지 못해
@@ -461,24 +478,31 @@ function AdCard({
   //
   // 바깥(자리)은 폭을 잡아 두고, 카드 옷은 안쪽에서 `w-fit`으로 실제 광고 크기에만
   // 맞춘다. 카드를 자리 폭 전체로 그리면 728 광고 주위로 카드가 864까지 벌어져 헐렁하다.
+  //
+  // **높이를 만드는 것(상하 패딩 + AD 라벨 줄)은 `filled`와 무관하게 항상 그린다.**
+  // 채워질 때만 붙이면 광고가 도착하는 순간 그 높이만큼 컨텐츠가 밀린다 — 예약 높이를
+  // 올려도 이 몫은 그대로 남아 CLS가 사라지지 않았다 (#75). 빈 회색 카드로 보이게 하는
+  // 장식(테두리·배경)과 라벨 글자만 `filled`에 걸어 둔다.
+  const bodyH = box.reserve ?? (filled ? box.minH : "");
   return (
     <div className={`${box.w} flex justify-center`}>
       <div
-        className={
-          filled
-            ? "w-fit overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 pb-1 pt-1"
-            : "w-full"
-        }
+        className={`pb-1 pt-1 ${
+          filled ? "w-fit overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30" : "w-full"
+        }`}
       >
-        {filled && (
-          <div className="px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
-            AD
-          </div>
-        )}
+        <div
+          className={`px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50 ${
+            filled ? "" : "invisible"
+          }`}
+          aria-hidden={!filled}
+        >
+          AD
+        </div>
         <div
           ref={ref}
           id={`ezoic-pub-ad-placeholder-${placeholderId}`}
-          className={filled ? box.minH : `w-full ${box.reserve ?? ""}`}
+          className={filled ? bodyH : `w-full ${bodyH}`}
         />
       </div>
     </div>
