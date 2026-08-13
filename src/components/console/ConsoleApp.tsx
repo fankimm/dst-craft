@@ -18,6 +18,7 @@ import {
 } from "@/data/console-commands";
 import { SearchWithSuggestions, type SearchSuggestion } from "../ui/SearchWithSuggestions";
 import { Footer } from "../crafting/Footer";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 // ---------------------------------------------------------------------------
 // Category color config
@@ -112,6 +113,8 @@ export function ConsoleApp() {
             {t(resolvedLocale, "tab_console")}
           </h1>
         </div>
+
+        <AdSlot variant="top" />
 
         {/* Item Spawn Builder */}
         <ItemSpawnBuilder locale={resolvedLocale} />

@@ -357,7 +357,7 @@ export function BossesApp({
           <div className="flex flex-col min-h-full">
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
               {/* 카테고리 첫 화면 첫 줄 광고 (#75) */}
-              <AdSlot variant="top-bosses" className="col-span-full" />
+              <AdSlot variant="top" className="col-span-full" />
               <CategoryCard
                 imageSrc={assetPath("/images/ui/health.png")}
                 label={t(resolvedLocale, "favorites")}
@@ -410,7 +410,7 @@ export function BossesApp({
         <div className="flex flex-col min-h-full">
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
             {/* 목록 맨 위 한 줄 — 검색바 바로 아래 (#75) */}
-            <AdSlot variant="top-bosses" className="col-span-full" />
+            <AdSlot variant="top" className="col-span-full" />
             {filteredBosses.map((boss) => (
               <BossCard
                 key={boss.id}

@@ -18,6 +18,7 @@ import { useRecent } from "@/hooks/use-recent";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { CategoryCard } from "@/components/ui/CategoryCard";
 import { TabScrollArea } from "@/components/ui/TabScrollArea";
+import { AdSlot } from "@/components/ads/AdSlot";
 import { TagChip } from "@/components/ui/TagChip";
 
 // ---------------------------------------------------------------------------
@@ -454,7 +455,10 @@ export function SkinsApp() {
   return (
     <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
       {header}
-      <TabScrollArea scrollContainer>{content}</TabScrollArea>
+      <TabScrollArea scrollContainer>
+        <AdSlot variant="top" />
+        {content}
+      </TabScrollArea>
       {detailPanel}
     </div>
   );

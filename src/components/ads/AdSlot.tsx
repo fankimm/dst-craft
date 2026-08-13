@@ -13,18 +13,18 @@ import { useEffect, useRef, useState } from "react";
  * placeholder 번호는 Ezoic 대시보드 리포트와 1:1로 대응하므로 한 번 정하면 바꾸지 않는다.
  * 좌우 레일은 서로 다른 번호여야 한다 — 같은 번호를 두 곳에 쓰면 한쪽만 채워진다.
  *
+ * **번호는 탭이 아니라 "자리 역할"(상단 띠 / 하단 띠 / 시트 / 레일) 단위로 공유한다.**
+ * 탭은 전부 동시에 마운트돼 있지만, 아래 활성 판정 덕분에 **보이는 탭의 자리만** id를
+ * 가진 div를 그린다. 그래서 문서 안에 같은 번호가 둘 이상 존재하는 일이 없다.
+ * (탭마다 번호를 따로 쓰면 탭이 늘어날 때마다 번호가 고갈된다 — 대시보드에 등록된
+ * 본문 계열 번호는 109~115뿐이다.)
+ *
  * 목업 모드: `?admock=<자리>[:<규격>]` (쉼표로 복수). 실제 광고 대신 규격만큼의
  * 자리 표시 박스를 그린다. 자리를 옮기거나 규격을 비교할 때 쓴다.
  *   ?admock=all                      모든 자리 기본 규격
  *   ?admock=infeed,sheet:250x250     인피드 + 시트(250×250)
  */
-export type AdVariant =
-  | "top-crafting"
-  | "top-cooking"
-  | "top-bosses"
-  | "sheet"
-  | "rail-left"
-  | "rail-right";
+export type AdVariant = "top" | "bottom" | "sheet" | "rail-left" | "rail-right";
 
 /**
  * 자리별 Ezoic placeholder id.
@@ -39,15 +39,13 @@ export type AdVariant =
  * 번호를 바꾸면 대시보드 리포트의 연속성이 끊기므로 한 번 정한 뒤엔 유지한다.
  */
 export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
-  // 목록 맨 위 (검색바 바로 아래) — 탭마다 다른 번호를 써야 한다.
-  // 탭은 hidden 상태로 동시에 마운트돼 있어서 같은 번호를 두 탭이 쓰면 한쪽만 채워지고
-  // 대시보드 리포트도 섞인다.
+  // 목록 맨 위 (검색바 바로 아래) — 모든 탭이 한 번호를 공유한다.
   // 102(under_page_title)·109(under_first_paragraph)는 beta 실측에서 계속 비어 있었다.
-  // 같은 조건에서 110~113(본문 계열)은 잘 채워졌으므로 그쪽으로 옮겼다 (#75).
-  "top-crafting": 111, // mid_content — 실측에서 가장 안정적으로 채워졌다
-  "top-cooking": 112, // long_content
-  "top-bosses": 110, // under_second_paragraph — 실측에서 채워짐 확인
-  // 상세 시트는 한 번에 하나만 열리므로 탭 구분 없이 한 번호를 공유한다.
+  // 같은 조건에서 110~113(본문 계열)은 잘 채워졌으므로 그쪽을 쓴다 (#75).
+  top: 111, // mid_content — 실측에서 가장 안정적으로 채워졌다
+  // 컨텐츠 끝, Footer 바로 위 — 모든 탭이 공유
+  bottom: 113, // longer_content
+  // 상세 시트는 한 번에 하나만 열린다.
   // 115(incontent_5)는 300×600·336×280 같은 세로로 긴 소재를 배달해 시트를 잡아먹었다
   // (#75, 사용자 지적). 103(bottom_of_page)은 실측에서 970×105 가로 띠가 왔고, 시트
   // 본문 끝이라는 위치 성격과도 맞아 이쪽으로 옮겼다.
@@ -86,18 +84,16 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 /** 목업 기본 규격 (모바일 / 데스크탑) — 실제 광고는 컨테이너 폭에 맞춰 Ezoic이 고른다 */
 const BAND_MOCK = { mobile: "320x50", desktop: "468x60" };
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
-  "top-crafting": BAND_MOCK,
-  "top-cooking": BAND_MOCK,
-  "top-bosses": BAND_MOCK,
+  top: BAND_MOCK,
+  bottom: BAND_MOCK,
   sheet: BAND_MOCK,
   "rail-left": { mobile: "", desktop: "300x600" },
   "rail-right": { mobile: "", desktop: "300x600" },
 };
 
 const MOCK_LABEL: Record<AdVariant, string> = {
-  "top-crafting": "제작 목록 첫 줄",
-  "top-cooking": "요리 목록 첫 줄",
-  "top-bosses": "보스 목록 첫 줄",
+  top: "목록 첫 줄",
+  bottom: "컨텐츠 끝",
   sheet: "상세 시트 안",
   "rail-left": "왼쪽 레일",
   "rail-right": "오른쪽 레일",
@@ -126,9 +122,9 @@ const MOCK_LABEL: Record<AdVariant, string> = {
  */
 const SLOT_BOX: Record<AdVariant, { w: string; minH: string; reserve?: string }> = {
   // 목록 맨 위 한 행 (검색바 바로 아래) — 길고 얇은 띠
-  "top-crafting": BAND_BOX,
-  "top-cooking": BAND_BOX,
-  "top-bosses": BAND_BOX,
+  top: BAND_BOX,
+  // 컨텐츠 끝, Footer 바로 위. 아래에 밀릴 컨텐츠가 Footer뿐이라 높이를 예약하지 않는다
+  bottom: { w: BAND_BOX.w, minH: BAND_BOX.minH },
   // 상세 시트 안 — 시트는 가로로 넓고 세로가 아까운 자리라 띠 형태가 맞다.
   // 폭을 336으로 좁혀 두면 336×280처럼 세로로 큰 광고가 와서 시트 아래를 잠식하고
   // 스크롤을 유발했다 (#75 실측).
@@ -165,18 +161,32 @@ interface EzStandalone {
  * 돌기 때문에 자리가 누락되지 않고, 광고가 붙는 시점도 빨라진다.
  * 해제도 같은 배치에서 먼저 처리한다 — Ezoic 문서가 권하는 SPA 패턴(destroy 후 show).
  */
-const pendingShow = new Set<number>();
-const pendingDestroy = new Set<number>();
+/**
+ * 원하는 상태는 **참조 수**로 센다. "요청/해제"를 그대로 큐에 넣으면 탭 전환처럼
+ * 한 자리가 사라지면서 다른 자리가 같은 번호를 잡는 상황에서 순서가 뒤집힐 수 있고
+ * (해제가 나중에 도착하면 방금 요청한 광고가 지워진다), 그러면 그 자리는 영영 빈다.
+ * 참조 수로 두면 순서와 무관하게 "지금 이 번호를 쓰는 자리가 있는가"만 남는다.
+ */
+const adRefs = new Map<number, number>();
+/** 지금 Ezoic에 요청돼 있는 번호 — 이미 뜬 광고를 다시 요청해 새 노출을 만들지 않는다 */
+const shownIds = new Set<number>();
 let flushScheduled = false;
 
 function flushAdQueue() {
   flushScheduled = false;
   const ez = (window as unknown as { ezstandalone?: EzStandalone }).ezstandalone;
   if (!ez?.cmd) return;
-  const show = [...pendingShow];
-  const destroy = [...pendingDestroy];
-  pendingShow.clear();
-  pendingDestroy.clear();
+  const show: number[] = [];
+  const destroy: number[] = [];
+  for (const [id, refs] of adRefs) {
+    if (refs > 0 && !shownIds.has(id)) {
+      show.push(id);
+      shownIds.add(id);
+    } else if (refs <= 0 && shownIds.has(id)) {
+      destroy.push(id);
+      shownIds.delete(id);
+    }
+  }
   if (!show.length && !destroy.length) return;
   ez.cmd.push(() => {
     if (destroy.length) ez.destroyPlaceholders(...destroy);
@@ -192,14 +202,12 @@ function scheduleAdFlush() {
 }
 
 function requestAd(id: number) {
-  pendingDestroy.delete(id);
-  pendingShow.add(id);
+  adRefs.set(id, (adRefs.get(id) ?? 0) + 1);
   scheduleAdFlush();
 }
 
 function releaseAd(id: number) {
-  pendingShow.delete(id);
-  pendingDestroy.add(id);
+  adRefs.set(id, Math.max(0, (adRefs.get(id) ?? 0) - 1));
   scheduleAdFlush();
 }
 
@@ -227,26 +235,36 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
   const id = AD_PLACEHOLDER_ID[variant];
 
   const hostRef = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  const [active, setActive] = useState(false);
 
-  // 자리가 화면에 들어왔을 때만 광고를 요청한다.
-  // 탭은 전부 동시에 마운트돼 있고 비활성 탭은 `display:none`이라, 무조건 요청하면
-  // 아무도 볼 수 없는 노출이 쌓인다 (광고 정책 위반). 활성 탭의 자리는 첫 콜백에서
-  // 바로 교차 판정이 나므로 이 게이트가 표시를 늦추지는 않는다.
+  // 자리가 **보이는 탭에서 화면 가까이 왔을 때만** 활성으로 친다.
+  //
+  // 탭은 전부 동시에 마운트돼 있고 비활성 탭은 `display:none`이다. 무조건 요청하면
+  // 아무도 볼 수 없는 노출이 쌓이고(광고 정책 위반), 같은 번호의 placeholder div가
+  // 문서에 여러 개 생겨 Ezoic이 엉뚱한(숨은) 쪽을 채운다.
+  //
+  // 판정은 교차 여부 + **레이아웃 박스 유무** 두 가지를 쓴다.
+  //  - 교차함            → 활성 (화면에 왔다)
+  //  - 안 교차 + 박스 있음 → 활성 유지 (그냥 스크롤로 벗어난 것 — 해제하면 다시 돌아올 때
+  //                        새 노출이 발생해 노출을 부풀리게 된다)
+  //  - 안 교차 + 박스 없음 → 비활성 (탭이 숨겨졌다 — 자리를 반납한다)
   useEffect(() => {
     if (isMock) return;
     const el = hostRef.current;
     if (!el) return;
     if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
+      setActive(true);
       return;
     }
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setInView(true);
-          io.disconnect();
+        const e = entries[entries.length - 1];
+        if (e.isIntersecting) {
+          setActive(true);
+          return;
         }
+        const laidOut = e.boundingClientRect.width > 0 || e.boundingClientRect.height > 0;
+        if (!laidOut) setActive(false);
       },
       { rootMargin: "300px" },
     );
@@ -257,16 +275,24 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
   // 실제 광고 요청 — 목업 모드에서는 건너뛴다.
   // 개별 호출이 아니라 배치 큐를 거친다 (위 `requestAd` 주석 참조).
   useEffect(() => {
-    if (isMock || !inView) return;
+    if (isMock || !active) return;
     requestAd(id);
     return () => releaseAd(id);
-  }, [id, isMock, inView]);
+  }, [id, isMock, active]);
 
   if (isMock) return <AdSlotMock variant={variant} sizeKey={mocks.get(variant) ?? null} className={className} />;
 
+  const box = SLOT_BOX[variant];
+
   return (
     <div ref={hostRef} className={`flex justify-center py-2 shrink-0 ${className}`} data-ad-slot={variant}>
-      <AdCard placeholderId={id} box={SLOT_BOX[variant]} />
+      {/* placeholder div는 활성일 때만 — 숨은 탭에도 그리면 같은 id가 문서에 여러 개
+          생겨 Ezoic이 보이지 않는 쪽을 채운다. 자리 폭·예약 높이는 그대로 유지한다. */}
+      {active ? (
+        <AdCard placeholderId={id} box={box} />
+      ) : (
+        <div className={`${box.w} ${box.reserve ?? ""}`} />
+      )}
     </div>
   );
 }

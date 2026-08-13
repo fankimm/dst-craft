@@ -68,7 +68,7 @@ export function ItemGrid({
   return (
     <div className={cn("grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full", className)}>
       {/* 목록 맨 위 한 줄 — 검색바 바로 아래 (#75) */}
-      <AdSlot variant="top-crafting" className="col-span-full" />
+      <AdSlot variant="top" className="col-span-full" />
       {visibleItems.map((item) => (
         <ItemIcon
           key={item.id}
