@@ -1,6 +1,7 @@
 import { characters } from "@/data/characters";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -41,6 +42,8 @@ export function CharactersListContent({ lang }: { lang: SeoLang }) {
             {L.charactersIntro[lang].replace("{n}", String(playable.length))}
           </p>
         </section>
+
+        <AdSlot variant="top" />
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {playable.map((char) => {

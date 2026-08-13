@@ -8,6 +8,7 @@ import { quests } from "@/data/quests";
 import { canonicalForBoss, canonicalForFood, canonicalForItem, canonicalForQuest } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -42,6 +43,8 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
 
       <main className="max-w-4xl mx-auto px-4 py-8 space-y-10">
         <h1 className="text-2xl font-bold">{L.browseTitle[lang]}</h1>
+
+        <AdSlot variant="top" />
 
         <section>
           <h2 className="text-lg font-semibold mb-4">

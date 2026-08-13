@@ -10,6 +10,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -155,6 +156,8 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
             </div>
           </div>
         </section>
+
+        <AdSlot variant="top" />
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">
