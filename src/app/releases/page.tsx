@@ -15,6 +15,34 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.33.0",
+    date: "2026-08-14",
+    dev: [
+      "feat(ads): Ezoic 광고 자리 연동 (#75). `AdSlot`(`src/components/ads/AdSlot.tsx`) — 상단 띠 `top`(placeholder 111 mid_content), 상세 시트 `sheet`(103 bottom_of_page), 데스크탑 좌우 레일 `rail-left/right`(107/108 sidebar_floating). 번호는 Ezoic 대시보드의 위치 유형과 1:1이라 임의 선택 금지 — 101~104를 임의로 썼다가 왼쪽 레일에 970×105 가로 배너가 와서 옆 컨텐츠와 겹쳤다.",
+      "번호는 탭이 아니라 **자리 역할** 단위로 공유. 탭 8개가 `display:none`으로 동시에 마운트돼 있으므로 IntersectionObserver로 보이는 탭의 자리에만 placeholder div를 그려 문서 내 중복 id를 막는다. 판정: 교차하면 활성 / 안 교차해도 레이아웃 박스가 있으면 활성 유지(스크롤 이탈) / 박스 0이면 비활성(탭 숨김).",
+      "요청 배칭 — 자리마다 개별 `showAds(id)`를 부르면 Ezoic이 진행 중 사이클에 들어온 호출을 흘려 그 자리가 조용히 빈 채 남는다. 같은 전환의 요청을 `showAds(...ids)` 한 번으로 묶음(디바운스 250ms, 해제만 쌓이면 900ms, 최대 대기 1.5s).",
+      "요청 큐를 참조 수가 아니라 **번호를 쥔 주인 토큰**(`desiredOwner`/`shownOwner`) 단위로 비교. 상단 띠는 모든 탭이 같은 번호를 쓰므로 탭 전환 때 div가 교체되는데, 번호만 세면 아무 요청도 안 나가 Ezoic이 사라진 div에 광고를 든 채 남고 새 자리는 영영 비었다(레일까지 동반 사망).",
+      "주인만 바뀌면 `destroy` 없이 `showAds`만 — `destroyPlaceholders(A)`가 지목하지 않은 다른 자리의 광고까지 비우는 것을 실브라우저에서 확인. 자리가 아예 사라질 때만 destroy하고, 그때는 살아 있는 나머지를 같은 배치에서 함께 재요청.",
+      "CLS: 카드 껍데기(AD 라벨 + 상하 패딩 ≈27px)를 `filled`·`active`와 무관하게 상시 렌더하고, 예약 높이(`min-h-[100px]`)를 광고 도착 후에도 유지. 채워질 때만 껍데기를 붙이거나 채워지면 예약을 푸는 구현은 도착·활성화 순간마다 20~30px씩 밀렸다 — 위로 당기는 것도 CLS다.",
+      "feat(ads): SEO 정적 페이지 10종(`src/components/seo/*Content.tsx`)에도 상단 띠 추가. 광고가 SPA 셸에만 있어 구글 검색에서 착지하는 item/food/boss/character/quest/skill-tree/browse/cookpot/목록 페이지에는 노출이 아예 발생하지 않았다. 히어로/h1 블록 바로 아래 배치(h1 위는 랜딩 최상단이 광고가 된다).",
+      "`ezstandalone.config()`를 `layout.tsx`의 cmd 큐 생성 인라인 스크립트로 이동. Ezoic 본체가 head에서 async로 먼저 떠 자동 유닛(anchor·vignette·video)과 초기 쿠키 싱크를 시작하므로 첫 배치 직전은 늦다. 현재 beta에서만 `limitCookies: true`로 ID 싱크 픽셀 감소폭 측정 중.",
+      "도착 판정은 소재 기준(iframe / 뱃지보다 큰 이미지 / 텍스트) — no-fill이어도 Ezoic이 18×18 자사 뱃지를 넣어 '자식 있으면 채워짐'으로 보면 텅 빈 회색 AD 카드가 그려졌다. 판정 자체는 rAF로 코얼레싱(mutation마다 동기 `getComputedStyle`·`innerText`·`getBoundingClientRect`는 리플로우 폭탄).",
+      "fix(sw): `src/sw.template.js` fetch 핸들러 맨 앞에 same-origin 가드. 없으면 광고·분석 교차 출처 요청이 맨 아래 stale-while-revalidate로 흘러 SW 홉이 붙고 광고 응답이 캐시될 수 있었다(DevTools initiator가 `sw.js`로 찍힘).",
+      "회귀 하네스 3종: `scripts/check-ad-slots.mjs`(탭 순회·카테고리→목록·시트), `check-ad-slots-stress.mjs`(연타·모바일·뒤로가기·왕복 20회·검색·자리 없는 탭), `check-ad-cls.mjs`(규격별 iframe을 직접 꽂아 자리 높이 변화 측정 + IO 스텁으로 비활성 높이 측정). Ezoic을 차단하고 동일 인터페이스의 가짜를 심어 '우리가 무엇을 요청하는지'만 결정적으로 검사한다 — 실제 광고는 세션·스로틀·무광고 대조군(`isEzoicUser`)에 따라 흔들려 판정 기준으로 못 쓴다.",
+      "docs: `docs/ui.md`에 AdSlot 규칙(번호 배정, 배칭, 주인 토큰, CLS 불변식, `config()` 위치) 정리. `docs/mistakes.md`에 CLS 오답노트 — 조건부 렌더 경계가 둘 이상이면 모든 경계에서 높이를 재야 하고, 로컬 하네스가 통과해도 실브라우저로 한 번은 볼 것.",
+    ],
+    changes: {
+      ko: [
+        "사이트 운영 비용을 충당하기 위해 광고를 도입했습니다. 목록 첫 줄, 상세 화면 아래, 넓은 화면의 좌우 여백에 표시됩니다.",
+        "광고가 늦게 도착해도 화면이 밀리지 않도록 자리를 미리 비워 둡니다.",
+      ],
+      en: [
+        "Ads have been introduced to cover hosting costs. They appear at the top of lists, below detail views, and in the side margins on wide screens.",
+        "Ad slots reserve their space up front, so content no longer shifts when an ad arrives.",
+      ],
+    },
+  },
+  {
     version: "0.32.0",
     date: "2026-08-11",
     dev: [
