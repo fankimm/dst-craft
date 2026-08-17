@@ -168,6 +168,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `bun-api/infra/com.dstcraft.api.plist` — API 서버 launchd 에이전트
 - `bun-api/infra/com.dstcraft.backup.plist` — DB 백업 launchd 에이전트
 - `bun-api/infra/com.dstcraft.goaccess-bots.plist` + `goaccess-bots.sh` — 봇 전용 GoAccess 대시보드 (1시간마다 `~/dstcraft/bots.html` 생성, `:7891/bots.html`로 접근)
+- `bun-api/infra/com.dstcraft.goaccess-restart.plist` — goaccess live 대시보드 1시간 주기 재시작 (#77). 로그 로테이션 후 goaccess가 사라진 inode를 계속 읽어 조용히 멈추는 걸 자동 복구. 설치는 plist 주석 참조
+- `bun-api/infra/newsyslog-dstcraft-nginx.conf` — nginx 로그 로테이션 (#77, 100MB/7개/gzip). `/etc/newsyslog.d/dstcraft-nginx.conf`로 복사해야 적용 — **자동 배포 없음**
 - `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta). prod 배포 시 IndexNow ping 호출
 - `scripts/indexnow-ping.py` — sitemap.xml의 전체 URL을 IndexNow API에 제출 (Bing 등 즉시 색인 유도). prod 배포에서만, best-effort
 - `public/<key>.txt` — IndexNow 키 파일 (`BingSiteAuth.xml`과 함께 SEO 검증 자산, 삭제 금지). 키 변경 시 `indexnow-ping.py`의 `KEY` 상수도 함께 갱신

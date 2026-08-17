@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  goaccess live 대시보드 주기 재시작 (#77)
+
+  왜 필요한가: goaccess는 access.log의 fd를 붙잡고 tail한다. newsyslog가 로그를 로테이션하면
+  goaccess는 사라진 옛 inode를 계속 읽어서 대시보드가 조용히 멈춘다 — 프로세스는 살아있어서
+  launchd도, 워치독도 이상을 감지하지 못한다. 실제로 #77 조사 당시 live.html이 며칠째
+  갱신되지 않고 있었는데 아무도 몰랐다.
+
+  com.dstcraft.goaccess는 KeepAlive=true라 죽이기만 하면 launchd가 즉시 되살리고,
+  되살아난 프로세스는 현재의 access.log를 새로 연다. 그래서 재시작 = pkill 한 줄이면 된다.
+
+  주기 3600초는 com.dstcraft.goaccess-bots와 동일 — 로테이션 후 최대 1시간이면 자동 복구된다.
+
+  설치 (맥미니에서 1회):
+    cp bun-api/infra/com.dstcraft.goaccess-restart.plist ~/Library/LaunchAgents/
+    launchctl bootstrap gui/501 ~/Library/LaunchAgents/com.dstcraft.goaccess-restart.plist
+  (bootstrap은 GUI 로그인 세션이 있어야 동작한다 — SSH 단독 세션에서는 막힌다)
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.dstcraft.goaccess-restart</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/pkill</string>
+    <string>-f</string>
+    <string>goaccess.*--real-time-html</string>
+  </array>
+
+  <key>StartInterval</key>
+  <integer>3600</integer>
+
+  <key>RunAtLoad</key>
+  <false/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/fankimm/dstcraft/logs/goaccess-restart.out.log</string>
+
+  <key>StandardErrorPath</key>
+  <string>/Users/fankimm/dstcraft/logs/goaccess-restart.err.log</string>
+</dict>
+</plist>
