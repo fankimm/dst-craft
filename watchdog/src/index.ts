@@ -50,7 +50,19 @@ interface Probe {
 
 const STATE_KEY = "health-state";
 const TRIES = 3;
-const TRY_TIMEOUT_MS = 5_000;
+/**
+ * 5s였다가 10s로 완화 (#77).
+ *
+ * 오탐이 반복돼 조사해보니 origin은 멀쩡했다 — 실패한 프로브는 nginx access.log에
+ * 아예 찍히지 않았고 cloudflared 로그에도 health 관련 오류가 0건이었다. 즉 요청이
+ * origin에 닿기 전에, Worker → CF edge → 터널 앞단에서 사라진다.
+ * cloudflared 메트릭의 quic_client_lost_packets{reason="timeout"}가 꾸준히 쌓이는
+ * 것과 맞물린다 — 가정용 업링크라 QUIC 패킷 유실이 간헐적으로 생긴다.
+ *
+ * 5s는 홈 서버 기준으로 빠듯해서 이 구간에 한 번 걸리면 곧장 실패로 셌다.
+ * 진짜 다운이면 10s로도 3회 모두 걸리니 감지력은 그대로다.
+ */
+const TRY_TIMEOUT_MS = 10_000;
 const TRY_GAP_MS = 2_000;
 /** down이 이어질 때 재알림 간격 */
 const DOWN_REMINDER_MS = 30 * 60 * 1000;
