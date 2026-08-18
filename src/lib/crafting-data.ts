@@ -98,10 +98,15 @@ function itemNameMatches(item: CraftingItem, lowerQuery: string): boolean {
 // 정식 이름에 없는 통칭 검색 별칭. Sanctum(성소) 콘텐츠는 코드명이 vault_*라
 // "성소"/"sanctum"(게임 한글/영문명)과 "볼트"/"vault"(코드 통칭) 모두로 찾게 한다.
 const SANCTUM_ALIASES = ["성소", "sanctum", "vault", "볼트"];
+// 어망(fishingnet)은 Return of Them 베타에 있다가 삭제된 아이템이라(recipes.lua에서 주석 처리,
+// 콘솔 소환만 가능) 제작탭에 없다. 재료가 같은(실크 6) 바다 어망 키트를 찾는 유입을 흡수한다.
+// "어망"/"바다 어망"은 로케일명 "바다 어망 키트"에 이미 부분매칭되므로 별칭에 넣지 않는다.
+const NET_ALIASES = ["그물", "fishing net", "fishingnet"];
 const SEARCH_ALIASES: Record<string, string[]> = {
   vault_orb_refined: SANCTUM_ALIASES,
   vault_pillar_guard_constr_plans: SANCTUM_ALIASES,
   chesspiece_vault_pillar_guard_builder: SANCTUM_ALIASES,
+  ocean_trawler_kit: NET_ALIASES,
 };
 
 function itemMatchesQuery(item: CraftingItem, lowerQuery: string, matNameMap: Map<string, string[]>): boolean {
