@@ -3,13 +3,20 @@
 import { useState, useCallback, useEffect } from "react";
 import type { CategoryId, CraftingItem } from "@/lib/types";
 import { getItemById } from "@/lib/crafting-data";
+import { useUrlStateSync } from "./use-url-state";
 
 function getParams(): URLSearchParams {
   if (typeof window === "undefined") return new URLSearchParams();
   return new URLSearchParams(window.location.search);
 }
 
-function readUrlState() {
+interface CraftingUrlState {
+  cat: CategoryId | null;
+  item: string | null;
+  char: string | null;
+}
+
+function readUrlState(): CraftingUrlState {
   const params = getParams();
   return {
     cat: (params.get("cat") as CategoryId) || null,
@@ -19,15 +26,13 @@ function readUrlState() {
 }
 
 // SSR-safe default: always start empty to match server render
-const SSR_DEFAULT = { cat: null as CategoryId | null, item: null as string | null, char: null as string | null };
+const SSR_DEFAULT: CraftingUrlState = { cat: null, item: null, char: null };
 
 export function useCraftingState() {
-  // Lazy init: read URL synchronously on first client render so deep-links
-  // (e.g. /?cat=structures or /?item=foo) land on the right view immediately
-  // after hydration instead of flashing the category grid until useEffect fires.
-  const [urlState, setUrlState] = useState(() =>
-    typeof window === "undefined" ? SSR_DEFAULT : readUrlState(),
-  );
+  // 첫 렌더는 서버와 동일한 SSR_DEFAULT, layout effect에서 URL을 반영한다.
+  // (딥링크 플리커 없이 hydration mismatch도 없는 구조 — useUrlStateSync 주석 참고)
+  const [urlState, setUrlState] = useState(SSR_DEFAULT);
+  useUrlStateSync(readUrlState, setUrlState);
   const [itemHistory, setItemHistory] = useState<string[]>([]);
 
   const showCategoryGrid = !urlState.cat;

@@ -288,6 +288,13 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **용도**: Redis 기반 클릭 수 조회 (싱글턴 캐시)
 - **반환**: `{ getClicks }`
 
+### useUrlStateSync (`src/hooks/use-url-state.ts`)
+- **용도**: URL 쿼리에서 읽어오는 화면 상태를 hydration-safe하게 초기화. 첫 렌더는 서버 HTML과 동일한 기본값, 커밋 직후 layout effect에서 URL을 반영해 딥링크 플리커도 없앤다
+- **사용처**: AppShell(activeTab), useCraftingState, useCookingState, useBossesState, SkinsApp(view), SkillSimulatorApp(selectedChar)
+- **사용법**: state는 평범한 `useState(SSR_DEFAULT)`로 두고 `useUrlStateSync(readUrlState, setState)`를 덧붙인다
+- **금지**: `useState(() => typeof window === "undefined" ? DEFAULT : readUrlState())` 형태의 lazy initializer — 정적 export 서버 HTML과 첫 클라이언트 렌더가 어긋나 hydration mismatch가 난다 (#76)
+- **부가 export**: `useIsomorphicLayoutEffect` (서버에선 useEffect, 브라우저에선 useLayoutEffect)
+
 ---
 
 ## 공유 유틸리티
