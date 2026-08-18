@@ -24,6 +24,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+CHUNK_SIZE = 200
 SKINS_DIR = REPO_ROOT / "public" / "images" / "skins"
 BODY_SKINS_DIR = REPO_ROOT / "public" / "images" / "skins-body"
 OUTPUT_TS = REPO_ROOT / "src" / "data" / "skins.ts"
@@ -478,11 +479,21 @@ export interface SkinEntry {
   body_image?: string;
 }
 
-export const SKINS: SkinEntry[] = '''
+'''
 
     OUTPUT_TS.parent.mkdir(parents=True, exist_ok=True)
-    body = json.dumps(rows, ensure_ascii=False, indent=2)
-    OUTPUT_TS.write_text(header + body + ";\n", encoding="utf-8")
+    # Emit in chunks: a single array literal of this size overflows TypeScript's
+    # union-complexity limit (TS2590) once the entry count grows past ~1.4k.
+    chunks = [rows[i:i + CHUNK_SIZE] for i in range(0, len(rows), CHUNK_SIZE)] or [[]]
+    parts = [
+        f"const SKINS_{i}: SkinEntry[] = "
+        + json.dumps(chunk, ensure_ascii=False, indent=2)
+        + ";\n"
+        for i, chunk in enumerate(chunks)
+    ]
+    spread = ", ".join(f"...SKINS_{i}" for i in range(len(chunks)))
+    parts.append(f"export const SKINS: SkinEntry[] = [{spread}];\n")
+    OUTPUT_TS.write_text(header + "\n".join(parts), encoding="utf-8")
 
 
 if __name__ == "__main__":

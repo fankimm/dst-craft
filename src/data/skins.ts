@@ -50,7 +50,7 @@ export interface SkinEntry {
   body_image?: string;
 }
 
-export const SKINS: SkinEntry[] = [
+const SKINS_0: SkinEntry[] = [
   {
     "id": "abigail_flower_ancient",
     "base_prefab": "abigail_flower",
@@ -1607,7 +1607,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 183,
     "name_en": "Cawnival Putter's Pack",
-    "name_ko": "Cawnival Putter's Pack",
+    "name_ko": "까악제 골프 가방",
     "icon": "/images/skins/backpack_minigolf.png",
     "rarity_modifier": "Woven"
   },
@@ -3028,7 +3028,10 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "의자버섯",
     "icon": "/images/skins/chair_stool_fantasy.png",
     "rarity_modifier": "Woven"
-  },
+  }
+];
+
+const SKINS_1: SkinEntry[] = [
   {
     "id": "chair_stool_hallowed",
     "base_prefab": "wood_stool",
@@ -4367,7 +4370,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 182,
     "name_en": "Eets",
-    "name_ko": "이츠",
+    "name_ko": "먹깨비",
     "icon": "/images/skins/eets_e_basic.png"
   },
   {
@@ -5924,7 +5927,10 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "맹그로브 투구",
     "icon": "/images/skins/hat_antlion_swamp.png",
     "rarity_modifier": "Woven"
-  },
+  }
+];
+
+const SKINS_2: SkinEntry[] = [
   {
     "id": "hat_catcoon_costume",
     "base_prefab": "tophat",
@@ -7600,7 +7606,7 @@ export const SKINS: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 183,
     "name_en": "Cawnival Plaque",
-    "name_ko": "Cawnival Plaque",
+    "name_ko": "까악제 명판",
     "icon": "/images/skins/minisign_cawnival_drawn.png",
     "rarity_modifier": "Woven"
   },
@@ -7612,7 +7618,7 @@ export const SKINS: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 183,
     "name_en": "Cawnival Plaque",
-    "name_ko": "Cawnival Plaque",
+    "name_ko": "까악제 명판",
     "icon": "/images/skins/minisign_cawnival_item.png",
     "rarity_modifier": "Woven"
   },
@@ -8043,7 +8049,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 183,
     "name_en": "Cawnival Egg Lamp",
-    "name_ko": "Cawnival Egg Lamp",
+    "name_ko": "까악제 달걀등",
     "icon": "/images/skins/mushroom_light_cawnival.png",
     "rarity_modifier": "Woven"
   },
@@ -8491,6 +8497,20 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "parasol_polkadot",
+    "base_prefab": "grass_umbrella",
+    "type": "item",
+    "rarity": "ProofOfPurchase",
+    "skin_tags": [
+      "GRASS_UMBRELLA",
+      "CRAFTABLE"
+    ],
+    "release_group": 184,
+    "name_en": "Polka Dot Parasol",
+    "name_ko": "Polka Dot Parasol",
+    "icon": "/images/skins/parasol_polkadot.png"
+  },
+  {
     "id": "parasol_spring",
     "base_prefab": "grass_umbrella",
     "type": "item",
@@ -8786,6 +8806,23 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "소박한 통나무집",
     "icon": "/images/skins/pighouse_logcabin.png",
     "rarity_modifier": "Woven"
+  }
+];
+
+const SKINS_3: SkinEntry[] = [
+  {
+    "id": "pitchfork_fork",
+    "base_prefab": "pitchfork",
+    "type": "item",
+    "rarity": "ProofOfPurchase",
+    "skin_tags": [
+      "PITCHFORK",
+      "CRAFTABLE"
+    ],
+    "release_group": 184,
+    "name_en": "Giant's Fork",
+    "name_ko": "Giant's Fork",
+    "icon": "/images/skins/pitchfork_fork.png"
   },
   {
     "id": "pitchfork_invisible",
@@ -9744,7 +9781,7 @@ export const SKINS: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 183,
     "name_en": "Egg Caddycapatator",
-    "name_ko": "Egg Caddycapatator",
+    "name_ko": "달걀 골프모자 장치",
     "icon": "/images/skins/researchlab4_minigolf_green.png",
     "rarity_modifier": "Woven"
   },
@@ -9756,7 +9793,7 @@ export const SKINS: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 183,
     "name_en": "Bow Caddycapatator",
-    "name_ko": "Bow Caddycapatator",
+    "name_ko": "리본 골프모자 장치",
     "icon": "/images/skins/researchlab4_minigolf_purple.png",
     "rarity_modifier": "Woven"
   },
@@ -9768,7 +9805,7 @@ export const SKINS: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 183,
     "name_en": "Flag Caddycapatator",
-    "name_ko": "Flag Caddycapatator",
+    "name_ko": "깃발 골프모자 장치",
     "icon": "/images/skins/researchlab4_minigolf_red.png",
     "rarity_modifier": "Woven"
   },
@@ -10615,6 +10652,20 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "shovel_spoon",
+    "base_prefab": "shovel",
+    "type": "item",
+    "rarity": "ProofOfPurchase",
+    "skin_tags": [
+      "SHOVEL",
+      "CRAFTABLE"
+    ],
+    "release_group": 184,
+    "name_en": "Giant's Spoon",
+    "name_ko": "Giant's Spoon",
+    "icon": "/images/skins/shovel_spoon.png"
+  },
+  {
     "id": "shovel_victorian",
     "base_prefab": "shovel",
     "type": "item",
@@ -11238,7 +11289,7 @@ export const SKINS: SkinEntry[] = [
     "rarity": "ProofOfPurchase",
     "skin_tags": [],
     "release_group": 177,
-    "name_en": "Tesla Coil Helm",
+    "name_en": "Arc Welded Helm",
     "name_ko": "테슬라 코일 조타륜",
     "icon": "/images/skins/steeringwheel_tesla_item.png"
   },
@@ -11695,7 +11746,10 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "셸락 마감 낚시 도구함",
     "icon": "/images/skins/tacklecontainer_shell.png",
     "rarity_modifier": "Woven"
-  },
+  }
+];
+
+const SKINS_4: SkinEntry[] = [
   {
     "id": "tacklecontainer_shiny",
     "base_prefab": "tacklecontainer",
@@ -12033,7 +12087,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 183,
     "name_en": "Egg Caddy Cap",
-    "name_ko": "Egg Caddy Cap",
+    "name_ko": "달걀 골프모자",
     "icon": "/images/skins/tophat_minigolf_green.png",
     "rarity_modifier": "Woven"
   },
@@ -12049,7 +12103,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 183,
     "name_en": "Bow Caddy Cap",
-    "name_ko": "Bow Caddy Cap",
+    "name_ko": "리본 골프모자",
     "icon": "/images/skins/tophat_minigolf_purple.png",
     "rarity_modifier": "Woven"
   },
@@ -12065,7 +12119,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 183,
     "name_en": "Flag Caddy Cap",
-    "name_ko": "Flag Caddy Cap",
+    "name_ko": "깃발 골프모자",
     "icon": "/images/skins/tophat_minigolf_red.png",
     "rarity_modifier": "Woven"
   },
@@ -12188,7 +12242,7 @@ export const SKINS: SkinEntry[] = [
     ],
     "release_group": 183,
     "name_en": "Cawnival Torch",
-    "name_ko": "Cawnival Torch",
+    "name_ko": "까악제 횃불",
     "icon": "/images/skins/torch_cawnival.png",
     "rarity_modifier": "Woven"
   },
@@ -13156,6 +13210,42 @@ export const SKINS: SkinEntry[] = [
     "icon": "/images/skins/walrushat_ceremonial.png"
   },
   {
+    "id": "walrushat_minigolf_green",
+    "base_prefab": "walrushat",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 183,
+    "name_en": "Egg Caddy Cap",
+    "name_ko": "Egg Caddy Cap",
+    "icon": "/images/skins/walrushat_minigolf_green.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "walrushat_minigolf_purple",
+    "base_prefab": "walrushat",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 183,
+    "name_en": "Bow Caddy Cap",
+    "name_ko": "Bow Caddy Cap",
+    "icon": "/images/skins/walrushat_minigolf_purple.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "walrushat_minigolf_red",
+    "base_prefab": "walrushat",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 183,
+    "name_en": "Flag Caddy Cap",
+    "name_ko": "Flag Caddy Cap",
+    "icon": "/images/skins/walrushat_minigolf_red.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "walrushat_party",
     "base_prefab": "walrushat",
     "type": "item",
@@ -13261,6 +13351,20 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven",
     "quote_en": "\"I'd wear it more often, but it's so heavy with all these badges...\"",
     "quote_ko": "\"자주 입고 싶긴 한데, 배지가 너무 많아서 무거워...\"",
+    "character": "walter"
+  },
+  {
+    "id": "walter_hazard",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Walter_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
     "character": "walter"
   },
   {
@@ -13745,6 +13849,20 @@ export const SKINS: SkinEntry[] = [
     "character": "wanda"
   },
   {
+    "id": "wanda_hazard",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wanda_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
+    "character": "wanda"
+  },
+  {
     "id": "wanda_ice",
     "base_prefab": "wanda",
     "type": "base",
@@ -14121,6 +14239,20 @@ export const SKINS: SkinEntry[] = [
     "character": "warly"
   },
   {
+    "id": "warly_hazard",
+    "base_prefab": "warly",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Warly_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
+    "character": "warly"
+  },
+  {
     "id": "warly_ice",
     "base_prefab": "warly",
     "type": "base",
@@ -14326,6 +14458,21 @@ export const SKINS: SkinEntry[] = [
     "quote_ko": "\"어머니가 내 명절 요리를 그리워하지 않으시려나.\"",
     "set_id": "emote_carol",
     "character": "warly"
+  },
+  {
+    "id": "waterballoon_insect",
+    "base_prefab": "waterballoon",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "WATERBALLOON",
+      "CRAFTABLE",
+      "INSECT"
+    ],
+    "release_group": 184,
+    "name_en": "Bugburst Waterballoon",
+    "name_ko": "Bugburst Waterballoon",
+    "icon": "/images/skins/waterballoon_insect.png"
   },
   {
     "id": "wateringcan_cactus",
@@ -14571,6 +14718,20 @@ export const SKINS: SkinEntry[] = [
     "character": "wigfrid"
   },
   {
+    "id": "wathgrithr_hazard",
+    "base_prefab": "wathgrithr",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wigfrid_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
+    "character": "wigfrid"
+  },
+  {
     "id": "wathgrithr_ice",
     "base_prefab": "wathgrithr",
     "type": "base",
@@ -14780,7 +14941,10 @@ export const SKINS: SkinEntry[] = [
     "quote_en": "\"Applause röars as red, red röses flööd my stage!\"",
     "quote_ko": "\"붉디 붉은 장미가 무대를 메우고 우레 같은 박수가 전당에 울린다!\"",
     "character": "wigfrid"
-  },
+  }
+];
+
+const SKINS_5: SkinEntry[] = [
   {
     "id": "wathgrithr_rosep",
     "base_prefab": "wathgrithr",
@@ -15145,6 +15309,20 @@ export const SKINS: SkinEntry[] = [
     "quote_en": "\"All those who oppose me shall perish!\"",
     "quote_ko": "\"나에게 대적하는 자, 쓰러지리라!\"",
     "set_id": "emote_fistshake",
+    "character": "maxwell"
+  },
+  {
+    "id": "waxwell_hazard",
+    "base_prefab": "waxwell",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Maxwell_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
     "character": "maxwell"
   },
   {
@@ -15671,6 +15849,20 @@ export const SKINS: SkinEntry[] = [
     "character": "webber"
   },
   {
+    "id": "webber_hazard",
+    "base_prefab": "webber",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Webber_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
+    "character": "webber"
+  },
+  {
     "id": "webber_ice",
     "base_prefab": "webber",
     "type": "base",
@@ -16156,6 +16348,20 @@ export const SKINS: SkinEntry[] = [
     "character": "wendy"
   },
   {
+    "id": "wendy_hazard",
+    "base_prefab": "wendy",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wendy_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
+    "character": "wendy"
+  },
+  {
     "id": "wendy_ice",
     "base_prefab": "wendy",
     "type": "base",
@@ -16608,6 +16814,18 @@ export const SKINS: SkinEntry[] = [
     "character": "wes"
   },
   {
+    "id": "wes_hazard",
+    "base_prefab": "wes",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wes_Hermetic_in_game.png",
+    "character": "wes"
+  },
+  {
     "id": "wes_ice",
     "base_prefab": "wes",
     "type": "base",
@@ -17050,6 +17268,20 @@ export const SKINS: SkinEntry[] = [
     "quote_en": "\"Goodness gracious, it seems you've been annihilated.\"",
     "quote_ko": "\"이런 세상에, 너희들은 전멸인 것 같군.\"",
     "set_id": "emote_fistshake",
+    "character": "wickerbottom"
+  },
+  {
+    "id": "wickerbottom_hazard",
+    "base_prefab": "wickerbottom",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wickerbottom_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
     "character": "wickerbottom"
   },
   {
@@ -17572,6 +17804,20 @@ export const SKINS: SkinEntry[] = [
     "character": "willow"
   },
   {
+    "id": "willow_hazard",
+    "base_prefab": "willow",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Willow_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
+    "character": "willow"
+  },
+  {
     "id": "willow_ice",
     "base_prefab": "willow",
     "type": "base",
@@ -17983,6 +18229,23 @@ export const SKINS: SkinEntry[] = [
     "character": "wilson"
   },
   {
+    "id": "wilson_hazard",
+    "base_prefab": "wilson",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "BASE",
+      "WILSON"
+    ],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wilson_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
+    "character": "wilson"
+  },
+  {
     "id": "wilson_ice",
     "base_prefab": "wilson",
     "type": "base",
@@ -18313,7 +18576,10 @@ export const SKINS: SkinEntry[] = [
     "name_ko": "좀도둑 도르레",
     "icon": "/images/skins/winch_pirate.png",
     "rarity_modifier": "Woven"
-  },
+  }
+];
+
+const SKINS_6: SkinEntry[] = [
   {
     "id": "winona_20s",
     "base_prefab": "winona",
@@ -18544,6 +18810,20 @@ export const SKINS: SkinEntry[] = [
     "quote_en": "\"You seem to think you got a chance. Let's fix that.\"",
     "quote_ko": "\"네가 상대가 된다고 생각하나 보지. 그 생각, 바로잡아 주지.\"",
     "set_id": "emote_fistshake",
+    "character": "winona"
+  },
+  {
+    "id": "winona_hazard",
+    "base_prefab": "winona",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Winona_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
     "character": "winona"
   },
   {
@@ -19243,6 +19523,24 @@ export const SKINS: SkinEntry[] = [
     "character": "wolfgang"
   },
   {
+    "id": "wolfgang_combatant",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Event",
+    "skin_tags": [
+      "LAVA",
+      "BASE",
+      "WOLFGANG"
+    ],
+    "release_group": 32,
+    "name_en": "The Challenger",
+    "name_ko": "도전자",
+    "body_image": "/images/skins-body/Wolfgang_Challenger_in_game.png",
+    "quote_en": "\"Mighty Wolfgang cannot wait to step into ring!\"",
+    "quote_ko": "\"힘센 볼프강 경기장 빨리 올라가고 싶다!\"",
+    "character": "wolfgang"
+  },
+  {
     "id": "wolfgang_cook",
     "base_prefab": "wolfgang",
     "type": "base",
@@ -19315,6 +19613,20 @@ export const SKINS: SkinEntry[] = [
     "quote_en": "\"You will kneel before might of Wolfgang!\"",
     "quote_ko": "\"넌 볼프강의 강력함 앞에 무릎 꿇게 될 거다!\"",
     "set_id": "emote_fistshake",
+    "character": "wolfgang"
+  },
+  {
+    "id": "wolfgang_hazard",
+    "base_prefab": "wolfgang",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wolfgang_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
     "character": "wolfgang"
   },
   {
@@ -19960,6 +20272,20 @@ export const SKINS: SkinEntry[] = [
     "character": "woodie"
   },
   {
+    "id": "woodie_hazard",
+    "base_prefab": "woodie",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Woodie_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
+    "character": "woodie"
+  },
+  {
     "id": "woodie_hippie",
     "base_prefab": "woodie",
     "type": "base",
@@ -20390,6 +20716,20 @@ export const SKINS: SkinEntry[] = [
     "character": "wormwood"
   },
   {
+    "id": "wormwood_hazard",
+    "base_prefab": "wormwood",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wormwood_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
+    "character": "wormwood"
+  },
+  {
     "id": "wormwood_ice",
     "base_prefab": "wormwood",
     "type": "base",
@@ -20652,6 +20992,20 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven",
     "quote_en": "\"Charmed, I'm sure.\"",
     "quote_ko": "\"풍채는 확실히 좋군.\"",
+    "character": "wortox"
+  },
+  {
+    "id": "wortox_hazard",
+    "base_prefab": "wortox",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wortox_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
     "character": "wortox"
   },
   {
@@ -20955,6 +21309,20 @@ export const SKINS: SkinEntry[] = [
     "rarity_modifier": "Woven",
     "quote_en": "\"Frilly and gilly, florp!\"",
     "quote_ko": "\"하늘하늘 팔랑팔랑, 뽀륵!\"",
+    "character": "wurt"
+  },
+  {
+    "id": "wurt_hazard",
+    "base_prefab": "wurt",
+    "type": "base",
+    "rarity": "Loyal",
+    "skin_tags": [],
+    "release_group": 182,
+    "name_en": "The Hermetic",
+    "name_ko": "밀폐복",
+    "body_image": "/images/skins-body/Wurt_Hermetic_in_game.png",
+    "quote_en": "\"Hrrm... mff! Mmmf!\"",
+    "quote_ko": "\"후앙... 무앙! 무앙!\"",
     "character": "wurt"
   },
   {
@@ -21510,3 +21878,5 @@ export const SKINS: SkinEntry[] = [
     "character": "wx78"
   }
 ];
+
+export const SKINS: SkinEntry[] = [...SKINS_0, ...SKINS_1, ...SKINS_2, ...SKINS_3, ...SKINS_4, ...SKINS_5, ...SKINS_6];

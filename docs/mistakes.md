@@ -117,6 +117,16 @@
   3. 중복 여부는 눈이 아니라 스크립트로 — ID 전수 카운트 한 번이면 끝
 - **참고**: 즐겨찾기는 `ing:<id>` 문자열 하나로 저장되므로 중복 항목 제거로 기존 즐겨찾기가 깨지지 않음 (남는 항목의 ID가 동일)
 
+### 자동 생성 데이터 파일이 커지자 TypeScript 유니온 한계(TS2590)에 걸림 (2026-08-18, #80)
+- **문제**: 게임 데이터 동기화 후 `npm run build`/`tsc`가 `src/data/skins.ts(53,35): error TS2590: Expression produces a union type that is too complex to represent`로 실패. 직전 main은 클린이었고 이번 sync가 스킨을 1362 → 1387개로 늘린 것 말고는 변화가 없었다
+- **원인**: `export const SKINS: SkinEntry[] = [ ...1387개 객체 리터럴... ]`. `SkinEntry`의 선택적 필드가 7개(rarity_modifier / quote_en / quote_ko / set_id / character / icon / body_image)라 항목마다 shape이 갈리고, TS가 배열 리터럴을 체크하며 만드는 내부 유니온이 한계치를 넘었다. **데이터가 틀린 게 아니라 개수가 임계값을 넘은 것** — 타입도 데이터도 그대로 두고 다음 sync에서 또 터질 수 있는 종류의 실패
+- **해결**: 생성 스크립트(`scripts/extract-skins.py`)가 200개씩 끊어 `const SKINS_0..N: SkinEntry[] = [...]`로 내보내고 마지막에 `export const SKINS: SkinEntry[] = [...SKINS_0, ...]`로 합치도록 변경. 청크마다 유니온이 리셋되므로 타입 체크는 그대로 유지하면서 한계를 피한다
+- **교훈**:
+  1. 자동 생성 데이터는 **생성 스크립트에서 고칠 것.** 생성물(`src/data/*.ts`)을 손으로 고치면 다음 sync에 사라진다 — `as unknown as`나 `@ts-expect-error`로 생성물을 덮는 건 특히 잘못된 방향
+  2. 항목 수가 계속 늘어나는 생성 배열은 **처음부터 청크로 내보낼 것.** 임계값을 넘는 순간이 하필 게임 업데이트 반영 중이라 원인이 데이터 변경처럼 보인다
+  3. 이런 실패는 `main`에서 같은 명령을 돌려 **기존 문제인지 이번 변경 탓인지 먼저 갈라놓는 게** 가장 빠른 절반 나누기다
+- **덤(워크트리 함정)**: feat 워크트리엔 `node_modules`가 없어 메인 워크트리에서 심볼릭 링크를 걸었더니 `tsc`는 통과하는데 `npm run build`가 `Symlink node_modules is invalid, it points out of the filesystem root` (TurbopackInternalError)로 죽었다. 워크트리에서 빌드까지 검증하려면 **링크 말고 `npm ci`**
+
 ## TEX 아틀라스 추출
 
 ### UV 좌표 V축 반전
