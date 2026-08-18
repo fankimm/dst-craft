@@ -5,6 +5,7 @@ import { canonicalForFood } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -106,6 +107,8 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
             {L.openSimulator[lang]}
           </Link>
         </section>
+
+        <AdSlot variant="top" />
 
         <section>
           <h2 className="text-lg font-semibold mb-4">{L.howItWorks[lang]}</h2>

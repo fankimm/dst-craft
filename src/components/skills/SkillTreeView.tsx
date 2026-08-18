@@ -15,6 +15,7 @@ import { SkillLockIndicator, LockConditionPill } from "./SkillLockIndicator";
 import { Wx78CircuitBoard } from "./Wx78CircuitBoard";
 import { Wx78StatusPanel } from "./Wx78StatusPanel";
 import { Footer } from "../crafting/Footer";
+import { AdSlot } from "@/components/ads/AdSlot";
 import { cn } from "@/lib/utils";
 
 type Wx78SubTab = "skills" | "circuits" | "status";
@@ -340,6 +341,7 @@ export function SkillTreeView({
       ) : (
       /* Scrollable tree */
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain" data-scroll-container="">
+        <AdSlot variant="top" />
         <div className="max-w-2xl mx-auto w-full pb-2">
           {groupedLinear.map(({ group, items }) => {
             // Count how many skills reference each lock as a parent within this group.

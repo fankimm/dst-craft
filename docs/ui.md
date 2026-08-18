@@ -228,6 +228,39 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **용도**: Footer 하단에 노출되는 소개(About)·개인정보처리방침·이용약관 링크 (client, `useSettings`로 locale 반영)
 - **사용처**: `src/components/crafting/Footer.tsx`
 
+### AdSlot (`src/components/ads/AdSlot.tsx`)
+- **용도**: Ezoic 광고 자리. placeholder div를 그리고 `ezstandalone.showAds(<id>)`로 광고를 요청. 같은 번호를 쥔 자리가 바뀔 때는 `destroy` 없이 `showAds`만, 자리가 화면에서 아예 사라질 때만 `destroyPlaceholders`
+- **자리(variant)와 placeholder id** — 번호는 임의로 고르면 안 된다. Ezoic 대시보드에 위치 유형이 정해진 placeholder가 이미 등록돼 있어 **번호가 곧 위치 유형**이다 (100=Adhesion, 101=top_of_page, 102=under_page_title, 103=bottom_of_page, 104~108=sidebar 계열, 109~115=본문 계열). 우리 자리의 성격과 같은 유형을 골라 쓴다:
+  | variant | id (Ezoic 유형) | 위치 | 규격 |
+  |---|---|---|---|
+  | `top` | 111 (`mid_content`) | 모든 탭의 목록/컨텐츠 첫 줄 (제작·요리 카테고리 화면과 목록, 보스, 스킬 캐릭터 그리드·스킬 트리, 스킨, 퀘스트, 콘솔) **+ SEO 정적 페이지 전부** (`src/components/seo/*Content.tsx` — 히어로/h1 블록 바로 아래) | 폭 728까지 (가로 띠) |
+  | `sheet` | 103 (`bottom_of_page`) | 상세 시트 컨텐츠 끝, `SupportPill` 위 (`DetailPanel`) | 가로 띠. 넓은 화면은 970까지 (103이 970×105를 배달) |
+  | `rail-left` / `rail-right` | 107 / 108 (`sidebar_floating_1·2`) | 탭 컨텐츠 좌우 (`AppShell`) | 336폭, 세로. 화면 1500 미만은 미표시 |
+- **요청은 반드시 배칭** — 자리마다 따로 `showAds(id)`를 부르면 Ezoic이 앞선 사이클 도중 들어온 호출을 흘려버려 그 자리가 조용히 빈 채로 남는다. `AdSlot` 모듈의 배치 큐(`requestAd`/`releaseAd`)에 등록만 하고, 같은 틱의 요청을 `showAds(...ids)` 한 번으로 내보낸다. 자리를 추가할 때 개별 호출을 복붙하지 말 것
+- **도착 판정은 소재 기준** — no-fill이어도 Ezoic이 18×18 뱃지 이미지를 넣기 때문에 "자식이 있으면 채워짐"으로 보면 빈 회색 AD 카드가 그려진다. iframe / 뱃지보다 큰 이미지 / 텍스트가 있을 때만 채워진 것으로 친다
+- **가로 띠만 상시 예약(`reserve`)** — 띠는 컨텐츠 위에 있어 늦게 도착하면 목록이 밀린다(CLS, 유입 65%가 구글). 띠 계열 중 가장 높은 320×100에 맞춰 **100px 하나로 고정**한다(브레이크포인트로 나누지 말 것 — 데스크탑만 90px로 좁혔더니 데스크탑에 320×100이 와서 10px 밀렸다). 레일(옆)·시트(아래)는 밀릴 컨텐츠가 없어 예약하지 않는다
+- **예약은 "채워진 뒤에도" 유지, 카드 껍데기는 `filled`와 무관하게 상시 렌더** — 이 둘을 지켜야 예약이 실제로 CLS를 막는다. ① 채워질 때만 껍데기(AD 라벨 + 상하 패딩 ≈27px)를 붙이면 광고 도착 순간 그만큼 밀린다. ② 채워지면 예약을 풀고 `minH`로 줄이면 100px 자리에 320×50이 올 때 위로 50px 당겨진다 — **위로 당기는 것도 CLS다**. 껍데기에서 `filled`에 걸어도 되는 건 높이를 안 만드는 것(테두리·배경·라벨 글자)뿐. `scripts/check-ad-cls.mjs`가 이 불변식을 지킨다
+- **`ezstandalone.config()`로 제어 가능** — 전면 광고(`disableInterstitial`, `vignetteDesktop/Mobile/Tablet`), ID 싱크 픽셀 감축(`limitCookies`), 자동 사이드레일(`disableLeftSideRail` 등), 앵커 위치(`anchorAdPosition`), 비디오(`disableVideo`). **대시보드 전용이 아니다** — 실브라우저에서 `typeof ezstandalone.config === "function"` 확인. `disableSidebarFloating`은 우리가 직접 심은 107/108까지 죽일 수 있으니 주의. 현재 beta에서만 `limitCookies: true`를 켜 요청 감소폭을 측정 중
+- **`config()`는 `layout.tsx`의 `cmd` 큐 생성 인라인 스크립트에 둔다** — `AdSlot`이 첫 배치를 내보내는 시점(마운트 → 교차 판정 → 250ms 디바운스)은 우리 `showAds`보다는 앞이지만, Ezoic 본체는 head에서 async로 먼저 떠서 **자동 유닛(anchor·vignette·video)과 초기 쿠키 싱크를 그 전에 이미 시작**한다. `limitCookies`처럼 초기 픽셀을 겨냥한 옵션은 그 위치면 늦다
+- **`refreshAds(id)`는 우리 구조에 안 맞는다** — "div는 그대로, 내용만 갱신"용이다. div 노드를 갈아끼운 뒤 `refreshAds`만 부르면 그 자리가 빈 채로 남는 것을 실측했다. 탭마다 노드가 교체되는 구조에서는 `showAds`를 쓴다
+- **실광고 관측은 `scripts/check-ad-slots-live.mjs`** — GPT 슬롯 누수(탭 왕복 전후 `googletag.pubads().getSlots()` 증가), 우리가 정의하지 않은 자동 삽입 슬롯, SDK API 존재를 본다. 실제 광고는 세션·스로틀·무광고 대조군(`isEzoicUser`)에 따라 흔들리므로 **판정용이 아니라 관측용**
+- **자리 폭은 "그 자리에 올 수 있는 최대 규격"으로 잡는다** — Ezoic은 컨테이너 폭을 존중하지 않는다. 160폭 자리에 300×250을 넣어 옆 컨텐츠와 겹치는 것을 실측했다(#75). 잘라내기(`overflow:hidden`)는 금지 — 광고를 일부 가리면 정책 위반이라 계정이 위험하다
+- **높이는 최소값만** — 큰 규격이 와도 아래로 늘어나면 되고, 최소 높이가 늦게 온 광고의 레이아웃 시프트를 막는다
+- **레일 브레이크포인트 근거**: 아이템 그리드 최대폭 896 + 좌우 300씩 = 1496 → `min-[1500px]`
+- **번호는 탭이 아니라 자리 역할 단위로 공유** — 탭은 `hidden` 상태로 동시에 마운트돼 있지만, `AdSlot`이 **보이는 탭에서만** placeholder div를 그리므로 문서에 같은 번호가 둘 이상 존재하지 않는다. 탭마다 번호를 따로 쓰면 탭이 늘 때마다 고갈된다(본문 계열은 109~115뿐). 좌우 레일만 서로 다른 번호가 필요
+- **활성 판정** — 교차하면 활성, 안 교차해도 레이아웃 박스가 있으면 활성 유지(스크롤로 벗어난 것), 박스가 0이면 비활성(탭이 숨겨진 것). 스크롤로 벗어날 때마다 해제하면 되돌아올 때 새 노출이 생겨 노출이 부풀려진다
+- **요청 큐는 "주인" 단위** — 상단 띠는 모든 탭이 같은 번호를 쓰므로 탭 전환 때 placeholder div가 교체된다. 번호만 세면 아무 요청도 안 나가 Ezoic이 사라진 div에 광고를 든 채로 남고(새 자리는 영영 빔, 레일까지 동반 사망), 그래서 번호를 쥔 엘리먼트가 바뀌면 **`destroy` 없이 `showAds`만** 다시 부른다 — Ezoic이 새 div를 찾아 채우고 다른 자리는 건드리지 않는다. 반대로 `destroy`는 지목하지 않은 자리의 광고까지 비우므로(실측), 자리가 아예 사라질 때만 쓰고 그때는 살아 있는 나머지를 같은 배치에서 함께 재요청한다. 해제는 자기가 주인일 때만 반영해 순서 뒤집힘에도 안전
+- **같은 번호가 문서에 둘 이상 있으면 Ezoic 동작이 예측 불가**(Ezoic 문서 명시). "보이는 자리만 렌더" 규칙으로 막고 있지만 탭·화면이 늘면 조용히 깨지므로, 개발 빌드에서 실제 DOM을 세어 `console.error`로 드러낸다 (`AdCard`)
+- **상세 시트는 `open`일 때만 렌더** — 시트가 탭마다 상시 마운트돼 있어 그냥 두면 안 보이는 노출이 쌓임
+- **회귀 검증 스크립트** — 자리를 건드렸으면 반드시 돌린다 (`npm i -D playwright-core` 필요, 설치된 Chrome 사용):
+  ```bash
+  node scripts/check-ad-slots.mjs https://beta.dstcraft.com          # 탭 순회·카테고리→목록·상세 시트
+  node scripts/check-ad-slots-stress.mjs https://beta.dstcraft.com   # 연타·모바일·뒤로가기·스크롤·왕복 20회·검색·자리 없는 탭
+  node scripts/check-ad-cls.mjs https://beta.dstcraft.com            # 규격별 도착 시 자리 높이 변화(띠 계열 전부 0이어야 함)
+  ```
+  Ezoic 스크립트를 차단하고 같은 인터페이스의 가짜를 심어 **우리가 무엇을 요청하는지**만 본다. 실제 광고는 세션·스로틀에 따라 왔다 갔다 하고 백그라운드 탭에서는 아예 안 뜨므로, 채움 여부로 판정하면 테스트가 매번 흔들린다. 판정 항목: 중복 placeholder 없음 / 숨은 탭이 자리를 들고 있지 않음 / 보이는 자리에 placeholder 있음 / 화면 전환당 `show` 배치 1회
+- **목업 모드**: `?admock=<자리>[:<규격>]` (쉼표로 복수, `all` 지원). 실제 광고 대신 규격만큼의 점선 박스를 그린다. 자리를 옮기거나 규격을 비교할 때 사용 — 예 `?admock=all`, `?admock=infeed,sheet:250x250`
+
 ### LegacyPwaNotice (`src/components/ui/LegacyPwaNotice.tsx`)
 - **용도**: iOS 26 legacy 웹클립 설치본(#60 이전 black-translucent 박제 → 하단 흰 띠)에만 뜨는 재설치 안내 배너. standalone + (screen-innerHeight>20) + safe-area-inset-top>0 시그니처로 감지, 닫기 시 localStorage 영구 dismiss. 해당 설치본이 소멸하면 자연히 안 뜨는 자기소멸형
 - **사용처**: `src/components/AppShell.tsx`
