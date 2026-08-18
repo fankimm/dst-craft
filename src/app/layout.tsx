@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Sans_KR } from "next/font/google";
 import Script from "next/script";
+import ReactDOM from "react-dom";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SettingsProvider } from "@/hooks/use-settings";
@@ -164,9 +165,22 @@ export const viewport: Viewport = {
  * 자식들이 통째로 밀린다(#79에서 8/8 재현). 마지막에 두면 주입분이 React가
  * 렌더한 자식들 뒤로 빠져 매칭이 흔들리지 않는다.
  *
- * `<link rel="preload">`도 검토했으나 실측상 요청 시작 시각이 달라지지 않았고
- * (head 끝은 이미 파싱 초반이다), React가 hoist한 사본과 원본이 HTML에 중복돼
- * 나가서 넣지 않았다. */
+ * 대신 head 끝이라 파서가 URL을 늦게 발견한다 — beta 실측에서 요청 시작이
+ * prod 대비 중앙값 274ms → 487ms로 밀렸다. 그래서 `ReactDOM.preload()`로
+ * head 앞쪽에 preload를 심어 발견 시점을 되돌린다 (JSX `<link rel="preload">`는
+ * React가 hoist한 사본과 원본이 둘 다 나가 HTML에 중복된다). preload는
+ * 다운로드만 앞당길 뿐 실행 순서에는 관여하지 않는다. */
+/** 삽입 순서 = 실행 순서. CMP 두 개가 먼저, 그다음 광고 본체, 마지막이 분석. */
+const AD_SCRIPT_SRCS = [
+  "https://cmp.gatekeeperconsent.com/min.js",
+  "https://the.gatekeeperconsent.com/cmp.min.js",
+  "https://www.ezojs.com/ezoic/sa.min.js",
+  "https://ezoicanalytics.com/analytics.js",
+] as const;
+
+/** Cloudflare Rocket Loader가 건드리지 못하게 하는 대상 (CMP 두 개). */
+const AD_SCRIPT_CFASYNC_OFF = 2;
+
 const adBootstrapScript = `
 window.ezstandalone = window.ezstandalone || {};
 ezstandalone.cmd = ezstandalone.cmd || [];${
@@ -175,17 +189,13 @@ ezstandalone.cmd = ezstandalone.cmd || [];${
     : ""
 }
 (function(){
-  var srcs = [
-    ["https://cmp.gatekeeperconsent.com/min.js", true],
-    ["https://the.gatekeeperconsent.com/cmp.min.js", true],
-    ["https://www.ezojs.com/ezoic/sa.min.js", false],
-    ["https://ezoicanalytics.com/analytics.js", false]
-  ];
+  var srcs = ${JSON.stringify(AD_SCRIPT_SRCS)};
+  var cfasyncOff = ${AD_SCRIPT_CFASYNC_OFF};
   for (var i = 0; i < srcs.length; i++) {
     var s = document.createElement('script');
-    s.src = srcs[i][0];
+    s.src = srcs[i];
     s.async = false;
-    if (srcs[i][1]) s.setAttribute('data-cfasync', 'false');
+    if (i < cfasyncOff) s.setAttribute('data-cfasync', 'false');
     document.head.appendChild(s);
   }
 })();
@@ -338,6 +348,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // 광고/CMP 스크립트를 미리 받아둔다 (adBootstrapScript 주석 참조).
+  for (const href of AD_SCRIPT_SRCS) ReactDOM.preload(href, { as: "script" });
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

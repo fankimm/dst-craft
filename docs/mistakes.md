@@ -796,6 +796,8 @@
 - **교훈 1**: 사용자가 신고한 증상(경고)만 쫓지 말고 **서버가 실제로 내보낸 HTML의 순서를 직접 찍어볼 것**. `curl | grep '<script'` + 바이트 오프셋 한 번이면 hoisting이 드러났다. JSX 소스의 순서 = 출력 순서라고 가정하면 안 된다 — React 19 Float(`async` script, `link rel=preload`, `stylesheet`)는 위치를 바꾼다
 - **교훈 2 (자책 포인트)**: 1차 수정으로 인라인 부트스트랩을 head **중간**에 두자 경고가 산발 → **8/8 확정 발생**으로 악화됐다. 파싱 중 `document.head.appendChild`는 아직 파싱되지 않은 뒤쪽 head 요소들보다 앞에 노드를 꽂으므로, React가 위치로 매칭하는 자식들이 통째로 밀린다. **동적 삽입은 `</head>` 직전(=React가 렌더한 자식들 뒤)에서 해야 한다.** main에서 Ezoic이 hydration 후 append할 땐 경고가 없던 것이 바로 이 힌트였는데 처음에 못 읽었다
 - **교훈 3**: 수정 전후를 **같은 하네스로 N회** 돌려 비율로 판정할 것. 이 경고는 Ezoic의 주입 여부에 따라 산발적이라 1~3회 로드로는 "고쳐졌다"는 착시가 쉽게 난다. 8회 반복으로 baseline 0/8 vs 1차 수정 8/8이 드러나 악화를 즉시 잡았다
-- **교훈 4**: `<link rel="preload">`를 JSX로 `<head>`에 쓰면 React가 hoist한 사본과 원본이 **둘 다** HTML에 나가 중복된다(`<body>`로 옮겨도 동일). 이번엔 실측상 요청 시작 시각이 안 변해서 그냥 뺐다 — **최적화는 넣기 전에 재고, 이득이 없으면 넣지 않는다**
+- **교훈 4**: `<link rel="preload">`를 JSX로 쓰면 React가 hoist한 사본과 원본이 **둘 다** HTML에 나가 중복된다(`<body>`로 옮겨도 동일). 중복 없이 하나만 심으려면 `ReactDOM.preload(href, { as: "script" })`를 쓴다
+- **교훈 5 (하마터면 놓칠 뻔)**: 부트스트랩을 head 끝으로 옮기면 파서가 URL을 늦게 발견한다. **로컬 dev에선 차이가 안 보였다**(head가 작고 네트워크가 0ms) — 실측 결과 dev는 preload 유무가 동일해서 "이득 없음"으로 판단하고 뺐는데, beta 배포 후 재보니 광고 요청 시작이 prod 중앙값 274ms → 487ms로 **200ms 밀려 있었다**. 27KB짜리 head를 네트워크로 받는 실환경에서만 드러나는 차이다. **네트워크·문서 크기에 좌우되는 최적화는 localhost 수치로 판단하지 말 것** — beta에 올려 prod와 나란히 재야 한다
 - **해결 (#79)**: JSX에서 `async` 스크립트를 전부 제거(=hoist될 대상 없음)하고, `</head>` 직전 인라인 `adBootstrapScript` 하나가 `document.createElement` + `s.async = false`로 CMP → CMP → `sa.min.js` → analytics 순서대로 삽입. `async=false`가 **삽입 순서 = 실행 순서**를 보장하고, 동적 삽입이라 파서도 막지 않는다
+  `ReactDOM.preload()`로 head 앞쪽에 preload를 심어 늦어진 발견 시점을 되돌린다.
 - **검증**: 재진입 8회 경고 0/8, 딥링크 4종 0건, 실행 순서 CMP→광고→분석 확인, 요청 시작 시각 main과 동일(90~113ms), 중복 fetch 없음, `check-ad-slots`·`check-ad-slots-stress` problems 없음. (`check-ad-cls`의 "SEO 아이템/목록 상단 띠 없음" 3건은 main에서도 동일하게 실패하는 기존 이슈)
