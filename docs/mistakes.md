@@ -778,3 +778,15 @@
   3. 외부 컴포넌트가 뱉은 에러라도 **우리 설정이 만든 결과일 수 있다.** `return 444`, `deny`, rate limit처럼 의도적으로 커넥션을 끊는 룰이 있으면 프록시 로그엔 장애처럼 찍힌다. 자기 conf부터 훑을 것
   4. 원인 미확정 상태에서 프로덕션 설정을 바꾸지 말 것. 이번엔 무해했지만(keepalive 역전은 어차피 바로잡을 값이었다) 오진 위에 쌓은 수정은 나중에 진짜 원인을 가린다
 - **진짜 원인 (미해결, 관찰 중)**: 실패 프로브는 Worker → CF edge → 터널 앞단에서 사라진다. origin·cloudflared 어느 로그에도 흔적이 없고, cloudflared 메트릭의 `quic_client_lost_packets{reason="timeout"}`가 꾸준히 쌓인다(가정용 업링크의 QUIC 패킷 유실 추정). 대응은 워치독 `TRY_TIMEOUT_MS` 5s → 10s 완화. 그래도 오탐이 남으면 TRIES를 5회로 늘리고 4회 실패 기준으로 조정
+
+## Hydration / SSR
+
+### 플리커를 없애려 useState lazy initializer에서 URL을 읽어 hydration mismatch 유발 (2026-08-18, #76)
+- **문제**: 딥링크(`/?cat=tools`, `/?tab=cooking&cat=all&recipe=...` 등)로 들어오면 콘솔에 "Hydration failed because the server rendered HTML didn't match the client"가 뜨고, React가 앱 트리 전체를 클라이언트에서 재생성. crafting / cooking / bosses / skins 4곳에서 재현
+- **원인**: 이전에 "딥링크 진입 시 카테고리 그리드가 잠깐 보였다가 상세로 바뀌는 플리커"를 고치려고, SSR 기본값 + mount `useEffect` 동기화 패턴을 `useState(() => typeof window === "undefined" ? DEFAULT : readUrlState())` lazy initializer로 바꿨음. 정적 export된 서버 HTML은 항상 홈(카테고리 그리드)인데 첫 클라이언트 렌더는 상세 뷰가 되므로 구조적으로 어긋남. **한 문제(플리커)를 고치면서 다른 문제(mismatch)를 만든 전형적 트레이드오프**
+- **해결**: 첫 렌더는 서버와 동일한 기본값으로 두고, **layout effect**(`useLayoutEffect`, 서버에선 `useEffect`)에서 URL을 읽어 setState. layout effect는 DOM 커밋 후 브라우저가 그리기 **전에** 동기 실행되므로 두 번째 렌더까지 같은 프레임에 끝난다 → mismatch도 없고 플리커도 없음. 공통 훅 `useUrlStateSync`로 추출 (`src/hooks/use-url-state.ts`)
+- **교훈 1**: "hydration 일치"와 "플리커 없음"은 배타적이지 않다. `useEffect`(페인트 후) vs lazy init(페인트 전이지만 서버와 불일치) 두 선택지만 놓고 고민하면 갇힌다. **`useLayoutEffect`가 정확히 그 사이 칸**
+- **교훈 2**: 커스텀 훅이 `useState`의 setter를 그대로 되돌려주면 **React Compiler가 그것을 안정된 setter로 인식하지 못한다**. 훅이 `[state, setState]`를 반환하는 순간 기존 `useCallback(..., [])`들이 전부 "inferred dependency `setUrlState` not present in source" 에러로 깨졌다. state는 호출부에 `useState`로 두고 **동기화 로직만** 훅으로 빼는 구조가 안전
+- **교훈 3**: 렌더 중 ref에 쓰기(`readRef.current = read`) 금지 — `react-hooks/refs` 에러. 마운트 시점 값만 필요하면 `useRef(read)` 초기값으로 고정
+- **검증 방법**: headless Playwright로 딥링크 진입 시 `pageerror` 수집 + rAF 프레임마다 DOM 텍스트 시그니처를 찍어 "홈 → 상세" 전환 시각을 기록. main 브랜치 dev 서버를 다른 포트에 같이 띄워 **수정 전후 전환 시각 분포를 비교**하면 플리커 재발 여부를 눈이 아니라 수치로 판정할 수 있다
+- **주의**: 같은 탭에서 재진입할 때 나오는 "A tree hydrated but some attributes ... didn't match" 경고는 **이 건과 무관한 별개 이슈** — `<head>`의 Ezoic/CMP 스크립트 순서가 어긋나는 문제로, 쿼리 없는 `/` 재진입에서도 동일하게 재현된다. 증상이 비슷하다고 한 원인으로 묶지 말 것

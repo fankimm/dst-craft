@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { bossCategories, type BossCategoryId } from "@/data/bosses";
+import { useUrlStateSync } from "./use-url-state";
 
 export type BossesCategoryValue = BossCategoryId | "favorites" | "recent";
 
@@ -36,10 +37,13 @@ function readUrlState(): BossesUrlState {
   };
 }
 
+// SSR-safe default: always start empty to match server render
+const SSR_DEFAULT: BossesUrlState = { cat: null, boss: null };
+
 export function useBossesState() {
-  const [state, setState] = useState<BossesUrlState>(() =>
-    typeof window === "undefined" ? { cat: null, boss: null } : readUrlState(),
-  );
+  // 첫 렌더는 서버와 동일한 SSR_DEFAULT, layout effect에서 URL을 반영한다.
+  const [state, setState] = useState<BossesUrlState>(SSR_DEFAULT);
+  useUrlStateSync(readUrlState, setState);
 
   useEffect(() => {
     const onPopState = () => {

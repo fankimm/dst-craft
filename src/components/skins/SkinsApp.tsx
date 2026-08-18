@@ -15,6 +15,7 @@ import { assetPath } from "@/lib/asset-path";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { useRecent } from "@/hooks/use-recent";
+import { useUrlStateSync } from "@/hooks/use-url-state";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { CategoryCard } from "@/components/ui/CategoryCard";
 import { TabScrollArea } from "@/components/ui/TabScrollArea";
@@ -238,9 +239,9 @@ export function SkinsApp() {
   const locale = resolvedLocale;
   const { recentIds, addRecent } = useRecent("skins");
 
-  const [view, setView] = useState<View>(() =>
-    typeof window === "undefined" ? "home" : viewFromUrl(),
-  );
+  // 첫 렌더는 서버와 동일한 "home", layout effect에서 URL을 반영한다.
+  const [view, setView] = useState<View>("home");
+  useUrlStateSync(viewFromUrl, setView);
   const [selectedSkin, setSelectedSkin] = useState<SkinEntry | null>(null);
   const [sort, setSort] = useState<SkinSort>("rarity");
 

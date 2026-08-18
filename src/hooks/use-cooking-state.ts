@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import type { CookingStation } from "@/data/recipes";
+import { useUrlStateSync } from "./use-url-state";
 
 // ---------------------------------------------------------------------------
 // Types (exported for CookingApp)
@@ -44,12 +45,9 @@ const SSR_DEFAULT = { cat: null as CookingCategoryId | null, recipe: null as str
 // ---------------------------------------------------------------------------
 
 export function useCookingState() {
-  // Lazy init: read URL synchronously on first client render so deep-links
-  // land on the right view immediately after hydration instead of flashing
-  // the category grid until useEffect fires.
-  const [urlState, setUrlState] = useState(() =>
-    typeof window === "undefined" ? SSR_DEFAULT : readUrlState(),
-  );
+  // 첫 렌더는 서버와 동일한 SSR_DEFAULT, layout effect에서 URL을 반영한다.
+  const [urlState, setUrlState] = useState(SSR_DEFAULT);
+  useUrlStateSync(readUrlState, setUrlState);
 
   const showCategoryGrid = !urlState.cat;
   const selectedCategory = urlState.cat;

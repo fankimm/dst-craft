@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.33.1",
+    date: "2026-08-18",
+    dev: [
+      "fix(hydration): 딥링크 진입 시 React hydration mismatch 제거 (#76). `useState` lazy initializer 안에서 `window.location.search`를 읽어 화면 상태를 만들던 패턴을 공통 훅 `useUrlStateSync`(`src/hooks/use-url-state.ts`)로 교체. 첫 렌더는 서버 HTML과 동일한 기본값을 쓰고, 커밋 직후 layout effect에서 URL을 반영한다.",
+      "정적 export된 서버 HTML은 항상 홈(카테고리 그리드)인데 lazy initializer는 첫 클라이언트 렌더에서 상세 뷰를 그려 구조적으로 어긋났다. crafting / cooking / bosses / skins 4개 탭에서 \"Hydration failed\" 발생 → 앱 트리 전체가 클라이언트에서 재생성되며 첫 페인트가 통째로 낭비.",
+      "layout effect는 DOM 커밋 후 브라우저가 그리기 전에 동기 실행되므로 두 번째 렌더까지 같은 프레임에 끝난다 → v0.34.x대에 lazy initializer로 잡았던 딥링크 플리커는 재발하지 않는다. `useEffect`(페인트 후)와 lazy init(페인트 전이지만 서버와 불일치) 사이의 정확한 중간 칸.",
+      "`AppShell`(activeTab), `SkillSimulatorApp`(selectedChar)은 원래 mount `useEffect` 방식이라 mismatch는 없었으나 플리커가 있었음 — 같은 훅으로 통일. `useCraftingState` / `useCookingState` / `useBossesState` / `SkinsApp`(view)까지 6곳 적용.",
+      "state 자체는 호출부의 `useState`로 남긴다. 훅이 setter를 반환하면 React Compiler가 안정된 setter로 인식하지 못해 기존 `useCallback(..., [])` 메모이제이션이 전부 깨진다(inferred dependency 에러).",
+      "검증: headless Playwright로 각 탭 딥링크 진입 시 콘솔 에러 0 (dev + 정적 프로덕션 빌드 양쪽). rAF 프레임별 DOM 시그니처를 찍어 main 브랜치 dev 서버와 전환 시각 분포를 비교 → 플리커 재발 없음. 뒤로가기 / 탭 전환 시퀀스도 main과 동일.",
+      "docs: `docs/ui.md` 공유 훅 목록에 `useUrlStateSync` + lazy initializer 금지 규칙 추가, `docs/mistakes.md`에 오답노트 추가.",
+    ],
+    changes: {
+      ko: [
+        "공유받은 링크나 검색 결과로 특정 카테고리·아이템·레시피에 바로 들어올 때 화면을 처음부터 다시 그리던 문제를 고쳤습니다. 첫 화면이 더 빠르게 뜹니다.",
+      ],
+      en: [
+        "Fixed an issue where opening a shared link or search result that points straight to a category, item, or recipe caused the page to be re-rendered from scratch. The first screen now appears faster.",
+      ],
+    },
+  },
+  {
     version: "0.33.0",
     date: "2026-08-14",
     dev: [
