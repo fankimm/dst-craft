@@ -778,3 +778,11 @@
   3. 외부 컴포넌트가 뱉은 에러라도 **우리 설정이 만든 결과일 수 있다.** `return 444`, `deny`, rate limit처럼 의도적으로 커넥션을 끊는 룰이 있으면 프록시 로그엔 장애처럼 찍힌다. 자기 conf부터 훑을 것
   4. 원인 미확정 상태에서 프로덕션 설정을 바꾸지 말 것. 이번엔 무해했지만(keepalive 역전은 어차피 바로잡을 값이었다) 오진 위에 쌓은 수정은 나중에 진짜 원인을 가린다
 - **진짜 원인 (미해결, 관찰 중)**: 실패 프로브는 Worker → CF edge → 터널 앞단에서 사라진다. origin·cloudflared 어느 로그에도 흔적이 없고, cloudflared 메트릭의 `quic_client_lost_packets{reason="timeout"}`가 꾸준히 쌓인다(가정용 업링크의 QUIC 패킷 유실 추정). 대응은 워치독 `TRY_TIMEOUT_MS` 5s → 10s 완화. 그래도 오탐이 남으면 TRIES를 5회로 늘리고 4회 실패 기준으로 조정
+
+### 이슈 본문의 "누락 목록"을 그대로 믿고 작업할 뻔함 (2026-08-18, #59)
+- **문제**: 이슈 #59는 ko 로케일에 `cookiecuttershell`, `fishingnet` 두 개가 빠졌다고 적혀 있었다. 그대로 넣었으면 `cookiecuttershell`은 **이미 들어있어 중복**이 되고, 정작 빠져 있던 `spear_wathgrithr_lightning`(materials 섹션)은 계속 누락된 채였다. 이슈가 쓰인 시점(2026-07)과 작업 시점 사이에 다른 작업이 일부를 이미 채운 것
+- **왜**: 로케일 파일은 `items` / `materials` 두 섹션에 같은 id가 따로 들어가서, 단순 `grep <id> ko.ts`로는 "있다"만 보이고 **어느 섹션에 없는지**가 안 보인다
+- **교훈**:
+  1. 데이터 누락 이슈는 착수 전 **전 로케일 key diff로 실측**할 것. 이슈 본문은 그 시점의 스냅샷일 뿐
+  2. 실측 방법: 각 로케일을 섹션별 key set으로 파싱 → "다른 로케일 5개 이상에 있는데 ko에 없는 key" 를 뽑는다. 이번엔 이걸로 정확히 2건(`items.fishingnet`, `materials.spear_wathgrithr_lightning`)이 나왔다
+  3. 섹션이 나뉜 데이터 파일은 grep 결과를 **섹션 단위로** 해석할 것
