@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.33.3",
+    date: "2026-08-18",
+    dev: [
+      "feat(search): `SEARCH_ALIASES`(`src/lib/crafting-data.ts`)에 `ocean_trawler_kit` → `[\"그물\", \"fishing net\", \"fishingnet\"]` 추가 (#81). Sanctum/볼트 선례가 있는 기존 별칭 테이블을 그대로 확장 — 새 기구를 만들지 않았다.",
+      "발단은 \"어망을 제작탭에 추가해달라\"는 요청이었으나, 어망(`fishingnet`)은 Return of Them 베타에 있다가 **삭제된 콘텐츠**였다. `recipes.lua:672`의 `Recipe(\"fishingnet\", {Ingredient(\"silk\", 6)}, ...)` 주석 처리, `scrapbook_prefabs.lua:1063` 주석 처리, `prefabs/fishingnet.lua:3`에 Klei 주석 `--fishingnet unused, so switching to PKGREF`. 위키도 \"removed... for reference only\"로 명시. 제작탭에 넣으면 게임에 없는 레시피를 안내하게 되므로 추가하지 않고 검색으로만 흡수.",
+      "별칭 목록은 프로덕션 실측으로 좁혔다 — `어망`/`바다 어망`은 로케일명 \"바다 어망 키트\"에 이미 부분매칭돼 별칭이 불필요했고, 실제로 0건이던 건 `그물`(통칭)과 영문 `fishing net`뿐이었다. 이미 되는 것을 별칭에 중복 등록하면 나중에 왜 넣었는지 판별이 안 된다.",
+      "검증: headless Playwright로 beta·prod를 나란히 띄워 5개 쿼리 비교. 타이핑(live preview text tag)과 Enter 태그 확정(`classifyTag`) 두 경로, 데스크탑/모바일 뷰포트 모두 통과. `net` 단독 검색은 원래도 id·영문 설명 부분매칭으로 40여 건이 나오던 쿼리이며 증가분은 바다 어망 키트 1건뿐 — 무관 아이템 대량 유입 없음.",
+      "검색 기능이 있는 탭은 제작·요리 둘뿐이고 요리탭(`use-cooking-search`)에는 별칭 기구도 해당 항목도 없어 적용 대상 아님.",
+    ],
+    changes: {
+      ko: [
+        "제작탭에서 \"그물\"이나 \"fishing net\"으로 검색해도 바다 어망 키트를 찾을 수 있습니다.",
+      ],
+      en: [
+        "Searching \"그물\" or \"fishing net\" in the crafting tab now finds the Ocean Trawler Kit.",
+      ],
+    },
+  },
+  {
     version: "0.33.2",
     date: "2026-08-18",
     dev: [
