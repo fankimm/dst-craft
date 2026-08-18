@@ -5,38 +5,6 @@
 
 ---
 
-## 다음 세션 이어서 (퇴근→폰에서 맥미니 세션 접속)
-
-### 퀘스트 탭 (#29 feat/29-quest-checklist) [~] — 베타에 푸시됨
-- **워크트리**: `~/private-works/dst-craft-29` (브랜치: `feat/29-quest-checklist`)
-- **베타**: https://beta.dstcraft.com/?tab=quests 에서 검증
-- **이슈**: https://github.com/fankimm/dst-craft/issues/29
-
-#### 이번 세션에 완료
-- [x] Challenge Board 모드 구조로 4개 퀘스트 재구성 (은둔자/연료직공/대변자/귀공자)
-- [x] 펄 캐릭터 portrait 위키에서 받아 적용 (`hermitcrab_npc.png`)
-- [x] 집수리 단계별 wiki 이미지 (`hermithouse_stage1/2/3.png`)
-- [x] 바다 쓰레기 제거 아이콘 → 윈치(`winch.png`)
-- [x] 베리덤불 아이콘 → `dug_berrybush.png`
-- [x] 의자 만들기 체인 substeps 분해 (모조유물 의자 → 목공 작업대 → 의자)
-- [x] 진행률 goal 10 + 마커, 필수 단계 의존성(스킬트리 동일 잠금 UX)
-- [x] 서브스텝 접기/펼치기, 재료 옆 수량 인접 표시
-- [x] 제작 가능 아이템 → 제작 탭 점프 (↗) + DetailPanel "← 퀘스트" 빠른 뒤로
-- [x] 사용자 피드백 정정: shadowheart Stalker 드롭, atrium_key 미노타우르스 회수, 변형 보스 3종 prereq, 펄 이사 substeps, 게슈탈트 포획기 substeps, 달 공명추출기 단계별 자재
-
-#### 다음에 검토 (사용자 한 줄: "흠 손볼게 매우 많다...")
-- [ ] 사용자가 베타에서 추가 손볼 항목 알려줄 예정 (현재 미정의)
-- [ ] 보스탭 연동: shadowheart 단계 → stalker 보스, atrium_key 단계 → minotaur 보스 (현재는 정보 텍스트만)
-- [ ] 검증 못 한 단계 묘사 추가 검증 (와그스태프 기구 4대 mechanism, 천상의 공물 충전 메커니즘 등)
-- [ ] OK 시 `/release` 해서 main 배포
-
-#### 폰에서 재개할 때
-1. `~/private-works/dst-craft-29` 워크트리에서 시작 (이 디렉토리에서 `claude` 실행)
-2. todo.md 이 섹션 확인
-3. 베타 화면을 보면서 사용자가 손볼 항목 지시
-
----
-
 ## 진행중
 
 ### 광고(Ezoic) 도입 후속 [~] (#75 릴리즈 완료, 2026-08-14)
@@ -257,42 +225,11 @@ node scripts/check-ad-audit.mjs https://www.dstcraft.com/item/abigail-flower 390
   - [x] analytics_uv DB로 SG IP 패턴 분석 — 335 IP 중 ~84%가 Tencent `43.128.0.0/10` + Alibaba `47.82/16` + Volcengine `43.119/16` + Alibaba HK `8.208/12`. UA는 outdated Chrome 로테이션 + Sogou spider
   - [x] nginx common.conf에 CIDR-regex IP 차단 룰 추가 — `$http_cf_connecting_ip` 매칭, `return 444`
   - [x] Mac mini nginx reload + origin 검증 (2026-05-09 17:32 KST 적용) — 포트 8080 직접 테스트로 4개 대역 모두 444, 경계 IP(43.127/43.192/8.207/8.224)는 200 통과 확인. 첫 80 포트 테스트는 macOS 기본 Apache가 응답하던 것 (`docs/mistakes.md` 추가)
-  - [ ] 24h 후 SG 비중 재분석 — **2026-05-10 이후 실행**: `ssh mac-mini "sqlite3 ~/dstcraft/data/app.db \"SELECT substr(ip,1,instr(ip,'.'||substr(ip,instr(ip,'.')+1,99))-1) AS prefix2, COUNT(*) FROM analytics_uv WHERE date >= '2026-05-10' GROUP BY prefix2 ORDER BY 2 DESC LIMIT 20\""` 또는 기존 분석 스크립트 재사용. 차단 후 SG IP 트래픽이 0/매우 낮아야 정상
+  - [x] ~~24h 후 SG 비중 재분석~~ — 기한 지나 종료 (2026-08-18 정리). 차단 룰 적용·경계 IP 검증은 위에서 완료. 재점검 필요 시 아래 쿼리 재사용: `ssh mac-mini "sqlite3 ~/dstcraft/data/app.db \"SELECT substr(ip,1,instr(ip,'.'||substr(ip,instr(ip,'.')+1,99))-1) AS prefix2, COUNT(*) FROM analytics_uv WHERE date >= '2026-05-10' GROUP BY prefix2 ORDER BY 2 DESC LIMIT 20\""` 또는 기존 분석 스크립트 재사용. 차단 후 SG IP 트래픽이 0/매우 낮아야 정상
 - [ ] **메인 추천 카드 — bounce rate 개선** — 현재 76% (DST 가이드 특성상 자연스러우나 75%↓ 시도)
   - 메인에서 인기 회로/스킬트리/요리로 유도하는 추천 카드 도입
   - "최근 본 항목" 또는 "이 캐릭터의 회로" 같은 cross-link
-- [ ] **CF Web Analytics baseline 누적 후 재분석** (2026-05-14 이후) — 현재 5/7 cutover라 1주치 baseline 부족. 일주일 뒤 CF 단독으로 분석 가능
-
----
-
-## 트래픽 분석 권장 액션 (2026-05-09)
-> 근거: GoAccess + raw nginx access.log 3일 분석 (567명 / 99,646 요청 / 봇 ~10.2%)
-> 우선순위: P0=실유저 영향, P1=품질, P2=보안/안정성. SEO 강화는 위 2026-05-08 섹션 참조.
-
-### P0 — `/api/skills` 401 토큰 만료 처리 (실유저 영향) ✅ (#10, v0.23.5)
-- [x] `src/lib/jwt.ts` + `src/lib/api-fetch.ts` 신설 (decodeJWTPayload + isJWTValid + apiFetch wrapper + AUTH_EXPIRED_EVENT)
-- [x] favorites-api.ts 4함수, analytics.ts 5함수 wrapper 사용. fetchAnalytics는 token optional이라 inline 검증 + public fallback
-- [x] useAuth가 auth:expired 이벤트로 자동 logout
-
-### P1 — `_vercel/insights/*` 호출처 제거 (404 1,415건) ✅ (#11, v0.23.6)
-- [x] 원인: layout.tsx의 `<Analytics />` (`@vercel/analytics`). Vercel 셀프호스팅 이주 후 잔존
-- [x] import + 컴포넌트 제거, package.json/lock 정리
-
-### P2 — nginx 보안/봇 차단 룰 ✅ (#12)
-- [x] path 기반 차단: `/wp-*`, `/wordpress/*`, `/wp-admin/*`, `/wp-includes/*`, `/.env`, `/.git/*`, `xmlrpc.php`, `/test.php`, `/phpinfo*` → `return 444`
-- [x] UA 기반 차단: `AhrefsBot|MJ12bot|TLM-Audit-Scanner` → `return 444`
-- [x] AI 검색 + 검색 엔진 봇은 차단 안 함 명시 (주석)
-- [x] **Mac mini reload 적용 완료** (2026-05-09) — 워커 프로세스 5/9 14:52:23 재시작 확인. 외부 검증: `/wp-admin`, `/.env`, `/xmlrpc.php`, `User-Agent: AhrefsBot` 모두 502 (origin 444 close), 정상 요청은 200
-
-### P2 — 2026-05-07 17:33~18:31 bun-api 502 사고 RCA — 조사 완료, follow-up 분리
-> 결론: 프로세스가 hang(deadlock 추정)이라 launchd KeepAlive(Crashed:true)는 트리거 안 됨. err.log 0바이트(stderr 안 씀), DiagnosticReports에 crash 없음, macOS unified log retention(2일) 만료로 직접 증거 소실. Watchdog은 정확히 감지했으나 **Telegram secrets 미설정으로 알림 안 갔음**.
-- [x] err.log/crash report 확인 → 증거 없음
-- [x] watchdog 동작 확인 → 08:34 UTC부터 3/3 fail 다수 기록, alert 미발송
-- 후속 follow-up (#13):
-  - [x] **`TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` repo secrets** — 사고 직후(2026-05-07) 사용자가 설정 완료. 향후 2/3·3/3 헬스 실패 시 자동 알림 발송됨
-  - [x] **bun-api 액세스 로그에 ISO 타임스탬프 추가** — `bun-api/src/index.ts`의 `logger()`를 timestamp prefix wrapping으로 교체
-  - [x] **watchdog 자동 복구 스텝 추가** — `vars.WATCHDOG_AUTORECOVER=1` flag 뒤에 Tailscale + SSH + launchctl kickstart. 활성화하려면 `.github/workflows/README-watchdog-secrets.md` 참고하여 `TS_AUTHKEY` / `SSH_PRIVATE_KEY` secrets + `WATCHDOG_AUTORECOVER` / `WATCHDOG_MACMINI_HOST` / `WATCHDOG_MACMINI_USER` vars 설정 필요
-- 예상 작업량: 0.5d
+- [x] ~~**CF Web Analytics baseline 누적 후 재분석**~~ — 기한 지나 종료 (2026-08-18 정리). 현재 트래픽 분석은 GoAccess + 자체 analytics(`/stats`)로 대체됨
 
 ---
 
@@ -302,17 +239,56 @@ node scripts/check-ad-audit.mjs https://www.dstcraft.com/item/abigail-flower 390
   - expression: `true` → 정적 자산만 (/_next/static/, /images/, /icons/, 확장자 매칭)
   - edge_ttl: `override_origin 1d` → `respect_origin`
   - CF API로 적용, HTML `cache-control: public, max-age=60` origin 헤더 살아있음 확인
-- [ ] **Vercel → Mac mini 셀프호스팅 이주** (2026-05-07, 우선순위 높음) — Vercel Hobby edge req 한도 임박. Phase 1: `beta.dstcraft.com` 정적 셀프호스팅. 상세: `TODO-self-hosting.md`. **Mac mini SSH 세션에서 진행할 것**.
+- [x] **Vercel → Mac mini 셀프호스팅 이주** ✅ (2026-05-07 시작 → 이주 완료) — prod/beta 모두 Mac mini(nginx + Cloudflare Tunnel) 서빙. Vercel은 watchdog failover 용도로만 잔존. 상세: `TODO-self-hosting.md`
 - [x] **Vercel 빌드를 사용자 영향 변경에만 한정** ✅ (#17, 2026-05-09) — `vercel.json`에 `ignoreCommand: bash scripts/vercel-ignore.sh` 추가. src/, public/, package*, next.config, tsconfig, postcss.config, vercel.json, scripts/generate-* 외 변경(docs, .claude, todo.md, memory, bun-api 등)은 Vercel 빌드 스킵. Hobby 한도 잠식 완화. drift 위험은 사용자 영향 변경 시 자연 해소 — failover 신뢰성 유지.
 - [ ] **git 히스토리 이메일 재작성** (2026-04-27, 우선순위 높음) — 회사 계정(kolon.com) 314커밋이 GitHub에 노출됨. 다른 머신(macOS 권장)에서 진행. 상세 계획: `TODO-rewrite-email-history.md`
 - [x] 누락된 보스 추가 (2026-04-14) — 8종
 - [x] 건조대/구이 등 비요리솥 음식 정보 (2026-04-14) — 구이 31종 + 건조 6종
 - [x] 요리솥 시뮬 — 최근 시도한 재료 / 선호 재료 기능 (2026-04-14)
 - [ ] SEO — 스탯 데이터를 SSG 페이지(`/item/[slug]`)에도 반영
+- [ ] 퀘스트 탭 — 검증 못 한 단계 묘사 재확인 (와그스태프 기구 4대 mechanism, 천상의 공물 충전 메커니즘 등). #29 배포분에 남은 유일한 후속
 
 ---
 
 ## 완료
+
+### 퀘스트 탭 ✅ (#29, v0.24.0 · 2026-05-13 배포)
+> Challenge Board 모드 구조로 4개 퀘스트(은둔자/연료직공/대변자/귀공자) 구현.
+- [x] 퀘스트 4종 + 단계/서브스텝 데이터, 진행률 goal 10 + 마커, 필수 단계 의존성 잠금
+- [x] 펄 portrait·집수리 단계별 위키 이미지, 윈치/베리덤불 등 아이콘 정비
+- [x] 서브스텝 접기/펼치기, 재료 옆 수량 인접 표시
+- [x] 제작 가능 아이템 → 제작 탭 점프(↗), DetailPanel "← 퀘스트" 빠른 뒤로
+- [x] 보스탭 연동 — `step.bossId` → `onViewBoss` (stalker_atrium / minotaur)
+- 남은 후속 1건은 "대기" 섹션 참조 (단계 묘사 재확인)
+
+### 트래픽 분석 권장 액션 ✅ (2026-05-09, P0~P2 전부 완료)
+> 근거: GoAccess + raw nginx access.log 3일 분석 (567명 / 99,646 요청 / 봇 ~10.2%)
+> 우선순위: P0=실유저 영향, P1=품질, P2=보안/안정성. SEO 강화는 위 2026-05-08 섹션 참조.
+
+#### P0 — `/api/skills` 401 토큰 만료 처리 (실유저 영향) ✅ (#10, v0.23.5)
+- [x] `src/lib/jwt.ts` + `src/lib/api-fetch.ts` 신설 (decodeJWTPayload + isJWTValid + apiFetch wrapper + AUTH_EXPIRED_EVENT)
+- [x] favorites-api.ts 4함수, analytics.ts 5함수 wrapper 사용. fetchAnalytics는 token optional이라 inline 검증 + public fallback
+- [x] useAuth가 auth:expired 이벤트로 자동 logout
+
+#### P1 — `_vercel/insights/*` 호출처 제거 (404 1,415건) ✅ (#11, v0.23.6)
+- [x] 원인: layout.tsx의 `<Analytics />` (`@vercel/analytics`). Vercel 셀프호스팅 이주 후 잔존
+- [x] import + 컴포넌트 제거, package.json/lock 정리
+
+#### P2 — nginx 보안/봇 차단 룰 ✅ (#12)
+- [x] path 기반 차단: `/wp-*`, `/wordpress/*`, `/wp-admin/*`, `/wp-includes/*`, `/.env`, `/.git/*`, `xmlrpc.php`, `/test.php`, `/phpinfo*` → `return 444`
+- [x] UA 기반 차단: `AhrefsBot|MJ12bot|TLM-Audit-Scanner` → `return 444`
+- [x] AI 검색 + 검색 엔진 봇은 차단 안 함 명시 (주석)
+- [x] **Mac mini reload 적용 완료** (2026-05-09) — 워커 프로세스 5/9 14:52:23 재시작 확인. 외부 검증: `/wp-admin`, `/.env`, `/xmlrpc.php`, `User-Agent: AhrefsBot` 모두 502 (origin 444 close), 정상 요청은 200
+
+#### P2 — 2026-05-07 17:33~18:31 bun-api 502 사고 RCA — 조사 완료, follow-up 분리
+> 결론: 프로세스가 hang(deadlock 추정)이라 launchd KeepAlive(Crashed:true)는 트리거 안 됨. err.log 0바이트(stderr 안 씀), DiagnosticReports에 crash 없음, macOS unified log retention(2일) 만료로 직접 증거 소실. Watchdog은 정확히 감지했으나 **Telegram secrets 미설정으로 알림 안 갔음**.
+- [x] err.log/crash report 확인 → 증거 없음
+- [x] watchdog 동작 확인 → 08:34 UTC부터 3/3 fail 다수 기록, alert 미발송
+- 후속 follow-up (#13):
+  - [x] **`TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` repo secrets** — 사고 직후(2026-05-07) 사용자가 설정 완료. 향후 2/3·3/3 헬스 실패 시 자동 알림 발송됨
+  - [x] **bun-api 액세스 로그에 ISO 타임스탬프 추가** — `bun-api/src/index.ts`의 `logger()`를 timestamp prefix wrapping으로 교체
+  - [x] **watchdog 자동 복구 스텝 추가** — `vars.WATCHDOG_AUTORECOVER=1` flag 뒤에 Tailscale + SSH + launchctl kickstart. 활성화하려면 `.github/workflows/README-watchdog-secrets.md` 참고하여 `TS_AUTHKEY` / `SSH_PRIVATE_KEY` secrets + `WATCHDOG_AUTORECOVER` / `WATCHDOG_MACMINI_HOST` / `WATCHDOG_MACMINI_USER` vars 설정 필요
+- 예상 작업량: 0.5d
 
 ### 스크랩북 데이터 마이그레이션 ✅ (2026-04-20 ~ 2026-05-09)
 > 설계: `docs/scrapbook-migration.md`
