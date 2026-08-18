@@ -145,6 +145,52 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+/** Ezoic/CMP 로더 (#79).
+ *
+ * 이전에는 이 네 개를 JSX `<script>`로 직접 렌더했는데, React 19가 `async` 스크립트를
+ * hoistable resource로 보고 `<head>` 최상단으로 끌어올린다. 그 결과 광고 본체
+ * `sa.min.js`가 CMP 동의 스크립트와 아래 `ezstandalone.cmd` 큐보다 **먼저** 나갔다
+ * (프로덕션 HTML에서 @2.1KB vs @20.8KB). 의도(#75: CMP 먼저, 큐 먼저)와 정반대.
+ * 덤으로, hoisting으로 흐트러진 head에 Ezoic이 자기 스크립트를 끼워넣으면 React가
+ * 위치로 매칭하던 자식들이 밀려 hydration 경고가 떴다.
+ *
+ * 그래서 JSX에서는 `async` 스크립트를 아예 없애고(=hoist될 것이 없음), 이 인라인
+ * 스크립트 하나가 순서대로 동적 삽입한다. 동적 삽입 스크립트는 기본이 async라
+ * 순서가 안 지켜지므로 `s.async = false`로 **삽입 순서 = 실행 순서**를 고정한다.
+ * 동적 삽입은 파서를 막지 않으므로 렌더 블로킹도 없다 (원래 async를 쓴 이유).
+ *
+ * 이 스크립트는 `</head>` 직전에 둔다. head 중간에서 append하면 주입된 노드가
+ * 아직 파싱되지 않은 뒤쪽 요소들보다 앞에 꽂혀, React가 위치로 매칭하는 head
+ * 자식들이 통째로 밀린다(#79에서 8/8 재현). 마지막에 두면 주입분이 React가
+ * 렌더한 자식들 뒤로 빠져 매칭이 흔들리지 않는다.
+ *
+ * `<link rel="preload">`도 검토했으나 실측상 요청 시작 시각이 달라지지 않았고
+ * (head 끝은 이미 파싱 초반이다), React가 hoist한 사본과 원본이 HTML에 중복돼
+ * 나가서 넣지 않았다. */
+const adBootstrapScript = `
+window.ezstandalone = window.ezstandalone || {};
+ezstandalone.cmd = ezstandalone.cmd || [];${
+  IS_BETA
+    ? "\nezstandalone.cmd.push(function(){ ezstandalone.config && ezstandalone.config({ limitCookies: true }); });"
+    : ""
+}
+(function(){
+  var srcs = [
+    ["https://cmp.gatekeeperconsent.com/min.js", true],
+    ["https://the.gatekeeperconsent.com/cmp.min.js", true],
+    ["https://www.ezojs.com/ezoic/sa.min.js", false],
+    ["https://ezoicanalytics.com/analytics.js", false]
+  ];
+  for (var i = 0; i < srcs.length; i++) {
+    var s = document.createElement('script');
+    s.src = srcs[i][0];
+    s.async = false;
+    if (srcs[i][1]) s.setAttribute('data-cfasync', 'false');
+    document.head.appendChild(s);
+  }
+})();
+`;
+
 const themeScript = `
 (function(){
   try {
@@ -295,38 +341,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Ezoic — privacy/consent (CMP) + ad system scripts.
+        {/* Ezoic — CMP(동의) + 광고 시스템 + 분석 스크립트.
             #58에서 iOS Safari 하단 흰 공간 원인으로 확정 → #60에서 재활성화.
             CMP가 body에 삽입하는 iframe/div가 레이아웃을 못 흔들도록 AppShell이
             fixed-position 컨테이너를 쓴다 (AppShell.tsx 뷰포트 로직 참조).
-            data-cfasync="false" keeps Cloudflare from reordering them. */}
-        <script data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js" />
-        <script data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js" />
-        {/* Ezoic — ad system header script. 실제 광고 자리는 `AdSlot`(components/ads)이
-            placeholder div + showAds()로 요청한다 (#75). */}
-        <script async src="https://www.ezojs.com/ezoic/sa.min.js" />
-        {/* `config()`는 큐를 만드는 이 자리에서 바로 밀어야 한다 (#75).
-            Ezoic 본체는 위 `sa.min.js`가 뜨는 즉시 자동 유닛(anchor·vignette·video)과
-            쿠키 싱크를 시작하므로, AdSlot이 첫 배치를 내보내는 시점(마운트 → 교차 판정
-            → 250ms 디바운스)에 넣으면 초기 픽셀에는 이미 늦다.
-            `limitCookies`는 수요처들의 ID 싱크 픽셀을 줄인다 — 실측에서 서드파티 요청
-            277건 중 상당수가 id5-sync·adsrvr·ccgateway 같은 매칭 픽셀이었다. 매칭률이
-            떨어지면 단가도 같이 내려갈 수 있어 **beta에서만 켜서 요청 감소폭을 먼저 재고**,
-            수익 영향은 prod 데이터가 쌓인 뒤 판단한다.
-            전면 광고(Vignette)는 유지하기로 했으므로 `disableInterstitial`·`vignette*`는
-            건드리지 않는다 — 끄기로 하면 여기에 옵션을 추가하면 된다. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ezstandalone = window.ezstandalone || {}; ezstandalone.cmd = ezstandalone.cmd || [];${
-              IS_BETA
-                ? " ezstandalone.cmd.push(function(){ ezstandalone.config && ezstandalone.config({ limitCookies: true }); });"
-                : ""
-            }`,
-          }}
-        />
-        {/* async — 동기 로드면 이 스크립트를 받는 동안 페이지 렌더가 멈춘다 (#75).
-            광고 서빙과 무관한 분석 스크립트라 순서 보장이 필요 없다. */}
-        <script async src="https://ezoicanalytics.com/analytics.js" />
+
+            CMP·광고·분석 스크립트는 JSX가 아니라 `adBootstrapScript`가 순서대로
+            동적 삽입한다 (#79 — 이유는 그 상수의 주석 참조). 실제 광고 자리는
+            `AdSlot`(components/ads)이 placeholder div + showAds()로 요청한다 (#75). */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />
@@ -370,6 +392,10 @@ export default function RootLayout({
             ],
           }}
         />
+        {/* 광고/CMP 로더는 반드시 head의 **마지막** 요소로 (#79).
+            여기서 append하면 주입된 <script>들이 React가 렌더한 head 자식들
+            뒤에 놓여, React의 자식 위치 매칭을 흔들지 않는다. */}
+        <script dangerouslySetInnerHTML={{ __html: adBootstrapScript }} />
       </head>
       <body
         className={`${inter.variable} ${notoSansKR.variable} font-sans antialiased`}
