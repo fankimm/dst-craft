@@ -15,6 +15,33 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.33.3",
+    date: "2026-08-18",
+    dev: [
+      "data(game): 게임 데이터를 Steam buildid 24700692 (Klei release 747465, 2026-08-13)로 동기화 (#80). 스냅샷 기준이 23922378에 머물러 있어 두 빌드(24080983 → 24700692)를 건너뛴 상태였다. `bash scripts/sync-game-data.sh` 한 번으로 scripts.zip + ko.po 재추출 → 컨버터 일괄 실행.",
+      "스킨 25종 추가 (1362 → 1387): 캐릭터별 밀폐복(Hermetic) 16종, 미니골프 월러스햇 3종, parasol_polkadot, pitchfork_fork, shovel_spoon, waterballoon_insect, wolfgang_combatant. 인벤토리 아이콘 7장 + 본체 이미지 65장 추가.",
+      "ko.po(2026-07-06 갱신) 반영으로 한글 미번역이던 스킨 이름 74건이 채워짐 — 까악제 계열(골프 가방, 왕관, 명판, 달걀등, 작은 탁자 등)이 대부분.",
+      "scrapbook 수치 보정 4건: goldenpickaxe 내구도 33 → 132(황금 도구 4배 계수 반영), vault_compass·vault_pillar_guard의 deps 갱신, vault_orb_refined 한국어 설명 갱신.",
+      "fix(build): `src/data/skins.ts`가 항목 증가로 TypeScript 유니온 복잡도 한계(TS2590)를 넘겨 빌드가 깨졌다. `scripts/extract-skins.py`가 200개 단위로 끊어 `SKINS_0..N`을 내보내고 마지막에 spread로 합치도록 변경 — 타입 체크는 유지하면서 청크마다 유니온이 리셋된다. 생성물이 아니라 생성 스크립트를 고쳤으므로 다음 sync에도 유지된다.",
+      "게임 측 recipes.lua / tuning.lua 변경은 카니발 골프 소품 상수 리팩터링과 우리 데이터에 없는 수치(제습제 온도, 분기공 함정 온도)뿐이라 앱 영향 없음. 스킬트리 소스는 변경 없어 verify-skill-trees 결과도 기존과 동일.",
+      "검증: beta에서 headless로 전 탭 pageerror 0건, 스킨 탭 카운트 1387/523/386 일치, 본체 의상 386장 + 모자·기타·가방 카테고리 깨진 이미지 0건, 부유한 곡괭이 상세 '내구도 132회' 확인. docs/mistakes.md 오답노트 추가.",
+    ],
+    changes: {
+      ko: [
+        "게임 데이터를 최신 업데이트(Release 747465) 기준으로 갱신했습니다.",
+        "새 스킨 25종이 추가되었습니다 — 캐릭터별 밀폐복 의상과 미니골프 소품 등.",
+        "영문으로만 보이던 스킨 이름 74개에 한글 이름이 붙었습니다.",
+        "부유한 곡괭이의 내구도가 실제 게임 수치(132회)로 바로잡혔습니다.",
+      ],
+      en: [
+        "Updated game data to the latest build (Release 747465).",
+        "Added 25 new skins, including the Hermetic outfits for each character and mini-golf props.",
+        "Filled in Korean names for 74 skins that previously showed only English.",
+        "Corrected the Opulent Pickaxe's durability to its actual in-game value (132 uses).",
+      ],
+    },
+  },
+  {
     version: "0.33.2",
     date: "2026-08-18",
     dev: [
