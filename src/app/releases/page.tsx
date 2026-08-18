@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.33.2",
+    date: "2026-08-18",
+    dev: [
+      "fix(ads): `<head>` 스크립트 hoisting으로 뒤집혀 있던 CMP↔광고 실행 순서 복구 (#79). React 19는 `<script async src>`를 hoistable resource로 보고 head 최상단으로 끌어올린다 — 그 결과 광고 본체 `sa.min.js`가 CMP 동의 스크립트와 `ezstandalone.cmd` 큐 부트스트랩보다 **먼저** 나가고 있었다 (프로덕션 HTML에서 @2.1KB vs @20.8KB). #75 주석이 명시한 의도와 정반대.",
+      "JSX에서 `async` 스크립트를 전부 제거(= hoist될 대상 없음)하고, `</head>` 직전 인라인 `adBootstrapScript` 하나가 `createElement` + `s.async = false`로 CMP → CMP → `sa.min.js` → analytics 순서대로 삽입. `async=false`가 삽입 순서를 실행 순서로 고정하고, 동적 삽입이라 파서도 막지 않는다(원래 `async`를 쓴 이유).",
+      "부트스트랩은 반드시 head의 **마지막** 요소여야 한다 — 중간에서 append하면 아직 파싱되지 않은 뒤쪽 요소보다 앞에 노드가 꽂혀 React의 head 자식 위치 매칭이 통째로 밀린다. 1차 시도에서 이걸로 hydration 경고가 산발 → 8/8로 악화됐다.",
+      "perf(ads): head 끝이라 파서가 URL을 늦게 발견하는 문제를 `ReactDOM.preload()`로 보완. beta 실측에서 광고 요청 시작이 prod 대비 중앙값 274ms → 487ms로 200ms 밀렸던 것을 288ms로 되돌렸다(prod 313ms와 동등). 로컬 dev에서는 head가 작고 네트워크가 0ms라 이 차이가 보이지 않았다.",
+      "JSX `<link rel=\"preload\">`는 React가 hoist한 사본과 원본이 둘 다 나가 HTML에 중복되므로 쓰지 않는다(빌드 산출물로 확인). 스크립트 URL은 `AD_SCRIPT_SRCS` 상수로 빼서 부트스트랩과 preload가 같은 목록을 공유한다.",
+      "재방문(같은 탭 2회째 이후 로드) 시 뜨던 \"A tree hydrated but some attributes ... didn\u0027t match\" 경고도 함께 해소 — 원 신고 증상이었으나 실제로는 위 hoisting의 부산물이었다.",
+      "검증: beta에서 재진입 8회 경고 0/8, 딥링크 4종 0건, 실행 순서 CMP→광고→분석 확인, 중복 fetch 없음, `check-ad-slots`·`check-ad-slots-stress` problems 없음. docs/mistakes.md 오답노트 추가.",
+    ],
+    changes: {
+      ko: [
+        "개인정보 동의 스크립트가 광고 스크립트보다 먼저 실행되도록 순서를 바로잡았습니다.",
+      ],
+      en: [
+        "Fixed the load order so the privacy consent script now runs before the ad scripts.",
+      ],
+    },
+  },
+  {
     version: "0.33.1",
     date: "2026-08-18",
     dev: [
