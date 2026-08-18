@@ -39,6 +39,140 @@
 
 ## 진행중
 
+### 광고(Ezoic) 도입 후속 [~] (#75 릴리즈 완료, 2026-08-14)
+> #75는 v0.33.0으로 **production 배포 완료** (커밋 `1b193ac`, 워크트리·브랜치 정리됨).
+> 아래는 배포 후 남은 것들. ~~1번이 최우선~~ → **1번(세금·지급·계약·MCM)은 2026-08-17 전부 처리 완료.**
+> **다음 최우선: 3-1 수익 개선 레버(Identity Coverage / anchor / 측정 격차) → 🔴 2026-10-15 Ramp-up 판단.**
+>
+> **기억할 날짜 2개: `10/15` 계속 여부 판단(통보 기한) · `11/11` Ramp-up 만료(넘기면 1년 자동 확정)**
+
+#### 1. 돈이 실제로 들어오게 하는 것 — ✅ 2026-08-17 일괄 처리
+- [x] **W-8BEN 제출** (2026-08-14) — Ezoic → Billing & Payments → TAX INFORMATION. Individual / Form W-8 / South Korea. 기본값이 `United States` + `Form W-9`라 그대로 두면 미국인 신고가 되는 함정이 있었음. Country를 먼저 바꿔야 폼이 W-8 계열로 전환됨. 조세조약 조항 입력란은 없고 서명란 위 declaration 4번이 그 역할
+- [x] 지급 수단 등록 (2026-08-14) — Wise → PayGate(개인), **KRW 직접 수취**, 국민은행 계좌 끝 2829. Net 30 / 최소 지급액 $20
+  - 예금주명(`Full name of the account holder`)은 **로마자만** 받음 (한글 입력 시 `Input is an invalid format`)
+  - 지급 설정 변경은 **매월 15일까지** 해야 그 달 지급에 반영
+- [x] **Publisher agreement 서명** (2026-08-17) — todo에 없던 미완료 항목이었음. 아래 "계약 조건" 참고
+- [x] **AdSense 계정 재활성화** (2026-08-17) — `pub-4567930429443718`이 활동 없음으로 비활성화돼 있었음. 재활성화 + dstcraft.com 등록 완료
+- [x] **MCM(Google Ad Manager) 신청** (2026-08-17) — 네트워크 코드 `23368262432`, 상위 게시자 `Ezoic NA 8`, 위임 유형 인벤토리 관리, 통화 USD / 시간대 Asia/Seoul (첫 주문 후 변경 불가라 확정값)
+- [x] **MCM 구글 승인** ✅ (2026-08-17 15:16 KST) — `admanager-noreply@google.com` / 제목 `Ad Manager 계정이 승인됨`. 네트워크 코드 `23368262432`. 메일 왈: *"인벤토리 관리를 시작하기 전에 몇 가지 단계를 더 완료해야 합니다. Ezoic NA 8에서 연락을 드릴 것"*
+  - Ezoic 대시보드 `Ad Manager Account Status`는 승인 직후에도 한동안 `Pending`으로 표시됨 (동기화 지연). Ezoic 표시를 승인 여부의 근거로 쓰지 말 것 — 구글 메일/Ad Manager가 기준
+
+- [ ] **[감시 항목] Ad Manager 도메인 심사 대기 — 2026-08-17 제출, 최대 14일 → ~2026-08-31**
+  > 2026-08-18 확인 (Ezoic setup): `Ad Manager Domain Status: In Progress` / *"Waiting on Google to review your domain. Your domain was submitted for review on 8/17/2026."*
+  - 셋업이 안 끝난 진짜 이유는 이것 하나. **우리가 할 일은 없고 대기만.**
+  - 대시보드의 *"Ad demand and revenue are limited until Ad Manager is fully set up"* 경고도 이것 때문
+  - → **심사 통과 전 EPMV/RPM 숫자는 판단 근거로 쓰지 말 것** (구글 수요 AdX가 빠진 값). 2~4주 데이터 수집은 통과 후부터 기산
+
+- [ ] **[감시 항목] Google Address Verification — 아직 요청 안 됨, 지금 할 일 없음**
+  > 2026-08-18 확인 (Ezoic setup): **Identity Verification: `Verified`** ✅ (8/17 `Not yet started` → 통과) / **Address Verification: `Not yet started`** ← 남은 건 주소 하나
+  > 2026-08-17 확인: Ad Manager → 지급 → **확인 검사**(`#payments/verification`) 화면이 **빈 상태**.
+  > *"수입이 확인 기준액에 도달하면 일부 개인 정보의 확인이 필요할 수 있습니다"* 만 표시되고 업로드 폼·시작 버튼·진행 항목 전부 없음.
+  - **Ezoic setup의 `Address Verification: Not yet started`는 "앞으로 필요해짐" 안내지 현재 요구가 아님.** 이걸 보고 기한이 시작됐다고 오판하지 말 것 (2026-08-17에 한 번 오판함)
+  - 현재 수익 $0.68로 확인 기준액과는 한참 멂 → 당분간 트리거될 가능성 낮음
+  - **요청이 오면** 그때부터 아래가 적용됨 (미리 알아둘 것)
+    - ~~신원 확인: 여권 / 운전면허증 / 주민등록증 / 거주증 중 1종 업로드~~ → **2026-08-18 `Verified` 확인, 완료**
+    - 주소 확인: 신원 확인 통과 **후** 구글이 **PIN 우편물** 발송 → 한국 배송 통상 2~4주
+    - ⏰ **최초 요청일로부터 45일**, 미완료 시 *"we'll stop showing ads on your inventory"* (광고 게재 중단)
+    - 근거: https://support.google.com/admanager/answer/13985965
+  - **트리거되면 즉시 착수할 것** — 신원확인 지연 → PIN 지연 → 광고 중단 → EPMV 데이터 공백 → Ramp-up 판단 불가로 이어짐
+- [ ] ~~광고 소재 카테고리 차단~~ — 사용자 판단으로 보류 (2026-08-17)
+##### ⚠️ Publisher Agreement 계약 조건 (Version: February 2025) — 놓치면 1년 묶임
+- **독점(§2)**: 사이트의 모든 프로그래매틱 인벤토리를 Ezoic이 독점. 다른 네트워크/AdSense 직접 연동 불가, **ads.txt도 Ezoic 것만**
+  - → **AdSense 홈의 `애드센스에 사이트를 연결하세요 → 시작하기` 누르지 말 것.** MCM엔 불필요하고 §2와 충돌
+- **1년 약정 + 자동 갱신(§4)**: 초기 90일이 Ramp-up Period. **이 안에 30일 전 서면 해지 통보를 안 하면 남은 1년에 묶임.** 이후 1년씩 자동 갱신(해지는 다음 Term 시작 90일 전 통보). 반면 Ezoic은 사유 없이 30일 통보로 해지 가능(비대칭)
+- **기산일**: "수익화 시작일" 과 "서명 후 14일" 중 빠른 쪽 → 8/13 광고 켠 시점 기준이면 **Ramp-up 마감 ≈ 2026-11-11**
+- [ ] **🔴 2026-10-15까지 계속 여부 판단** — Ramp-up 마감(11/11) 30일 전. EPMV 2~4주 데이터 보고 결정. 놓치면 1년 자동 확정
+- 관할: 캘리포니아 법 / 샌디에이고, Ezoic 재량으로 AAA 중재 강제 가능
+- 사이트 자동 편입: 나중에 계정에 추가하는 사이트는 90일 ramp-up 후 자동 포함. 원치 않으면 90일 끝나기 30일 전 제거
+
+#### 2. 오늘 발견했지만 못 끝낸 것 (코드/조사)
+- [~] **광고 자리 15px — 원인 위치 특정 완료, CLS 무해 판정. 더 파지 않기로 함** (2026-08-17 실측)
+  - **"beta 143 vs prod 158"은 오진이었음.** 환경 차이가 아니라 **Ezoic 로드 여부** 차이. 같은 prod URL을 Ezoic 스크립트만 차단하고 재측정:
+
+    | | slot | card | label | placeholder |
+    |---|---|---|---|---|
+    | 정상 | **158** | **142** | 19 | 100 |
+    | Ezoic 차단 | **143** | **127** | 19 | 100 |
+
+    `label(19) + placeholder(100) + card padding(8) = 127` → 차단 시 값과 정확히 일치. 143이 우리 CSS가 의도한 높이가 맞음
+  - **15px의 정확한 위치**: 라벨 하단(`labelBottom`)과 placeholder 상단(`phTop`) 사이. 문서 좌표로 `-190.25 → -175.25`
+  - 그 자리에 **노드 없음**(`childNodes`가 DIV 2개뿐, 텍스트 노드 없음), **의사요소 없음**(`::before/::after` 모두 `content:none`), 양쪽 **margin 0**, placeholder는 `static`/`float:none`. 인플로우 형제 사이 공백이라 익명 라인박스 외엔 설명이 안 되는데 흔적 못 찾음 → **미해결로 남김**
+  - ✅ **하지만 CLS 무해**: 같은 페이지 CLS **0.0032**(데스크탑) / **0**(모바일 390). 기준선 0.1의 1/30 수준. `min-h-[100px]` 예약이 제대로 먹고 있어 **로드 후 밀림이 아니라 처음부터 그 높이로 그려짐** → 순수 미관 문제
+  - **결론: 우선순위 낮춤.** 15px 미관을 위해 Ezoic 주입 CSS와 씨름할 가치 없음. 자리를 다시 손볼 때 같이 보면 됨
+  - ~~주의: 사용자 브라우저가 계속 `ezstandalone.enabled === false`(무광고 대조군)여서 실제 광고가 붙은 상태를 한 번도 못 봄~~ → **취소.** `enabled=false`는 클린 헤드리스에서도 동일하고 광고는 정상 서빙됨 (3-1 참조)
+
+- [x] **SEO 페이지 640px 자리에 어떤 규격이 배달되는지** — 부분 확인 (2026-08-17)
+  - `/item/abigail-flower` 데스크탑 1600px: 우리 `top` 자리 폭 **640px**, placeholder `#111` **640×100**, 그 안에 Ezoic이 잡은 크리에이티브 슬롯 **높이 90px** → **728×90 계열 띠를 기대하고 있음. 336×280 사각형이 오는 시나리오는 관측되지 않음**
+  - ⚠️ 단, 헤드리스/데이터센터 IP라 **실제 크리에이티브 iframe은 no-fill**(`creatives: []`). 규격 후보는 Ezoic이 예약한 90px로 추정한 것이고, 실사용자 환경에서 재확인 필요
+  - → 걱정했던 "+180px 시프트" 리스크는 현재 근거 없음. 자리를 728로 넓히는 작업은 보류
+
+- [x] **Ezoic 자동 삽입 placeholder 116·117 정체 확인** — 우리 레이아웃 침범 아님
+  - `#116` → `div#ez-sidebar-wall-left` 직속, `#117` → `div#ez-sidebar-wall-right` 직속. 둘 다 **`<body>` 바로 아래**에 붙는 Ezoic 자체 **사이드월(sidebar wall)** 유닛, 160×606
+  - 본문 흐름 밖(좌우 여백)이라 컨텐츠를 밀지 않음 → CLS 원인 아님. 모바일(390px)에서는 아예 삽입 안 됨
+- [ ] **SEO 페이지 640px 자리에 어떤 규격이 배달되는지 미확인** — `<main>`이 `max-w-2xl`+`px-4`라 자리 폭이 640px이고 728×90이 후보에서 빠진다. 336×280 사각형이 오면 **+180px 시프트**(예약으로 흡수 불가) + 레이아웃 어수선. 하필 구글 랜딩 페이지들
+  - 확인: `node scripts/check-ad-slots-live.mjs https://www.dstcraft.com/item/<slug>`
+  - 사각형이면 → 자리를 728까지 넓히는 작업 필요(`-mx` 브레이크아웃 등)
+- [ ] `limitCookies`가 **beta에만** 켜져 있음 (prod 미적용). beta는 트래픽이 없어 요청 감소폭 측정이 사실상 불가 → prod에서 켜고 EPMV 변화를 보든지, 방향을 정해야 함. 위치: `src/app/layout.tsx` cmd 큐 인라인 스크립트
+
+#### 3. 결정만 하면 되는 것 (전부 `ezstandalone.config()`로 코드 제어 가능 — 대시보드 전용 아님)
+- [ ] **Vignette(전면 광고) 유지 여부** — 요청·용량의 가장 큰 덩어리. `disableInterstitial` 또는 디바이스별 `vignetteDesktop/vignetteMobile/vignetteTablet`. 데스크탑 67% 사이트라 "데스크탑만 끄고 모바일 유지"가 유력한 절충
+- [ ] Ad Refresh 주기(약 40초 확인됨), 수요처(demand partner) 수 — 요청 400건의 원천. 줄이면 요청 급감/단가 하락 맞교환
+- [ ] 레일 2개 → 1개 축소 여부 — **손으로 지우지 말 것.** Ezoic Ad Tester가 placeholder 조합을 자동 테스트하므로 둘 다 노출한 채 2~4주 데이터를 보고 결정
+
+#### 3-1. 수익 개선 레버 (2026-08-17 조사 완료)
+
+- [x] **anchor 포맷 RPM $0.00 — 조사 완료, 고장 아님** — `AdSlot.tsx`의 `AD_PLACEHOLDER_ID`에 등록된 자리는 `top:111` / `sheet:103` / `rail-left:107` / `rail-right:108` 4개뿐. **anchor(=Adhesion, 100번)를 쓰는 코드가 아예 없음.** "안 팔린 것"이 아니라 "자리를 안 만든 것"
+  - [ ] **결정 필요: anchor(하단 고정 띠) 자리를 만들 것인가** — RPM은 높은 편이지만 화면 하단에 계속 붙어 있어 가이드 사이트 UX·CLS·모바일 가독성에 부담. 코드 변경이라 `/task` 필요
+
+- [~] **Identity Coverage First-Party 0% — 켜는 게 아니라 "할지 말지"의 문제였음** — Identity 탭 실물 확인 결과 설정 토글이 아님
+  > *"Ezoic Identity (ezID) enables you to provide **privacy-safe hashed emails or phone numbers**"* / Get Started → **"CONNECT OR UPLOAD YOUR LIST"** (계정 연동 또는 **csv 업로드**)
+  - 즉 **우리 사이트 이용자들의 이메일을 광고 네트워크에 업로드**해야 올라가는 수치. dstcraft.com은 구글 로그인(GIS)을 써서 DB에 실제 이메일이 있음
+  - **해시를 하더라도 개인정보를 광고 목적으로 제3자에게 제공하는 행위** → 국내법상 별도 동의 필요, 현재 개인정보처리방침에 해당 고지 없음
+  - **결론: 하지 않는 쪽을 기본값으로 둔다.** First-Party 0%는 결함이 아니라 선택. 나머지(Third-Party 5.7% / Identity Graph 0.4%)는 Ezoic이 알아서 올리는 영역이라 우리가 손댈 게 없음
+
+- [x] **`ezstandalone.enabled === false` — 오해였음 (중요)** — 헤드리스 클린 브라우저(이력·쿠키 없음)에서도 **동일하게 `false`**. 즉 "사용자 브라우저만 무광고 대조군에 걸린 것"이 아니라 **모든 방문에서 false**
+  - **그런데 광고는 정상적으로 나가고 있음**: `[data-ad-slot="top"]` 높이 158px, placeholder inner HTML 823자, iframe 4개, `securepubads.g.doubleclick.net/tag/js/gpt.js` + `pubads_impl.js` + `direct.adsrvr.org/bid/bidder/ezoic` 전부 로드됨
+  - **→ `ezstandalone.enabled`는 광고 on/off 플래그가 아니다.** 이 값으로 "광고가 안 붙는다"고 판단하면 안 됨. 2번 섹션에 적어둔 "실제 광고가 붙은 상태를 한 번도 못 봄"은 사실이 아니었음
+
+- [x] **Ezoic이 우리 코드에 없는 placeholder를 자동 삽입 중** — 실측 DOM의 placeholder는 `111`(우리 `top`) + **`116`, `117`**. 116·117은 `AdSlot.tsx`에 없는 번호 → Ezoic 자동 삽입(auto-insert) 유닛
+  - [ ] 116·117이 화면 어디에 들어가는지 확인 필요. 우리가 CLS 대비로 예약해 둔 자리가 아니라서 **레이아웃 시프트의 미확인 원인일 수 있음**
+
+- [ ] **Ezoic visits(949) vs 자체 UV 격차 — 스크립트 미실행은 아님** — 위 실측에서 `g.ezoic.net/saa.go?...&npv=true` 정상 발화 확인. 측정 자체는 되고 있음. 남은 설명 후보:
+  - 자체 analytics에 **봇 포함** (전체 CN 9,116 ≈ 10%, SG 1,982, `docs`상 봇 ~10.2%) — Ezoic은 이런 트래픽을 visit로 안 셈
+  - **중국 트래픽은 `ezojs.com`·doubleclick 도달 불가** → Ezoic 집계에 애초에 안 잡힘
+  - 정의 차이: Ezoic=세션, 자체=일별 UV 합산
+  - → **격차 자체는 이상 징후가 아닐 가능성이 높음.** EPMV 계산은 Ezoic visits 기준으로 하는 게 맞음
+
+##### 실측 재현 방법 — `scripts/check-ad-audit.mjs` (2026-08-17 추가)
+```bash
+npm i -D playwright-core                                              # 레포 devDep 아님
+node scripts/check-ad-audit.mjs https://www.dstcraft.com/item/abigail-flower 1600 1000
+node scripts/check-ad-audit.mjs https://www.dstcraft.com/item/abigail-flower 390 844   # 모바일
+```
+한 번에 덤프하는 것: **CLS 총합 + 가장 크게 밀린 노드 5개**, 문서 내 **모든** ezoic placeholder(우리 것/자동 삽입 구분 + 부모 체인 + 좌표), 배달된 크리에이티브 iframe 규격, 우리 `[data-ad-slot]` 실측 크기.
+기존 하네스 3종은 자리 회귀 검증용이고, 이건 **"지금 실제로 무엇이 어디에 그려졌나"** 를 보는 용도.
+
+#### 4. 지켜볼 것
+- [ ] EPMV — 첫 2~3일 숫자는 표본이 작아 무의미. 판단은 최소 1~2주 데이터로. **MCM 승인 전 데이터는 아예 쓰지 말 것**(수요처가 빠진 상태)
+- 트래픽 baseline (2026-08-17, `curl https://www.dstcraft.com/api/stats`): 전체 PV 88,233 / UV 45,442 · 7월 PV 27,678 / UV 15,301 · 8월(17일) PV 14,361 / UV 7,982 · 광고 켠 이후 일 PV 800~1,000 · 데스크탑 68% · 유입 google.com 28,434 압도적
+- **📌 수익 baseline (2026-08-17, MCM 승인 전 / 광고 가동 5일차)** — MCM 승인 후 개선폭을 재는 기준선. 이 값과 비교할 것
+  - Estimated Earnings **$0.68** (30일, 전액이 최근 7일 = 8/13 배포 이후 발생)
+  - Ezoic Website Visits **949** (30일) → **EPMV ≈ $0.72 / 1000 visits**
+  - 포맷별 RPM: display `$0.50` · interstitial `$0.86` · side rails `$0.64` · anchor `$0.00`
+  - Rewarded Revenue $0.00 (미설정)
+  - 대시보드 경고: *"Ads can begin serving before setup is finished. Complete remaining steps to unlock full demand and revenue."*
+  - **해석**: RPM 정상 범위는 통상 $2~15. 현재 $0.5~0.9는 MCM 미승인으로 구글 수요(AdX)가 통째로 빠진 상태의 값. 낮다고 판단 근거로 쓰지 말 것
+- [ ] **Core Web Vitals (서치 콘솔)** — 유입 65%가 구글인데 광고를 넣었다. CLS/LCP/INP 추이 확인. CrUX는 28일 롤링이라 반영이 느림. **순위가 내려가면 광고 수익보다 손실이 큼**
+
+#### 참고 (이번에 만든 것)
+- 회귀 하네스 3종 — 자리 건드리면 반드시 돌릴 것 (`npm i -D playwright-core` 필요, 레포에는 devDep 미포함)
+  ```bash
+  node scripts/check-ad-slots.mjs https://beta.dstcraft.com          # 탭 순회·전환
+  node scripts/check-ad-slots-stress.mjs https://beta.dstcraft.com   # 연타·모바일·왕복 20회·검색
+  node scripts/check-ad-cls.mjs https://beta.dstcraft.com            # 규격별 자리 높이 변화 (띠 계열 전부 0이어야)
+  ```
+- 규칙은 `docs/ui.md`의 AdSlot 섹션, 오답노트는 `docs/mistakes.md`("광고 자리를 예약해 놓고 CLS를 못 막고 있었음")
+
 ### 요리탭 검색·재료 표시 정확도 [~] (#25, 2026-05-10)
 > 크롬으로 production 직접 검증해 발견한 이슈들. #25에서 핵심 두 항목 처리, 나머지는 후속 점검.
 - [x] 재료 ItemSlot 매핑 — `Small Fish` / `Small Meat` / `Seeds` ingredient name mismatch alias 추가 (#25)
