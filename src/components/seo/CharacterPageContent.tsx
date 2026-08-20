@@ -9,6 +9,7 @@ import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
 import { AdSlot } from "@/components/ads/AdSlot";
+import { AdBleed } from "@/components/ads/AdBleed";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -122,7 +123,9 @@ export function CharacterPageContent({ slug, lang }: { slug: string; lang: SeoLa
           </div>
         </section>
 
-        <AdSlot variant="top" />
+        <AdBleed>
+          <AdSlot variant="top" />
+        </AdBleed>
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">

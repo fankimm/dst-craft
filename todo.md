@@ -26,17 +26,20 @@
 - [x] **MCM 구글 승인** ✅ (2026-08-17 15:16 KST) — `admanager-noreply@google.com` / 제목 `Ad Manager 계정이 승인됨`. 네트워크 코드 `23368262432`. 메일 왈: *"인벤토리 관리를 시작하기 전에 몇 가지 단계를 더 완료해야 합니다. Ezoic NA 8에서 연락을 드릴 것"*
   - Ezoic 대시보드 `Ad Manager Account Status`는 승인 직후에도 한동안 `Pending`으로 표시됨 (동기화 지연). Ezoic 표시를 승인 여부의 근거로 쓰지 말 것 — 구글 메일/Ad Manager가 기준
 
-- [ ] **[감시 항목] Ad Manager 도메인 심사 대기 — 2026-08-17 제출, 최대 14일 → ~2026-08-31**
-  > 2026-08-18 확인 (Ezoic setup): `Ad Manager Domain Status: In Progress` / *"Waiting on Google to review your domain. Your domain was submitted for review on 8/17/2026."*
-  - 셋업이 안 끝난 진짜 이유는 이것 하나. **우리가 할 일은 없고 대기만.**
-  - 대시보드의 *"Ad demand and revenue are limited until Ad Manager is fully set up"* 경고도 이것 때문
-  - → **심사 통과 전 EPMV/RPM 숫자는 판단 근거로 쓰지 말 것** (구글 수요 AdX가 빠진 값). 2~4주 데이터 수집은 통과 후부터 기산
+- [x] **Ad Manager 도메인 심사 ✅ 통과 (2026-08-20 확인)** — 8/17 제출 → `Approved`
+  > 2026-08-20 Ezoic setup: **`Ad Manager Domain Status: Approved`** / *"Your domain has been approved by Google."* (8/18까지 `In Progress`였음)
+  - 이것이 구글 수요(AdX) 진입을 막던 병목이었다. 통과했으므로 **이제부터 붙는 수요가 정상 상태**
+  - 🔴 **EPMV 데이터 기산일 = 2026-08-20.** 10/15 판단까지 약 8주 → 표본은 충분하다
+  - **8/20 이전 수익 숫자는 전부 "수요가 빠진 상태"의 값**이다. 아래 baseline과 비교용으로만 쓰고, 낮다고 해서 판단 근거로 삼지 말 것
+  - 며칠 내로 RPM이 오르는지가 첫 확인 지점. 안 오르면 그때 원인을 따로 볼 것
+  - ⚠️ setup 화면의 *"Ad demand and revenue are limited until Ad Manager is fully set up"* 경고는 아직 남아 있다 — 이제는 **주소 확인(Pending) 하나 때문**
 
 - [~] **🔴 [진행중] 주소 확인 PIN — 2026-08-18 발송됨. 시계 돌기 시작. 마감 2026-10-02**
   > 근거: `admanager-noreply@google.com` / 2026-08-18 17:40 KST / 제목 `조치 필요: Ad Manager에서 수취인 주소를 확인해 주세요`
   > *"2026. 8. 18.에 PIN 번호가 담긴 우편물을 Ad Manager에 등록하신 수취인 주소로 발송했습니다"*
   > *"이 PIN을 사용하여 주소를 인증하지 않으면 광고 게재에 영향이 있습니다. 단, 예약 캠페인에서는 계속 광고가 게재됩니다"*
   - 신원 확인은 **완료** — 2026-08-17 `payments-noreply@google.com` "AdSense 본인 인증이 완료되었습니다" → Ezoic setup에 `Identity: Verified`로 반영
+  - 2026-08-20 Ezoic setup이 드디어 `Address Verification: **Pending**`으로 전환 (8/18 PIN 발송을 이틀 늦게 반영). **Ezoic 표시는 항상 늦는다**는 것이 또 한 번 확인됨
   - **일정**
     | 날짜 | 내용 |
     |---|---|
@@ -83,28 +86,41 @@
   - **결론: 우선순위 낮춤.** 15px 미관을 위해 Ezoic 주입 CSS와 씨름할 가치 없음. 자리를 다시 손볼 때 같이 보면 됨
   - ~~주의: 사용자 브라우저가 계속 `ezstandalone.enabled === false`(무광고 대조군)여서 실제 광고가 붙은 상태를 한 번도 못 봄~~ → **취소.** `enabled=false`는 클린 헤드리스에서도 동일하고 광고는 정상 서빙됨 (3-1 참조)
 
-- [x] **SEO 페이지 640px 자리에 어떤 규격이 배달되는지** — 부분 확인 (2026-08-17)
-  - `/item/abigail-flower` 데스크탑 1600px: 우리 `top` 자리 폭 **640px**, placeholder `#111` **640×100**, 그 안에 Ezoic이 잡은 크리에이티브 슬롯 **높이 90px** → **728×90 계열 띠를 기대하고 있음. 336×280 사각형이 오는 시나리오는 관측되지 않음**
+- [x] **SEO 페이지 640px 자리에 어떤 규격이 배달되는지 → 해결 (2026-08-20, #83에서 728로 확장)**
+  - `/item/abigail-flower` 데스크탑 1600px: 우리 `top` 자리 폭 **640px**, placeholder `#111` **640×100**, 그 안에 Ezoic이 잡은 크리에이티브 슬롯 **높이 90px**
+  - ⚠️ 당시 이걸 "728×90 계열 띠를 기대하고 있음"으로 읽었는데 **오독이었다.** 폭 640에는 728×90이 애초에 못 들어온다 — 높이 90은 468×60/320×100 같은 좁은 띠의 자리였을 뿐. 아래 97줄 항목이 같은 파일에서 정확히 진단해 놓았는데도 이쪽을 `[x]`로 닫아버려 조치가 두 달 밀릴 뻔했다 (`docs/mistakes.md` 참조)
+  - **해결**: `AdBleed`(`md:-mx-11`)로 640 → 728 확장, SEO 상세 6종에 적용 (#83)
   - ⚠️ 단, 헤드리스/데이터센터 IP라 **실제 크리에이티브 iframe은 no-fill**(`creatives: []`). 규격 후보는 Ezoic이 예약한 90px로 추정한 것이고, 실사용자 환경에서 재확인 필요
   - → 걱정했던 "+180px 시프트" 리스크는 현재 근거 없음. 자리를 728로 넓히는 작업은 보류
 
 - [x] **Ezoic 자동 삽입 placeholder 116·117 정체 확인** — 우리 레이아웃 침범 아님
   - `#116` → `div#ez-sidebar-wall-left` 직속, `#117` → `div#ez-sidebar-wall-right` 직속. 둘 다 **`<body>` 바로 아래**에 붙는 Ezoic 자체 **사이드월(sidebar wall)** 유닛, 160×606
   - 본문 흐름 밖(좌우 여백)이라 컨텐츠를 밀지 않음 → CLS 원인 아님. 모바일(390px)에서는 아예 삽입 안 됨
-- [ ] **SEO 페이지 640px 자리에 어떤 규격이 배달되는지 미확인** — `<main>`이 `max-w-2xl`+`px-4`라 자리 폭이 640px이고 728×90이 후보에서 빠진다. 336×280 사각형이 오면 **+180px 시프트**(예약으로 흡수 불가) + 레이아웃 어수선. 하필 구글 랜딩 페이지들
+- [x] **SEO 페이지 640px 자리 → 728로 확장 완료 (2026-08-20, #83)** — 진단은 8/17에 이미 정확했다: *"`<main>`이 `max-w-2xl`+`px-4`라 자리 폭이 640px이고 728×90이 후보에서 빠진다. 하필 구글 랜딩 페이지들"*
+  - `AdBleed`(`src/components/ads/AdBleed.tsx`)로 `md:-mx-11` 브레이크아웃 → 640 + 88 = 728. md(768px) 미만 미적용(가로 스크롤 방지), 목록형(`max-w-4xl` 864px)은 이미 충분해 제외
+  - 걱정했던 336×280 시프트는 근거 없음이 확인됐고(`BAND_BOX` max-w 728이 상한), 예약 100px 안에 728×90(90px)이 들어가 CLS도 그대로
+  - **효과 측정**: 도메인 승인(8/20)과 같은 시점에 들어가므로 두 변화가 섞인다. RPM 상승분을 둘로 나눠 귀속시키지 말 것
   - 확인: `node scripts/check-ad-slots-live.mjs https://www.dstcraft.com/item/<slug>`
   - 사각형이면 → 자리를 728까지 넓히는 작업 필요(`-mx` 브레이크아웃 등)
-- [ ] `limitCookies`가 **beta에만** 켜져 있음 (prod 미적용). beta는 트래픽이 없어 요청 감소폭 측정이 사실상 불가 → prod에서 켜고 EPMV 변화를 보든지, 방향을 정해야 함. 위치: `src/app/layout.tsx` cmd 큐 인라인 스크립트
+- [x] **`limitCookies` — prod 미적용으로 확정 (2026-08-20, #83)** — 위치: `src/app/layout.tsx` cmd 큐 인라인 스크립트, `IS_BETA`일 때만 주입
+  - 이 옵션은 ID 싱크 픽셀을 줄인다 = **타게팅 데이터가 줄어 단가가 떨어지는 쪽**이다. 요청 수는 줄지만 수익과 맞바꾸는 거래
+  - 도메인 승인(8/20) 직후는 구글 수요가 처음 붙는 구간이라 **단가를 깎는 옵션을 넣을 시점이 아니다.** 10/15 판단을 위해서도 수익 상한을 먼저 봐야 한다
+  - beta는 트래픽이 없어 감소폭 측정이 불가하므로 beta 설정은 그대로 둔다(해가 없음). 나중에 요청 수·페이지 무게가 문제로 드러나면 그때 prod 적용을 재검토
+  - → **"켤지 말지"의 답은 지금은 '아니오'.** 항목을 열어두면 매번 다시 판단하게 되므로 닫는다
 
-#### 3. 결정만 하면 되는 것 (전부 `ezstandalone.config()`로 코드 제어 가능 — 대시보드 전용 아님)
-- [ ] **Vignette(전면 광고) 유지 여부** — 요청·용량의 가장 큰 덩어리. `disableInterstitial` 또는 디바이스별 `vignetteDesktop/vignetteMobile/vignetteTablet`. 데스크탑 67% 사이트라 "데스크탑만 끄고 모바일 유지"가 유력한 절충
-- [ ] Ad Refresh 주기(약 40초 확인됨), 수요처(demand partner) 수 — 요청 400건의 원천. 줄이면 요청 급감/단가 하락 맞교환
-- [ ] 레일 2개 → 1개 축소 여부 — **손으로 지우지 말 것.** Ezoic Ad Tester가 placeholder 조합을 자동 테스트하므로 둘 다 노출한 채 2~4주 데이터를 보고 결정
+#### 3. 결정 항목 — **2026-08-20 전부 "현행 유지"로 확정** (#83)
+> 사용자 방침: **최대 수익 우선.** 아래는 전부 "수익을 깎아 다른 것(요청 수·용량·UX)을 얻는" 거래라, 도메인 승인(8/20) 직후 수익 상한을 아직 보지 못한 지금은 손댈 이유가 없다.
+> 항목을 열어 두면 볼 때마다 다시 판단하게 되므로 닫는다. **10/15 판단 때 EPMV를 손에 쥐고 한꺼번에 재검토**한다.
+- [x] **Vignette(전면 광고) → 유지** — 요청·용량의 가장 큰 덩어리지만 동시에 RPM 기여도 크다(8/17 기준 interstitial `$0.86`으로 포맷 중 최고). 끄면 그 수익이 그대로 사라진다. `disableInterstitial` / `vignetteDesktop·Mobile·Tablet`은 언제든 되돌릴 수 있는 스위치이므로, 페이지 무게가 실제 문제로 드러날 때 다시 본다
+- [x] **Ad Refresh 주기(~40초) / 수요처 수 → 현행 유지** — 줄이면 요청은 급감하지만 단가도 같이 떨어진다. 수익 최대화와 정면으로 반대되는 조작
+- [x] **레일 2개 → 유지** — 원래도 "손으로 지우지 말 것"이 결론이었다. Ezoic Ad Tester가 placeholder 조합을 자동 테스트 중이라 사람이 지우면 그 학습을 망친다
 
 #### 3-1. 수익 개선 레버 (2026-08-17 조사 완료)
 
 - [x] **anchor 포맷 RPM $0.00 — 조사 완료, 고장 아님** — `AdSlot.tsx`의 `AD_PLACEHOLDER_ID`에 등록된 자리는 `top:111` / `sheet:103` / `rail-left:107` / `rail-right:108` 4개뿐. **anchor(=Adhesion, 100번)를 쓰는 코드가 아예 없음.** "안 팔린 것"이 아니라 "자리를 안 만든 것"
-  - [ ] **결정 필요: anchor(하단 고정 띠) 자리를 만들 것인가** — RPM은 높은 편이지만 화면 하단에 계속 붙어 있어 가이드 사이트 UX·CLS·모바일 가독성에 부담. 코드 변경이라 `/task` 필요
+  - [~] **정정 (2026-08-20, #83): 이건 코드로 만들 자리가 아니다** — Adhesion(100)은 **Ezoic이 대시보드 설정에 따라 자동 삽입하고 `position:fixed`로 직접 배치**하는 유닛이다(`docs/mistakes.md` "Ezoic 자동 배치가 전면·하단 고정 광고를 제멋대로 삽입" 참조). RPM $0.00의 실제 원인은 "자리를 안 만든 것"이 아니라 **#75에서 UX 이유로 대시보드에서 껐기 때문**
+    - 코드로 placeholder 100 div를 넣으면 본문에 유령 자리(예약 높이 + AD 라벨)가 남고 광고는 따로 하단에 고정되는, 둘 다 생기는 꼴이 될 수 있다 → **시도하지 않는다**
+    - [ ] **남은 결정: Ezoic 대시보드에서 Adhesion을 다시 켤 것인가** — 켜면 RPM은 오르지만 화면 하단 91px을 상시 점유한다. 브라우저에서 Ezoic 대시보드 접근이 필요한 작업이고, UX 트레이드오프라 사용자 판단 사항
 
 - [~] **Identity Coverage First-Party 0% — 켜는 게 아니라 "할지 말지"의 문제였음** — Identity 탭 실물 확인 결과 설정 토글이 아님
   > *"Ezoic Identity (ezID) enables you to provide **privacy-safe hashed emails or phone numbers**"* / Get Started → **"CONNECT OR UPLOAD YOUR LIST"** (계정 연동 또는 **csv 업로드**)
@@ -137,7 +153,7 @@ node scripts/check-ad-audit.mjs https://www.dstcraft.com/item/abigail-flower 390
 #### 4. 지켜볼 것
 - [ ] EPMV — 첫 2~3일 숫자는 표본이 작아 무의미. 판단은 최소 1~2주 데이터로. **MCM 승인 전 데이터는 아예 쓰지 말 것**(수요처가 빠진 상태)
 - 트래픽 baseline (2026-08-17, `curl https://www.dstcraft.com/api/stats`): 전체 PV 88,233 / UV 45,442 · 7월 PV 27,678 / UV 15,301 · 8월(17일) PV 14,361 / UV 7,982 · 광고 켠 이후 일 PV 800~1,000 · 데스크탑 68% · 유입 google.com 28,434 압도적
-- **📌 수익 baseline (2026-08-17, MCM 승인 전 / 광고 가동 5일차)** — MCM 승인 후 개선폭을 재는 기준선. 이 값과 비교할 것
+- **📌 수익 baseline (2026-08-17, MCM 승인 전 / 도메인 심사 전 / 광고 가동 5일차)** — 개선폭을 재는 기준선. **도메인 승인(8/20) 전 값이므로 구글 수요가 통째로 빠져 있다.** 비교 대상으로만 쓸 것
   - Estimated Earnings **$0.68** (30일, 전액이 최근 7일 = 8/13 배포 이후 발생)
   - Ezoic Website Visits **949** (30일) → **EPMV ≈ $0.72 / 1000 visits**
   - 포맷별 RPM: display `$0.50` · interstitial `$0.86` · side rails `$0.64` · anchor `$0.00`
