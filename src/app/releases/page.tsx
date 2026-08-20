@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.33.5",
+    date: "2026-08-20",
+    dev: [
+      "feat(ads): SEO 상세 페이지 6종(item/food/boss/character/quest/skill-tree)의 상단 띠 자리를 `AdBleed`(`src/components/ads/AdBleed.tsx`)로 감싸 728px까지 확장 (#83). 본문이 `max-w-2xl px-4`라 컨텐츠 폭이 640px이었고, `BAND_BOX`가 `sm:max-w-[728px]`까지 열려 있어도 부모가 눌러서 **728×90(leaderboard)이 후보에서 빠져 있었다** — 실측에서 `/item/abigail-flower`의 placeholder #111이 640×100으로 잡힘. 띠 계열에서 채움률·단가가 가장 좋은 규격을 하필 구글 유입이 가장 많은 페이지에서 놓치던 셈.",
+      "`md:-mx-11`(좌우 44px)로 640 + 88 = 728을 만든다. md(768px) 미만에는 적용하지 않는다 — 그보다 좁은 화면에서 벌리면 띠가 뷰포트를 넘어 가로 스크롤이 생긴다. 768px에서도 좌우 20px 여백이 남는다. 목록형 SEO 페이지(`max-w-4xl`, 컨텐츠 864px)는 이미 728이 들어가므로 제외.",
+      "예약 높이는 그대로 둔다 — 728×90은 90px이라 기존 reserve(100px) 안에 들어가고, `BAND_BOX`의 max-w-[728px]이 상한이라 폭이 늘었다고 970×250 같은 규격이 오지도 않는다. 실측 CLS 0.0032(데스크탑)로 변화 없음.",
+      "docs(ads): Ad Manager 도메인 심사 통과(2026-08-20 `Approved`) 반영. 구글 수요(AdX) 진입을 막던 병목이 풀렸으므로 **EPMV 데이터 기산일을 2026-08-20으로 확정** — 그 이전 수익 숫자는 수요가 빠진 값이라 판단 근거로 쓰지 않는다. 주소 확인은 `Pending`으로 전환(8/18 PIN 발송이 이틀 늦게 반영).",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.33.4",
     date: "2026-08-18",
     dev: [
