@@ -605,6 +605,19 @@
 - **원인**: 파일이 존재하고 import도 유효해서 현재 사용 중인 컴포넌트라고 판단. 실제 렌더링 경로(`SkillTreeView → SkillNodeCard`)를 추적하지 않음
 - **교훈**: 코드 수정 전 반드시 **실제 렌더링 경로를 추적**할 것. 파일 존재 + 타입 에러 없음 ≠ 현재 사용 중. `grep`으로 import/사용처를 확인하고, 사용되지 않는 컴포넌트는 발견 즉시 삭제 제안할 것
 
+## 빌드 · 도구
+
+### `git add -A`로 60MB 임시 캐시를 커밋해 푸시했다 (2026-08-27, #88)
+- **문제**: 보스 이미지 변환 작업 중 `git add -A && git commit`으로 커밋했더니 ImageMagick이 남긴 `public/images/bosses/mask.cache`(**60MB**)와 `mask.mpc`가 딸려 들어가 origin까지 푸시됐다. GitHub가 *"File is 60.12 MB; larger than GitHub's recommended maximum"* 경고를 띄워서야 발견
+- **원인 1 — 규칙이 이미 있었는데 어겼다.** `.claude/skills/beta/SKILL.md`에 *"`git add <files>` — 명시적 파일 추가, `-A` / `.` 금지"* 라고 적혀 있다. 앞선 커밋들에서는 파일을 일일이 나열했는데, 생성물(`public/images/bosses/thumb/` 34장)이 많다는 이유로 `-A`로 바꿨다
+- **원인 2 — `git status`를 보지 않고 커밋했다.** `-A`를 쓸 거였으면 최소한 무엇이 잡히는지 먼저 봤어야 했다. 실제로 커밋 직전 `git status --short`를 찍은 적이 없다
+- **원인 3 — ImageMagick이 작업 디렉터리를 오염시킨다는 걸 몰랐다.** `magick`은 마스크 연산 중간 결과를 `.mpc` + `.cache` 쌍으로 **입력 파일이 있는 디렉터리에** 쓸 수 있다. 이미지 도구를 레포 안에서 돌릴 때의 기본 위험이다
+- **교훈**:
+  - **`git add -A` 금지는 예외 없다.** 파일이 많으면 디렉터리 단위로 명시(`git add public/images/bosses/thumb/`)하면 되지 전체를 긁을 이유가 없다
+  - **커밋 전 `git status --short`를 반드시 본다.** 특히 외부 도구(이미지·빌드·변환)를 돌린 뒤에는 무엇이 새로 생겼는지 모른다고 전제할 것
+  - **이미지/변환 도구는 스크래치패드에서 돌린다.** 레포 안에서 돌려야 하면 산출물 경로를 명시하고, 끝나고 `git status`로 잔재를 확인한다
+- **해결**: `git rm --cached` + `--amend`로 커밋에서 제거, `feat/88`을 `--force-with-lease`로 재푸시, `origin/beta`를 `origin/main` 기준으로 리셋 후 재머지. main에는 들어가기 전이라 히스토리 오염 없이 회수됨. `.gitignore`에 `*.mpc` / `*.cache` 추가로 재발 차단
+
 ## 광고 / Ezoic
 
 ### 헤드리스에서 광고가 안 뜨는 걸 "이 환경은 수익화 대상이 아니다"로 잘못 귀속했다 (2026-08-27, #86)
