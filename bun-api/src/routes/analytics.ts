@@ -104,6 +104,25 @@ app.post("/_t", trackHandler);
 const AD_STATES = ["filled", "nofill", "blocked", "noscript", "early"] as const;
 type AdState = (typeof AD_STATES)[number];
 
+/**
+ * 첫 소재 도착 시각 구간 (#86).
+ *
+ * 실측 조사가 전부 headless에서 나왔고 Ezoic이 클라이언트를 분류하는 정황이 있어
+ * 절대값을 실사용자로 확증할 수 없었다. 이 분포가 그 확증이다.
+ * 구간은 조사 실측(데스크탑 4.1~5.9초, Fast3G 15~17초)을 가르도록 잡았다.
+ * 별도 테이블 대신 카운터를 써서 마이그레이션 없이 넣는다.
+ */
+const AD_FILL_BUCKETS = [2000, 4000, 6000, 8000, 12000, 20000] as const;
+
+function fillMsBucket(ms: number): string {
+  let lo = 0;
+  for (const hi of AD_FILL_BUCKETS) {
+    if (ms < hi) return `${lo / 1000}-${hi / 1000}s`;
+    lo = hi;
+  }
+  return `${lo / 1000}s+`;
+}
+
 function adState(body: Record<string, any>): AdState {
   if (body.filled) return "filled";
   if (body.early) return "early";
@@ -145,6 +164,11 @@ const eventHandler = async (c: Context) => {
     // 날짜별 추이 — 대시보드 설정을 바꿨을 때 노출률이 움직이는지 보려면 필요하다.
     bumpCounter("adstate_day", `${today()}:${state}`, "");
     bumpCounter("adcmp", body.cmp ? "yes" : "no", "");
+    // 도착 시각은 실제로 소재가 온 세션에서만 의미가 있다 — no-fill의 elapsed는
+    // "데드라인까지 기다린 시간"이라 분포에 섞으면 20초 구간만 부풀린다.
+    if (state === "filled" && typeof body.elapsed === "number" && body.elapsed >= 0) {
+      bumpCounter("adfill_ms", fillMsBucket(Math.min(body.elapsed, 600000)), "");
+    }
   }
 
   return c.json({ ok: true });
@@ -375,6 +399,7 @@ app.get("/stats", async (c) => {
   // ePMV가 낮을 때 원인이 "재고가 안 붙음(nofill)"인지 "단가가 낮음"인지 가르는 숫자.
   const adVisibility = getCounterMap("adstate");
   const adCmp = getCounterMap("adcmp");
+  const adFillMs = getCounterMap("adfill_ms");
   const adVisibilityDaily = dates
     .map((d) => {
       const row = { date: d } as { date: string } & Record<AdState, number>;
@@ -459,6 +484,7 @@ app.get("/stats", async (c) => {
     adVisibilityDaily,
     adVisibilityByCountry,
     adCmp,
+    adFillMs,
     isAdmin,
   };
 
