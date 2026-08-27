@@ -177,7 +177,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `bun-api/infra/com.dstcraft.goaccess-bots.plist` + `goaccess-bots.sh` — 봇 전용 GoAccess 대시보드 (1시간마다 `~/dstcraft/bots.html` 생성, `:7891/bots.html`로 접근)
 - `bun-api/infra/com.dstcraft.goaccess-restart.plist` — goaccess live 대시보드 1시간 주기 재시작 (#77). 로그 로테이션 후 goaccess가 사라진 inode를 계속 읽어 조용히 멈추는 걸 자동 복구. 설치는 plist 주석 참조
 - `bun-api/infra/newsyslog-dstcraft-nginx.conf` — nginx 로그 로테이션 (#77, 100MB/7개/gzip). `/etc/newsyslog.d/dstcraft-nginx.conf`로 복사해야 적용 — **자동 배포 없음**
-- `scripts/optimize-boss-images.sh` — 보스 이미지 UI용 축소본(320px WebP) 생성 → `public/images/bosses/thumb/`. **보스 이미지를 추가·교체하면 반드시 다시 실행**할 것. 원본은 OG/schema용으로 남겨 두므로 덮어쓰지 않는다 (#88)
+- `scripts/optimize-boss-images.mjs` — 보스 이미지 UI용 축소본(**무손실** WebP, 긴 변 512px, `sharp`) 생성 → `public/images/bosses/thumb/`. **보스 이미지를 추가·교체하면 반드시 다시 실행**할 것 (`node scripts/optimize-boss-images.mjs`). 원본은 OG/schema용으로 남겨 두므로 덮어쓰지 않는다. 선화+알파 소재라 손실 압축은 윤곽선을 뭉갠다 — 무손실이 기본이다 (#88)
 - `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta). prod 배포 시 IndexNow ping 호출
 - `scripts/indexnow-ping.py` — sitemap.xml의 전체 URL을 IndexNow API에 제출 (Bing 등 즉시 색인 유도). prod 배포에서만, best-effort
 - `public/<key>.txt` — IndexNow 키 파일 (`BingSiteAuth.xml`과 함께 SEO 검증 자산, 삭제 금지). 키 변경 시 `indexnow-ping.py`의 `KEY` 상수도 함께 갱신
