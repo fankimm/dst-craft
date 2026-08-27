@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { assetPath } from "@/lib/asset-path";
+import { assetPath, bossThumbPath } from "@/lib/asset-path";
 
 interface ItemSlotProps {
   /** game-items image filename (e.g. "meat.png") */
@@ -46,7 +46,7 @@ export function ItemSlot({ icon, iconPath, label, badge, variant = "default", on
       >
         {(icon || iconPath) ? (
           <img
-            src={iconPath ? assetPath(iconPath) : assetPath(`/images/game-items/${icon}`)}
+            src={iconPath ? assetPath(bossThumbPath(iconPath)) : assetPath(`/images/game-items/${icon}`)}
             alt={label}
             className="size-8 object-contain"
             loading="lazy"
