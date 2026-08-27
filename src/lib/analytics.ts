@@ -49,6 +49,8 @@ export interface AnalyticsData {
   adVisibilityByCountry?: Record<string, Record<string, number>>;
   /** TCF CMP 존재 여부별 세션 수 — no-fill이 동의 거부 때문인지 가릴 때 쓴다 (#85) */
   adCmp?: Record<string, number>;
+  /** 첫 소재 도착 시각 분포 — 구간 라벨별 세션 수. 실사용자 광고 지연 (#86) */
+  adFillMs?: Record<string, number>;
 }
 
 /** 광고 도달 계측 1건 (#85) — 판정은 `AdVisibilityProbe`가 한다 */
@@ -63,6 +65,13 @@ export interface AdVisibilitySample {
   cmp: boolean;
   /** 체크포인트 전에 이탈해 판정이 이른 표본 */
   early: boolean;
+  /**
+   * navigationStart 기준 판정 시각(ms) — `filled`면 곧 첫 소재 도착 시각 (#86).
+   *
+   * 지연 조사가 전부 headless에서 나왔는데 Ezoic이 클라이언트를 분류하는 정황이 있어
+   * 절대값을 실사용자로 확증할 방법이 없었다. 이 값이 그 확증이다.
+   */
+  elapsed: number;
 }
 
 /** Track a page visit — call once on app load */

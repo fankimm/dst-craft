@@ -94,6 +94,14 @@ const AD_STATE_ORDER = [
   { key: "early", label: "이탈" },
 ] as const;
 
+/**
+ * 첫 소재 도착 시각 구간 (#86) — 서버 `fillMsBucket`의 라벨과 1:1.
+ *
+ * 실사용자 광고 지연 분포다. 헤드리스 실측(데스크탑 4.1~5.9초, Fast3G 15~17초)이
+ * 실제 방문자에게도 맞는지 확인하는 유일한 근거이므로 순서를 임의로 바꾸지 말 것.
+ */
+const AD_FILL_MS_ORDER = ["0-2s", "2-4s", "4-6s", "6-8s", "8-12s", "12-20s", "20s+"] as const;
+
 function CollapsibleList({
   title,
   icon,
@@ -554,6 +562,11 @@ export default function StatsPage() {
               const judged = totalAv - (av.early ?? 0);
               const filled = av.filled ?? 0;
               const fillPct = judged > 0 ? Math.round((filled / judged) * 100) : 0;
+              const fm = data.adFillMs ?? {};
+              const fillRows = AD_FILL_MS_ORDER.map((label) => ({ label, count: fm[label] ?? 0 })).filter(
+                (r) => r.count > 0,
+              );
+              const fillTotal = fillRows.reduce((n, r) => n + r.count, 0);
               const byCountry = data.adVisibilityByCountry ?? {};
               const countryRows = Object.entries(byCountry)
                 .map(([code, m]) => {
@@ -587,9 +600,19 @@ export default function StatsPage() {
                   </div>
                   <p className="text-[11px] leading-relaxed text-muted-foreground">
                     노출·차단·미도달 비율은 <strong>판정 {judged}건</strong> 기준이다.
-                    이탈만 전체 {totalAv}건 기준 — 체크포인트(4초) 전에 떠나 판정이 이른 표본이라
+                    이탈만 전체 {totalAv}건 기준 — 소재가 오기 전에 떠나 판정이 이른 표본이라
                     비율 계산에서 뺐다.
                   </p>
+                  {fillRows.length > 0 && (
+                    <div className="space-y-2 border-t border-border pt-3">
+                      <p className="text-xs font-medium text-muted-foreground">
+                        첫 광고 도착까지 걸린 시간 (실사용자)
+                      </p>
+                      {fillRows.map((r) => (
+                        <PercentBar key={r.label} label={r.label} count={r.count} total={fillTotal} />
+                      ))}
+                    </div>
+                  )}
                   {isAdmin && countryRows.length > 0 && (
                     <div className="space-y-2 border-t border-border pt-3">
                       <p className="text-xs font-medium text-muted-foreground">국가별 노출률</p>

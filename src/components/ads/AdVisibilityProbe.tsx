@@ -6,37 +6,42 @@ import { useAuth } from "@/hooks/use-auth";
 import { trackAdVisibility } from "@/lib/analytics";
 
 /**
- * 광고가 이 방문자에게 **실제로 도달했는지**를 세션당 한 번 보고한다 (#85).
+ * 광고가 이 방문자에게 **실제로 도달했는지**, 도달했다면 **얼마나 걸렸는지**를
+ * 세션당 한 번 보고한다 (#85, 판정 방식 교정 #86).
  *
- * 왜 필요한가: Ezoic 대시보드의 `Visits`와 우리 자체 UV가 어긋나는데, 그 차이를
- * 봇·중국 도달 불가·세션 정의만으로 설명할 수 있는지 확인할 방법이 없었다. 더 중요한 건
- * ePMV가 낮을 때 그 원인이 **재고가 안 붙어서(no-fill)** 인지 **단가가 낮아서**인지
- * 가릴 수 없다는 점이다 — 대시보드는 채워진 노출만 보여주기 때문이다.
- * 우리 쪽에서 "요청은 나갔는데 소재가 안 왔다"를 직접 세면 그 구분이 선다.
+ * 왜 필요한가: Ezoic 대시보드는 **채워진 노출만** 보여준다. ePMV가 낮을 때 원인이
+ * 재고가 안 붙어서(no-fill)인지 단가가 낮아서인지 가릴 수 없다. 우리 쪽에서
+ * "요청은 나갔는데 소재가 안 왔다"를 직접 세면 그 구분이 선다.
  *
- * 이 자리가 **우리 트래킹은 살아 있고 광고만 죽은 세션**까지 잡을 수 있는 유일한 지점이다.
- * 자체 트래킹은 이미 광고차단 필터를 피하는 경로(`/_t`)를 쓰기 때문이다 (#34).
+ * 이 자리가 **우리 트래킹은 살아 있고 광고만 죽은 세션**까지 잡을 수 있는 유일한
+ * 지점이다 — 자체 트래킹은 이미 광고차단 필터를 피하는 경로(`/_t`)를 쓴다 (#34).
  *
- * 화면에는 아무것도 그리지 않는다. 광고 요청을 늦추지도, 레이아웃을 건드리지도 않는다.
+ * 화면에는 아무것도 그리지 않는다.
  */
 
 /**
- * 판정 시각.
+ * **고정 시각에 판정하지 않는다** (#86).
  *
- * `AdSlot`의 배치 창이 최대 1.5초(`FLUSH_MAX_WAIT_MS`)이고 그 뒤에 입찰→렌더가 붙는다.
- * 4초는 그 전체가 끝나고도 여유가 있는 지점이다. 더 짧게 잡으면 아직 도착 중인 광고를
- * no-fill로 오판해 차단율이 부풀려진다.
+ * 처음에는 4초 체크포인트 한 번으로 판정했다. 근거는 "`AdSlot`의 배치 창 최대 1.5초 +
+ * 입찰·렌더"라는 추정이었고 종단 시간을 재지 않았다. 이후 실측에서 첫 크리에이티브가
+ * 데스크탑 콜드 4.1~5.4초(상단 띠는 4.9~5.9초), Fast3G 15~17초로 나왔다 — 4초는
+ * 광고가 **오는 중인** 시점이라 그 표본이 통째로 no-fill로 잡혔다. 재고 부족과 단가를
+ * 가르려고 만든 지표가 그 판정을 스스로 오염시키고 있었다.
+ *
+ * 그래서 도착을 **기다리지 않고 관측**한다. 소재가 붙는 순간 바로 보고하므로 6초가
+ * 걸리든 17초가 걸리든 오판이 없고, 끝내 안 오는 세션만 데드라인까지 간다.
  */
-const CHECKPOINT_MS = 4000;
+/** 이 시각까지 소재가 없으면 재고 없음으로 판정. 3G 실측(15~17초)을 덮는 값. */
+const DEADLINE_MS = 20000;
 
-/** 세션당 1회. `dst:tracked`(페이지뷰)와 별개로 둔다 — 판정 시점이 다르다. */
+/** 세션당 1회. `dst:tracked`(페이지뷰)와 별개 — 판정 시점이 다르다. */
 const SESSION_KEY = "dst:adstate";
 
 /**
  * 미끼 엘리먼트에 붙일 클래스.
  *
- * EasyList/uBlock 계열 필터가 코스메틱 규칙으로 숨기는 대표적인 이름들이다.
- * 하나라도 숨겨지면 이 브라우저에 광고 필터가 걸려 있다고 본다.
+ * EasyList/uBlock 계열이 코스메틱 규칙으로 숨기는 대표적인 이름들. 하나라도 숨겨지면
+ * 이 브라우저에 광고 필터가 걸려 있다고 본다.
  */
 const BAIT_CLASSES = "ad-banner ads adsbox doubleclick ad-placement textads banner-ads";
 
@@ -102,7 +107,7 @@ export function AdVisibilityProbe() {
   const { isAdmin } = useAuth();
 
   // 관리자 여부는 인증이 끝나야 정해진다. 그걸 기다리느라 계측을 미루면 인증이 실패한
-  // 세션이 통째로 표본에서 빠지므로, 타이머는 바로 걸고 **보내는 순간에** 읽는다.
+  // 세션이 통째로 표본에서 빠지므로, 관측은 바로 시작하고 **보내는 순간에** 읽는다.
   const isAdminRef = useRef(isAdmin);
   useEffect(() => {
     isAdminRef.current = isAdmin;
@@ -120,13 +125,14 @@ export function AdVisibilityProbe() {
     let sent = false;
 
     /**
-     * `early` — 체크포인트 전에 이탈한 세션.
+     * `elapsed` — navigationStart 기준 경과 ms.
      *
-     * 이 표본을 버리면 안 된다. 이탈 세션도 Ezoic은 visit로 세므로, 빼버리면 우리 분모가
-     * Ezoic 분모보다 작아져 비교가 성립하지 않는다. 그렇다고 같이 섞으면 "아직 도착
-     * 중이던 광고"가 no-fill로 잡혀 비율이 망가진다. 그래서 **별도 버킷으로 분리**한다.
+     * 이 값이 이번 교정의 핵심 산출물이다. 지연 조사는 전부 headless에서 나왔는데,
+     * 기본 headless UA로는 Ezoic 계열 사이트가 전부 0% 충전됐다 — Ezoic이 클라이언트를
+     * 분류한다는 뜻이라 실측 절대값이 실사용자와 다를 수 있다. 실사용자 도착 시각을
+     * 직접 받아야 그 의심이 풀린다.
      */
-    const send = (early: boolean) => {
+    const send = (reason: "filled" | "deadline" | "early") => {
       if (sent) return;
       sent = true;
       cleanup();
@@ -136,26 +142,52 @@ export function AdVisibilityProbe() {
       } catch {
         /* 위와 같음 */
       }
+      const filled = reason === "filled";
       trackAdVisibility({
         adblock: detectAdFilter(),
         script: adEngineReady(),
-        filled: anyCreativeRendered(),
+        filled,
         cmp: cmpPresent(),
-        early,
+        // 이탈은 판정이 이르므로 별도 버킷으로 뺀다 — 버리지는 않는다. Ezoic도 이탈
+        // 세션을 visit로 세므로, 빼면 우리 분모가 Ezoic 분모보다 작아져 비교가 깨진다.
+        // 단 소재가 이미 왔다면 이탈이든 아니든 그 세션은 노출된 것이다.
+        early: reason === "early",
+        elapsed: Math.round(performance.now()),
       });
     };
 
+    /**
+     * 관측은 **폴링**으로 한다 — `MutationObserver`가 아니다.
+     *
+     * 판정이 `getComputedStyle` + `innerText` + `getBoundingClientRect`라 전부 강제
+     * 레이아웃을 유발한다. 소재 도착을 놓치지 않으려면 관찰 범위가 `document.body`
+     * subtree여야 하는데, 그러면 앱의 모든 리렌더가 콜백을 때려 데드라인까지 프레임마다
+     * 리플로우가 걸린다 — 광고가 느린 걸 재려다 앱을 느리게 만드는 꼴이다.
+     * (자리별 세밀한 감시는 `AdCard`가 이미 하고 있어 중복이기도 하다.)
+     *
+     * 폴링은 비용이 **상한이 있다**: 250ms × 20초 = 최대 80회. 도착 시각 분포를
+     * 초 단위 구간으로 볼 것이므로 250ms 해상도면 충분하다.
+     */
+    const POLL_MS = 250;
+    const poll = window.setInterval(() => {
+      if (anyCreativeRendered()) send("filled");
+    }, POLL_MS);
+
     const onHidden = () => {
-      if (document.visibilityState === "hidden") send(true);
+      if (document.visibilityState === "hidden") send(anyCreativeRendered() ? "filled" : "early");
     };
 
-    const timer = window.setTimeout(() => send(false), CHECKPOINT_MS);
+    const timer = window.setTimeout(() => send("deadline"), DEADLINE_MS);
     document.addEventListener("visibilitychange", onHidden);
 
     function cleanup() {
+      clearInterval(poll);
       clearTimeout(timer);
       document.removeEventListener("visibilitychange", onHidden);
     }
+
+    // 프로브가 늦게 마운트되면 소재가 이미 붙어 있을 수 있다 — 첫 관측을 즉시 한 번.
+    if (anyCreativeRendered()) send("filled");
 
     return cleanup;
   }, []);
