@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.33.6",
+    date: "2026-08-27",
+    dev: [
+      "feat(ads): 광고 도달 계측 추가 (#85). Ezoic 대시보드는 **채워진 노출만** 보여주므로, ePMV가 낮을 때 원인이 `재고가 안 붙음(no-fill)`인지 `단가가 낮음`인지 가릴 수 없었다. `AdVisibilityProbe`(`src/components/ads/AdVisibilityProbe.tsx`)가 세션당 한 번 3축으로 판정한다 — 미끼 엘리먼트 은닉(광고 필터), `ezstandalone.showAds` 존재(본체 실행 도달), `hasCreative`(실제 소재). 서버가 `filled / nofill / blocked / noscript / early` 다섯 버킷으로 집계.",
+      "판정에 `AdSlot`의 `hasCreative`를 그대로 재사용한다(export로 승격). 재고가 없어도 Ezoic이 18×18 자사 뱃지를 넣기 때문에, 자식 유무로 세면 no-fill이 통째로 노출로 잡혀 결론이 정반대가 된다.",
+      "비콘 경로는 `/api/event`가 아니라 **`/api/_e`**. `/event`가 광고차단 필터에 걸리면 하필 차단된 세션의 표본만 소실돼 차단율이 0에 수렴한다 — 측정 대상이 측정 경로를 막는 구조라 경로 선택이 곧 결과의 유효성이다. 서버는 `/track` → `/_t`와 같은 방식으로 동일 핸들러를 두 경로에 마운트.",
+      "프로브는 `AppShell`이 아니라 root layout(`src/app/layout.tsx`)에 마운트한다. 유입의 65%가 들어오는 SEO 상세 페이지(`/item`, `/character` 등)는 AppShell을 거치지 않아, 앱 화면에만 달면 정작 no-fill 판정이 가장 중요한 트래픽이 표본에서 빠진다.",
+      "체크포인트는 4초 — `AdSlot`의 배치 창 최대 1.5초(`FLUSH_MAX_WAIT_MS`) + 입찰·렌더가 끝나는 지점. 더 짧으면 도착 중인 광고를 no-fill로 오판한다. 그 전에 이탈한 세션은 버리지 않고 `early` 버킷으로 분리한다 — Ezoic도 이탈 세션을 visit로 세므로 빼면 분모가 어긋나고, 섞으면 비율이 망가진다.",
+      "`/api/stats`에 `adVisibility` / `adVisibilityDaily` / `adVisibilityByCountry`(admin) / `adCmp` 추가. `/stats` 페이지에 광고 도달 섹션 — 노출률은 `early`를 뺀 판정 표본 기준으로 계산하고, 국가별 노출률은 admin에게만(중국은 광고 도메인 도달 자체가 불가라 분리해서 봐야 나머지 해석이 선다).",
+      "관리자 세션은 표본에서 제외(`trackEvent(\"pwa_install\", isAdmin)` 관례와 동일). 인증 완료를 기다리면 인증 실패 세션이 통째로 빠지므로, 타이머는 즉시 걸고 보내는 순간에 ref로 읽는다.",
+      "검증: beta 실측에서 `/api/_e`로 `{adblock:false, script:true, filled:false, cmp:true, early:false}` 발화 확인, CLS 0.0019, pageerror 0건. bun-api는 beta에 배포되지 않으므로 서버 수신은 이 릴리즈 이후 prod에서 확인된다.",
+      "docs: 수익 실측 기록(2026-08-19~25 Earnings $3.10 / Visits 2,515 / ePMV $1.23). 기존 `todo.md`의 \"visits 격차 15배\"는 30일 창의 값을 5일치 데이터와 나눈 오진이었고 실제로는 약 1.2배 — 경위와 교훈은 `docs/mistakes.md`.",
+    ],
+    changes: { ko: [], en: [] },
+  },
+  {
     version: "0.33.5",
     date: "2026-08-20",
     dev: [

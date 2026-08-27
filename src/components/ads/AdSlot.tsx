@@ -408,8 +408,11 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
  *
  * 그래서 소재로 볼 만한 것 — iframe, 뱃지보다 큰 이미지, 텍스트 — 이 있을 때만 채워진
  * 것으로 친다.
+ *
+ * `AdVisibilityProbe`(#85)가 노출률 계측에서 같은 판정을 쓴다. no-fill을 노출로 오판하면
+ * 차단율이 실제보다 낮게 나오므로, 판정 기준은 반드시 한 곳에서만 정의한다.
  */
-function hasCreative(el: HTMLElement): boolean {
+export function hasCreative(el: HTMLElement): boolean {
   if (el.querySelector("iframe")) return true;
   if (el.innerText.trim().length > 0) return true;
   const BADGE_MAX = 40; // Ezoic 뱃지는 18×18

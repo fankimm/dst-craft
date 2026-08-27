@@ -139,7 +139,14 @@
 - [x] **Ezoic이 우리 코드에 없는 placeholder를 자동 삽입 중** — 실측 DOM의 placeholder는 `111`(우리 `top`) + **`116`, `117`**. 116·117은 `AdSlot.tsx`에 없는 번호 → Ezoic 자동 삽입(auto-insert) 유닛
   - [ ] 116·117이 화면 어디에 들어가는지 확인 필요. 우리가 CLS 대비로 예약해 둔 자리가 아니라서 **레이아웃 시프트의 미확인 원인일 수 있음**
 
-- [ ] **Ezoic visits(949) vs 자체 UV 격차 — 스크립트 미실행은 아님** — 위 실측에서 `g.ezoic.net/saa.go?...&npv=true` 정상 발화 확인. 측정 자체는 되고 있음. 남은 설명 후보:
+- [x] **Ezoic visits vs 자체 UV 격차 — 해소됨. 약 1.2배로 정상 범위 (2026-08-27 대시보드 실측)**
+  > Revenue > Earnings, 2026-08-19~08-25: **Total Earnings $3.10 / Visits 2,515 / ePMV $1.23**
+  > 일별 visits 356·355·368·395·323·361·357 (편차 작음) · 일별 ePMV $0.99~$1.81
+  - 일 환산 **359 visits** vs 자체 UV 일평균 **470** → **약 1.2배**. 봇(~10%)과 중국 도달 불가만으로 거의 설명된다
+  - **기존 "949(30일)" 수치를 30일치로 읽은 것이 오진이었다** — 광고는 8/13에 켜져 실제로는 5일치였다. 15배 격차설은 폐기 (`docs/mistakes.md` 참조)
+  - 남은 미세 격차의 정체는 #85 계측이 직접 답한다
+
+- [ ] ~~Ezoic visits(949) vs 자체 UV 격차 — 스크립트 미실행은 아님~~ (위 항목으로 대체) — 위 실측에서 `g.ezoic.net/saa.go?...&npv=true` 정상 발화 확인. 측정 자체는 되고 있음. 남은 설명 후보:
   - 자체 analytics에 **봇 포함** (전체 CN 9,116 ≈ 10%, SG 1,982, `docs`상 봇 ~10.2%) — Ezoic은 이런 트래픽을 visit로 안 셈
   - **중국 트래픽은 `ezojs.com`·doubleclick 도달 불가** → Ezoic 집계에 애초에 안 잡힘
   - 정의 차이: Ezoic=세션, 자체=일별 UV 합산
@@ -164,6 +171,15 @@ node scripts/check-ad-audit.mjs https://www.dstcraft.com/item/abigail-flower 390
   - Rewarded Revenue $0.00 (미설정)
   - 대시보드 경고: *"Ads can begin serving before setup is finished. Complete remaining steps to unlock full demand and revenue."*
   - **해석**: RPM 정상 범위는 통상 $2~15. 현재 $0.5~0.9는 MCM 미승인으로 구글 수요(AdX)가 통째로 빠진 상태의 값. 낮다고 판단 근거로 쓰지 말 것
+- **📌 수익 실측 (2026-08-27, 도메인 승인 후 첫 온전한 1주)** — 판단의 기준값은 이제 이것이다
+  - 2026-08-19~08-25: **Earnings $3.10 / Visits 2,515 / ePMV $1.23** (월 환산 약 **$13**)
+  - 8/17 baseline(EPMV $0.72, 구글 수요 빠진 값) 대비 약 1.7배. 도메인 승인 효과는 실재하나 절대값은 여전히 낮다
+  - **일별 ePMV가 8/20 $1.81 → 8/25 $0.99로 하락 추세** — 승인 직후 반짝인지 추세인지 9월 데이터로 확인 필요
+  - 🔴 **10/15 판단 기준으로 잡았던 "EPMV $2"에 미달.** 다만 AdSense 단독은 구조적으로 이보다 낮으므로 "Ezoic을 떠나 AdSense 단독"은 수익상 개선이 아니다. 실제 쟁점은 **월 $13을 위해 CWV/SEO 리스크와 1년 약정을 지는 게 맞는가**로 바뀐다
+  - [ ] no-fill 비율 확인 (#85 계측) — ePMV가 낮은 원인이 재고 부족인지 단가인지 가른다
+    - #85 프론트는 beta에서 동작 확인 완료(비콘 발화·페이로드·CLS 0.0019). **단 `/api/_e`는 main 머지 후에야 살아난다** — bun-api는 beta에 배포되지 않는다
+    - 따라서 실데이터는 `/release` 이후 prod에서만 쌓인다. 며칠 뒤 `/stats`의 "광고 도달" 섹션 확인
+
 - [ ] **Core Web Vitals (서치 콘솔)** — 유입 65%가 구글인데 광고를 넣었다. CLS/LCP/INP 추이 확인. CrUX는 28일 롤링이라 반영이 느림. **순위가 내려가면 광고 수익보다 손실이 큼**
 
 #### 참고 (이번에 만든 것)

@@ -4,6 +4,7 @@ import {
   nowSec,
   bumpCounter,
   getCounter,
+  getCounterMap,
   addUv,
   countUv,
   countUvExcludingCountry,
@@ -91,8 +92,31 @@ const trackHandler = async (c: Context) => {
 app.post("/track", trackHandler);
 app.post("/_t", trackHandler);
 
-// POST /event
-app.post("/event", async (c) => {
+/**
+ * 광고 도달 상태 (#85).
+ *
+ * 순서가 결과를 바꾼다. **`filled`가 가장 먼저다** — 코스메틱 필터만 켠 사용자는 미끼가
+ * 숨겨져 `adblock`으로 잡히지만 실제 광고는 정상 배달된다. 그 세션은 수익이 나므로
+ * 차단으로 세면 노출률이 실제보다 낮게 나온다.
+ * `early`(체크포인트 전 이탈)는 아직 도착 중이던 광고를 no-fill로 오판하지 않도록
+ * 별도 버킷으로 뺀다 — 버리지는 않는다. 이탈 세션도 Ezoic은 visit로 세기 때문이다.
+ */
+const AD_STATES = ["filled", "nofill", "blocked", "noscript", "early"] as const;
+type AdState = (typeof AD_STATES)[number];
+
+function adState(body: Record<string, any>): AdState {
+  if (body.filled) return "filled";
+  if (body.early) return "early";
+  if (body.adblock) return "blocked";
+  if (!body.script) return "noscript";
+  return "nofill";
+}
+
+// POST /event (legacy) / POST /_e
+// 두 경로 모두 동일 핸들러. /_e는 광고차단 필터(EasyPrivacy/uBlock 등) 회피용 별칭.
+// 광고 도달 계측(adstate)은 반드시 /_e로 와야 한다 — /event가 필터에 걸리면
+// 차단된 세션의 표본만 소실돼 차단율이 0에 수렴한다 (#85).
+const eventHandler = async (c: Context) => {
   const ip = extractIp(c);
   if (checkRateLimit(`rl:event:${ip}`, 30, 60)) {
     return c.json({ error: "Too many requests" }, 429);
@@ -113,10 +137,21 @@ app.post("/event", async (c) => {
   } else if (type === "duration" && typeof body.value === "number") {
     const duration = Math.min(Math.max(Math.round(body.value), 0), 3600);
     db.query(`INSERT INTO analytics_duration_samples(duration) VALUES (?)`).run(duration);
+  } else if (type === "adstate") {
+    const state = adState(body);
+    const countryCode = extractCountry(c);
+    bumpCounter("adstate", state, "");
+    if (countryCode) bumpCounter("adstate", state, countryCode);
+    // 날짜별 추이 — 대시보드 설정을 바꿨을 때 노출률이 움직이는지 보려면 필요하다.
+    bumpCounter("adstate_day", `${today()}:${state}`, "");
+    bumpCounter("adcmp", body.cmp ? "yes" : "no", "");
   }
 
   return c.json({ ok: true });
-});
+};
+
+app.post("/event", eventHandler);
+app.post("/_e", eventHandler);
 
 // GET /popular
 app.get("/popular", async (c) => {
@@ -336,6 +371,29 @@ app.get("/stats", async (c) => {
   const searchCount = getCounter("event", "search", "");
   const pwaInstalls = getCounter("event", "pwa_install", "");
 
+  // ─── 광고 도달 계측 (#85) ───
+  // ePMV가 낮을 때 원인이 "재고가 안 붙음(nofill)"인지 "단가가 낮음"인지 가르는 숫자.
+  const adVisibility = getCounterMap("adstate");
+  const adCmp = getCounterMap("adcmp");
+  const adVisibilityDaily = dates
+    .map((d) => {
+      const row = { date: d } as { date: string } & Record<AdState, number>;
+      for (const st of AD_STATES) row[st] = getCounter("adstate_day", `${d}:${st}`, "");
+      return row;
+    })
+    .filter((row) => AD_STATES.some((st) => row[st] > 0));
+  // 국가별은 admin only — 중국(광고 도메인 도달 불가)을 분리해서 봐야 나머지 해석이 선다.
+  const adVisibilityByCountry: Record<string, Record<string, number>> = {};
+  if (isAdmin) {
+    for (const r of db
+      .query<{ bucket: string; country: string; count: number }, []>(
+        `SELECT bucket, country, count FROM analytics_counters WHERE scope = 'adstate' AND country != ''`,
+      )
+      .all()) {
+      (adVisibilityByCountry[r.country] ??= {})[r.bucket] = r.count;
+    }
+  }
+
   // ─── excludeCountry 적용 ───
   if (excludeCountry) {
     totalPV = Math.max(0, totalPV - getCounter("pv_total", "", excludeCountry));
@@ -397,6 +455,10 @@ app.get("/stats", async (c) => {
     ratings,
     avgRating,
     totalRatings,
+    adVisibility,
+    adVisibilityDaily,
+    adVisibilityByCountry,
+    adCmp,
     isAdmin,
   };
 

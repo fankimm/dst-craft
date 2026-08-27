@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Sans_KR } from "next/font/google";
 import Script from "next/script";
+import { AdVisibilityProbe } from "@/components/ads/AdVisibilityProbe";
 import ReactDOM from "react-dom";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -419,6 +420,11 @@ export default function RootLayout({
             <FavoritesProvider>
               <TooltipProvider>{children}</TooltipProvider>
             </FavoritesProvider>
+            {/* 광고 도달 계측 (#85) — 화면에는 아무것도 그리지 않는다.
+                AppShell이 아니라 여기에 두는 이유: 유입의 65%가 들어오는 SEO 상세
+                페이지(/item, /character 등)는 AppShell을 거치지 않는다. 앱 화면에만
+                달면 정작 재고 판정이 가장 중요한 트래픽이 표본에서 빠진다. */}
+            <AdVisibilityProbe />
           </AuthProvider>
         </SettingsProvider>
       </body>
