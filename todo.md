@@ -177,6 +177,8 @@ node scripts/check-ad-audit.mjs https://www.dstcraft.com/item/abigail-flower 390
   - **일별 ePMV가 8/20 $1.81 → 8/25 $0.99로 하락 추세** — 승인 직후 반짝인지 추세인지 9월 데이터로 확인 필요
   - 🔴 **10/15 판단 기준으로 잡았던 "EPMV $2"에 미달.** 다만 AdSense 단독은 구조적으로 이보다 낮으므로 "Ezoic을 떠나 AdSense 단독"은 수익상 개선이 아니다. 실제 쟁점은 **월 $13을 위해 CWV/SEO 리스크와 1년 약정을 지는 게 맞는가**로 바뀐다
   - [ ] no-fill 비율 확인 (#85 계측) — ePMV가 낮은 원인이 재고 부족인지 단가인지 가른다
+    - #85 프론트는 beta에서 동작 확인 완료(비콘 발화·페이로드·CLS 0.0019). **단 `/api/_e`는 main 머지 후에야 살아난다** — bun-api는 beta에 배포되지 않는다
+    - 따라서 실데이터는 `/release` 이후 prod에서만 쌓인다. 며칠 뒤 `/stats`의 "광고 도달" 섹션 확인
 
 - [ ] **Core Web Vitals (서치 콘솔)** — 유입 65%가 구글인데 광고를 넣었다. CLS/LCP/INP 추이 확인. CrUX는 28일 롤링이라 반영이 느림. **순위가 내려가면 광고 수익보다 손실이 큼**
 
