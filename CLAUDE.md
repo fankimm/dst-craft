@@ -138,6 +138,12 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 
 맥미니 접속이 안 될 때만 대안으로, 사용자에게 로그인한 브라우저의 `localStorage.getItem("dst-auth-token")`을 받아 `PATCH https://www.dstcraft.com/api/feedback`에 `{id, status, reply, replyAuthor:"claude"}`를 직접 보낸다. 그 토큰은 30일짜리 비밀값이므로 레포·메모리·로그에 남기지 말 것.
 
+## Ad Decision Deadline (놓치면 1년 묶임)
+- **`docs/ezoic-decision.md`** — Ezoic 계속 여부 결정 문서. 판단 기준·데이터 읽는 법·분기별 절차가 전부 여기 있다
+- 🔴 **2026-10-15 통보 기한** (그 전에 `2026-10-02` PIN 마감이 먼저다 — 놓치면 광고가 멈춰 판단 근거가 끊긴다)
+- 세션 시작 시 `scripts/check-deadlines.sh`가 D-30부터 자동 경고 (SessionStart 훅)
+- 광고 관련 질문/작업을 받으면 이 문서를 먼저 확인할 것
+
 ## TODO Management
 - `todo.md` — 프로젝트 전체 TODO (진행중/대기/완료)
 - `/todo` 스킬로 세션 시작 시 상태 확인 + 작업 재개

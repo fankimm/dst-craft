@@ -6,6 +6,10 @@
           {
             "type": "command",
             "command": "bash scripts/check-main-worktree.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash scripts/check-deadlines.sh"
           }
         ]
       }
