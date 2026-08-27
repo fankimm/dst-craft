@@ -41,6 +41,28 @@ export interface AnalyticsData {
   ratings?: Record<string, number>;
   avgRating?: number;
   totalRatings?: number;
+  /** 광고 도달 상태별 세션 수 (#85). 키는 filled/nofill/blocked/noscript/early */
+  adVisibility?: Record<string, number>;
+  /** 날짜별 광고 도달 상태 (#85) */
+  adVisibilityDaily?: { date: string; filled: number; nofill: number; blocked: number; noscript: number; early: number }[];
+  /** 국가별 광고 도달 상태 — admin only (#85) */
+  adVisibilityByCountry?: Record<string, Record<string, number>>;
+  /** TCF CMP 존재 여부별 세션 수 — no-fill이 동의 거부 때문인지 가릴 때 쓴다 (#85) */
+  adCmp?: Record<string, number>;
+}
+
+/** 광고 도달 계측 1건 (#85) — 판정은 `AdVisibilityProbe`가 한다 */
+export interface AdVisibilitySample {
+  /** 미끼 엘리먼트가 숨겨졌다 = 광고 필터가 걸려 있다 */
+  adblock: boolean;
+  /** Ezoic 본체(sa.min.js)가 실행됐다 */
+  script: boolean;
+  /** 자리 중 하나라도 실제 소재가 그려졌다 */
+  filled: boolean;
+  /** TCF CMP가 떠 있다 */
+  cmp: boolean;
+  /** 체크포인트 전에 이탈해 판정이 이른 표본 */
+  early: boolean;
 }
 
 /** Track a page visit — call once on app load */
@@ -347,6 +369,20 @@ export function trackEvent(type: "search" | "pwa_install" | "share" | "github_st
   const url = analyticsUrl("/event");
   if (!url || skipTracking) return;
   navigator.sendBeacon(url, JSON.stringify({ type }));
+}
+
+/**
+ * 광고 도달 여부 보고 (#85).
+ *
+ * **`/event`가 아니라 `/_e`로 보낸다.** 이 비콘이 광고차단 필터에 걸리면 하필 차단된
+ * 세션의 표본만 통째로 사라져, 차단율이 0에 수렴하는 정반대 결과가 나온다. 측정하려는
+ * 대상이 측정 경로를 막는 구조라 경로 선택이 곧 결과의 유효성이다.
+ * 서버 라우트는 `/event`와 동일하다 (`/track` → `/_t`와 같은 관계).
+ */
+export function trackAdVisibility(sample: AdVisibilitySample, skipTracking?: boolean) {
+  const url = analyticsUrl("/_e");
+  if (!url || skipTracking) return;
+  navigator.sendBeacon(url, JSON.stringify({ type: "adstate", ...sample }));
 }
 
 export interface VisitorPage {

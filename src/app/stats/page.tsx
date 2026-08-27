@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import {
   BarChart3, Globe, Users, Eye, RefreshCw,
   Smartphone, Monitor, Clock, Search, Download,
-  RotateCcw, TrendingUp, ExternalLink, Star,
+  RotateCcw, TrendingUp, ExternalLink, Star, Megaphone,
 } from "lucide-react";
 import { BackToHome } from "@/components/ui/BackToHome";
 import { DetailPanel } from "@/components/ui/DetailPanel";
@@ -80,6 +80,20 @@ function PercentBar({ label, count, total, icon }: { label: string; count: numbe
  * sortedItems: [key, count] 배열 (정렬된 상태로 전달).
  * renderItem: 한 항목을 PercentBar 등으로 렌더링.
  */
+/**
+ * 광고 도달 상태 표시 순서와 라벨 (#85).
+ *
+ * 서버(`bun-api` analytics 라우트)의 `AD_STATES`와 키가 1:1로 대응한다.
+ * 순서는 "수익이 나는 쪽 → 안 나는 쪽 → 판정 불가" 로 읽히게 둔다.
+ */
+const AD_STATE_ORDER = [
+  { key: "filled", label: "노출됨" },
+  { key: "nofill", label: "재고 없음" },
+  { key: "blocked", label: "광고 차단" },
+  { key: "noscript", label: "스크립트 미도달" },
+  { key: "early", label: "이탈" },
+] as const;
+
 function CollapsibleList({
   title,
   icon,
@@ -527,6 +541,72 @@ export default function StatsPage() {
                 </button>
               )}
             </div>
+
+            {/* 광고 도달 (#85) — Ezoic 대시보드는 "채워진 노출"만 보여준다.
+                여기서는 요청이 나갔는데 소재가 안 온 세션(nofill)과 광고 필터에 막힌
+                세션(blocked)까지 세므로, ePMV가 낮을 때 원인을 재고 부족과 단가 하락으로
+                가를 수 있다. */}
+            {(() => {
+              const av = data.adVisibility ?? {};
+              const totalAv = AD_STATE_ORDER.reduce((n, st) => n + (av[st.key] ?? 0), 0);
+              if (totalAv === 0) return null;
+              // 이탈 세션(early)은 판정이 이르므로 노출률 계산에서 뺀다 — 대신 따로 보여준다.
+              const judged = totalAv - (av.early ?? 0);
+              const filled = av.filled ?? 0;
+              const fillPct = judged > 0 ? Math.round((filled / judged) * 100) : 0;
+              const byCountry = data.adVisibilityByCountry ?? {};
+              const countryRows = Object.entries(byCountry)
+                .map(([code, m]) => {
+                  const sum = AD_STATE_ORDER.reduce((n, st) => n + (m[st.key] ?? 0), 0);
+                  const judgedC = sum - (m.early ?? 0);
+                  return { code, sum, judgedC, filled: m.filled ?? 0 };
+                })
+                .filter((r) => r.judgedC > 0)
+                .sort((a, b) => b.sum - a.sum)
+                .slice(0, 8);
+              return (
+                <div className="rounded-lg border border-border bg-card p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-sm font-semibold flex items-center gap-2">
+                      <Megaphone className="size-4" />
+                      광고 도달
+                    </h2>
+                    <span className="text-xs text-muted-foreground">
+                      노출률 {fillPct}% / 판정 {judged}건
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    {AD_STATE_ORDER.map((st) => (
+                      <PercentBar
+                        key={st.key}
+                        label={st.label}
+                        count={av[st.key] ?? 0}
+                        total={st.key === "early" ? totalAv : judged}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                    노출·차단·미도달 비율은 <strong>판정 {judged}건</strong> 기준이다.
+                    이탈만 전체 {totalAv}건 기준 — 체크포인트(4초) 전에 떠나 판정이 이른 표본이라
+                    비율 계산에서 뺐다.
+                  </p>
+                  {isAdmin && countryRows.length > 0 && (
+                    <div className="space-y-2 border-t border-border pt-3">
+                      <p className="text-xs font-medium text-muted-foreground">국가별 노출률</p>
+                      {countryRows.map((r) => (
+                        <PercentBar
+                          key={r.code}
+                          label={countryName(r.code)}
+                          icon={countryFlag(r.code)}
+                          count={r.filled}
+                          total={r.judgedC}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Ratings */}
             {(data.totalRatings ?? 0) > 0 && (() => {
