@@ -48,6 +48,25 @@ export function AppShell() {
   // 첫 렌더는 서버와 동일한 "crafting", layout effect에서 URL의 tab을 반영한다.
   const [activeTab, setActiveTab] = useState<TabId>("crafting");
   useUrlStateSync(readTabFromUrl, setActiveTab);
+
+  // 한 번이라도 연 탭만 마운트한다 (#91).
+  //
+  // 예전에는 9개 탭을 전부 마운트하고 비활성 탭을 `hidden`(=display:none)으로만
+  // 감췄다. 화면에 안 보일 뿐 DOM·이미지·데이터 비용은 전부 발생한다 — 홈 실측에서
+  // 안 보이는 탭이 이미지 1,724KB를 끌어왔고, 프리렌더된 index.html은 391KB였다.
+  //
+  // 한 번 마운트한 탭은 그대로 유지한다. 탭을 오갈 때 검색어·스크롤·스킬 시뮬레이터
+  // 편집 상태가 날아가면 안 되기 때문 — 목적은 "안 연 탭을 미루는 것"이지
+  // "떠난 탭을 버리는 것"이 아니다.
+  // 갱신은 effect가 아니라 렌더 중에 한다 (React "렌더 중 상태 조정" 패턴). effect로
+  // 미루면 `activeTab` 이 layout effect에서 바뀌는 딥링크(`?tab=bosses`) 진입 시
+  // 페인트 한 번을 빈 화면으로 흘려보낸다 — `useUrlStateSync` 가 layout effect인 이유와
+  // 같은 문제다. 여기서 setState하면 React가 커밋 없이 즉시 다시 렌더한다.
+  const [openedTabs, setOpenedTabs] = useState<Set<TabId>>(() => new Set<TabId>(["crafting"]));
+  if (!openedTabs.has(activeTab)) {
+    setOpenedTabs(new Set(openedTabs).add(activeTab));
+  }
+  const isTabMounted = (id: TabId) => openedTabs.has(id);
   const { resolvedLocale, devMenuEnabled } = useSettings();
   const { isAdmin, token } = useAuth();
   const isDev = process.env.NODE_ENV === "development";
@@ -359,30 +378,46 @@ export function AppShell() {
         <div className={activeTab === "crafting" ? "h-full" : "hidden"}>
           <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} externalBackLabel={craftingBack?.label ?? null} onExternalBack={craftingBack ? handleExternalBack : undefined} onPanelClose={() => setCraftingBack(null)} />
         </div>
+        {isTabMounted("cooking") && (
         <div className={activeTab === "cooking" ? "h-full" : "hidden"}>
           <CookingApp pendingRecipeId={pendingRecipeId} onClearPendingRecipe={handleClearPendingRecipe} onViewCraftingItem={handleViewCraftingItem} />
         </div>
+        )}
+        {isTabMounted("cookpot") && (
         <div className={activeTab === "cookpot" ? "h-full" : "hidden"}>
           <CookpotApp onViewRecipe={handleViewRecipe} />
         </div>
+        )}
+        {isTabMounted("bosses") && (
         <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
           <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} pendingBossId={pendingBossId} onClearPendingBoss={handleClearPendingBoss} externalBackLabel={bossesBack?.label ?? null} onExternalBack={bossesBack ? handleBossesExternalBack : undefined} onPanelClose={() => setBossesBack(null)} />
         </div>
+        )}
+        {isTabMounted("skills") && (
         <div className={activeTab === "skills" ? "h-full" : "hidden"}>
           <SkillSimulatorApp onViewCraftingItem={handleViewCraftingItem} />
         </div>
+        )}
+        {isTabMounted("skins") && (
         <div className={activeTab === "skins" ? "h-full" : "hidden"}>
           <SkinsApp />
         </div>
+        )}
+        {isTabMounted("quests") && (
         <div className={activeTab === "quests" ? "h-full" : "hidden"}>
           <QuestsApp onViewCraftingItem={(id) => handleViewCraftingItem(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} onViewBoss={(id) => handleViewBoss(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} />
         </div>
+        )}
+        {isTabMounted("console") && (
         <div className={activeTab === "console" ? "h-full" : "hidden"}>
           <ConsoleApp />
         </div>
+        )}
+        {isTabMounted("settings") && (
         <div className={activeTab === "settings" ? "h-full" : "hidden"}>
           <SettingsPage />
         </div>
+        )}
         </div>
         <AdSlot variant="rail-right" className="hidden min-[1500px]:flex items-start self-stretch max-h-full overflow-y-auto overscroll-contain" />
       </div>
