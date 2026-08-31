@@ -257,7 +257,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
         {character && (
           <section className="rounded-xl border border-amber-500/40 bg-amber-500/5 px-4 py-3 flex items-center gap-3">
             <img
-              src={`/images/category-icons/characters/${character.portrait}.png`}
+              src={`/images/category-icons/characters/${character.portrait}.webp`}
               alt={characterName ?? character.name}
               className="size-8 object-contain"
               loading="lazy"
@@ -355,7 +355,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                     key={cat.id}
                     className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1 text-xs text-foreground"
                   >
-                    <img src={`/images/category-icons/${cat.id}.png`} alt="" className="size-3.5 object-contain" loading="lazy" />
+                    <img src={`/images/category-icons/${cat.id}.webp`} alt="" className="size-3.5 object-contain" loading="lazy" />
                     {catName}
                   </span>
                 );

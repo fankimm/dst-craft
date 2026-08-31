@@ -28,7 +28,7 @@ export function FavClickBadge({ isFav, onToggleFav, clicks }: FavClickBadgeProps
         aria-label="favorite"
       >
         <img
-          src={assetPath("/images/ui/health.png")}
+          src={assetPath("/images/ui/health.webp")}
           alt=""
           className={cn("size-3.5 sm:size-4", !isFav && "opacity-30 grayscale")}
           loading="lazy"

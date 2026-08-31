@@ -41,7 +41,7 @@ export function CategorySidebar({
                 onClick={() => onSelectCategory(cat.id)}
               >
                 <img
-                  src={assetPath(`/images/category-icons/${cat.id}.png`)}
+                  src={assetPath(`/images/category-icons/${cat.id}.webp`)}
                   alt={categoryName(cat, resolvedLocale)}
                   className="size-full object-contain"
                   draggable={false}

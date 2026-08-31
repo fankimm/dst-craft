@@ -38,7 +38,7 @@ export function ItemIcon({ item, isSelected, onClick, clicks }: ItemIconProps) {
         const char = getCharacterById(item.characterOnly);
         return char ? (
           <img
-            src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
+            src={assetPath(`/images/category-icons/characters/${char.portrait}.webp`)}
             alt={item.characterOnly}
             className="absolute top-1 right-1 size-6.5 sm:size-8 object-contain"
             loading="lazy"

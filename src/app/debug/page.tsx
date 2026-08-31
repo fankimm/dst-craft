@@ -31,7 +31,7 @@ function StyleA() {
           >
             <img
               src={assetPath(
-                `/images/category-icons/characters/${tag.portrait}.png`
+                `/images/category-icons/characters/${tag.portrait}.webp`
               )}
               alt={tag.text}
               className="size-4 object-contain"
@@ -82,7 +82,7 @@ function StyleB() {
           >
             <img
               src={assetPath(
-                `/images/category-icons/characters/${tag.portrait}.png`
+                `/images/category-icons/characters/${tag.portrait}.webp`
               )}
               alt={tag.text}
               className="size-4 object-contain"
@@ -189,7 +189,7 @@ export default function DebugPage() {
             >
               <img
                 src={assetPath(
-                  `/images/category-icons/characters/${tag.portrait}.png`
+                  `/images/category-icons/characters/${tag.portrait}.webp`
                 )}
                 alt={tag.text}
                 className="size-4 object-contain"
@@ -224,7 +224,7 @@ export default function DebugPage() {
             >
               <img
                 src={assetPath(
-                  `/images/category-icons/characters/${tag.portrait}.png`
+                  `/images/category-icons/characters/${tag.portrait}.webp`
                 )}
                 alt={tag.text}
                 className="size-4 object-contain"

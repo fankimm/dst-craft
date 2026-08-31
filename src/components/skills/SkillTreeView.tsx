@@ -203,7 +203,7 @@ export function SkillTreeView({
       <div className="shrink-0 flex items-center gap-3 px-4 py-2.5 border-b border-border bg-background/80">
         {char && (
           <Image
-            src={`/images/category-icons/characters/${char.portrait}.png`}
+            src={`/images/category-icons/characters/${char.portrait}.webp`}
             alt=""
             width={32}
             height={32}
@@ -221,7 +221,7 @@ export function SkillTreeView({
           </h2>
           <div ref={pointsRef} className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Image
-              src="/images/ui/skill_eye.png"
+              src="/images/ui/skill_eye.webp"
               alt=""
               width={16}
               height={16}
@@ -299,7 +299,7 @@ export function SkillTreeView({
       {isWx78 && (
         <div className="shrink-0 flex border-b border-border bg-background/80">
           {([
-            { id: "skills" as const, ko: "스킬트리", en: "Skill Tree", src: "/images/ui/skill_eye.png" },
+            { id: "skills" as const, ko: "스킬트리", en: "Skill Tree", src: "/images/ui/skill_eye.webp" },
             { id: "circuits" as const, ko: "회로판", en: "Circuit Board", src: "/images/game-items/wx78_moduleremover.png" },
             { id: "status" as const, ko: "현황", en: "Status", src: "/images/game-items/scandata.png" },
           ]).map((t) => (

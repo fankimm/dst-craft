@@ -51,7 +51,7 @@ const SettingsPage = dynamic(() => import("./settings/SettingsPage").then((m) =>
  * 이후에야 광고 파이프라인을 시작하는데(#86·#88), 그 구간에 우리 청크로 대역폭을
  * 밀면 첫 광고가 그만큼 늦어진다. 상호작용 시점 프리페치는 그 경쟁이 없다.
  *
- * webpack이 아래 `import()` 를 위 `dyn()` 의 것과 같은 청크로 묶으므로 중복 요청은
+ * webpack이 아래 `import()` 를 위 `dynamic()` 의 것과 같은 청크로 묶으므로 중복 요청은
  * 생기지 않는다.
  */
 const TAB_PREFETCH: Partial<Record<TabId, () => Promise<unknown>>> = {
@@ -73,11 +73,11 @@ function prefetchTab(id: TabId) {
 }
 
 const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?: boolean }[] = [
-  { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.png" },
-  { id: "cooking", labelKey: "tab_cooking", image: "/images/category-icons/cooking.png" },
+  { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.webp" },
+  { id: "cooking", labelKey: "tab_cooking", image: "/images/category-icons/cooking.webp" },
   { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
   { id: "bosses", labelKey: "tab_bosses", image: "/images/game-items/deerclops_eyeball.png" },
-  { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.png" },
+  { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.webp" },
   { id: "skins", labelKey: "tab_skins", image: "/images/skins/axe_heart.png" },
   { id: "quests", labelKey: "tab_quests", image: "/images/game-items/hermitcrab_npc.png" },
   { id: "console", labelKey: "tab_console", image: "/images/game-items/papyrus.png" },

@@ -190,9 +190,9 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
             {L.stats[lang]}
           </h2>
           <div className="grid grid-cols-3 gap-3">
-            <StatCard icon="/images/ui/health.png" label={lang === "ko" ? "체력" : "Health"} value={recipe.health} color="red" />
-            <StatCard icon="/images/ui/hunger.png" label={lang === "ko" ? "허기" : "Hunger"} value={recipe.hunger} color="yellow" />
-            <StatCard icon="/images/ui/sanity.png" label={lang === "ko" ? "정신력" : "Sanity"} value={recipe.sanity} color="blue" />
+            <StatCard icon="/images/ui/health.webp" label={lang === "ko" ? "체력" : "Health"} value={recipe.health} color="red" />
+            <StatCard icon="/images/ui/hunger.webp" label={lang === "ko" ? "허기" : "Hunger"} value={recipe.hunger} color="yellow" />
+            <StatCard icon="/images/ui/sanity.webp" label={lang === "ko" ? "정신력" : "Sanity"} value={recipe.sanity} color="blue" />
           </div>
         </section>
 

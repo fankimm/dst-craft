@@ -386,11 +386,11 @@ function ResultCard({
           )}
           <div className="flex items-center gap-2 mt-0.5 text-[10px] text-muted-foreground">
             <span className="inline-flex items-center gap-0.5">
-              <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-3.5 object-contain" loading="lazy" />
+              <img src={assetPath("/images/ui/cooktime.webp")} alt="" className="size-3.5 object-contain" loading="lazy" />
               {cookSeconds}{t(locale, "cooking_seconds")}
             </span>
             <span className="inline-flex items-center gap-0.5">
-              <img src={assetPath("/images/ui/perish.png")} alt="" className="size-3.5 object-contain" loading="lazy" />
+              <img src={assetPath("/images/ui/perish.webp")} alt="" className="size-3.5 object-contain" loading="lazy" />
               {recipe.perishDays == null
                 ? t(locale, "cooking_no_perish")
                 : `${recipe.perishDays}${t(locale, "cooking_days")}`}
@@ -407,17 +407,17 @@ function ResultCard({
       {/* Stats (vertical) */}
       <div className="flex flex-col gap-1">
         <InlineStat
-          iconSrc={assetPath("/images/ui/health.png")}
+          iconSrc={assetPath("/images/ui/health.webp")}
           formatted={formatStat(recipe.health)}
           colorClass={statColor(recipe.health)}
         />
         <InlineStat
-          iconSrc={assetPath("/images/ui/hunger.png")}
+          iconSrc={assetPath("/images/ui/hunger.webp")}
           formatted={formatStat(recipe.hunger)}
           colorClass={statColor(recipe.hunger)}
         />
         <InlineStat
-          iconSrc={assetPath("/images/ui/sanity.png")}
+          iconSrc={assetPath("/images/ui/sanity.webp")}
           formatted={formatStat(recipe.sanity)}
           colorClass={statColor(recipe.sanity)}
         />

@@ -54,7 +54,7 @@ function categoryImage(catId: BossCategoryId): string {
   return boss ? bossFirstImage(boss) : "/images/bosses/deerclops.png";
 }
 
-const ALL_CATEGORY_IMAGE = "/images/category-icons/bosses_all.png";
+const ALL_CATEGORY_IMAGE = "/images/category-icons/bosses_all.webp";
 
 /** Build unique loot list for suggestions */
 const allLootItems = (() => {
@@ -359,7 +359,7 @@ export function BossesApp({
               {/* 카테고리 첫 화면 첫 줄 광고 (#75) */}
               <AdSlot variant="top" className="col-span-full" />
               <CategoryCard
-                imageSrc={assetPath("/images/ui/health.png")}
+                imageSrc={assetPath("/images/ui/health.webp")}
                 label={t(resolvedLocale, "favorites")}
                 badgeCount={bossFavCount}
                 onClick={() => handleSelectCategory("favorites")}
@@ -565,7 +565,7 @@ function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale })
   if (health != null) {
     const val = typeof health === "string" ? health : health.toLocaleString();
     items.push({
-      icon: "/images/ui/health.png",
+      icon: "/images/ui/health.webp",
       label: locale === "ko" ? "체력" : "Health",
       value: val,
       color: "text-red-500",
@@ -586,7 +586,7 @@ function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale })
 
   if (sanity != null && sanity !== 0) {
     items.push({
-      icon: "/images/ui/sanity.png",
+      icon: "/images/ui/sanity.webp",
       label: locale === "ko" ? "정신력" : "Sanity",
       value: formatSanityAura(sanity, locale),
       color: "text-purple-400",
@@ -801,7 +801,7 @@ function BossDetail({
           <div className="flex items-center gap-1.5">
             <h3 className="text-base font-semibold">{localName}</h3>
             <button onClick={onToggleFav} className="shrink-0 p-0.5" aria-label="favorite">
-              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} loading="lazy" />
+              <img src={assetPath("/images/ui/health.webp")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} loading="lazy" />
             </button>
           </div>
           {showAltName && (

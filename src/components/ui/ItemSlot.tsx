@@ -6,7 +6,7 @@ import { assetPath, bossThumbPath } from "@/lib/asset-path";
 interface ItemSlotProps {
   /** game-items image filename (e.g. "meat.png") */
   icon?: string;
-  /** Full image path override (e.g. "/images/ui/health.png") — takes priority over icon */
+  /** Full image path override (e.g. "/images/ui/health.webp") — takes priority over icon */
   iconPath?: string;
   /** Localized display name shown below the icon */
   label: string;
