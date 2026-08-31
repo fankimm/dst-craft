@@ -12,14 +12,10 @@ import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { AdBleed } from "@/components/ads/AdBleed";
+import { resolveIconPath } from "@/lib/icon-path";
 
 const SITE_URL = "https://www.dstcraft.com";
 
-function resolveIcon(item: { icon?: string; iconPath?: string }): string | null {
-  if (item.iconPath) return item.iconPath;
-  if (item.icon) return `/images/game-items/${item.icon}`;
-  return null;
-}
 
 function stepTitle(step: QuestStep, lang: SeoLang): string {
   return lang === "ko" ? step.titleKo : step.titleEn;
@@ -49,7 +45,7 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
   const subtitle = lang === "ko" ? quest.titleEn : null;
   const totalSteps = quest.steps.length;
   const subCount = countSubsteps(quest);
-  const heroIcon = resolveIcon(quest);
+  const heroIcon = resolveIconPath(quest);
 
   const seo = lang === "ko" ? generateQuestSeoTextKo(quest) : generateQuestSeoText(quest);
 
@@ -154,7 +150,7 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
           </h2>
           <ol className="space-y-3">
             {quest.steps.map((step, i) => {
-              const icon = resolveIcon(step);
+              const icon = resolveIconPath(step);
               const title = stepTitle(step, lang);
               return (
                 <li
@@ -204,7 +200,7 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
                       {step.substeps && step.substeps.length > 0 && (
                         <ul className="mt-2 space-y-1">
                           {step.substeps.map((ss) => {
-                            const ssIcon = resolveIcon(ss);
+                            const ssIcon = resolveIconPath(ss);
                             const ssName = substepName(ss, lang);
                             const ssNote = substepNote(ss, lang);
                             const ssCraft = ss.craftId ? canonicalForItem(ss.craftId) : undefined;
@@ -289,7 +285,7 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {otherQuests.map((q) => {
-                const qIcon = resolveIcon(q);
+                const qIcon = resolveIconPath(q);
                 const qName = questTitle(q, lang);
                 const qSub = lang === "ko" ? q.titleEn : null;
                 return (
@@ -352,7 +348,7 @@ export function buildQuestMetadata(slug: string, lang: SeoLang) {
   const koUrl = `${SITE_URL}/ko/quest/${canonicalSlug}`;
   const canonical = lang === "ko" ? koUrl : enUrl;
 
-  const heroIcon = resolveIcon(quest);
+  const heroIcon = resolveIconPath(quest);
 
   return {
     title,

@@ -182,7 +182,17 @@ node scripts/check-ad-audit.mjs https://www.dstcraft.com/item/abigail-flower 390
   - `ezoicanalytics.com/analytics.js` 제거: 차단하면 3/3회에서 `sacountry.go`조차 안 나가고 광고가 하나도 안 뜬다 (하드 의존성)
   - "광고가 앱을 느리게 만든다"는 오해: 입력 지연 >100ms 발생이 광고 ON 3/45, OFF 3/45로 동일. CPU 스로틀을 풀면 TBT 218→0ms인데 첫 광고는 16712→16891ms로 불변
 - **할 만한 것 (기대효과 순)**
-  - [ ] **보스 PNG 축소·WebP화** — 표시 크기 48~64px인데 원본 `alterguardian_phase4` 3.5MB / `crabking` 2.1MB / `bearger`·`mutateddeerclops` 1.5MB / `dragonfly` 1.3MB. 차단 실험에서 홈 load 1789→992ms, 첫 광고 4778→3901ms. **Fast3G 홈·characters는 현재 30초 내 window load 미발화로 광고 노출이 0** → 노출 자체가 생긴다 (직접 수익 증분)
+  - [x] **보스 PNG 축소·WebP화 — 완료 (#88, 2026-08-27)**
+    - `scripts/optimize-boss-images.sh`가 320px WebP q90 축소본 생성 (34장 24,554KB → 927KB). 원본은 OG/schema용으로 유지 — UI 렌더 경로만 `bossImageSrc()`로 교체
+    - **prod vs beta A/B 실측 (각 4회, 중앙값, 실제 UA)**
+      | | prod(전) | beta(후) | 차이 |
+      |---|---|---|---|
+      | 홈 이미지 | 10,249KB | 1,543KB | −85% |
+      | window load | 3,596ms | 1,793ms | −1,803ms |
+      | 첫 광고 | 6,709ms | 5,425ms | **−1,284ms** |
+    - load 절감이 광고로 전달된 비율 **0.71** (조사 추정 0.62보다 양호)
+    - prod 6,709ms가 사용자 눈대중 "6~7초"와 일치 — 체감 관측이 정확했다
+    - 남은 최대 이미지는 `category-icons/all.png` 165KB. 보스만큼의 이득은 없어 후속으로 둔다
   - [ ] Ezoic 지원 티켓: 입찰 타임아웃 T 상한 하향 요청 (실측 근거 첨부). 파트너 `insticator`(57건 중 낙찰 0, 타임아웃 24회, 응답 중앙값 1375ms)·`yieldmo`(응답 0, 타임아웃 7회) 검토 요청 — 단 낙찰 0은 헤드리스·데이터센터 IP 편향 가능성이 있어 **타임아웃 하향을 먼저**
   - [ ] 홈 초기 페이로드 지연 로딩 (269KB 청크, RSC prefetch, GSI, `/api/{rating,top-countries,feedback/public,popular}` 4건)
 - **미해결**: 이번 조사는 전부 headless에서 나왔고, 기본 headless UA로는 우리 포함 Ezoic 계열 5개 사이트가 **전부 0% 충전**됐다(UA만 바꾸면 충전). Ezoic이 클라이언트를 분류한다는 뜻이라 절대값이 실사용자와 다를 수 있다 → **#86의 실사용자 도착 시각 분포가 이 의심을 푼다**

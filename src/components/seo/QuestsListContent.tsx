@@ -3,14 +3,10 @@ import { canonicalForQuest } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 import { AdSlot } from "@/components/ads/AdSlot";
+import { resolveIconPath } from "@/lib/icon-path";
 
 const SITE_URL = "https://www.dstcraft.com";
 
-function resolveIcon(item: { icon?: string; iconPath?: string }): string | null {
-  if (item.iconPath) return item.iconPath;
-  if (item.icon) return `/images/game-items/${item.icon}`;
-  return null;
-}
 
 function countSubsteps(q: Quest): number {
   let n = 0;
@@ -47,7 +43,7 @@ export function QuestsListContent({ lang }: { lang: SeoLang }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {quests.map((q) => {
-            const icon = resolveIcon(q);
+            const icon = resolveIconPath(q);
             const primary = lang === "ko" ? q.titleKo : q.titleEn;
             const secondary = lang === "ko" ? q.titleEn : null;
             const totalSteps = q.steps.length;

@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { TabScrollArea } from "@/components/ui/TabScrollArea";
 import { AdSlot } from "@/components/ads/AdSlot";
+import { resolveIconPath } from "@/lib/icon-path";
 
 function stepTitle(step: QuestStep, locale: Locale): string {
   return locale === "ko" ? step.titleKo : step.titleEn;
@@ -27,11 +28,6 @@ function substepNote(s: QuestSubstep, locale: Locale): string | undefined {
   return locale === "ko" ? s.noteKo : s.noteEn;
 }
 
-function resolveIcon(item: { icon?: string; iconPath?: string }): string | null {
-  if (item.iconPath) return assetPath(item.iconPath);
-  if (item.icon) return assetPath(`/images/game-items/${item.icon}`);
-  return null;
-}
 
 export function QuestsApp({ onViewCraftingItem, onViewBoss }: { onViewCraftingItem?: (itemId: string) => void; onViewBoss?: (bossId: string) => void } = {}) {
   const { resolvedLocale } = useSettings();
@@ -137,7 +133,7 @@ function QuestSection({
   const { total, checkedCount, goal, effective, goalReached, allDone } = progress;
   const denom = goal;
   const percent = denom === 0 ? 0 : Math.round((effective / denom) * 100);
-  const questIconSrc = resolveIcon(quest);
+  const questIconSrc = resolveIconPath(quest);
   // 진행바: effective/goal 기반.
   const fillPercent = denom === 0 ? 0 : Math.min(100, Math.round((effective / denom) * 100));
 
@@ -228,7 +224,7 @@ function QuestSection({
             return quest.steps.map((step) => {
               const checked = isStepDone(quest.id, step);
               const hasSubsteps = !!step.substeps && step.substeps.length > 0;
-              const stepIconSrc = resolveIcon(step);
+              const stepIconSrc = resolveIconPath(step);
               const expanded = hasSubsteps && !collapsedSteps.has(step.id);
               const locked = (step.requires ?? []).some((r) => !doneIds.has(r));
               return (
@@ -365,7 +361,7 @@ function SubstepRow({
   onViewCraftingItem?: (itemId: string) => void;
   onViewBoss?: (bossId: string) => void;
 }) {
-  const iconSrc = resolveIcon(substep);
+  const iconSrc = resolveIconPath(substep);
   const note = substepNote(substep, locale);
   return (
     <li className="flex items-stretch">

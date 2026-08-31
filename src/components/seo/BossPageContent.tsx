@@ -8,6 +8,7 @@ import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { AdBleed } from "@/components/ads/AdBleed";
+import { bossImageSrc } from "@/lib/asset-path";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -125,7 +126,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 key={img}
                 className="size-24 rounded-xl border border-border bg-surface flex items-center justify-center"
               >
-                <img src={`/images/bosses/${img}`} alt={displayName} className="size-20 object-contain" />
+                <img src={bossImageSrc(`/images/bosses/${img}`)} alt={displayName} className="size-20 object-contain" />
               </div>
             ))}
           </div>
@@ -327,7 +328,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                     href={`${routePrefix}/boss/${canonicalForBoss(b.id)}`}
                     className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
                   >
-                    <img src={`/images/bosses/${img}`} alt={rDisplay} className="size-10 object-contain" />
+                    <img src={bossImageSrc(`/images/bosses/${img}`)} alt={rDisplay} className="size-10 object-contain" />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground truncate">{rDisplay}</p>
                       <p className="text-[10px] text-muted-foreground truncate">{rSub}</p>

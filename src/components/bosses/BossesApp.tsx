@@ -10,7 +10,7 @@ import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/Se
 import { useSettings } from "@/hooks/use-settings";
 import { t, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { assetPath } from "@/lib/asset-path";
+import { assetPath, bossImageSrc } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
 import { TagChip } from "@/components/ui/TagChip";
 import { trackItemClick } from "@/lib/analytics";
@@ -373,7 +373,7 @@ export function BossesApp({
               {bossCategories.map((cat) => (
                 <CategoryCard
                   key={cat.id}
-                  imageSrc={assetPath(cat.id === "all" ? ALL_CATEGORY_IMAGE : categoryImage(cat.id))}
+                  imageSrc={cat.id === "all" ? assetPath(ALL_CATEGORY_IMAGE) : bossImageSrc(categoryImage(cat.id))}
                   label={categoryLabel(cat.id, resolvedLocale)}
                   onClick={() => handleSelectCategory(cat.id)}
                 />
@@ -513,7 +513,7 @@ function BossCard({
         {images.map((img, i) => (
           <img
             key={i}
-            src={assetPath(`/images/bosses/${img}`)}
+            src={bossImageSrc(`/images/bosses/${img}`)}
             alt={boss.name}
             className={cn(
               "size-12 sm:size-14 object-contain",
@@ -785,7 +785,7 @@ function BossDetail({
           {images.map((img, i) => (
             <img
               key={i}
-              src={assetPath(`/images/bosses/${img}`)}
+              src={bossImageSrc(`/images/bosses/${img}`)}
               alt={boss.name}
               className={cn(
                 "size-16 object-contain",

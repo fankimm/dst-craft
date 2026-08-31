@@ -15,6 +15,28 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.33.8",
+    date: "2026-08-31",
+    dev: [
+      "perf(images): 보스 원본 PNG(최대 2108×2492 / 3.5MB)를 앱 표시용 **640px 무손실 WebP 축소본**으로 교체 (#88). 프로덕션 홈 실측에서 **이미지 10,249KB 중 보스 PNG 9장이 8,982KB(88%)** 를 차지했다. Ezoic이 `window load` 이후에야 광고 파이프라인을 시작하므로 이 무게가 곧 광고 지연이고, Fast3G 홈에서는 load가 30초 내에 발화하지 않아 **광고가 0회** 떴다(`docs/ezoic-decision.md`). 결과: 홈 이미지 10,249 → 2,615KB(-74%), 보스 9장 8,982 → 1,348KB(-85%).",
+      "손실 압축을 버리고 **무손실**을 쓴다. 선화 + 평면 채색 + 알파 컷아웃은 손실 WebP가 가장 못하는 소재로, 4:2:0 크로마 서브샘플링 대역에 검은 윤곽선이 그대로 산다 — 실측에서 선을 가로지르는 국소 대비가 5.2% 깎였다(윤곽선 +3.3/255, 반대편 -3.0의 대칭 저역통과). 평면 채색이라 무손실이어도 비싸지 않다: 무손실 512px(3,697KB) ≈ 손실 q88 768px(2,210KB) 같은 자릿수.",
+      "해상도 640px은 **브라우저 밉맵 체인** 실측으로 정했다. 체인이 목표 크기 바로 위에서 끝나면 마지막 단계가 1.0배에 가까운 축소가 되고 바이리니어가 그 구간을 가장 못 다룬다 — 즉 **클수록 좋은 게 아니라 비율이 어중간할 때 가장 나쁘다.** 80px 자리 엣지 보존율(원본=1.0): 384px DPR3 1.035 / **512px DPR3 0.850(15% 손실)** / 640px DPR3 1.018 / 768px DPR3 1.005 / 1024px DPR3 0.832. 640px 검증(6장) DPR2 1.027 · DPR3 1.024로 **둘 다 원본 이상**. 이 표는 sharp·ImageMagick으로 재현되지 않으므로(그 도구엔 밉맵 아티팩트가 없다) 값을 바꾸려면 반드시 브라우저로 재측정할 것.",
+      "원본을 덮어쓰지 않고 **화면에 그리는 자리에서만** 경로를 갈아끼운다(`src/lib/asset-path.ts`의 `bossThumbPath` / `bossImageSrc`). 같은 파일이 OG·schema.org 이미지로도 쓰여(`src/components/seo/BossPageContent.tsx`) 소셜 카드·구글 리치 결과에는 큰 이미지가 필요하기 때문 — 메타데이터·JSON-LD에는 이 함수를 쓰지 않는다. 축소본이 없으면 원본 경로가 그대로 나가므로 화면이 깨지지 않는다(무게 이득만 사라진다).",
+      "퀘스트/스텝 아이콘 경로 해석이 `QuestsApp` · `QuestPageContent` · `QuestsListContent` 세 곳에 복사돼 있던 것을 `src/lib/icon-path.ts`의 `resolveIconPath`로 공통화. SEO 쪽 둘은 `assetPath`를 빠뜨려 `NEXT_PUBLIC_BASE_PATH`가 설정되면 깨지는 상태였고, 모으면서 그 차이도 함께 해소. 홈이 로드하던 보스 PNG 9장 중 절반이 이 경로였다.",
+      "변환 파이프라인을 ImageMagick+cwebp → **sharp**로 전환(`scripts/optimize-boss-images.mjs`). 외부 바이너리 의존이 사라지고 레포에 임시파일을 남기지 않는다 — 이전 구현이 남긴 60MB `.cache`를 `git add -A`로 푸시한 사고가 있었다(`docs/mistakes.md`). 실행 시 `.mpc`/`.cache` 잔재를 자동 정리한다.",
+    ],
+    changes: {
+      ko: [
+        "홈 화면이 훨씬 빨리 뜹니다 — 보스 이미지 용량을 85% 줄였습니다(9MB → 1.3MB). 느린 모바일 회선에서 특히 체감됩니다.",
+        "화질은 그대로입니다. 표시 크기에서 원본과 같거나 더 선명하도록 해상도를 실측해서 골랐습니다.",
+      ],
+      en: [
+        "The home screen loads much faster — boss images are 85% smaller (9MB → 1.3MB), which is especially noticeable on slow mobile connections.",
+        "Image quality is unchanged. The thumbnail resolution was measured in-browser so it renders as sharp as the original at display size.",
+      ],
+    },
+  },
+  {
     version: "0.33.7",
     date: "2026-08-27",
     dev: [

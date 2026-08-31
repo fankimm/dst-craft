@@ -1,6 +1,7 @@
 "use client";
 
 import { BackToHome } from "@/components/ui/BackToHome";
+import { bossImageSrc } from "@/lib/asset-path";
 
 interface BossLoot {
   item: string;
@@ -368,7 +369,7 @@ export default function BossesPage() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         key={i}
-                        src={`/images/bosses/${img}`}
+                        src={bossImageSrc(`/images/bosses/${img}`)}
                         alt={boss.name}
                         width={48}
                         height={48}

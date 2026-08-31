@@ -59,3 +59,8 @@ public/icons/splash/
 next-env.d.ts
 reference/
 pnpm-lock.yaml
+
+# ImageMagick 중간 캐시 (#88) — `magick`이 작업 디렉터리에 .mpc/.cache 쌍을 남긴다.
+# 60MB짜리가 `git add -A`에 딸려 들어가 푸시된 적이 있다.
+*.mpc
+*.cache
