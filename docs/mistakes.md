@@ -891,6 +891,15 @@
   3. 응답을 묶기 전에 **캐시 가능성이 같은지** 본다. 공개·장수명 응답과 사용자별 응답을 한 엔드포인트로 합치면 전자의 캐시가 죽는다
   4. #86의 "타이밍 상수를 실측 없이 추정으로 확정"과 같은 실수다. 추정치를 사용자에게 숫자로 제시할 때는 **어떻게 쟀는지**를 같이 적어야 스스로도 검증 조건을 의심하게 된다
 
+### 검증용 beta 빌드가 커밋 대상 파일을 오염시켰다 — `manifest.json`이 BETA 아이콘으로 (2026-08-31, #91)
+- **문제**: `IS_BETA` 게이트가 실제로 동작하는지 확인하려고 양성 대조로 `NEXT_PUBLIC_DEPLOY_ENV=beta npm run build` 를 돌렸다. 그 빌드의 `scripts/generate-manifest.cjs` 가 **레포에 추적되는 `public/manifest.json` 을 beta 판(`icon-192-beta.png`)으로 덮어썼다.** 커밋 직전 `git status` 로 잡았지만, 못 봤으면 프로덕션 PWA 아이콘이 BETA 배지 버전으로 나갈 뻔했다
+- **원인**: 빌드가 산출물을 `out/`(gitignore) 에만 쓰는 게 아니라 **추적되는 소스 파일(`public/manifest.json`)도 생성**한다. env를 바꿔 빌드하는 행위가 곧 소스 변경이라는 걸 생각 못 했다. 같은 이유로 `npm i -D playwright-core` 도 `package.json` 을 건드려 남아 있었다
+- **교훈**:
+  1. **env를 바꿔서 빌드했으면 반드시 `git status` 를 보고 원복**한다. `npm run build` 는 읽기 전용 작업이 아니다 — 이 레포에서 빌드가 쓰는 추적 파일: `public/manifest.json`(generate-manifest.cjs), 스플래시 이미지(generate-ios-splash.mjs), `public/sw.js`(generate-sw.cjs)
+  2. 검증 목적의 빌드는 결과만 보고 **바로 원복**한다. "나중에 정리"로 미루면 다른 커밋에 딸려 들어간다
+  3. 임시로 설치한 devDependency(`playwright-core` 등)도 같은 부류다. 스크립트가 요구하더라도 이번 작업 범위가 아니면 되돌린다
+  4. 이 레포는 `git add -A` 를 쓰지 말라는 규칙이 이미 있는데(`/beta` 스킬), 그 규칙이 정확히 이런 사고를 막으려던 것이다
+
 ## 디버깅 프로세스
 
 ### 증상이 비슷한 별개 버그 2개를 하나로 착각 + 원격 왕복 디버깅 낭비 (2026-07-09~14, #60)
