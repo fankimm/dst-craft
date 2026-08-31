@@ -272,3 +272,72 @@ Fast3G에서 홈·characters는 `window load`가 30초 내에 발화하지 않�
 - `docs/mistakes.md` — 광고 / Ezoic 섹션 (이 판단에서 이미 밟은 함정들)
 - `scripts/check-deadlines.sh` — 마감일 알림 (SessionStart 훅)
 - 이슈: [#85](https://github.com/fankimm/dst-craft/issues/85) 도달 계측 · [#86](https://github.com/fankimm/dst-craft/issues/86) 판정 교정 · [#87](https://github.com/fankimm/dst-craft/issues/87) 이 문서
+
+---
+
+## 2026-08-31 — beta HAR 실측: 전면 광고 가격 워터폴 3.1초, 2/2 no-fill
+
+`beta.dstcraft.com` HAR(실브라우저, 페이지뷰 2회, `limitCookies: true` 적용 상태) 분석.
+`#91` 프론트 최적화 직후 "로딩이 안 끝난다"는 관측에서 출발.
+
+### 페이지 자체는 0.5~0.8초에 끝난다
+| | page_1 | page_2(리로드) |
+|---|---|---|
+| DCL | 378ms | 199ms |
+| **load** | **811ms** | **506ms** |
+| Finish(모든 요청 종료) | 11.0s | 7.2s |
+| 우리 오리진 | 71건 30KB · 마지막 시작 10.9s | 66건 24KB · **마지막 시작 0.5s** |
+| 서드파티 | 229건 781KB · 마지막 시작 10.9s | 180건 241KB · 마지막 시작 7.0s |
+
+**load 이후 우리가 보내는 요청은 7건 1KB**뿐이고 그중 2~3건은 Cloudflare가 주입한
+`/cdn-cgi/rum` 비콘이다. Finish까지의 나머지 시간은 전부 광고 스택이다.
+
+### 전면 광고가 가격 바닥을 11번 내려가며 3.1초를 쓴다 — 그리고 안 채워진다
+`/gampad/ads` 11건은 서로 다른 자리가 아니라 **같은 Interstitial 자리 하나**가
+floor를 낮춰가며 재시도하는 워터폴이다. 양쪽 페이지뷰에서 **완전히 동일한 수열**:
+
+```
+br1= 500 → 260 → 200 → 140 → 80 → 40 → 16 → 6 → 2 → 0 → 0   (전부 tap=Interstitial)
+page_1  4100ms ─────────────────────────────────────→ 7199ms   (3.1s)
+page_2  3581ms ─────────────────────────────────────→ 6703ms   (3.1s)
+```
+
+**11개 응답이 전부 1,185~1,615B** — 소재가 아니라 빈 응답이다. `br1=0`(바닥)까지
+내려가고도 채워지지 않았다. 즉 **3.1초를 쓰고 광고는 나오지 않는다.** 매 단계마다
+`ccgateway` 로 `ad_impression` 비콘이 하나씩 나가므로(13건) Ezoic 쪽 집계에는
+잡히는데 화면에는 아무것도 없다.
+
+### 광고 JS 디코드 총량이 앱보다 훨씬 크다
+| 파일 | 디코드 |
+|---|---|
+| `imasdk.googleapis.com/js/core/bridge3.787.0_en.html` | 941KB |
+| `go.ezodn.com/beardeddragon/wyvern.js` | 682KB |
+| `go.ezodn.com/hb/dall.js` | 673KB |
+| `securepubads.../gpt.js` | 663KB |
+| `go.ezodn.com/porpoiseant/ezadloadrewarded.js` | 517KB |
+| `imasdk.googleapis.com/js/sdkloader/ima3.js` | 477KB |
+| `ezojs.com/sa.min.js` | 457KB |
+| `ezojs.com/ezorca.es6.min.js` | 412KB |
+
+합 ~4.8MB. **비디오(IMA SDK)와 rewarded 로더가 통째로 온다.** 2026-08-31 이전
+프로덕션 스샷의 "22.1 MB resources"가 우리 이미지가 아니라 이것이었다.
+
+요청 분류(page_1): Ezoic 본체 69건 / 쿠키싱크 65건 / 입찰 32건 / 구글 광고서빙 21건.
+`limitCookies: true`가 켜진 상태에서도 쿠키싱크가 65건이다.
+
+### 판단에 필요한 것 — 아직 결론 내기엔 표본이 부족하다
+- **표본이 페이지뷰 2회다.** 2/2 no-fill로 "전면 광고는 안 채워진다"고 단정하면
+  `#86`에서 저지른 오판(4초 체크포인트로 도착 전 표본을 nofill로 집계)의 반복이다
+- **beta에서 잰 것**이라 prod와 채움률이 다를 수 있다. Ezoic이 도메인·UA로 클라이언트를
+  분류하는 정황이 이미 있다(`docs/mistakes.md`)
+- 우리에겐 이미 `#85`/`#86`의 도달 계측(`/api/_e`, `filled/nofill/blocked` 버킷 +
+  첫 소재 도착 시각 분포)이 있다. **전면 광고 채움률은 그 데이터로 봐야 한다**
+
+### 손댈 수 있는 수단 (지금 켜지 말 것 — 데이터 먼저)
+`ezstandalone.config({ disableInterstitial: true })` 로 이 워터폴을 없앨 수 있다
+(`docs/ui.md` 참조). 하지만 전면 광고는 단가가 높은 유형이라 **채움률을 확인하기 전에
+끄면 수익을 버리는 쪽으로 틀릴 수 있다.** 순서:
+1. prod에서 HAR을 같은 방식으로 떠서 `br1` 수열이 prod에서도 zero로 끝나는지 확인
+2. `/stats` 광고 도달 분포에서 Interstitial 자리의 채움률을 분리해 본다
+3. 두 곳 모두 no-fill이 지배적이면 그때 `disableInterstitial` — 3.1초 + 비디오 SDK
+   ~1.4MB가 사라진다
