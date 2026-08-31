@@ -46,6 +46,7 @@ function RecipeHeader() {
         src={assetPath("/images/game-items/meatballs.png")}
         alt="미트볼"
         className="size-16 object-contain shrink-0"
+        loading="lazy"
       />
       <div className="flex-1 min-w-0 pt-1">
         <h3 className="text-base font-semibold">미트볼</h3>
@@ -57,7 +58,7 @@ function RecipeHeader() {
             { icon: "ui/sanity.png", label: "정신력", value: "+5", color: "text-green-600 dark:text-green-400" },
           ].map((s) => (
             <div key={s.label} className="flex items-center gap-1">
-              <img src={assetPath(`/images/${s.icon}`)} alt="" className="size-4" />
+              <img src={assetPath(`/images/${s.icon}`)} alt="" className="size-4" loading="lazy" />
               <span className={cn("text-sm font-semibold tabular-nums", s.color)}>{s.value}</span>
             </div>
           ))}

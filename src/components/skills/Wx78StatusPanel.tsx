@@ -643,20 +643,20 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
         {/* Vital stats — always show (base 100 + circuits) */}
         <div className="mt-3 flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
           <StatBox
-            iconSrc={assetPath("/images/ui/health.png")}
+            iconSrc={assetPath("/images/ui/health.webp")}
             label={locale === "ko" ? "최대 체력" : "Max Health"}
             formatted={vitals.health.toString()}
             onClick={() => setSelected({ kind: "vital", statKind: "maxHealth", total: vitals.health })}
           />
           <StatBox
-            iconSrc={assetPath("/images/ui/hunger.png")}
+            iconSrc={assetPath("/images/ui/hunger.webp")}
             label={locale === "ko" ? "최대 허기" : "Max Hunger"}
             formatted={vitals.hunger.toString()}
             divider
             onClick={() => setSelected({ kind: "vital", statKind: "maxHunger", total: vitals.hunger })}
           />
           <StatBox
-            iconSrc={assetPath("/images/ui/sanity.png")}
+            iconSrc={assetPath("/images/ui/sanity.webp")}
             label={locale === "ko" ? "최대 정신력" : "Max Sanity"}
             formatted={vitals.sanity.toString()}
             divider
@@ -704,7 +704,7 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
               onClick={tempDelta !== 0 ? () => setSelected({ kind: "body_temp", delta: tempDelta }) : undefined}
             />
             <StatBox
-              iconSrc={assetPath("/images/ui/perish.png")}
+              iconSrc={assetPath("/images/ui/perish.webp")}
               label={locale === "ko" ? "부패 속도" : "Spoilage Rate"}
               formatted={spoilDelta !== 0 ? `${spoilDelta > 0 ? "+" : "−"}${Math.abs(Math.round(spoilDelta * 100))}%` : "—"}
               colorClass={spoilDelta !== 0 ? statColor(spoilDelta < 0 ? 1 : -1) : undefined}
@@ -849,6 +849,7 @@ function DetailHeader({
             src={iconSrc}
             alt=""
             className={cn("size-12 object-contain", iconRounded && "rounded-full")}
+            loading="lazy"
           />
         </div>
       </div>
@@ -942,6 +943,7 @@ function Detail({
               src={assetPath(`/images/game-items/${r.module.id}.png`)}
               alt=""
               className="size-9 object-contain shrink-0"
+              loading="lazy"
             />
             <div className="flex-1 min-w-0 text-sm font-semibold text-foreground truncate">
               {moduleName}
@@ -1242,7 +1244,7 @@ function Detail({
       if (cold > 0 && coldModule) contribs.push({ module: coldModule, count: cold, right: `−${cold * BODY_TEMP_PER_MODULE}°` });
     } else if (selected.kind === "spoil_rate") {
       title = locale === "ko" ? "부패 속도" : "Spoil Rate";
-      icon = "/images/ui/perish.png";
+      icon = "/images/ui/perish.webp";
       total = `${selected.delta > 0 ? "+" : "−"}${Math.abs(Math.round(selected.delta * 100))}%`;
       subtitle = locale === "ko"
         ? `1 + (발열 − 냉각) × 25% (additive). 양수 = 빠르게 부패, 음수 = 느리게 부패`
@@ -1309,9 +1311,9 @@ function Detail({
     statKind === "maxHunger" ? (locale === "ko" ? "최대 허기" : "Max Hunger") :
     (locale === "ko" ? "최대 정신력" : "Max Sanity");
   const headerIcon =
-    statKind === "maxHealth" ? "/images/ui/health.png" :
-    statKind === "maxHunger" ? "/images/ui/hunger.png" :
-    "/images/ui/sanity.png";
+    statKind === "maxHealth" ? "/images/ui/health.webp" :
+    statKind === "maxHunger" ? "/images/ui/hunger.webp" :
+    "/images/ui/sanity.webp";
   return (
     <div className="pb-2">
       <DetailHeader
@@ -1326,7 +1328,7 @@ function Detail({
         </div>
         <ul className="space-y-1.5">
           <BreakdownRow
-            iconSrc="/images/category-icons/characters/wx78.png"
+            iconSrc="/images/category-icons/characters/wx78.webp"
             iconRounded
             name={locale === "ko" ? "WX-78 기본" : "WX-78 base"}
             rightValue={baseValue}

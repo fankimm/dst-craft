@@ -107,7 +107,7 @@ function ReplyAuthorLabel({ author, locale }: { author?: ReplyAuthor | null; loc
   return (
     <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-violet-600 dark:text-violet-400">
       <img
-        src={assetPath("/images/category-icons/characters/wx78.png")}
+        src={assetPath("/images/category-icons/characters/wx78.webp")}
         alt=""
         className="size-4 object-contain shrink-0"
         loading="lazy"

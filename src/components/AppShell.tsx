@@ -2,18 +2,12 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { CraftingApp } from "./crafting/CraftingApp";
-import { CookingApp } from "./cooking/CookingApp";
-import { CookpotApp } from "./cookpot/CookpotApp";
-import { BossesApp } from "./bosses/BossesApp";
-import { SettingsPage } from "./settings/SettingsPage";
-import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
-import { SkinsApp } from "./skins/SkinsApp";
-import { ConsoleApp } from "./console/ConsoleApp";
-import { QuestsApp } from "./quests/QuestsApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { FloatingSupportPill } from "./ui/FloatingSupportPill";
 import { LegacyPwaNotice } from "./ui/LegacyPwaNotice";
+import { TabFallback } from "./ui/TabFallback";
 import { AdSlot } from "./ads/AdSlot";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
@@ -24,12 +18,66 @@ import { cn } from "@/lib/utils";
 
 type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "skills" | "skins" | "quests" | "console" | "settings";
 
+/**
+ * 제작 탭 외 8개는 청크로 분리한다 (#91).
+ *
+ * 전부 정적 import이던 시절, 홈은 첫 로드에 14청크 3,204KB(원본)를 받았다. 그중
+ * 스킨 데이터 + 콘솔 prefab 목록만 1,130KB, scrapbook 스펙 + 요리 데이터가 409KB —
+ * 제작 탭만 보는 사용자가 스킨·콘솔·스킬·요리 데이터를 전부 받아서 파싱하고 있었다.
+ *
+ * `ssr: false` 인 이유: 프리렌더 HTML에는 어차피 제작 탭만 들어간다(`isTabMounted`).
+ * 서버에서 렌더해봐야 쓰이지 않는 마크업으로 HTML만 불린다.
+ *
+ * 제작 탭(`CraftingApp`)은 정적 import로 남긴다 — 기본 탭이라 프리렌더 HTML과 첫
+ * 페인트에 반드시 있어야 하고, 쪼개면 첫 화면에 청크 왕복이 하나 더 끼어든다.
+ */
+// 옵션은 반드시 각 호출부에 객체 리터럴로 둔다 — 공통 상수로 빼면 Turbopack이
+// `next/dynamic options must be an object literal` 로 빌드를 막는다. 공통 헬퍼로
+// 감싸는 것도 안 된다 (`dynamic` 이 추론한 props가 `never` 로 뭉개진다).
+const CookingApp = dynamic(() => import("./cooking/CookingApp").then((m) => m.CookingApp), { ssr: false, loading: () => <TabFallback /> });
+const CookpotApp = dynamic(() => import("./cookpot/CookpotApp").then((m) => m.CookpotApp), { ssr: false, loading: () => <TabFallback /> });
+const BossesApp = dynamic(() => import("./bosses/BossesApp").then((m) => m.BossesApp), { ssr: false, loading: () => <TabFallback /> });
+const SkillSimulatorApp = dynamic(() => import("./skills/SkillSimulatorApp").then((m) => m.SkillSimulatorApp), { ssr: false, loading: () => <TabFallback /> });
+const SkinsApp = dynamic(() => import("./skins/SkinsApp").then((m) => m.SkinsApp), { ssr: false, loading: () => <TabFallback /> });
+const QuestsApp = dynamic(() => import("./quests/QuestsApp").then((m) => m.QuestsApp), { ssr: false, loading: () => <TabFallback /> });
+const ConsoleApp = dynamic(() => import("./console/ConsoleApp").then((m) => m.ConsoleApp), { ssr: false, loading: () => <TabFallback /> });
+const SettingsPage = dynamic(() => import("./settings/SettingsPage").then((m) => m.SettingsPage), { ssr: false, loading: () => <TabFallback /> });
+
+/**
+ * 탭 버튼에 포인터가 닿거나 누르는 순간 그 탭 청크를 미리 받아둔다. 클릭 → 렌더
+ * 사이의 청크 왕복을 사용자가 체감하지 못하게 하는 용도.
+ *
+ * `window load` 이후 idle에 전부 미리 받는 방식은 쓰지 않는다 — Ezoic이 `load`
+ * 이후에야 광고 파이프라인을 시작하는데(#86·#88), 그 구간에 우리 청크로 대역폭을
+ * 밀면 첫 광고가 그만큼 늦어진다. 상호작용 시점 프리페치는 그 경쟁이 없다.
+ *
+ * webpack이 아래 `import()` 를 위 `dynamic()` 의 것과 같은 청크로 묶으므로 중복 요청은
+ * 생기지 않는다.
+ */
+const TAB_PREFETCH: Partial<Record<TabId, () => Promise<unknown>>> = {
+  cooking: () => import("./cooking/CookingApp"),
+  cookpot: () => import("./cookpot/CookpotApp"),
+  bosses: () => import("./bosses/BossesApp"),
+  skills: () => import("./skills/SkillSimulatorApp"),
+  skins: () => import("./skins/SkinsApp"),
+  quests: () => import("./quests/QuestsApp"),
+  console: () => import("./console/ConsoleApp"),
+  settings: () => import("./settings/SettingsPage"),
+};
+
+const prefetched = new Set<TabId>();
+function prefetchTab(id: TabId) {
+  if (prefetched.has(id)) return;
+  prefetched.add(id);
+  TAB_PREFETCH[id]?.().catch(() => prefetched.delete(id));
+}
+
 const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?: boolean }[] = [
-  { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.png" },
-  { id: "cooking", labelKey: "tab_cooking", image: "/images/category-icons/cooking.png" },
+  { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.webp" },
+  { id: "cooking", labelKey: "tab_cooking", image: "/images/category-icons/cooking.webp" },
   { id: "cookpot", labelKey: "tab_cookpot", image: "/images/game-items/cookpot.png" },
   { id: "bosses", labelKey: "tab_bosses", image: "/images/game-items/deerclops_eyeball.png" },
-  { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.png" },
+  { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.webp" },
   { id: "skins", labelKey: "tab_skins", image: "/images/skins/axe_heart.png" },
   { id: "quests", labelKey: "tab_quests", image: "/images/game-items/hermitcrab_npc.png" },
   { id: "console", labelKey: "tab_console", image: "/images/game-items/papyrus.png" },
@@ -48,6 +96,25 @@ export function AppShell() {
   // 첫 렌더는 서버와 동일한 "crafting", layout effect에서 URL의 tab을 반영한다.
   const [activeTab, setActiveTab] = useState<TabId>("crafting");
   useUrlStateSync(readTabFromUrl, setActiveTab);
+
+  // 한 번이라도 연 탭만 마운트한다 (#91).
+  //
+  // 예전에는 9개 탭을 전부 마운트하고 비활성 탭을 `hidden`(=display:none)으로만
+  // 감췄다. 화면에 안 보일 뿐 DOM·이미지·데이터 비용은 전부 발생한다 — 홈 실측에서
+  // 안 보이는 탭이 이미지 1,724KB를 끌어왔고, 프리렌더된 index.html은 391KB였다.
+  //
+  // 한 번 마운트한 탭은 그대로 유지한다. 탭을 오갈 때 검색어·스크롤·스킬 시뮬레이터
+  // 편집 상태가 날아가면 안 되기 때문 — 목적은 "안 연 탭을 미루는 것"이지
+  // "떠난 탭을 버리는 것"이 아니다.
+  // 갱신은 effect가 아니라 렌더 중에 한다 (React "렌더 중 상태 조정" 패턴). effect로
+  // 미루면 `activeTab` 이 layout effect에서 바뀌는 딥링크(`?tab=bosses`) 진입 시
+  // 페인트 한 번을 빈 화면으로 흘려보낸다 — `useUrlStateSync` 가 layout effect인 이유와
+  // 같은 문제다. 여기서 setState하면 React가 커밋 없이 즉시 다시 렌더한다.
+  const [openedTabs, setOpenedTabs] = useState<Set<TabId>>(() => new Set<TabId>(["crafting"]));
+  if (!openedTabs.has(activeTab)) {
+    setOpenedTabs(new Set(openedTabs).add(activeTab));
+  }
+  const isTabMounted = (id: TabId) => openedTabs.has(id);
   const { resolvedLocale, devMenuEnabled } = useSettings();
   const { isAdmin, token } = useAuth();
   const isDev = process.env.NODE_ENV === "development";
@@ -319,6 +386,9 @@ export function AppShell() {
             <button
               key={tab.id}
               onClick={() => handleTabClick(tab.id)}
+              onPointerEnter={() => prefetchTab(tab.id)}
+              onPointerDown={() => prefetchTab(tab.id)}
+              onFocus={() => prefetchTab(tab.id)}
               className={cn(
                 "shrink-0 flex items-center justify-center gap-1 px-0 py-2 text-xs font-medium transition-colors relative touch-manipulation",
                 isActive
@@ -359,30 +429,46 @@ export function AppShell() {
         <div className={activeTab === "crafting" ? "h-full" : "hidden"}>
           <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} externalBackLabel={craftingBack?.label ?? null} onExternalBack={craftingBack ? handleExternalBack : undefined} onPanelClose={() => setCraftingBack(null)} />
         </div>
+        {isTabMounted("cooking") && (
         <div className={activeTab === "cooking" ? "h-full" : "hidden"}>
           <CookingApp pendingRecipeId={pendingRecipeId} onClearPendingRecipe={handleClearPendingRecipe} onViewCraftingItem={handleViewCraftingItem} />
         </div>
+        )}
+        {isTabMounted("cookpot") && (
         <div className={activeTab === "cookpot" ? "h-full" : "hidden"}>
           <CookpotApp onViewRecipe={handleViewRecipe} />
         </div>
+        )}
+        {isTabMounted("bosses") && (
         <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
           <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} pendingBossId={pendingBossId} onClearPendingBoss={handleClearPendingBoss} externalBackLabel={bossesBack?.label ?? null} onExternalBack={bossesBack ? handleBossesExternalBack : undefined} onPanelClose={() => setBossesBack(null)} />
         </div>
+        )}
+        {isTabMounted("skills") && (
         <div className={activeTab === "skills" ? "h-full" : "hidden"}>
           <SkillSimulatorApp onViewCraftingItem={handleViewCraftingItem} />
         </div>
+        )}
+        {isTabMounted("skins") && (
         <div className={activeTab === "skins" ? "h-full" : "hidden"}>
           <SkinsApp />
         </div>
+        )}
+        {isTabMounted("quests") && (
         <div className={activeTab === "quests" ? "h-full" : "hidden"}>
           <QuestsApp onViewCraftingItem={(id) => handleViewCraftingItem(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} onViewBoss={(id) => handleViewBoss(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} />
         </div>
+        )}
+        {isTabMounted("console") && (
         <div className={activeTab === "console" ? "h-full" : "hidden"}>
           <ConsoleApp />
         </div>
+        )}
+        {isTabMounted("settings") && (
         <div className={activeTab === "settings" ? "h-full" : "hidden"}>
           <SettingsPage />
         </div>
+        )}
         </div>
         <AdSlot variant="rail-right" className="hidden min-[1500px]:flex items-start self-stretch max-h-full overflow-y-auto overscroll-contain" />
       </div>
@@ -566,7 +652,7 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
           open && "ring-2 ring-primary"
         )}
       >
-        <img src="/images/game-items/hammer.png" alt="Dev" className="size-7" draggable={false} />
+        <img src="/images/game-items/hammer.png" alt="Dev" className="size-7" draggable={false} loading="lazy" />
       </button>
     </div>
   );

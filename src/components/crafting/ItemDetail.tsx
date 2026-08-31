@@ -65,6 +65,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               alt={itemName(item, resolvedLocale)}
               className="size-14 object-contain"
               onError={() => setImgError(true)}
+              loading="lazy"
             />
           )}
         </div>
@@ -82,7 +83,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               className="p-0.5 rounded-full transition-colors shrink-0"
               aria-label="favorite"
             >
-              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFavorite(item.id) && "opacity-30 grayscale")} />
+              <img src={assetPath("/images/ui/health.webp")} alt="" className={cn("size-4", !isFavorite(item.id) && "opacity-30 grayscale")} loading="lazy" />
             </button>
             <ShareButton
               url={`/?cat=${item.category[0] || "tools"}&item=${item.id}`}
@@ -122,7 +123,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             return (
               <TagChip
                 label={char ? characterName(char, resolvedLocale) : item.characterOnly}
-                icon={char ? `category-icons/characters/${char.portrait}.png` : undefined}
+                icon={char ? `category-icons/characters/${char.portrait}.webp` : undefined}
                 onClick={onCharacterClick ? () => onCharacterClick(item.characterOnly!) : undefined}
                 className="border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-700/60 dark:bg-amber-950/40 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50"
               />
@@ -139,7 +140,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
                 <TagChip
                   key={catId}
                   label={categoryName(cat, resolvedLocale)}
-                  icon={`category-icons/${catId}.png`}
+                  icon={`category-icons/${catId}.webp`}
                   onClick={onCategoryClick ? () => onCategoryClick(catId) : undefined}
                   className="text-muted-foreground"
                 />
@@ -197,7 +198,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
           {/* Health cost — displayed as a material-style slot */}
           {item.healthCost && (
             <ItemSlot
-              iconPath="/images/ui/health.png"
+              iconPath="/images/ui/health.webp"
               label={t(resolvedLocale, "health_cost")}
               badge={`-${item.healthCost}`}
             />

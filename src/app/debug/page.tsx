@@ -31,10 +31,11 @@ function StyleA() {
           >
             <img
               src={assetPath(
-                `/images/category-icons/characters/${tag.portrait}.png`
+                `/images/category-icons/characters/${tag.portrait}.webp`
               )}
               alt={tag.text}
               className="size-4 object-contain"
+              loading="lazy"
             />
             {tag.text}
             <button className="rounded-full hover:bg-amber-200 dark:hover:bg-amber-800/50 transition-colors p-0.5 -mr-0.5">
@@ -81,10 +82,11 @@ function StyleB() {
           >
             <img
               src={assetPath(
-                `/images/category-icons/characters/${tag.portrait}.png`
+                `/images/category-icons/characters/${tag.portrait}.webp`
               )}
               alt={tag.text}
               className="size-4 object-contain"
+              loading="lazy"
             />
             {tag.text}
             <button className="rounded-full hover:bg-amber-200 dark:hover:bg-amber-800/50 transition-colors p-0.5 -mr-0.5">
@@ -187,10 +189,11 @@ export default function DebugPage() {
             >
               <img
                 src={assetPath(
-                  `/images/category-icons/characters/${tag.portrait}.png`
+                  `/images/category-icons/characters/${tag.portrait}.webp`
                 )}
                 alt={tag.text}
                 className="size-4 object-contain"
+                loading="lazy"
               />
               {tag.text}
               <button className="rounded-full hover:bg-amber-200 dark:hover:bg-amber-800/50 transition-colors p-0.5 -mr-0.5">
@@ -221,10 +224,11 @@ export default function DebugPage() {
             >
               <img
                 src={assetPath(
-                  `/images/category-icons/characters/${tag.portrait}.png`
+                  `/images/category-icons/characters/${tag.portrait}.webp`
                 )}
                 alt={tag.text}
                 className="size-4 object-contain"
+                loading="lazy"
               />
               {tag.text}
               <button className="rounded-full hover:bg-amber-200 dark:hover:bg-amber-800/50 transition-colors p-0.5 -mr-0.5">

@@ -147,7 +147,7 @@ for (const s of SKINS) {
 // ---------------------------------------------------------------------------
 
 function charPortrait(charKey: string): string {
-  return `/images/category-icons/characters/${charKey}.png`;
+  return `/images/category-icons/characters/${charKey}.webp`;
 }
 
 const KIND_TILE_IMG: Record<string, string> = {};
@@ -357,7 +357,7 @@ export function SkinsApp() {
     content = (
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
         <CategoryCard
-          imageSrc={assetPath("/images/category-icons/all.png")}
+          imageSrc={assetPath("/images/category-icons/all.webp")}
           label={t(locale, "skins_filter_all")}
           badgeCount={SKINS.length}
           onClick={() => handleOpenList("all")}
@@ -369,7 +369,7 @@ export function SkinsApp() {
           onClick={() => handleOpenList("recent")}
         />
         <CategoryCard
-          imageSrc={assetPath("/images/category-icons/character.png")}
+          imageSrc={assetPath("/images/category-icons/character.webp")}
           label={t(locale, "skins_section_characters")}
           badgeCount={CHARACTERS_TOTAL}
           onClick={handleOpenCharacters}
@@ -378,7 +378,7 @@ export function SkinsApp() {
           KIND_COUNT[k] ? (
             <CategoryCard
               key={k}
-              imageSrc={assetPath(KIND_TILE_IMG[k] ?? "/images/category-icons/all.png")}
+              imageSrc={assetPath(KIND_TILE_IMG[k] ?? "/images/category-icons/all.webp")}
               label={kindLabel(k, locale)}
               badgeCount={KIND_COUNT[k]}
               onClick={() => handleOpenList(`kind:${k}`)}
@@ -387,7 +387,7 @@ export function SkinsApp() {
         )}
         {KIND_COUNT["body"] && (
           <CategoryCard
-            imageSrc={assetPath("/images/category-icons/clothing.png")}
+            imageSrc={assetPath("/images/category-icons/clothing.webp")}
             label={t(locale, "skins_kind_body")}
             badgeCount={KIND_COUNT["body"]}
             onClick={() => handleOpenList("kind:body")}

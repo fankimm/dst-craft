@@ -30,7 +30,7 @@ export function SkillCharacterGrid({ locale, onSelect }: Props) {
             )}
           >
             <Image
-              src={`/images/category-icons/characters/${char.portrait}.png`}
+              src={`/images/category-icons/characters/${char.portrait}.webp`}
               alt={char.name}
               width={56}
               height={56}

@@ -34,21 +34,21 @@ export const stationImages: Record<CraftingStation, string | null> = {
   science_2: "game-items/Alchemy_Engine.png",
   magic_1: "game-items/Prestihatitator.png",
   magic_2: "game-items/Shadow_Manipulator.png",
-  ancient: "category-icons/ancient.png",
-  celestial: "category-icons/celestial.png",
+  ancient: "category-icons/ancient.webp",
+  celestial: "category-icons/celestial.webp",
   think_tank: "game-items/Think_Tank.png",
   cartography: "game-items/Cartography_Desk.png",
   tackle_station: "game-items/Tackle_Receptacle.png",
   potter_wheel: "game-items/Potter's_Wheel.png",
   bookstation: "game-items/Bookcase.png",
   portableblender: "game-items/Portable_Grinding_Mill.png",
-  lunar_forge: "category-icons/lunar_forge.png",
-  shadow_forge: "category-icons/shadow_forge.png",
+  lunar_forge: "category-icons/lunar_forge.webp",
+  shadow_forge: "category-icons/shadow_forge.webp",
   carpentry_station: "game-items/carpentry_station.png",
   turfcraftingstation: "game-items/turfcraftingstation.png",
   wagpunk_workstation: null,
   vault_refiner: "game-items/Sanctum_Smithy.png",
-  critter_lab: "category-icons/critter_lab.png",
+  critter_lab: "category-icons/critter_lab.webp",
   character: null,
 };
 
@@ -273,11 +273,11 @@ export function classifyTag(text: string): SearchTag {
   // Check characters (English + all locales) — partial match
   for (const char of characters) {
     if (char.name.toLowerCase().includes(lower)) {
-      return { text, type: "character", portrait: char.portrait, image: `category-icons/characters/${char.portrait}.png` };
+      return { text, type: "character", portrait: char.portrait, image: `category-icons/characters/${char.portrait}.webp` };
     }
     for (const localeData of Object.values(allLocales)) {
       if (localeData.characters[char.id]?.name?.toLowerCase().includes(lower)) {
-        return { text, type: "character", portrait: char.portrait, image: `category-icons/characters/${char.portrait}.png` };
+        return { text, type: "character", portrait: char.portrait, image: `category-icons/characters/${char.portrait}.webp` };
       }
     }
   }
@@ -285,11 +285,11 @@ export function classifyTag(text: string): SearchTag {
   // Check categories (English + all locales) — partial match
   for (const cat of categories) {
     if (cat.name.toLowerCase().includes(lower)) {
-      return { text, type: "category", image: `category-icons/${cat.id}.png` };
+      return { text, type: "category", image: `category-icons/${cat.id}.webp` };
     }
     for (const localeData of Object.values(allLocales)) {
       if (localeData.categories[cat.id]?.name?.toLowerCase().includes(lower)) {
-        return { text, type: "category", image: `category-icons/${cat.id}.png` };
+        return { text, type: "category", image: `category-icons/${cat.id}.webp` };
       }
     }
   }
@@ -348,7 +348,7 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
         text: characterName(char, locale),
         type: "character",
         portrait: char.portrait,
-        image: `category-icons/characters/${char.portrait}.png`,
+        image: `category-icons/characters/${char.portrait}.webp`,
       });
     }
     if (results.length >= limit) return results;
@@ -369,7 +369,7 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
       results.push({
         text: categoryName(cat, locale),
         type: "category",
-        image: `category-icons/${cat.id}.png`,
+        image: `category-icons/${cat.id}.webp`,
       });
     }
     if (results.length >= limit) return results;

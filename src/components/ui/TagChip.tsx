@@ -19,6 +19,7 @@ export function TagChip({ label, icon, onClick, onRemove, className }: TagChipPr
           src={assetPath(`/images/${icon}`)}
           alt=""
           className="size-4 object-contain shrink-0"
+          loading="lazy"
         />
       )}
       {label}

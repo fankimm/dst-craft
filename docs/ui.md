@@ -25,6 +25,18 @@
 └─────────────────────────────────────────────────────────┘
 ```
 
+#### 탭 마운트 정책 — "한 번 연 탭만, 열면 계속" (#91)
+- 탭 컨텐츠는 **처음 그 탭을 열 때 마운트**된다. 안 연 탭은 DOM에 아예 없다 (`isTabMounted()` 가 게이트)
+- 한 번 마운트된 탭은 **떠나도 언마운트하지 않는다** — `hidden`(=`display:none`)으로 감출 뿐. 검색어·스크롤 위치·스킬 시뮬레이터 편집 상태가 탭을 오가도 살아 있어야 하기 때문
+- **9개를 처음부터 다 마운트하면 안 된다.** 안 보여도 DOM·이미지·데이터 비용은 전부 발생한다 — 그 상태의 홈이 안 보이는 탭 때문에 이미지 1,724KB를 받고 프리렌더 HTML이 391KB였다 (`docs/mistakes.md` 참조)
+- `openedTabs` 갱신은 effect가 아니라 **렌더 중**에 한다. `activeTab` 은 `useUrlStateSync`의 layout effect에서 바뀌므로, effect로 미루면 딥링크(`?tab=bosses`) 진입 시 페인트 한 번이 빈 화면이 된다
+- 새 탭을 추가할 때는 `allTabs` 배열 + `isTabMounted("<id>") && (...)` 블록을 **함께** 넣을 것
+
+#### `<img>` 로딩 정책 (#91)
+- `<img>` 의 기본은 **`loading="lazy"`**. 뷰포트 안 이미지는 lazy여도 즉시 로드되므로 목록/그리드에 무해하다
+- `eager`(속성 생략)는 **상세 페이지 최상단 히어로 1장**에만 — LCP 요소라 preload 스캐너가 먼저 집어가야 한다. 현재 대상은 `seo/{Item,Boss,Character,Food,SkillTree,Quest}PageContent`, `seo/CookpotContent` 8곳
+- 누락 감시·일괄 적용: `node scripts/add-img-lazy.mjs [--dry-run]`
+
 ### 탭별 3단계 네비게이션
 모든 메인 탭(제작, 요리, 보스)은 동일한 패턴:
 

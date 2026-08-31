@@ -65,7 +65,7 @@ const sanityRecommendCount = cookingRecipes.filter((r) => r.sanity >= SANITY_THR
 const hungerRecommendCount = cookingRecipes.filter((r) => r.hunger >= HUNGER_THRESHOLD).length;
 
 const cookingCategories: CookingCategory[] = [
-  { id: "all", labelKey: "cooking_all", image: "category-icons/cooking_all.png", count: cookingRecipes.length },
+  { id: "all", labelKey: "cooking_all", image: "category-icons/cooking_all.webp", count: cookingRecipes.length },
   { id: "cookpot", labelKey: "cooking_cookpot", image: "game-items/cookpot.png", count: cookpotCount },
   { id: "portablecookpot", labelKey: "cooking_portablecookpot", image: "game-items/portablecookpot_item.png", count: portableCount },
   { id: "campfire", labelKey: "cooking_campfire", image: "game-items/campfire.png", count: campfireCount },
@@ -361,7 +361,7 @@ export function CookingApp({
               {/* 카테고리 첫 화면 첫 줄 광고 (#75) */}
               <AdSlot variant="top" className="col-span-full" />
               <CategoryCard
-                imageSrc={assetPath("/images/ui/health.png")}
+                imageSrc={assetPath("/images/ui/health.webp")}
                 label={t(resolvedLocale, "favorites")}
                 badgeCount={cookingFavCount}
                 onClick={() => handleSelectCategory("favorites")}
@@ -487,7 +487,7 @@ function CookingBreadcrumb({
   categoryLabel?: string;
   onHomeClick: () => void;
 }) {
-  const iconSrc = assetPath("/images/category-icons/cooking.png");
+  const iconSrc = assetPath("/images/category-icons/cooking.webp");
   const isHome = !categoryLabel;
 
   return (
@@ -627,9 +627,10 @@ function RecipeCard({
       <FavClickBadge isFav={isFav} onToggleFav={onToggleFav} clicks={clicks} />
       {recipe.station === "portablecookpot" && (
         <img
-          src={assetPath("/images/category-icons/characters/warly.png")}
+          src={assetPath("/images/category-icons/characters/warly.webp")}
           alt="Warly"
           className="absolute top-0.5 right-0.5 size-5 rounded-full"
+          loading="lazy"
         />
       )}
       <img
@@ -675,9 +676,10 @@ function AffinityBadges({ foodId, foodType, locale }: { foodId: string; foodType
             className="inline-flex items-center gap-1 text-xs rounded-full bg-pink-500/12 border border-pink-500/20 px-2 py-0.5 text-pink-700 dark:text-pink-300"
           >
             <img
-              src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
+              src={assetPath(`/images/category-icons/characters/${char.portrait}.webp`)}
               alt={name}
               className="size-4 rounded-full object-cover"
+              loading="lazy"
             />
             <span>{locale === "ko" ? `${name}의 선호 음식` : `${name}'s favorite`}</span>
           </div>
@@ -823,6 +825,7 @@ function RawFoodDetail({
           src={assetPath(`/images/game-items/${food.image ?? `${food.id}.png`}`)}
           alt={localName}
           className="size-16 sm:size-20 object-contain shrink-0"
+          loading="lazy"
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
@@ -832,7 +835,7 @@ function RawFoodDetail({
               className="p-0.5 rounded-full transition-colors shrink-0"
               aria-label="favorite"
             >
-              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} />
+              <img src={assetPath("/images/ui/health.webp")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} loading="lazy" />
             </button>
             <ShareButton
               url={`/?tab=cooking&cat=raw&recipe=${food.id}`}
@@ -868,20 +871,20 @@ function RawFoodDetail({
       {/* Stats inline */}
       <div className="flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
         <StatBox
-          iconSrc={assetPath("/images/ui/health.png")}
+          iconSrc={assetPath("/images/ui/health.webp")}
           label={t(locale, "cooking_health")}
           formatted={formatStat(food.health)}
           colorClass={statColor(food.health)}
         />
         <StatBox
-          iconSrc={assetPath("/images/ui/hunger.png")}
+          iconSrc={assetPath("/images/ui/hunger.webp")}
           label={t(locale, "cooking_hunger")}
           formatted={formatStat(food.hunger)}
           colorClass={statColor(food.hunger)}
           divider
         />
         <StatBox
-          iconSrc={assetPath("/images/ui/sanity.png")}
+          iconSrc={assetPath("/images/ui/sanity.webp")}
           label={t(locale, "cooking_sanity")}
           formatted={formatStat(food.sanity)}
           colorClass={statColor(food.sanity)}
@@ -969,6 +972,7 @@ function RecipeDetail({
           src={assetPath(`/images/game-items/${recipe.id}.png`)}
           alt={localName}
           className="size-16 object-contain shrink-0"
+          loading="lazy"
         />
         <div className="flex-1 min-w-0 pt-1">
           <div className="flex items-center gap-1.5">
@@ -978,7 +982,7 @@ function RecipeDetail({
               className="p-0.5 rounded-full transition-colors shrink-0"
               aria-label="favorite"
             >
-              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} />
+              <img src={assetPath("/images/ui/health.webp")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} loading="lazy" />
             </button>
             <ShareButton
               url={`/?tab=cooking&cat=all&recipe=${recipe.id}`}
@@ -1050,20 +1054,20 @@ function RecipeDetail({
       {/* Stats inline */}
       <div className="flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
         <StatBox
-          iconSrc={assetPath("/images/ui/health.png")}
+          iconSrc={assetPath("/images/ui/health.webp")}
           label={t(locale, "cooking_health")}
           formatted={formatStat(recipe.health)}
           colorClass={statColor(recipe.health)}
         />
         <StatBox
-          iconSrc={assetPath("/images/ui/hunger.png")}
+          iconSrc={assetPath("/images/ui/hunger.webp")}
           label={t(locale, "cooking_hunger")}
           formatted={formatStat(recipe.hunger)}
           colorClass={statColor(recipe.hunger)}
           divider
         />
         <StatBox
-          iconSrc={assetPath("/images/ui/sanity.png")}
+          iconSrc={assetPath("/images/ui/sanity.webp")}
           label={t(locale, "cooking_sanity")}
           formatted={formatStat(recipe.sanity)}
           colorClass={statColor(recipe.sanity)}
@@ -1104,7 +1108,7 @@ function RecipeDetail({
           {/* Info row — perish / cooktime / temp inline */}
           <div className="flex items-center py-1 text-sm">
             <div className="flex-1 flex items-center justify-center gap-1.5">
-              <img src={assetPath("/images/ui/perish.png")} alt="" className="size-4 object-contain" />
+              <img src={assetPath("/images/ui/perish.webp")} alt="" className="size-4 object-contain" loading="lazy" />
               <div>
                 <div className="font-semibold tabular-nums leading-tight">
                   {recipe.perishDays == null
@@ -1116,7 +1120,7 @@ function RecipeDetail({
             </div>
             {recipe.station !== "teashop" && (
               <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
-                <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" />
+                <img src={assetPath("/images/ui/cooktime.webp")} alt="" className="size-4 object-contain" loading="lazy" />
                 <div>
                   <div className="font-semibold tabular-nums leading-tight">{cookSeconds}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></div>
                   <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_cooktime")}</div>
@@ -1129,6 +1133,7 @@ function RecipeDetail({
                   src={assetPath(`/images/game-items/${recipe.temperature > 0 ? "campfire" : "ice"}.png`)}
                   alt=""
                   className="size-4 object-contain"
+                  loading="lazy"
                 />
                 <div>
                   <div className="font-semibold tabular-nums leading-tight">

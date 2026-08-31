@@ -154,7 +154,7 @@ export function CraftingApp({
     const cat = getCategoryById(catId);
     if (!cat) return;
     const label = categoryName(cat, resolvedLocale);
-    addSearchTag({ text: label, type: "category", image: `category-icons/${catId}.png` });
+    addSearchTag({ text: label, type: "category", image: `category-icons/${catId}.webp` });
     setItem(null);
   }, [addSearchTag, setItem, resolvedLocale]);
 
