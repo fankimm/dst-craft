@@ -15,6 +15,32 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.34.0",
+    date: "2026-08-31",
+    dev: [
+      "perf(shell): **안 연 탭은 마운트하지 않는다** (#91). `AppShell`이 9개 탭을 전부 마운트하고 비활성 탭을 `hidden`(=`display:none`)으로만 감추고 있었다 — 화면에 안 보일 뿐 DOM·이미지·데이터 비용은 전부 발생한다. 한 번이라도 연 탭만 마운트하되, 한 번 마운트한 탭은 유지한다(탭을 오갈 때 검색어·스크롤·스킬 시뮬레이터 편집 상태가 날아가면 안 된다). `openedTabs` 갱신은 effect가 아니라 **렌더 중**에 한다 — `activeTab`이 `useUrlStateSync`의 layout effect에서 바뀌므로 effect로 미루면 딥링크(`?tab=bosses`) 진입 시 페인트 한 번이 빈 화면이 된다. 홈 `<img>` DOM 340개 → 40개(그중 0×0이던 것 300개 → 0개), 프리렌더 `index.html` 391KB → 138KB.",
+      "perf(images): `loading` 속성이 없던 `<img>` **84곳에 `loading=\"lazy\"`** 일괄 적용 (#91). 브라우저는 `display:none`인 `loading=\"lazy\"` 이미지는 받지 않지만 `loading`이 없는 이미지는 그대로 받는다 — 홈 실측에서 숨은 `<img>` 300개 중 `loading` 없는 81개가 **1,724KB**를 끌어왔고(lazy 219개 중 195개는 정상적으로 미다운로드), 그중 보스 썸네일 9장 1,351KB는 보스 탭 것이었다. #88에서 보스 이미지를 9MB → 1.3MB로 줄였는데 **그 1.3MB가 여전히 제작 탭에서 전량 다운로드되고 있었다** — 용량 최적화가 \"애초에 받지 말아야 한다\"는 더 큰 문제를 가린 셈. `scripts/add-img-lazy.mjs`(JSX 스캐너 — 문자열·템플릿·표현식 인식)로 일괄 적용하고, 상세 페이지 최상단 히어로 8곳은 LCP 요소라 `EAGER_KEEP`으로 eager 유지. 뷰포트 안 이미지는 lazy여도 즉시 로드되므로 목록·그리드에 lazy는 무해하다.",
+      "perf(shell): 제작 외 **8개 탭을 `next/dynamic`으로 분할** (#91). 전부 정적 import이던 시절 홈은 첫 로드에 14청크 3,204KB(원본)를 받았고, 그중 스킨 데이터 + 콘솔 prefab 목록만 1,130KB였다 — 제작 탭만 보는 사용자가 스킨·콘솔·스킬·요리 데이터를 전부 받아 파싱했다. `ssr: false`인 이유는 프리렌더 HTML에 어차피 제작 탭만 들어가기 때문. 제작 탭은 정적 import로 남긴다(기본 탭이라 첫 페인트에 있어야 하고, 쪼개면 청크 왕복이 하나 더 낀다). 탭 버튼 `pointerenter`/`pointerdown`/`focus`에 청크 프리페치를 걸어 클릭 지연을 상쇄하되, **`window load` 후 idle 일괄 프리페치는 하지 않는다** — Ezoic이 `load` 이후에야 광고 파이프라인을 시작하므로(#86·#88) 그 구간에 우리 청크로 대역폭을 밀면 첫 광고가 늦어진다. 초기 JS 원본 3,204 → 2,178KB.",
+      "perf(images): `category-icons/**` + `ui/**` PNG **62장을 무손실 WebP로 제자리 변환** (#91). `all.png` 165 → 38KB(-77%), 전체 1,387 → 736KB(-47%). **해상도는 건드리지 않았다** — #88에서 브라우저 밉맵 체인이 목표 크기 바로 위에서 끝나면 마지막 축소가 1.0배에 가까워져 바이리니어가 가장 못 다룬다는 걸 실측했으므로(512px DPR3 엣지 보존율 0.850), 축소는 브라우저 재측정이 따라야 하는 결정이다. 픽셀이 완전히 동일한 포맷 변환만 하면 그 논쟁이 생기지 않는다. 보스 이미지와 달리 원본을 남기지 않는다 — 이 아이콘들은 OG·`og:image`·JSON-LD 어디에도 쓰이지 않는 걸 확인했다(보스는 크롤러용 원본이 필요해 `thumb/`를 따로 뒀다). `scripts/optimize-ui-icons.mjs`는 WebP가 더 큰 파일이 하나라도 나오면 소스 확장자 일괄 치환이 깨지므로 비정상 종료해 사람이 판단하게 한다.",
+      "fix(nginx): 정적 자산 `Cache-Control` **중복 헤더 제거** (#91). `location ~* \\.(js|css|...)$`가 `expires 1y;`와 `add_header Cache-Control`을 같이 써서 응답에 `Cache-Control`이 두 줄 나갔다. 바로 아래 HTML 블록 주석에 \"expires 디렉티브는 자동 Cache-Control을 추가하므로 add_header와 충돌\"이라고 이미 적혀 있는데 이 블록만 규칙에서 빠져 있었다. ⚠️ nginx 설정은 자동 배포되지 않으므로 맥미니에서 수동 reload 필요.",
+      "홈 API 번들 엔드포인트는 **만들지 않기로 했다** (#91). 계획 단계에서 \"8회 → 1회, -2.1초\"로 잡았으나 실측하니 근거가 틀렸다 — GET 5건이 같은 시각에 동시 발사되어 각 94~103ms였고 이미 병렬이었다(순차 `curl`과 광고 경합 중이던 스샷 값에서 나온 과대 추정). 게다가 위 탭 lazy mount로 5건 중 3건(`rating`·`top-countries`·`feedback/public` — 전부 설정 탭 소속)이 이미 사라졌고, 남은 공개 GET 2건을 사용자별 `favorites`와 합치면 응답이 캐시 불가가 되어 오히려 느려진다.",
+      "docs(ads): HAR 실측으로 광고 지연 구조를 기록 (`docs/ezoic-decision.md`). \"Finish 46.5초\"는 로딩이 아니라 Ezoic 텔레메트리 하트비트(`greenoaks.gif` `type:pageview`가 30초 간격)였고, `load`는 637ms에 끝나며 그 뒤 우리 오리진 요청은 3건 0KB뿐이다. 실사용자 계측은 채움률 63.6%지만 **`early`가 54.5%** — 소재가 오기 전에 떠난 세션이 절반 이상이고 첫 소재 도착은 6~8초 최빈. beta에서 `disableInterstitial`+`disableVideo`를 켜 검증한 결과 **가설은 기각됐다**: Interstitial gampad를 11건 → 0건으로 없애도 우리 자리 첫 요청은 5,244 → 4,902ms로 편차 안에 묻힌다(병렬이었다). 가격 워터폴도 Interstitial 전용이 아니라 모든 자리의 기본 동작이라 우리가 끌 수 없다.",
+      "docs/mistakes.md 오답노트 3건: `hidden` 탭이 `loading` 속성 유무로 다운로드가 갈린 것, 엔드포인트 응답시간만 재고 페이지가 그걸 어떻게 호출하는지 안 잰 것, 검증용 beta 빌드가 추적 파일 `public/manifest.json`을 BETA 아이콘으로 오염시킨 것(`npm run build`는 읽기 전용이 아니다).",
+    ],
+    changes: {
+      ko: [
+        "앱이 훨씬 가볍게 열립니다 — 첫 화면이 받는 데이터를 65% 줄였습니다(3.6MB → 1.3MB). 느린 회선에서 특히 체감됩니다.",
+        "열지 않은 탭은 이제 아예 불러오지 않습니다. 제작 탭만 보는데도 보스·스킨·콘솔 자료까지 내려받던 문제를 고쳤습니다.",
+        "아이콘 화질은 그대로면서 용량만 절반으로 줄였습니다.",
+      ],
+      en: [
+        "The app opens much lighter — the first screen now downloads 65% less data (3.6MB → 1.3MB), especially noticeable on slow connections.",
+        "Tabs you haven't opened are no longer loaded at all. Previously, just viewing the Crafting tab also pulled down boss, skin, and console data.",
+        "Icons are half the size with no change in quality.",
+      ],
+    },
+  },
+  {
     version: "0.33.8",
     date: "2026-08-31",
     dev: [
