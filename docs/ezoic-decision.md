@@ -272,3 +272,204 @@ Fast3G에서 홈·characters는 `window load`가 30초 내에 발화하지 않�
 - `docs/mistakes.md` — 광고 / Ezoic 섹션 (이 판단에서 이미 밟은 함정들)
 - `scripts/check-deadlines.sh` — 마감일 알림 (SessionStart 훅)
 - 이슈: [#85](https://github.com/fankimm/dst-craft/issues/85) 도달 계측 · [#86](https://github.com/fankimm/dst-craft/issues/86) 판정 교정 · [#87](https://github.com/fankimm/dst-craft/issues/87) 이 문서
+
+---
+
+## 2026-08-31 — beta HAR 실측: 전면 광고 가격 워터폴 3.1초, 3/3 no-fill
+
+`beta.dstcraft.com` HAR(실브라우저, 페이지뷰 2회, `limitCookies: true` 적용 상태) 분석.
+`#91` 프론트 최적화 직후 "로딩이 안 끝난다"는 관측에서 출발.
+
+### 페이지 자체는 0.5~0.8초에 끝난다
+| | page_1 | page_2(리로드) |
+|---|---|---|
+| DCL | 378ms | 199ms |
+| **load** | **811ms** | **506ms** |
+| Finish(모든 요청 종료) | 11.0s | 7.2s |
+| 우리 오리진 | 71건 30KB · 마지막 시작 10.9s | 66건 24KB · **마지막 시작 0.5s** |
+| 서드파티 | 229건 781KB · 마지막 시작 10.9s | 180건 241KB · 마지막 시작 7.0s |
+
+**load 이후 우리가 보내는 요청은 7건 1KB**뿐이고 그중 2~3건은 Cloudflare가 주입한
+`/cdn-cgi/rum` 비콘이다. Finish까지의 나머지 시간은 전부 광고 스택이다.
+
+### 전면 광고가 가격 바닥을 11번 내려가며 3.1초를 쓴다 — 그리고 안 채워진다
+`/gampad/ads` 11건은 서로 다른 자리가 아니라 **같은 Interstitial 자리 하나**가
+floor를 낮춰가며 재시도하는 워터폴이다. 양쪽 페이지뷰에서 **완전히 동일한 수열**:
+
+```
+br1= 500 → 260 → 200 → 140 → 80 → 40 → 16 → 6 → 2 → 0 → 0   (전부 tap=Interstitial)
+page_1  4100ms ─────────────────────────────────────→ 7199ms   (3.1s)
+page_2  3581ms ─────────────────────────────────────→ 6703ms   (3.1s)
+```
+
+**11개 응답이 전부 1,185~1,615B** — 소재가 아니라 빈 응답이다. `br1=0`(바닥)까지
+내려가고도 채워지지 않았다. 즉 **3.1초를 쓰고 광고는 나오지 않는다.** 매 단계마다
+`ccgateway` 로 `ad_impression` 비콘이 하나씩 나가므로(13건) Ezoic 쪽 집계에는
+잡히는데 화면에는 아무것도 없다.
+
+### 광고 JS 디코드 총량이 앱보다 훨씬 크다
+| 파일 | 디코드 |
+|---|---|
+| `imasdk.googleapis.com/js/core/bridge3.787.0_en.html` | 941KB |
+| `go.ezodn.com/beardeddragon/wyvern.js` | 682KB |
+| `go.ezodn.com/hb/dall.js` | 673KB |
+| `securepubads.../gpt.js` | 663KB |
+| `go.ezodn.com/porpoiseant/ezadloadrewarded.js` | 517KB |
+| `imasdk.googleapis.com/js/sdkloader/ima3.js` | 477KB |
+| `ezojs.com/sa.min.js` | 457KB |
+| `ezojs.com/ezorca.es6.min.js` | 412KB |
+
+합 ~4.8MB. **비디오(IMA SDK)와 rewarded 로더가 통째로 온다.** 2026-08-31 이전
+프로덕션 스샷의 "22.1 MB resources"가 우리 이미지가 아니라 이것이었다.
+
+요청 분류(page_1): Ezoic 본체 69건 / 쿠키싱크 65건 / 입찰 32건 / 구글 광고서빙 21건.
+`limitCookies: true`가 켜진 상태에서도 쿠키싱크가 65건이다.
+
+### 판단에 필요한 것 — 아직 결론 내기엔 표본이 부족하다
+- **표본이 페이지뷰 2회다.** 2/2 no-fill로 "전면 광고는 안 채워진다"고 단정하면
+  `#86`에서 저지른 오판(4초 체크포인트로 도착 전 표본을 nofill로 집계)의 반복이다
+- **beta에서 잰 것**이라 prod와 채움률이 다를 수 있다. Ezoic이 도메인·UA로 클라이언트를
+  분류하는 정황이 이미 있다(`docs/mistakes.md`)
+- 우리에겐 이미 `#85`/`#86`의 도달 계측(`/api/_e`, `filled/nofill/blocked` 버킷 +
+  첫 소재 도착 시각 분포)이 있다. **전면 광고 채움률은 그 데이터로 봐야 한다**
+
+### 손댈 수 있는 수단 (지금 켜지 말 것 — 데이터 먼저)
+`ezstandalone.config({ disableInterstitial: true })` 로 이 워터폴을 없앨 수 있다
+(`docs/ui.md` 참조). 하지만 전면 광고는 단가가 높은 유형이라 **채움률을 확인하기 전에
+끄면 수익을 버리는 쪽으로 틀릴 수 있다.** 순서:
+1. prod에서 HAR을 같은 방식으로 떠서 `br1` 수열이 prod에서도 zero로 끝나는지 확인
+2. `/stats` 광고 도달 분포에서 Interstitial 자리의 채움률을 분리해 본다
+3. 두 곳 모두 no-fill이 지배적이면 그때 `disableInterstitial` — 3.1초 + 비디오 SDK
+   ~1.4MB가 사라진다
+
+
+### 추가 캡처(2회차 HAR, `Finish 46.5s`) — 세 가지가 더 나왔다
+
+| | page_3 |
+|---|---|
+| DCL | 576ms |
+| **load** | **637ms** |
+| Finish | **46.5s** |
+| 우리 오리진 | 66건 30KB · **마지막 시작 0.6s** |
+| load 이후 우리 요청 | **3건 0KB** (`/cdn-cgi/rum`, `favicon.ico`, `icon-192`) |
+
+**1) `Finish 46.5s`는 로딩이 아니라 Ezoic 텔레메트리 하트비트다.** 10초 이후 요청 23건이
+전부 `g.ezoic.net` 비콘이고, `greenoaks.gif`(`type:"pageview"`)가 **16.4s와 46.4s에
+30초 간격**으로 발화한다. 탭을 열어둔 만큼 계속 나가므로 DevTools의 `Finish` 숫자는
+탭을 얼마나 오래 열어뒀는지를 잴 뿐 사용자 체감과 무관하다. 판단에는 `load`(637ms)를 쓸 것.
+
+늦은 비콘 내역: `adop.gif`(11.9s) · `greenoaks.gif` pageview(16.4s, 46.4s) ·
+`ce.gif`×10 + `army.gif`(21.5s) · `bluemonkey.gif`×2(21.9s) · `idgraph/profile`(22.4s) ·
+`tangerine.gif`×5(27.9s).
+
+**2) 워터폴이 3번째 재현됐다 — 3/3 no-fill.** `br1` 500→260→200→140→80→40→16→6→2→0→0,
+11건 전부 `tap=Interstitial`, 응답 1,185~1,614B(빈 응답), 3948→7130ms(3.2초).
+게다가 Ezoic 자신의 `adop.gif` 페이로드가 **`"attempt_number": 10`** 이라고 보고한다 —
+11단계 워터폴임을 Ezoic 텔레메트리가 확인해준다.
+
+**3) 🔴 소재가 없는데 `type:"impression"` 을 보고한다.** 21.5s `army.gif`:
+```json
+{"type":"impression","impression_id":"2772428992551108","unit":"Interstitial/...","domain_id":"791734"}
+```
+바로 그 Interstitial은 `br1=0`까지 내려가고도 안 채워진 자리다. 27.9s `tangerine.gif`도
+`{"type":"outstream-video-ad","data":[{"name":"watched_ms","val":"0"}]}` × 5 —
+IMA SDK ~1.4MB를 받아놓고 시청 0ms인데 이벤트는 5건 나간다.
+
+**이게 사실이면 `#85`가 풀려다 만 문제의 답일 수 있다** — "ePMV가 낮을 때 원인이 no-fill인지
+단가인지 가릴 수 없다"던 것이, **Ezoic 쪽 impression 집계에 no-fill이 섞여 분모가 부푼**
+결과일 수 있다. 단, 이 비콘이 대시보드 ePMV의 분모로 실제 쓰이는지는 확인되지 않았다 —
+**추론이지 사실이 아니다.** 대시보드 노출수와 우리 `/api/_e` 의 `filled` 카운트를 같은
+기간으로 맞춰 비교하면 갈린다. 그 비교가 이 문서의 다음 할 일.
+
+**4) 우리 자리는 무사하다.** `#91`의 탭 lazy mount 이후 광고 오케스트레이션이 깨졌는지
+`scripts/check-ad-slots.mjs`(Ezoic 목업)로 beta와 prod를 각각 돌려 **출력이 바이트 단위로
+동일**함을 확인했다. 탭 8개 순회 + 상세 시트 왕복에서 `problems: []`, 중복 placeholder
+없음, 숨은 탭이 자리를 들고 있지 않음. 초기 `show(107,111,108)` → 탭 전환마다 `show(111)`
+→ 시트 `show(103)` → 닫으면 `destroy(103)` + `show(107,108,111)` 로 정상.
+
+HAR의 `gampad/ads` 에 Interstitial만 보이고 우리 번호(111/103/107/108)가 안 보이는 것은
+**우리 자리가 안 나가서가 아니라** Ezoic이 자사 수요를 자체 파이프라인으로 처리해 GAM
+요청으로 드러나지 않기 때문이다. HAR만으로 우리 자리의 채움을 판정하지 말 것 — 그 판정은
+`/api/_e` 도달 계측(`#85`/`#86`)이 담당한다.
+
+---
+
+## 2026-08-31 — Ezoic 설정 점검 (공식 문서 대조 + 실사용자 계측)
+
+"설정을 잘못한 것 아니냐"는 물음에 대한 점검. **통합 자체는 정상이고, 공식 지침 위반은
+의도된 것 1건뿐이다. 진짜 문제는 설정 오류가 아니라 타이밍이다.**
+
+### 정상인 것 (공식 문서 대조)
+| 항목 | 공식 요구 | 우리 |
+|---|---|---|
+| 스크립트 순서 | CMP(gatekeeperconsent) → `sa.min.js` → `analytics.js` | 동일 (`AD_SCRIPT_SRCS`) |
+| `ezstandalone.cmd` 큐 | 본체 로드 전 생성 | 인라인에서 먼저 생성 |
+| CMP 지연 금지 | privacy 스크립트가 먼저 | `data-cfasync=false` 로 Rocket Loader 회피까지 |
+| placeholder 번호 | 대시보드 위치 유형과 일치 | GPT 슬롯이 `Content_1`(111) · `SidebarFloating_1·2`(107·108) 로 정확히 매핑됨 |
+| SPA 재호출 | 화면 전환 시 `showAds` 재호출 | `AdSlot` 배치 큐가 수행, `check-ad-slots.mjs` problems 0 |
+| Cloudflare | "Cache Everything" 금지 | `cf-cache-status: DYNAMIC` — HTML 미캐시, 해당 없음 |
+
+`?ez_js_debugger=1` 로 확인한 GPT 슬롯: `Content_1`, `SidebarFloating_1`, `SidebarFloating_2`,
+`Interstitial/..._10`. 우리 자리 3개는 정상 정의되고 자동 유닛은 Interstitial 하나다.
+
+### 공식 지침 위반 1건 — 의도된 트레이드오프
+Ezoic 공식 문서:
+> "Adding styles or reserving space for the placeholder may result in empty white space if an ad does not load."
+
+우리는 `AdSlot`이 placeholder div 자체에 `min-h-[100px]`(띠 계열)을 준다. **CLS 때문에 일부러
+어긴 것**이고 `scripts/check-ad-cls.mjs` 가 그 불변식을 지킨다(유입 65%가 구글이라 CLS가
+SEO에 직결). 대가는 명확하다 — **no-fill 36.4%인 세션에서 100px 빈 띠가 뜬다.** 버그가
+아니라 우리가 고른 쪽이지만, "공식 권고를 어기고 있다"는 사실은 알고 있어야 한다.
+
+### 🔴 실사용자 계측이 말하는 진짜 문제 (`/api/stats?days=30`)
+```
+표본 3,037건
+  filled   683 ┐ 판정된 1,074건 → 채움률 63.6%
+  nofill   391 ┘                  no-fill 36.4%
+  early  1,656  ← 54.5%. 광고 판정 전에 떠난 세션
+  noscript 300  ← 9.9%
+  blocked    7  ← 0.2%. 애드블록은 사실상 무시해도 된다
+
+첫 소재 도착 (filled 675건)
+  2-4s     24건   3.6%
+  4-6s    162건  24.0%
+  6-8s    260건  38.5%  ← 최빈
+  8-12s   165건  24.4%
+  12-20s   53건   7.9%
+  20s+     11건   1.6%
+  → 4초 이후 도착 96.4% · 8초 이후 33.9%
+```
+
+**헤드리스로 본 "prod도 전부 no-fill"은 틀렸다.** 실사용자 채움률은 63.6%다. 헤드리스에서
+세 자리가 전부 18×18 뱃지만 있던 건 Ezoic이 클라이언트를 분류하기 때문이고, 이건
+`docs/mistakes.md`에 이미 기록된 함정이다. **광고 채움 판정에 헤드리스를 쓰지 말 것.**
+
+**손실의 정체는 no-fill이 아니라 `early` 54.5%다.** 광고가 6~8초에 오는데 그 전에 절반
+이상이 떠난다. 업계 관측으로 광고 전달 1초 지연이 프로그래매틱 수익을 약 8% 깎는다는
+수치를 감안하면, 6~8초는 그 자체로 수익 구조다.
+
+### 인과 사슬 (HAR과 정확히 맞는다)
+```
+load 637ms
+ → Ezoic은 window load 이후에 시작 (#86·#88에서 인과 확정)
+ → 첫 gampad 3.9~4.1s   (부트스트랩 + CMP + 입찰)
+ → Interstitial 가격 워터폴 11단계 3.2초 → 7.1s
+ → 첫 소재 6~8초 최빈  ← 계측과 일치
+```
+
+우리 쪽(#91)에서 이미 뺄 수 있는 건 뺐다 — 홈 전송 3,665KB → 1,273KB, load 0.64초.
+**여기서 더 줄여도 첫 소재 시각은 거의 안 움직인다.** 남은 4~7초는 전부 Ezoic 파이프라인이다.
+
+### 판단 후보 (아직 켜지 말 것 — 각각 검증 필요)
+1. **`disableInterstitial: true`** — 워터폴 3.2초가 사라진다. 사용자 HAR 3/3에서 이 자리는
+   `br1=0`까지 가고도 no-fill이었다. 단 표본 3이고 전부 beta다. 검증: prod HAR에서 같은
+   수열이 zero로 끝나는지 + Interstitial 자리만의 채움률
+2. **`disableVideo: true`** — IMA SDK 1.4MB(`bridge3` 941KB + `ima3` 477KB) + rewarded
+   로더 517KB를 받는데 HAR의 outstream 이벤트는 `watched_ms: 0` × 5. 이 앱엔 비디오 컨텐츠가
+   없다. 단 Ezoic은 아웃스트림을 "higher revenue potential"로 권한다. 검증: 끄기 전후 ePMV A/B
+3. **placeholder 예약 높이** — 지금 그대로 둔다. CLS 대 빈 공간의 교환이고 CLS 쪽이 맞다
+
+**Ezoic 공식 입장 하나는 기억해 둘 것**: `Max Ads Per Page` 같은 제한 기능은 "AI 최적화를
+방해해 EPMV를 크게 떨어뜨릴 수 있다"고 명시적으로 비권장한다. 즉 **자리 수를 줄이는 방향은
+Ezoic이 말리는 방향**이다. 1·2번은 "자리 수 제한"이 아니라 "우리 사이트에 안 맞는 유닛
+제거"라 성격이 다르지만, 끄고 나서 ePMV를 반드시 관측해야 하는 이유는 같다.
