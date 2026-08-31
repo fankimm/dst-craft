@@ -55,7 +55,7 @@ export function CharactersListContent({ lang }: { lang: SeoLang }) {
                 href={`${routePrefix}/character/${char.id}`}
                 className="flex flex-col items-center gap-2 rounded-xl border border-border bg-surface px-3 py-4 hover:border-ring transition-colors text-center"
               >
-                <img src={`/images/characters/${char.portrait}.png`} alt={primary} className="size-20 object-contain" />
+                <img src={`/images/characters/${char.portrait}.png`} alt={primary} className="size-20 object-contain" loading="lazy" />
                 <div>
                   <p className="text-sm font-semibold text-foreground">{primary}</p>
                   {secondary && secondary !== primary && (

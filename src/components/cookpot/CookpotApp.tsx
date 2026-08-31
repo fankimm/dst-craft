@@ -207,6 +207,7 @@ function StationButton({
         src={assetPath(`/images/game-items/${img}`)}
         alt=""
         className="size-4 object-contain"
+        loading="lazy"
       />
       {t(locale, labelKey)}
     </button>
@@ -244,6 +245,7 @@ function IngredientSlot({
         src={assetPath(`/images/game-items/${ingredientImage(slot)}`)}
         alt={ingredientName(slot, locale)}
         className="size-7 object-contain shrink-0"
+        loading="lazy"
       />
       <span className="text-[9px] sm:text-[10px] text-foreground/80 font-medium leading-tight truncate flex-1">
         {ingredientName(slot, locale)}
@@ -370,6 +372,7 @@ function ResultCard({
           src={assetPath(`/images/game-items/${recipe.id}.png`)}
           alt={localName}
           className="size-10 object-contain shrink-0"
+          loading="lazy"
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1">
@@ -383,11 +386,11 @@ function ResultCard({
           )}
           <div className="flex items-center gap-2 mt-0.5 text-[10px] text-muted-foreground">
             <span className="inline-flex items-center gap-0.5">
-              <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-3.5 object-contain" />
+              <img src={assetPath("/images/ui/cooktime.webp")} alt="" className="size-3.5 object-contain" loading="lazy" />
               {cookSeconds}{t(locale, "cooking_seconds")}
             </span>
             <span className="inline-flex items-center gap-0.5">
-              <img src={assetPath("/images/ui/perish.png")} alt="" className="size-3.5 object-contain" />
+              <img src={assetPath("/images/ui/perish.webp")} alt="" className="size-3.5 object-contain" loading="lazy" />
               {recipe.perishDays == null
                 ? t(locale, "cooking_no_perish")
                 : `${recipe.perishDays}${t(locale, "cooking_days")}`}
@@ -404,17 +407,17 @@ function ResultCard({
       {/* Stats (vertical) */}
       <div className="flex flex-col gap-1">
         <InlineStat
-          iconSrc={assetPath("/images/ui/health.png")}
+          iconSrc={assetPath("/images/ui/health.webp")}
           formatted={formatStat(recipe.health)}
           colorClass={statColor(recipe.health)}
         />
         <InlineStat
-          iconSrc={assetPath("/images/ui/hunger.png")}
+          iconSrc={assetPath("/images/ui/hunger.webp")}
           formatted={formatStat(recipe.hunger)}
           colorClass={statColor(recipe.hunger)}
         />
         <InlineStat
-          iconSrc={assetPath("/images/ui/sanity.png")}
+          iconSrc={assetPath("/images/ui/sanity.webp")}
           formatted={formatStat(recipe.sanity)}
           colorClass={statColor(recipe.sanity)}
         />
@@ -438,7 +441,7 @@ function InlineStat({
 }) {
   return (
     <div className="flex items-center gap-1 rounded-md border border-border bg-background px-2 py-1">
-      <img src={iconSrc} alt="" className="size-4 object-contain" />
+      <img src={iconSrc} alt="" className="size-4 object-contain" loading="lazy" />
       <span className={cn("text-xs font-semibold tabular-nums", colorClass)}>
         {formatted}
       </span>

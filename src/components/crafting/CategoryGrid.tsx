@@ -38,7 +38,7 @@ export function CategoryGrid({
           두 화면은 서로 배타적이라 같은 번호를 동시에 요청하는 일이 없다. */}
       <AdSlot variant="top" className="col-span-full" />
       <CategoryCard
-        imageSrc={assetPath("/images/ui/health.png")}
+        imageSrc={assetPath("/images/ui/health.webp")}
         label={t(resolvedLocale, "favorites")}
         badgeCount={favCount}
         onClick={() => onSelectCategory("favorites")}
@@ -52,7 +52,7 @@ export function CategoryGrid({
       {sortedCategories.map((cat) => (
         <CategoryCard
           key={cat.id}
-          imageSrc={assetPath(`/images/category-icons/${cat.id}.png`)}
+          imageSrc={assetPath(`/images/category-icons/${cat.id}.webp`)}
           imageAlt={categoryName(cat, resolvedLocale)}
           label={categoryName(cat, resolvedLocale)}
           onClick={() => onSelectCategory(cat.id)}

@@ -33,6 +33,7 @@ export function CategoryCard({
               : "size-12 sm:size-14 object-contain"
           }
           draggable={false}
+          loading="lazy"
         />
         {hasBadge && badgeCount > 0 && (
           <span className="absolute -bottom-1 -right-1 flex items-center justify-center min-w-5 h-5 px-0.5 rounded-full text-[11px] font-bold bg-surface-hover border border-ring text-foreground/80">

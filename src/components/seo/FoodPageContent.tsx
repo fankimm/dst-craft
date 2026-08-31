@@ -190,9 +190,9 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
             {L.stats[lang]}
           </h2>
           <div className="grid grid-cols-3 gap-3">
-            <StatCard icon="/images/ui/health.png" label={lang === "ko" ? "체력" : "Health"} value={recipe.health} color="red" />
-            <StatCard icon="/images/ui/hunger.png" label={lang === "ko" ? "허기" : "Hunger"} value={recipe.hunger} color="yellow" />
-            <StatCard icon="/images/ui/sanity.png" label={lang === "ko" ? "정신력" : "Sanity"} value={recipe.sanity} color="blue" />
+            <StatCard icon="/images/ui/health.webp" label={lang === "ko" ? "체력" : "Health"} value={recipe.health} color="red" />
+            <StatCard icon="/images/ui/hunger.webp" label={lang === "ko" ? "허기" : "Hunger"} value={recipe.hunger} color="yellow" />
+            <StatCard icon="/images/ui/sanity.webp" label={lang === "ko" ? "정신력" : "Sanity"} value={recipe.sanity} color="blue" />
           </div>
         </section>
 
@@ -260,6 +260,7 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                         src={`/images/game-items/${imgFile}`}
                         alt={ingName}
                         className="size-10 object-contain"
+                        loading="lazy"
                       />
                       <span className="absolute -bottom-1 -right-1 bg-foreground text-background text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center leading-none">
                         {qty}
@@ -291,6 +292,7 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               src={`/images/game-items/${stationImg}`}
               alt={stationLabel}
               className="size-8 object-contain"
+              loading="lazy"
             />
             <span className="text-sm font-medium">{stationLabel}</span>
           </div>
@@ -330,6 +332,7 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                       src={`/images/game-items/${r.id}.png`}
                       alt={rDisplayName}
                       className="size-10 object-contain"
+                      loading="lazy"
                     />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground truncate">{rDisplayName}</p>
@@ -377,7 +380,7 @@ function StatCard({
   };
   return (
     <div className="rounded-lg border border-border bg-surface px-3 py-3 text-center">
-      <img src={icon} alt={label} className="size-5 object-contain mx-auto mb-1" />
+      <img src={icon} alt={label} className="size-5 object-contain mx-auto mb-1" loading="lazy" />
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className={`text-base font-bold mt-0.5 ${colorMap[color]}`}>
         {value > 0 ? "+" : ""}

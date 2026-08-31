@@ -72,7 +72,7 @@ export function LockConditionPill({ lockId, lockType, isSatisfied, locale, onTog
       role={isManual ? "button" : undefined}
     >
       <Image
-        src={isSatisfied ? "/images/ui/skill_unlock_large.png" : "/images/ui/skill_lock_large.png"}
+        src={isSatisfied ? "/images/ui/skill_unlock_large.webp" : "/images/ui/skill_lock_large.webp"}
         alt=""
         width={14}
         height={14}

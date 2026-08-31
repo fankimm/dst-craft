@@ -160,7 +160,7 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
                   <div className="flex items-start gap-3">
                     <div className="shrink-0 size-10 rounded-md border border-border bg-background flex items-center justify-center relative">
                       {icon ? (
-                        <img src={icon} alt={title} className="size-8 object-contain" />
+                        <img src={icon} alt={title} className="size-8 object-contain" loading="lazy" />
                       ) : (
                         <span className="text-xs text-muted-foreground">{i + 1}</span>
                       )}
@@ -212,6 +212,7 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
                                     src={ssIcon}
                                     alt={ssName}
                                     className="size-5 object-contain shrink-0"
+                                    loading="lazy"
                                   />
                                 )}
                                 <span className="text-xs text-foreground/90">
@@ -295,7 +296,7 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
                     className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
                   >
                     {qIcon && (
-                      <img src={qIcon} alt={qName} className="size-10 object-contain" />
+                      <img src={qIcon} alt={qName} className="size-10 object-contain" loading="lazy" />
                     )}
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground truncate">{qName}</p>

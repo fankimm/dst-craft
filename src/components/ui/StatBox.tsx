@@ -30,7 +30,7 @@ export function StatBox({
   const inner = (
     <>
       {iconSrc ? (
-        <img src={iconSrc} alt={label} className="size-5 object-contain" />
+        <img src={iconSrc} alt={label} className="size-5 object-contain" loading="lazy" />
       ) : iconNode ? (
         <span className="size-5 inline-flex items-center justify-center text-muted-foreground">{iconNode}</span>
       ) : null}

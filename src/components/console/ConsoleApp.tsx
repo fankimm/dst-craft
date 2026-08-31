@@ -159,6 +159,7 @@ function ItemImage({ image, size }: { image: string; size: number }) {
       height={size}
       className="shrink-0 object-contain"
       onError={() => setError(true)}
+      loading="lazy"
     />
   );
 }
@@ -521,6 +522,7 @@ function CommandCard({
             width={28}
             height={28}
             className="shrink-0 object-contain mt-0.5"
+            loading="lazy"
           />
         )}
         <div className="min-w-0 flex-1">

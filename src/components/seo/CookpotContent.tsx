@@ -142,7 +142,7 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
                   href={`${routePrefix}/food/${canonicalForFood(r.id)}`}
                   className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2 hover:border-ring transition-colors"
                 >
-                  <img src={`/images/game-items/${r.id}.png`} alt={primary} className="size-10 object-contain shrink-0" />
+                  <img src={`/images/game-items/${r.id}.png`} alt={primary} className="size-10 object-contain shrink-0" loading="lazy" />
                   <div className="min-w-0">
                     <p className="text-xs font-medium leading-tight truncate">{primary}</p>
                     {secondary && secondary !== primary && (
@@ -226,7 +226,7 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
                         key={ing.id}
                         className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 py-1 text-xs"
                       >
-                        <img src={`/images/game-items/${ing.image ?? ing.id + ".png"}`} alt={ingName} className="size-4 object-contain" />
+                        <img src={`/images/game-items/${ing.image ?? ing.id + ".png"}`} alt={ingName} className="size-4 object-contain" loading="lazy" />
                         {ingName}
                       </span>
                     );

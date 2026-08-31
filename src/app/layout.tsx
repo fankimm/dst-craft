@@ -182,11 +182,34 @@ const AD_SCRIPT_SRCS = [
 /** Cloudflare Rocket Loader가 건드리지 못하게 하는 대상 (CMP 두 개). */
 const AD_SCRIPT_CFASYNC_OFF = 2;
 
+/**
+ * beta 전용 `ezstandalone.config()` 실험 (#91).
+ *
+ * **prod에는 절대 그대로 옮기지 말 것** — 여기서 재는 건 "첫 소재가 앞당겨지는가"뿐이고,
+ * 수익(ePMV)은 beta 트래픽으로 알 수 없다. 타이밍 이득이 확인된 뒤 prod에서 별도로
+ * ePMV A/B를 해야 한다.
+ *
+ * - `limitCookies` — 쿠키 싱크 요청 감축. 먼저 켜져 있던 실험이고 첫 소재 시각과는
+ *   무관해서 그대로 둔다(기준선 유지).
+ * - `disableInterstitial` — 전면 광고가 가격 바닥을 500→0으로 11번 낮춰가며 재시도하는
+ *   워터폴에 **3.2초**를 쓴다(HAR 3회 모두 동일 수열, 응답은 전부 1.2KB 빈 응답).
+ *   실사용자 첫 소재 도착이 6~8초 최빈인데 그중 3.2초가 이것이다.
+ * - `disableVideo` — IMA SDK(`bridge3` 941KB + `ima3` 477KB)와 rewarded 로더 517KB를
+ *   받는데 HAR의 outstream 이벤트는 `watched_ms: 0`. 이 앱에는 비디오 컨텐츠가 없다.
+ *
+ * 둘을 한꺼번에 켜는 이유: 어느 쪽이 기여했는지는 HAR에서 바로 갈린다(gampad의
+ * Interstitial 요청 소멸 / imasdk 요청 소멸). 합산 효과가 0이면 둘 다 볼 필요가 없으니
+ * 먼저 싸게 합쳐 재고, 유의미하면 그때 분리한다.
+ *
+ * 되돌리기: 이 객체에서 두 키를 지우면 끝. 서버·대시보드 설정은 건드리지 않았다.
+ */
+const BETA_AD_CONFIG = { limitCookies: true, disableInterstitial: true, disableVideo: true };
+
 const adBootstrapScript = `
 window.ezstandalone = window.ezstandalone || {};
 ezstandalone.cmd = ezstandalone.cmd || [];${
   IS_BETA
-    ? "\nezstandalone.cmd.push(function(){ ezstandalone.config && ezstandalone.config({ limitCookies: true }); });"
+    ? `\nezstandalone.cmd.push(function(){ ezstandalone.config && ezstandalone.config(${JSON.stringify(BETA_AD_CONFIG)}); });`
     : ""
 }
 (function(){

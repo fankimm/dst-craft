@@ -54,7 +54,7 @@ function categoryImage(catId: BossCategoryId): string {
   return boss ? bossFirstImage(boss) : "/images/bosses/deerclops.png";
 }
 
-const ALL_CATEGORY_IMAGE = "/images/category-icons/bosses_all.png";
+const ALL_CATEGORY_IMAGE = "/images/category-icons/bosses_all.webp";
 
 /** Build unique loot list for suggestions */
 const allLootItems = (() => {
@@ -359,7 +359,7 @@ export function BossesApp({
               {/* 카테고리 첫 화면 첫 줄 광고 (#75) */}
               <AdSlot variant="top" className="col-span-full" />
               <CategoryCard
-                imageSrc={assetPath("/images/ui/health.png")}
+                imageSrc={assetPath("/images/ui/health.webp")}
                 label={t(resolvedLocale, "favorites")}
                 badgeCount={bossFavCount}
                 onClick={() => handleSelectCategory("favorites")}
@@ -565,7 +565,7 @@ function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale })
   if (health != null) {
     const val = typeof health === "string" ? health : health.toLocaleString();
     items.push({
-      icon: "/images/ui/health.png",
+      icon: "/images/ui/health.webp",
       label: locale === "ko" ? "체력" : "Health",
       value: val,
       color: "text-red-500",
@@ -586,7 +586,7 @@ function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale })
 
   if (sanity != null && sanity !== 0) {
     items.push({
-      icon: "/images/ui/sanity.png",
+      icon: "/images/ui/sanity.webp",
       label: locale === "ko" ? "정신력" : "Sanity",
       value: formatSanityAura(sanity, locale),
       color: "text-purple-400",
@@ -599,7 +599,7 @@ function BossCombatStats({ bossId, locale }: { bossId: string; locale: Locale })
         <div className="flex flex-wrap gap-x-4 gap-y-1.5">
           {items.map((item) => (
             <div key={item.label} className="flex items-center gap-1.5 text-xs">
-              <img src={assetPath(item.icon)} alt="" className="size-4 object-contain" />
+              <img src={assetPath(item.icon)} alt="" className="size-4 object-contain" loading="lazy" />
               <span className="text-muted-foreground">{item.label}</span>
               <span className={cn("font-semibold tabular-nums", item.color)}>
                 {item.value}
@@ -653,6 +653,7 @@ function renderLootPill(
         alt=""
         className="size-4 object-contain shrink-0"
         onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+        loading="lazy"
       />
       {displayName}
       {chanceText && <span className="text-amber-500">{chanceText}</span>}
@@ -792,6 +793,7 @@ function BossDetail({
                 images.length > 1 && i > 0 && "-ml-4",
                 images.length > 1 && "size-14",
               )}
+              loading="lazy"
             />
           ))}
         </div>
@@ -799,7 +801,7 @@ function BossDetail({
           <div className="flex items-center gap-1.5">
             <h3 className="text-base font-semibold">{localName}</h3>
             <button onClick={onToggleFav} className="shrink-0 p-0.5" aria-label="favorite">
-              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} />
+              <img src={assetPath("/images/ui/health.webp")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} loading="lazy" />
             </button>
           </div>
           {showAltName && (
@@ -852,6 +854,7 @@ function BossDetail({
                   alt=""
                   className="size-4 object-contain shrink-0"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                  loading="lazy"
                 />
                 {displayName}
                 {chanceText && <span className="text-amber-500">{chanceText}</span>}
@@ -897,6 +900,7 @@ function BossDetail({
               src={assetPath(`/images/game-items/${boss.stashLoot.icon}`)}
               alt=""
               className="size-4 object-contain"
+              loading="lazy"
             />
           </div>
           <p className="text-xs text-muted-foreground/80">

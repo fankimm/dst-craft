@@ -257,9 +257,10 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
         {character && (
           <section className="rounded-xl border border-amber-500/40 bg-amber-500/5 px-4 py-3 flex items-center gap-3">
             <img
-              src={`/images/category-icons/characters/${character.portrait}.png`}
+              src={`/images/category-icons/characters/${character.portrait}.webp`}
               alt={characterName ?? character.name}
               className="size-8 object-contain"
+              loading="lazy"
             />
             <div>
               <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wide">
@@ -278,7 +279,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
           </h2>
           <div className="flex items-center gap-3 rounded-lg border border-border bg-surface px-4 py-3">
             {stationImg ? (
-              <img src={`/images/${stationImg}`} alt={stationLabel} className="size-8 object-contain" />
+              <img src={`/images/${stationImg}`} alt={stationLabel} className="size-8 object-contain" loading="lazy" />
             ) : (
               <span className="size-8 flex items-center justify-center text-lg">🤲</span>
             )}
@@ -304,6 +305,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                       src={`/images/game-items/${mat?.image ?? m.materialId + ".png"}`}
                       alt={primary}
                       className="size-10 object-contain"
+                      loading="lazy"
                     />
                     <span className="absolute -bottom-1 -right-1 bg-foreground text-background text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center leading-none">
                       {m.quantity}
@@ -353,7 +355,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                     key={cat.id}
                     className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1 text-xs text-foreground"
                   >
-                    <img src={`/images/category-icons/${cat.id}.png`} alt="" className="size-3.5 object-contain" />
+                    <img src={`/images/category-icons/${cat.id}.webp`} alt="" className="size-3.5 object-contain" loading="lazy" />
                     {catName}
                   </span>
                 );
@@ -382,6 +384,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                       src={`/images/game-items/${other.image}`}
                       alt={otherPrimary}
                       className="size-10 object-contain shrink-0"
+                      loading="lazy"
                     />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground leading-tight truncate">{otherPrimary}</p>

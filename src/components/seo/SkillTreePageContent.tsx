@@ -221,6 +221,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
                       src={`/images/skill-icons/${node.icon}.png`}
                       alt={titlePrimary}
                       className="size-10 object-contain shrink-0 rounded"
+                      loading="lazy"
                     />
                   )}
                   <div className="min-w-0 flex-1">
@@ -266,7 +267,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
                     href={`${routePrefix}/item/${canonicalForItem(item.id)}`}
                     className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2 hover:border-ring transition-colors"
                   >
-                    <img src={`/images/game-items/${item.image}`} alt={primary} className="size-10 object-contain shrink-0" />
+                    <img src={`/images/game-items/${item.image}`} alt={primary} className="size-10 object-contain shrink-0" loading="lazy" />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground leading-tight truncate">{primary}</p>
                       {secondary && secondary !== primary && (
@@ -308,7 +309,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
                   href={`${routePrefix}/skill-tree/${c.id}`}
                   className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
                 >
-                  <img src={`/images/characters/${c.portrait}.png`} alt={primary} className="h-12 object-contain" />
+                  <img src={`/images/characters/${c.portrait}.png`} alt={primary} className="h-12 object-contain" loading="lazy" />
                   <div className="min-w-0">
                     <p className="text-xs font-medium text-foreground truncate">{primary}</p>
                     {secondary && secondary !== primary && (

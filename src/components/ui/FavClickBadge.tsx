@@ -28,14 +28,15 @@ export function FavClickBadge({ isFav, onToggleFav, clicks }: FavClickBadgeProps
         aria-label="favorite"
       >
         <img
-          src={assetPath("/images/ui/health.png")}
+          src={assetPath("/images/ui/health.webp")}
           alt=""
           className={cn("size-3.5 sm:size-4", !isFav && "opacity-30 grayscale")}
+          loading="lazy"
         />
       </div>
       {!!clicks && clicks > 0 && (
         <span className="flex items-center gap-px text-[9px] text-muted-foreground/50 tabular-nums">
-          <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-2.5 object-contain" />
+          <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-2.5 object-contain" loading="lazy" />
           {formatClicks(clicks)}
         </span>
       )}

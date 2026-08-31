@@ -374,6 +374,7 @@ export default function BossesPage() {
                         width={48}
                         height={48}
                         style={{ flexShrink: 0, objectFit: "contain", marginRight: Array.isArray(boss.image) ? -12 : 0 }}
+                        loading="lazy"
                       />
                     ))}
                     <div>
@@ -411,6 +412,7 @@ export default function BossesPage() {
                               onError={(e) => {
                                 (e.target as HTMLImageElement).style.display = "none";
                               }}
+                              loading="lazy"
                             />
                             <span style={{ color: loot.blueprint ? "#6ba3e8" : "#ccc" }}>
                               {displayName}

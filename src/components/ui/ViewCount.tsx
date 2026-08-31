@@ -6,7 +6,7 @@ export function ViewCount({ clicks, className }: { clicks: number; className?: s
 
   return (
     <p className={cn("flex items-center gap-1 text-[11px] text-muted-foreground/50", className)}>
-      <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-3 object-contain" />
+      <img src={assetPath("/images/game-items/deerclops_eyeball.png")} alt="" className="size-3 object-contain" loading="lazy" />
       <span className="tabular-nums">{clicks.toLocaleString()}</span>
     </p>
   );

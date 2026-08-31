@@ -47,7 +47,7 @@ function CharacterAvatar({
         </div>
       ) : (
         <img
-          src={assetPath(`/images/category-icons/characters/${character.portrait}.png`)}
+          src={assetPath(`/images/category-icons/characters/${character.portrait}.webp`)}
           alt={characterName(character, locale)}
           className="size-12 sm:size-14 object-contain"
           onError={() => setImgError(true)}
