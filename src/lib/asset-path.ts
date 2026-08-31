@@ -18,7 +18,7 @@ export function assetPath(path: string): string {
  * 원하므로 크롤러에게는 원본을 그대로 준다. 이 함수는 **화면에 그리는 자리에서만** 쓴다 —
  * 메타데이터·JSON-LD에는 절대 쓰지 말 것.
  *
- * 축소본은 `scripts/optimize-boss-images.sh`가 만든다. 없으면 그냥 원본 경로가 나가므로
+ * 축소본은 `scripts/optimize-boss-images.mjs`가 만든다. 없으면 그냥 원본 경로가 나가므로
  * 화면이 깨지지는 않는다 (무게 이득만 사라진다).
  */
 export function bossThumbPath(path: string): string {
