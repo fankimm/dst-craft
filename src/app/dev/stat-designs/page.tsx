@@ -40,7 +40,7 @@ function DesignA({ data }: { data: typeof stats }) {
     <div className="grid grid-cols-3 gap-3">
       {data.map((s) => (
         <div key={s.label} className="rounded-lg border border-border bg-surface p-2.5 text-center">
-          <img src={assetPath(`/images/${s.icon}`)} alt={s.label} className="size-6 mx-auto object-contain" />
+          <img src={assetPath(`/images/${s.icon}`)} alt={s.label} className="size-6 mx-auto object-contain" loading="lazy" />
           <div className={cn("text-sm font-semibold tabular-nums mt-1", statColor(s.value))}>{s.formatted}</div>
           <div className="text-[10px] text-muted-foreground mt-0.5">{s.label}</div>
         </div>
@@ -58,7 +58,7 @@ function DesignB({ data }: { data: typeof stats }) {
     <div className="flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2.5">
       {data.map((s, i) => (
         <div key={s.label} className={cn("flex items-center gap-1.5", i > 0 && "border-l border-border pl-4")}>
-          <img src={assetPath(`/images/${s.icon}`)} alt={s.label} className="size-5 object-contain" />
+          <img src={assetPath(`/images/${s.icon}`)} alt={s.label} className="size-5 object-contain" loading="lazy" />
           <div>
             <div className={cn("text-sm font-semibold tabular-nums leading-tight", statColor(s.value))}>{s.formatted}</div>
             <div className="text-[10px] text-muted-foreground leading-tight">{s.label}</div>
@@ -84,7 +84,7 @@ function DesignC({ data }: { data: typeof stats }) {
         const isZero = s.value === 0;
         return (
           <div key={s.label} className="flex items-center gap-2">
-            <img src={assetPath(`/images/${s.icon}`)} alt={s.label} className="size-5 object-contain shrink-0" />
+            <img src={assetPath(`/images/${s.icon}`)} alt={s.label} className="size-5 object-contain shrink-0" loading="lazy" />
             <span className="text-[11px] text-muted-foreground w-12 shrink-0">{s.label}</span>
             <div className="flex-1 h-4 rounded-full bg-muted/50 overflow-hidden relative">
               {!isZero && (

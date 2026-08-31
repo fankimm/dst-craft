@@ -48,6 +48,7 @@ export default function SkillIconsPage() {
                     width={48}
                     height={48}
                     style={{ imageRendering: "auto", flexShrink: 0 }}
+                    loading="lazy"
                   />
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: 13, fontWeight: 600, color: "#e0e0e0" }}>{names.ko}</div>

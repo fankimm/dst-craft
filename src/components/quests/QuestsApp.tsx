@@ -156,7 +156,7 @@ function QuestSection({
             aria-expanded={!collapsed}
           >
             {questIconSrc && (
-              <img src={questIconSrc} alt="" className="size-9 object-contain shrink-0" />
+              <img src={questIconSrc} alt="" className="size-9 object-contain shrink-0" loading="lazy" />
             )}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">

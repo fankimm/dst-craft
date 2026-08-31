@@ -140,17 +140,17 @@ export function CharacterPageContent({ slug, lang }: { slug: string; lang: SeoLa
           </h2>
           <div className="grid grid-cols-3 gap-3">
             <div className="rounded-lg border border-border bg-surface px-3 py-3 text-center">
-              <img src="/images/ui/health.png" alt={lang === "ko" ? "체력" : "Health"} className="size-5 object-contain mx-auto mb-1" />
+              <img src="/images/ui/health.png" alt={lang === "ko" ? "체력" : "Health"} className="size-5 object-contain mx-auto mb-1" loading="lazy" />
               <p className="text-xs text-muted-foreground">{lang === "ko" ? "체력" : "Health"}</p>
               <p className="text-base font-bold text-red-600 dark:text-red-400 mt-0.5">{char.health}</p>
             </div>
             <div className="rounded-lg border border-border bg-surface px-3 py-3 text-center">
-              <img src="/images/ui/hunger.png" alt={lang === "ko" ? "허기" : "Hunger"} className="size-5 object-contain mx-auto mb-1" />
+              <img src="/images/ui/hunger.png" alt={lang === "ko" ? "허기" : "Hunger"} className="size-5 object-contain mx-auto mb-1" loading="lazy" />
               <p className="text-xs text-muted-foreground">{lang === "ko" ? "허기" : "Hunger"}</p>
               <p className="text-base font-bold text-yellow-600 dark:text-yellow-400 mt-0.5">{char.hunger}</p>
             </div>
             <div className="rounded-lg border border-border bg-surface px-3 py-3 text-center">
-              <img src="/images/ui/sanity.png" alt={lang === "ko" ? "정신력" : "Sanity"} className="size-5 object-contain mx-auto mb-1" />
+              <img src="/images/ui/sanity.png" alt={lang === "ko" ? "정신력" : "Sanity"} className="size-5 object-contain mx-auto mb-1" loading="lazy" />
               <p className="text-xs text-muted-foreground">{lang === "ko" ? "정신력" : "Sanity"}</p>
               <p className="text-base font-bold text-blue-600 dark:text-blue-400 mt-0.5">{char.sanity}</p>
             </div>
@@ -210,7 +210,7 @@ export function CharacterPageContent({ slug, lang }: { slug: string; lang: SeoLa
                     href={`${routePrefix}/item/${canonicalForItem(item.id)}`}
                     className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2 hover:border-ring transition-colors"
                   >
-                    <img src={`/images/game-items/${item.image}`} alt={primary} className="size-10 object-contain shrink-0" />
+                    <img src={`/images/game-items/${item.image}`} alt={primary} className="size-10 object-contain shrink-0" loading="lazy" />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground leading-tight truncate">{primary}</p>
                       {secondary && secondary !== primary && (
@@ -252,7 +252,7 @@ export function CharacterPageContent({ slug, lang }: { slug: string; lang: SeoLa
                   href={`${routePrefix}/character/${c.id}`}
                   className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
                 >
-                  <img src={`/images/characters/${c.portrait}.png`} alt={primary} className="h-12 object-contain" />
+                  <img src={`/images/characters/${c.portrait}.png`} alt={primary} className="h-12 object-contain" loading="lazy" />
                   <div className="min-w-0">
                     <p className="text-xs font-medium text-foreground truncate">{primary}</p>
                     {secondary && secondary !== primary && (

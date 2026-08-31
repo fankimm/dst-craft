@@ -222,6 +222,7 @@ export function SettingsPage() {
                       alt=""
                       referrerPolicy="no-referrer"
                       className="size-10 rounded-full shrink-0"
+                      loading="lazy"
                     />
                   )}
                   <div className="flex-1 min-w-0">

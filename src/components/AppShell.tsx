@@ -566,7 +566,7 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
           open && "ring-2 ring-primary"
         )}
       >
-        <img src="/images/game-items/hammer.png" alt="Dev" className="size-7" draggable={false} />
+        <img src="/images/game-items/hammer.png" alt="Dev" className="size-7" draggable={false} loading="lazy" />
       </button>
     </div>
   );

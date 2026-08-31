@@ -45,6 +45,7 @@ export function CategorySidebar({
                   alt={categoryName(cat, resolvedLocale)}
                   className="size-full object-contain"
                   draggable={false}
+                  loading="lazy"
                 />
               </button>
             </TooltipTrigger>

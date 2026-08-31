@@ -175,7 +175,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               const inner = (
                 <>
                   <div className="relative shrink-0">
-                    <img src={imgSrc} alt={lootName} className="size-10 object-contain" />
+                    <img src={imgSrc} alt={lootName} className="size-10 object-contain" loading="lazy" />
                     {loot.count && loot.count > 1 && (
                       <span className="absolute -bottom-1 -right-1 bg-foreground text-background text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center leading-none">
                         {loot.count}
@@ -240,7 +240,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 const inner = (
                   <>
                     <div className="relative shrink-0">
-                      <img src={imgSrc} alt={lootName} className="size-10 object-contain" />
+                      <img src={imgSrc} alt={lootName} className="size-10 object-contain" loading="lazy" />
                       {loot.count && loot.count > 1 && (
                         <span className="absolute -bottom-1 -right-1 bg-foreground text-background text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center leading-none">
                           {loot.count}
@@ -328,7 +328,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                     href={`${routePrefix}/boss/${canonicalForBoss(b.id)}`}
                     className="flex flex-col items-center gap-2 rounded-lg border border-border bg-surface px-3 py-3 hover:border-ring transition-colors text-center"
                   >
-                    <img src={bossImageSrc(`/images/bosses/${img}`)} alt={rDisplay} className="size-10 object-contain" />
+                    <img src={bossImageSrc(`/images/bosses/${img}`)} alt={rDisplay} className="size-10 object-contain" loading="lazy" />
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-foreground truncate">{rDisplay}</p>
                       <p className="text-[10px] text-muted-foreground truncate">{rSub}</p>

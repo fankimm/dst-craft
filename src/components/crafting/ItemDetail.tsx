@@ -65,6 +65,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               alt={itemName(item, resolvedLocale)}
               className="size-14 object-contain"
               onError={() => setImgError(true)}
+              loading="lazy"
             />
           )}
         </div>
@@ -82,7 +83,7 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               className="p-0.5 rounded-full transition-colors shrink-0"
               aria-label="favorite"
             >
-              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFavorite(item.id) && "opacity-30 grayscale")} />
+              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFavorite(item.id) && "opacity-30 grayscale")} loading="lazy" />
             </button>
             <ShareButton
               url={`/?cat=${item.category[0] || "tools"}&item=${item.id}`}

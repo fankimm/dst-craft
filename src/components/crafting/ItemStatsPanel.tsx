@@ -107,7 +107,7 @@ export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
   if (stats.forgerepairable) {
     const repairItems = stats.forgerepairable.map((rid) => (
       <span key={rid} className="inline-flex items-center gap-1">
-        <img src={assetPath(`/images/game-items/${rid}.png`)} alt="" className="size-3.5 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+        <img src={assetPath(`/images/game-items/${rid}.png`)} alt="" className="size-3.5 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} loading="lazy" />
         <span className="font-medium text-foreground">{resolveItemName(rid, l)}</span>
       </span>
     ));
@@ -121,7 +121,7 @@ export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
   if (stats.repairitems) {
     const repairItems = stats.repairitems.map((rid) => (
       <span key={rid} className="inline-flex items-center gap-1">
-        <img src={assetPath(`/images/game-items/${rid}.png`)} alt="" className="size-3.5 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+        <img src={assetPath(`/images/game-items/${rid}.png`)} alt="" className="size-3.5 object-contain" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} loading="lazy" />
         <span className="font-medium text-foreground">{resolveItemName(rid, l)}</span>
       </span>
     ));

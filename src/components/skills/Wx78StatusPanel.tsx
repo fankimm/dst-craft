@@ -849,6 +849,7 @@ function DetailHeader({
             src={iconSrc}
             alt=""
             className={cn("size-12 object-contain", iconRounded && "rounded-full")}
+            loading="lazy"
           />
         </div>
       </div>
@@ -942,6 +943,7 @@ function Detail({
               src={assetPath(`/images/game-items/${r.module.id}.png`)}
               alt=""
               className="size-9 object-contain shrink-0"
+              loading="lazy"
             />
             <div className="flex-1 min-w-0 text-sm font-semibold text-foreground truncate">
               {moduleName}

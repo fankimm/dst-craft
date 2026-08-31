@@ -198,6 +198,7 @@ export function IngredientPicker({ locale, onSelect, disabled }: IngredientPicke
                   src={assetPath(`/images/${imgDir}/${tab.icon}`)}
                   alt=""
                   className="size-4 object-contain"
+                  loading="lazy"
                 />
                 {t(locale, tab.labelKey)}
               </button>

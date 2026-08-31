@@ -65,6 +65,7 @@ export function QuestsListContent({ lang }: { lang: SeoLang }) {
                     src={icon}
                     alt={primary}
                     className="size-14 object-contain shrink-0"
+                    loading="lazy"
                   />
                 )}
                 <div className="min-w-0 flex-1">

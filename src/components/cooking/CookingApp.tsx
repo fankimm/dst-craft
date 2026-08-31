@@ -630,6 +630,7 @@ function RecipeCard({
           src={assetPath("/images/category-icons/characters/warly.png")}
           alt="Warly"
           className="absolute top-0.5 right-0.5 size-5 rounded-full"
+          loading="lazy"
         />
       )}
       <img
@@ -678,6 +679,7 @@ function AffinityBadges({ foodId, foodType, locale }: { foodId: string; foodType
               src={assetPath(`/images/category-icons/characters/${char.portrait}.png`)}
               alt={name}
               className="size-4 rounded-full object-cover"
+              loading="lazy"
             />
             <span>{locale === "ko" ? `${name}의 선호 음식` : `${name}'s favorite`}</span>
           </div>
@@ -823,6 +825,7 @@ function RawFoodDetail({
           src={assetPath(`/images/game-items/${food.image ?? `${food.id}.png`}`)}
           alt={localName}
           className="size-16 sm:size-20 object-contain shrink-0"
+          loading="lazy"
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
@@ -832,7 +835,7 @@ function RawFoodDetail({
               className="p-0.5 rounded-full transition-colors shrink-0"
               aria-label="favorite"
             >
-              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} />
+              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} loading="lazy" />
             </button>
             <ShareButton
               url={`/?tab=cooking&cat=raw&recipe=${food.id}`}
@@ -969,6 +972,7 @@ function RecipeDetail({
           src={assetPath(`/images/game-items/${recipe.id}.png`)}
           alt={localName}
           className="size-16 object-contain shrink-0"
+          loading="lazy"
         />
         <div className="flex-1 min-w-0 pt-1">
           <div className="flex items-center gap-1.5">
@@ -978,7 +982,7 @@ function RecipeDetail({
               className="p-0.5 rounded-full transition-colors shrink-0"
               aria-label="favorite"
             >
-              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} />
+              <img src={assetPath("/images/ui/health.png")} alt="" className={cn("size-4", !isFav && "opacity-30 grayscale")} loading="lazy" />
             </button>
             <ShareButton
               url={`/?tab=cooking&cat=all&recipe=${recipe.id}`}
@@ -1104,7 +1108,7 @@ function RecipeDetail({
           {/* Info row — perish / cooktime / temp inline */}
           <div className="flex items-center py-1 text-sm">
             <div className="flex-1 flex items-center justify-center gap-1.5">
-              <img src={assetPath("/images/ui/perish.png")} alt="" className="size-4 object-contain" />
+              <img src={assetPath("/images/ui/perish.png")} alt="" className="size-4 object-contain" loading="lazy" />
               <div>
                 <div className="font-semibold tabular-nums leading-tight">
                   {recipe.perishDays == null
@@ -1116,7 +1120,7 @@ function RecipeDetail({
             </div>
             {recipe.station !== "teashop" && (
               <div className="flex-1 flex items-center justify-center gap-1.5 border-l border-border">
-                <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" />
+                <img src={assetPath("/images/ui/cooktime.png")} alt="" className="size-4 object-contain" loading="lazy" />
                 <div>
                   <div className="font-semibold tabular-nums leading-tight">{cookSeconds}<span className="text-muted-foreground font-normal">{t(locale, "cooking_seconds")}</span></div>
                   <div className="text-[10px] text-muted-foreground leading-tight">{t(locale, "cooking_cooktime")}</div>
@@ -1129,6 +1133,7 @@ function RecipeDetail({
                   src={assetPath(`/images/game-items/${recipe.temperature > 0 ? "campfire" : "ice"}.png`)}
                   alt=""
                   className="size-4 object-contain"
+                  loading="lazy"
                 />
                 <div>
                   <div className="font-semibold tabular-nums leading-tight">
