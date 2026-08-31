@@ -2,18 +2,12 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { CraftingApp } from "./crafting/CraftingApp";
-import { CookingApp } from "./cooking/CookingApp";
-import { CookpotApp } from "./cookpot/CookpotApp";
-import { BossesApp } from "./bosses/BossesApp";
-import { SettingsPage } from "./settings/SettingsPage";
-import { SkillSimulatorApp } from "./skills/SkillSimulatorApp";
-import { SkinsApp } from "./skins/SkinsApp";
-import { ConsoleApp } from "./console/ConsoleApp";
-import { QuestsApp } from "./quests/QuestsApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { FloatingSupportPill } from "./ui/FloatingSupportPill";
 import { LegacyPwaNotice } from "./ui/LegacyPwaNotice";
+import { TabFallback } from "./ui/TabFallback";
 import { AdSlot } from "./ads/AdSlot";
 import { useSettings } from "@/hooks/use-settings";
 import { useAuth } from "@/hooks/use-auth";
@@ -23,6 +17,60 @@ import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "skills" | "skins" | "quests" | "console" | "settings";
+
+/**
+ * 제작 탭 외 8개는 청크로 분리한다 (#91).
+ *
+ * 전부 정적 import이던 시절, 홈은 첫 로드에 14청크 3,204KB(원본)를 받았다. 그중
+ * 스킨 데이터 + 콘솔 prefab 목록만 1,130KB, scrapbook 스펙 + 요리 데이터가 409KB —
+ * 제작 탭만 보는 사용자가 스킨·콘솔·스킬·요리 데이터를 전부 받아서 파싱하고 있었다.
+ *
+ * `ssr: false` 인 이유: 프리렌더 HTML에는 어차피 제작 탭만 들어간다(`isTabMounted`).
+ * 서버에서 렌더해봐야 쓰이지 않는 마크업으로 HTML만 불린다.
+ *
+ * 제작 탭(`CraftingApp`)은 정적 import로 남긴다 — 기본 탭이라 프리렌더 HTML과 첫
+ * 페인트에 반드시 있어야 하고, 쪼개면 첫 화면에 청크 왕복이 하나 더 끼어든다.
+ */
+// 옵션은 반드시 각 호출부에 객체 리터럴로 둔다 — 공통 상수로 빼면 Turbopack이
+// `next/dynamic options must be an object literal` 로 빌드를 막는다. 공통 헬퍼로
+// 감싸는 것도 안 된다 (`dynamic` 이 추론한 props가 `never` 로 뭉개진다).
+const CookingApp = dynamic(() => import("./cooking/CookingApp").then((m) => m.CookingApp), { ssr: false, loading: () => <TabFallback /> });
+const CookpotApp = dynamic(() => import("./cookpot/CookpotApp").then((m) => m.CookpotApp), { ssr: false, loading: () => <TabFallback /> });
+const BossesApp = dynamic(() => import("./bosses/BossesApp").then((m) => m.BossesApp), { ssr: false, loading: () => <TabFallback /> });
+const SkillSimulatorApp = dynamic(() => import("./skills/SkillSimulatorApp").then((m) => m.SkillSimulatorApp), { ssr: false, loading: () => <TabFallback /> });
+const SkinsApp = dynamic(() => import("./skins/SkinsApp").then((m) => m.SkinsApp), { ssr: false, loading: () => <TabFallback /> });
+const QuestsApp = dynamic(() => import("./quests/QuestsApp").then((m) => m.QuestsApp), { ssr: false, loading: () => <TabFallback /> });
+const ConsoleApp = dynamic(() => import("./console/ConsoleApp").then((m) => m.ConsoleApp), { ssr: false, loading: () => <TabFallback /> });
+const SettingsPage = dynamic(() => import("./settings/SettingsPage").then((m) => m.SettingsPage), { ssr: false, loading: () => <TabFallback /> });
+
+/**
+ * 탭 버튼에 포인터가 닿거나 누르는 순간 그 탭 청크를 미리 받아둔다. 클릭 → 렌더
+ * 사이의 청크 왕복을 사용자가 체감하지 못하게 하는 용도.
+ *
+ * `window load` 이후 idle에 전부 미리 받는 방식은 쓰지 않는다 — Ezoic이 `load`
+ * 이후에야 광고 파이프라인을 시작하는데(#86·#88), 그 구간에 우리 청크로 대역폭을
+ * 밀면 첫 광고가 그만큼 늦어진다. 상호작용 시점 프리페치는 그 경쟁이 없다.
+ *
+ * webpack이 아래 `import()` 를 위 `dyn()` 의 것과 같은 청크로 묶으므로 중복 요청은
+ * 생기지 않는다.
+ */
+const TAB_PREFETCH: Partial<Record<TabId, () => Promise<unknown>>> = {
+  cooking: () => import("./cooking/CookingApp"),
+  cookpot: () => import("./cookpot/CookpotApp"),
+  bosses: () => import("./bosses/BossesApp"),
+  skills: () => import("./skills/SkillSimulatorApp"),
+  skins: () => import("./skins/SkinsApp"),
+  quests: () => import("./quests/QuestsApp"),
+  console: () => import("./console/ConsoleApp"),
+  settings: () => import("./settings/SettingsPage"),
+};
+
+const prefetched = new Set<TabId>();
+function prefetchTab(id: TabId) {
+  if (prefetched.has(id)) return;
+  prefetched.add(id);
+  TAB_PREFETCH[id]?.().catch(() => prefetched.delete(id));
+}
 
 const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?: boolean }[] = [
   { id: "crafting", labelKey: "tab_crafting", image: "/images/category-icons/tools.png" },
@@ -338,6 +386,9 @@ export function AppShell() {
             <button
               key={tab.id}
               onClick={() => handleTabClick(tab.id)}
+              onPointerEnter={() => prefetchTab(tab.id)}
+              onPointerDown={() => prefetchTab(tab.id)}
+              onFocus={() => prefetchTab(tab.id)}
               className={cn(
                 "shrink-0 flex items-center justify-center gap-1 px-0 py-2 text-xs font-medium transition-colors relative touch-manipulation",
                 isActive
