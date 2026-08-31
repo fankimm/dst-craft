@@ -275,7 +275,7 @@ Fast3G에서 홈·characters는 `window load`가 30초 내에 발화하지 않�
 
 ---
 
-## 2026-08-31 — beta HAR 실측: 전면 광고 가격 워터폴 3.1초, 2/2 no-fill
+## 2026-08-31 — beta HAR 실측: 전면 광고 가격 워터폴 3.1초, 3/3 no-fill
 
 `beta.dstcraft.com` HAR(실브라우저, 페이지뷰 2회, `limitCookies: true` 적용 상태) 분석.
 `#91` 프론트 최적화 직후 "로딩이 안 끝난다"는 관측에서 출발.
@@ -341,3 +341,53 @@ page_2  3581ms ─────────────────────�
 2. `/stats` 광고 도달 분포에서 Interstitial 자리의 채움률을 분리해 본다
 3. 두 곳 모두 no-fill이 지배적이면 그때 `disableInterstitial` — 3.1초 + 비디오 SDK
    ~1.4MB가 사라진다
+
+
+### 추가 캡처(2회차 HAR, `Finish 46.5s`) — 세 가지가 더 나왔다
+
+| | page_3 |
+|---|---|
+| DCL | 576ms |
+| **load** | **637ms** |
+| Finish | **46.5s** |
+| 우리 오리진 | 66건 30KB · **마지막 시작 0.6s** |
+| load 이후 우리 요청 | **3건 0KB** (`/cdn-cgi/rum`, `favicon.ico`, `icon-192`) |
+
+**1) `Finish 46.5s`는 로딩이 아니라 Ezoic 텔레메트리 하트비트다.** 10초 이후 요청 23건이
+전부 `g.ezoic.net` 비콘이고, `greenoaks.gif`(`type:"pageview"`)가 **16.4s와 46.4s에
+30초 간격**으로 발화한다. 탭을 열어둔 만큼 계속 나가므로 DevTools의 `Finish` 숫자는
+탭을 얼마나 오래 열어뒀는지를 잴 뿐 사용자 체감과 무관하다. 판단에는 `load`(637ms)를 쓸 것.
+
+늦은 비콘 내역: `adop.gif`(11.9s) · `greenoaks.gif` pageview(16.4s, 46.4s) ·
+`ce.gif`×10 + `army.gif`(21.5s) · `bluemonkey.gif`×2(21.9s) · `idgraph/profile`(22.4s) ·
+`tangerine.gif`×5(27.9s).
+
+**2) 워터폴이 3번째 재현됐다 — 3/3 no-fill.** `br1` 500→260→200→140→80→40→16→6→2→0→0,
+11건 전부 `tap=Interstitial`, 응답 1,185~1,614B(빈 응답), 3948→7130ms(3.2초).
+게다가 Ezoic 자신의 `adop.gif` 페이로드가 **`"attempt_number": 10`** 이라고 보고한다 —
+11단계 워터폴임을 Ezoic 텔레메트리가 확인해준다.
+
+**3) 🔴 소재가 없는데 `type:"impression"` 을 보고한다.** 21.5s `army.gif`:
+```json
+{"type":"impression","impression_id":"2772428992551108","unit":"Interstitial/...","domain_id":"791734"}
+```
+바로 그 Interstitial은 `br1=0`까지 내려가고도 안 채워진 자리다. 27.9s `tangerine.gif`도
+`{"type":"outstream-video-ad","data":[{"name":"watched_ms","val":"0"}]}` × 5 —
+IMA SDK ~1.4MB를 받아놓고 시청 0ms인데 이벤트는 5건 나간다.
+
+**이게 사실이면 `#85`가 풀려다 만 문제의 답일 수 있다** — "ePMV가 낮을 때 원인이 no-fill인지
+단가인지 가릴 수 없다"던 것이, **Ezoic 쪽 impression 집계에 no-fill이 섞여 분모가 부푼**
+결과일 수 있다. 단, 이 비콘이 대시보드 ePMV의 분모로 실제 쓰이는지는 확인되지 않았다 —
+**추론이지 사실이 아니다.** 대시보드 노출수와 우리 `/api/_e` 의 `filled` 카운트를 같은
+기간으로 맞춰 비교하면 갈린다. 그 비교가 이 문서의 다음 할 일.
+
+**4) 우리 자리는 무사하다.** `#91`의 탭 lazy mount 이후 광고 오케스트레이션이 깨졌는지
+`scripts/check-ad-slots.mjs`(Ezoic 목업)로 beta와 prod를 각각 돌려 **출력이 바이트 단위로
+동일**함을 확인했다. 탭 8개 순회 + 상세 시트 왕복에서 `problems: []`, 중복 placeholder
+없음, 숨은 탭이 자리를 들고 있지 않음. 초기 `show(107,111,108)` → 탭 전환마다 `show(111)`
+→ 시트 `show(103)` → 닫으면 `destroy(103)` + `show(107,108,111)` 로 정상.
+
+HAR의 `gampad/ads` 에 Interstitial만 보이고 우리 번호(111/103/107/108)가 안 보이는 것은
+**우리 자리가 안 나가서가 아니라** Ezoic이 자사 수요를 자체 파이프라인으로 처리해 GAM
+요청으로 드러나지 않기 때문이다. HAR만으로 우리 자리의 채움을 판정하지 말 것 — 그 판정은
+`/api/_e` 도달 계측(`#85`/`#86`)이 담당한다.
