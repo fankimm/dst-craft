@@ -183,27 +183,35 @@ const AD_SCRIPT_SRCS = [
 const AD_SCRIPT_CFASYNC_OFF = 2;
 
 /**
- * beta 전용 `ezstandalone.config()` 실험 (#91).
+ * beta 전용 `ezstandalone.config()` 실험.
  *
- * **prod에는 절대 그대로 옮기지 말 것** — 여기서 재는 건 "첫 소재가 앞당겨지는가"뿐이고,
- * 수익(ePMV)은 beta 트래픽으로 알 수 없다. 타이밍 이득이 확인된 뒤 prod에서 별도로
- * ePMV A/B를 해야 한다.
+ * `limitCookies` — 쿠키 싱크 요청 감축. 감소폭 측정 중이고 첫 소재 시각과는 무관하다.
  *
- * - `limitCookies` — 쿠키 싱크 요청 감축. 먼저 켜져 있던 실험이고 첫 소재 시각과는
- *   무관해서 그대로 둔다(기준선 유지).
- * - `disableInterstitial` — 전면 광고가 가격 바닥을 500→0으로 11번 낮춰가며 재시도하는
- *   워터폴에 **3.2초**를 쓴다(HAR 3회 모두 동일 수열, 응답은 전부 1.2KB 빈 응답).
- *   실사용자 첫 소재 도착이 6~8초 최빈인데 그중 3.2초가 이것이다.
- * - `disableVideo` — IMA SDK(`bridge3` 941KB + `ima3` 477KB)와 rewarded 로더 517KB를
- *   받는데 HAR의 outstream 이벤트는 `watched_ms: 0`. 이 앱에는 비디오 컨텐츠가 없다.
+ * ---
+ * ⛔ **`disableInterstitial` 과 `disableVideo` 는 다시 켜지 말 것** (#92에서 제거).
  *
- * 둘을 한꺼번에 켜는 이유: 어느 쪽이 기여했는지는 HAR에서 바로 갈린다(gampad의
- * Interstitial 요청 소멸 / imasdk 요청 소멸). 합산 효과가 0이면 둘 다 볼 필요가 없으니
- * 먼저 싸게 합쳐 재고, 유의미하면 그때 분리한다.
+ * #91에서 HAR 3회가 전부 "Interstitial이 `br1` 500→0까지 내려가고도 빈 응답"이라
+ * 꺼도 된다고 판단해 잠깐 켰다. **Ezoic 대시보드 실측이 정반대였다** (최근 7일):
  *
- * 되돌리기: 이 객체에서 두 키를 지우면 끝. 서버·대시보드 설정은 건드리지 않았다.
+ * | 포맷 | RPM | 수익 | 비중 |
+ * |---|---|---|---|
+ * | display (#111) | $0.31 | $0.99 | 48% |
+ * | **interstitial** | **$0.72** | **$0.61** | **29%** |
+ * | side rails (#107·108) | $0.39 | $0.28 | 13% |
+ *
+ * 전면 광고는 수익의 29%이고 **RPM이 셋 중 가장 높다**(display의 2.3배). 끄면 그냥 손해다.
+ * HAR 3회는 no-fill 세션만 우연히 잡은 표본이었다 — 페이지뷰 3개로 수익 유닛을 판정하려
+ * 한 것이 잘못이다.
+ *
+ * `disableVideo` 도 근거가 없다: Ezoic Video는 대시보드에서 "Get Started" 상태(= 미설정)라
+ * 이 옵션이 끄는 건 우리가 안 쓰는 플레이어가 아니라 **아웃스트림 비디오 광고**인데, 그건
+ * 별도 수익 항목이 없어 위 `display $0.99`에 섞여 있을 수 있다(3개 포맷 합 $1.88 vs 7일
+ * 총액 $2.08 — $0.20이 미분류다). 끄면 display 수익을 깎을 위험이 있다.
+ *
+ * 다시 검토하려면 **대시보드 Ad Format Revenue를 먼저 보고** 판단할 것. HAR·헤드리스로는
+ * 채움 판정 자체가 안 된다(Ezoic이 클라이언트를 분류한다 — `docs/mistakes.md`).
  */
-const BETA_AD_CONFIG = { limitCookies: true, disableInterstitial: true, disableVideo: true };
+const BETA_AD_CONFIG = { limitCookies: true };
 
 const adBootstrapScript = `
 window.ezstandalone = window.ezstandalone || {};
