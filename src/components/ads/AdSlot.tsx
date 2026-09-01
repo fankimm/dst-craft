@@ -208,8 +208,8 @@ function flushAdQueue() {
     const want = desiredOwner.get(id);
     const have = shownOwner.get(id);
     if (want && want !== have) {
-      // 주인이 바뀐 자리(탭 전환·목록 전환) — **destroy 없이 show만.**
-      // Ezoic은 새 div를 찾아 다시 채우고, 다른 자리는 건드리지 않는다 (#75 실측).
+      // 주인이 바뀐 자리(탭 전환·목록 전환) — destroy 없이 show만 부른다.
+      // Ezoic이 새 div를 찾아 다시 채운다.
       show.push(id);
       shownOwner.set(id, want);
     } else if (!want && have) {
@@ -220,15 +220,25 @@ function flushAdQueue() {
     }
   }
   if (!show.length && !destroy.length) return;
-  if (destroy.length) {
-    // **destroy는 다른 자리의 내용까지 비운다** (#75 실측: `destroy(111); showAds(111)`
-    // 한 번에 레일 두 개가 빈 div가 됐다). 그래서 해제가 낀 배치에서만 살아 있는
-    // 나머지를 함께 다시 요청한다. 주인만 바뀐 경우에는 이 비용을 치르지 않는다.
-    for (const [id, owner] of desiredOwner) {
-      if (!show.includes(id)) {
-        show.push(id);
-        shownOwner.set(id, owner);
-      }
+
+  // **배치가 나가면 지목하지 않은 자리의 광고까지 비워진다.** 그래서 배치를 낼 때는
+  // 살아 있는 자리를 **전부** 함께 요청한다.
+  //
+  // #75에서는 이 현상을 `destroy` 전용으로 봤고(`destroy(111); showAds(111)` 한 번에
+  // 레일 두 개가 빈 div가 됐다), 그래서 해제가 낀 배치에서만 나머지를 재요청했다.
+  // 그 전제가 틀렸다 — **`showAds` 단독으로도 같은 일이 일어난다** (#94 실측).
+  // 상세 시트를 열면 `#111`의 주인이 바뀌어 배치가 `showAds(111)` 하나만 내보내는데,
+  // 그 호출에 레일 `#107`·`#108`이 높이 0인 빈 div가 됐다. destroy가 없으니 위 복구
+  // 로직도 안 타서 **시트를 닫아도 돌아오지 않았다** — 그 세션 동안 레일은 영구 사망이고,
+  // 레일은 최근 7일 수익의 13%다(`docs/ezoic-decision.md`).
+  //
+  // 이미 채워진 자리를 다시 요청하는 비용이 생기지만, 배치 자체는 `shownOwner` 비교로
+  // 변화가 있을 때만 나가므로 유휴 상태에서 반복 요청이 돌지는 않는다. 자리가 죽은 채로
+  // 남는 것보다 재요청이 낫다.
+  for (const [id, owner] of desiredOwner) {
+    if (!show.includes(id)) {
+      show.push(id);
+      shownOwner.set(id, owner);
     }
   }
   ez.cmd.push(() => {
