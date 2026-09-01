@@ -26,6 +26,7 @@ import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { useSlideAnimation } from "@/hooks/use-slide-animation";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { SortDropdown } from "@/components/ui/SortDropdown";
+import { AdSlot } from "@/components/ads/AdSlot";
 
 const isHome = (v: boolean) => v;
 
@@ -227,103 +228,104 @@ export function CraftingApp({
     />
   );
 
-  // Category grid view (initial state - no category selected)
-  if (showCategoryGrid) {
-    return (
-      <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
-        <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 min-w-0">
-              {isSearching ? (
-                <Breadcrumb
-                  isSearching
-                  searchLabel={t(resolvedLocale, "searchResults")}
-                  onHomeClick={handleGoHome}
-                />
-              ) : (
-                <Breadcrumb onHomeClick={handleGoHome} />
-              )}
-            </div>
-            {!isSearching && (
-              <SortDropdown
-                value={sortByPopular ? "popular" : "default"}
-                onChange={(v) => setSortByPopular(v === "popular")}
-                locale={resolvedLocale}
-              />
-            )}
-          </div>
-          {searchBar}
+  // 헤더는 화면에 따라 통째로 다르다 (홈=Breadcrumb+정렬, 목록=CategoryHeader).
+  const header = showCategoryGrid ? (
+    <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2 min-w-0">
+          {isSearching ? (
+            <Breadcrumb
+              isSearching
+              searchLabel={t(resolvedLocale, "searchResults")}
+              onHomeClick={handleGoHome}
+            />
+          ) : (
+            <Breadcrumb onHomeClick={handleGoHome} />
+          )}
         </div>
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-          <div className="flex flex-col min-h-full">
-            {isSearching ? (
-              <ItemGrid
-                items={searchResults}
-                selectedItem={selectedItem}
-                onSelectItem={handleSelectItem}
-              />
-            ) : (
-              <CategoryGrid
-                categories={categories}
-                favCount={craftingFavCount}
-                recentCount={recentIds.length}
-                sortByPopular={sortByPopular}
-                getClicks={getClicks}
-                onSelectCategory={handleSelectCategory}
-              />
-            )}
-            <Footer />
-          </div>
-        </div>
-
-        {detailPanel}
-      </div>
-    );
-  }
-
-  // Item list view (after category selection or searching)
-  return (
-    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
-      {/* Header */}
-      <CategoryHeader
-        category={isSearching ? undefined : currentCategory}
-        character={currentCharacter}
-        characterId={selectedCharacter}
-        searchBar={searchBar}
-        isSearching={isSearching}
-        customLabel={(selectedCategory as string) === "favorites" ? t(resolvedLocale, "favorites") : (selectedCategory as string) === "recent" ? t(resolvedLocale, "recent") : undefined}
-        onHomeClick={handleGoHome}
-        onCategoryClick={selectedCharacter ? goToCategory : undefined}
-        actions={!isSearching ? (
+        {!isSearching && (
           <SortDropdown
             value={sortByPopular ? "popular" : "default"}
             onChange={(v) => setSortByPopular(v === "popular")}
             locale={resolvedLocale}
           />
-        ) : undefined}
-      />
+        )}
+      </div>
+      {searchBar}
+    </div>
+  ) : (
+    <CategoryHeader
+      category={isSearching ? undefined : currentCategory}
+      character={currentCharacter}
+      characterId={selectedCharacter}
+      searchBar={searchBar}
+      isSearching={isSearching}
+      customLabel={(selectedCategory as string) === "favorites" ? t(resolvedLocale, "favorites") : (selectedCategory as string) === "recent" ? t(resolvedLocale, "recent") : undefined}
+      onHomeClick={handleGoHome}
+      onCategoryClick={selectedCharacter ? goToCategory : undefined}
+      actions={!isSearching ? (
+        <SortDropdown
+          value={sortByPopular ? "popular" : "default"}
+          onChange={(v) => setSortByPopular(v === "popular")}
+          locale={resolvedLocale}
+        />
+      ) : undefined}
+    />
+  );
 
-      {/* Scrollable content area */}
+  // 스크롤 영역 본문 — 광고 아래에서만 갈린다.
+  const body = showCategoryGrid ? (
+    isSearching ? (
+      <ItemGrid items={searchResults} selectedItem={selectedItem} onSelectItem={handleSelectItem} />
+    ) : (
+      <CategoryGrid
+        categories={categories}
+        favCount={craftingFavCount}
+        recentCount={recentIds.length}
+        sortByPopular={sortByPopular}
+        getClicks={getClicks}
+        onSelectCategory={handleSelectCategory}
+      />
+    )
+  ) : selectedCategory === "character" && !selectedCharacter && !isSearching ? (
+    <CharacterSelector
+      characters={characters}
+      selectedCharacter={selectedCharacter}
+      sortByPopular={sortByPopular}
+      getClicks={getClicks}
+      onSelectCharacter={handleSelectCharacter}
+    />
+  ) : (
+    <ItemGrid
+      items={displayItems}
+      selectedItem={selectedItem}
+      onSelectItem={handleSelectItem}
+      getClicks={sortByPopular ? getClicks : undefined}
+    />
+  );
+
+  // 화면(홈/목록)을 두 개의 `return`으로 나누지 않는다 (#93).
+  //
+  // 예전에는 `AdSlot variant="top"` 이 `CategoryGrid` 와 `ItemGrid` **안에** 각각 있었다.
+  // 두 컴포넌트는 화면 전환 때 서로 교체되므로 placeholder `#111` 을 쥔 DOM 노드가 통째로
+  // 바뀌었고, Ezoic은 새 div를 발견해 **처음부터 다시 요청**했다 — 프로덕션 실측에서
+  // 카테고리를 누르는 순간 광고가 사라지고(iframe 0) 재요청이 나가 8초 뒤에야 다시 찼다.
+  // 전환할 때마다 사용자는 빈 띠를 다시 4~8초 봐야 했고, 노출 시간도 매번 초기화됐다
+  // (`early` = 소재 도착 전 이탈이 56%인 것과 직결).
+  //
+  // 그래서 헤더/본문만 갈리고 **자리 자체는 트리에 하나만** 존재하도록 합쳤다. 같은
+  // 위치·같은 타입이라 React가 DOM 노드를 그대로 재사용하고, Ezoic 입장에서는 자리가
+  // 사라진 적이 없으므로 재요청이 일어나지 않는다.
+  //
+  // ⚠️ 이 자리를 다시 `CategoryGrid`/`ItemGrid` 안으로 넣지 말 것. 그리드 안에 두면
+  // `col-span-full` 로 격자에 맞출 수 있어 편해 보이지만, 그 편의가 곧 위 재요청이다.
+  return (
+    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
+      {header}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
         <div className="flex flex-col min-h-full">
-          {/* Character selector (only when no character selected yet) */}
-          {selectedCategory === "character" && !selectedCharacter && !isSearching ? (
-            <CharacterSelector
-              characters={characters}
-              selectedCharacter={selectedCharacter}
-              sortByPopular={sortByPopular}
-              getClicks={getClicks}
-              onSelectCharacter={handleSelectCharacter}
-            />
-          ) : (
-            /* Item grid */
-            <ItemGrid
-              items={displayItems}
-              selectedItem={selectedItem}
-              onSelectItem={handleSelectItem}
-              getClicks={sortByPopular ? getClicks : undefined}
-            />
-          )}
+          <AdSlot variant="top" className="max-w-4xl mx-auto w-full px-3 sm:px-4" />
+          {body}
           <Footer />
         </div>
       </div>
