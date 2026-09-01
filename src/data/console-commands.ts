@@ -20,7 +20,7 @@ export interface ConsoleCommand {
   command: string;
   descKo?: string;
   descEn?: string;
-  /** Image path relative to /images/ (e.g. "game-items/reviver.png" or "ui/health.png") */
+  /** Image path relative to /images/ (e.g. "game-items/reviver.png" or "ui/health.webp") */
   icon?: string;
   /** Parameter definitions for editable commands */
   params?: CommandParam[];
@@ -70,21 +70,21 @@ export const consoleCommands: Record<CommandCategoryId, ConsoleCommand[]> = {
       nameKo: "체력 최대",
       nameEn: "Max Health",
       command: "c_sethealth(1)",
-      icon: "ui/health.png",
+      icon: "ui/health.webp",
     },
     {
       id: "sethunger",
       nameKo: "허기 최대",
       nameEn: "Max Hunger",
       command: "c_sethunger(1)",
-      icon: "ui/hunger.png",
+      icon: "ui/hunger.webp",
     },
     {
       id: "setsanity",
       nameKo: "정신력 최대",
       nameEn: "Max Sanity",
       command: "c_setsanity(1)",
-      icon: "ui/sanity.png",
+      icon: "ui/sanity.webp",
     },
     {
       id: "setmoisture",

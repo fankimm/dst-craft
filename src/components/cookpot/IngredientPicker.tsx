@@ -51,8 +51,8 @@ interface CategoryTab {
 }
 
 const categoryTabs: CategoryTab[] = [
-  { id: "favorites", labelKey: "cookpot_category_favorites", icon: "health.png" },
-  { id: "recent", labelKey: "cookpot_category_recent", icon: "cooktime.png" },
+  { id: "favorites", labelKey: "cookpot_category_favorites", icon: "health.webp" },
+  { id: "recent", labelKey: "cookpot_category_recent", icon: "cooktime.webp" },
   { id: "all", labelKey: "cookpot_category_all", icon: "cookpot.png" },
   { id: "fruits", labelKey: "cookpot_category_fruits", icon: "pomegranate.png" },
   { id: "veggies", labelKey: "cookpot_category_veggies", icon: "carrot.png" },

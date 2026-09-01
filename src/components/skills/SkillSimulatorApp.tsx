@@ -395,6 +395,11 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
         </nav>
       </div>
       {/* Content */}
+      {/* 광고 자리는 캐릭터 그리드 ↔ 스킬트리 전환 **위**에 둔다 (#95).
+          두 화면이 각자 스크롤 컨테이너를 가지고 있어서, 자리를 그 안에 두면 전환할 때마다
+          placeholder 노드가 교체돼 Ezoic이 재요청한다 (#93 참조). 여기 두면 노드가 하나로
+          유지되고, 덤으로 스킬트리를 스크롤해도 띠가 위에 남는다. */}
+      <AdSlot variant="top" className="shrink-0" />
       <div className={cn("flex-1 min-h-0 overflow-hidden", slideClass)}>
         {selectedChar && tree ? (
           <SkillTreeView
@@ -422,7 +427,6 @@ export function SkillSimulatorApp({ onViewCraftingItem }: Props) {
           />
         ) : (
           <div className="h-full overflow-y-auto overscroll-contain" data-scroll-container="">
-            <AdSlot variant="top" />
             <SkillCharacterGrid
               locale={resolvedLocale}
               onSelect={handleSelectChar}

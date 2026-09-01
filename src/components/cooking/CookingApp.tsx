@@ -72,9 +72,9 @@ const cookingCategories: CookingCategory[] = [
   { id: "dryingrack", labelKey: "cooking_dryingrack", image: "game-items/meatrack.png", count: dryingrackCount },
   { id: "teashop", labelKey: "cooking_teashop", image: "game-items/hermitcrab_teashop.png", count: teashopCount },
   { id: "raw", labelKey: "cooking_raw", image: "game-items/berries.png", count: rawFoods.length },
-  { id: "recommend_health", labelKey: "cooking_recommend_health", image: "ui/health.png", count: healthRecommendCount },
-  { id: "recommend_sanity", labelKey: "cooking_recommend_sanity", image: "ui/sanity.png", count: sanityRecommendCount },
-  { id: "recommend_hunger", labelKey: "cooking_recommend_hunger", image: "ui/hunger.png", count: hungerRecommendCount },
+  { id: "recommend_health", labelKey: "cooking_recommend_health", image: "ui/health.webp", count: healthRecommendCount },
+  { id: "recommend_sanity", labelKey: "cooking_recommend_sanity", image: "ui/sanity.webp", count: sanityRecommendCount },
+  { id: "recommend_hunger", labelKey: "cooking_recommend_hunger", image: "ui/hunger.webp", count: hungerRecommendCount },
 ];
 
 // Effect badge labels
@@ -345,21 +345,41 @@ export function CookingApp({
   // -----------------------------------------------------------------------
   // Category grid view (home)
   // -----------------------------------------------------------------------
-  if (showCategoryGrid && !isSearching) {
-    return (
-      <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
-        {/* Header */}
-        <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
-          <CookingBreadcrumb locale={resolvedLocale} onHomeClick={handleGoHome} />
-          {searchBar}
-        </div>
+  // 화면(카테고리 홈 / 레시피 목록)을 두 개의 `return` 으로 나누지 않는다 (#95).
+  // 나누면 `AdSlot` 이 화면마다 별개 노드가 되어 전환할 때마다 Ezoic이 재요청한다 (#93).
+  // 게다가 레시피가 0건인 화면에는 자리가 아예 없어 `destroy(111)` 만 나가고 복구 요청이
+  // 없었다 — 그 경우 상단 띠가 그 세션 동안 영구히 사라졌다 (#94와 같은 유실 경로).
+  const isHomeView = showCategoryGrid && !isSearching;
 
-        {/* Category grid */}
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-          <div className="flex flex-col min-h-full">
+  const header = isHomeView ? (
+    <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
+      <CookingBreadcrumb locale={resolvedLocale} onHomeClick={handleGoHome} />
+      {searchBar}
+    </div>
+  ) : (
+    <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
+      <div className="flex items-center gap-2 min-w-0">
+        <CookingBreadcrumb
+          locale={resolvedLocale}
+          categoryLabel={isSearching && !selectedCategory ? t(resolvedLocale, "searchResults") : selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : selectedCategory === "recent" ? t(resolvedLocale, "recent") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
+          onHomeClick={handleGoHome}
+        />
+        {!isSearching && (
+          <div className="ml-auto shrink-0">
+            <SortDropdown
+              value={sortByPopular ? "popular" : "default"}
+              onChange={(v) => setSortByPopular(v === "popular")}
+              locale={resolvedLocale}
+            />
+          </div>
+        )}
+      </div>
+      {searchBar}
+    </div>
+  );
+
+  const body = isHomeView ? (
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-              {/* 카테고리 첫 화면 첫 줄 광고 (#75) */}
-              <AdSlot variant="top" className="col-span-full" />
               <CategoryCard
                 imageSrc={assetPath("/images/ui/health.webp")}
                 label={t(resolvedLocale, "favorites")}
@@ -382,44 +402,8 @@ export function CookingApp({
                 />
               ))}
             </div>
-            <Footer />
-          </div>
-        </div>
-
-        {detailPanel}
-      </div>
-    );
-  }
-
-  // -----------------------------------------------------------------------
-  // Recipe list view (after category selection)
-  // -----------------------------------------------------------------------
-  return (
-    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
-      {/* Header */}
-      <div className="border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
-        <div className="flex items-center gap-2 min-w-0">
-          <CookingBreadcrumb
-            locale={resolvedLocale}
-            categoryLabel={isSearching && !selectedCategory ? t(resolvedLocale, "searchResults") : selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : selectedCategory === "recent" ? t(resolvedLocale, "recent") : currentCat ? t(resolvedLocale, currentCat.labelKey) : undefined}
-            onHomeClick={handleGoHome}
-          />
-          {!isSearching && (
-            <div className="ml-auto shrink-0">
-              <SortDropdown
-                value={sortByPopular ? "popular" : "default"}
-                onChange={(v) => setSortByPopular(v === "popular")}
-                locale={resolvedLocale}
-              />
-            </div>
-          )}
-        </div>
-        {searchBar}
-      </div>
-
-      {/* Recipe grid (or raw food grid for the "raw" category) */}
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-        <div className="flex flex-col min-h-full">
+  ) : (
+    <>
           {selectedCategory === "raw" && !isSearching ? (
             <RawFoodGrid
               foods={rawFoods}
@@ -465,6 +449,16 @@ export function CookingApp({
               )}
             </>
           )}
+    </>
+  );
+
+  return (
+    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
+      {header}
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
+        <div className="flex flex-col min-h-full">
+          <AdSlot variant="top" className="max-w-4xl mx-auto w-full px-3 sm:px-4" />
+          {body}
           <Footer />
         </div>
       </div>
@@ -581,7 +575,6 @@ function RecipeGrid({
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
       {/* 목록 맨 위 한 줄 — 검색바 바로 아래 (#75) */}
-      <AdSlot variant="top" className="col-span-full" />
       {visible.map((recipe) => (
         <RecipeCard
           key={recipe.id}
@@ -737,7 +730,6 @@ function RawFoodGrid({
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
       {/* 생식 목록도 같은 자리 번호를 쓴다 — 레시피 목록과 동시에 렌더되지 않는다 (#75) */}
-      <AdSlot variant="top" className="col-span-full" />
       {visible.map((food) => (
         <RawFoodCard
           key={food.id}
