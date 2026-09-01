@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { fetchAnalytics, fetchVisitors, type AnalyticsData } from "@/lib/analytics";
 import { useAuth } from "@/hooks/use-auth";
 import {
@@ -39,6 +39,8 @@ function countryName(code: string): string {
 
 const osIcons: Record<string, string> = {
   iOS: "\u{1F34E}", macOS: "\u{1F34E}", Windows: "\u{1FA9F}", Android: "\u{1F916}", Linux: "\u{1F427}", ChromeOS: "\u{1F4BB}",
+  // #63에서 `Other` 쓰레기통을 쪼갠 버킷들. 서버 `parseOS`의 반환값과 1:1.
+  HarmonyOS: "\u{1F338}", Bot: "\u{1F577}\uFE0F", Unknown: "\u2753", Other: "\u{1F4E6}",
 };
 
 function StatCard({ icon: Icon, label, value, sub, unfiltered }: { icon: typeof Eye; label: string; value: number | string; sub?: string; unfiltered?: boolean }) {
@@ -164,6 +166,11 @@ function CollapsibleList({
 }
 
 function VisitorTable({ rows }: { rows: AnalyticsData["recentVisitors"] }) {
+  // 행을 눌러 원본 UA를 편다 (#63).
+  // OS 버킷만으로는 왜 그렇게 분류됐는지 알 수 없다 — 특히 `Bot`/`Other`/`Unknown` 은
+  // 원문을 봐야 규칙을 고칠지 판단할 수 있다.
+  const [openId, setOpenId] = useState<number | string | null>(null);
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-xs">
@@ -177,29 +184,48 @@ function VisitorTable({ rows }: { rows: AnalyticsData["recentVisitors"] }) {
           </tr>
         </thead>
         <tbody>
-          {rows.map((v, i) => (
-            <tr key={`${v.id ?? "x"}-${i}`} className="border-b border-border/30 last:border-0">
-              <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap font-mono tabular-nums">
-                {new Date(v.time).toLocaleTimeString("en-GB", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </td>
-              <td className="py-2 pr-3">
-                <span
-                  className="font-mono text-foreground/80 inline-block w-[15ch] truncate align-middle"
-                  title={v.ip}
+          {rows.map((v, i) => {
+            const key = v.id ?? `x-${i}`;
+            const open = openId === key;
+            return (
+              <Fragment key={`${key}-${i}`}>
+                <tr
+                  className="border-b border-border/30 last:border-0 cursor-pointer hover:bg-surface-hover/50"
+                  onClick={() => setOpenId(open ? null : key)}
+                  title="클릭하면 원본 User-Agent 표시"
                 >
-                  {v.ip}
-                </span>
-              </td>
-              <td className="py-2 pr-3 whitespace-nowrap">
-                {countryFlag(v.country)} {countryName(v.country)}
-              </td>
-              <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "\u{1F4F1}" : "\u{1F5A5}️"}</td>
-              <td className="py-2 text-muted-foreground">{v.os ?? ""}</td>
-            </tr>
-          ))}
+                  <td className="py-2 pr-3 text-muted-foreground whitespace-nowrap font-mono tabular-nums">
+                    {new Date(v.time).toLocaleTimeString("en-GB", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
+                  <td className="py-2 pr-3">
+                    <span
+                      className="font-mono text-foreground/80 inline-block w-[15ch] truncate align-middle"
+                      title={v.ip}
+                    >
+                      {v.ip}
+                    </span>
+                  </td>
+                  <td className="py-2 pr-3 whitespace-nowrap">
+                    {countryFlag(v.country)} {countryName(v.country)}
+                  </td>
+                  <td className="py-2 pr-3 text-muted-foreground">{v.device === "mobile" ? "\u{1F4F1}" : "\u{1F5A5}️"}</td>
+                  <td className="py-2 text-muted-foreground">{v.os ?? ""}</td>
+                </tr>
+                {open && (
+                  <tr className="border-b border-border/30 last:border-0">
+                    <td colSpan={5} className="py-2 pr-3">
+                      <div className="rounded bg-surface px-2 py-1.5 font-mono text-[11px] leading-relaxed break-all text-muted-foreground">
+                        {v.ua?.trim() ? v.ua : <span className="italic">(User-Agent 없음 — 봇이 body 없이 POST한 경우)</span>}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
+            );
+          })}
         </tbody>
       </table>
     </div>

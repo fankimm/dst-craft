@@ -180,6 +180,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `scripts/optimize-boss-images.mjs` — 보스 이미지 UI용 축소본(**무손실** WebP, 긴 변 512px, `sharp`) 생성 → `public/images/bosses/thumb/`. **보스 이미지를 추가·교체하면 반드시 다시 실행**할 것 (`node scripts/optimize-boss-images.mjs`). 원본은 OG/schema용으로 남겨 두므로 덮어쓰지 않는다. 선화+알파 소재라 손실 압축은 윤곽선을 뭉갠다 — 무손실이 기본이다 (#88)
 - `scripts/optimize-ui-icons.mjs` — `public/images/category-icons/**` · `public/images/ui/**` PNG를 **무손실 WebP로 제자리 변환**(원본 삭제). 이 아이콘들은 OG·schema에 안 쓰여서 사본을 남길 이유가 없다 — 보스와 다른 점. **해상도는 절대 바꾸지 않는다**(밉맵 이슈는 #88 참조, 바꾸려면 브라우저 재측정 필수). 아이콘을 새로 추가하면 다시 실행할 것. WebP가 더 큰 파일이 나오면 비정상 종료해서 사람이 판단하게 한다 (#91)
 - `scripts/add-img-lazy.mjs` — `loading` 속성이 없는 `<img>` JSX에 `loading="lazy"` 일괄 적용. `--dry-run` 으로 누락 감시. 상세 페이지 히어로(LCP) 8곳은 스크립트 안 `EAGER_KEEP` 으로 제외 — 여기에 없는 `<img>` 는 전부 lazy가 기본이다 (#91)
+- `bun-api/scripts/recalc-visitor-os.ts` — `analytics_visitors.os` 재계산 (#63). `parseOS`에 `Bot`/`Unknown`/`HarmonyOS` 버킷이 생기기 전 행을 원본 `ua`로 다시 분류한다. 기본 dry-run, `--apply`로 반영. **집계 카운터는 원본 UA를 안 남겨 백필 불가** — OS 분포는 배포 시점부터 새 기준
+- `bun-api/src/lib/util.test.ts` — UA 분류 회귀 테스트 (`bun test`). 핵심 위험은 정상 방문자(네이버 인앱, CUBOT 단말 등)를 봇으로 오분류하는 것이라 그 케이스를 고정
 - `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta). prod 배포 시 IndexNow ping 호출
 - `scripts/indexnow-ping.py` — sitemap.xml의 전체 URL을 IndexNow API에 제출 (Bing 등 즉시 색인 유도). prod 배포에서만, best-effort
 - `public/<key>.txt` — IndexNow 키 파일 (`BingSiteAuth.xml`과 함께 SEO 검증 자산, 삭제 금지). 키 변경 시 `indexnow-ping.py`의 `KEY` 상수도 함께 갱신
