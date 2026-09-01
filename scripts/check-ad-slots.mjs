@@ -113,6 +113,20 @@ for (const r of results) {
   if (r.visible.some((v) => v.endsWith("#none"))) problems.push(`${r.step}: 보이는 자리에 placeholder 없음 (${r.visible.join(" ")})`);
   const batches = r.calls.filter((c) => c.startsWith("show")).length;
   if (batches > 1) problems.push(`${r.step}: show 배치가 ${batches}번 — 한 번으로 합쳐져야 함 [${r.calls.join(" ")}]`);
+
+  // 배치가 나가면 **지목하지 않은 자리의 광고까지 비워진다** (#94 실측 — `destroy` 뿐
+  // 아니라 `showAds` 단독으로도). 그래서 배치를 낼 때는 그 시점에 보이는 자리를 전부
+  // 함께 요청해야 한다. 빠뜨린 자리는 빈 div가 되고, 그 배치에 destroy가 없으면
+  // 복구 요청도 안 나가 **영구히 죽는다** (상세 시트를 열면 레일이 그렇게 사라졌다).
+  const shown = r.calls.filter((c) => c.startsWith("show"));
+  if (shown.length) {
+    const asked = new Set(shown.flatMap((c) => c.replace(/^show\(|\)$/g, "").split(",").filter(Boolean)));
+    const onScreen = r.visible.map((v) => v.split("#")[1]).filter((x) => x && x !== "none");
+    const missing = onScreen.filter((id) => !asked.has(id));
+    if (missing.length) {
+      problems.push(`${r.step}: 배치에서 빠진 자리 ${missing.join(", ")} — 이 배치로 비워진 뒤 복구되지 않는다 [${r.calls.join(" ")}]`);
+    }
+  }
 }
 
 console.log(JSON.stringify({ results, problems }, null, 1));
