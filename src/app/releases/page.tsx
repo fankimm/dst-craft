@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.34.3",
+    date: "2026-09-01",
+    dev: [
+      "fix(ads): **요리·보스·스킬 탭**의 상단 광고 자리도 화면별 컴포넌트 밖으로 올려 화면 전환 시 재요청을 제거 (#95, #93 확산). Ezoic 목업으로 8개 탭의 내부 전환을 전수 측정해 대상을 특정했다 — 요리 `destroy(111) show(107,108)`, 보스·스킬 `show(111,107,108)`. **요리가 최악이었다**: 레시피가 0건인 화면에는 자리가 아예 없어 `destroy(111)` 만 나가고 복구 요청이 없었다(그 세션 동안 상단 띠 영구 사망 — #94와 같은 유실 경로).",
+      "요리·보스는 여러 `return` 을 하나로 합쳐 자리를 공유 스크롤 컨테이너에 하나만 뒀다. 스킬은 캐릭터 그리드 ↔ 스킬트리가 **각자 스크롤 컨테이너를 가져서** 자리를 그 삼항 위로 올렸다 — 덤으로 스킬트리를 스크롤해도 띠가 위에 남는다. `RecipeGrid`·`RawFoodGrid`·`SkillTreeView` 안의 옛 자리는 제거. 측정 결과 8개 탭 전부 \"재요청 없음\", `check-ad-slots` problems 0, CLS 시프트 0. 요리솥·스킨·퀘스트는 내부 전환이 없어 대상 아님.",
+      "🔴 fix(images): **프로덕션에서 404였던 아이콘 4개 복구** — `/images/ui/{health,sanity,hunger,cooktime}.png`. 요리 탭 카테고리 3개와 요리솥 재료 피커 탭 아이콘이 깨진 채로 배포돼 있었다. `#91`의 WebP 전환 정규식이 `images/` 접두사가 붙은 참조만 잡았는데, 이 레포는 `image: \"ui/health.png\"` 처럼 접두사 없는 파일명을 렌더 시점에 조립하는 곳이 있다(`CookingApp`, `IngredientPicker`, `console-commands.ts`).",
+      "`scripts/check-broken-images.mjs` 신설 — 경로가 런타임에 조립되어 정적 스캔이 불가능하므로, 실제로 띄워 각 탭과 하위 화면을 돌며 404와 `naturalWidth===0` 인 `<img>` 를 센다. 프로덕션에서 4건 검출(음성 대조), 수정본 0건.",
+      "docs/mistakes.md: 확장자 일괄 치환이 접두사 없는 참조를 놓친 것 + **검증 커버리지가 변경 범위보다 좁았던 것**(아이콘 62장을 옮기고 홈·딥링크만 확인해서, 요리 카테고리 화면과 재료 피커를 안 밟았다) 기록.",
+    ],
+    changes: {
+      ko: [
+        "요리 탭의 '체력회복 추천 / 정신력 회복 추천 / 허기 추천' 카테고리와 요리솥 재료 탭의 아이콘이 깨져 보이던 문제를 고쳤습니다.",
+        "요리·보스·스킬 탭에서도 화면을 옮길 때 상단 영역이 깜빡였다가 다시 채워지던 현상을 고쳤습니다.",
+      ],
+      en: [
+        "Fixed broken icons on the Cooking tab's health/sanity/hunger recommendation categories and the Crock Pot ingredient tabs.",
+        "Fixed the top area flickering and reloading when switching screens in the Cooking, Bosses, and Skills tabs too.",
+      ],
+    },
+  },
+  {
     version: "0.34.2",
     date: "2026-09-01",
     dev: [
