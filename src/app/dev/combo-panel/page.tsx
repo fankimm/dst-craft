@@ -53,9 +53,9 @@ function RecipeHeader() {
         <p className="text-sm text-muted-foreground">Meatballs</p>
         <div className="flex items-center justify-around rounded-lg border border-border bg-surface px-3 py-2 mt-2">
           {[
-            { icon: "ui/health.png", label: "체력", value: "+3", color: "text-green-600 dark:text-green-400" },
-            { icon: "ui/hunger.png", label: "배고픔", value: "+62.5", color: "text-green-600 dark:text-green-400" },
-            { icon: "ui/sanity.png", label: "정신력", value: "+5", color: "text-green-600 dark:text-green-400" },
+            { icon: "ui/health.webp", label: "체력", value: "+3", color: "text-green-600 dark:text-green-400" },
+            { icon: "ui/hunger.webp", label: "배고픔", value: "+62.5", color: "text-green-600 dark:text-green-400" },
+            { icon: "ui/sanity.webp", label: "정신력", value: "+5", color: "text-green-600 dark:text-green-400" },
           ].map((s) => (
             <div key={s.label} className="flex items-center gap-1">
               <img src={assetPath(`/images/${s.icon}`)} alt="" className="size-4" loading="lazy" />

@@ -8,21 +8,21 @@ import { assetPath } from "@/lib/asset-path";
 // ---------------------------------------------------------------------------
 
 const stats = [
-  { icon: "ui/health.png", label: "체력", value: 40, formatted: "+40" },
-  { icon: "ui/hunger.png", label: "배고픔", value: 150, formatted: "+150" },
-  { icon: "ui/sanity.png", label: "정신력", value: -5, formatted: "-5" },
+  { icon: "ui/health.webp", label: "체력", value: 40, formatted: "+40" },
+  { icon: "ui/hunger.webp", label: "배고픔", value: 150, formatted: "+150" },
+  { icon: "ui/sanity.webp", label: "정신력", value: -5, formatted: "-5" },
 ];
 
 const stats2 = [
-  { icon: "ui/health.png", label: "체력", value: 60, formatted: "+60" },
-  { icon: "ui/hunger.png", label: "배고픔", value: 75, formatted: "+75" },
-  { icon: "ui/sanity.png", label: "정신력", value: 33, formatted: "+33" },
+  { icon: "ui/health.webp", label: "체력", value: 60, formatted: "+60" },
+  { icon: "ui/hunger.webp", label: "배고픔", value: 75, formatted: "+75" },
+  { icon: "ui/sanity.webp", label: "정신력", value: 33, formatted: "+33" },
 ];
 
 const stats3 = [
-  { icon: "ui/health.png", label: "체력", value: -3, formatted: "-3" },
-  { icon: "ui/hunger.png", label: "배고픔", value: 25, formatted: "+25" },
-  { icon: "ui/sanity.png", label: "정신력", value: 0, formatted: "0" },
+  { icon: "ui/health.webp", label: "체력", value: -3, formatted: "-3" },
+  { icon: "ui/hunger.webp", label: "배고픔", value: 25, formatted: "+25" },
+  { icon: "ui/sanity.webp", label: "정신력", value: 0, formatted: "0" },
 ];
 
 function statColor(value: number): string {
