@@ -299,130 +299,107 @@ export function BossesApp({
   // -----------------------------------------------------------------------
   // Loot search results view
   // -----------------------------------------------------------------------
-  if (lootSearchResults !== null) {
-    return (
-      <div className="flex flex-col h-full bg-background text-foreground overflow-hidden">
-        <div className="border-b border-border bg-background/80 px-4 py-2.5">
-          <BossBreadcrumb
+  // 화면(전리품 검색 / 카테고리 홈 / 보스 목록)을 여러 `return` 으로 나누지 않는다 (#95).
+  // 나누면 `AdSlot` 이 화면마다 별개 노드가 되어 전환할 때마다 Ezoic이 재요청한다
+  // (#93 참조). 헤더·본문만 갈리고 자리는 트리에 하나만 둔다.
+  const isLootSearch = lootSearchResults !== null;
+  const isHomeView = !isLootSearch && selectedCategory === null;
+
+  const GRID = "grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full";
+
+  const header = isLootSearch ? (
+    <div className="border-b border-border bg-background/80 px-4 py-2.5">
+      <BossBreadcrumb
+        locale={resolvedLocale}
+        categoryLabel={t(resolvedLocale, "boss_loot_search_result")}
+        onHomeClick={handleGoHome}
+      />
+    </div>
+  ) : isHomeView ? (
+    <div className="border-b border-border bg-background/80 px-4 py-2.5">
+      <BossBreadcrumb locale={resolvedLocale} onHomeClick={handleGoHome} />
+    </div>
+  ) : (
+    <div className="border-b border-border bg-background/80 px-4 py-2.5 flex items-center justify-between gap-2">
+      <BossBreadcrumb
+        locale={resolvedLocale}
+        categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : selectedCategory === "recent" ? t(resolvedLocale, "recent") : selectedCategory ? categoryLabel(selectedCategory, resolvedLocale) : undefined}
+        onHomeClick={handleGoHome}
+      />
+      <SortDropdown
+        value={sortByPopular ? "popular" : "default"}
+        onChange={(v) => setSortByPopular(v === "popular")}
+        locale={resolvedLocale}
+      />
+    </div>
+  );
+
+  const body = isLootSearch ? (
+    lootSearchResults.length > 0 ? (
+      <div className={GRID}>
+        {lootSearchResults.map((boss) => (
+          <BossCard
+            key={boss.id}
+            boss={boss}
             locale={resolvedLocale}
-            categoryLabel={t(resolvedLocale, "boss_loot_search_result")}
-            onHomeClick={handleGoHome}
+            onClick={() => { selectBoss(boss.id); addRecent(boss.id); }}
+            isFav={isFavorite(boss.id)}
+            onToggleFav={() => toggleFavorite(boss.id)}
           />
-        </div>
-
-        {lootSearchBar}
-
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-          <div className="flex flex-col min-h-full">
-            {lootSearchResults.length > 0 ? (
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-                {lootSearchResults.map((boss) => (
-                  <BossCard
-                    key={boss.id}
-                    boss={boss}
-                    locale={resolvedLocale}
-                    onClick={() => { selectBoss(boss.id); addRecent(boss.id); }}
-                    isFav={isFavorite(boss.id)}
-                    onToggleFav={() => toggleFavorite(boss.id)}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm py-12">
-                {resolvedLocale === "ko" ? "검색 결과가 없습니다" : "No results found"}
-              </div>
-            )}
-            <Footer />
-          </div>
-        </div>
-
-        {detailPanel}
+        ))}
       </div>
-    );
-  }
-
-  // -----------------------------------------------------------------------
-  // Category grid view (home)
-  // -----------------------------------------------------------------------
-  if (selectedCategory === null) {
-    return (
-      <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
-        <div className="border-b border-border bg-background/80 px-4 py-2.5">
-          <BossBreadcrumb locale={resolvedLocale} onHomeClick={handleGoHome} />
-        </div>
-
-        {lootSearchBar}
-
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
-          <div className="flex flex-col min-h-full">
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-              {/* 카테고리 첫 화면 첫 줄 광고 (#75) */}
-              <AdSlot variant="top" className="col-span-full" />
-              <CategoryCard
-                imageSrc={assetPath("/images/ui/health.webp")}
-                label={t(resolvedLocale, "favorites")}
-                badgeCount={bossFavCount}
-                onClick={() => handleSelectCategory("favorites")}
-              />
-              <CategoryCard
-                imageSrc={assetPath("/images/game-items/pocketwatch_warp.png")}
-                label={t(resolvedLocale, "recent")}
-                badgeCount={recentIds.length}
-                onClick={() => handleSelectCategory("recent")}
-              />
-              {bossCategories.map((cat) => (
-                <CategoryCard
-                  key={cat.id}
-                  imageSrc={cat.id === "all" ? assetPath(ALL_CATEGORY_IMAGE) : bossImageSrc(categoryImage(cat.id))}
-                  label={categoryLabel(cat.id, resolvedLocale)}
-                  onClick={() => handleSelectCategory(cat.id)}
-                />
-              ))}
-            </div>
-            <Footer />
-          </div>
-        </div>
-
-        {detailPanel}
+    ) : (
+      <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm py-12">
+        {resolvedLocale === "ko" ? "검색 결과가 없습니다" : "No results found"}
       </div>
-    );
-  }
+    )
+  ) : isHomeView ? (
+    <div className={GRID}>
+      <CategoryCard
+        imageSrc={assetPath("/images/ui/health.webp")}
+        label={t(resolvedLocale, "favorites")}
+        badgeCount={bossFavCount}
+        onClick={() => handleSelectCategory("favorites")}
+      />
+      <CategoryCard
+        imageSrc={assetPath("/images/game-items/pocketwatch_warp.png")}
+        label={t(resolvedLocale, "recent")}
+        badgeCount={recentIds.length}
+        onClick={() => handleSelectCategory("recent")}
+      />
+      {bossCategories.map((cat) => (
+        <CategoryCard
+          key={cat.id}
+          imageSrc={cat.id === "all" ? assetPath(ALL_CATEGORY_IMAGE) : bossImageSrc(categoryImage(cat.id))}
+          label={categoryLabel(cat.id, resolvedLocale)}
+          onClick={() => handleSelectCategory(cat.id)}
+        />
+      ))}
+    </div>
+  ) : (
+    <div className={GRID}>
+      {filteredBosses.map((boss) => (
+        <BossCard
+          key={boss.id}
+          boss={boss}
+          locale={resolvedLocale}
+          onClick={() => { selectBoss(boss.id); trackItemClick(`boss:${boss.id}`); addRecent(boss.id); }}
+          clicks={sortByPopular ? getClicks(`boss:${boss.id}`) : 0}
+          isFav={isFavorite(boss.id)}
+          onToggleFav={() => toggleFavorite(boss.id)}
+        />
+      ))}
+    </div>
+  );
 
-  // -----------------------------------------------------------------------
-  // Boss list view
-  // -----------------------------------------------------------------------
   return (
-    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
-      <div className="border-b border-border bg-background/80 px-4 py-2.5 flex items-center justify-between gap-2">
-        <BossBreadcrumb
-          locale={resolvedLocale}
-          categoryLabel={selectedCategory === "favorites" ? t(resolvedLocale, "favorites") : selectedCategory === "recent" ? t(resolvedLocale, "recent") : categoryLabel(selectedCategory, resolvedLocale)}
-          onHomeClick={handleGoHome}
-        />
-        <SortDropdown
-          value={sortByPopular ? "popular" : "default"}
-          onChange={(v) => setSortByPopular(v === "popular")}
-          locale={resolvedLocale}
-        />
-      </div>
-
+    <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${isLootSearch ? "" : slideClass}`}>
+      {header}
+      {(isLootSearch || isHomeView) && lootSearchBar}
       <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
         <div className="flex flex-col min-h-full">
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 p-3 sm:p-4 max-w-4xl mx-auto w-full">
-            {/* 목록 맨 위 한 줄 — 검색바 바로 아래 (#75) */}
-            <AdSlot variant="top" className="col-span-full" />
-            {filteredBosses.map((boss) => (
-              <BossCard
-                key={boss.id}
-                boss={boss}
-                locale={resolvedLocale}
-                onClick={() => { selectBoss(boss.id); trackItemClick(`boss:${boss.id}`); addRecent(boss.id); }}
-                clicks={sortByPopular ? getClicks(`boss:${boss.id}`) : 0}
-                isFav={isFavorite(boss.id)}
-                onToggleFav={() => toggleFavorite(boss.id)}
-              />
-            ))}
-          </div>
+          <AdSlot variant="top" className="max-w-4xl mx-auto w-full px-3 sm:px-4" />
+          {body}
           <Footer />
         </div>
       </div>
