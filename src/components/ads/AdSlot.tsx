@@ -191,7 +191,7 @@ interface EzStandalone {
  * 해제는 **자기가 주인일 때만** 반영하므로, 언마운트(해제)가 새 자리의 요청보다
  * 늦게 도착해도 방금 잡은 자리를 빼앗지 않는다.
  */
-type SlotToken = { id: number };
+type SlotToken = { id: number; variant: AdVariant };
 const desiredOwner = new Map<number, SlotToken>();
 /** 지금 Ezoic이 광고를 붙여 둔 주인 — 같은 주인이면 다시 요청하지 않는다 (노출 부풀리기 방지) */
 const shownOwner = new Map<number, SlotToken>();
@@ -295,15 +295,97 @@ function scheduleAdFlush() {
   flushTimer = setTimeout(flushAdQueue, Math.max(0, Math.min(base, remaining)));
 }
 
+/**
+ * 자리별 **안정화 대기** — 잠깐 나타났다 사라지는 자리가 배치를 유발하지 않게 한다 (#96).
+ *
+ * 배치가 나가면 지목하지 않은 자리의 광고까지 비워지므로, `flushAdQueue` 는 살아 있는
+ * 자리를 전부 함께 요청한다(#94). 그 대가로 **배치 한 번 = 모든 자리 리프레시 한 번**이다.
+ * 상세 시트는 열고 닫을 때마다 자리가 생겼다 사라지므로, 그대로 두면 배치가 쏟아진다 —
+ * 프로덕션 실측에서 아이템 5개를 4초씩 열고 닫자 배치 15건, 레일이 0.9~3.1초 간격으로
+ * 9번 리프레시됐다. Ezoic 자체 리프레시 주기가 30초인데 그 15배다.
+ *
+ * 그게 왜 손해인가: 뷰어빌리티 집계 기준이 **1초**(픽셀 50% 이상)라 0.9초 만에 갈아치운
+ * 노출은 집계도 지불도 되지 않는다. 그러면서 평균 viewability 를 끌어내려 **전체 인벤토리의
+ * CPM** 을 깎는다(현재 display viewability 69.47% — `docs/ezoic-decision.md` 기준선).
+ * 초 단위 반복 리프레시는 invalid traffic 정책 리스크이기도 하다.
+ *
+ * **"배치에서 레일을 빼면 되지 않나"는 안 된다** — 시트가 열린 상태에서 `showAds(103)` 만
+ * 단독 호출하니 레일이 즉시 비워지고 6초 뒤에도 복구되지 않았다(실측). 그래서 고칠 지점은
+ * "배치에 무엇을 넣느냐"가 아니라 **"배치를 몇 번 내느냐"** 다.
+ *
+ * - `CLAIM_MS` — 이만큼 떠 있어야 자리로 인정한다. 스쳐 지나가는 상세뷰는 등록 자체를 안 한다
+ * - `LINGER_MS` — 닫혀도 이만큼 붙들고 있는다. 아이템을 연달아 훑는 동안 자리가 계속 등록된
+ *   상태로 남아 배치가 아예 안 나간다. 다시 열리면 해제 예약을 취소한다
+ *
+ * 상단 띠·레일은 화면에 상주하므로 0 — 즉시 등록/해제한다(첫 광고가 늦어지면 안 된다).
+ */
+const SETTLE: Partial<Record<AdVariant, { claim: number; linger: number }>> = {
+  sheet: { claim: 2000, linger: 4000 },
+};
+/** 등록/해제 예약 타이머 (자리 번호 → 타이머) */
+const settleTimers = new Map<number, ReturnType<typeof setTimeout>>();
+
+function clearSettle(id: number) {
+  const t = settleTimers.get(id);
+  if (t !== undefined) {
+    clearTimeout(t);
+    settleTimers.delete(id);
+  }
+}
+
 function requestAd(token: SlotToken) {
-  desiredOwner.set(token.id, token);
-  scheduleAdFlush();
+  // 해제 예약이 걸려 있었다면 취소 — 닫았다 다시 연 것이므로 아무 일도 없었던 셈이다.
+  clearSettle(token.id);
+  const settle = SETTLE[token.variant];
+  if (!settle) {
+    desiredOwner.set(token.id, token);
+    scheduleAdFlush();
+    return;
+  }
+  if (desiredOwner.get(token.id) === token) return; // 이미 같은 주인으로 등록됨
+  settleTimers.set(
+    token.id,
+    setTimeout(() => {
+      settleTimers.delete(token.id);
+      desiredOwner.set(token.id, token);
+      scheduleAdFlush();
+    }, settle.claim),
+  );
 }
 
 function releaseAd(token: SlotToken) {
+  const settle = SETTLE[token.variant];
+
+  // 등록되기 전에 사라졌다 — 스쳐 지나간 상세뷰다. 예약만 취소하고 배치는 내지 않는다.
+  if (settle && settleTimers.has(token.id) && desiredOwner.get(token.id) !== token) {
+    clearSettle(token.id);
+    return;
+  }
+
   // 이미 다른 자리가 이 번호를 가져갔다면 건드리지 않는다
-  if (desiredOwner.get(token.id) === token) desiredOwner.delete(token.id);
-  scheduleAdFlush();
+  if (desiredOwner.get(token.id) !== token) {
+    scheduleAdFlush();
+    return;
+  }
+
+  if (!settle) {
+    desiredOwner.delete(token.id);
+    scheduleAdFlush();
+    return;
+  }
+
+  // 닫혀도 잠시 붙들고 있는다 — 아이템을 연달아 훑는 동안 자리가 등록된 채로 남아
+  // 배치가 아예 안 나간다. 그 사이 다시 열리면 `requestAd` 가 이 예약을 취소한다.
+  clearSettle(token.id);
+  settleTimers.set(
+    token.id,
+    setTimeout(() => {
+      settleTimers.delete(token.id);
+      if (desiredOwner.get(token.id) !== token) return; // 그새 다른 주인이 잡았다
+      desiredOwner.delete(token.id);
+      scheduleAdFlush();
+    }, settle.linger),
+  );
 }
 
 /** `?admock=` 파싱 — 자리 → 규격 오버라이드. 쿼리가 없으면 빈 맵(=실제 광고) */
@@ -373,7 +455,7 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
     if (isMock || !active) return;
     // effect마다 새 토큰 = "이번에 그려진 placeholder div"의 신분증.
     // 같은 번호라도 div가 새로 생기면 토큰이 달라져 destroy → show가 나간다.
-    const token = { id };
+    const token = { id, variant };
     requestAd(token);
     return () => releaseAd(token);
   }, [id, isMock, active]);
