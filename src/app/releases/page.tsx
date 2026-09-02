@@ -15,6 +15,47 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.34.4",
+    date: "2026-09-01",
+    dev: [
+      "fix(analytics): OS 분류에서 `Other` 쓰레기통을 쪼갰다 (#63). `parseOS()` 가 6종 정규식에 안 걸리면 무조건 `Other` 를 반환해서, **중국계 크롤러(플랫폼 토큰 없음) · UA 미전송 · HarmonyOS가 한 칸에 뭉쳐** 화면만 보고는 셋 중 무엇인지 가릴 수 없었다. 판정 순서를 `Unknown`(UA 없음) → `Bot` → `HarmonyOS` → 기존 6종 → `Other` 로 바꿔 `Other` 가 \"정말 규칙에 없는 UA\" 만 의미하게 했다.",
+      "**봇은 OS보다 먼저 판정한다** — Bytespider·PetalBot 같은 중국계 크롤러는 Android 토큰을 달고 오기 때문에, 나중에 보면 봇 트래픽이 그대로 Android 집계에 섞인다. 반대로 정상 방문자를 봇으로 오분류하지 않도록 `bot` 은 단어 경계 + 흔한 접미형(`-bot`, `bot/`)만 본다 — 부분일치로 잡으면 네이버 인앱 브라우저(`NAVER(inapp; …)`)나 `CUBOT` 단말이 걸린다.",
+      "`HarmonyOS` 버킷 신설 — `OpenHarmony`/`ArkWeb` 은 android·linux 토큰이 없어 예전엔 `Other` 였고, Android 호환 모드로 오는 HarmonyOS는 반대로 Android에 섞였다. 둘 다 한 버킷으로.",
+      "`bun-api/src/lib/util.test.ts` 신설 (`bun test`) — 29개 케이스. 정상 방문자 10종(네이버·카카오 인앱, CUBOT 단말 포함), HarmonyOS 2종, 봇 14종, `Unknown`/`Other` 경계 3종을 고정했다. 핵심 위험이 \"정상 방문자를 봇으로 오분류\" 라서 그쪽을 두껍게 덮었다.",
+      "`bun-api/scripts/recalc-visitor-os.ts` — 접속자 로그(rolling 200건)는 원본 `ua` 를 보관하므로 재계산한다. 기본 dry-run이고 전이 요약을 먼저 보여준다. **집계 카운터는 원본 UA를 안 남기고 버킷 이름만 세므로 백필 불가** — `/stats` 의 OS 분포는 이 배포 시점부터 새 기준으로 쌓인다.",
+      "`/stats` 접속자 로그에서 **행을 누르면 원본 User-Agent 전문**을 편다. OS 버킷만으로는 왜 그렇게 분류됐는지 알 수 없어 규칙을 고칠 판단이 안 됐다. UA가 비어 있으면 그 사실을 명시한다(`/_t` 는 인증·Origin 체크가 없어 봇이 body 없이 POST할 수 있다).",
+    ],
+    changes: {
+      ko: [
+        "통계 페이지의 OS 분포에서 봇·미상·HarmonyOS를 따로 구분해 보여줍니다. 예전에는 전부 '기타'로 뭉쳐 있었습니다.",
+      ],
+      en: [
+        "The stats page now separates bots, unknown clients, and HarmonyOS in the OS breakdown instead of lumping them all into \"Other\".",
+      ],
+    },
+  },
+  {
+    version: "0.34.3",
+    date: "2026-09-01",
+    dev: [
+      "fix(ads): **요리·보스·스킬 탭**의 상단 광고 자리도 화면별 컴포넌트 밖으로 올려 화면 전환 시 재요청을 제거 (#95, #93 확산). Ezoic 목업으로 8개 탭의 내부 전환을 전수 측정해 대상을 특정했다 — 요리 `destroy(111) show(107,108)`, 보스·스킬 `show(111,107,108)`. **요리가 최악이었다**: 레시피가 0건인 화면에는 자리가 아예 없어 `destroy(111)` 만 나가고 복구 요청이 없었다(그 세션 동안 상단 띠 영구 사망 — #94와 같은 유실 경로).",
+      "요리·보스는 여러 `return` 을 하나로 합쳐 자리를 공유 스크롤 컨테이너에 하나만 뒀다. 스킬은 캐릭터 그리드 ↔ 스킬트리가 **각자 스크롤 컨테이너를 가져서** 자리를 그 삼항 위로 올렸다 — 덤으로 스킬트리를 스크롤해도 띠가 위에 남는다. `RecipeGrid`·`RawFoodGrid`·`SkillTreeView` 안의 옛 자리는 제거. 측정 결과 8개 탭 전부 \"재요청 없음\", `check-ad-slots` problems 0, CLS 시프트 0. 요리솥·스킨·퀘스트는 내부 전환이 없어 대상 아님.",
+      "🔴 fix(images): **프로덕션에서 404였던 아이콘 4개 복구** — `/images/ui/{health,sanity,hunger,cooktime}.png`. 요리 탭 카테고리 3개와 요리솥 재료 피커 탭 아이콘이 깨진 채로 배포돼 있었다. `#91`의 WebP 전환 정규식이 `images/` 접두사가 붙은 참조만 잡았는데, 이 레포는 `image: \"ui/health.png\"` 처럼 접두사 없는 파일명을 렌더 시점에 조립하는 곳이 있다(`CookingApp`, `IngredientPicker`, `console-commands.ts`).",
+      "`scripts/check-broken-images.mjs` 신설 — 경로가 런타임에 조립되어 정적 스캔이 불가능하므로, 실제로 띄워 각 탭과 하위 화면을 돌며 404와 `naturalWidth===0` 인 `<img>` 를 센다. 프로덕션에서 4건 검출(음성 대조), 수정본 0건.",
+      "docs/mistakes.md: 확장자 일괄 치환이 접두사 없는 참조를 놓친 것 + **검증 커버리지가 변경 범위보다 좁았던 것**(아이콘 62장을 옮기고 홈·딥링크만 확인해서, 요리 카테고리 화면과 재료 피커를 안 밟았다) 기록.",
+    ],
+    changes: {
+      ko: [
+        "요리 탭의 '체력회복 추천 / 정신력 회복 추천 / 허기 추천' 카테고리와 요리솥 재료 탭의 아이콘이 깨져 보이던 문제를 고쳤습니다.",
+        "요리·보스·스킬 탭에서도 화면을 옮길 때 상단 영역이 깜빡였다가 다시 채워지던 현상을 고쳤습니다.",
+      ],
+      en: [
+        "Fixed broken icons on the Cooking tab's health/sanity/hunger recommendation categories and the Crock Pot ingredient tabs.",
+        "Fixed the top area flickering and reloading when switching screens in the Cooking, Bosses, and Skills tabs too.",
+      ],
+    },
+  },
+  {
     version: "0.34.2",
     date: "2026-09-01",
     dev: [

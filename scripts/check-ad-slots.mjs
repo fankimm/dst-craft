@@ -96,6 +96,11 @@ await step("아이템 클릭(상세 시트)", async () => {
     b?.click();
   });
 });
+// 시트 자리는 `claim` 만큼 떠 있어야 요청된다 (#96 — 스쳐 지나가는 상세뷰가 배치를
+// 유발하지 않게). 그 지연이 "시트 광고가 영영 안 뜬다"로 조용히 바뀌지 않도록,
+// 임계값을 넘겨 기다린 뒤 실제로 요청이 나가는지 확인한다.
+await step("시트 유지(임계 초과)", null, 3000);
+
 await step("시트 닫기", async () => {
   await page.keyboard.press("Escape");
   await page.evaluate(() => {
@@ -118,6 +123,11 @@ for (const r of results) {
   // 아니라 `showAds` 단독으로도). 그래서 배치를 낼 때는 그 시점에 보이는 자리를 전부
   // 함께 요청해야 한다. 빠뜨린 자리는 빈 div가 되고, 그 배치에 destroy가 없으면
   // 복구 요청도 안 나가 **영구히 죽는다** (상세 시트를 열면 레일이 그렇게 사라졌다).
+  // 시트를 임계 이상 유지했는데도 요청이 안 나가면 자리가 죽은 것이다 (#96)
+  if (r.step === "시트 유지(임계 초과)" && !r.calls.some((c) => /^show\(.*\b103\b/.test(c))) {
+    problems.push(`${r.step}: 시트 자리(103)가 임계를 넘겨도 요청되지 않음 — claim 지연이 과하거나 자리가 죽었다 [${r.calls.join(" ") || "호출 없음"}]`);
+  }
+
   const shown = r.calls.filter((c) => c.startsWith("show"));
   if (shown.length) {
     const asked = new Set(shown.flatMap((c) => c.replace(/^show\(|\)$/g, "").split(",").filter(Boolean)));
