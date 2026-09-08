@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { adEngineReady, anyCreativeRendered, cmpPresent, detectAdFilter } from "@/components/ads/AdVisibilityProbe";
 
 /**
  * 환경 진단 오버레이 (#103).
@@ -37,6 +38,25 @@ interface Metrics {
   topFixed: string[];
   /** Ezoic 앵커·상단 띠 상태 */
   ezoic: string;
+  /** 광고 파이프라인 — 스크립트가 막힌 건지, 떴는데 안 채워진 건지 */
+  ads: string;
+}
+
+/** 광고 엔진 상태. AdVisibilityProbe와 같은 판정 함수 + 리소스 타이밍으로 실제 로드된 광고 호스트 수 */
+function scanAds(): string {
+  const scripts = document.querySelectorAll('script[src*="ezojs"], script[src*="ezoic"]').length;
+  const res = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
+  const count = (re: RegExp) => res.filter((r) => re.test(r.name)).length;
+  const creatives = document.querySelectorAll('[id^="ezoic-pub-ad-placeholder-"] iframe').length;
+  return [
+    `ezoic script tag=${scripts}`,
+    `engine(showAds)=${adEngineReady()}`,
+    `cmp(__tcfapi)=${cmpPresent()}`,
+    `bait hidden(차단기 의심)=${detectAdFilter()}`,
+    `loaded: ezoic=${count(/ezojs|ezodn|ezoic/)} gam=${count(/doubleclick|googlesyndication/)} other=${count(/adsrvr|rubicon|pubmatic|openx|criteo|amazon-adsystem/)}`,
+    `creatives=${creatives} rendered=${anyCreativeRendered()}`,
+    `online=${navigator.onLine}`,
+  ].join(" · ");
 }
 
 /** 상단 100px과 겹치는 fixed 요소 (우리 진단 오버레이 자신은 제외) */
@@ -110,6 +130,7 @@ function readMetrics(): Metrics {
       probe("env(safe-area-inset-top, 0px)") > 0,
     topFixed: scanTopFixed(),
     ezoic: scanEzoic(),
+    ads: scanAds(),
   };
 }
 
@@ -148,6 +169,7 @@ export function EnvDiagOverlay({ onClose }: { onClose: () => void }) {
     ["viewport meta", m.viewportMeta],
     ["legacy 웹클립 판정(#61)", m.legacyPwa],
     ["ezoic", m.ezoic],
+    ["ads", m.ads],
     ["fixed 요소(상단 100px)", m.topFixed.length ? m.topFixed.join(" ‖ ") : "(없음)"],
     ["UA", m.ua],
   ];
