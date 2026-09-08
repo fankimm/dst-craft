@@ -104,6 +104,12 @@ export function CraftingApp({
     addRecent(item.id);
   }, [setItem, addRecent]);
 
+  // "Item" row picked in the search dropdown → open that item's detail right away
+  const handleSelectSuggestedItem = useCallback((itemId: string) => {
+    const item = getItemById(itemId);
+    if (item) handleSelectItem(item);
+  }, [handleSelectItem]);
+
   const handleSelectCategory = useCallback((id: CategoryId | "favorites" | "recent") => {
     setSortByPopular(false);
     if (id === "recent") {
@@ -223,6 +229,7 @@ export function CraftingApp({
       tags={searchTags}
       onInputChange={setSearchInput}
       onAddTag={addSearchTag}
+      onSelectItem={handleSelectSuggestedItem}
       onRemoveTag={removeSearchTag}
       onClearAll={clearSearch}
     />
