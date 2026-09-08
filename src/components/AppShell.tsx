@@ -7,6 +7,11 @@ import { CraftingApp } from "./crafting/CraftingApp";
 import { ReviewPrompt } from "./ReviewPrompt";
 import { FloatingSupportPill } from "./ui/FloatingSupportPill";
 import { LegacyPwaNotice } from "./ui/LegacyPwaNotice";
+// 개발 전용 진단 오버레이 (#103) — 일반 번들에서 분리
+const EnvDiagOverlay = dynamic(
+  () => import("./dev/EnvDiagOverlay").then((m) => m.EnvDiagOverlay),
+  { ssr: false },
+);
 import { TabFallback } from "./ui/TabFallback";
 import { AdSlot } from "./ads/AdSlot";
 import { useSettings } from "@/hooks/use-settings";
@@ -124,6 +129,11 @@ export function AppShell() {
   const [pendingRecipeId, setPendingRecipeId] = useState<string | null>(null);
   const [pendingItemId, setPendingItemId] = useState<string | null>(null);
   const [showReview, setShowReview] = useState(false);
+  // 환경 진단 오버레이 (#103). URL은 hydration 뒤 effect에서 읽는다 (docs/mistakes.md — lazy initializer 함정)
+  const [showEnvDiag, setShowEnvDiag] = useState(false);
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("diag") === "1") setShowEnvDiag(true);
+  }, []);
 
   // Listen to popstate — sync tab from URL (browser back/forward)
   useEffect(() => {
@@ -546,9 +556,16 @@ export function AppShell() {
       {/* legacy PWA 설치본(하단 흰 띠) 재설치 안내 — 해당 설치본에서만 표시 (#61) */}
       <LegacyPwaNotice />
 
+      {/* 환경 진단 오버레이 — DevMenu 또는 ?diag=1 (#103) */}
+      {showEnvDiag && <EnvDiagOverlay onClose={() => setShowEnvDiag(false)} />}
+
       {/* Dev menu */}
       {showDevMenu && (
-        <DevMenu onOpenReview={() => setShowReview(true)} token={token} />
+        <DevMenu
+          onOpenReview={() => setShowReview(true)}
+          onToggleEnvDiag={() => setShowEnvDiag((v) => !v)}
+          token={token}
+        />
       )}
 
       {/* Toast */}
@@ -590,7 +607,15 @@ function BetaTabIndicator() {
   );
 }
 
-function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: string | null }) {
+function DevMenu({
+  onOpenReview,
+  onToggleEnvDiag,
+  token,
+}: {
+  onOpenReview: () => void;
+  onToggleEnvDiag: () => void;
+  token: string | null;
+}) {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ x: 12, y: 80 }); // bottom-right offset
   const ref = useRef<HTMLDivElement>(null);
@@ -646,6 +671,7 @@ function DevMenu({ onOpenReview, token }: { onOpenReview: () => void; token: str
         sessionStorage.removeItem("dst:review-shown");
       },
     },
+    { label: "환경 진단 오버레이 (뷰포트·safe-area 눈금)", action: onToggleEnvDiag },
     { label: "스킬 아이콘 목록", action: () => window.open("/skill-icons", "_blank") },
     { label: "블루프린트 아이템", action: () => window.open("/blueprints", "_blank") },
     { label: "보스 전리품", action: () => window.open("/bosses", "_blank") },

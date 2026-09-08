@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.35.0",
+    date: "2026-09-08",
+    dev: [
+      "feat(search): **재료이면서 제작품인 아이템은 자동완성에 아이템·재료 두 줄로 노출** (#102, 피드백 `1788851925065-6uqdmo`). `getSuggestions` 가 재료를 아이템보다 먼저 넣고 아이템은 표시 이름이 겹치면 건너뛰어서, 판자·밧줄·창·도끼·툴레사이트 등 **65개**가 드롭다운에 \"재료\" 한 줄로만 떴다. 그 줄을 누르면 재료 태그가 붙어 \"그 재료를 쓰는 레시피\" 만 나오고, 재료 태그 매칭은 `item.materials` 만 보므로 아이템 본인은 결과에도 없었다 — 사용자가 \"아이템을 검색했는데 재료 용도만 나온다\" 고 느낀 지점.",
+      "재료 루프에서 같은 id 의 제작품(`getItemById(mat.id)`)이 있으면 **아이템 줄을 재료 줄 바로 위에** 먼저 넣고, 아이템 루프는 그 id 를 건너뛴다. 이름 중복 제거는 아이템끼리만 적용 — 부수 효과로 재료와 이름이 같은 방랑 상인 거래 항목 10개(잔가지·풀·부싯돌·톱니바퀴 등)가 재료 줄 아래 아이템 줄로 새로 보인다. 예전엔 재료 줄에 가려 드롭다운에서 못 가던 항목이고, 텍스트 검색 그리드에는 원래 나오던 것.",
+      "\"아이템\" 줄을 고르면 태그를 붙이는 동시에 **상세 패널을 바로 연다** (`Suggestion.itemId` → `SearchBar.onSelectItem` → `handleSelectItem`). 태그는 그대로 남아 패널을 닫으면 그 아이템으로 좁혀진 그리드가 남는다. 순수 원재료(제작법 없음)는 상세가 없으니 기존대로 재료 줄 하나 → 사용처 목록.",
+      "요리 탭도 같은 패턴 — \"레시피\" 제안을 고르면 상세 즉시 오픈 (`CookingSearchBar.onSelectRecipe`). 그리드 3곳에 인라인으로 반복되던 `selectRecipe + trackItemClick + addRecent` 를 `handleSelectFood` 로 공통화. 보스 탭은 전리품 검색만 있어 해당 없음.",
+      "검증: Node 24 타입 스트리핑 + `module.registerHooks` resolve 훅으로 `getSuggestions` 를 직접 실행해 전/후 비교(dev 서버·빌드 없이), `tsc`/eslint, beta 배포 후 실제 Chrome(데스크톱 1280·모바일 420)에서 드롭다운 → 상세 → 닫기 → 재료 줄 → 요리 탭까지 실측. Claude in Chrome 확장은 이 사이트에서 스크립트 주입이 타임아웃돼(prod·beta·`admock` 모두) Playwright headed 로 대체. `docs/terminology.md`(자동완성 드롭다운)·`docs/ui.md`(SearchWithSuggestions) 갱신.",
+    ],
+    changes: {
+      ko: [
+        "검색에서 재료로도 쓰이는 제작품(판자·밧줄·창 등)을 고르면 그 아이템의 상세가 바로 열립니다. 자동완성에 '아이템'과 '재료' 두 줄이 나오고, '재료' 줄은 예전처럼 그 재료가 들어가는 제작법 목록을 보여줍니다.",
+        "요리 탭에서도 자동완성의 요리 이름을 고르면 상세가 바로 열립니다.",
+      ],
+      en: [
+        "Searching for a craftable that is also an ingredient (Boards, Rope, Spear, ...) now shows two rows in the dropdown: \"Item\" opens that item's details right away, and \"Material\" still lists the recipes that use it.",
+        "In the Cooking tab, picking a dish from the dropdown now opens its details right away.",
+      ],
+    },
+  },
+  {
     version: "0.34.6",
     date: "2026-09-08",
     dev: [
