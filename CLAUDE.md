@@ -141,7 +141,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 
 ## Ad Decision Deadline (놓치면 1년 묶임)
 - **`docs/ezoic-decision.md`** — Ezoic 계속 여부 결정 문서. 판단 기준·데이터 읽는 법·분기별 절차가 전부 여기 있다
-- 🔴 **2026-10-15 통보 기한** (그 전에 `2026-10-02` PIN 마감이 먼저다 — 놓치면 광고가 멈춰 판단 근거가 끊긴다)
+- 🔴 **2026-10-15 통보 기한** — 남은 마감은 이것 하나다 (`2026-10-02` PIN 건은 **2026-08-31 인증 완료**로 종료)
 - 세션 시작 시 `scripts/check-deadlines.sh`가 D-30부터 자동 경고 (SessionStart 훅)
 - 광고 관련 질문/작업을 받으면 이 문서를 먼저 확인할 것
 
