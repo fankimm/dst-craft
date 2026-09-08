@@ -31,6 +31,42 @@ interface Metrics {
   dpr: number;
   statusBarMeta: string;
   viewportMeta: string;
+  /** #61 LegacyPwaNotice와 같은 시그니처 — 상태바 밑까지 깔린 옛 웹클립인지 */
+  legacyPwa: boolean;
+  /** 뷰포트 상단 100px에 걸친 position:fixed 요소들 — 탭 바를 덮는 게 광고 컨테이너인지 OS 블러인지 가른다 */
+  topFixed: string[];
+  /** Ezoic 앵커·상단 띠 상태 */
+  ezoic: string;
+}
+
+/** 상단 100px과 겹치는 fixed 요소 (우리 진단 오버레이 자신은 제외) */
+function scanTopFixed(): string[] {
+  const out: string[] = [];
+  const els = document.body.querySelectorAll<HTMLElement>("div, iframe, ins, section, aside, nav");
+  for (const el of els) {
+    if (el.closest("[data-env-diag]")) continue;
+    const cs = getComputedStyle(el);
+    if (cs.position !== "fixed") continue;
+    const r = el.getBoundingClientRect();
+    if (r.height <= 0 || r.width <= 0 || r.top >= 100) continue;
+    const name = `${el.tagName.toLowerCase()}${el.id ? "#" + el.id : ""}${el.className && typeof el.className === "string" ? "." + el.className.split(/\s+/).slice(0, 2).join(".") : ""}`;
+    out.push(`${name.slice(0, 48)} top=${Math.round(r.top)} h=${Math.round(r.height)} z=${cs.zIndex} bg=${cs.backgroundColor} filter=${cs.backdropFilter || "none"}`);
+    if (out.length >= 8) break;
+  }
+  return out;
+}
+
+function scanEzoic(): string {
+  const anchor = document.querySelector<HTMLElement>("#ezmobfooter, .ezmob-footer");
+  const band = document.querySelector<HTMLElement>("#ezoic-pub-ad-placeholder-111");
+  const a = anchor
+    ? `anchor ${anchor.id || anchor.className} top=${Math.round(anchor.getBoundingClientRect().top)} h=${Math.round(anchor.getBoundingClientRect().height)} pos=${getComputedStyle(anchor).position}`
+    : "anchor 없음";
+  const b = band
+    ? `111 h=${Math.round(band.getBoundingClientRect().height)} iframes=${band.querySelectorAll("iframe").length}`
+    : "111 없음";
+  const v = getComputedStyle(document.documentElement).getPropertyValue("--ez-anchor-h").trim() || "(unset)";
+  return `${a} / ${b} / --ez-anchor-h=${v}`;
 }
 
 /** `env()` 값은 JS로 직접 못 읽으므로 그 높이의 보이지 않는 fixed 요소를 재서 얻는다 */
@@ -68,6 +104,12 @@ function readMetrics(): Metrics {
     dpr: devicePixelRatio,
     statusBarMeta: meta("apple-mobile-web-app-status-bar-style"),
     viewportMeta: meta("viewport"),
+    legacyPwa:
+      nav.standalone === true &&
+      screen.height - innerHeight > 20 &&
+      probe("env(safe-area-inset-top, 0px)") > 0,
+    topFixed: scanTopFixed(),
+    ezoic: scanEzoic(),
   };
 }
 
@@ -104,6 +146,9 @@ export function EnvDiagOverlay({ onClose }: { onClose: () => void }) {
     ["dpr", m.dpr],
     ["status-bar meta", m.statusBarMeta],
     ["viewport meta", m.viewportMeta],
+    ["legacy 웹클립 판정(#61)", m.legacyPwa],
+    ["ezoic", m.ezoic],
+    ["fixed 요소(상단 100px)", m.topFixed.length ? m.topFixed.join(" ‖ ") : "(없음)"],
     ["UA", m.ua],
   ];
 
@@ -118,7 +163,7 @@ export function EnvDiagOverlay({ onClose }: { onClose: () => void }) {
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[70] pointer-events-none" aria-hidden>
+    <div className="fixed inset-0 z-[70] pointer-events-none" aria-hidden data-env-diag>
       {/* 최상단 경계 — 상태바가 이 위를 덮으면 웹뷰가 상태바 밑까지 깔린 것 */}
       <div className="absolute inset-x-0 top-0 h-[3px] bg-red-600" />
       {TICKS.map((y) => (
