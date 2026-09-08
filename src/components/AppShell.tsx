@@ -382,7 +382,11 @@ export function AppShell() {
    */
   useEffect(() => {
     const root = document.documentElement;
-    const SEL = "#ezmobfooter, .ezmob-footer, [id^='ezoic-pub-ad-placeholder-100']";
+    // 앵커 후보. **`querySelector` 로 첫 번째를 집으면 안 된다** — 문서 순서상
+    // `placeholder-100`(높이 24px, `position: static`)이 먼저 나와서 그걸 앵커로 오인하고
+    // 높이를 0으로 계산한다(실측). 실제로 자리를 차지하는 건 `position: fixed` 인 쪽이므로
+    // 후보를 전부 훑어 fixed 이면서 높이가 있는 것을 고른다.
+    const CANDS = "#ezmobfooter, .ezmob-footer, [id^='ezoic-pub-ad-placeholder-100']";
     let ro: ResizeObserver | undefined;
     let watched: Element | null = null;
 
@@ -390,23 +394,23 @@ export function AppShell() {
       root.style.setProperty("--ez-anchor-h", px > 0 ? `${Math.round(px)}px` : "0px");
     };
 
+    const pick = (): Element | null =>
+      [...document.querySelectorAll(CANDS)].find(
+        (e) => getComputedStyle(e).position === "fixed" && e.getBoundingClientRect().height > 0,
+      ) ?? null;
+
     const sync = () => {
-      const el = document.querySelector(SEL);
+      const el = pick();
       if (el !== watched) {
         ro?.disconnect();
+        ro = undefined;
         watched = el;
         if (el) {
-          ro = new ResizeObserver(() => {
-            const r = el.getBoundingClientRect();
-            // position:fixed 로 화면 하단에 붙어 있을 때만 자리를 차지하는 것으로 본다.
-            setH(getComputedStyle(el).position === "fixed" ? r.height : 0);
-          });
+          ro = new ResizeObserver(() => setH(el.getBoundingClientRect().height));
           ro.observe(el);
         }
       }
-      if (!el) { setH(0); return; }
-      const r = el.getBoundingClientRect();
-      setH(getComputedStyle(el).position === "fixed" ? r.height : 0);
+      setH(el ? el.getBoundingClientRect().height : 0);
     };
 
     sync();
