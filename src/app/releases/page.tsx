@@ -15,6 +15,25 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.34.6",
+    date: "2026-09-08",
+    dev: [
+      "fix(ads): **앵커(하단 고정) 광고 높이만큼 앱 높이를 줄인다** (#97). Ezoic 대시보드에서 Anchor Ads를 켰더니 하단 91px가 마지막 카드 줄을 그대로 덮었다. Ezoic은 `body` 에 `padding-bottom`(101px)을 넣어 콘텐츠를 밀어올리는데, `AppShell` 루트가 `fixed inset-x-0 top-0` 로 **body 흐름 밖**이라 그 패딩이 전혀 먹지 않는다.",
+      "실제 앵커 엘리먼트 높이를 재서 `--ez-anchor-h` 로 노출하고, 루트를 `h-dvh` 대신 `calc(100dvh - var(--ez-anchor-h, 0px))` 로 잡는다. 앵커가 없으면 0이라 기존과 동일하다. `body` 의 패딩이 아니라 엘리먼트를 직접 재는 이유는, Ezoic이 앵커 없이도 패딩을 남기는 경우가 있어 눈에 보이는 것을 기준으로 삼는 편이 어긋나지 않기 때문.",
+      "앵커는 로드 20초쯤 뒤에 붙고 규격도 바뀌므로(320×50 / 320×100 / 728×90) 등장은 `MutationObserver`, 높이 변화는 `ResizeObserver` 로 쫓는다. 폴링은 쓰지 않았다 — `getBoundingClientRect` 주기 호출은 강제 레이아웃을 만든다.",
+      "구현 중 한 번 헛짚었다: `querySelector` 가 문서 순서상 먼저 나오는 `placeholder-100`(높이 24px, `position: static`)을 앵커로 오인해 높이를 0으로 계산했다. 후보를 전부 훑어 **`position: fixed` 이면서 높이가 있는 것**을 고르도록 고쳤다.",
+      "beta 실측: 겹침 **91px → 0px**, 스크롤 영역 하단이 859px(뷰포트 950 − 앵커 91)에서 끝난다.",
+    ],
+    changes: {
+      ko: [
+        "화면 하단에 광고가 뜰 때 마지막 줄이 가려지던 문제를 고쳤습니다.",
+      ],
+      en: [
+        "Fixed the bottom row being covered when a bottom-anchored ad is shown.",
+      ],
+    },
+  },
+  {
     version: "0.34.5",
     date: "2026-09-01",
     dev: [

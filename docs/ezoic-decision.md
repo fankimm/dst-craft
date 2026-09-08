@@ -26,14 +26,55 @@ Ezoic Publisher Agreement (Version: February 2025)는 **1년 약정 + 자동 갱
 ## 선택지는 둘뿐이다
 
 우리 트래픽(월 UV 약 1.5만)으로 갈 수 있는 곳이 사실상 이 둘이다. Mediavine 5만 세션,
-Raptive 10만, Monumetric 1만+셋업비 — 전부 문턱이 있고 Ezoic만 무제한이다.
+Raptive 10만, Monumetric 1만+셋업비 — 전부 문턱이 있고 ~~Ezoic만 무제한이다~~
+→ **틀렸다. 아래 참조.**
 
 1. **Ezoic 유지** — 통보 없이 10/15를 넘기면 자동으로 이쪽
-2. **AdSense 단독** — 10/15까지 서면 통보 필요
+2. **AdSense 단독** — 10/15까지 서면 통보 필요.
+   🔴 **2026-09-08 확인: 이 선택지는 현재 실재하지 않는다.** dstcraft.com은 AdSense
+   승인 상태가 아니다(`검토 필요`). 아래 "AdSense 승인 상태 확정" 참조.
 
 > **AdSense를 병행 테스트할 수 없다.** Publisher Agreement §2가 사이트의 모든 프로그래매틱
 > 인벤토리를 Ezoic에 독점시키고 ads.txt도 Ezoic 것만 쓰게 한다. 즉 비교는 순차적으로만
-> 가능하고, AdSense가 더 나쁘면 Ezoic 복귀는 **새 1년 계약**이다. 되돌리기 비용이 비대칭이다.
+> 가능하다.
+
+### 🔴 2026-09-08 교정 — "복귀 = 새 1년 계약"은 낙관적이었다
+
+이 문서는 원래 되돌리기 비용을 "Ezoic 복귀는 **새 1년 계약**"으로 적었다. **그보다 나쁠 수
+있다 — 복귀 자체가 막힐 수 있다.**
+
+Ezoic 요건 KB([getting-started-ezoics-requirements](https://support.ezoic.com/kb/article/getting-started-ezoics-requirements))
+원문:
+
+| 조항 | 원문 |
+|---|---|
+| 최소 요건 | *"To join Ezoic, sites are generally required to have **250,000+ monthly active users**."* |
+| 유예 | *"Publishers monetizing with Ezoic prior to **February 19, 2026**, are grandfathered into the platform regardless of their current site size, provided they maintain **continuous use** of Ezoic."* |
+| **7일 룰** | *"If a grandfathered site (with under 250k users) removes Ezoic integration for more than **7 days**, the grandfathered status is void."* |
+| 신규 사이트 | *"Any new sites added to an existing account after February 19, 2026, must meet the 250k traffic requirement."* |
+
+**우리에게 왜 문제인가:**
+
+- 우리 월 UV는 약 1.5만. 250k와는 **자릿수가 다르다**(약 1/17).
+- 우리 수익화 시작은 **2026-08-13**으로, 유예 기준일 **2026-02-19 이후**다.
+  즉 **유예 대상인지부터가 불명확하다.** (기준일 이후인데 어떻게 가입됐는지 설명이 안 된다 —
+  요건이 그때 미시행이었는지, Incubator 경로였는지, 예외였는지 확인이 필요하다)
+- 유예 대상이 맞더라도 **7일 넘게 연동을 떼면 자격이 소멸**한다. AdSense 단독 전환은 정의상
+  연동 제거이므로, **"4주 비교해보고 나쁘면 돌아온다"는 계획이 성립하지 않을 수 있다.**
+
+> **판단에 미치는 영향**: 이 문서의 비교 프레임은 "AdSense가 나쁘면 되돌린다"를 전제로
+> 순차 비교를 설계했다. 복귀가 불가능하다면 **이탈은 일방통행**이고, 한계 판단은 유지 쪽으로
+> 기울어야 한다. 숫자(도달률 66%)는 여전히 AdSense 단독을 가리키지만, **가역성 가정이
+> 무너지면 규칙을 그대로 적용할 수 없다.**
+
+**확정 전 Ezoic에 서면으로 물을 것** (답변 보관):
+
+1. dstcraft.com은 250k MAU 요건에서 유예 대상인가? 2026-08-13 수익화 시작인데 근거는?
+2. 7일 룰의 기산점은 **스크립트 제거 시점**인가 **마지막 노출 시점**인가?
+3. AdSense Mediation은 Publisher Agreement §2와 충돌하지 않는가?
+4. AdSense 측 Mediation 매니저 위임은 GAM 네트워크 `23368262432`(상위 `Ezoic NA 8`)의
+   기존 인벤토리 관리 위임과 **같은 것인가 별개인가?** (해제 시 광고 서빙이 끊기는지)
+5. Mediation 수익은 대시보드 헤드라인 ePMV에 **포함되는가 별도인가?**
 
 ## 결정 기준 — 숫자로 정한다
 
@@ -716,3 +757,284 @@ viewability 가 먼저 올라 있어야 한다. 안 올랐는데 ePMV만 올랐�
 `display` RPM 이 $0.34 에서 움직이는지. viewability → CPM 은 시차가 있으므로 **9/15·9/22**
 두 번 더 본다. 안 움직이면 viewability 개선이 단가로 이어지지 않는 인벤토리라는 뜻이고,
 그건 Ezoic 유지 여부 판단에 직접 들어간다.
+
+## 2026-09-08 — 도달률 재측정 (기존 63.1% 기록을 덮어쓰지 않음)
+
+`GET /api/stats?days=7` → 9/2~9/8. 8/31 판독(63.1%) 이후 #91·#93·#94·#95·#96·#97이 배포된
+구간이므로, **수정의 효과를 보는 첫 판독**이다.
+
+| 날짜 | early | noscript | filled | nofill | blocked | 총 | 판정값 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 09-02 | 458 | 52 | 124 | 57 | 3 | 694 | **73.5%** |
+| 09-03 | 332 | 48 | 116 | 54 | 2 | 552 | 68.8% |
+| 09-04 | 324 | 62 | 123 | 90 | 1 | 600 | 64.3% |
+| 09-05 | 429 | 90 | 185 | 78 | 1 | 783 | 66.3% |
+| 09-06 | 410 | 58 | 228 | 99 | 1 | 796 | **58.8%** |
+| 09-07 | 317 | 69 | 183 | 84 | 2 | 655 | **58.9%** |
+| 09-08 | 255 | 40 | 65 | 53 | 0 | 413 | 71.4%(당일 진행중) |
+| **7일 합산** | 4,859 | 778 | 1,880 | 995 | 19 | **8,531** | **66.1%** |
+
+판정값 = `(early + noscript) ÷ 전체` (8/31과 동일한 산식).
+
+**읽는 법:**
+
+- 수정은 효과가 있었다 — 9/2 73.5% → 9/6~9/7 **58.8/58.9%**. `filled`가 124 → 228로 늘었다.
+- 그러나 **임계 40%에는 여전히 한참 못 미친다.** 규칙을 문자 그대로 적용하면 AdSense 단독이다.
+- 9/8은 당일 집계 진행중이라 표본이 얇다(413). **판단에 쓰지 말 것.**
+- 회복 불가분(`noscript`)은 9~11%로 8/31(10.2%)과 같다. 이 부분은 광고망을 바꿔도 안 잡힌다.
+
+> ⚠️ **이 숫자만으로 이탈을 결정하지 말 것.** 위 "복귀 = 새 1년 계약은 낙관적이었다" 항목대로
+> 가역성 가정이 무너졌다. 규칙(40%)은 되돌릴 수 있다는 전제에서 만들어진 것이다.
+
+## 2026-09-08 — AdSense Mediation 조사 결론: 10/15 전에는 하지 않는다
+
+대시보드가 "Rev. Opportunities"에서 *"You are losing revenue - complete AdSense Mediation
+setup now"* 로 재촉하지만, **10/15 전에는 하지 않는 게 맞다.**
+
+**이유 세 가지:**
+
+1. **판단 근거를 오염시킨다.** Mediation 수익은 Google이 직접 지급해 Ezoic 정산에서 빠지는데
+   대시보드 숫자에는 섞여 들어온다. 지금 켜면 `$0.89 → $1.32` ePMV 시계열이 자기 자신과
+   비교 불가능해진다. **10/15 판단이 딛고 선 바로 그 숫자다.**
+2. **기대 수익이 무의미하다.** 현재 하루 약 $0.40. 낙관적으로 10% 상승이라 해도 연 $15 수준.
+   게다가 **독립적 근거가 없다** — 정량 수치는 Ezoic 자사 2023-03 마케팅 글(자기선택 코호트
+   비교, 유의성 검정 없음, 근거 차트는 현재 깨진 이미지) 하나뿐이다.
+3. **떠날 계획이라면 정확히 반대로 작동한다.** AdSense 계정은 이탈 시의 탈출 수단인데,
+   Mediation은 그 계정에 Ezoic의 매니저 권한을 붙이는 일이다.
+
+**끄는 스위치가 Ezoic 쪽에 없다.** Ezoic 대시보드의 `Pause All`·네트워크별 토글은
+*Header Bidding Mediation*(별개 기능)의 것이다. AdSense Mediation 해제는 Google 쪽
+`AdSense → 계정 → 액세스 및 승인 → 서드파티`에서만 가능하고, Google은 이 동작을
+**"실행 취소할 수 없음"**으로 표시한다.
+
+### 실제 절차 (2026-09-08 대시보드 실측)
+
+위치는 **`EzoicAds → Ad Integration`** (`https://pubdash.ezoic.com/ezoicads/adintegrations`).
+Mediation은 **그 페이지 하단의 인라인 섹션**이다 — 별도 탭이 아니다.
+
+> 오래된 안내(`AdSense | Mediation` 탭, `Monetization → Mediation`, `Mediation App → Go to App`)는
+> 전부 현재 대시보드에 없다. 따라가지 말 것.
+
+같은 페이지 구성:
+
+- **Link Your AdSense Account** — AdSense 이메일 입력 → Google이 초대 메일 발송
+- **AdSense Mediation Setup Troubleshooter** — 5단계: Validate → Invitation → Account Details
+  → Ads.txt → Finish. 1단계가 *"Is dstcraft.com approved for AdSense?"* 이고,
+  섹션 설명에 **"AdSense Mediation can only be set up if your domain is approved for AdSense"**
+- **Import Historical AdSense Data** — `GRANT AUTHORIZATION`(OAuth) 또는 `.csv` 업로드
+- **Mediation** — `ENABLE MEDIATION` 버튼
+
+**게이팅 조건이 미해결이다.** `pub-4567930429443718`은 재활성화(2026-08-17)돼 있고 도메인도
+등록했지만, `todo.md:75`가 §2 충돌을 이유로 **AdSense 사이트 연결 플로우를 누르지 말라고**
+못박아 두었다. 즉 **도메인이 AdSense 심사를 통과한 적이 있는지 기록이 없다.**
+라이브 `ads.txt`(→ `srv.adstxtmanager.com/19390/dstcraft.com`)에도 우리 pub ID는 **없다**:
+
+```
+curl -sL https://www.dstcraft.com/ads.txt | grep -c 4567930429443718   # → 0
+```
+
+**이건 Mediation보다 훨씬 중요하다** — dstcraft.com이 AdSense 승인 상태가 아니라면
+"AdSense 단독"이라는 선택지 자체가 존재하지 않는다. Google 안내상 사이트 심사는
+**최대 2~4주**라 10/15에 맞추려면 지금 확인해야 한다. 확인처:
+`https://adsense.google.com` → 사이트 (상태가 **`준비됨`**이어야 한다).
+
+### 하기로 했을 때 — 사용자만 할 수 있는 단계
+
+Claude가 할 수 있는 것: 대시보드 이동·화면 판독·비자격증명 입력란 작성.
+**할 수 없는 것**(정책상 대행 금지):
+
+| 단계 | 왜 사용자만 |
+|---|---|
+| AdSense 로그인 / 2단계 인증 | 자격증명 입력 |
+| Google 초대 메일의 **수락** 클릭 | 서드파티 접근 동의(OAuth). Google 문구: 매니저가 *"내 계정에 액세스하거나 계정 설정을 변경"* 할 수 있음 |
+| `GRANT AUTHORIZATION` (과거 데이터 연동) | OAuth 동의 |
+| 매니저 해제(서드파티에서 Ezoic 제거) | 되돌릴 수 없는 계정 수준 변경 |
+
+## 🔴 2026-09-08 — Floating Video Player가 Better Ads 금지 목록에 걸린다
+
+[Better Ads Standards](https://www.betterads.org/standards/) 현행 기준의 **모바일 웹 금지
+목록에 `Sticky, Pop-Out Video Ads`가 있다.** 데스크톱에는 *"Ad Density Higher Than 30% when
+Combined With a Sticky Video Ad"* 조항이 별도로 있다(sticky video 없을 때의 상한은 50%).
+
+우리는 **Floating Video Player가 ON**이다. 이 기준은 Chrome의 광고 필터링으로 집행되며,
+반복 위반 시 **사이트의 광고 전체가 차단**된다. 광고 수익 자체보다 큰 리스크다.
+
+**단, 끄기 전에 재보 것** — 2026-08-31 실측에서 floating video는 수익의 **26.45%**,
+RPM **$0.90**(display의 2.6배), 뷰어빌리티 100%였다. 사이트 평균 뷰어빌리티를 끌어올린
+주역이기도 하다. 무작정 끄면 손해다.
+
+**확인 순서:**
+
+1. Search Console → **광고 환경 보고서(Ad Experience Report)** 에서 dstcraft.com 상태 확인.
+   `통과`면 당장의 집행 리스크는 없다 (사용자 로그인 필요)
+2. `위반` 또는 `검토 중`이면 Floating Video Player를 끄고 재심사 요청
+3. Ezoic은 Google 공인 파트너(GCPP)라 자사 포맷이 비준수일 가능성은 낮지만,
+   **책임은 사이트에 남는다** — 보고서 상태가 유일한 사실 확인 수단이다
+
+
+## 🔴 2026-09-08 — AdSense 승인 상태 확정: "AdSense 단독"은 현재 선택지가 아니다
+
+AdSense 사이트 화면 실측(`adsense.google.com` → 사이트):
+
+| 사이트 | 승인 상태 | 상태 세부정보 | Ads.txt 상태 | 최종 업데이트 |
+|---|---|---|---|---|
+| **dstcraft.com** | **검토 필요** | — | **승인되지 않음** | 2026-08-17 11:56 KST |
+| card-usages.vercel.app | 검토 필요 | — | 찾을 수 없음 | 2026-03-22 |
+
+상단 경고 배너: *"애드센스로 수익 창출을 시작하려면 지급 정보를 추가하고 **사이트를
+연결해야 합니다**."*
+
+[Google 공식 문서](https://support.google.com/adsense/answer/12170222?hl=ko) 기준
+**`검토 필요` = 사이트를 목록에 추가만 했고 승인되지 않은 상태**다. 검토를 받으려면
+[확인 방법](https://support.google.com/adsense/answer/7584263?hl=ko)을 사이트에 적용해야 한다:
+
+- AdSense 코드 스니펫(`adsbygoogle.js`)을 `<head>`에 삽입, 또는
+- **`<meta name="google-adsense-account" content="ca-pub-4567930429443718">` 메타 태그**
+
+검토 소요는 *"보통 며칠, 경우에 따라 **2~4주**"*.
+
+### 왜 이게 판단을 바꾸나
+
+이 문서는 선택지를 "Ezoic 유지 / AdSense 단독" 둘로 놓고 40% 규칙으로 고르게 설계했다.
+**그런데 2번이 아직 존재하지 않는다.** 승인을 먼저 받아야 하고, 승인을 받으려면 확인 태그를
+넣어야 하는데 `todo.md:75`가 §2 충돌을 이유로 **그 플로우를 막아뒀다.**
+
+즉 현재 구조는 이렇다:
+
+```
+AdSense 단독으로 가려면 → 승인 필요 → 확인 태그 삽입 필요 → §2 충돌 우려로 금지
+                                                      ↓
+                            승인은 Ezoic 해지 후에나 시도 가능
+                                                      ↓
+       그런데 해지 통보 기한(10/15)이 승인 여부를 알기 전에 먼저 온다
+```
+
+**착지 가능 여부를 모르는 채로 뛰어내려야 하는 구조다.** 게다가 250k MAU·7일 룰 때문에
+복귀도 막힐 수 있다(위 항목 참조). 10/15까지 37일인데 검토만 최대 4주다.
+
+### 빠져나갈 구멍이 하나 있다 — 메타 태그 확인
+
+확인 방법 중 **메타 태그**는 광고를 게재하지 않는다. `ads.txt`도 건드리지 않는다.
+§2가 금지하는 것은 *프로그래매틱 인벤토리의 타 네트워크 개방*과 *Ezoic 외 ads.txt*인데,
+메타 태그는 둘 다 아니다. 이 방식이면 **Ezoic에 남은 채로 AdSense 승인만 미리 받아둘 수
+있고**, 그러면 10/15 판단이 가정이 아니라 실물 선택지 비교가 된다.
+
+> ⚠️ **단, 스스로 결정하지 말 것.** `todo.md:75`는 "누르지 말 것"이라고 명시적으로 적혀 있고,
+> 이건 계약 리스크다. Ezoic 질의 목록에 **6번 항목으로 추가**한다:
+>
+> 6. AdSense 사이트 검토를 위해 `<meta name="google-adsense-account">` 태그만 넣는 것이
+>    Publisher Agreement §2에 저촉되는가? (광고 게재 없음, ads.txt 변경 없음)
+>
+> 답이 "저촉 안 됨"이면 즉시 넣고 검토를 신청한다 — 그래야 10/15에 실물 비교가 가능하다.
+> 답이 늦거나 애매하면 **2번 선택지는 없는 것으로 보고 유지 쪽으로 판단**해야 한다.
+
+### `Ads.txt 상태: 승인되지 않음`은 별개 항목이다
+
+승인 상태와 다른 축이다. 우리 `ads.txt`는 `srv.adstxtmanager.com/19390/dstcraft.com`으로
+301되고 거기엔 Ezoic 항목만 있다(DIRECT는 `pub-6644558441501035`). 우리 pub ID는 없다:
+
+```
+curl -sL https://www.dstcraft.com/ads.txt | grep -c 4567930429443718   # → 0
+```
+
+Ezoic에 있는 한 정상이다. AdSense Mediation을 켜면 Ezoic이 자기 ads.txt에 우리 ID를
+넣어줘야 하는 구조이고, 우리 레포에서는 손댈 수 없다.
+
+## ✅ 2026-09-08 (2차 검증) — 교착은 가짜였다. 메타 태그 배포 완료
+
+앞의 세 섹션(가역성·Mediation·승인 상태)을 웹 재검증에 걸었더니 **여러 개가 뒤집혔다.**
+아래는 교정본이다. 위 기록은 히스토리로 남기고 지우지 않는다.
+
+### 1. 🔴→✅ "AdSense 승인 교착"은 없었다
+
+앞에서 *"승인받으려면 확인 태그가 필요한데 §2가 금지한다"* 고 썼다. **틀렸다.**
+
+- [Google 공식 문서](https://support.google.com/adsense/answer/7584263?hl=ko): 사이트 확인
+  방법은 **3가지**이고, **메타 태그**는 *"AdSense 코드 스니펫을 추가하고 싶지 않은 경우"* 의
+  대안으로 명시돼 있다. 광고를 게재하지 않고, 광고 요청도 하지 않고, ads.txt도 안 건드린다.
+  같은 문서: *"사이트가 승인되기 전에는 광고가 게재되지 않습니다."*
+- Ezoic이 **실제로 공개한** 제약은 *"You are required to remove all non-Ezoic ad codes from
+  your website"* — **광고 코드**에 대한 것이다. 메타 태그는 어떤 해석으로도 광고 코드가 아니다.
+- `검토 필요`는 **거절이 아니라 "아직 제출된 적 없음"** 이다. 아무도 버튼을 안 눌렀을 뿐이다.
+
+**→ #100에서 메타 태그 배포 완료.** 서빙되는 HTML에서 검증했다(홈·`/boss/*`·`/item/*`,
+`adsbygoogle` 0건). **남은 것은 소유자의 클릭 하나**: `adsense.google.com` → 사이트 →
+dstcraft.com → 확인 방법 `메타 태그` → `확인` → **`검토 요청`**.
+
+> ⚠️ `Ads.txt 상태: 승인되지 않음`은 **별개 축**이라 소유권 확인을 막지 않는다. 무시하고 진행.
+
+### 2. ✅ 되돌릴 수 없는 건 맞다 — 다만 이유가 다르다
+
+앞에서 "7일 룰 때문에 유예 자격이 소멸한다"고 썼다. **우리는 유예 대상이었던 적이 없다.**
+수익화 시작이 2026-08-13으로 기준일(2026-02-19) 이후다. 진짜 경로는 **Incubator**다.
+
+Ezoic `trustandquality@ezoic.com`, **2026-07-01** 메일 원문:
+
+> *"NB - as the site doesn't meet our traffic threshold of **250k users**, it can be approved
+> via our **Incubator programme** instead, if it shows good growth potential. To enable us to
+> assess this please temporarily share read only access to Google Analytics with info111@ezoic.com."*
+
+(일주일 뒤 2026-07-08 `onboarding@ezoic.com` → 승인)
+
+**결론은 그대로다: 이탈은 사실상 일방통행이다.** 떠난 사이트의 복귀는 현행 요건(250k) 적용을
+받고, Incubator는 재신청 절차가 공개돼 있지 않다. 우리는 15k — 17배 차이다.
+**틀린 건 결론이 아니라 메커니즘이었다.** 7일 유지보수 창을 걱정할 게 아니라,
+**Incubator 자리를 이미 한 번 썼다는 것**을 걱정해야 한다.
+
+### 3. ⚠️ §2/§4 조항 인용은 공개 약관에서 확인되지 않는다 (그러나 Ramp-up은 실재)
+
+공개 약관(2025-02 / 2026-06 판)에서 독점·1년 약정·자동갱신·Ramp-up·통보기한 조항을
+찾지 못했다. 메일함에도 계약서·전자서명 기록이 없다.
+
+**그렇다고 10/15를 지워선 안 된다.** 대시보드 `Account Details → AGREEMENT`에
+**`dstcraft.com — Ramp-up period`** 가 도메인별로 표시되고 있고 `Download` 링크도 있다
+(2026-09-08 화면 확인). **Ramp-up은 실재한다.**
+
+→ **할 일: `Download`로 실물 계약서를 받아 §2/§4와 기산일을 대조한다.** 그 전까지 10/15는
+달력에 유지한다. 단 *"조항 원문을 확인했다"* 고 적지 말 것 — 아직 확인 안 됐다.
+
+### 4. ⚠️ "AdSense 단독 +54%" 추정은 과대다
+
+기존 계산은 **단가 40% 하락 · 도달률 95%** 를 가정했다. 둘 다 어긋난다.
+
+| 가정 | 기존 | 교정 | 이유 |
+|---|---|---|---|
+| 도달률 상한 | 95% | **~90%** | `noscript` 9~11%는 어떤 광고망으로도 도달 불가 |
+| 플로팅 비디오 | 단가 희석에 포함 | **소멸** | 수익의 26.45%·RPM $0.90. AdSense엔 아웃스트림 대체재가 없다 |
+| 손익분기 | 43% | **~46%** | 위 둘의 결과 |
+
+재계산하면 AdSense 단독은 방문 1,000당 **$1.55~1.80** 대(현재 Ezoic $1.32). 월 $15~18 대
+$13 — **차이가 일일 변동폭 안에 있다** (ePMV가 9/2 $0.27 → 9/5 $0.71로 2.6배 흔들렸다).
+
+> **판정 규칙(40%)을 문자 그대로 적용하지 말 것.** 그 규칙은 (a) 전환이 되돌릴 수 있고
+> (b) AdSense가 95%에 도달한다는 두 전제 위에 세워졌는데, **둘 다 틀린 것으로 확인됐다.**
+
+### 5. 현재 권고: 유지. 단 선택지는 만들어 둔다
+
+떠나서 얻을 게 월 $2~5인데, 그건 일일 노이즈보다 작다. 반면 잃는 건 이 사이트를 받아주는
+유일한 플랫폼이고 복귀는 막혀 있다. **10/15에는 통보하지 않는다**가 현재 답이다.
+
+**뒤집힐 조건** (하나라도 걸리면 재검토):
+
+- 광고 환경 보고서가 **모바일 `위반`** 이고 유일한 해법이 플로팅 비디오 제거인 경우
+  → Ezoic을 지킬 이유였던 수익 26%가 어차피 사라지므로 비교가 뒤집힌다
+- Search Console **Core Web Vitals가 `양호` → `개선 필요`** 로 내려가는 경우
+  → 트래픽의 65%가 구글 검색이다. 순위 손실이 월 $13보다 크다 (이 문서의 기존 veto, 유효)
+- **display RPM이 9/15·9/22 두 판독에서도 $0.34에 머무는 경우**
+  → 뷰어빌리티를 8.6%p 올려도 가격이 안 따라온다면 이 인벤토리는 개선이 돈으로 안 바뀐다
+- Ezoic이 *"떠난 사이트도 Incubator 재신청 가능"* 이라고 답하는 경우
+  → 가역성이 복원되므로 실험이 다시 성립한다
+
+### 6. Better Ads — 진단부터. 플로팅 비디오를 먼저 끄지 말 것
+
+앞 섹션에서 리스크를 적었지만 **아직 아무도 광고 환경 보고서를 읽지 않았다.** 그게 유일한
+권위다. 읽기 전에 설정을 바꾸면 수익 26%를 근거 없이 버리고 측정 구간까지 오염시킨다.
+
+> 🔴 보고서에서 **`재심사 요청`을 반사적으로 누르지 말 것.** 실패하면 365일 카운터가 돌고,
+> 두 번째 실패는 경고 기간이 30일이 아니라 7일이다. **읽기만 한다.**
+
+### 7. 측정 동결: 9/15 ~ 10/01
+
+9/15·9/22 판독이 이 결정이 얻을 **마지막 깨끗한 근거**다. 그 구간에 광고 관련 변경 금지 —
+새 광고 자리, Ezoic 설정 토글, AdSense 광고 코드, Mediation, `AdSlot` 배치/배칭 변경 전부.
+예외는 위 6번이 강제하는 플로팅 비디오 변경 하나뿐이다.

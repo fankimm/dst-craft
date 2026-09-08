@@ -320,6 +320,12 @@ export interface Suggestion {
   portrait?: string;
   /** Image path relative to /images/ */
   image?: string;
+  /** Craftable id — set on "item" suggestions so the UI can open that item's detail directly */
+  itemId?: string;
+}
+
+function itemSuggestion(item: CraftingItem, locale: string): Suggestion {
+  return { text: itemName(item, locale), type: "item", image: `game-items/${item.image}`, itemId: item.id };
 }
 
 const MAX_SUGGESTIONS = Infinity;
@@ -377,9 +383,21 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
 
   // Materials (before items — small focused set, high relevance)
   const matNameMap = getMaterialNameMap();
+  // Craftables already emitted beside their material row, so the items loop
+  // below doesn't list them a second time.
+  const emittedItemIds = new Set<string>();
   for (const mat of materials) {
     const mNames = matNameMap.get(mat.id) || [];
     if (mNames.some((n) => n.includes(lower))) {
+      // A material that is also a craftable (boards, rope, spear, ...) gets two
+      // rows: the item row first (opens its detail), then the material row
+      // (filters recipes that consume it). Users searching such an item expected
+      // its description, not its uses (feedback 1788851925065-6uqdmo, #102).
+      const craftable = getItemById(mat.id);
+      if (craftable) {
+        emittedItemIds.add(craftable.id);
+        results.push(itemSuggestion(craftable, locale));
+      }
       results.push({
         text: materialName(mat, locale),
         type: "material",
@@ -400,12 +418,14 @@ export function getSuggestions(query: string, locale: string = "ko"): Suggestion
         }
       }
     }
-    if (matched && !results.some((r) => r.text === itemName(item, locale))) {
-      results.push({
-        text: itemName(item, locale),
-        type: "item",
-        image: `game-items/${item.image}`,
-      });
+    // Skip craftables already emitted beside their material row, and keep one
+    // row per display name among items (same-name variants collapse).
+    if (
+      matched &&
+      !emittedItemIds.has(item.id) &&
+      !results.some((r) => r.type === "item" && r.text === itemName(item, locale))
+    ) {
+      results.push(itemSuggestion(item, locale));
     }
     if (results.length >= limit) return results;
   }

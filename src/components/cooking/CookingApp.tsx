@@ -313,6 +313,16 @@ export function CookingApp({
     </DetailPanel>
   ) : null;
 
+  // Open a recipe / raw food detail (grid tap, "recipe" suggestion, raw food suggestion)
+  const handleSelectFood = useCallback(
+    (foodId: string) => {
+      selectRecipe(foodId);
+      trackItemClick(foodId);
+      addRecent(foodId);
+    },
+    [selectRecipe, addRecent],
+  );
+
   // Raw food suggestion → open the food's detail panel directly. Raw foods
   // aren't part of the cookpot search index (they aren't recipes), so picking
   // one from the dropdown bypasses tag-based search entirely.
@@ -320,11 +330,9 @@ export function CookingApp({
     (foodId: string) => {
       clearSearch();
       selectCategory("raw");
-      selectRecipe(foodId);
-      trackItemClick(foodId);
-      addRecent(foodId);
+      handleSelectFood(foodId);
     },
-    [clearSearch, selectCategory, selectRecipe, addRecent],
+    [clearSearch, selectCategory, handleSelectFood],
   );
 
   // Search bar component (shared between both views)
@@ -337,6 +345,7 @@ export function CookingApp({
       onRemoveTag={removeTag}
       onClearAll={clearSearch}
       onSelectRawFood={handleSelectRawFood}
+      onSelectRecipe={handleSelectFood}
       locale={resolvedLocale}
       pending={searchPending}
     />
@@ -408,7 +417,7 @@ export function CookingApp({
             <RawFoodGrid
               foods={rawFoods}
               locale={resolvedLocale}
-              onSelect={(food) => { selectRecipe(food.id); trackItemClick(food.id); addRecent(food.id); }}
+              onSelect={(food) => handleSelectFood(food.id)}
               isFavorite={isFavorite}
               onToggleFav={toggleFavorite}
               getClicks={sortByPopular ? getClicks : undefined}
@@ -427,7 +436,7 @@ export function CookingApp({
                   <RawFoodGrid
                     foods={searchRawFoodResults}
                     locale={resolvedLocale}
-                    onSelect={(food) => { selectRecipe(food.id); trackItemClick(food.id); addRecent(food.id); }}
+                    onSelect={(food) => handleSelectFood(food.id)}
                     isFavorite={isFavorite}
                     onToggleFav={toggleFavorite}
                     getClicks={sortByPopular ? getClicks : undefined}
@@ -441,7 +450,7 @@ export function CookingApp({
                 <RecipeGrid
                   recipes={displayRecipes}
                   locale={resolvedLocale}
-                  onSelect={(recipe) => { selectRecipe(recipe.id); trackItemClick(recipe.id); addRecent(recipe.id); }}
+                  onSelect={(recipe) => handleSelectFood(recipe.id)}
                   isFavorite={isFavorite}
                   onToggleFav={toggleFavorite}
                   getClicks={sortByPopular ? getClicks : undefined}

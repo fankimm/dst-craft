@@ -86,6 +86,12 @@ export const metadata: Metadata = {
     "돈스타브 제작",
   ],
   metadataBase: new URL(SITE_URL),
+  // AdSense 사이트 소유권 확인용. 광고를 게재하지 않고 광고 요청도 하지 않는다 —
+  // `adsbygoogle.js` 대신 쓰라고 구글이 안내하는 방법이다(#100). Ezoic이 금지하는 것은
+  // "non-Ezoic ad code"이고 이건 ad code가 아니다. 되돌리려면 이 한 줄만 지우고 재배포.
+  other: {
+    "google-adsense-account": "ca-pub-4567930429443718",
+  },
   alternates: {
     canonical: "/",
     languages: {
