@@ -364,10 +364,70 @@ export function AppShell() {
     };
   }, []);
 
+  /**
+   * 앵커(하단 고정) 광고 높이를 `--ez-anchor-h` 로 노출한다 (#97).
+   *
+   * Ezoic은 앵커를 띄우면서 `body` 에 `padding-bottom` 을 넣어 콘텐츠를 밀어올린다.
+   * 그런데 이 앱의 루트는 `fixed inset-x-0 top-0` 로 **body 흐름을 벗어나** 있어서 그
+   * 패딩이 전혀 먹지 않는다 — beta 실측에서 앵커 91px가 마지막 카드 줄을 그대로 덮었다
+   * (`body padding-bottom: 101px` 는 들어와 있는데도).
+   *
+   * 그래서 실제 앵커 엘리먼트의 높이를 직접 재서 루트 높이에서 뺀다. `body` 의 패딩을
+   * 읽지 않는 이유는 Ezoic이 앵커 없이도 패딩을 남겨 두는 경우가 있어서다 — 눈에 보이는
+   * 것을 기준으로 삼는 편이 어긋나지 않는다.
+   *
+   * 앵커는 페이지 로드 20초쯤 뒤에야 붙고 규격도 바뀌므로(320×50 / 320×100 / 728×90),
+   * 등장은 `MutationObserver`(body 자식 추가)로, 이후 높이 변화는 `ResizeObserver` 로 쫓는다.
+   * 폴링은 쓰지 않는다 — `getBoundingClientRect` 를 주기적으로 부르면 강제 레이아웃이 걸린다.
+   */
+  useEffect(() => {
+    const root = document.documentElement;
+    const SEL = "#ezmobfooter, .ezmob-footer, [id^='ezoic-pub-ad-placeholder-100']";
+    let ro: ResizeObserver | undefined;
+    let watched: Element | null = null;
+
+    const setH = (px: number) => {
+      root.style.setProperty("--ez-anchor-h", px > 0 ? `${Math.round(px)}px` : "0px");
+    };
+
+    const sync = () => {
+      const el = document.querySelector(SEL);
+      if (el !== watched) {
+        ro?.disconnect();
+        watched = el;
+        if (el) {
+          ro = new ResizeObserver(() => {
+            const r = el.getBoundingClientRect();
+            // position:fixed 로 화면 하단에 붙어 있을 때만 자리를 차지하는 것으로 본다.
+            setH(getComputedStyle(el).position === "fixed" ? r.height : 0);
+          });
+          ro.observe(el);
+        }
+      }
+      if (!el) { setH(0); return; }
+      const r = el.getBoundingClientRect();
+      setH(getComputedStyle(el).position === "fixed" ? r.height : 0);
+    };
+
+    sync();
+    const mo = new MutationObserver(sync);
+    mo.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      mo.disconnect();
+      ro?.disconnect();
+      root.style.removeProperty("--ez-anchor-h");
+    };
+  }, []);
+
   return (
     <div
       ref={shellRef}
-      className="fixed inset-x-0 top-0 h-dvh flex flex-col bg-background text-foreground overflow-hidden"
+      className="fixed inset-x-0 top-0 flex flex-col bg-background text-foreground overflow-hidden"
+      // 앵커(하단 고정) 광고가 뜬 만큼 앱 높이를 줄인다 (#97).
+      // Ezoic은 `body` 에 `padding-bottom` 을 넣어 콘텐츠를 밀어올리는데, 이 루트는
+      // `fixed` 라 body 흐름 밖이라서 그 패딩이 안 먹는다. `--ez-anchor-h` 는 아래
+      // effect가 실제 앵커 높이로 채운다. 앵커가 없으면 0이라 기존과 동일하다.
+      style={{ height: "calc(100dvh - var(--ez-anchor-h, 0px))" }}
     >
       {/* Status bar cover — sits above overlays so status bar area never dims */}
       <div
