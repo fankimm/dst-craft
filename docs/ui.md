@@ -224,7 +224,8 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 ### SearchWithSuggestions (`src/components/ui/SearchWithSuggestions.tsx`)
 - **용도**: 드롭다운 서제스천 + 태그 지원 검색 입력
-- **사용처**: CookingApp, BossesApp
+- **사용처**: `SearchBar`(제작), `CookingSearchBar`(요리), BossesApp(전리품 검색)
+- **선택 동작**: 제안의 `data`를 그대로 돌려주고 탭별 핸들러가 해석한다. 제작 `item`·요리 `recipe` 제안은 태그 추가 + 상세 패널 즉시 오픈(`onSelectItem` / `onSelectRecipe`), 요리 `rawFood` 제안은 태그 없이 상세 직행(`onSelectRawFood`). 제작품이면서 재료인 아이템은 아이템 줄이 재료 줄 바로 위에 온다 — 재료 줄은 "그 재료를 쓰는 레시피" 필터 (#102)
 
 ### AffinityBadges (`src/components/cooking/CookingApp.tsx` 내부)
 - **용도**: 음식의 캐릭터 선호 라벨 ("○○의 선호 음식") 한 줄 노출

@@ -54,6 +54,10 @@ interface CookingSearchBarProps {
    * include raw foods (they aren't recipes), so instead of adding a tag we route
    * straight to that food's detail panel. */
   onSelectRawFood?: (foodId: string) => void;
+  /** Called when user picks a "recipe" suggestion. The recipe tag is still added
+   * (the grid narrows to that one recipe), and its detail panel opens right away
+   * instead of waiting for a second tap on the grid. Mirrors SearchBar's onSelectItem. */
+  onSelectRecipe?: (recipeId: string) => void;
   locale: Locale;
   /** True while the 300ms debounce is in flight — surfaced as a small spinner. */
   pending?: boolean;
@@ -68,6 +72,7 @@ export function CookingSearchBar({
   onRemoveTag,
   onClearAll,
   onSelectRawFood,
+  onSelectRecipe,
   locale,
   pending,
   className,
@@ -98,6 +103,7 @@ export function CookingSearchBar({
       image: original.image,
       engName: original.engName,
     });
+    if (original.type === "recipe") onSelectRecipe?.(original.engName);
   };
 
   const handleSubmit = (value: string) => {

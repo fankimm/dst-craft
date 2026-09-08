@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
 import { t } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n";
-import { getSuggestions } from "@/lib/crafting-data";
+import { getSuggestions, type Suggestion } from "@/lib/crafting-data";
 import type { SearchTag } from "@/hooks/use-search";
 import type { TagType } from "@/lib/crafting-data";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
@@ -53,6 +53,10 @@ interface SearchBarProps {
   onAddTag: (value: string | SearchTag) => void;
   onRemoveTag: (index: number) => void;
   onClearAll: () => void;
+  /** Called when the user picks an "item" suggestion — that item's detail opens
+   * right away. The item tag is still added, so closing the panel leaves the
+   * filtered grid behind. Mirrors CookingSearchBar's onSelectRecipe. */
+  onSelectItem?: (itemId: string) => void;
   className?: string;
 }
 
@@ -63,6 +67,7 @@ export function SearchBar({
   onAddTag,
   onRemoveTag,
   onClearAll,
+  onSelectItem,
   className,
 }: SearchBarProps) {
   const { resolvedLocale } = useSettings();
@@ -82,8 +87,9 @@ export function SearchBar({
       : [];
 
   const handleSelect = (s: SearchSuggestion) => {
-    const original = s.data as { text: string; type: TagType; portrait?: string; image?: string };
+    const original = s.data as Suggestion;
     onAddTag({ text: original.text, type: original.type, portrait: original.portrait, image: original.image });
+    if (original.type === "item" && original.itemId) onSelectItem?.(original.itemId);
   };
 
   const handleSubmit = (value: string) => {
