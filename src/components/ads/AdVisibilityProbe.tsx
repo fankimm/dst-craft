@@ -51,7 +51,8 @@ const BAIT_CLASSES = "ad-banner ads adsbox doubleclick ad-placement textads bann
  * 미끼에 **실제 크기를 줘야** 한다. 0×0으로 만들면 차단 여부와 무관하게 높이가 0이라
  * 아무것도 판정하지 못한다. 화면 밖으로 밀어내 사용자에게는 보이지 않게 한다.
  */
-function detectAdFilter(): boolean {
+/** 진단 오버레이(#103)에서도 같은 판정을 쓴다 */
+export function detectAdFilter(): boolean {
   const bait = document.createElement("div");
   bait.className = BAIT_CLASSES;
   bait.setAttribute("aria-hidden", "true");
@@ -79,7 +80,8 @@ function detectAdFilter(): boolean {
  * 인라인 스크립트가 항상 먼저 만든다(`layout.tsx`의 `adBootstrapScript`). 스크립트가
  * 차단돼도 껍데기는 남으므로 언제나 참이 된다. `showAds`는 본체만 정의한다.
  */
-function adEngineReady(): boolean {
+/** 진단 오버레이(#103)에서도 같은 판정을 쓴다 */
+export function adEngineReady(): boolean {
   const ez = (window as unknown as { ezstandalone?: { showAds?: unknown } }).ezstandalone;
   return typeof ez?.showAds === "function";
 }
@@ -90,7 +92,8 @@ function adEngineReady(): boolean {
  * 판정은 `AdSlot`의 `hasCreative`를 그대로 쓴다 — 재고가 없어도 Ezoic이 18×18 뱃지를
  * 넣기 때문에, 자식 유무로 세면 no-fill이 통째로 노출로 잡혀 결과가 뒤집힌다.
  */
-function anyCreativeRendered(): boolean {
+/** 진단 오버레이(#103)에서도 같은 판정을 쓴다 */
+export function anyCreativeRendered(): boolean {
   const nodes = document.querySelectorAll<HTMLElement>('[id^="ezoic-pub-ad-placeholder-"]');
   for (const el of nodes) {
     if (getComputedStyle(el).display !== "none" && hasCreative(el)) return true;
@@ -99,7 +102,8 @@ function anyCreativeRendered(): boolean {
 }
 
 /** TCF CMP가 떠 있는가 — no-fill이 동의 거부 때문인지 가릴 때 쓴다. */
-function cmpPresent(): boolean {
+/** 진단 오버레이(#103)에서도 같은 판정을 쓴다 */
+export function cmpPresent(): boolean {
   return typeof (window as unknown as { __tcfapi?: unknown }).__tcfapi === "function";
 }
 
