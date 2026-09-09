@@ -63,8 +63,17 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
  *
  * 폭과 최소 높이를 분리해 두는 이유는 `AdCard` 주석 참조 (폭은 항상, 높이는 채워졌을 때만).
  */
+/**
+ * 카드 안쪽 여백(`AdCard`의 `p-2`, 8px) 몫. 바깥 폭은 항상 **placeholder 폭 + 16**이다.
+ * 여백 없이 소재를 카드에 꽉 채우면 `rounded-xl` + `overflow-hidden`이 소재 네 귀퉁이를
+ * 잘라낸다 — 레일에 336×672(300×600을 Ezoic이 확대한 것)가 오면 오른쪽 위 AdChoices
+ * 아이콘까지 깎였다 (#104 beta 실측). 반대로 바깥 폭을 그대로 두고 여백만 주면
+ * 미충전 placeholder가 16px 좁아져 Ezoic이 한 단계 작은 규격을 고른다.
+ */
+const CARD_PAD = 16;
 const BAND_BOX = {
-  w: "w-full max-w-[320px] sm:max-w-[728px]",
+  // = placeholder 320 / 728 + CARD_PAD
+  w: "w-full max-w-[336px] sm:max-w-[744px]",
   minH: "min-h-[50px]",
   // 예약 높이는 **띠 계열 소재 중 가장 높은 것**에 맞춘다 = 320×100의 100px,
   // 여기에 Ezoic이 소재 아래 붙이는 신고 줄(`.reportline`, 18px)을 더한다.
@@ -141,13 +150,15 @@ const SLOT_BOX: Record<AdVariant, { w: string; minH: string; reserve?: string }>
   // 넓은 화면에서 970까지 열어 두는 건 103(bottom_of_page)이 970×105 띠를 배달하기
   // 때문이다 — 728로 묶어 두면 그 규격이 자리를 삐져나온다.
   // 시트 광고는 본문 아래라 밀릴 컨텐츠가 없다 → 예약 불필요
-  sheet: { w: "w-full max-w-[320px] sm:max-w-[728px] lg:max-w-[970px]", minH: "min-h-[50px]" },
+  // = placeholder 320 / 728 / 970 + CARD_PAD
+  sheet: { w: "w-full max-w-[336px] sm:max-w-[744px] lg:max-w-[986px]", minH: "min-h-[50px]" },
   // 데스크탑 레일 — 실측상 sidebar 자리에도 336폭(336×280 계열)이 배달되므로
   // 폭을 336으로 잡는다. 300으로 두면 36px씩 옆 컨텐츠를 침범했다.
   // 세로로 여러 유닛이 쌓여 뷰포트보다 길어지는 경우가 있어 래퍼에서 높이를 흡수한다
   // (AppShell의 `max-h-full overflow-y-auto` 참조).
-  "rail-left": { w: "w-[336px]", minH: "min-h-[600px]" },
-  "rail-right": { w: "w-[336px]", minH: "min-h-[600px]" },
+  // = placeholder 336 + CARD_PAD
+  "rail-left": { w: "w-[352px]", minH: "min-h-[600px]" },
+  "rail-right": { w: "w-[352px]", minH: "min-h-[600px]" },
 };
 
 const MOCK_DESKTOP_MIN_WIDTH = 768;
@@ -518,7 +529,7 @@ export function hasCreative(el: HTMLElement): boolean {
  * 실제 카드와 목업이 같은 위치에 그려야 하므로 한 곳에서 정의한다.
  */
 const AD_LABEL_CLASS =
-  "pointer-events-none absolute bottom-1 left-2 flex h-[18px] items-center text-[10px] font-medium tracking-wide text-muted-foreground/50";
+  "pointer-events-none absolute bottom-2 left-3 flex h-[18px] items-center text-[10px] font-medium tracking-wide text-muted-foreground/50";
 
 /**
  * Ezoic 래퍼(`span.ezoic-ad`)의 상하 margin 15px를 없앤다 (#104).
@@ -535,6 +546,23 @@ function stripEzoicMargins(root: HTMLElement) {
   for (const span of root.querySelectorAll<HTMLElement>(".ezoic-ad")) {
     for (const side of ["margin-top", "margin-bottom"] as const) {
       if (span.style.getPropertyValue(side) !== "0px") span.style.setProperty(side, "0px", "important");
+    }
+  }
+}
+
+if (process.env.NODE_ENV !== "production") {
+  // 바깥 폭 = placeholder 폭 + CARD_PAD 불변식 — 숫자를 한쪽만 고치면 여기서 걸린다
+  const expect: Record<AdVariant, number[]> = {
+    top: [320, 728],
+    sheet: [320, 728, 970],
+    "rail-left": [336],
+    "rail-right": [336],
+  };
+  for (const v of Object.keys(expect) as AdVariant[]) {
+    const widths = [...SLOT_BOX[v].w.matchAll(/\[(\d+)px\]/g)].map((m) => Number(m[1]));
+    const want = expect[v].map((n) => n + CARD_PAD);
+    if (widths.join() !== want.join()) {
+      console.error(`[AdSlot] ${v} 바깥 폭 ${widths} ≠ placeholder + ${CARD_PAD} = ${want}`);
     }
   }
 }
@@ -606,7 +634,7 @@ function AdCard({
   // 바깥(자리)은 폭을 잡아 두고, 카드 옷은 안쪽에서 `w-fit`으로 실제 광고 크기에만
   // 맞춘다. 카드를 자리 폭 전체로 그리면 728 광고 주위로 카드가 864까지 벌어져 헐렁하다.
   //
-  // **높이를 만드는 것(상하 패딩)은 `filled`와 무관하게 항상 그린다.**
+  // **높이를 만드는 것(사방 패딩 `p-2` = CARD_PAD)은 `filled`와 무관하게 항상 그린다.**
   // 채워질 때만 붙이면 광고가 도착하는 순간 그 높이만큼 컨텐츠가 밀린다 — 예약 높이를
   // 올려도 이 몫은 그대로 남아 CLS가 사라지지 않았다 (#75). 빈 회색 카드로 보이게 하는
   // 장식(테두리·배경)과 라벨 글자만 `filled`에 걸어 둔다.
@@ -618,7 +646,7 @@ function AdCard({
   return (
     <div className={`${box.w} flex justify-center`}>
       <div
-        className={`relative pb-1 pt-1 ${
+        className={`relative p-2 ${
           filled ? "w-fit overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30" : "w-full"
         }`}
       >
@@ -682,7 +710,7 @@ function AdSlotMock({
       aria-hidden="true"
     >
       {/* 실제 광고와 같은 카드 껍데기 — 목업에서 최종 모습을 그대로 보기 위함 */}
-      <div className="relative overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 pb-1 pt-1">
+      <div className="relative overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 p-2">
         <div
           style={{ width: size.w, height: size.h }}
           className="flex flex-col items-center justify-center gap-0.5 rounded-md border border-dashed border-muted-foreground/40 bg-muted/40 text-muted-foreground/70 select-none overflow-hidden"
