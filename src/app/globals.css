@@ -204,3 +204,12 @@
 .animate-shake {
   animation: shake 0.4s ease-out, shake-color 1.2s ease-out;
 }
+
+/* Ezoic 광고 래퍼 여백 제거 (#104)
+   Ezoic은 placeholder 안에 `span.ezoic-ad`를 심고 자기 CSS로 `margin: 15px 0`을 준다.
+   우리 카드가 이미 여백을 갖고 있어 소재 위아래로 15px씩 빈 띠가 생기고, 예약 높이에도
+   안 잡혀 광고 도착 시 그만큼 컨텐츠가 밀렸다. 소재(iframe)와 신고 줄은 건드리지 않는다. */
+[id^="ezoic-pub-ad-placeholder-"] .ezoic-ad {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
