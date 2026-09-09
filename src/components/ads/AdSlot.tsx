@@ -66,11 +66,14 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
 const BAND_BOX = {
   w: "w-full max-w-[320px] sm:max-w-[728px]",
   minH: "min-h-[50px]",
-  // 예약 높이는 **띠 계열 소재 중 가장 높은 것**에 맞춘다 = 320×100의 100px.
+  // 예약 높이는 **띠 계열 소재 중 가장 높은 것**에 맞춘다 = 320×100의 100px,
+  // 여기에 Ezoic이 소재 아래 붙이는 신고 줄(`.reportline`, 18px)을 더한다.
   // 50px로 잡았더니 728×90이 도착할 때마다 40px씩 밀렸고, 데스크탑만 90px로 좁혔더니
   // 이번엔 데스크탑에 320×100이 와서 10px 밀렸다 (실측 `measure-cls`). 브레이크포인트를
-  // 나눠 봐야 10px 아끼고 시프트를 만드는 꼴이라 100px 하나로 고정한다.
-  reserve: "min-h-[100px]",
+  // 나눠 봐야 10px 아끼고 시프트를 만드는 꼴이라 하나로 고정한다.
+  // 100px일 때는 신고 줄과 래퍼 margin(30px, `globals.css`에서 제거)이 예약에 안 잡혀
+  // 광고가 도착할 때마다 36px씩 밀렸다 (#104 prod 실측).
+  reserve: "min-h-[118px]",
 };
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
@@ -510,6 +513,13 @@ export function hasCreative(el: HTMLElement): boolean {
   const BADGE_MAX = 40; // Ezoic 뱃지는 18×18
   return [...el.querySelectorAll("img")].some((img) => img.getBoundingClientRect().width > BADGE_MAX);
 }
+/**
+ * "AD" 라벨 — 카드 맨 아래 Ezoic 신고 줄(18px) 왼쪽에 겹친다. 높이를 만들지 않는다.
+ * 실제 카드와 목업이 같은 위치에 그려야 하므로 한 곳에서 정의한다.
+ */
+const AD_LABEL_CLASS =
+  "pointer-events-none absolute bottom-1 left-2 flex h-[18px] items-center text-[10px] font-medium tracking-wide text-muted-foreground/50";
+
 function AdCard({
   placeholderId,
   box,
@@ -576,31 +586,33 @@ function AdCard({
   // 바깥(자리)은 폭을 잡아 두고, 카드 옷은 안쪽에서 `w-fit`으로 실제 광고 크기에만
   // 맞춘다. 카드를 자리 폭 전체로 그리면 728 광고 주위로 카드가 864까지 벌어져 헐렁하다.
   //
-  // **높이를 만드는 것(상하 패딩 + AD 라벨 줄)은 `filled`와 무관하게 항상 그린다.**
+  // **높이를 만드는 것(상하 패딩)은 `filled`와 무관하게 항상 그린다.**
   // 채워질 때만 붙이면 광고가 도착하는 순간 그 높이만큼 컨텐츠가 밀린다 — 예약 높이를
   // 올려도 이 몫은 그대로 남아 CLS가 사라지지 않았다 (#75). 빈 회색 카드로 보이게 하는
   // 장식(테두리·배경)과 라벨 글자만 `filled`에 걸어 둔다.
+  //
+  // "AD" 라벨은 자기 줄을 갖지 않는다 — Ezoic이 소재 아래 붙이는 신고 줄(18px, 뱃지
+  // 아이콘은 오른쪽)의 왼쪽에 절대 배치로 겹쳐 놓는다. 라벨 줄을 따로 두면 그만큼
+  // 카드가 소재보다 커져 위아래가 헐렁했다 (#104). 높이에 안 잡히므로 CLS와도 무관하다.
   const bodyH = box.reserve ?? (filled ? box.minH : "");
   return (
     <div className={`${box.w} flex justify-center`}>
       <div
-        className={`pb-1 pt-1 ${
+        className={`relative pb-1 pt-1 ${
           filled ? "w-fit overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30" : "w-full"
         }`}
       >
-        <div
-          className={`px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50 ${
-            filled ? "" : "invisible"
-          }`}
-          aria-hidden={!filled}
-        >
-          AD
-        </div>
         <div
           ref={ref}
           id={placeholderId === null ? undefined : `ezoic-pub-ad-placeholder-${placeholderId}`}
           className={filled ? bodyH : `w-full ${bodyH}`}
         />
+        <div
+          className={`${AD_LABEL_CLASS} ${filled ? "" : "invisible"}`}
+          aria-hidden={!filled}
+        >
+          AD
+        </div>
       </div>
     </div>
   );
@@ -650,10 +662,7 @@ function AdSlotMock({
       aria-hidden="true"
     >
       {/* 실제 광고와 같은 카드 껍데기 — 목업에서 최종 모습을 그대로 보기 위함 */}
-      <div className="overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 pb-1 pt-1">
-        <div className="px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
-          AD
-        </div>
+      <div className="relative overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 pb-1 pt-1">
         <div
           style={{ width: size.w, height: size.h }}
           className="flex flex-col items-center justify-center gap-0.5 rounded-md border border-dashed border-muted-foreground/40 bg-muted/40 text-muted-foreground/70 select-none overflow-hidden"
@@ -662,6 +671,9 @@ function AdSlotMock({
           <span className="text-[10px]">{MOCK_LABEL[variant]}</span>
           <span className="text-[10px] tabular-nums opacity-70">{key}</span>
         </div>
+        {/* Ezoic 신고 줄 자리 — 실제 광고에선 오른쪽 끝에 18×18 뱃지가 온다 */}
+        <div className="h-[18px]" />
+        <div className={AD_LABEL_CLASS}>AD</div>
       </div>
     </div>
   );
