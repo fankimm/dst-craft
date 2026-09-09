@@ -71,7 +71,7 @@ const BAND_BOX = {
   // 50px로 잡았더니 728×90이 도착할 때마다 40px씩 밀렸고, 데스크탑만 90px로 좁혔더니
   // 이번엔 데스크탑에 320×100이 와서 10px 밀렸다 (실측 `measure-cls`). 브레이크포인트를
   // 나눠 봐야 10px 아끼고 시프트를 만드는 꼴이라 하나로 고정한다.
-  // 100px일 때는 신고 줄과 래퍼 margin(30px, `globals.css`에서 제거)이 예약에 안 잡혀
+  // 100px일 때는 신고 줄과 래퍼 margin(30px, `stripEzoicMargins`가 제거)이 예약에 안 잡혀
   // 광고가 도착할 때마다 36px씩 밀렸다 (#104 prod 실측).
   reserve: "min-h-[118px]",
 };
@@ -520,6 +520,25 @@ export function hasCreative(el: HTMLElement): boolean {
 const AD_LABEL_CLASS =
   "pointer-events-none absolute bottom-1 left-2 flex h-[18px] items-center text-[10px] font-medium tracking-wide text-muted-foreground/50";
 
+/**
+ * Ezoic 래퍼(`span.ezoic-ad`)의 상하 margin 15px를 없앤다 (#104).
+ *
+ * Ezoic은 이 값을 **인라인 `style`에 `!important`로** 박는다 — 스타일시트로는 어떤
+ * 명시도·`!important`로도 못 이긴다 (beta 실측). 같은 인라인 `!important`로 덮어쓰는
+ * 수밖에 없다. 소재 위아래로 15px씩 빈 띠를 만들고 예약 높이에도 안 잡혀 CLS 원인이
+ * 됐던 여백이다. 소재(iframe)와 신고 줄은 건드리지 않는다.
+ *
+ * `AdCard`의 MutationObserver가 style 변경도 보므로, Ezoic이 리프레시 때 다시 써도
+ * 곧바로 되돌린다. 이미 0이면 안 건드려서 우리 쓰기 → 관찰 → 쓰기 루프가 생기지 않는다.
+ */
+function stripEzoicMargins(root: HTMLElement) {
+  for (const span of root.querySelectorAll<HTMLElement>(".ezoic-ad")) {
+    for (const side of ["margin-top", "margin-bottom"] as const) {
+      if (span.style.getPropertyValue(side) !== "0px") span.style.setProperty(side, "0px", "important");
+    }
+  }
+}
+
 function AdCard({
   placeholderId,
   box,
@@ -535,6 +554,7 @@ function AdCard({
     const el = ref.current;
     if (!el || placeholderId === null) return;
     const check = () => {
+      stripEzoicMargins(el);
       setFilled(getComputedStyle(el).display !== "none" && hasCreative(el));
     };
     // 판정 자체가 `getComputedStyle` + `innerText` + `getBoundingClientRect`라 전부
