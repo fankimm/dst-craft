@@ -125,12 +125,29 @@ for (const p of PAGES) {
         const slot = document.querySelector('[data-ad-slot="top"]');
         const ph = document.querySelector('[id^="ezoic-pub-ad-placeholder-"]');
         ph.innerHTML = "";
+        // Ezoic 실제 DOM을 흉내 낸다 — `span.ezoic-ad`(인라인 `!important`로 margin 15px)
+        // 안에 iframe + 신고 줄(`.reportline`, 14px + margin 2px). iframe만 넣으면 래퍼
+        // 몫 48px이 빠져서 prod의 실제 시프트(36px)를 못 잡았다 (#104).
+        // margin을 인라인 `!important`로 주는 것까지 같아야 `stripEzoicMargins`가 검증된다.
+        if (!document.getElementById("fake-ezoic-css")) {
+          const s = document.createElement("style");
+          s.id = "fake-ezoic-css";
+          s.textContent = ".reportline{display:block;height:14px;margin:2px 0}";
+          document.head.appendChild(s);
+        }
+        const wrap = document.createElement("span");
+        wrap.className = "ezoic-ad";
+        wrap.style.cssText = "display:block !important;margin-top:15px !important;margin-bottom:15px !important";
         const f = document.createElement("iframe");
         f.width = String(w);
         f.height = String(h);
         f.style.border = "0";
         f.style.display = "block";
-        ph.appendChild(f);
+        wrap.appendChild(f);
+        const rl = document.createElement("span");
+        rl.className = "reportline";
+        wrap.appendChild(rl);
+        ph.appendChild(wrap);
         await new Promise((r) => setTimeout(r, 400));
         const res = Math.round(slot.getBoundingClientRect().height);
         ph.innerHTML = "";

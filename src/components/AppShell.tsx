@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { CraftingApp } from "./crafting/CraftingApp";
-import { ReviewPrompt } from "./ReviewPrompt";
 import { FloatingSupportPill } from "./ui/FloatingSupportPill";
 import { LegacyPwaNotice } from "./ui/LegacyPwaNotice";
 // 개발 전용 진단 오버레이 (#103) — 일반 번들에서 분리
@@ -128,7 +127,6 @@ export function AppShell() {
   const [toast, setToast] = useState<string | null>(null);
   const [pendingRecipeId, setPendingRecipeId] = useState<string | null>(null);
   const [pendingItemId, setPendingItemId] = useState<string | null>(null);
-  const [showReview, setShowReview] = useState(false);
   // 환경 진단 오버레이 (#103). URL은 hydration 뒤 effect에서 읽는다 (docs/mistakes.md — lazy initializer 함정)
   const [showEnvDiag, setShowEnvDiag] = useState(false);
   useEffect(() => {
@@ -142,27 +140,6 @@ export function AppShell() {
     };
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, []);
-
-  // Review prompt trigger — show after 60s of active usage
-  useEffect(() => {
-    const dismissed = localStorage.getItem("dst:review-dismissed");
-    if (dismissed === "permanent") return;
-    if (dismissed) {
-      const dismissedAt = parseInt(dismissed, 10);
-      if (!isNaN(dismissedAt) && Date.now() - dismissedAt < 7 * 24 * 60 * 60 * 1000) return;
-    }
-    if (sessionStorage.getItem("dst:review-shown")) return;
-
-    const timer = setTimeout(() => {
-      sessionStorage.setItem("dst:review-shown", "1");
-      setShowReview(true);
-    }, 60_000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleReviewClose = useCallback(() => {
-    setShowReview(false);
   }, []);
 
   // Tab click handler — pushState + setActiveTab
@@ -493,7 +470,7 @@ export function AppShell() {
           여러 유닛을 쌓아 뷰포트보다 길어지는 경우가 있어(실측 1068px vs 뷰포트 772px)
           `max-h-full overflow-y-auto`로 레일 안에서 높이를 흡수한다 — 잘라내면 광고
           정책 위반이라 스크롤로 접근 가능하게 둔다.
-          1500px 미만에서는 아예 렌더하지 않는다 (그리드 896 + 좌우 336).
+          1500px 미만에서는 아예 렌더하지 않는다 (그리드 896 + 좌우 352).
           넓은 화면에서는 컨텐츠 폭을 1024로 묶고 전체를 가운데 정렬한다 — 안 그러면
           컨텐츠가 flex-1로 늘어나 레일만 화면 양 끝으로 밀려나고 사이가 텅 빈다
           (QHD 2560에서 좌우 500px씩 공백). */}
@@ -547,8 +524,6 @@ export function AppShell() {
         <AdSlot variant="rail-right" className="hidden min-[1500px]:flex items-start self-stretch max-h-full overflow-y-auto overscroll-contain" />
       </div>
 
-      {/* Review Prompt */}
-      <ReviewPrompt open={showReview} onClose={handleReviewClose} locale={resolvedLocale} />
 
       {/* Floating ko-fi pill — docks into Footer when Footer is in view */}
       <FloatingSupportPill />
@@ -562,7 +537,6 @@ export function AppShell() {
       {/* Dev menu */}
       {showDevMenu && (
         <DevMenu
-          onOpenReview={() => setShowReview(true)}
           onToggleEnvDiag={() => setShowEnvDiag((v) => !v)}
           token={token}
         />
@@ -608,11 +582,9 @@ function BetaTabIndicator() {
 }
 
 function DevMenu({
-  onOpenReview,
   onToggleEnvDiag,
   token,
 }: {
-  onOpenReview: () => void;
   onToggleEnvDiag: () => void;
   token: string | null;
 }) {
@@ -663,14 +635,6 @@ function DevMenu({
   }, []);
 
   const items = [
-    { label: "리뷰 프롬프트", action: onOpenReview },
-    {
-      label: "리뷰 상태 초기화",
-      action: () => {
-        localStorage.removeItem("dst:review-dismissed");
-        sessionStorage.removeItem("dst:review-shown");
-      },
-    },
     { label: "환경 진단 오버레이 (뷰포트·safe-area 눈금)", action: onToggleEnvDiag },
     { label: "스킬 아이콘 목록", action: () => window.open("/skill-icons", "_blank") },
     { label: "블루프린트 아이템", action: () => window.open("/blueprints", "_blank") },

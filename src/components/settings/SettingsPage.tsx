@@ -118,7 +118,6 @@ export function SettingsPage() {
   const handleRate = useCallback(async (star: number) => {
     setMyRating(star);
     localStorage.setItem("dst:my-rating", String(star));
-    localStorage.setItem("dst:review-dismissed", "permanent");
     setToast(t(resolvedLocale, "review_thanks"));
     setTimeout(() => setToast(null), 2000);
     await submitRating(star);

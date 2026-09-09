@@ -15,6 +15,29 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.35.1",
+    date: "2026-09-09",
+    dev: [
+      "fix(ads): **광고 카드를 소재에 핏** (#104). prod 실측에서 728×90 배너에 카드가 163px — 남는 73px 중 48px이 Ezoic 래퍼 몫(`span.ezoic-ad` 상하 margin 15px + 신고 줄 `.reportline` 18px), 19px이 우리 \"AD\" 라벨 줄. 예약 높이 100px은 배너만 계산한 값이라 광고 도착 시마다 **36px씩 밀리고 있었는데** `check-ad-cls.mjs`는 iframe만 꽂아 재서 통과시키고 있었다.",
+      "Ezoic margin은 **인라인 `!important`** 라 `globals.css` 규칙이 beta에서 무력(1차 시도 실패). `AdCard` 의 소재 판정 경로(`MutationObserver`, style 변경도 관찰)에서 `stripEzoicSpacing` 이 `setProperty(..., \"important\")` 로 0을 쓰고, 리프레시로 다시 써도 되돌린다. 같은 함수가 레일의 sticky 컨테이너 `min-height: <뷰포트>`(인라인)도 걷어낸다 — 본문이 내부 스크롤이라 페이지가 안 움직이는 우리 구조에선 950px 빈 테두리만 만들고 좌우 레일 세로 위치를 어긋나게 했다.",
+      "\"AD\" 라벨은 자기 줄 없이 Ezoic 신고 줄 왼쪽에 절대 배치. 예약 100 → 118(320×100 + 신고 줄 18). 카드 `p-2` 사방 8px 안쪽 여백, 바깥 폭 = placeholder + 16(top 336/744, sheet 336/744/986, rail 352) — 여백 없이 꽉 채우면 `rounded-xl` + `overflow-hidden` 이 소재 귀퉁이(AdChoices 아이콘)를 잘랐고, 바깥 폭을 안 늘리고 여백만 주면 미충전 placeholder 가 좁아져 Ezoic 이 작은 규격을 고른다. 개발 빌드가 `SLOT_BOX` 폭 = placeholder + `CARD_PAD` 불변식을 콘솔 에러로 검사.",
+      "`check-ad-cls.mjs` 가 `span.ezoic-ad`(인라인 `!important` margin) + `.reportline` 까지 흉내 내서 재도록 수정 → 띠 계열 전부 시프트 0. beta 실측: 상단 카드 163 → 134px, 레일 967 → 634(300×600)/706(336×672), 좌우 소재 시작 y 동일. 좌우 규격 차이는 Ezoic 이 같은 300×600 을 placeholder 폭에 맞춰 확대해 내보내는 것으로 요청마다 다르며 우리 쪽에서 고정 불가.",
+      "chore: 리뷰 프롬프트(`ReviewPrompt.tsx`, 60초 뒤 뜨는 별점 바텀시트) 삭제 — `AppShell` 트리거, DevMenu 항목 2개, 미사용 i18n 키 정리. 설정 탭 별점 위젯은 유지. `docs/ui.md`·`terminology.md`·`mistakes.md` 갱신.",
+    ],
+    changes: {
+      ko: [
+        "광고 카드가 실제 광고 크기에 맞게 줄었습니다. 위아래 빈 공간이 사라지고, 광고가 도착할 때 목록이 밀리던 현상도 없어졌습니다.",
+        "넓은 화면의 좌우 광고 레일이 광고 높이에 맞춰지고, 둥근 모서리에 광고가 잘리지 않습니다.",
+        "사용 중 뜨던 별점 평가 팝업을 없앴습니다. 평가는 설정 탭에서 할 수 있습니다.",
+      ],
+      en: [
+        "Ad cards now fit the actual ad. The empty space above and below is gone, and the list no longer jumps when an ad arrives.",
+        "On wide screens the side ad rails match the ad height, and rounded corners no longer clip the ad.",
+        "Removed the rating popup that appeared during use. You can still rate the app in the Settings tab.",
+      ],
+    },
+  },
+  {
     version: "0.35.0",
     date: "2026-09-08",
     dev: [

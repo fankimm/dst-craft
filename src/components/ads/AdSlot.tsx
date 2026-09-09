@@ -63,14 +63,26 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
  *
  * 폭과 최소 높이를 분리해 두는 이유는 `AdCard` 주석 참조 (폭은 항상, 높이는 채워졌을 때만).
  */
+/**
+ * 카드 안쪽 여백(`AdCard`의 `p-2`, 8px) 몫. 바깥 폭은 항상 **placeholder 폭 + 16**이다.
+ * 여백 없이 소재를 카드에 꽉 채우면 `rounded-xl` + `overflow-hidden`이 소재 네 귀퉁이를
+ * 잘라낸다 — 레일에 336×672(300×600을 Ezoic이 확대한 것)가 오면 오른쪽 위 AdChoices
+ * 아이콘까지 깎였다 (#104 beta 실측). 반대로 바깥 폭을 그대로 두고 여백만 주면
+ * 미충전 placeholder가 16px 좁아져 Ezoic이 한 단계 작은 규격을 고른다.
+ */
+const CARD_PAD = 16;
 const BAND_BOX = {
-  w: "w-full max-w-[320px] sm:max-w-[728px]",
+  // = placeholder 320 / 728 + CARD_PAD
+  w: "w-full max-w-[336px] sm:max-w-[744px]",
   minH: "min-h-[50px]",
-  // 예약 높이는 **띠 계열 소재 중 가장 높은 것**에 맞춘다 = 320×100의 100px.
+  // 예약 높이는 **띠 계열 소재 중 가장 높은 것**에 맞춘다 = 320×100의 100px,
+  // 여기에 Ezoic이 소재 아래 붙이는 신고 줄(`.reportline`, 18px)을 더한다.
   // 50px로 잡았더니 728×90이 도착할 때마다 40px씩 밀렸고, 데스크탑만 90px로 좁혔더니
   // 이번엔 데스크탑에 320×100이 와서 10px 밀렸다 (실측 `measure-cls`). 브레이크포인트를
-  // 나눠 봐야 10px 아끼고 시프트를 만드는 꼴이라 100px 하나로 고정한다.
-  reserve: "min-h-[100px]",
+  // 나눠 봐야 10px 아끼고 시프트를 만드는 꼴이라 하나로 고정한다.
+  // 100px일 때는 신고 줄과 래퍼 margin(30px, `stripEzoicSpacing`이 제거)이 예약에 안 잡혀
+  // 광고가 도착할 때마다 36px씩 밀렸다 (#104 prod 실측).
+  reserve: "min-h-[118px]",
 };
 
 /** 표준 광고 규격 (IAB) — 목업에서 규격을 지정할 때 쓴다 */
@@ -138,13 +150,15 @@ const SLOT_BOX: Record<AdVariant, { w: string; minH: string; reserve?: string }>
   // 넓은 화면에서 970까지 열어 두는 건 103(bottom_of_page)이 970×105 띠를 배달하기
   // 때문이다 — 728로 묶어 두면 그 규격이 자리를 삐져나온다.
   // 시트 광고는 본문 아래라 밀릴 컨텐츠가 없다 → 예약 불필요
-  sheet: { w: "w-full max-w-[320px] sm:max-w-[728px] lg:max-w-[970px]", minH: "min-h-[50px]" },
+  // = placeholder 320 / 728 / 970 + CARD_PAD
+  sheet: { w: "w-full max-w-[336px] sm:max-w-[744px] lg:max-w-[986px]", minH: "min-h-[50px]" },
   // 데스크탑 레일 — 실측상 sidebar 자리에도 336폭(336×280 계열)이 배달되므로
   // 폭을 336으로 잡는다. 300으로 두면 36px씩 옆 컨텐츠를 침범했다.
   // 세로로 여러 유닛이 쌓여 뷰포트보다 길어지는 경우가 있어 래퍼에서 높이를 흡수한다
   // (AppShell의 `max-h-full overflow-y-auto` 참조).
-  "rail-left": { w: "w-[336px]", minH: "min-h-[600px]" },
-  "rail-right": { w: "w-[336px]", minH: "min-h-[600px]" },
+  // = placeholder 336 + CARD_PAD
+  "rail-left": { w: "w-[352px]", minH: "min-h-[600px]" },
+  "rail-right": { w: "w-[352px]", minH: "min-h-[600px]" },
 };
 
 const MOCK_DESKTOP_MIN_WIDTH = 768;
@@ -510,6 +524,60 @@ export function hasCreative(el: HTMLElement): boolean {
   const BADGE_MAX = 40; // Ezoic 뱃지는 18×18
   return [...el.querySelectorAll("img")].some((img) => img.getBoundingClientRect().width > BADGE_MAX);
 }
+/**
+ * "AD" 라벨 — 카드 맨 아래 Ezoic 신고 줄(18px) 왼쪽에 겹친다. 높이를 만들지 않는다.
+ * 실제 카드와 목업이 같은 위치에 그려야 하므로 한 곳에서 정의한다.
+ */
+const AD_LABEL_CLASS =
+  "pointer-events-none absolute bottom-2 left-3 flex h-[18px] items-center text-[10px] font-medium tracking-wide text-muted-foreground/50";
+
+/**
+ * Ezoic이 자기 래퍼에 인라인으로 박는 빈 공간을 걷어낸다 (#104). 소재(iframe)와 신고
+ * 줄은 건드리지 않는다. 두 가지다:
+ *
+ * 1. `span.ezoic-ad`의 상하 margin 15px — **인라인 `style`에 `!important`로** 온다.
+ *    스타일시트로는 어떤 명시도·`!important`로도 못 이긴다 (beta 실측). 같은 인라인
+ *    `!important`로 덮어쓰는 수밖에 없다. 소재 위아래로 15px씩 빈 띠를 만들고 예약
+ *    높이에도 안 잡혀 CLS 원인이 됐던 여백이다.
+ * 2. sticky 사이드바용 컨테이너(`.ez-sticky`를 품은 placeholder 직계 div)의
+ *    `min-height: <뷰포트 높이>` — 페이지가 스크롤될 때 그 안에서 광고를 따라오게 하려는
+ *    값인데, 우리 앱은 본문이 내부 스크롤이라 페이지 자체가 안 움직인다. 결과는 레일
+ *    카드가 소재(600)보다 훨씬 긴 950px짜리 빈 테두리뿐이고, sticky 오프셋이 좌우
+ *    레일에 다르게 걸려 두 광고의 세로 위치까지 어긋났다 (beta 실측).
+ *
+ * `AdCard`의 MutationObserver가 style 변경도 보므로, Ezoic이 리프레시 때 다시 써도
+ * 곧바로 되돌린다. 이미 없앤 값은 안 건드려서 우리 쓰기 → 관찰 → 쓰기 루프가 없다.
+ */
+function stripEzoicSpacing(root: HTMLElement) {
+  for (const span of root.querySelectorAll<HTMLElement>(".ezoic-ad")) {
+    for (const side of ["margin-top", "margin-bottom"] as const) {
+      if (span.style.getPropertyValue(side) !== "0px") span.style.setProperty(side, "0px", "important");
+    }
+  }
+  for (const child of root.children) {
+    if (child instanceof HTMLElement && child.style.minHeight && child.querySelector(".ez-sticky")) {
+      child.style.removeProperty("min-height");
+    }
+  }
+}
+
+if (process.env.NODE_ENV !== "production") {
+  // 바깥 폭 = placeholder 폭 + CARD_PAD 불변식 — 숫자를 한쪽만 고치면 여기서 걸린다
+  const expect: Record<AdVariant, number[]> = {
+    top: [320, 728],
+    sheet: [320, 728, 970],
+    "rail-left": [336],
+    "rail-right": [336],
+  };
+  for (const v of Object.keys(expect) as AdVariant[]) {
+    const widths = [...SLOT_BOX[v].w.matchAll(/\[(\d+)px\]/g)].map((m) => Number(m[1]));
+    const want = expect[v].map((n) => n + CARD_PAD);
+    if (widths.join() !== want.join()) {
+      console.error(`[AdSlot] ${v} 바깥 폭 ${widths} ≠ placeholder + ${CARD_PAD} = ${want}`);
+    }
+  }
+}
+
 function AdCard({
   placeholderId,
   box,
@@ -525,6 +593,7 @@ function AdCard({
     const el = ref.current;
     if (!el || placeholderId === null) return;
     const check = () => {
+      stripEzoicSpacing(el);
       setFilled(getComputedStyle(el).display !== "none" && hasCreative(el));
     };
     // 판정 자체가 `getComputedStyle` + `innerText` + `getBoundingClientRect`라 전부
@@ -576,31 +645,33 @@ function AdCard({
   // 바깥(자리)은 폭을 잡아 두고, 카드 옷은 안쪽에서 `w-fit`으로 실제 광고 크기에만
   // 맞춘다. 카드를 자리 폭 전체로 그리면 728 광고 주위로 카드가 864까지 벌어져 헐렁하다.
   //
-  // **높이를 만드는 것(상하 패딩 + AD 라벨 줄)은 `filled`와 무관하게 항상 그린다.**
+  // **높이를 만드는 것(사방 패딩 `p-2` = CARD_PAD)은 `filled`와 무관하게 항상 그린다.**
   // 채워질 때만 붙이면 광고가 도착하는 순간 그 높이만큼 컨텐츠가 밀린다 — 예약 높이를
   // 올려도 이 몫은 그대로 남아 CLS가 사라지지 않았다 (#75). 빈 회색 카드로 보이게 하는
   // 장식(테두리·배경)과 라벨 글자만 `filled`에 걸어 둔다.
+  //
+  // "AD" 라벨은 자기 줄을 갖지 않는다 — Ezoic이 소재 아래 붙이는 신고 줄(18px, 뱃지
+  // 아이콘은 오른쪽)의 왼쪽에 절대 배치로 겹쳐 놓는다. 라벨 줄을 따로 두면 그만큼
+  // 카드가 소재보다 커져 위아래가 헐렁했다 (#104). 높이에 안 잡히므로 CLS와도 무관하다.
   const bodyH = box.reserve ?? (filled ? box.minH : "");
   return (
     <div className={`${box.w} flex justify-center`}>
       <div
-        className={`pb-1 pt-1 ${
+        className={`relative p-2 ${
           filled ? "w-fit overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30" : "w-full"
         }`}
       >
-        <div
-          className={`px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50 ${
-            filled ? "" : "invisible"
-          }`}
-          aria-hidden={!filled}
-        >
-          AD
-        </div>
         <div
           ref={ref}
           id={placeholderId === null ? undefined : `ezoic-pub-ad-placeholder-${placeholderId}`}
           className={filled ? bodyH : `w-full ${bodyH}`}
         />
+        <div
+          className={`${AD_LABEL_CLASS} ${filled ? "" : "invisible"}`}
+          aria-hidden={!filled}
+        >
+          AD
+        </div>
       </div>
     </div>
   );
@@ -650,10 +721,7 @@ function AdSlotMock({
       aria-hidden="true"
     >
       {/* 실제 광고와 같은 카드 껍데기 — 목업에서 최종 모습을 그대로 보기 위함 */}
-      <div className="overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 pb-1 pt-1">
-        <div className="px-2 pb-1 text-[10px] font-medium tracking-wide text-muted-foreground/50">
-          AD
-        </div>
+      <div className="relative overflow-hidden rounded-xl ring-1 ring-border/50 bg-muted/30 p-2">
         <div
           style={{ width: size.w, height: size.h }}
           className="flex flex-col items-center justify-center gap-0.5 rounded-md border border-dashed border-muted-foreground/40 bg-muted/40 text-muted-foreground/70 select-none overflow-hidden"
@@ -662,6 +730,9 @@ function AdSlotMock({
           <span className="text-[10px]">{MOCK_LABEL[variant]}</span>
           <span className="text-[10px] tabular-nums opacity-70">{key}</span>
         </div>
+        {/* Ezoic 신고 줄 자리 — 실제 광고에선 오른쪽 끝에 18×18 뱃지가 온다 */}
+        <div className="h-[18px]" />
+        <div className={AD_LABEL_CLASS}>AD</div>
       </div>
     </div>
   );
