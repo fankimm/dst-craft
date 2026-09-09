@@ -80,7 +80,7 @@ const BAND_BOX = {
   // 50px로 잡았더니 728×90이 도착할 때마다 40px씩 밀렸고, 데스크탑만 90px로 좁혔더니
   // 이번엔 데스크탑에 320×100이 와서 10px 밀렸다 (실측 `measure-cls`). 브레이크포인트를
   // 나눠 봐야 10px 아끼고 시프트를 만드는 꼴이라 하나로 고정한다.
-  // 100px일 때는 신고 줄과 래퍼 margin(30px, `stripEzoicMargins`가 제거)이 예약에 안 잡혀
+  // 100px일 때는 신고 줄과 래퍼 margin(30px, `stripEzoicSpacing`이 제거)이 예약에 안 잡혀
   // 광고가 도착할 때마다 36px씩 밀렸다 (#104 prod 실측).
   reserve: "min-h-[118px]",
 };
@@ -532,20 +532,31 @@ const AD_LABEL_CLASS =
   "pointer-events-none absolute bottom-2 left-3 flex h-[18px] items-center text-[10px] font-medium tracking-wide text-muted-foreground/50";
 
 /**
- * Ezoic 래퍼(`span.ezoic-ad`)의 상하 margin 15px를 없앤다 (#104).
+ * Ezoic이 자기 래퍼에 인라인으로 박는 빈 공간을 걷어낸다 (#104). 소재(iframe)와 신고
+ * 줄은 건드리지 않는다. 두 가지다:
  *
- * Ezoic은 이 값을 **인라인 `style`에 `!important`로** 박는다 — 스타일시트로는 어떤
- * 명시도·`!important`로도 못 이긴다 (beta 실측). 같은 인라인 `!important`로 덮어쓰는
- * 수밖에 없다. 소재 위아래로 15px씩 빈 띠를 만들고 예약 높이에도 안 잡혀 CLS 원인이
- * 됐던 여백이다. 소재(iframe)와 신고 줄은 건드리지 않는다.
+ * 1. `span.ezoic-ad`의 상하 margin 15px — **인라인 `style`에 `!important`로** 온다.
+ *    스타일시트로는 어떤 명시도·`!important`로도 못 이긴다 (beta 실측). 같은 인라인
+ *    `!important`로 덮어쓰는 수밖에 없다. 소재 위아래로 15px씩 빈 띠를 만들고 예약
+ *    높이에도 안 잡혀 CLS 원인이 됐던 여백이다.
+ * 2. sticky 사이드바용 컨테이너(`.ez-sticky`를 품은 placeholder 직계 div)의
+ *    `min-height: <뷰포트 높이>` — 페이지가 스크롤될 때 그 안에서 광고를 따라오게 하려는
+ *    값인데, 우리 앱은 본문이 내부 스크롤이라 페이지 자체가 안 움직인다. 결과는 레일
+ *    카드가 소재(600)보다 훨씬 긴 950px짜리 빈 테두리뿐이고, sticky 오프셋이 좌우
+ *    레일에 다르게 걸려 두 광고의 세로 위치까지 어긋났다 (beta 실측).
  *
  * `AdCard`의 MutationObserver가 style 변경도 보므로, Ezoic이 리프레시 때 다시 써도
- * 곧바로 되돌린다. 이미 0이면 안 건드려서 우리 쓰기 → 관찰 → 쓰기 루프가 생기지 않는다.
+ * 곧바로 되돌린다. 이미 없앤 값은 안 건드려서 우리 쓰기 → 관찰 → 쓰기 루프가 없다.
  */
-function stripEzoicMargins(root: HTMLElement) {
+function stripEzoicSpacing(root: HTMLElement) {
   for (const span of root.querySelectorAll<HTMLElement>(".ezoic-ad")) {
     for (const side of ["margin-top", "margin-bottom"] as const) {
       if (span.style.getPropertyValue(side) !== "0px") span.style.setProperty(side, "0px", "important");
+    }
+  }
+  for (const child of root.children) {
+    if (child instanceof HTMLElement && child.style.minHeight && child.querySelector(".ez-sticky")) {
+      child.style.removeProperty("min-height");
     }
   }
 }
@@ -582,7 +593,7 @@ function AdCard({
     const el = ref.current;
     if (!el || placeholderId === null) return;
     const check = () => {
-      stripEzoicMargins(el);
+      stripEzoicSpacing(el);
       setFilled(getComputedStyle(el).display !== "none" && hasCreative(el));
     };
     // 판정 자체가 `getComputedStyle` + `innerText` + `getBoundingClientRect`라 전부
