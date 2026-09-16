@@ -116,6 +116,10 @@ return (
 내부 구조: `flex-1 min-h-0 overflow-y-auto` → `flex flex-col min-h-full` → children + Footer.
 Footer는 자동 포함 (`noFooter` prop으로 끌 수 있음 — CookpotApp처럼 외부에 pinned할 때만).
 
+`scrollContainer` 마커는 탭마다 **여러 개가 동시에 DOM 에 있다**(숨은 탭도 마운트 유지, #91). 잡을 땐
+`document.querySelector` 가 아니라 자기 `ref` 또는 `findScrollContainerFor` 를 쓴다 (#105).
+AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 경계 판정에 쓴다.
+
 ### 퀘스트 탭 (QuestsApp)
 단일 화면 스크롤: 3개 퀘스트 섹션(은둔자/대변자/연료직공) 카드형 체크리스트
 ```
@@ -165,9 +169,11 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 ### DetailPanel (`src/components/ui/DetailPanel.tsx`)
 - **용도**: 바텀시트 상세 패널 (오버레이 + 슬라이드업 + 닫기 버튼 + SupportPill)
-- **사용처**: CraftingApp, CookingApp, BossesApp, AdminFeedbackSection (설정 탭)
+- **사용처**: CraftingApp, CookingApp, BossesApp, SkinsApp, Wx78StatusPanel, Wx78CircuitBoard, FeedbackBoard (설정 탭)
 - **짝 훅**: `useDetailPanel` — 패널 open/close 애니메이션 상태 관리
-- **Props**: `open`, `onClose`, `children`
+- **Props**: `open`, `onClose`, `onBack`/`backLabel`, `hideClose`, `children`
+- **스크롤 잠금 (#105)**: 열리는 동안 **자기 탭의** `[data-scroll-container]` 에 인라인 `overflow:hidden`. 대상은 `findScrollContainerFor(overlayRef)` 로 찾는다 — `document.querySelector` 첫 매치는 숨은 제작 탭이라 금지. 오버레이에 `data-detail-open="true|false"` 마커가 있어 `useScrollLockHeal` 이 "시트 없는 잠금" 을 판정한다
+- **탭을 떠나면 닫혀야 한다**: URL 상태 시트는 `useTabSync(() => set(readUrlState()))` 로, 로컬 상태 시트(스킨·WX-78·피드백 보드)는 `useTabSync(() => setSelected(null))` 로. 열린 채 `display:none` 이 되면 잠금이 잔존해 그 탭 스크롤이 죽는다
 
 ### FeedbackBoard (`src/components/settings/FeedbackBoard.tsx`)
 - **용도**: 사용자 피드백 게시판 (설정 탭에 임베드). 공개 목록 + 어드민 관리 UI를 한 컴포넌트에서 분기
@@ -294,9 +300,22 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 ## 공유 훅
 
 ### useDetailPanel (`src/hooks/use-detail-panel.ts`)
-- **용도**: 바텀시트 패널 open/close 애니메이션 (double-rAF + delayed cleanup)
-- **사용처**: CraftingApp, CookingApp, BossesApp
+- **용도**: 바텀시트 패널 open/close 애니메이션 (double-rAF + delayed cleanup). 열리는 두 프레임 사이에 선택이 풀리면 rAF 를 취소한다 — 안 그러면 빈 시트 + 오버레이가 영구히 남는다 (#105)
+- **사용처**: CraftingApp, CookingApp, BossesApp, SkinsApp, FeedbackBoard
 - **반환**: `{ panelItem, panelOpen }`
+
+### useTabSync (`src/hooks/use-tab-sync.ts`)
+- **용도**: 탭 URL 이 바뀌는 모든 순간(`popstate`, `dst-tab-switch`, `pageshow` persisted)에 콜백 호출 (#105)
+- **사용처**: use-crafting-state, use-bosses-state, use-cooking-state (`set(readUrlState())`), SkinsApp, Wx78StatusPanel, Wx78CircuitBoard, FeedbackBoard (로컬 시트 닫기)
+- **규칙**: 콜백은 "내 탭이 아니면 return" 하지 말고 무조건 URL 을 다시 읽어 덮어쓴다. 새 탭의 URL 상태 훅은 popstate 를 직접 듣지 말고 이 훅을 쓸 것
+
+### useScrollLockHeal (`src/hooks/use-scroll-lock-heal.ts`)
+- **용도**: 시트 없이 남은 스크롤 잠금(인라인 overflow)을 탭 전환·`visibilitychange`·`pageshow` 때 지우는 자가 복구 (#105)
+- **사용처**: AppShell 1곳 (`useScrollLockHeal(activeTab)`)
+
+### findScrollContainerFor (`src/lib/scroll-container.ts`)
+- **용도**: 패널 DOM 위치에서 자기 탭의 `[data-scroll-container]` 찾기 — `closest` → 조상 단계별 `querySelectorAll`(보이는 것 우선) → `[data-tab-root]` 에서 중단 (#105)
+- **사용처**: DetailPanel. 탭 안에서 "내 스크롤 컨테이너" 가 필요하면 `document.querySelector` 대신 이것 또는 자기 `ref`
 
 ### useSlideAnimation (`src/hooks/use-slide-animation.ts`)
 - **용도**: 카테고리 ↔ 리스트 뷰 전환 시 슬라이드 애니메이션

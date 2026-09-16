@@ -363,6 +363,19 @@
   2. IntersectionObserver의 `entries`는 변화된 것만 오므로, 다중 타깃 관찰 시 누적 상태(WeakMap/ref)로 따로 보관 필요
 - **검증**: 단일 인스턴스가 보장되는 마커가 아니면 `querySelectorAll(...).length`를 dev 모드에서 한번 출력해 다중 마운트 여부 확인
 
+### 클래스 기본값에 기대는 `el.style.x = ""` 리셋이 있는데 기본값을 인라인 style 로 옮김 (2026-09-16, #105)
+- **문제**: #97(2026-09-08)에서 AppShell 루트 높이를 `h-dvh` 클래스 → `style={{ height: "calc(100dvh - var(--ez-anchor-h))" }}` 인라인 prop 으로 옮겼다. 그런데 키보드 대응 vv `resize` 핸들러가 키보드가 아닐 때 `shell.style.height = ""` 로 리셋한다 — 클래스 시절엔 "인라인 오버라이드 제거 → 클래스 복귀" 였지만 인라인이 되자 **높이 선언 자체를 삭제**했다. `position:fixed; top:0` 에 높이가 없으니 루트가 콘텐츠 높이(뷰포트 664px에서 1667px)로 늘어나고 모든 `flex-1 min-h-0` 컨테이너가 콘텐츠 높이가 돼 `scrollHeight == clientHeight` → **전 탭 스크롤 먹통**. html/body 는 overflow:hidden 이라 문서도 안 움직임. 트리거는 키보드 닫기·회전·백그라운드 복귀 등 vv resize 한 번. 배포 다음날 "웹·앱 둘 다 가끔 스크롤 먹통, 나갔다 오면 복구" 피드백
+- **원인**: React 는 style prop 값이 바뀌지 않으면 DOM 에 다시 쓰지 않는다(`prevStyles[k] !== styles[k]` 일 때만). 그래서 리렌더로도 복구되지 않고 리로드만 복구
+- **해결**: 높이를 `globals.css` 의 `.app-shell` 클래스로 되돌림. `""` 리셋은 그대로 (= 클래스 복귀 계약 복원)
+- **교훈**: 어떤 요소의 스타일을 JS 가 `""` 로 리셋하고 있으면 그 속성의 기본값은 **반드시 스타일시트(클래스)** 에 있어야 한다. 기본값을 인라인 style prop 으로 옮기기 전에 `grep "style\.<prop> = \"\""` 로 리셋 코드가 있는지 확인
+- **검증**: 헤드리스로 `visualViewport.dispatchEvent(new Event("resize"))` 한 번 쏜 뒤 루트 높이 == innerHeight, 보이는 컨테이너 `scrollHeight > clientHeight`, wheel 후 `scrollTop > 0`
+
+### DetailPanel 도 `querySelector` 첫 매치 함정을 그대로 밟음 + 탭을 떠나도 시트가 안 닫힘 (2026-09-16, #105)
+- **문제**: `DetailPanel` 이 `document.querySelector("[data-scroll-container]")` 로 잠글 컨테이너를 잡았다. 위 "querySelector 로 anchor 잡을 때 다중 탭 마운트 함정" 과 같은 버그 — 첫 매치는 언제나 제작 탭 컨테이너라 보스·요리·스킨 시트가 제작 컨테이너를 잠갔다. 여기에 보스·요리 URL 상태 훅의 popstate 가 "내 탭이 아니면 return" 이라 퀘스트→보스 상세 닫기(history.back → `?tab=quests`)·요리솥→레시피 Back·스킨 카드 후 Back 때 시트가 **숨은 탭에 열린 채** 남았고, 그 잠금이 제작 탭에 그대로 남아 제작 탭만 스크롤 먹통. 요리는 `selectRecipe(null)` 이 URL 에 `recipe` 가 없으면 no-op 이라 돌아와도 시트를 닫을 방법이 없었다
+- **해결**: (1) `findScrollContainerFor(ref)` 로 자기 탭 컨테이너만 잠금 (2) `useTabSync` 로 세 URL 훅이 popstate/탭전환/bfcache 때 **무조건** `set(readUrlState())` (3) 로컬 상태 시트(스킨·WX-78·피드백 보드)도 `useTabSync` 로 닫기 (4) `selectRecipe(null)` 로컬 클리어 (5) `useScrollLockHeal` 자가 복구
+- **교훈**: 기존 오답노트에 있는 함정을 다른 컴포넌트가 똑같이 밟고 있었다. 오답노트 항목을 쓸 때 **같은 패턴을 쓰는 다른 곳을 grep 해서 한 번에 고칠 것** (`grep -rn 'document.querySelector("\[data-'`). 그리고 hidden 마운트 탭의 상태 훅은 "내 탭 아니면 return" 금지 — URL 이 진실 공급원이면 무조건 다시 읽는다
+- **검증**: 헤드리스로 퀘스트→보스 상세→Back→제작 탭, 요리솥→레시피→Back→제작, 스킨 카드→Back×2 후 제작 컨테이너 `style.overflow === ""` 및 wheel 스크롤 확인
+
 ### "공통 컴포넌트만 고치면 다 적용된다" 가정으로 사용처 확인 누락
 - **문제**: ko-fi 후원자 ticker를 `SupportPill` 컴포넌트에 구현했는데, 사용자가 "푸터의 서포트 버튼"이라고 명시한 메인 푸터(`Footer.tsx`)는 `SupportPill`을 쓰지 않고 동일 디자인의 ko-fi 버튼을 별도 하드코딩하고 있었음 → ticker가 메인 푸터에 적용 안 됨, 사용자가 빈 ticker 보고 보고 후 발견
 - **원인**:
