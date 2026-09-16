@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useCallback, useState, useEffect } from "react";
+import { useMemo, useCallback, useState, useEffect, useRef } from "react";
 import { categories } from "@/data/categories";
 import { characters } from "@/data/characters";
 import { getItemsByCategory, getCharacterItems, getCategoryById, getCharacterById, getItemById, getMaterialById, stationImages } from "@/lib/crafting-data";
@@ -147,8 +147,10 @@ export function CraftingApp({
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, [handleGoHome]);
 
+  // 자기 컨테이너를 ref 로 잡는다 — document.querySelector 첫 매치는 다른 탭일 수 있다 (#105)
+  const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    document.querySelector("[data-scroll-container]")?.scrollTo(0, 0);
+    scrollRef.current?.scrollTo(0, 0);
   }, [selectedCategory, selectedCharacter]);
 
   const handleStationClick = useCallback((stationLabel: string, station?: string) => {
@@ -329,7 +331,7 @@ export function CraftingApp({
   return (
     <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${slideClass}`}>
       {header}
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
+      <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
         <div className="flex flex-col min-h-full">
           <AdSlot variant="top" className="max-w-4xl mx-auto w-full px-3 sm:px-4" />
           {body}

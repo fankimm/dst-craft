@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import type { CookingStation } from "@/data/recipes";
 import { useUrlStateSync } from "./use-url-state";
+import { useTabSync } from "./use-tab-sync";
 
 // ---------------------------------------------------------------------------
 // Types (exported for CookingApp)
@@ -20,10 +21,6 @@ export type CookingCategoryId = "all" | "favorites" | "recent" | CookingStation 
 function getParams(): URLSearchParams {
   if (typeof window === "undefined") return new URLSearchParams();
   return new URLSearchParams(window.location.search);
-}
-
-function isCookingTab(): boolean {
-  return getParams().get("tab") === "cooking";
 }
 
 function readUrlState() {
@@ -53,24 +50,11 @@ export function useCookingState() {
   const selectedCategory = urlState.cat;
   const selectedRecipeId = urlState.recipe;
 
-  // Listen to popstate (browser back/forward)
-  useEffect(() => {
-    const onPopState = () => {
-      // Only sync when on cooking tab
-      if (!isCookingTab()) return;
-      setUrlState(readUrlState());
-    };
-    window.addEventListener("popstate", onPopState);
-    // Sync state when page is restored from bfcache (Safari back/forward)
-    const onPageShow = (e: PageTransitionEvent) => {
-      if (e.persisted && isCookingTab()) setUrlState(readUrlState());
-    };
-    window.addEventListener("pageshow", onPageShow);
-    return () => {
-      window.removeEventListener("popstate", onPopState);
-      window.removeEventListener("pageshow", onPageShow);
-    };
-  }, []);
+  // 뒤로가기·탭 전환·bfcache 복원 때 URL 을 다시 읽는다. 예전엔 "요리 탭이 아니면 return"
+  // 했는데, 그러면 요리솥→레시피에서 Back(→ ?tab=cookpot) 했을 때 시트가 숨은 요리 탭에
+  // 열린 채 남아 스크롤 잠금이 잔존했다 (#105). readUrlState 는 다른 탭 URL 에서 초기값을
+  // 주므로 무조건 덮어써도 된다.
+  useTabSync(() => setUrlState(readUrlState()));
 
   // Select a category — pushState
   const selectCategory = useCallback((cat: CookingCategoryId) => {
@@ -84,26 +68,30 @@ export function useCookingState() {
     if (recipeId === null) {
       // Close recipe
       const params = getParams();
-      if (params.has("recipe")) {
-        if (window.history.state?._jump) {
-          params.delete("recipe");
-          const search = params.toString();
-          const url = search
-            ? `${window.location.pathname}?${search}`
-            : window.location.pathname;
-          window.history.replaceState({ _appNav: true }, "", url);
-          setUrlState(readUrlState());
-        } else if (window.history.state?._appNav) {
-          window.history.back();
-        } else {
-          params.delete("recipe");
-          const search = params.toString();
-          const url = search
-            ? `${window.location.pathname}?${search}`
-            : window.location.pathname;
-          window.history.replaceState({}, "", url);
-          setUrlState(readUrlState());
-        }
+      if (!params.has("recipe")) {
+        // URL 엔 레시피가 없는데 시트가 열려 있는 상태 — 로컬만 닫는다 (보스 탭과 동일).
+        // 이게 없으면 X·오버레이가 아무 일도 안 해서 리로드 말고는 닫을 방법이 없다 (#105).
+        setUrlState((prev) => ({ ...prev, recipe: null }));
+        return;
+      }
+      if (window.history.state?._jump) {
+        params.delete("recipe");
+        const search = params.toString();
+        const url = search
+          ? `${window.location.pathname}?${search}`
+          : window.location.pathname;
+        window.history.replaceState({ _appNav: true }, "", url);
+        setUrlState(readUrlState());
+      } else if (window.history.state?._appNav) {
+        window.history.back();
+      } else {
+        params.delete("recipe");
+        const search = params.toString();
+        const url = search
+          ? `${window.location.pathname}?${search}`
+          : window.location.pathname;
+        window.history.replaceState({}, "", url);
+        setUrlState(readUrlState());
       }
       return;
     }

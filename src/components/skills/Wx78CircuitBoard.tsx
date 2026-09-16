@@ -19,6 +19,7 @@ import {
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import type { Locale } from "@/lib/i18n";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
+import { useTabSync } from "@/hooks/use-tab-sync";
 import { extractVital } from "./wx78-vital-extract";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { Footer } from "../crafting/Footer";
@@ -57,6 +58,8 @@ export function Wx78CircuitBoard({
 }: Props) {
   const maxSlots = getMaxSlots(activatedSkills);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  // 로컬 상태 시트 — 뒤로가기·탭 전환 때 닫는다 (열린 채 숨으면 스크롤 잠금 잔존, #105)
+  useTabSync(() => setSelectedId(null));
 
   const equippedTotal = useMemo(
     () => Object.values(counts).reduce((a, b) => a + b, 0),

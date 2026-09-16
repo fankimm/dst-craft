@@ -14,6 +14,8 @@ const EnvDiagOverlay = dynamic(
 import { TabFallback } from "./ui/TabFallback";
 import { AdSlot } from "./ads/AdSlot";
 import { useSettings } from "@/hooks/use-settings";
+import { useScrollLockHeal } from "@/hooks/use-scroll-lock-heal";
+import { ANCHOR_AD_SELECTOR } from "@/lib/ad-anchor";
 import { useAuth } from "@/hooks/use-auth";
 import { useUrlStateSync } from "@/hooks/use-url-state";
 import { t } from "@/lib/i18n";
@@ -100,6 +102,8 @@ export function AppShell() {
   // 첫 렌더는 서버와 동일한 "crafting", layout effect에서 URL의 tab을 반영한다.
   const [activeTab, setActiveTab] = useState<TabId>("crafting");
   useUrlStateSync(readTabFromUrl, setActiveTab);
+  // 시트 없이 남은 스크롤 잠금을 탭 전환·앱 복귀 때 지운다 (#105)
+  useScrollLockHeal(activeTab);
 
   // 한 번이라도 연 탭만 마운트한다 (#91).
   //
@@ -330,6 +334,8 @@ export function AppShell() {
         // iOS에서 키보드는 innerHeight를 안 바꾸고 vv.height만 줄이므로
         // 그 차이(>150px)로 키보드 여부를 판별할 수 있다.
         const keyboardOpen = window.innerHeight - vv.height > 150;
+        // `""` 는 `.app-shell` 클래스 높이(globals.css)로의 복귀다. 루트 높이가 인라인 style
+        // 이면 이 한 줄이 높이 선언을 통째로 지워 모든 탭의 스크롤이 죽는다 (#105, #97 회귀).
         shell.style.height = keyboardOpen ? `${vv.height}px` : "";
         if (vv.height > prevHeight) window.scrollTo(0, 0);
         prevHeight = vv.height;
@@ -373,7 +379,8 @@ export function AppShell() {
     // `placeholder-100`(높이 24px, `position: static`)이 먼저 나와서 그걸 앵커로 오인하고
     // 높이를 0으로 계산한다(실측). 실제로 자리를 차지하는 건 `position: fixed` 인 쪽이므로
     // 후보를 전부 훑어 fixed 이면서 높이가 있는 것을 고른다.
-    const CANDS = "#ezmobfooter, .ezmob-footer, [id^='ezoic-pub-ad-placeholder-100']";
+    // 후보 목록은 `src/lib/ad-anchor.ts` 에서 진단 오버레이와 공유한다 (#105).
+    const CANDS = ANCHOR_AD_SELECTOR;
     let ro: ResizeObserver | undefined;
     let watched: Element | null = null;
 
@@ -402,7 +409,9 @@ export function AppShell() {
 
     sync();
     const mo = new MutationObserver(sync);
-    mo.observe(document.body, { childList: true, subtree: true });
+    // `body` 가 아니라 `documentElement` 를 본다 — GPT Adhesion 앵커는 `<html>` 직계 자식으로
+    // 붙어서 body 관찰로는 등장을 놓친다 (#105 실측).
+    mo.observe(document.documentElement, { childList: true, subtree: true });
     return () => {
       mo.disconnect();
       ro?.disconnect();
@@ -413,12 +422,14 @@ export function AppShell() {
   return (
     <div
       ref={shellRef}
-      className="fixed inset-x-0 top-0 flex flex-col bg-background text-foreground overflow-hidden"
-      // 앵커(하단 고정) 광고가 뜬 만큼 앱 높이를 줄인다 (#97).
-      // Ezoic은 `body` 에 `padding-bottom` 을 넣어 콘텐츠를 밀어올리는데, 이 루트는
-      // `fixed` 라 body 흐름 밖이라서 그 패딩이 안 먹는다. `--ez-anchor-h` 는 아래
-      // effect가 실제 앵커 높이로 채운다. 앵커가 없으면 0이라 기존과 동일하다.
-      style={{ height: "calc(100dvh - var(--ez-anchor-h, 0px))" }}
+      // 높이는 `.app-shell`(globals.css) 클래스가 준다: `calc(100dvh - var(--ez-anchor-h))`.
+      // 앵커(하단 고정) 광고가 뜬 만큼 앱 높이를 줄이는 값이다 (#97) — Ezoic은 `body` 에
+      // `padding-bottom` 을 넣어 콘텐츠를 밀어올리는데, 이 루트는 `fixed` 라 body 흐름
+      // 밖이라서 그 패딩이 안 먹는다. `--ez-anchor-h` 는 아래 effect가 실제 앵커 높이로 채운다.
+      // **인라인 style 로 옮기지 말 것** (#105): 위 vv 핸들러가 키보드가 닫힐 때
+      // `style.height = ""` 로 지우는데, 인라인이면 그게 높이 선언 자체를 지워 앱이
+      // 콘텐츠 높이로 늘어나고 모든 탭의 스크롤이 죽는다.
+      className="app-shell fixed inset-x-0 top-0 flex flex-col bg-background text-foreground overflow-hidden"
     >
       {/* Status bar cover — sits above overlays so status bar area never dims */}
       <div
@@ -477,46 +488,46 @@ export function AppShell() {
       <div className="flex-1 min-h-0 flex justify-center overflow-hidden">
         <AdSlot variant="rail-left" className="hidden min-[1500px]:flex items-start self-stretch max-h-full overflow-y-auto overscroll-contain" />
         <div className="flex-1 min-w-0 max-w-[1024px] h-full overflow-hidden">
-        <div className={activeTab === "crafting" ? "h-full" : "hidden"}>
+        <div data-tab-root="crafting" className={activeTab === "crafting" ? "h-full" : "hidden"}>
           <CraftingApp pendingItemId={pendingItemId} onClearPendingItem={handleClearPendingItem} onBlueprintClick={handleBlueprintClick} onSkillClick={handleSkillClick} externalBackLabel={craftingBack?.label ?? null} onExternalBack={craftingBack ? handleExternalBack : undefined} onPanelClose={() => setCraftingBack(null)} />
         </div>
         {isTabMounted("cooking") && (
-        <div className={activeTab === "cooking" ? "h-full" : "hidden"}>
+        <div data-tab-root="cooking" className={activeTab === "cooking" ? "h-full" : "hidden"}>
           <CookingApp pendingRecipeId={pendingRecipeId} onClearPendingRecipe={handleClearPendingRecipe} onViewCraftingItem={handleViewCraftingItem} />
         </div>
         )}
         {isTabMounted("cookpot") && (
-        <div className={activeTab === "cookpot" ? "h-full" : "hidden"}>
+        <div data-tab-root="cookpot" className={activeTab === "cookpot" ? "h-full" : "hidden"}>
           <CookpotApp onViewRecipe={handleViewRecipe} />
         </div>
         )}
         {isTabMounted("bosses") && (
-        <div className={activeTab === "bosses" ? "h-full" : "hidden"}>
+        <div data-tab-root="bosses" className={activeTab === "bosses" ? "h-full" : "hidden"}>
           <BossesApp onViewCraftingItem={handleViewCraftingItem} pendingLootItemId={pendingLootItemId} onClearPendingLoot={handleClearPendingLoot} pendingBossId={pendingBossId} onClearPendingBoss={handleClearPendingBoss} externalBackLabel={bossesBack?.label ?? null} onExternalBack={bossesBack ? handleBossesExternalBack : undefined} onPanelClose={() => setBossesBack(null)} />
         </div>
         )}
         {isTabMounted("skills") && (
-        <div className={activeTab === "skills" ? "h-full" : "hidden"}>
+        <div data-tab-root="skills" className={activeTab === "skills" ? "h-full" : "hidden"}>
           <SkillSimulatorApp onViewCraftingItem={handleViewCraftingItem} />
         </div>
         )}
         {isTabMounted("skins") && (
-        <div className={activeTab === "skins" ? "h-full" : "hidden"}>
+        <div data-tab-root="skins" className={activeTab === "skins" ? "h-full" : "hidden"}>
           <SkinsApp />
         </div>
         )}
         {isTabMounted("quests") && (
-        <div className={activeTab === "quests" ? "h-full" : "hidden"}>
+        <div data-tab-root="quests" className={activeTab === "quests" ? "h-full" : "hidden"}>
           <QuestsApp onViewCraftingItem={(id) => handleViewCraftingItem(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} onViewBoss={(id) => handleViewBoss(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} />
         </div>
         )}
         {isTabMounted("console") && (
-        <div className={activeTab === "console" ? "h-full" : "hidden"}>
+        <div data-tab-root="console" className={activeTab === "console" ? "h-full" : "hidden"}>
           <ConsoleApp />
         </div>
         )}
         {isTabMounted("settings") && (
-        <div className={activeTab === "settings" ? "h-full" : "hidden"}>
+        <div data-tab-root="settings" className={activeTab === "settings" ? "h-full" : "hidden"}>
           <SettingsPage />
         </div>
         )}

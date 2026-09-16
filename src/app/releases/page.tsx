@@ -15,6 +15,29 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.35.2",
+    date: "2026-09-16",
+    dev: [
+      "fix(scroll): **간헐적 스크롤 먹통 — 원인 2개 수정** (#105, 피드백 `1788942886048-by7h8z`). ① **루트 높이 소실(#97 회귀, v0.34.6)**: `AppShell` 루트 높이를 `h-dvh` 클래스 → 인라인 `style={{ height: calc(100dvh - var(--ez-anchor-h)) }}` 로 옮긴 뒤, 키보드 대응 `visualViewport` resize 핸들러의 `shell.style.height = \"\"` 리셋이 **높이 선언 자체를 삭제**했다. `fixed` 루트가 콘텐츠 높이(뷰포트 664px에서 1667px)로 늘어나 모든 `flex-1 min-h-0` 컨테이너가 넘치지 않아 전 탭 먹통 — html/body 는 overflow:hidden 이라 문서도 안 움직인다. React 는 바뀌지 않은 style 값을 다시 쓰지 않아 리로드만 복구. 트리거는 키보드 닫기·회전·백그라운드 복귀·창 리사이즈 등 vv resize **한 번**. 높이를 `globals.css` `.app-shell` 클래스로 복원 (`\"\"` 리셋 = 클래스 복귀 계약).",
+      "② **DetailPanel 잠금 오타깃 + 탭을 떠나도 안 닫히는 시트**: `document.querySelector(\"[data-scroll-container]\")` 첫 매치는 #91(탭 상시 마운트) 이후 항상 **숨은 제작 탭** 컨테이너. 보스·요리 URL 훅의 popstate 가 \"내 탭 아니면 return\" 이라 퀘스트→보스 상세 닫기(`history.back` → `?tab=quests`)·요리솥→레시피 Back·스킨 카드 Back 때 시트가 숨은 탭에 열린 채 남고, 그 잠금이 제작 컨테이너에 남아 제작 탭만 먹통. 요리는 `selectRecipe(null)` 이 URL 에 `recipe` 없으면 no-op 이라 돌아와도 못 닫았다. → `src/lib/scroll-container.ts` `findScrollContainerFor(ref)`(closest → 조상별 querySelectorAll 보이는 것 우선, `[data-tab-root]` 경계)로 **자기 탭만** 잠금 · `src/hooks/use-tab-sync.ts` `useTabSync` 로 제작·보스·요리 URL 훅이 popstate/`dst-tab-switch`/pageshow(persisted) 때 무조건 `set(readUrlState())` (제작 `readUrlState` 는 `tab` 있으면 초기값 — `?tab=cooking&cat=all` 의 cat 오독도 해소) · 로컬 시트(SkinsApp·Wx78StatusPanel·Wx78CircuitBoard·FeedbackBoard)도 같은 훅으로 닫기 · `selectRecipe(null)` 로컬 클리어 · `SettingsPage` 에 컨테이너 마커 · Crafting/Bosses go-home `scrollTo` 를 자기 ref 로.",
+      "방어: `src/hooks/use-scroll-lock-heal.ts` `useScrollLockHeal(activeTab)` — 열린 시트(`data-detail-open=\"true\"`) 없이 남은 인라인 overflow 를 탭 전환·`visibilitychange`·`pageshow` 때 제거(폴링 없음). `useDetailPanel` 이 여는 두 프레임 사이 선택이 풀리면 rAF 취소 — 빈 시트 + 오버레이 영구 고착 방지. `?diag=1` 진단 오버레이에 \"스크롤 진단\" 행(셸 인라인 높이 / 보이는 컨테이너 sh/ch·인라인 overflow / 잠금·열린 시트 수).",
+      "fix(ads): GPT Adhesion 앵커(`ins[id^='gpt_unit_'][id*='/Adhesion/']`, `<html>` 직계 자식)가 `--ez-anchor-h` 에 안 잡혀 하단 124px 가림. 후보 셀렉터를 `src/lib/ad-anchor.ts` `ANCHOR_AD_SELECTOR` 로 빼 `EnvDiagOverlay` 와 공유, `MutationObserver` 를 `documentElement` 로.",
+      "검증: playwright 헤드리스(iPhone 13 에뮬 + 데스크톱 1280) 시나리오 18개 — vv resize·키보드 열림/닫힘·잠금 대상·퀘스트→보스 Back·요리솥→레시피 Back·스킨 Back·탭 복귀 시 시트 상태·제작 탭 내 열고닫기. 프로덕션(수정 전) 2/18 → 로컬 빌드·beta 18/18. 데스크톱은 창 높이 한 번만 바꿔도 재현(700→650: 루트 1760px, 컨테이너 1641/1641, 휠 0). `docs/ui.md`(useTabSync·useScrollLockHeal·findScrollContainerFor·DetailPanel 잠금 규칙)·`docs/mistakes.md`(style 리셋+인라인 이전 함정, querySelector 첫 매치 재발) 갱신.",
+    ],
+    changes: {
+      ko: [
+        "가끔 화면은 멀쩡한데 스크롤이 전혀 안 되던 문제를 고쳤습니다. 검색 키보드를 닫거나 화면을 돌리거나 창 크기를 바꾼 뒤 모든 탭이 멈추던 것과, 퀘스트에서 보스 상세를 보고 닫은 뒤(요리솥→레시피, 스킨 카드도 같음) 제작 탭만 멈추던 것 두 가지였습니다.",
+        "다른 탭으로 나갔다 돌아오면 전에 열어둔 상세창이 그대로 남아 있던 문제도 정리했습니다. 이제 탭을 옮기면 상세창이 닫힙니다.",
+        "하단 고정 광고가 마지막 줄을 가리던 경우를 줄였습니다.",
+      ],
+      en: [
+        "Fixed the intermittent \"screen looks fine but nothing scrolls\" bug. Two causes: every tab froze after closing the search keyboard, rotating the phone, or resizing the window; and only the Crafting tab froze after viewing a boss from Quests and closing it (same for Cookpot → recipe and skin cards).",
+        "Detail sheets left open in another tab no longer linger when you come back. Switching tabs now closes them.",
+        "Reduced cases where the bottom anchor ad covered the last row.",
+      ],
+    },
+  },
+  {
     version: "0.35.1",
     date: "2026-09-09",
     dev: [

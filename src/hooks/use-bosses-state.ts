@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { bossCategories, type BossCategoryId } from "@/data/bosses";
 import { useUrlStateSync } from "./use-url-state";
+import { useTabSync } from "./use-tab-sync";
 
 export type BossesCategoryValue = BossCategoryId | "favorites" | "recent";
 
@@ -16,10 +17,6 @@ function isValidCategory(v: string): v is BossesCategoryValue {
 function getParams(): URLSearchParams {
   if (typeof window === "undefined") return new URLSearchParams();
   return new URLSearchParams(window.location.search);
-}
-
-function isBossesTab(): boolean {
-  return getParams().get("tab") === "bosses";
 }
 
 interface BossesUrlState {
@@ -45,21 +42,11 @@ export function useBossesState() {
   const [state, setState] = useState<BossesUrlState>(SSR_DEFAULT);
   useUrlStateSync(readUrlState, setState);
 
-  useEffect(() => {
-    const onPopState = () => {
-      if (!isBossesTab()) return;
-      setState(readUrlState());
-    };
-    const onPageShow = (e: PageTransitionEvent) => {
-      if (e.persisted && isBossesTab()) setState(readUrlState());
-    };
-    window.addEventListener("popstate", onPopState);
-    window.addEventListener("pageshow", onPageShow);
-    return () => {
-      window.removeEventListener("popstate", onPopState);
-      window.removeEventListener("pageshow", onPageShow);
-    };
-  }, []);
+  // 뒤로가기·탭 전환·bfcache 복원 때 URL 을 다시 읽는다. 예전엔 "보스 탭이 아니면 return"
+  // 했는데, 그러면 퀘스트→보스 상세를 닫을 때(history.back → ?tab=quests) 시트가 숨은
+  // 보스 탭에 열린 채 남아 스크롤 잠금이 잔존했다 (#105). readUrlState 는 다른 탭 URL 에서
+  // 초기값을 주므로 무조건 덮어써도 된다.
+  useTabSync(() => setState(readUrlState()));
 
   /** Select a category — pushState. Closes any open boss panel by dropping `boss` param. */
   const selectCategory = useCallback((value: BossesCategoryValue | null) => {

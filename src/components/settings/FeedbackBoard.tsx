@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { Copy, Check, Trash2, Eye, EyeOff, Languages } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { useTabSync } from "@/hooks/use-tab-sync";
 import { useDetailPanel } from "@/hooks/use-detail-panel";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import {
@@ -129,6 +130,8 @@ export function FeedbackBoard({ locale, newItem }: Props) {
   const [filter, setFilter] = useState<"all" | FeedbackStatus>("all");
   const [loading, setLoading] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  // 로컬 상태 시트 — 뒤로가기·탭 전환 때 닫는다 (열린 채 숨으면 스크롤 잠금 잔존, #105)
+  useTabSync(() => setSelectedId(null));
   const selected = selectedId ? items.find((x) => x.id === selectedId) ?? null : null;
   const { panelItem, panelOpen } = useDetailPanel(selected);
   const [copied, setCopied] = useState<"msg" | null>(null);

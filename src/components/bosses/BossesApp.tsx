@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
@@ -223,8 +223,11 @@ export function BossesApp({
     return () => window.removeEventListener("dst-tab-go-home", handler);
   }, [handleGoHome]);
 
+  // 자기 컨테이너를 ref 로 잡는다 — document.querySelector 첫 매치는 제작 탭이라 보스 탭에선
+  // 엉뚱한 컨테이너를 스크롤했다 (#105)
+  const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    document.querySelector("[data-scroll-container]")?.scrollTo(0, 0);
+    scrollRef.current?.scrollTo(0, 0);
   }, [selectedCategory]);
 
   const handleSelectCategory = useCallback((id: BossesCategoryValue) => {
@@ -396,7 +399,7 @@ export function BossesApp({
     <div className={`flex flex-col h-full bg-background text-foreground overflow-hidden ${isLootSearch ? "" : slideClass}`}>
       {header}
       {(isLootSearch || isHomeView) && lootSearchBar}
-      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
+      <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overscroll-contain" data-scroll-container="">
         <div className="flex flex-col min-h-full">
           <AdSlot variant="top" className="max-w-4xl mx-auto w-full px-3 sm:px-4" />
           {body}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ANCHOR_AD_SELECTOR } from "@/lib/ad-anchor";
 import { createPortal } from "react-dom";
 import { adEngineReady, anyCreativeRendered, cmpPresent, detectAdFilter } from "@/components/ads/AdVisibilityProbe";
 
@@ -38,6 +39,7 @@ interface Metrics {
   topFixed: string[];
   /** Ezoic 앵커·상단 띠 상태 */
   ezoic: string;
+  scroll: string;
   /** 광고 파이프라인 — 스크립트가 막힌 건지, 떴는데 안 채워진 건지 */
   ads: string;
 }
@@ -77,7 +79,11 @@ function scanTopFixed(): string[] {
 }
 
 function scanEzoic(): string {
-  const anchor = document.querySelector<HTMLElement>("#ezmobfooter, .ezmob-footer");
+  // AppShell 과 같은 후보 목록·판정(fixed) — 표시값이 실제 `--ez-anchor-h` 계산과 어긋나지 않게 (#105)
+  const anchor =
+    Array.from(document.querySelectorAll<HTMLElement>(ANCHOR_AD_SELECTOR)).find(
+      (e) => getComputedStyle(e).position === "fixed",
+    ) ?? document.querySelector<HTMLElement>(ANCHOR_AD_SELECTOR);
   const band = document.querySelector<HTMLElement>("#ezoic-pub-ad-placeholder-111");
   const a = anchor
     ? `anchor ${anchor.id || anchor.className} top=${Math.round(anchor.getBoundingClientRect().top)} h=${Math.round(anchor.getBoundingClientRect().height)} pos=${getComputedStyle(anchor).position}`
@@ -87,6 +93,24 @@ function scanEzoic(): string {
     : "111 없음";
   const v = getComputedStyle(document.documentElement).getPropertyValue("--ez-anchor-h").trim() || "(unset)";
   return `${a} / ${b} / --ez-anchor-h=${v}`;
+}
+
+/** 스크롤 먹통 진단 (#105): 셸 인라인 높이 / 보이는 컨테이너의 넘침·인라인 overflow / 잠금·열린 시트 수.
+ *  "shell inline=(none)" 인데 h 가 뷰포트보다 크면 루트 높이 소실, "sh/ch" 가 같은데 내용이 길면 높이 체인 붕괴,
+ *  "잠금 N개 > 열린 시트 0개" 면 잠금 잔존. */
+function scanScroll(): string {
+  const shell = document.querySelector<HTMLElement>(".app-shell");
+  const sh = shell
+    ? `shell h=${Math.round(shell.getBoundingClientRect().height)} inline=${shell.style.height || "(none)"}`
+    : "shell 없음";
+  const conts = Array.from(document.querySelectorAll<HTMLElement>("[data-scroll-container]"));
+  const vis = conts.find((c) => c.getClientRects().length > 0);
+  const locked = conts.filter((c) => c.style.overflow).length;
+  const c = vis
+    ? `container sh/ch=${vis.scrollHeight}/${vis.clientHeight} overflowY=${getComputedStyle(vis).overflowY} inline=${vis.style.overflow || "(none)"}`
+    : "보이는 container 없음";
+  const sheets = document.querySelectorAll('[data-detail-open="true"]').length;
+  return `${sh} / ${c} / 잠금 ${locked}개, 열린 시트 ${sheets}개`;
 }
 
 /** `env()` 값은 JS로 직접 못 읽으므로 그 높이의 보이지 않는 fixed 요소를 재서 얻는다 */
@@ -130,6 +154,7 @@ function readMetrics(): Metrics {
       probe("env(safe-area-inset-top, 0px)") > 0,
     topFixed: scanTopFixed(),
     ezoic: scanEzoic(),
+    scroll: scanScroll(),
     ads: scanAds(),
   };
 }
@@ -169,6 +194,7 @@ export function EnvDiagOverlay({ onClose }: { onClose: () => void }) {
     ["viewport meta", m.viewportMeta],
     ["legacy 웹클립 판정(#61)", m.legacyPwa],
     ["ezoic", m.ezoic],
+    ["스크롤 진단(#105)", m.scroll],
     ["ads", m.ads],
     ["fixed 요소(상단 100px)", m.topFixed.length ? m.topFixed.join(" ‖ ") : "(없음)"],
     ["UA", m.ua],
