@@ -15,6 +15,7 @@ import { TabFallback } from "./ui/TabFallback";
 import { AdSlot } from "./ads/AdSlot";
 import { useSettings } from "@/hooks/use-settings";
 import { useScrollLockHeal } from "@/hooks/use-scroll-lock-heal";
+import { ANCHOR_AD_SELECTOR } from "@/lib/ad-anchor";
 import { useAuth } from "@/hooks/use-auth";
 import { useUrlStateSync } from "@/hooks/use-url-state";
 import { t } from "@/lib/i18n";
@@ -378,7 +379,8 @@ export function AppShell() {
     // `placeholder-100`(높이 24px, `position: static`)이 먼저 나와서 그걸 앵커로 오인하고
     // 높이를 0으로 계산한다(실측). 실제로 자리를 차지하는 건 `position: fixed` 인 쪽이므로
     // 후보를 전부 훑어 fixed 이면서 높이가 있는 것을 고른다.
-    const CANDS = "#ezmobfooter, .ezmob-footer, [id^='ezoic-pub-ad-placeholder-100']";
+    // 후보 목록은 `src/lib/ad-anchor.ts` 에서 진단 오버레이와 공유한다 (#105).
+    const CANDS = ANCHOR_AD_SELECTOR;
     let ro: ResizeObserver | undefined;
     let watched: Element | null = null;
 
@@ -407,7 +409,9 @@ export function AppShell() {
 
     sync();
     const mo = new MutationObserver(sync);
-    mo.observe(document.body, { childList: true, subtree: true });
+    // `body` 가 아니라 `documentElement` 를 본다 — GPT Adhesion 앵커는 `<html>` 직계 자식으로
+    // 붙어서 body 관찰로는 등장을 놓친다 (#105 실측).
+    mo.observe(document.documentElement, { childList: true, subtree: true });
     return () => {
       mo.disconnect();
       ro?.disconnect();

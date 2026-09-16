@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ANCHOR_AD_SELECTOR } from "@/lib/ad-anchor";
 import { createPortal } from "react-dom";
 import { adEngineReady, anyCreativeRendered, cmpPresent, detectAdFilter } from "@/components/ads/AdVisibilityProbe";
 
@@ -78,7 +79,11 @@ function scanTopFixed(): string[] {
 }
 
 function scanEzoic(): string {
-  const anchor = document.querySelector<HTMLElement>("#ezmobfooter, .ezmob-footer");
+  // AppShell 과 같은 후보 목록·판정(fixed) — 표시값이 실제 `--ez-anchor-h` 계산과 어긋나지 않게 (#105)
+  const anchor =
+    Array.from(document.querySelectorAll<HTMLElement>(ANCHOR_AD_SELECTOR)).find(
+      (e) => getComputedStyle(e).position === "fixed",
+    ) ?? document.querySelector<HTMLElement>(ANCHOR_AD_SELECTOR);
   const band = document.querySelector<HTMLElement>("#ezoic-pub-ad-placeholder-111");
   const a = anchor
     ? `anchor ${anchor.id || anchor.className} top=${Math.round(anchor.getBoundingClientRect().top)} h=${Math.round(anchor.getBoundingClientRect().height)} pos=${getComputedStyle(anchor).position}`
