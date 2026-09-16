@@ -16,6 +16,7 @@ import { skillTranslations } from "@/data/skill-trees/translations";
 import type { Locale } from "@/lib/i18n";
 import { extractVital } from "./wx78-vital-extract";
 import type { CircuitCounts } from "@/hooks/use-wx78-circuits";
+import { useTabSync } from "@/hooks/use-tab-sync";
 import { Footer } from "../crafting/Footer";
 import { DetailPanel } from "@/components/ui/DetailPanel";
 import { TagChip } from "@/components/ui/TagChip";
@@ -615,6 +616,8 @@ export function Wx78StatusPanel({ locale, activatedSkills, counts }: Props) {
   );
 
   const [selected, setSelected] = useState<SelectedDetail | null>(null);
+  // 로컬 상태 시트 — 뒤로가기·탭 전환 때 닫는다 (열린 채 숨으면 스크롤 잠금 잔존, #105)
+  useTabSync(() => setSelected(null));
 
   if (equippedTotal === 0 && skillRows.length === 0) {
     return (

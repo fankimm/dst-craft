@@ -9,6 +9,7 @@ import {
   type SkinRarity,
 } from "@/data/skins";
 import { useSettings } from "@/hooks/use-settings";
+import { useTabSync } from "@/hooks/use-tab-sync";
 import { t, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
@@ -267,15 +268,13 @@ export function SkinsApp() {
     setSort("rarity");
   }, []);
 
-  // Sync from URL on popstate (system Back/Forward).
-  useEffect(() => {
-    const onPop = () => {
-      if (!isSkinsTab()) return;
-      setView(viewFromUrl());
-    };
-    window.addEventListener("popstate", onPop);
-    return () => window.removeEventListener("popstate", onPop);
-  }, []);
+  // 뒤로가기·탭 전환·bfcache 복원 때 뷰를 URL 에서 다시 읽고 시트를 닫는다 (#105).
+  // 시트는 히스토리 엔트리가 없어 Back 으로 안 닫히고, 탭을 떠날 때 열린 채 남으면
+  // 스크롤 잠금이 잔존한다. viewFromUrl 은 다른 탭 URL 에서 "home" 을 준다.
+  useTabSync(() => {
+    setView(viewFromUrl());
+    setSelectedSkin(null);
+  });
 
   const handleGoHome = useCallback(() => replaceView("home"), [replaceView]);
   const handleOpenCharacters = useCallback(() => pushView("characters"), [pushView]);

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import type { CategoryId, CraftingItem } from "@/lib/types";
 import { getItemById } from "@/lib/crafting-data";
 import { useUrlStateSync } from "./use-url-state";
+import { useTabSync } from "./use-tab-sync";
 
 function getParams(): URLSearchParams {
   if (typeof window === "undefined") return new URLSearchParams();
@@ -18,6 +19,9 @@ interface CraftingUrlState {
 
 function readUrlState(): CraftingUrlState {
   const params = getParams();
+  // `tab` 이 있으면 다른 탭의 URL 이다 (제작 탭은 tab 파라미터를 쓰지 않는다) → 선택 없음.
+  // `?tab=cooking&cat=all` 의 `cat` 을 제작 카테고리로 읽으면 안 된다.
+  if (params.get("tab")) return { cat: null, item: null, char: null };
   return {
     cat: (params.get("cat") as CategoryId) || null,
     item: params.get("item"),
@@ -41,41 +45,9 @@ export function useCraftingState() {
   const selectedCharacter = urlState.char;
   const previousItem = itemHistory.length > 0 ? (getItemById(itemHistory[itemHistory.length - 1]) ?? null) : null;
 
-  // Listen to popstate (browser back/forward)
-  useEffect(() => {
-    const onPopState = () => {
-      // Skip if URL belongs to another tab (cooking, cookpot, settings)
-      const tab = new URLSearchParams(window.location.search).get("tab");
-      if (tab) {
-        // Another tab is active — clear crafting selection so panel closes
-        setUrlState({ cat: null, item: null, char: null });
-        return;
-      }
-      setUrlState(readUrlState());
-    };
-    window.addEventListener("popstate", onPopState);
-    // Sync state when page is restored from bfcache (Safari back/forward)
-    const onPageShow = (e: PageTransitionEvent) => {
-      const tab = new URLSearchParams(window.location.search).get("tab");
-      if (e.persisted && !tab) setUrlState(readUrlState());
-    };
-    window.addEventListener("pageshow", onPageShow);
-    // Also listen for tab switches (pushState doesn't fire popstate)
-    const onTabSwitch = () => {
-      const tab = new URLSearchParams(window.location.search).get("tab");
-      if (tab) {
-        setUrlState({ cat: null, item: null, char: null });
-      } else {
-        setUrlState(readUrlState());
-      }
-    };
-    window.addEventListener("dst-tab-switch", onTabSwitch);
-    return () => {
-      window.removeEventListener("popstate", onPopState);
-      window.removeEventListener("pageshow", onPageShow);
-      window.removeEventListener("dst-tab-switch", onTabSwitch);
-    };
-  }, []);
+  // 뒤로가기·탭 전환·bfcache 복원 때 URL 을 다시 읽는다. 다른 탭 URL 이면 readUrlState 가
+  // 초기값을 주므로 열린 시트가 닫히고 스크롤 잠금이 풀린다 (#105).
+  useTabSync(() => setUrlState(readUrlState()));
 
   const setCategory = useCallback((category: CategoryId) => {
     const url = new URL(window.location.href);

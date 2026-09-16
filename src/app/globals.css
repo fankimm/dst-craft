@@ -147,6 +147,16 @@
   }
 }
 
+/* 앱 루트(AppShell)의 높이 — 반드시 클래스로 둔다 (#105).
+   키보드가 열리면 AppShell 이 인라인 `height: <vv.height>px` 로 덮어쓰고, 닫히면 `""` 로
+   지워 이 규칙으로 복귀한다. #97 에서 이 값을 인라인 style prop 으로 옮겼더니 그 `""` 가
+   높이 선언 자체를 지워 버렸다 — React 는 바뀌지 않은 style 값을 다시 쓰지 않으므로 리로드
+   전까지 앱이 콘텐츠 높이로 늘어나 모든 탭의 스크롤이 죽었다.
+   `--ez-anchor-h` 는 하단 앵커 광고 높이 (#97, AppShell 이 채운다). */
+.app-shell {
+  height: calc(100dvh - var(--ez-anchor-h, 0px));
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

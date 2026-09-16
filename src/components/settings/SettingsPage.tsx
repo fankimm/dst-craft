@@ -206,7 +206,7 @@ export function SettingsPage() {
   }, [authLoading, user, gisReady, renderGoogleButton]);
 
   return (
-    <div className="flex flex-col h-full bg-background text-foreground overflow-y-auto overscroll-contain">
+    <div className="flex flex-col h-full bg-background text-foreground overflow-y-auto overscroll-contain" data-scroll-container="">
       <div className="flex flex-col min-h-full">
         <div className="flex-1 p-4 space-y-6 max-w-md mx-auto w-full">
           {/* Account */}
