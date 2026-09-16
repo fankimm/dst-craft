@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.35.3",
+    date: "2026-09-16",
+    dev: [
+      "fix(feedback): **피드백 보드의 \"원문 보기/번역 보기\" 토글을 번역본을 보여줄 때만 그린다** (#107). `pickDisplay` 가 원문 언어 == 사용자 로캘이어도 번역본만 있으면 `hasAlternate: true` 를 돌려줘, 한국어 사용자가 한국어 피드백에서 토글을 봤고 눌러도 같은 원문이라 아무 변화가 없었다. `hasAlternate` 필드를 없애고 `isTranslated` 로 통일 (메시지·답변 동일). beta 실측: 토글 수 == \"자동 번역\" 배지 수 (ko 10/10, en 42/42; 프로덕션은 ko 52 토글 중 42개가 짝 없음).",
+      "chore(feedback): 미번역 한국어 피드백 8건(2026-08-14 ~ 09-15)의 영문 번역을 `bun-api/scripts/translate-existing-feedback.ts` 에 추가하고 맥미니에서 실행 — 공개 API `messageLang: null` 0건. \"도발탄\" 은 ko.po 의 `MEGAFLARE`(Hostile Flare) 한글명.",
+    ],
+    changes: {
+      ko: [
+        "피드백 게시판에서 원문을 그대로 보고 있을 때는 \"원문 보기\" 버튼이 뜨지 않습니다. 번역본을 보여줄 때만 나옵니다.",
+        "최근 한국어 피드백 8건에 영문 번역을 붙였습니다.",
+      ],
+      en: [
+        "The feedback board no longer shows a \"View original\" button when you are already reading the original. It appears only when a translation is shown.",
+        "Added English translations for the 8 most recent Korean feedback entries.",
+      ],
+    },
+  },
+  {
     version: "0.35.2",
     date: "2026-09-16",
     dev: [
