@@ -352,6 +352,14 @@
   3. transaction id 패턴(예: `selftest-`)을 인식해 저장 스킵
 - **검증**: 외부 연동 코드 작성 시 위 3가지 중 하나가 코드에 들어 있는지 PR 자체 점검 항목으로 확인
 
+## 배포 / 인프라
+
+### `gh workflow run deploy-beta.yml` 재실행 시 `target` 기본값이 beta — main 재배포는 `-f target=main` 필수 (2026-09-16, #108)
+- **문제**: v0.35.3 main 푸시 배포가 실패해서(아래 폰트 타임아웃) `gh workflow run deploy-beta.yml --ref main -f force_frontend=true` 로 재실행했는데, `--ref` 는 워크플로우 파일을 읽을 브랜치일 뿐이고 **배포 대상은 `inputs.target`(기본 `beta`)** 이라 beta 가 다시 빌드됐다. run 은 success 인데 prod 는 옛 버전 그대로 — `readlink ~/dstcraft/prod` 로 확인하기 전까지 몰랐다
+- **해결**: `gh workflow run deploy-beta.yml --ref main -f target=main -f force_frontend=true`. 성공 판정은 conclusion 이 아니라 `gh run view <id> --json jobs` 에서 **`Frontend rebuild — main → ~/dstcraft/prod → success`** 가 있는지 + `ssh fankimm@100.85.118.4 'readlink ~/dstcraft/prod'` 의 릴리즈 디렉터리 시각으로
+- **부수**: 실패 원인이 `Connection timed out when requesting https://fonts.gstatic.com/...` + `Module not found: '@vercel/turbopack-next/internal/font/google/font'` 면 `next/font/google` 이 빌드 시점에 폰트를 못 받은 것 — 맥미니 일시 네트워크 문제라 코드 수정 없이 재실행하면 된다. 반복되면 폰트 자체 호스팅(`next/font/local`) 검토
+- **교훈**: 배포 재실행은 "무슨 브랜치에서" 가 아니라 "무엇을 배포하나" 를 입력으로 주는 워크플로우다. 재실행 뒤에는 반드시 prod 심볼릭 링크와 서빙 버전(`/releases` 페이지 또는 설정 탭 하단)을 실측한다
+
 ## 컴포넌트 / 리팩터링
 
 ### querySelector로 anchor 잡을 때 AppShell 다중 탭 마운트 함정
