@@ -192,6 +192,52 @@ const TRANSLATIONS: Entry[] = [
     replyTranslated:
       "요청 감사합니다! 재료로도 쓰이는 제작품(판자·밧줄·창 등)은 검색 드롭다운에 '아이템'과 '재료' 두 줄로 나오고, '아이템' 줄을 누르면 그 아이템 상세가 바로 열립니다. '재료' 줄은 그 재료가 들어가는 제작법 목록입니다.",
   },
+  // --- 2026-09-16 추가분 (이슈 #107) — 미번역 한국어 피드백 8건, 답변은 아직 없음 ---
+  {
+    id: "1786669699396-8catpk",
+    messageLang: "ko",
+    messageTranslated: "It'd be great to have an Items category where you can look up item info too ~!",
+  },
+  {
+    id: "1786706814363-hl9jum",
+    messageLang: "ko",
+    messageTranslated: "Would love a category with info on regular monsters too, not just bosses!",
+  },
+  {
+    id: "1787228907525-8jd5c6",
+    messageLang: "ko",
+    messageTranslated:
+      "Could you add a feature that shows the exact numbers for the stat increases you get when picking a skill?",
+  },
+  {
+    // "도발탄" = ko.po 의 MEGAFLARE(Hostile Flare) 한글명
+    id: "1787476043177-txe21r",
+    messageLang: "ko",
+    messageTranslated: "Can the Hostile Flare only be used in winter?",
+  },
+  {
+    id: "1787854326772-cq0iie",
+    messageLang: "ko",
+    messageTranslated:
+      "Minor thing: in dark mode the skill tree images are hard to make out — the background is dark and the images are dark too.",
+  },
+  {
+    id: "1788012304165-qq9emx",
+    messageLang: "ko",
+    messageTranslated: "Any chance a Farming tab gets added?? (recommended fertilizer / crop combos, etc.)",
+  },
+  {
+    // #105 스크롤 먹통 제보. 답변 등록 후 replyLang/replyTranslated 를 이 항목에 추가할 것
+    id: "1788942886048-by7h8z",
+    messageLang: "ko",
+    messageTranslated:
+      "Sometimes — I'm not sure when — scrolling stops working entirely on both the web and the app 😢 Do you know why? Leaving and coming back does fix it 🥺🥺",
+  },
+  {
+    id: "1789483590837-grx2ak",
+    messageLang: "ko",
+    messageTranslated: "Could you add the chess piece sketches?",
+  },
 ];
 
 const db = new Database(DB_PATH);

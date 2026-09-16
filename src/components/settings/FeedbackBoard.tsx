@@ -43,18 +43,21 @@ type BoardItem = {
 // - 원문 lang이 user locale과 같으면: 원문 그대로 (번역 사용 안 함)
 // - 원문 lang이 다르고 번역이 있으면: 번역 사용 + isTranslated=true
 // - 원문 lang이 다르고 번역이 없으면: 원문 그대로 (배지 없음)
+// "원문 보기/번역 보기" 토글은 isTranslated 일 때만 그린다 — 표시 중인 글이 이미 원문이면
+// 바꿀 대상이 없다. 예전엔 같은 언어여도 번역본만 있으면 토글이 떠서 눌러도 아무 변화가
+// 없었다 (#107). 반대 언어 번역본을 굳이 보여줄 이유는 없다.
 function pickDisplay(
   original: string | null | undefined,
   translated: string | null | undefined,
   origLang: string | null | undefined,
   userLocale: Locale,
-): { text: string; isTranslated: boolean; hasAlternate: boolean } {
+): { text: string; isTranslated: boolean } {
   const orig = (original ?? "").trim();
-  if (!orig) return { text: "", isTranslated: false, hasAlternate: false };
+  if (!orig) return { text: "", isTranslated: false };
   const trans = (translated ?? "").trim();
   const sameLang = origLang === userLocale;
-  if (sameLang || !trans) return { text: orig, isTranslated: false, hasAlternate: !!trans };
-  return { text: trans, isTranslated: true, hasAlternate: true };
+  if (sameLang || !trans) return { text: orig, isTranslated: false };
+  return { text: trans, isTranslated: true };
 }
 
 const STATUS_LABEL_KO: Record<FeedbackStatus, string> = { new: "확인 중", done: "반영됨", hold: "보류", rejected: "미반영" };
@@ -286,7 +289,7 @@ export function FeedbackBoard({ locale, newItem }: Props) {
                     return (
                       <>
                         <p className="text-sm text-foreground whitespace-pre-wrap break-words">{text}</p>
-                        {msg.hasAlternate && (
+                        {msg.isTranslated && (
                           <div className="mt-1 flex items-center gap-1.5">
                             {showingTranslated && (
                               <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-500/10 text-blue-600 dark:text-blue-400">
@@ -334,7 +337,7 @@ export function FeedbackBoard({ locale, newItem }: Props) {
                       )}
                     </div>
                     <p className="text-foreground whitespace-pre-wrap">{text}</p>
-                    {rep.hasAlternate && (
+                    {rep.isTranslated && (
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); toggleOriginal(key); }}
