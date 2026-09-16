@@ -227,11 +227,14 @@ const TRANSLATIONS: Entry[] = [
     messageTranslated: "Any chance a Farming tab gets added?? (recommended fertilizer / crop combos, etc.)",
   },
   {
-    // #105 스크롤 먹통 제보. 답변 등록 후 replyLang/replyTranslated 를 이 항목에 추가할 것
+    // #105 스크롤 먹통 제보. 답변(한국어, reply_author=claude)은 2026-09-16 등록 — 번역은 #109
     id: "1788942886048-by7h8z",
     messageLang: "ko",
     messageTranslated:
       "Sometimes — I'm not sure when — scrolling stops working entirely on both the web and the app 😢 Do you know why? Leaving and coming back does fix it 🥺🥺",
+    replyLang: "ko",
+    replyTranslated:
+      "Thanks for the report! We found the cause. Whenever the viewport changed — closing the search keyboard, rotating the screen, and so on — the app's height setting was wiped and scrolling stopped. There was also a second path where only the Crafting tab froze after closing a boss, cooking, or skin detail sheet. Both are fixed and deployed. If it ever happens again, please let us know 🙏",
   },
   {
     id: "1789483590837-grx2ak",
