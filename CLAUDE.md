@@ -58,6 +58,7 @@
    - 릴리즈노트/버전은 **건드리지 않음** — deploy-only
    - `/beta clear` 서브커맨드로 누적된 staging 머지를 청산 (origin/beta를 origin/main 기준으로 리셋, 파괴적 — 사용자 확인 필수)
 4. **테스트 통과** — beta.dstcraft.com에서 의도대로 동작 확인
+   - **문서·스크립트·메타만 바뀌어 사용자 화면에 변화가 없는 건은 3~4번(beta)을 생략하고 묻지 않고 바로 `/release`한다.** 검증할 화면이 없는데 확인을 기다리는 건 낭비 (2026-09-16 사용자 지시, #106)
 5. **main 머지 (production 배포)** — `/release` 호출. 인자 없으면 현재 워크트리 브랜치를 자동 인식.
    - `/release`가 그 feat 브랜치 하나만 main에 `--no-ff` merge
    - 머지 커밋에 `Closes #<num>` 자동 포함 → GitHub가 이슈 자동 close
