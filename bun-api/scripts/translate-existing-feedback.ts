@@ -14,7 +14,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DB_PATH = process.env.DB_PATH ?? join(homedir(), "dstcraft", "data", "app.db");
-const MODEL = "claude-opus-5"; // 이번 실행분(2026-08-11 추가)의 번역 작성자. 이전 row들은 claude-opus-4-7로 기록돼 있고 덮어쓰지 않는다.
+const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16 추가)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
 
 type Lang = "ko" | "en";
 interface Entry {
@@ -179,6 +179,18 @@ const TRANSLATIONS: Entry[] = [
     replyLang: "ko",
     replyTranslated:
       "The developer had one too many Forget-Me-Lots and registered the same ingredient twice. Then they started breeding on screen. All cleaned up. Thanks for the report 🌿",
+  },
+  // --- 2026-09-16 추가분 (이슈 #106) ---
+  {
+    // 원문이 영어인 두 번째 건 (#102 검색 자동완성 요청). 원래 reply에 영문+국문을 병기했던 것을
+    // 영문만 남기고 국문을 여기로 옮겼다 — 병기 금지 규칙은 CLAUDE.md "Feedback Replies" 참조.
+    id: "1788851925065-6uqdmo",
+    messageLang: "en",
+    messageTranslated:
+      "기능 요청: 아이템을 검색해서 탭하면 그 아이템이 재료로 쓰이는 곳이 아니라 아이템 설명이 열리게 해주세요.",
+    replyLang: "en",
+    replyTranslated:
+      "요청 감사합니다! 재료로도 쓰이는 제작품(판자·밧줄·창 등)은 검색 드롭다운에 '아이템'과 '재료' 두 줄로 나오고, '아이템' 줄을 누르면 그 아이템 상세가 바로 열립니다. '재료' 줄은 그 재료가 들어가는 제작법 목록입니다.",
   },
 ];
 

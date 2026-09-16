@@ -122,10 +122,11 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 
 1. **답변할 피드백 id 확인**
    ```bash
-   curl -s https://www.dstcraft.com/api/feedback/public | jq '.items[] | {id, message, reply, replyAuthor}'
+   curl -s https://www.dstcraft.com/api/feedback/public | jq '.items[] | {id, message, messageLang, reply, replyAuthor, replyTranslated}'
    ```
 
 2. **답변 문구를 사용자에게 확인받는다** — 공개 게시판에 그대로 노출되므로 예외 없음
+   - **답변은 피드백 원문 언어로만 쓴다.** 한국어 피드백엔 한국어, 영어 피드백엔 영어. **한 답변에 두 언어를 병기하지 않는다** — 보드는 `pickDisplay`가 사용자 로캘에 맞춰 원문/번역 중 하나만 보여주는 구조라, 병기하면 모든 사용자가 두 언어를 다 보게 된다 (#106). 반대 언어는 4번의 번역 필드로 따로 넣는다
 
 3. **등록** — 맥미니에서 `bun-api/scripts/reply-as-claude.ts` 실행 (`replyAuthor=claude` 고정):
    ```bash
@@ -135,7 +136,15 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
    - 답변은 500자에서 잘림
    - 공개 목록 캐시가 60초라 사이트 반영에 최대 1분
 
-4. **확인** — 1번 curl을 다시 돌려 `replyAuthor: "claude"`로 저장됐는지 본다
+4. **번역 백필** — 등록 스크립트는 `reply`만 쓰고 번역 필드(`replyLang`/`replyTranslated`)는 채우지 않는다. `bun-api/scripts/translate-existing-feedback.ts`의 `TRANSLATIONS` 끝에 항목을 추가한다 — `replyLang`은 답변 원문 언어, `replyTranslated`는 반대 언어 번역. 그 피드백의 메시지가 아직 미번역이면(1번 출력에서 `messageLang: null`) `messageLang`/`messageTranslated`도 같은 항목에 채운다. `MODEL` 상수는 이번 번역을 쓴 모델로 갱신한다(기존 row는 덮어쓰지 않아 안전). 그리고 맥미니에서 실행:
+   ```bash
+   scp bun-api/scripts/translate-existing-feedback.ts fankimm@100.85.118.4:/tmp/ && ssh fankimm@100.85.118.4 '~/.bun/bin/bun run /tmp/translate-existing-feedback.ts'
+   ```
+   - 맥미니 클론은 main이라 feat 브랜치의 수정본은 이렇게 scp로 넘겨 돌린다 (스크립트는 `bun:sqlite`만 써서 단독 실행 가능)
+   - 이미 번역된 row는 `*_translated_at IS NULL` 조건으로 건너뛰므로 여러 번 돌려도 안전
+   - **답변을 나중에 고치면 번역이 자동으로 지워지지 않는다** (PATCH는 `reply`/`reply_author`만 갱신). 답변을 바꿨으면 DB에서 그 row의 `reply_translated`/`reply_translated_at`을 NULL로 되돌린 뒤 다시 백필
+
+5. **확인** — 1번 curl을 다시 돌려 `replyAuthor: "claude"`와 `replyTranslated`가 채워졌는지 본다 (공개 목록 캐시 60초)
 
 맥미니 접속이 안 될 때만 대안으로, 사용자에게 로그인한 브라우저의 `localStorage.getItem("dst-auth-token")`을 받아 `PATCH https://www.dstcraft.com/api/feedback`에 `{id, status, reply, replyAuthor:"claude"}`를 직접 보낸다. 그 토큰은 30일짜리 비밀값이므로 레포·메모리·로그에 남기지 말 것.
 
