@@ -163,6 +163,14 @@ const TRANSLATIONS: Entry[] = [
     replyTranslated: "Ewe've got my word — I'll keep it worth watching 🐑",
   },
   {
+    id: "1783434334431-cv284i",
+    messageLang: "ko",
+    messageTranslated: "Please add \"Cookie Cutter Shell\" (과자틀소라 조가비).",
+    replyLang: "ko",
+    replyTranslated:
+      "The Cookie Cutter Shell isn't craftable — it's a material dropped by Cookie Cutters at sea. That's why it has no card in the Crafting tab, but if you type \"Cookie Cutter\" in the search box it shows up as a material, and tapping it lists the 7 recipes that use it (Cookie Cutter Cap, the four Hermit lures, the Hermit relocation kit, and the Shellweaver). We don't show where materials come from yet, so we'll consider that as part of an item info feature.",
+  },
+  {
     id: "1785440343749-p1wxms",
     messageLang: "ko",
     messageTranslated: "You're an absolute legend.",
