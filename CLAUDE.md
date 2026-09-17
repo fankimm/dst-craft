@@ -171,6 +171,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `src/components/settings/` — 설정 페이지
 - `src/components/ads/AdSlot.tsx` — Ezoic 광고 자리 (자리별 placeholder id 고정, `?admock=`로 목업 미리보기). 자리 목록·규격은 `docs/ui.md` 참조
 - `src/data/skill-trees/` — 스킬트리 데이터 (11캐릭터, 번역, 타입)
+- `src/data/sketches.ts` — 체스기물 조각상 ↔ 도면(sketch) 매핑 + 도면 입수처 (보스/제작/회전초/석상/돼지왕/신월/성소) + 조각 재료별 결과물 이미지. 조각상 상세(`ItemDetail`)·SEO 아이템 페이지·보스탭 전리품 이름/아이콘이 모두 여기서 파생 (#111)
 - `src/hooks/` — 커스텀 훅 (use-crafting-state, use-settings, use-search, use-auth, use-favorites, use-skill-tree)
 - `src/lib/` — 유틸리티 (types, i18n, crafting-data, utils, favorites-api)
 - `src/lib/version.ts` — 앱 버전 (`APP_VERSION`)

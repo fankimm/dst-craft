@@ -15,6 +15,29 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.36.0",
+    date: "2026-09-17",
+    dev: [
+      "feat(crafting): **체스기물 조각상 44종 제작법 수정** (#111, 피드백 `1789483590837-grx2ak` \"체스기물 도면 추가해주실수 있을까요?\"). `recipes.lua` 의 `Recipe2(\"chesspiece_*_builder\", {Ingredient(TECH_INGREDIENT.SCULPTING, 2), Ingredient(\"rocks\", 2)}, TECH.LOST)` 를 `station: \"none\"` + 돌 ×2 로만 적어 두어 \"손 제작\" 으로 나갔다. `station: \"potter_wheel\"`, 재료 `sculpting_material ×1`(`constants.lua:2140` `TECH_INGREDIENT.SCULPTING = \"sculpting_material\"` — 돌림판에 올리는 대리석/석재/달 파편 1개) 추가, 카테고리 `structures` → `decorations`(풍요의 뿔·방울 파이프와 통일). 새 재료 `sculpting_material`(\"Sculpting Block\" / 한글모드 \"조각용 돌\")을 `materials.ts` 와 12개 로캘(`scripts/languages/*.po` `STRINGS.NAMES.SCULPTING_MATERIAL`)에 등록. 돌림판 한글명 `station_potter_wheel` \"조각\" → ko.po `SCULPTINGTABLE` \"도예가의 돌림판\".",
+      "feat(data): **`src/data/sketches.ts` 신설** — 조각상 ↔ 도면(`chesspiece_*_sketch`) 매핑 + 입수처 `SketchSource`(boss / craft / tumbleweed / statue_marble / statue_maxwell / sculpture / pigking_trinket / vault_guard). 근거: `prefabs/sketch.lua` SKETCHES, 보스 loot 테이블, `tumbleweed.lua` CHESS_LOOT, `statue_marble.lua` SKETCH_UNLOCKS(뮤즈 type 1·2, 폰 type 4), `statuemaxwell.lua`, `sculptures.lua` 신월 부활, `trinkets.lua` TRADEFOR + `pigking.lua`(체스 장신구 → 도면), `vault_pillar_guard.lua` VAULT_LOOT_FINAL. `sketchName()` 은 인게임 `named` 컴포넌트와 같은 `STRINGS.NAMES.SKETCH` = \"{item} 도면\" 규칙, `sculptResultImages()` 는 `chesspieces.lua` MATERIALS 접미사(대리석 없음 / `_stone` / `_moonglass`). 고대의 수호탑은 석재·달유리 아이콘이 없어 대리석만.",
+      "feat(ui): `ItemDetail` 조각상 상세 — 블루프린트 칩 대신 **도면 필요** 칩(도면 아이콘), **재료별 결과물** 슬롯 3종, **도면 입수처** 블록(도면 슬롯 + 칩: 보스 → `onBlueprintClick(sketchId)` 로 보스탭 전리품 검색, 제작 도면 → 새 `onItemClick` 으로 그 아이템 상세, 나머지는 `sketchSourceLabel()` 텍스트 칩). `ItemPageContent`(SEO) 에 같은 두 섹션 + 보스/도면 링크. i18n 키 `sketch_required` / `sketch_source` / `sculpt_results`.",
+      "fix(bosses): 도면 전리품 이름을 `lootNameKo` 수기 23건(\"…스케치\"/\"…도면\" 혼용, \"수정 외눈사슴\" 등 ko.po 와 불일치) 대신 `sketchName()` 파생으로 일원화, 영어도 `chesspiece klaus sketch` → `Klaus Figure Sketch`. `SKETCHES_WITH_ICONS`(6개) → `SKETCH_ICON_IDS`(21개) 공유. 천상의 귀공자(`alterguardian_phase4_lunarrift.lua` `{\"chesspiece_wagboss_lunar_sketch\", 1.0}`) 전리품 누락 보강. `BossesApp` 전리품 알약: 도면 클릭 → 조각상 상세(`lootCraftingId()` 로 두 렌더 경로 공통화).",
+      "docs: `docs/ui.md` 조각상 도면·결과물 파생 패턴, `docs/terminology.md` 도면/도면 입수처/재료별 결과물, `docs/mistakes.md` tech ingredient 누락 재발 기록, `CLAUDE.md` Key Paths.",
+    ],
+    changes: {
+      ko: [
+        "체스기물 조각상 44종의 제작법을 바로잡았습니다. 제작대가 도예가의 돌림판으로, 재료에 조각용 돌(대리석·석재·달 파편 중 1개)이 추가됐고, 어떤 돌을 올리느냐에 따라 나오는 조각상 3종을 보여줍니다.",
+        "조각상 상세에 필요한 도면과 입수처를 표시합니다. 보스가 떨어뜨리는 도면은 눌러서 보스탭으로, 제작 가능한 도면은 그 도면 상세로 이동합니다. 회전초·대리석 조각상 채굴·맥스웰 석상·돼지왕 장신구 교환·신월 부활·성소 수호탑 경로도 적었습니다.",
+        "보스탭 전리품의 조각상 도면 이름을 게임과 같은 \"○○ 조각상 도면\"으로 통일했고, 도면을 누르면 그 조각상으로 이동합니다. 천상의 귀공자 도면이 전리품에 빠져 있던 것도 추가했습니다.",
+      ],
+      en: [
+        "Fixed the recipes of all 44 chess-piece figures: they are now crafted at the Potter's Wheel, need a Sculpting Block (Marble, Cut Stone or Moon Shard), and the detail shows the three figures you get depending on the block.",
+        "Figure details now show the required sketch and where to get it. Boss-dropped sketches jump to the Bosses tab, craftable sketches open their own recipe, and Tumbleweed, Marble Sculpture, Maxwell Statue, Pig King trinket trades, new-moon sculptures and the Sanctum guard tower are listed as text.",
+        "Boss loot now names figure sketches like the game (\"Klaus Figure Sketch\") and tapping one opens that figure. The Celestial Scion's sketch was missing from its loot and has been added.",
+      ],
+    },
+  },
+  {
     version: "0.35.3",
     date: "2026-09-16",
     dev: [

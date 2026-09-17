@@ -402,3 +402,11 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 - `itemStats[itemId]`로 매핑 — 아이템 `id`와 키가 일치해야 자동 연결
 - `usage` 필드는 `{ ko, en }` 구조로 다국어 지원
+
+### 조각상 도면·결과물 (`src/data/sketches.ts`)
+- **용도**: 도예가의 돌림판 조각상(`chesspiece_*_builder`)의 필요 도면과 입수처, 조각 재료별 결과물 이미지를 한 곳에서 파생 (#111)
+- **데이터**: `figureSketchSources` (조각상 id → `SketchSource[]`), `sketchName()`("{조각상} 도면" / "{Figure} Sketch" — 인게임 named 컴포넌트와 동일 규칙), `sketchIcon()`(전용 아이콘 없으면 `sketch.png`), `sculptResultImages()`(대리석 / `_stone` / `_moonglass` 접미사)
+- **사용처**: `ItemDetail`(도면 필요 칩 + 재료별 결과물 슬롯 + 도면 입수처 칩), `ItemPageContent`(SEO 페이지 같은 두 섹션), `bosses.ts`의 `lootDisplayName`/`lootImage`(도면 전리품 이름·아이콘), `BossesApp` 전리품 알약(도면 클릭 → 조각상 상세)
+- **입수처 칩 동작**: 보스 → `onBlueprintClick(sketchId)`로 보스탭 전리품 검색, 제작 도면 → `onItemClick(itemId)`로 그 도면 아이템 상세, 나머지(회전초·석상 채굴·돼지왕 교환·신월 부활·성소)는 `sketchSourceLabel()` 텍스트 칩
+- **조각 재료**: 인게임 `Ingredient(TECH_INGREDIENT.SCULPTING, 2)`는 "돌림판에 올린 조각용 돌 1개"라 재료 슬롯 `sculpting_material ×1`로 표현. 새 조각상을 추가하면 `figureSketchSources`에 입수처를 함께 등록할 것
+

@@ -710,6 +710,7 @@ export const zh_CN: LocaleData = {
     "redgem": { name: "红宝石" },
     "reviver": { name: "告密的心" },
     "rocks": { name: "石头" },
+    "sculpting_material": { name: "雕刻石块" },
     "rope": { name: "绳子" },
     "rottenegg": { name: "腐烂鸟蛋" },
     "royal_jelly": { name: "蜂王浆" },

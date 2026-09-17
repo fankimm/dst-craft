@@ -710,6 +710,7 @@ export const pl: LocaleData = {
     "redgem": { name: "Czerwony klejnot" },
     "reviver": { name: "Oskarżycielskie serce" },
     "rocks": { name: "Kamienie" },
+    "sculpting_material": { name: "Kamień do rzeźbienia" },
     "rope": { name: "Lina" },
     "rottenegg": { name: "Zgniłe jajo" },
     "royal_jelly": { name: "Królewska galaretka" },

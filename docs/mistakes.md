@@ -30,6 +30,7 @@
 - **교훈**: 모든 station 값은 `recipes.lua`의 TECH 인자에서 도출해야 함. `TECH.NONE` → "none", `TECH.SCIENCE_ONE` → "science_1", `TECH.WAGPUNK_WORKSTATION_TWO` → "wagpunk_workstation" 식으로 1:1 매핑. 다른 잘 알려지지 않은 작업장(SHELLWEAVER, MASHTURFCRAFTING 등)도 검증 필요할 수 있음
 - **검증**: `grep '^Recipe2("<id>"' recipes.lua` → TECH 인자 확인 → constants.lua:1229의 `TECH = {...}` 정의에서 어느 작업장 tier인지 역인덱스
 - **부수 발견**: `numtogive=N` 옵션도 함께 누락되는 경우 많음 (슬링샷 탄, 향신료, 벽 등 30+ 레시피). 데이터 정확도가 필요한 부분
+- **재발 (2026-09-17, #111)**: 체스기물 조각상 44종이 `station: "none"` + 조각 재료 누락 상태로 1년 넘게 방치 → 유저 피드백("체스기물 도면 추가")으로 발견. 원인은 `Ingredient(TECH_INGREDIENT.SCULPTING, 2)` 같은 **tech ingredient**가 일반 재료처럼 안 보여서 재료 목록 대조에서 빠진 것. `TECH_INGREDIENT.*`는 `constants.lua:2140`에 정의된 "제작대에 올려야 하는 재료"(`sculpting_material` = 대리석/석재/달 파편)이므로 재료 슬롯 1개로 표현하고, 결과물이 재료별로 갈리면 `sketches.ts`처럼 파생 데이터로 따로 둔다
 
 ### lua 원본의 오타를 "고치지" 말 것
 - **문제**: wurt 스킬 데이터에서 `swampmaser` 태그(`t` 빠진 오타)가 lua 원본에 그대로 있는데, 우리 TS 데이터에서 "오타니까 정리"해서 모두 제거함

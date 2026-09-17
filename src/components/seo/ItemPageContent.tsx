@@ -6,7 +6,9 @@ import { ko } from "@/data/locales/ko";
 import { stationImages } from "@/lib/crafting-data";
 import { stationName } from "@/lib/i18n";
 import { generateItemSeoText, generateItemSeoTextKo } from "@/lib/seo-text";
-import { canonicalForItem, resolveItemSlug } from "@/lib/slug";
+import { canonicalForBoss, canonicalForItem, resolveItemSlug } from "@/lib/slug";
+import { bosses } from "@/data/bosses";
+import { figureSketchSources, figureSketchId, sketchIcon, sketchName, sculptResultImages, sketchSourceLabel } from "@/data/sketches";
 import { isWx78PriorityItem } from "@/lib/seo-priority";
 import type { CraftingStation } from "@/lib/types";
 import { notFound } from "next/navigation";
@@ -128,6 +130,17 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
       );
 
   const routePrefix = lang === "ko" ? "/ko" : "";
+
+  // 도예가의 돌림판 조각상: 조각 재료별 결과물 + 필요 도면 입수처 (ItemDetail과 같은 데이터)
+  const sketchSources = figureSketchSources[item.id];
+  const sketchId = figureSketchId(item.id);
+  const sculptResults = item.materials.some((m) => m.materialId === "sculpting_material")
+    ? sculptResultImages(item.id)
+    : [];
+  const materialLabel = (materialId: string) => {
+    const mat = materials.find((x) => x.id === materialId);
+    return lang === "ko" ? (ko.materials[materialId]?.name ?? mat?.name ?? materialId) : (mat?.name ?? materialId);
+  };
 
   const appLinkCategory = item.category[0] || "tools";
   const appLinkParams = item.characterOnly
@@ -334,6 +347,54 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
             })}
           </div>
         </section>
+
+        {sculptResults.length > 0 && (
+          <section>
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+              {L.sculptResults[lang]}
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {sculptResults.map(({ materialId, image }) => (
+                <div key={materialId} className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2">
+                  <img src={`/images/game-items/${image}`} alt={materialLabel(materialId)} className="size-10 object-contain shrink-0" loading="lazy" />
+                  <p className="text-xs font-medium text-foreground leading-tight truncate">{materialLabel(materialId)}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {sketchSources && (
+          <section>
+            <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+              {L.sketchSource[lang]}
+            </h2>
+            <div className="inline-flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2 mb-3">
+              <img src={`/images/game-items/${sketchIcon(sketchId)}`} alt="" className="size-10 object-contain shrink-0" loading="lazy" />
+              <p className="text-xs font-medium text-foreground">{sketchName(sketchId, lang)}</p>
+            </div>
+            <ul className="space-y-1.5 text-sm text-foreground/90 list-disc pl-5">
+              {sketchSources.map((src, i) => {
+                if (src.kind === "boss") {
+                  const boss = bosses.find((b) => b.id === src.bossId);
+                  if (!boss) return null;
+                  const bossName = lang === "ko" ? boss.nameKo : boss.name;
+                  const link = <Link href={`${routePrefix}/boss/${canonicalForBoss(boss.id)}`} className="underline underline-offset-2 hover:text-foreground">{bossName}</Link>;
+                  return <li key={i}>{lang === "ko" ? <>{link} 처치 시 드롭</> : <>Dropped by {link}</>}</li>;
+                }
+                if (src.kind === "craft") {
+                  const sketchItem = allItems.find((x) => x.id === src.itemId);
+                  const label = sketchName(sketchId, lang);
+                  const link = sketchItem
+                    ? <Link href={`${routePrefix}/item/${canonicalForItem(src.itemId)}`} className="underline underline-offset-2 hover:text-foreground">{label}</Link>
+                    : label;
+                  return <li key={i}>{lang === "ko" ? <>{link} 제작</> : <>Craft {link}</>}</li>;
+                }
+                return <li key={i}>{sketchSourceLabel(src, lang)}</li>;
+              })}
+            </ul>
+          </section>
+        )}
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">

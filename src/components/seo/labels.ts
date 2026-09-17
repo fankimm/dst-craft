@@ -33,6 +33,8 @@ export const L = {
   cookingStation: { en: "Cooking Station", ko: "조리 도구" },
   craftingStation: { en: "Crafting Station", ko: "제작대" },
   materialsRequired: { en: "Materials Required", ko: "필요한 재료" },
+  sculptResults: { en: "Result by Material", ko: "재료별 결과물" },
+  sketchSource: { en: "Where to Get the Sketch", ko: "도면 입수처" },
   usesAndTips: { en: "Uses and Tips", ko: "용도 및 팁" },
   categories: { en: "Categories", ko: "카테고리" },
   usedIn: { en: "Used In", ko: "사용처" },
