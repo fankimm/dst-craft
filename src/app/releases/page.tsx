@@ -15,6 +15,34 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.37.0",
+    date: "2026-09-17",
+    dev: [
+      "feat(farming): **농사 탭 신설** (#120, 피드백 `1788012304165-qq9emx`). 조사(#117·#118)와 인수인계(#119) 위에 1~3단계 구현.",
+      "pipeline: `scripts/extract-farming.py` → `src/data/farming.ts` (작물 14·잡초 4·비료 17·돌보기 도구 8·급수 4·스트레스 등급·식물 도감 라벨·계절 이름). 이름은 전부 ko.po(msgid=영문, msgstr=한글모드). `sync-game-data.sh`에 연결. assert: 양분 잉여 분배 미발동, 양분 인덱스 순서, 스트레스 등급 경계 1·6·11, 작물 14종, 비료 상수 전부 해석 — 패치로 규칙이 바뀌면 빌드가 알려준다.",
+      "lib: `src/lib/farming-combos.ts` — 조합을 데이터로 저장하지 않고 `farming.ts`에서 계산(`farmCombos`, `randomSeedChances`). 조사용 프로토타입과 28개 조합(봄 12·여름 4·가을 10·겨울 2)의 포기 수·가족·수요·안전 여부가 전부 일치함을 확인하고 `scripts/farm-combos-prototype.py` 삭제.",
+      "ui: `src/components/farming/` — `FarmingApp`(보기 칩 3개: 계절별 조합/작물/참고표), `CropDetail`(인게임 식물 도감 순서), `FarmingGuide`(비료·돌보기 도구·급수·스트레스 7항목·수확물·잡초), `ValueBadge`(게임 수치/계산값 구분). 기존 `TagChip`·`ItemSlot`·`CategoryCard`·`DetailPanel`·`TabScrollArea`만 사용. 상태는 URL(`useFarmingState`: view/season/with/crop) + `useTabSync`(#105). AppShell에 `farming` 탭(10번째, dynamic 청크 + `isTabMounted`). 화면 문구는 홈 번들에 안 실리게 `farming-text.ts`로 분리(#91), `i18n.ts`에는 `tab_farming`만.",
+      "seo: `/farming`, `/ko/farming` SSG(`seo/FarmingContent`) — 계절별 조합 표를 빌드 시 계산, sitemap 등록, 히어로 2장은 `add-img-lazy.mjs` EAGER_KEEP.",
+      "assets: `wx78_foodbrick(_wet).png`를 게임 인벤토리 아틀라스에서 추출. 양파 작물 이미지는 게임 파일명 `quagmire_onion.png` 사용.",
+      "docs: `docs/ui.md` 농사 탭 구조도, 용어집, CLAUDE.md `Farming Pipeline Rules`, `todo.md`, `TODO-farming-tab.md`. 보류: 4단계 밭 배치도(정확히 1타일 거리의 가족 판정은 인게임 확인 필요).",
+      "verify: tsc·build 통과. beta 헤드리스 실측 — 탭 진입·계절 전환·시트 열고 뒤로가기로 닫기·탭 이탈 시 닫힘·작물 상세→조합 이동, 영어 로캘, 390px 가로 넘침 0, 깨진 이미지 0.",
+    ],
+    changes: {
+      ko: [
+        "농사 탭을 추가했습니다. 계절별로 비료 없이 양분이 유지되는 작물 조합과 타일당 몇 포기씩 심는지 보여 줍니다. 조합은 게임 데이터에서 직접 계산합니다.",
+        "작물을 누르면 제철, 양분 소비·배출, 물 소비량, 씨앗·거대 작물, 일반 씨앗에서 나올 확률, 맞는 비료를 볼 수 있습니다.",
+        "참고표에서 비료 양분값, 돌보기 도구 범위, 급수량, 스트레스 7항목, 스트레스 합계에 따른 수확물을 확인할 수 있습니다.",
+        "일반 씨앗에서 자란 작물은 거대 작물이 될 수 없습니다 — 거대 작물을 노린다면 작물 씨앗으로 심으세요.",
+      ],
+      en: [
+        "New Farming tab: crop combos for every season that keep soil nutrients balanced without fertilizer, with how many of each to plant per tile. Combos are calculated straight from game data.",
+        "Tap a crop to see its seasons, nutrient use, water use, seeds and giant crop, its chance from generic Seeds, and which fertilizers match.",
+        "The reference view lists fertilizer values, tending tool ranges, watering amounts, the 7 stressors, and what you harvest at each stress total.",
+        "Plants grown from generic Seeds can never become giant — use crop-specific seeds if you want giant crops.",
+      ],
+    },
+  },
+  {
     version: "0.36.1",
     date: "2026-09-17",
     dev: [
