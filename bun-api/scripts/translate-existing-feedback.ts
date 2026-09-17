@@ -214,6 +214,9 @@ const TRANSLATIONS: Entry[] = [
     id: "1787476043177-txe21r",
     messageLang: "ko",
     messageTranslated: "Can the Hostile Flare only be used in winter?",
+    replyLang: "ko",
+    replyTranslated:
+      "You can craft and fire the Hostile Flare in any season. However, its Deerclops-summoning effect only triggers in winter (60% chance). Luring the MacTusk hunting party also works only in winter, when their camp is occupied. Fired at sea, it calls a Moon Quay pirate raid regardless of season (60% chance).",
   },
   {
     id: "1787854326772-cq0iie",
