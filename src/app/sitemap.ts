@@ -67,7 +67,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const staticPaths = ["/browse", "/cookpot", "/characters", "/quests"];
+  const staticPaths = ["/browse", "/cookpot", "/farming", "/characters", "/quests"];
   const staticRoutes: MetadataRoute.Sitemap = staticPaths.flatMap((p) => [
     {
       url: `${SITE_URL}${p}`,

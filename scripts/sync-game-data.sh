@@ -114,6 +114,10 @@ echo "═══ extract-raw-foods ═══"
 python3 scripts/extract-raw-foods.py
 
 echo
+echo "═══ extract-farming ═══"
+python3 scripts/extract-farming.py
+
+echo
 echo "═══ verify-skill-trees ═══"
 python3 scripts/verify-skill-trees.py || echo "(verify-skill-trees reported divergences — review above)"
 
