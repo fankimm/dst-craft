@@ -83,6 +83,25 @@ export const FARM_NUTRIENT_NAMES: [FarmText, FarmText, FarmText] = [
   {"en": "Manure", "ko": "거름"},
 ];
 
+export const FARM_SEASON_NAMES: Record<FarmSeason, FarmText> = {
+  "spring": {
+    "en": "Spring",
+    "ko": "봄"
+  },
+  "summer": {
+    "en": "Summer",
+    "ko": "여름"
+  },
+  "autumn": {
+    "en": "Autumn",
+    "ko": "가을"
+  },
+  "winter": {
+    "en": "Winter",
+    "ko": "겨울"
+  }
+};
+
 export const FARM_LABELS = {
   "plants": {
     "en": "Plants",

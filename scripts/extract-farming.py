@@ -281,6 +281,7 @@ labels = {
     "randomSeeds": s("NAMES.SEEDS"), "debris": s("NAMES.FARM_SOIL_DEBRIS"),
 }
 nutrients = [s(R + f"NUTRIENTS.NUTRIENT_{i}") for i in (1, 2, 3)]
+season_names = {x: s(f"UI.SERVERLISTINGSCREEN.SEASONS.{x.upper()}") for x in SEASONS}
 for v in list(labels.values()) + nutrients:  # "소비: " 같은 꼬리 구두점은 화면에서 붙인다
     for lang in v:
         v[lang] = v[lang].rstrip(": ").strip()
@@ -355,6 +356,8 @@ export const FARM_SEASONS: FarmSeason[] = {ts(SEASONS)};
 export const FARM_CONSTANTS = {ts(constants)} as const;
 
 export const FARM_NUTRIENT_NAMES: [FarmText, FarmText, FarmText] = {ts(nutrients)};
+
+export const FARM_SEASON_NAMES: Record<FarmSeason, FarmText> = {ts(season_names)};
 
 export const FARM_LABELS = {ts(labels)} as const;
 
