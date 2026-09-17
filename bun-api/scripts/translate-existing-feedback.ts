@@ -220,6 +220,9 @@ const TRANSLATIONS: Entry[] = [
     messageLang: "ko",
     messageTranslated:
       "Minor thing: in dark mode the skill tree images are hard to make out — the background is dark and the images are dark too.",
+    replyLang: "ko",
+    replyTranslated:
+      "Confirmed — the skill icons are black line art, so they were blending into the dark background in dark mode. Icons now sit on a light plate in dark mode and are easy to see. Thanks for pointing out even the small things!",
   },
   {
     id: "1788012304165-qq9emx",
