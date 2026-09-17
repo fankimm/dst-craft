@@ -167,6 +167,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `src/components/crafting/` — 메인 앱 컴포넌트
 - `src/components/cooking/` — 요리 탭 컴포넌트
 - `src/components/console/` — 콘솔 명령어 탭 컴포넌트
+- `src/components/farming/` — 농사 탭 컴포넌트 (#120). 게임에 없는 문구는 `farming-text.ts`에만 둔다
 - `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지
 - `src/components/ads/AdSlot.tsx` — Ezoic 광고 자리 (자리별 placeholder id 고정, `?admock=`로 목업 미리보기). 자리 목록·규격은 `docs/ui.md` 참조
@@ -206,7 +207,10 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
 - `docs/scrapbook-migration.md` — 스크랩북 데이터 마이그레이션 설계 (히스토리)
 - `docs/farming-research.md` — 농사 탭 사전 조사 (#117): 공략 10개를 게임 소스와 대조 검증한 기록, 소스 기준 농사 메커니즘·상수, 작물/비료/도구 표, 계절별 무비료 조합, 공략 오류 로그. 농사 기능을 만들기 전에 먼저 읽을 것
-- `scripts/farm-combos-prototype.py` — 위 문서의 표를 소스에서 다시 계산하는 조사용 프로토타입. 정식 파이프라인을 만들면 로직을 옮기고 삭제
+- `src/data/farming.ts` — 농사 데이터 (작물 14·잡초 4·비료 17·돌보기 도구·급수·스트레스 등급·도감 라벨) — 자동 생성, 수정 금지
+- `scripts/extract-farming.py` — 위 파일 생성 파이프라인 (아래 Farming Pipeline Rules)
+- `src/lib/farming-combos.ts` — 계절별 무비료 조합 계산 (`farmCombos`), 일반 씨앗 확률 (`randomSeedChances`)
+- `src/components/seo/FarmingContent.tsx` — `/farming`, `/ko/farming` 정적 페이지
 - `src/data/scrapbook-stats.ts` — 인게임 scrapbookdata.lua 기반 아이템 스펙 (1541개, specialinfo ko/en 799개) — 자동 생성, 수정 금지
 - `scripts/convert-scrapbook.py` — scrapbookdata.lua + strings.lua + ko.po → scrapbook-stats.ts 생성 파이프라인
 
@@ -291,6 +295,17 @@ jihwan-kim3 (macOS):
 - 정확하지 않은 항목은 스크립트 상단의 `OVERRIDES` dict에 명시적으로 수정 (예: butter → foodtype dairy)
 - 제외할 항목은 `EXCLUDE_IDS`에 ID 추가 (예: acorn — FOODTYPE.SEEDS, raw 식용 의미 없음)
 - 렌더링: `src/components/cooking/CookingApp.tsx`의 `RawFoodGrid` + `RawFoodDetail` (요리탭 "raw" 카테고리에서만)
+
+## Farming Pipeline Rules
+- 농사 탭의 모든 게임 수치는 `src/data/farming.ts` 한 곳에서 온다 — `scripts/extract-farming.py`가 자동 생성, **수동 편집 금지** (#120)
+- 갱신 절차: 통합 `bash scripts/sync-game-data.sh` 한 번이면 끝. (개별 실행: `python3 scripts/extract-farming.py`, 스냅샷 `~/dst-game-snapshot`을 직접 읽는다)
+- 소스: `prefabs/farm_plant_defs.lua`(양분·제철·물·성장 시간), `weed_defs.lua`, `veggies.lua`(일반 씨앗 가중치 — `MakeVegStats`의 **첫 인자만** 읽는다. 호박은 유통기한 인자에 `IsSpecialEventActive(...)` 괄호가 들어 있어 단순 정규식으로 뒤 인자를 읽으면 잘린다), `fertilizer_nutrient_defs.lua`, `components/farmplantstress.lua`(등급 경계), `tuning.lua`, ko.po(이름·도감 라벨·스트레스 대사 — msgid가 영문이라 ko.po 하나로 en/ko를 다 얻는다)
+- **assert가 곧 패치 감지기다.** 실패하면 데이터를 고치지 말고 규칙이 바뀐 것이니 `docs/farming-research.md`와 조합 계산식부터 재검토:
+  - 작물의 소비 총량이 되돌릴 양분 수로 나누어떨어진다 (아니면 소스의 "잉여 랜덤 분배" 경로가 발동해 순변화가 결정적이지 않다)
+  - 양분 인덱스 순서 = [성장 촉진제, 퇴비, 거름] / 스트레스 등급 경계 1·6·11 / 작물 14종 / 비료 항목이 전부 상수로 풀림
+- **조합은 데이터로 저장하지 않는다** — `src/lib/farming-combos.ts`가 `farming.ts`에서 계산한다. 기준값: 기본 조합 **봄 12 · 여름 4 · 가을 10 · 겨울 2**. 패치 후 이 수가 바뀌면 의도된 변화인지 확인할 것
+- 돌보기 도구·급수 수단의 "아이템 ↔ 상수" 매핑과 등급별 수확물(`FARM_HARVEST`)은 prefab 코드에서 확인해 고정한 값이다 (`docs/farming-research.md` 2장, 검증 수준 A). 새 도구가 추가되면 스크립트의 `TEND_TOOLS` / `WATER_SOURCES`에 수동으로 넣는다
+- 화면에 수치를 더할 땐 "게임 수치" / "계산값" 배지(`ValueBadge`)로 출처를 구분한다. `docs/farming-research.md` 2.0절의 **C등급(미검증) 항목은 화면에 사실로 쓰지 않는다**
 
 ## Skill Tree Verification
 - `scripts/verify-skill-trees.py` — 인게임 `skilltree_<char>.lua` vs 우리 `src/data/skill-trees/*.ts` 정적 비교

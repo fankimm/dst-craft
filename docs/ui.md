@@ -9,7 +9,7 @@
 ### AppShell (`src/components/AppShell.tsx`)
 ```
 ┌─ 상태바 커버 (z-60, safe-area-inset-top) ──────────────┐
-├─ 탭 바 (crafting | cooking | cookpot | bosses | skills | quests | console | settings)─┤
+├─ 탭 바 (crafting | cooking | cookpot | bosses | skills | skins | quests | farming | console | settings)─┤
 ├─ 활성 탭 컨텐츠 ──────────────────────────────────────────┤
 │                                                           │
 │  ┌─ CraftingApp / CookingApp / BossesApp / CookpotApp ─┐ │
@@ -145,6 +145,34 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - 훅: `useQuestState` — toggle / resetQuest / countChecked
 - 아이템 아이콘은 게임 내 이미지 사용 (lureplantbulb, moon_altar_*, atrium_key, thurible 등)
 
+### 농사 탭 (FarmingApp) (#120)
+헤더의 보기 칩 3개로 화면을 바꾸는 단일 스크롤 탭. 상태는 전부 URL(`?tab=farming&view=&season=&with=&crop=`, `useFarmingState`).
+```
+┌─────────────────────────────────────────────┐
+│ 농사                                         │
+│ [계절별 조합] [작물] [참고표]                 │ ← 보기 칩 (TagChip + 선택 강조)
+├─────────────────────────────────────────────┤
+│ (계절별 조합)                                │
+│ [봄][여름][가을][겨울]                       │ ← 계절 칩 (텍스트 — 봄·가을 아이콘이 게임에 없다)
+│ ⚠ 일반 씨앗 → 거대 작물 불가 안내            │
+│ 이 작물이 들어간 조합: [전체][당근]…          │ ← 제철 작물만, 작물 상세에서 넘어오면 미리 선택됨
+│ ┌ 조합 카드 ───────────────────────────────┐ │
+│ │ [5 타일당 | 토마토란] + [5 | 감자 가지]   │ │ ← 칸 = 양분 역할, 칸 안 작물은 서로 대체 가능
+│ │ (타일 1개로 충분) (새 밭에서 안전)        │ │ ← 상태 배지 2개 (초록=좋음 / 호박색=주의)
+│ │ 최악 순서 수요 — 성장 촉진제 10 …         │ │
+│ └──────────────────────────────────────────┘ │
+│ (작물) CategoryCard 그리드 14개 → DetailPanel │
+│ (참고표) 비료 · 돌보기 도구 · 급수 · 스트레스 7항목 · 수확물 · 잡초 │
+│ <Footer />                                   │
+└──────────────────────────────────────────────┘
+```
+- **데이터**: `src/data/farming.ts`(자동 생성, `scripts/extract-farming.py`) — 이름·도감 라벨·스트레스 대사까지 ko.po에서 온다. 게임에 없는 말만 `src/components/farming/farming-text.ts`에 둔다 (홈 번들에 안 실리게 `i18n.ts`와 분리)
+- **조합은 저장하지 않고 계산한다**: `src/lib/farming-combos.ts` `farmCombos(season)`. 정렬은 ① 타일 하나로 끝남 ② 칸 수 적음 ③ 새 밭에서 안전 ④ 일반 씨앗에서 흔한 작물
+- **작물 상세(`CropDetail`)**: 인게임 식물 도감 순서 — 계절 → 물 소비량 → 양분 순환 → 씨앗·생산물·거대 작물(`ItemSlot`) → 성장 시간 → 일반 씨앗 확률 → 맞는 비료(`ItemSlot`, 배지 = 양분값) → 조합으로 이동 → 현장 기록
+- **`ValueBadge`**(`src/components/farming/ValueBadge.tsx`): "게임 수치" / "계산값" 구분 표시. 게임에서 그대로 온 값과 우리가 계산한 값(조합·포기 수·양분 수요·씨앗 확률)을 화면에서 나눈다 — 농사 화면에 수치를 더할 땐 반드시 둘 중 하나를 붙일 것
+- 스트레스 7항목 이름은 게임에 공식 라벨이 없어 나무위키식 표기를 쓰고 인게임 대사(윌슨)를 곁들인다
+- 양파 작물 이미지는 게임 파일명이 `quagmire_onion.png` — `cropImage()`가 처리한다
+
 ### SEO 전용 SSG 페이지
 클라이언트 앱과 별도로 서버 렌더링되는 정적 페이지:
 - `/item/[slug]` — 제작 아이템 상세 (JSON-LD: HowTo)
@@ -152,6 +180,7 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - `/boss/[slug]` — 보스 상세 (JSON-LD: GamePlayMode)
 - `/browse` — 전체 목록 디렉토리
 - `/cookpot` — 요리솥 랜딩페이지
+- `/farming` — 농사 가이드 (`seo/FarmingContent` — 계절별 조합을 빌드 시 계산해 표로 담는다. 참고표는 탭의 `FarmingGuide`를 그대로 재사용)
 
 > SSG 페이지는 클라이언트 컴포넌트(DetailPanel 등)를 사용하지 않음. 리팩토링 시 주의.
 
@@ -169,7 +198,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 ### DetailPanel (`src/components/ui/DetailPanel.tsx`)
 - **용도**: 바텀시트 상세 패널 (오버레이 + 슬라이드업 + 닫기 버튼 + SupportPill)
-- **사용처**: CraftingApp, CookingApp, BossesApp, SkinsApp, Wx78StatusPanel, Wx78CircuitBoard, FeedbackBoard (설정 탭)
+- **사용처**: CraftingApp, CookingApp, BossesApp, FarmingApp, SkinsApp, Wx78StatusPanel, Wx78CircuitBoard, FeedbackBoard (설정 탭)
 - **짝 훅**: `useDetailPanel` — 패널 open/close 애니메이션 상태 관리
 - **Props**: `open`, `onClose`, `onBack`/`backLabel`, `hideClose`, `children`
 - **스크롤 잠금 (#105)**: 열리는 동안 **자기 탭의** `[data-scroll-container]` 에 인라인 `overflow:hidden`. 대상은 `findScrollContainerFor(overlayRef)` 로 찾는다 — `document.querySelector` 첫 매치는 숨은 제작 탭이라 금지. 오버레이에 `data-detail-open="true|false"` 마커가 있어 `useScrollLockHeal` 이 "시트 없는 잠금" 을 판정한다
@@ -208,7 +237,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 ### CategoryCard (`src/components/ui/CategoryCard.tsx`)
 - **용도**: 카테고리 그리드 타일 (아이콘 + 라벨, 즐겨찾기/최근조회는 우하단 카운트 뱃지)
-- **사용처**: CraftingApp(CategoryGrid), CookingApp, BossesApp
+- **사용처**: CraftingApp(CategoryGrid), CookingApp, BossesApp, FarmingApp(작물 그리드)
 - **레이아웃 규칙**: 아이콘 영역 size-12 sm:size-14 고정 + 라벨 영역 `min-h-[2lh]` 고정 → 라벨이 1줄이든 2줄이든 모든 카드의 카드 높이 / 아이콘 수직 위치가 동일 (인게임 라벨이 단일 진실 공급원이라 텍스트 줄 수가 가변)
 - **Props**: `imageSrc`, `imageAlt?`, `label`, `badgeCount?`, `onClick`
 - **badge 동작**: `badgeCount === undefined`면 안쪽 이미지 크기를 size-12/14로 확장(뱃지 자리 없이 가득). 정의됐고 > 0이면 우하단에 카운트 뱃지

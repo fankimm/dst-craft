@@ -123,7 +123,7 @@ def s(key: str) -> dict:
 veg_stats = {}
 for m in re.finditer(r"^\s*(\w+)\s*=\s*MakeVegStats\(([^)]*)\)", veggies, re.M):
     args = [a.strip() for a in m.group(2).split(",")]
-    veg_stats[m.group(1)] = args  # 첫 인자 = seed_weight. 나머지는 호박처럼 조건식이 끼어 위치가 밀릴 수 있어 쓰지 않는다 (유통기한은 raw-foods.ts)
+    veg_stats[m.group(1)] = args  # 첫 인자 = seed_weight 만 쓴다. 호박은 인자 안에 IsSpecialEventActive(...) 괄호가 있어 이 정규식으로는 뒤 인자가 잘린다
 oversized_mult = float(re.search(r"local OVERSIZED_PERISHTIME_MULT\s*=\s*([\d.]+)", veggies).group(1))
 
 crops = {}
