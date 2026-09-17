@@ -324,6 +324,7 @@ node scripts/check-ad-audit.mjs https://www.dstcraft.com/item/abigail-flower 390
 
 ## 대기 (다음 작업 후보)
 
+- [ ] **농사 탭** (피드백 2026-08-29 "추천 비료/작물 조합") — 사전 조사 완료(#117): `docs/farming-research.md`. 공략 10개를 소스와 대조 검증, 무비료 조합 계산 프로토타입 `scripts/farm-combos-prototype.py`. 구현 범위 제안: ① 자동 추출 파이프라인 → `src/data/farming.ts` ② 작물·비료·도구 참고표 ③ 계절별 조합 추천(기본 28개 우선) ④ (선택) 밭 배치도. 시작 전 문서 6장의 인게임 확인 항목부터 볼 것
 - [x] **CF "static cache" rule 좁히기 — All requests → 정적 자산만** (2026-05-07 완료)
   - expression: `true` → 정적 자산만 (/_next/static/, /images/, /icons/, 확장자 매칭)
   - edge_ttl: `override_origin 1d` → `respect_origin`
