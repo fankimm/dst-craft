@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { Check, Lock, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getItemsBySkill } from "@/data/skill-trees/skill-items";
 import { ItemSlot } from "@/components/ui/ItemSlot";
+import { SkillIcon } from "@/components/ui/SkillIcon";
 import { itemName, type Locale } from "@/lib/i18n";
 import { allItems } from "@/data/items";
 import type { LockCondition } from "@/data/skill-trees/types";
@@ -52,7 +52,6 @@ export function SkillNodeCard({
   prereq,
   lockRequirements,
 }: Props) {
-  const iconSrc = icon ? `/images/skill-icons/${icon}.png` : undefined;
   const relatedItemIds = getItemsBySkill(skillId);
   const relatedItems = relatedItemIds
     .map((id) => allItems.find((item) => item.id === id))
@@ -111,16 +110,16 @@ export function SkillNodeCard({
       {/* Main row: icon + title + toggle */}
       <div className="flex items-center gap-2.5">
         {/* Icon */}
-        <div
-          className="shrink-0 size-10 rounded-md flex items-center justify-center overflow-hidden"
-          style={!iconSrc ? { backgroundColor: `${groupColor}15` } : undefined}
-        >
-          {iconSrc ? (
-            <Image src={iconSrc} alt="" width={40} height={40} className="size-10" />
-          ) : (
+        {icon ? (
+          <SkillIcon icon={icon} className="size-10" />
+        ) : (
+          <div
+            className="shrink-0 size-10 rounded-md flex items-center justify-center"
+            style={{ backgroundColor: `${groupColor}15` }}
+          >
             <div className="size-5 rounded-full" style={{ backgroundColor: `${groupColor}60` }} />
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Title + description */}
         <div className="flex-1 min-w-0">
