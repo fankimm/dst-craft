@@ -1096,6 +1096,12 @@ Monumetric 1만+셋업비 — 전부 문턱이 있고 **Ezoic만 무제한이다
 - **해결**: `AdCard`가 소재 도착 판정 때 `.ezoic-ad`의 인라인 margin을 `setProperty(..., "important")`로 0으로 덮어쓰고(Ezoic이 **인라인 `!important`**로 주기 때문에 스타일시트 `!important`는 beta 실측에서 무력했다 — 1차 시도 실패), 예약을 100 → 118(320×100 + 신고 줄 18)로 보정. "AD" 라벨은 자기 줄(19px)을 없애고 신고 줄 왼쪽에 절대 배치. 검사 스크립트는 `span.ezoic-ad`(margin 15px CSS 포함) + `.reportline`까지 흉내 내도록 수정
 - **교훈**: 외부 스크립트가 DOM을 만드는 자리는 **실환경에서 한 번 트리를 통째로 찍어**(태그·클래스·computed margin/min-height) 시뮬레이션과 대조할 것. 이번엔 prod headless로 placeholder 하위 12개 노드를 덤프하자 한 번에 드러났다. "테스트 0"만 믿고 실측을 건너뛰면 이런 종류는 영원히 안 잡힌다
 
+### 줄번호로 키를 건 예외 목록이 조용히 어긋남 (2026-09-17, #121)
+- **문제**: `scripts/add-img-lazy.mjs`의 `EAGER_KEEP`("경로:줄번호")이 #111·#113 편집으로 밀려(Item 224→237, SkillTree 139→140) LCP 히어로 2개가 lazy 대상으로 잡혔다. `--dry-run` 없이 돌렸으면 그대로 lazy가 됐다
+- **원인**: 예외 목록이 **안 맞아도 아무 일도 안 일어나는** 구조. 맞은 개수(히어로 제외 6개)는 출력됐지만 기대값(8)과 비교하지 않았다
+- **해결**: 매칭 안 된 항목이 하나라도 있으면 파일을 쓰기 전에 exit 1. 쓰기를 루프 밖으로 모아 부분 적용도 막음
+- **교훈**: 위치(줄번호·인덱스)로 거는 allowlist는 반드시 "항목이 실제로 뭔가와 맞았는지"를 검증하게 만들 것. 더 나은 건 대상 자체에 표식을 두는 것(히어로에 `loading="eager"` 명시 — 스크립트가 이미 `loading=` 있는 태그는 건너뛴다)
+
 ### 추출 파서가 못 읽은 행을 조용히 `continue` — 호박이 요리탭에서 통째로 빠짐 (2026-09-17, #122)
 - **문제**: 요리탭 "생식 가능"에 호박이 없었다. `veggies.lua`의 pumpkin 행만 perish 인자가 `IsSpecialEventActive(SPECIAL_EVENTS.HALLOWED_NIGHTS) and TUNING.PERISH_PRESERVED or TUNING.PERISH_MED`라 괄호를 품고 있는데, `extract-raw-foods.py`가 `MakeVegStats\(([\s\S]*?)\)` **비탐욕 정규식**으로 인자를 잡아 조건식 안의 첫 `)`에서 잘렸다 → 인자 4개 → `len < 5: continue`. `or` 분기를 고르는 코드는 이미 있었지만 거기까지 도달하지 못했다
 - **해결**: 괄호 짝을 세는 `_balanced_args()`로 인자를 추출하고, 버려진 행은 목록으로 모아 **stderr 출력 + exit 1** (파일을 쓰지 않음). `MakeVegStats(` 호출 수와 파싱된 행 수도 대조한다
