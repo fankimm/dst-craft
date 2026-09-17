@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.36.1",
+    date: "2026-09-17",
+    dev: [
+      "fix(skills): **다크모드에서 스킬 아이콘이 안 보이던 문제** (#113, 피드백 `1787854326772-cq0iie`). `public/images/skill-icons/*.png` 332장은 인게임 추출 **검은 선화 + 투명 배경**인데 `SkillNodeCard` 가 아이콘이 있으면 컨테이너 배경을 주지 않아(아이콘 없을 때만 `groupColor` 15%) 다크모드 카드(L≈8) 위에서 선이 묻혔다. 공유 컴포넌트 `src/components/ui/SkillIcon.tsx` 신설 — 다크모드에서만 `dark:bg-zinc-200` 배경판(L≈91), 라이트모드는 투명 그대로. `SkillNodeCard`(next/image → `<img loading=lazy>`, `images.unoptimized` 라 동작 동일)와 `SkillTreePageContent`(SEO)에 적용. 제작탭 \"스킬 필요\" 칩은 노란 배경이라 제외. beta 실측: 아이콘 26개 40×40 유지, 라이트 배경 `rgba(0,0,0,0)`.",
+      "docs: `docs/ui.md` 공유 컴포넌트에 SkillIcon + \"스킬 아이콘은 `<img>` 직접 쓰지 말 것\" 규칙.",
+    ],
+    changes: {
+      ko: [
+        "다크모드에서 스킬트리 아이콘이 어두운 배경에 묻혀 잘 안 보이던 문제를 고쳤습니다. 다크모드에서는 아이콘 뒤에 밝은 배경판이 깔립니다.",
+      ],
+      en: [
+        "Skill tree icons were hard to see in dark mode because the black line art blended into the dark cards. Icons now sit on a light plate in dark mode.",
+      ],
+    },
+  },
+  {
     version: "0.36.0",
     date: "2026-09-17",
     dev: [
