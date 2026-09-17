@@ -51,6 +51,7 @@ export const rawFoods: RawFood[] = [
   { id: "plantmeat", name: "Plantmeat", nameKo: "풀고기", foodType: "meat", hunger: 12.5, health: 0.0, sanity: -10, perishDays: 6.0 },
   { id: "pomegranate", name: "Pomegranate", nameKo: "석류", foodType: "veggie", hunger: 9.375, health: 3, sanity: 0.0, perishDays: 6.0 },
   { id: "potato", name: "Potato", nameKo: "감자", foodType: "veggie", hunger: 12.5, health: -3, sanity: -5, perishDays: 10.0 },
+  { id: "pumpkin", name: "Pumpkin", nameKo: "호박", foodType: "veggie", hunger: 37.5, health: 3, sanity: 0.0, perishDays: 10.0 },
   { id: "red_cap", name: "Red Cap", nameKo: "빨간 버섯", foodType: "veggie", hunger: 12.5, health: -20, sanity: 0.0, perishDays: 6.0 },
   { id: "smallmeat", name: "Smallmeat", nameKo: "고깃조각", foodType: "meat", hunger: 12.5, health: 0.0, sanity: -10, perishDays: 6.0 },
   { id: "tomato", name: "Tomato", nameKo: "토마토란", foodType: "veggie", hunger: 12.5, health: 3, sanity: 0.0, perishDays: 6.0 },
