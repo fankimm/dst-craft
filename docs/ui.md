@@ -69,7 +69,7 @@
 └──────────────────────────────────────────────┘
 ```
 - 왼쪽: SVG Rail (그룹 컬러 세로 라인 + 정션 포인트)
-- 오른쪽: 스킬 노드 카드 (아이콘 + 이름 + 토글)
+- 오른쪽: 스킬 노드 카드 (아이콘 + 이름 + 토글). 아이콘은 `SkillIcon` — 다크모드에서 밝은 배경판 (#113)
 - 상태 저장: localStorage (`dst:skills:${charId}`)
 
 ### 콘솔 탭 (ConsoleApp)
@@ -227,6 +227,12 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **v3 필드**: tags(TagChip), resistance, shadow_level, set_bonus(강조 카드), repair(아이템 이미지+이름), skill_tree(보라색 블록), immunities(에메랄드 뱃지), effects(불릿)
 - **v2 폴백**: v3 데이터 없을 시 기존 usage 텍스트 표시
 - **사용처**: ItemDetail
+
+### SkillIcon (`src/components/ui/SkillIcon.tsx`)
+- **용도**: 스킬트리 아이콘(`public/images/skill-icons/*.png`) 표시. 인게임 추출본이 **검은 선화 + 투명 배경**이라 다크모드에선 어두운 카드에 묻힌다 → 다크모드에서만 `dark:bg-zinc-200` 배경판을 깐다 (#113). 라이트모드는 배경 없음
+- **Props**: `icon`(파일명, 확장자 제외), `alt?`, `className?`(크기 — `size-10` 등)
+- **사용처**: `SkillNodeCard`(스킬트리 탭), `SkillTreePageContent`(SEO 스킬트리 페이지). 제작탭 상세의 "스킬 필요" 칩은 노란 배경이라 `TagChip` 그대로
+- **규칙**: 스킬 아이콘을 새로 그리는 곳은 `<img>` 직접 쓰지 말고 이 컴포넌트를 쓸 것
 
 ### SearchWithSuggestions (`src/components/ui/SearchWithSuggestions.tsx`)
 - **용도**: 드롭다운 서제스천 + 태그 지원 검색 입력
