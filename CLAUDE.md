@@ -205,6 +205,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `docs/terminology.md` — UI 용어집
 - `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
 - `docs/scrapbook-migration.md` — 스크랩북 데이터 마이그레이션 설계 (히스토리)
+- `docs/farming-research.md` — 농사 탭 사전 조사 (#117): 공략 10개를 게임 소스와 대조 검증한 기록, 소스 기준 농사 메커니즘·상수, 작물/비료/도구 표, 계절별 무비료 조합, 공략 오류 로그. 농사 기능을 만들기 전에 먼저 읽을 것
+- `scripts/farm-combos-prototype.py` — 위 문서의 표를 소스에서 다시 계산하는 조사용 프로토타입. 정식 파이프라인을 만들면 로직을 옮기고 삭제
 - `src/data/scrapbook-stats.ts` — 인게임 scrapbookdata.lua 기반 아이템 스펙 (1541개, specialinfo ko/en 799개) — 자동 생성, 수정 금지
 - `scripts/convert-scrapbook.py` — scrapbookdata.lua + strings.lua + ko.po → scrapbook-stats.ts 생성 파이프라인
 
