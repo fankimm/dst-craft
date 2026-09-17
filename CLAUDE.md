@@ -289,6 +289,7 @@ jihwan-kim3 (macOS):
   3. `prefabs/{meats,butter,honey,egg,acorn,...}.lua`의 per-prefab `inst.components.edible.{foodtype,hungervalue,healthvalue,sanityvalue}` 직접 설정
 - 한국어 이름은 ko.po(`STRINGS.NAMES.<ID>`)에서 자동 매칭. 누락 시 영문 fallback
 - 정확하지 않은 항목은 스크립트 상단의 `OVERRIDES` dict에 명시적으로 수정 (예: butter → foodtype dairy)
+- **VEGGIES 행을 못 읽으면 스크립트가 목록을 찍고 exit 1로 죽는다** (파일 미기록) — `MakeVegStats(` 호출 수와 파싱 행 수도 대조. 조용한 누락 방지용이니 `continue`로 되돌리지 말 것. `IsSpecialEventActive(...) and X or Y` 같은 이벤트 조건식은 비이벤트 값(`or` 쪽)을 쓴다 (#122, 호박 누락 건)
 - 제외할 항목은 `EXCLUDE_IDS`에 ID 추가 (예: acorn — FOODTYPE.SEEDS, raw 식용 의미 없음)
 - 렌더링: `src/components/cooking/CookingApp.tsx`의 `RawFoodGrid` + `RawFoodDetail` (요리탭 "raw" 카테고리에서만)
 

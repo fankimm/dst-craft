@@ -1095,3 +1095,8 @@ Monumetric 1만+셋업비 — 전부 문턱이 있고 **Ezoic만 무제한이다
 - **원인**: 검사 스크립트가 placeholder에 **iframe만** 꽂아 높이를 쟀다. 실제 Ezoic은 iframe을 래퍼로 감싸고 그 래퍼에 스타일을 주는데, 그 부분이 시뮬레이션에서 빠져 있었다. **테스트가 통과하는 것과 실환경이 맞는 것은 다르다** — 가짜를 심을 때는 외부 스크립트가 만드는 DOM을 클래스·스타일까지 그대로 베껴야 한다
 - **해결**: `AdCard`가 소재 도착 판정 때 `.ezoic-ad`의 인라인 margin을 `setProperty(..., "important")`로 0으로 덮어쓰고(Ezoic이 **인라인 `!important`**로 주기 때문에 스타일시트 `!important`는 beta 실측에서 무력했다 — 1차 시도 실패), 예약을 100 → 118(320×100 + 신고 줄 18)로 보정. "AD" 라벨은 자기 줄(19px)을 없애고 신고 줄 왼쪽에 절대 배치. 검사 스크립트는 `span.ezoic-ad`(margin 15px CSS 포함) + `.reportline`까지 흉내 내도록 수정
 - **교훈**: 외부 스크립트가 DOM을 만드는 자리는 **실환경에서 한 번 트리를 통째로 찍어**(태그·클래스·computed margin/min-height) 시뮬레이션과 대조할 것. 이번엔 prod headless로 placeholder 하위 12개 노드를 덤프하자 한 번에 드러났다. "테스트 0"만 믿고 실측을 건너뛰면 이런 종류는 영원히 안 잡힌다
+
+### 추출 파서가 못 읽은 행을 조용히 `continue` — 호박이 요리탭에서 통째로 빠짐 (2026-09-17, #122)
+- **문제**: 요리탭 "생식 가능"에 호박이 없었다. `veggies.lua`의 pumpkin 행만 perish 인자가 `IsSpecialEventActive(SPECIAL_EVENTS.HALLOWED_NIGHTS) and TUNING.PERISH_PRESERVED or TUNING.PERISH_MED`라 괄호를 품고 있는데, `extract-raw-foods.py`가 `MakeVegStats\(([\s\S]*?)\)` **비탐욕 정규식**으로 인자를 잡아 조건식 안의 첫 `)`에서 잘렸다 → 인자 4개 → `len < 5: continue`. `or` 분기를 고르는 코드는 이미 있었지만 거기까지 도달하지 못했다
+- **해결**: 괄호 짝을 세는 `_balanced_args()`로 인자를 추출하고, 버려진 행은 목록으로 모아 **stderr 출력 + exit 1** (파일을 쓰지 않음). `MakeVegStats(` 호출 수와 파싱된 행 수도 대조한다
+- **교훈**: 자동 생성 파이프라인의 `continue`는 "데이터가 틀림"이 아니라 **"데이터가 없음"**을 만들어서 눈에 안 띈다 — 틀린 값은 누가 신고하지만 없는 항목은 아무도 모른다. 원본의 행 수를 세어 결과와 대조하고, 못 읽은 행은 조용히 넘기지 말고 실패시킬 것. 중첩 괄호가 나올 수 있는 Lua 호출을 비탐욕 `\)`로 자르지 말 것
