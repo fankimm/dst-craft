@@ -14,7 +14,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DB_PATH = process.env.DB_PATH ?? join(homedir(), "dstcraft", "data", "app.db");
-const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16 추가)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
+const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16·09-17 추가)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
 
 type Lang = "ko" | "en";
 interface Entry {
@@ -240,6 +240,9 @@ const TRANSLATIONS: Entry[] = [
     id: "1789483590837-grx2ak",
     messageLang: "ko",
     messageTranslated: "Could you add the chess piece sketches?",
+    replyLang: "ko",
+    replyTranslated:
+      "We fixed the recipes of all 44 chess-piece figures and added sketch info. Each figure's detail now shows the required sketch and where to get it (boss drops, Tumbleweeds, mining statues, Pig King trades, and more), and boss-dropped sketches jump to the Bosses tab when tapped. It also shows the three figures you get depending on the block placed on the Potter's Wheel (Marble, Cut Stone or Moon Shard). Thanks for the report!",
   },
 ];
 
