@@ -14,7 +14,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DB_PATH = process.env.DB_PATH ?? join(homedir(), "dstcraft", "data", "app.db");
-const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16·09-17 추가)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
+const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16·09-17 추가, #120 포함)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
 
 type Lang = "ko" | "en";
 interface Entry {
@@ -239,6 +239,9 @@ const TRANSLATIONS: Entry[] = [
     id: "1788012304165-qq9emx",
     messageLang: "ko",
     messageTranslated: "Any chance a Farming tab gets added?? (recommended fertilizer / crop combos, etc.)",
+    replyLang: "ko",
+    replyTranslated:
+      "We've added the Farming tab you asked for. It shows crop combos for each season that work without fertilizer, how many of each to plant per tile, every crop's nutrient and water use, and fertilizer values. It also points out that plants grown from generic Seeds can never become giant. Thanks for the suggestion!",
   },
   {
     // #105 스크롤 먹통 제보. 답변(한국어, reply_author=claude)은 2026-09-16 등록 — 번역은 #109
