@@ -29,6 +29,8 @@ const EAGER_KEEP = new Set([
   "src/components/seo/CookpotContent.tsx:95",
   "src/components/seo/CookpotContent.tsx:96",
   "src/components/seo/QuestPageContent.tsx:108",
+  "src/components/seo/FarmingContent.tsx:44",
+  "src/components/seo/FarmingContent.tsx:45",
 ]);
 
 const dryRun = process.argv.includes("--dry-run");

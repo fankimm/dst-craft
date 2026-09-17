@@ -22,7 +22,7 @@ import { t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "skills" | "skins" | "quests" | "console" | "settings";
+type TabId = "crafting" | "cooking" | "cookpot" | "bosses" | "skills" | "skins" | "quests" | "farming" | "console" | "settings";
 
 /**
  * 제작 탭 외 8개는 청크로 분리한다 (#91).
@@ -46,6 +46,7 @@ const BossesApp = dynamic(() => import("./bosses/BossesApp").then((m) => m.Bosse
 const SkillSimulatorApp = dynamic(() => import("./skills/SkillSimulatorApp").then((m) => m.SkillSimulatorApp), { ssr: false, loading: () => <TabFallback /> });
 const SkinsApp = dynamic(() => import("./skins/SkinsApp").then((m) => m.SkinsApp), { ssr: false, loading: () => <TabFallback /> });
 const QuestsApp = dynamic(() => import("./quests/QuestsApp").then((m) => m.QuestsApp), { ssr: false, loading: () => <TabFallback /> });
+const FarmingApp = dynamic(() => import("./farming/FarmingApp").then((m) => m.FarmingApp), { ssr: false, loading: () => <TabFallback /> });
 const ConsoleApp = dynamic(() => import("./console/ConsoleApp").then((m) => m.ConsoleApp), { ssr: false, loading: () => <TabFallback /> });
 const SettingsPage = dynamic(() => import("./settings/SettingsPage").then((m) => m.SettingsPage), { ssr: false, loading: () => <TabFallback /> });
 
@@ -67,6 +68,7 @@ const TAB_PREFETCH: Partial<Record<TabId, () => Promise<unknown>>> = {
   skills: () => import("./skills/SkillSimulatorApp"),
   skins: () => import("./skins/SkinsApp"),
   quests: () => import("./quests/QuestsApp"),
+  farming: () => import("./farming/FarmingApp"),
   console: () => import("./console/ConsoleApp"),
   settings: () => import("./settings/SettingsPage"),
 };
@@ -86,6 +88,7 @@ const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?
   { id: "skills", labelKey: "tab_skills", image: "/images/ui/skill_eye.webp" },
   { id: "skins", labelKey: "tab_skins", image: "/images/skins/axe_heart.png" },
   { id: "quests", labelKey: "tab_quests", image: "/images/game-items/hermitcrab_npc.png" },
+  { id: "farming", labelKey: "tab_farming", image: "/images/game-items/farm_hoe.png" },
   { id: "console", labelKey: "tab_console", image: "/images/game-items/papyrus.png" },
   { id: "settings", labelKey: "tab_settings", image: "/images/game-items/gears.png" },
 ];
@@ -94,7 +97,7 @@ const allTabs: { id: TabId; labelKey: TranslationKey; image?: string; adminOnly?
 function readTabFromUrl(): TabId {
   if (typeof window === "undefined") return "crafting";
   const tab = new URLSearchParams(window.location.search).get("tab");
-  if (tab === "cooking" || tab === "cookpot" || tab === "bosses" || tab === "skills" || tab === "skins" || tab === "quests" || tab === "console" || tab === "settings") return tab;
+  if (tab === "cooking" || tab === "cookpot" || tab === "bosses" || tab === "skills" || tab === "skins" || tab === "quests" || tab === "farming" || tab === "console" || tab === "settings") return tab;
   return "crafting";
 }
 
@@ -519,6 +522,11 @@ export function AppShell() {
         {isTabMounted("quests") && (
         <div data-tab-root="quests" className={activeTab === "quests" ? "h-full" : "hidden"}>
           <QuestsApp onViewCraftingItem={(id) => handleViewCraftingItem(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} onViewBoss={(id) => handleViewBoss(id, { tab: "quests", label: t(resolvedLocale, "tab_quests") })} />
+        </div>
+        )}
+        {isTabMounted("farming") && (
+        <div data-tab-root="farming" className={activeTab === "farming" ? "h-full" : "hidden"}>
+          <FarmingApp />
         </div>
         )}
         {isTabMounted("console") && (
