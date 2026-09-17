@@ -178,6 +178,7 @@ export const materials: Material[] = [
   { id: "rope", name: "Rope", image: "rope.png" },
   { id: "rottenegg", name: "Rotten Egg", image: "rottenegg.png" },
   { id: "royal_jelly", name: "Royal Jelly", image: "royal_jelly.png" },
+  { id: "sculpting_material", name: "Sculpting Block", image: "sculpting_material.png" },
   { id: "saltrock", name: "Salt Crystals", image: "saltrock.png" },
   { id: "scandata", name: "Bio Data", image: "scandata.png" },
   { id: "security_pulse_cage_full", name: "Security Pulse Cage Full", image: "security_pulse_cage_full.png" },

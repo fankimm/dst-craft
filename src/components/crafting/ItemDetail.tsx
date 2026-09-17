@@ -4,20 +4,21 @@ import type { CraftingItem, CraftingStation, CategoryId } from "@/lib/types";
 import { TagChip } from "@/components/ui/TagChip";
 import { MaterialSlot } from "./MaterialSlot";
 import { ItemSlot } from "@/components/ui/ItemSlot";
-import { getCategoryById, getCharacterById, stationImages } from "@/lib/crafting-data";
+import { getCategoryById, getCharacterById, getMaterialById, stationImages } from "@/lib/crafting-data";
 import { useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { useFavorites } from "@/hooks/use-favorites";
-import { t, itemName, itemAltName, itemDesc, categoryName, characterName, stationName, skillName } from "@/lib/i18n";
+import { t, itemName, itemAltName, itemDesc, categoryName, characterName, stationName, skillName, materialName } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { assetPath } from "@/lib/asset-path";
+import { assetPath, bossThumbPath } from "@/lib/asset-path";
 import { usePopularity } from "@/hooks/use-popularity";
 import { ViewCount } from "@/components/ui/ViewCount";
 import { ShareButton } from "@/components/ui/ShareButton";
 import { PrefabIdButton } from "@/components/ui/PrefabIdButton";
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import { ItemStatsPanel } from "./ItemStatsPanel";
-import { bossDropBlueprintItems } from "@/data/bosses";
+import { bossDropBlueprintItems, bosses } from "@/data/bosses";
+import { figureSketchSources, figureSketchId, sketchIcon, sketchName, sculptResultImages, sketchSourceLabel } from "@/data/sketches";
 
 // Higher-tier stations that can also craft items of the base station
 const stationUpgrades: Partial<Record<CraftingStation, CraftingStation[]>> = {
@@ -33,9 +34,11 @@ interface ItemDetailProps {
   onStationClick?: (stationLabel: string, station?: string) => void;
   onBlueprintClick?: (itemId: string) => void;
   onSkillClick?: (skillId: string) => void;
+  /** 상세 패널 안에서 다른 제작 아이템으로 이동 (예: 제작 가능한 도면) */
+  onItemClick?: (itemId: string) => void;
 }
 
-export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick, onBlueprintClick, onSkillClick }: ItemDetailProps) {
+export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacterClick, onStationClick, onBlueprintClick, onSkillClick, onItemClick }: ItemDetailProps) {
   const [imgError, setImgError] = useState(false);
   const { resolvedLocale } = useSettings();
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -49,6 +52,13 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
       </div>
     );
   }
+
+  // 도예가의 돌림판 조각상: 필요 도면 + 입수처, 조각 재료별 결과물
+  const sketchSources = figureSketchSources[item.id];
+  const sketchId = figureSketchId(item.id);
+  const sculptResults = item.materials.some((m) => m.materialId === "sculpting_material")
+    ? sculptResultImages(item.id)
+    : [];
 
   return (
     <div className="flex gap-4 p-4">
@@ -157,8 +167,16 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               className="border-[#dab74e] bg-[#dab74e] text-black dark:border-[#dab74e] dark:bg-[#dab74e] dark:text-black"
             />
           )}
+          {/* Sketch badge — 조각상은 블루프린트 대신 도면(sketch)으로 해금. 입수처는 아래 도면 블록에 */}
+          {item.blueprint && !item.characterOnly && sketchSources && (
+            <TagChip
+              label={t(resolvedLocale, "sketch_required")}
+              icon={`game-items/${sketchIcon(sketchId)}`}
+              className="border-[#3975ce] bg-[#3975ce] text-white dark:border-[#3975ce] dark:bg-[#3975ce] dark:text-white"
+            />
+          )}
           {/* Blueprint badge */}
-          {item.blueprint && !item.characterOnly && (() => {
+          {item.blueprint && !item.characterOnly && !sketchSources && (() => {
             const isBossBlueprint = bossDropBlueprintItems.has(item.id);
             return (
               <div className="flex flex-col items-center">
@@ -204,6 +222,69 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
             />
           )}
         </div>
+
+        {/* Sculpting: 돌림판에 올린 재료(대리석/석재/달 파편)에 따라 다른 조각상이 나온다 */}
+        {sculptResults.length > 0 && (
+          <div className="space-y-1.5 pt-1">
+            <p className="text-[11px] text-muted-foreground">{t(resolvedLocale, "sculpt_results")}</p>
+            <div className="flex flex-wrap gap-4">
+              {sculptResults.map(({ materialId, image }) => {
+                const mat = getMaterialById(materialId);
+                return (
+                  <ItemSlot
+                    key={materialId}
+                    icon={image}
+                    label={mat ? materialName(mat, resolvedLocale) : materialId}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Sketch: 필요 도면 + 입수처 (보스 → 보스탭 전리품 검색, 제작 도면 → 그 아이템 상세) */}
+        {sketchSources && (
+          <div className="space-y-1.5 pt-1">
+            <p className="text-[11px] text-muted-foreground">{t(resolvedLocale, "sketch_source")}</p>
+            <div className="flex items-start gap-3 flex-wrap">
+              <ItemSlot icon={sketchIcon(sketchId)} label={sketchName(sketchId, resolvedLocale)} />
+              <div className="flex flex-wrap gap-2 pt-1.5">
+                {sketchSources.map((src, i) => {
+                  if (src.kind === "boss") {
+                    const boss = bosses.find((b) => b.id === src.bossId);
+                    const img = boss ? (Array.isArray(boss.image) ? boss.image[0] : boss.image) : null;
+                    return (
+                      <TagChip
+                        key={i}
+                        label={boss ? (resolvedLocale === "ko" ? boss.nameKo : boss.name) : src.bossId}
+                        icon={img ? bossThumbPath(`/images/bosses/${img}`).replace(/^\/images\//, "") : undefined}
+                        onClick={boss && onBlueprintClick ? () => onBlueprintClick(sketchId) : undefined}
+                      />
+                    );
+                  }
+                  if (src.kind === "craft") {
+                    return (
+                      <TagChip
+                        key={i}
+                        label={sketchName(sketchId, resolvedLocale)}
+                        icon={`game-items/${sketchIcon(sketchId)}`}
+                        onClick={onItemClick ? () => onItemClick(src.itemId) : undefined}
+                      />
+                    );
+                  }
+                  return (
+                    <TagChip
+                      key={i}
+                      label={sketchSourceLabel(src, resolvedLocale)}
+                      icon={src.kind === "pigking_trinket" ? `game-items/${src.trinket}.png` : undefined}
+                      className="text-muted-foreground"
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

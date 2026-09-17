@@ -3,7 +3,8 @@
 import React, { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
-import { bosses, bossCategories, lootImage, lootDisplayName, lootNameKo, type Boss, type BossCategoryId } from "@/data/bosses";
+import { bosses, bossCategories, lootImage, lootDisplayName, type Boss, type BossCategoryId } from "@/data/bosses";
+import { figureSketchSources, sketchBuilderId } from "@/data/sketches";
 import { useBossesState, type BossesCategoryValue } from "@/hooks/use-bosses-state";
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import { SearchWithSuggestions, type SearchSuggestion } from "@/components/ui/SearchWithSuggestions";
@@ -56,6 +57,19 @@ function categoryImage(catId: BossCategoryId): string {
 
 const ALL_CATEGORY_IMAGE = "/images/category-icons/bosses_all.webp";
 
+/**
+ * 전리품 알약 클릭 시 열 제작 아이템. 블루프린트 → 그 아이템,
+ * 조각상 도면 → 그 조각상 (도면 자체는 제작품이 아니라 조각상 상세로 보낸다)
+ */
+function lootCraftingId(loot: import("@/data/bosses").BossLoot): string | null {
+  if (loot.blueprint) return loot.item.replace(/_blueprint$/, "");
+  if (loot.item.endsWith("_sketch")) {
+    const builder = sketchBuilderId(loot.item);
+    return figureSketchSources[builder] ? builder : null;
+  }
+  return null;
+}
+
 /** Build unique loot list for suggestions */
 const allLootItems = (() => {
   const seen = new Set<string>();
@@ -69,8 +83,8 @@ const allLootItems = (() => {
       items.push({
         id: loot.item,
         baseId,
-        nameKo: lootNameKo[baseId] ?? lootNameKo[loot.item] ?? baseId.replace(/_/g, " "),
-        nameEn: baseId.replace(/_/g, " "),
+        nameKo: lootDisplayName(loot.item, "ko"),
+        nameEn: lootDisplayName(loot.item, "en"),
         image: lootImage(loot.item),
         blueprint: !!loot.blueprint,
       });
@@ -617,7 +631,7 @@ function renderLootPill(
   const displayName = lootDisplayName(loot.item, locale);
   const hasCount = (loot.count ?? 0) > 1;
   const chanceText = !loot.pool && loot.chance < 1 ? ` ${Math.round(loot.chance * 100)}%` : "";
-  const craftingId = loot.blueprint ? loot.item.replace(/_blueprint$/, "") : null;
+  const craftingId = lootCraftingId(loot);
   const isClickable = !!(craftingId && onViewCraftingItem);
   const pill = (
     <span
@@ -818,7 +832,7 @@ function BossDetail({
             const displayName = lootDisplayName(loot.item, locale);
             const hasCount = (loot.count ?? 0) > 1;
             const chanceText = loot.chance < 1 ? ` ${Math.round(loot.chance * 100)}%` : "";
-            const craftingId = loot.blueprint ? loot.item.replace(/_blueprint$/, "") : null;
+            const craftingId = lootCraftingId(loot);
             const isClickable = !!(craftingId && onViewCraftingItem);
             const pill = (
               <span

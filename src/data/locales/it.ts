@@ -710,6 +710,7 @@ export const it: LocaleData = {
     "redgem": { name: "Gemma rossa" },
     "reviver": { name: "Cuore rivelatore" },
     "rocks": { name: "Rocce" },
+    "sculpting_material": { name: "Blocco da scultura" },
     "rope": { name: "Fune" },
     "rottenegg": { name: "Uovo marcio" },
     "royal_jelly": { name: "Pappa reale" },

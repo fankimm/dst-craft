@@ -167,6 +167,12 @@ export function CraftingApp({
     setItem(null);
   }, [addSearchTag, setItem, resolvedLocale]);
 
+  // 상세 패널 안의 아이템 링크(예: 제작 가능한 도면) → 그 아이템 상세로 이동
+  const handleItemClick = useCallback((itemId: string) => {
+    const target = getItemById(itemId);
+    if (target) navigateToItem(target);
+  }, [navigateToItem]);
+
   const handleMaterialClick = useCallback((materialId: string) => {
     const mat = getMaterialById(materialId);
     if (!mat) return;
@@ -221,7 +227,7 @@ export function CraftingApp({
       onBack={previousItem ? goBackToItem : (externalBackLabel && onExternalBack) ? () => { setItem(null); onExternalBack(); } : undefined}
       backLabel={previousItem ? itemName(previousItem, resolvedLocale) : externalBackLabel ?? undefined}
     >
-      <ItemDetail item={panelItem} onMaterialClick={handleMaterialClick} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} onSkillClick={onSkillClick} />
+      <ItemDetail item={panelItem} onMaterialClick={handleMaterialClick} onCategoryClick={handleCategoryClick} onCharacterClick={jumpToCharacter} onStationClick={handleStationClick} onBlueprintClick={onBlueprintClick} onSkillClick={onSkillClick} onItemClick={handleItemClick} />
     </DetailPanel>
   );
 
