@@ -15,6 +15,20 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.37.1",
+    date: "2026-09-17",
+    dev: [
+      "fix(raw-foods): `scripts/extract-raw-foods.py`의 `parse_veggies`가 `MakeVegStats\\(([\\s\\S]*?)\\)` 비탐욕 정규식으로 인자를 잡아, pumpkin 행의 `IsSpecialEventActive(SPECIAL_EVENTS.HALLOWED_NIGHTS) and ... or TUNING.PERISH_MED` 안 첫 `)`에서 잘려 행이 조용히 버려지던 문제 (#122). 괄호 짝을 세는 `_balanced_args()`로 교체, 이벤트 조건식은 `_non_event_branch()`가 `or` 쪽(비이벤트 값) 선택.",
+      "pipeline: 파싱 못 한 VEGGIES 행은 목록 출력 + exit 1(파일 미기록). `MakeVegStats(` 호출 수와 파싱 행 수 대조. 구 파서 기준 누락은 20행 중 pumpkin 1건뿐.",
+      "data: `src/data/raw-foods.ts` 재생성 — pumpkin 1행 추가(37→38), 다른 행 무변화. 이름은 ko.po `STRINGS.NAMES.PUMPKIN`.",
+      "docs: `docs/mistakes.md`, CLAUDE.md Raw Foods Pipeline Rules.",
+    ],
+    changes: {
+      ko: ["요리 탭의 '생식 가능' 목록에서 빠져 있던 호박을 추가했습니다 (허기 +37.5, 체력 +3, 유통기한 10일)."],
+      en: ["Added the missing Pumpkin to the Cooking tab's raw-edible list (+37.5 hunger, +3 health, spoils in 10 days)."],
+    },
+  },
+  {
     version: "0.37.0",
     date: "2026-09-17",
     dev: [
