@@ -15,13 +15,17 @@
 import fs from "node:fs";
 import path from "node:path";
 
-/** LCP 히어로라 eager로 남길 자리 — "파일경로:태그가 시작하는 줄번호" */
+/**
+ * LCP 히어로라 eager로 남길 자리 — "파일경로:태그가 시작하는 줄번호".
+ * 줄번호 키라 위쪽에 코드가 추가되면 어긋난다 (#121). 어긋난 항목이 있으면 아래에서
+ * 파일을 쓰기 전에 실패하므로, 그때 여기 줄번호를 현재 위치로 고칠 것.
+ */
 const EAGER_KEEP = new Set([
-  "src/components/seo/ItemPageContent.tsx:224",
+  "src/components/seo/ItemPageContent.tsx:237",
   "src/components/seo/BossPageContent.tsx:129",
   "src/components/seo/CharacterPageContent.tsx:105",
   "src/components/seo/FoodPageContent.tsx:145",
-  "src/components/seo/SkillTreePageContent.tsx:139",
+  "src/components/seo/SkillTreePageContent.tsx:140",
   "src/components/seo/CookpotContent.tsx:95",
   "src/components/seo/CookpotContent.tsx:96",
   "src/components/seo/QuestPageContent.tsx:108",
@@ -71,6 +75,8 @@ const lineOf = (src, idx) => src.slice(0, idx).split("\n").length;
 
 let touched = 0, skippedHero = 0, already = 0;
 const report = [];
+const matchedHero = new Set();
+const writes = [];
 
 for (const file of walk(path.join(root, "src"))) {
   const rel = path.relative(root, file);
@@ -85,7 +91,7 @@ for (const file of walk(path.join(root, "src"))) {
     const tag = src.slice(tagStart, end + 2);
     const line = lineOf(src, tagStart);
     if (/\bloading\s*=/.test(tag)) { already++; continue; }
-    if (EAGER_KEEP.has(`${rel}:${line}`)) { skippedHero++; continue; }
+    if (EAGER_KEEP.has(`${rel}:${line}`)) { skippedHero++; matchedHero.add(`${rel}:${line}`); continue; }
     edits.push({ end, tag, line });
   }
   if (!edits.length) continue;
@@ -112,8 +118,18 @@ for (const file of walk(path.join(root, "src"))) {
   }
   touched += edits.length;
   report.push(`${rel}  +${edits.length}`);
-  if (!dryRun) fs.writeFileSync(file, src);
+  writes.push([file, src]);
 }
+
+// EAGER_KEEP 항목이 어떤 `<img>` 와도 안 맞으면 줄이 밀린 것 — 그대로 쓰면 히어로가 lazy가 된다
+const stale = [...EAGER_KEEP].filter((k) => !matchedHero.has(k));
+if (stale.length) {
+  console.error("EAGER_KEEP 항목이 loading 없는 <img> 와 맞지 않는다 (줄번호 어긋남?) — 아무 파일도 쓰지 않음:");
+  stale.forEach((k) => console.error("  " + k));
+  report.sort().forEach((r) => console.error("  추가 대상: " + r));
+  process.exit(1);
+}
+if (!dryRun) for (const [file, src] of writes) fs.writeFileSync(file, src);
 
 report.sort().forEach((r) => console.log("  " + r));
 console.log(`\n${dryRun ? "[dry-run] " : ""}loading="lazy" 추가: ${touched}개 / 이미 있던 것: ${already}개 / 히어로 제외: ${skippedHero}개`);
