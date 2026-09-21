@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.37.3",
+    date: "2026-09-21",
+    dev: [
+      "refactor(ads): **상세 시트 안 광고 자리(`sheet`, placeholder 103 bottom_of_page) 제거** (#110). Ezoic Ad Placeholder 리포트에서 두 기간 연속 viewability 51%(다른 자리 78~93%)에 수익 비중 4.7%(9/2~9/15) — 사용자가 보러 온 스탯·재료가 광고 위에서 끝나 스크롤할 동기가 없고, 짧은 아이템은 광고가 시트를 늘리는 유일한 원인이었으며, 고정 `SupportPill`이 소재 위로 겹쳤다. `DetailPanel`의 `<AdSlot variant=\"sheet\">`와 `AdSlot`의 `sheet` variant·103 매핑·목업·`SLOT_BOX`, 그리고 시트 전용이던 claim/linger 안정화 타이머(#96 `SETTLE`)를 함께 걷어냈다 — 남은 자리(111·107·108)는 전부 상주라 즉시 등록/해제. 시트를 열고 닫을 때마다 나가던 4자리 재배치(~2초 공백)도 사라진다. `scripts/check-ad-slots.mjs`는 이제 시트 열기·유지·닫기 단계에서 배치 0을 요구한다. 숫자·결정 근거는 `docs/ezoic-decision.md` 2026-09-17 항목. 배포는 원래 측정 동결(9/15~9/22)이 끝나는 9/23 예정이었으나, 9/19까지의 Revenue Daily가 수정 전후로 평평해 9/22 판독이 결론을 바꿀 여지가 없다고 보고 9/21에 동결을 끝내고 배포 (결정 문서 \"수익 추세 판독\" 절).",
+    ],
+    changes: {
+      ko: [
+        "아이템 상세 화면 아래에 있던 광고를 없앴습니다. 짧은 아이템도 스크롤 없이 한 화면에 들어오고, 후원 버튼이 광고를 가리는 일도 사라집니다.",
+      ],
+      en: [
+        "Removed the ad at the bottom of the item detail sheet. Short items now fit on one screen without scrolling, and the support button no longer overlaps an ad.",
+      ],
+    },
+  },
+  {
     version: "0.37.2",
     date: "2026-09-21",
     dev: [

@@ -5,7 +5,6 @@ import { X, ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { findScrollContainerFor } from "@/lib/scroll-container";
 import { SupportPill } from "./SupportPill";
-import { AdSlot } from "@/components/ads/AdSlot";
 
 interface DetailPanelProps {
   open: boolean;
@@ -76,9 +75,9 @@ export function DetailPanel({ open, onClose, onBack, backLabel, hideClose, child
           </button>
         ) : null}
         {children}
-        {/* 상세 시트 광고 (#75). 시트는 탭마다 하나씩 상시 마운트돼 있으므로 열렸을 때만
-            렌더한다 — 닫힌 시트에도 광고를 요청하면 보이지 않는 노출이 쌓인다. */}
-        {open && <AdSlot variant="sheet" />}
+        {/* 시트 안에 광고 자리를 두지 않는다 (#110). #75~#96 동안 컨텐츠 끝에 placeholder
+            103이 있었지만 시청률 51%로 전 자리 최저였고, 짧은 시트에 스크롤을 만들며
+            아래 SupportPill이 소재를 가렸다. 시트를 열고 닫을 때마다 나가던 재배치도 사라졌다. */}
         <SupportPill />
       </div>
     </>

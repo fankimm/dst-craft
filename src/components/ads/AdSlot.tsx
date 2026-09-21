@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
  * placeholder 번호는 Ezoic 대시보드 리포트와 1:1로 대응하므로 한 번 정하면 바꾸지 않는다.
  * 좌우 레일은 서로 다른 번호여야 한다 — 같은 번호를 두 곳에 쓰면 한쪽만 채워진다.
  *
- * **번호는 탭이 아니라 "자리 역할"(상단 띠 / 시트 / 레일) 단위로 공유한다.**
+ * **번호는 탭이 아니라 "자리 역할"(상단 띠 / 레일) 단위로 공유한다.**
  * 탭은 전부 동시에 마운트돼 있지만, 아래 활성 판정 덕분에 **보이는 탭의 자리만** id를
  * 가진 div를 그린다. 그래서 문서 안에 같은 번호가 둘 이상 존재하는 일이 없다.
  * (탭마다 번호를 따로 쓰면 탭이 늘어날 때마다 번호가 고갈된다 — 대시보드에 등록된
@@ -23,9 +23,9 @@ import { useEffect, useRef, useState } from "react";
  * 목업 모드: `?admock=<자리>[:<규격>]` (쉼표로 복수). 실제 광고 대신 규격만큼의
  * 자리 표시 박스를 그린다. 자리를 옮기거나 규격을 비교할 때 쓴다.
  *   ?admock=all                      모든 자리 기본 규격
- *   ?admock=infeed,sheet:250x250     인피드 + 시트(250×250)
+ *   ?admock=top:320x100,rail-left    상단 띠(320×100) + 왼쪽 레일(기본 규격)
  */
-export type AdVariant = "top" | "sheet" | "rail-left" | "rail-right";
+export type AdVariant = "top" | "rail-left" | "rail-right";
 
 /**
  * 자리별 Ezoic placeholder id.
@@ -44,11 +44,10 @@ export const AD_PLACEHOLDER_ID: Record<AdVariant, number> = {
   // 102(under_page_title)·109(under_first_paragraph)는 beta 실측에서 계속 비어 있었다.
   // 같은 조건에서 110~113(본문 계열)은 잘 채워졌으므로 그쪽을 쓴다 (#75).
   top: 111, // mid_content — 실측에서 가장 안정적으로 채워졌다
-  // 상세 시트는 한 번에 하나만 열린다.
-  // 115(incontent_5)는 300×600·336×280 같은 세로로 긴 소재를 배달해 시트를 잡아먹었다
-  // (#75, 사용자 지적). 103(bottom_of_page)은 실측에서 970×105 가로 띠가 왔고, 시트
-  // 본문 끝이라는 위치 성격과도 맞아 이쪽으로 옮겼다.
-  sheet: 103, // bottom_of_page — 가로 띠 계열
+  // 103(bottom_of_page)은 상세 시트 끝에 있던 `sheet` 자리였다 — #110에서 제거.
+  // Ezoic placeholder 리포트에서 두 기간 연속 viewability 51%(다른 자리 78~93%)에
+  // 수익 비중 4.7%였고, 짧은 시트에 스크롤을 만들며 `SupportPill`이 소재를 가렸다.
+  // 시트 안에 자리를 다시 만들 생각이면 그 숫자부터 다시 볼 것 (`docs/ezoic-decision.md`).
   // 데스크탑 레일은 AppShell에 한 쌍만 있다
   "rail-left": 107, // sidebar_floating_1
   "rail-right": 108, // sidebar_floating_2
@@ -104,14 +103,12 @@ const MOCK_SIZES: Record<string, { w: number; h: number }> = {
 const BAND_MOCK = { mobile: "320x50", desktop: "468x60" };
 const MOCK_DEFAULT: Record<AdVariant, { mobile: string; desktop: string }> = {
   top: BAND_MOCK,
-  sheet: BAND_MOCK,
   "rail-left": { mobile: "", desktop: "300x600" },
   "rail-right": { mobile: "", desktop: "300x600" },
 };
 
 const MOCK_LABEL: Record<AdVariant, string> = {
   top: "목록 첫 줄",
-  sheet: "상세 시트 안",
   "rail-left": "왼쪽 레일",
   "rail-right": "오른쪽 레일",
 };
@@ -144,14 +141,6 @@ const MOCK_LABEL: Record<AdVariant, string> = {
 const SLOT_BOX: Record<AdVariant, { w: string; minH: string; reserve?: string }> = {
   // 목록 맨 위 한 행 (검색바 바로 아래) — 길고 얇은 띠
   top: BAND_BOX,
-  // 상세 시트 안 — 시트는 가로로 넓고 세로가 아까운 자리라 띠 형태가 맞다.
-  // 폭을 336으로 좁혀 두면 336×280처럼 세로로 큰 광고가 와서 시트 아래를 잠식하고
-  // 스크롤을 유발했다 (#75 실측).
-  // 넓은 화면에서 970까지 열어 두는 건 103(bottom_of_page)이 970×105 띠를 배달하기
-  // 때문이다 — 728로 묶어 두면 그 규격이 자리를 삐져나온다.
-  // 시트 광고는 본문 아래라 밀릴 컨텐츠가 없다 → 예약 불필요
-  // = placeholder 320 / 728 / 970 + CARD_PAD
-  sheet: { w: "w-full max-w-[336px] sm:max-w-[744px] lg:max-w-[986px]", minH: "min-h-[50px]" },
   // 데스크탑 레일 — 실측상 sidebar 자리에도 336폭(336×280 계열)이 배달되므로
   // 폭을 336으로 잡는다. 300으로 두면 36px씩 옆 컨텐츠를 침범했다.
   // 세로로 여러 유닛이 쌓여 뷰포트보다 길어지는 경우가 있어 래퍼에서 높이를 흡수한다
@@ -310,96 +299,27 @@ function scheduleAdFlush() {
 }
 
 /**
- * 자리별 **안정화 대기** — 잠깐 나타났다 사라지는 자리가 배치를 유발하지 않게 한다 (#96).
+ * 모든 자리는 화면에 상주하므로 **즉시** 등록/해제한다 — 첫 광고가 늦어지면 안 된다.
  *
- * 배치가 나가면 지목하지 않은 자리의 광고까지 비워지므로, `flushAdQueue` 는 살아 있는
- * 자리를 전부 함께 요청한다(#94). 그 대가로 **배치 한 번 = 모든 자리 리프레시 한 번**이다.
- * 상세 시트는 열고 닫을 때마다 자리가 생겼다 사라지므로, 그대로 두면 배치가 쏟아진다 —
- * 프로덕션 실측에서 아이템 5개를 4초씩 열고 닫자 배치 15건, 레일이 0.9~3.1초 간격으로
- * 9번 리프레시됐다. Ezoic 자체 리프레시 주기가 30초인데 그 15배다.
- *
- * 그게 왜 손해인가: 뷰어빌리티 집계 기준이 **1초**(픽셀 50% 이상)라 0.9초 만에 갈아치운
- * 노출은 집계도 지불도 되지 않는다. 그러면서 평균 viewability 를 끌어내려 **전체 인벤토리의
- * CPM** 을 깎는다(현재 display viewability 69.47% — `docs/ezoic-decision.md` 기준선).
- * 초 단위 반복 리프레시는 invalid traffic 정책 리스크이기도 하다.
- *
- * **"배치에서 레일을 빼면 되지 않나"는 안 된다** — 시트가 열린 상태에서 `showAds(103)` 만
- * 단독 호출하니 레일이 즉시 비워지고 6초 뒤에도 복구되지 않았다(실측). 그래서 고칠 지점은
- * "배치에 무엇을 넣느냐"가 아니라 **"배치를 몇 번 내느냐"** 다.
- *
- * - `CLAIM_MS` — 이만큼 떠 있어야 자리로 인정한다. 스쳐 지나가는 상세뷰는 등록 자체를 안 한다
- * - `LINGER_MS` — 닫혀도 이만큼 붙들고 있는다. 아이템을 연달아 훑는 동안 자리가 계속 등록된
- *   상태로 남아 배치가 아예 안 나간다. 다시 열리면 해제 예약을 취소한다
- *
- * 상단 띠·레일은 화면에 상주하므로 0 — 즉시 등록/해제한다(첫 광고가 늦어지면 안 된다).
+ * 잠깐 나타났다 사라지는 자리를 다시 만들 땐 (#96의) **안정화 대기**가 필요하다는 것을
+ * 기억할 것. 배치가 나가면 지목하지 않은 자리의 광고까지 비워지므로 `flushAdQueue` 는 살아
+ * 있는 자리를 전부 함께 요청하고(#94), 그 대가로 **배치 한 번 = 모든 자리 리프레시 한 번**
+ * 이다. 상세 시트 자리(103)가 있던 시절 아이템 5개를 4초씩 열고 닫자 배치 15건, 레일이
+ * 0.9~3.1초 간격으로 9번 리프레시됐다 — 뷰어빌리티 집계 기준(1초)을 못 채우는 노출은 지불도
+ * 안 되면서 인벤토리 전체의 viewability·CPM을 깎는다. 그래서 #96은 열림 2초 뒤에 등록하고
+ * 닫힘 4초 뒤에 해제하는 claim/linger 타이머를 뒀다. 그 시트 자리는 #110에서 자리 자체를
+ * 없애며(시청률 51%로 전 자리 최저) 타이머도 함께 걷어냈다 — 필요해지면 git 히스토리의
+ * `SETTLE` 을 참조.
  */
-const SETTLE: Partial<Record<AdVariant, { claim: number; linger: number }>> = {
-  sheet: { claim: 2000, linger: 4000 },
-};
-/** 등록/해제 예약 타이머 (자리 번호 → 타이머) */
-const settleTimers = new Map<number, ReturnType<typeof setTimeout>>();
-
-function clearSettle(id: number) {
-  const t = settleTimers.get(id);
-  if (t !== undefined) {
-    clearTimeout(t);
-    settleTimers.delete(id);
-  }
-}
-
 function requestAd(token: SlotToken) {
-  // 해제 예약이 걸려 있었다면 취소 — 닫았다 다시 연 것이므로 아무 일도 없었던 셈이다.
-  clearSettle(token.id);
-  const settle = SETTLE[token.variant];
-  if (!settle) {
-    desiredOwner.set(token.id, token);
-    scheduleAdFlush();
-    return;
-  }
-  if (desiredOwner.get(token.id) === token) return; // 이미 같은 주인으로 등록됨
-  settleTimers.set(
-    token.id,
-    setTimeout(() => {
-      settleTimers.delete(token.id);
-      desiredOwner.set(token.id, token);
-      scheduleAdFlush();
-    }, settle.claim),
-  );
+  desiredOwner.set(token.id, token);
+  scheduleAdFlush();
 }
 
 function releaseAd(token: SlotToken) {
-  const settle = SETTLE[token.variant];
-
-  // 등록되기 전에 사라졌다 — 스쳐 지나간 상세뷰다. 예약만 취소하고 배치는 내지 않는다.
-  if (settle && settleTimers.has(token.id) && desiredOwner.get(token.id) !== token) {
-    clearSettle(token.id);
-    return;
-  }
-
   // 이미 다른 자리가 이 번호를 가져갔다면 건드리지 않는다
-  if (desiredOwner.get(token.id) !== token) {
-    scheduleAdFlush();
-    return;
-  }
-
-  if (!settle) {
-    desiredOwner.delete(token.id);
-    scheduleAdFlush();
-    return;
-  }
-
-  // 닫혀도 잠시 붙들고 있는다 — 아이템을 연달아 훑는 동안 자리가 등록된 채로 남아
-  // 배치가 아예 안 나간다. 그 사이 다시 열리면 `requestAd` 가 이 예약을 취소한다.
-  clearSettle(token.id);
-  settleTimers.set(
-    token.id,
-    setTimeout(() => {
-      settleTimers.delete(token.id);
-      if (desiredOwner.get(token.id) !== token) return; // 그새 다른 주인이 잡았다
-      desiredOwner.delete(token.id);
-      scheduleAdFlush();
-    }, settle.linger),
-  );
+  if (desiredOwner.get(token.id) === token) desiredOwner.delete(token.id);
+  scheduleAdFlush();
 }
 
 /** `?admock=` 파싱 — 자리 → 규격 오버라이드. 쿼리가 없으면 빈 맵(=실제 광고) */
@@ -565,7 +485,6 @@ if (process.env.NODE_ENV !== "production") {
   // 바깥 폭 = placeholder 폭 + CARD_PAD 불변식 — 숫자를 한쪽만 고치면 여기서 걸린다
   const expect: Record<AdVariant, number[]> = {
     top: [320, 728],
-    sheet: [320, 728, 970],
     "rail-left": [336],
     "rail-right": [336],
   };
