@@ -1,3 +1,5 @@
+import { sketchIcon, sketchName } from "./sketches";
+
 export interface BossLoot {
   item: string;
   chance: number; // 1.0 = 100%
@@ -594,6 +596,7 @@ export const bosses: Boss[] = [
       { item: "trinket_6", chance: 0.7 },
       { item: "gears", chance: 1 },
       { item: "gears", chance: 0.5 },
+      { item: "chesspiece_wagboss_lunar_sketch", chance: 1 },
     ],
   },
   {
@@ -659,7 +662,6 @@ export const lootNameKo: Record<string, string> = {
   orangestaff: "게으른 탐험가", yellowstaff: "별부름 지팡이",
   orangeamulet: "게으른 약탈자", yellowamulet: "마광",
   thulecite: "툴레사이트", thulecite_pieces: "툴레사이트 파편",
-  chesspiece_eyeofterror_sketch: "공포의 눈 조각상 스케치",
   armorruins: "툴레사이트 갑옷", ruinshat: "툴레사이트 왕관", ruins_bat: "툴레사이트 몽둥이",
   spidereggsack: "거미 알", spiderhat: "거미 모자",
   dragonflyfurnace: "용비늘 화로", bundlewrap: "포장지",
@@ -673,20 +675,6 @@ export const lootNameKo: Record<string, string> = {
   support_pillar_scaffold: "기둥 비계",
   red_mushroomhat: "빨간 버섯갓", green_mushroomhat: "녹색 버섯갓", blue_mushroomhat: "파란 버섯갓",
   mushroom_light: "버섯등", mushroom_light2: "발광갓", sleepbomb: "잠주머니",
-  chesspiece_deerclops_sketch: "외눈사슴 조각상 스케치",
-  chesspiece_bearger_sketch: "곰소리 조각상 스케치",
-  chesspiece_moosegoose_sketch: "큰사슴/거위 조각상 스케치",
-  chesspiece_dragonfly_sketch: "용파리 조각상 스케치",
-  chesspiece_beequeen_sketch: "여왕벌 조각상 스케치",
-  chesspiece_klaus_sketch: "클라우스 조각상 스케치",
-  chesspiece_toadstool_sketch: "독꺼비버섯 조각상 스케치",
-  chesspiece_stalker_sketch: "고대의 연료직공 조각상 스케치",
-  chesspiece_crabking_sketch: "대게왕 조각상 스케치",
-  chesspiece_malbatross_sketch: "꽉새치 조각상 스케치",
-  chesspiece_twinsofterror_sketch: "공포의 쌍둥이 조각상 스케치",
-  chesspiece_antlion_sketch: "개미사자 조각상 스케치",
-  chesspiece_daywalker_sketch: "악몽화된 늑대돼지 조각상 스케치",
-  chesspiece_minotaur_sketch: "고대 수호자 조각상 스케치",
   // 추가된 보스 전리품
   alterguardianhat: "계몽의 왕관", alterguardianhatshard: "계몽의 조각", moonglass: "달 파편", moonglass_charged: "충전된 달 파편",
   moonrocknugget: "월석", wagpunk_bits: "고철더미", scrap_monoclehat: "지평확장기",
@@ -694,14 +682,6 @@ export const lootNameKo: Record<string, string> = {
   livinglog: "생목", houndstooth: "사냥개 이빨",
   purebrilliance: "순수한 광휘", spoiled_food: "부패물",
   plantmeat: "풀고기", fruitflyfruit: "친절한 초파리의 과일",
-  chesspiece_guardianphase3_sketch: "천상의 대변자 조각상 도면",
-  chesspiece_daywalker2_sketch: "고철덩이 늑대돼지 조각상 도면",
-  chesspiece_sharkboi_sketch: "서리턱상어 조각상 도면",
-  chesspiece_warg_mutated_sketch: "귀신들린 바르그 조각상 도면",
-  chesspiece_deerclops_mutated_sketch: "수정 외눈사슴 조각상 도면",
-  chesspiece_bearger_mutated_sketch: "무장 곰소리 조각상 도면",
-  chesspiece_wagboss_robot_sketch: "W.A.R.B.O.T. 조각상 도면",
-  chesspiece_wormboss_sketch: "거대 동굴지렁이 조각상 도면",
   wormlight: "발광 베리",
   beardhair: "수염털",
   rabbitkingspear: "토끼왕의 곤봉",
@@ -710,30 +690,17 @@ export const lootNameKo: Record<string, string> = {
   ice: "얼음", lunar_seed: "천상의 보석",
 };
 
-/** Sketches that have unique icon files */
-const SKETCHES_WITH_ICONS = new Set([
-  "chesspiece_crabking_sketch",
-  "chesspiece_daywalker_sketch",
-  "chesspiece_malbatross_sketch",
-  "chesspiece_guardianphase3_sketch",
-  "chesspiece_sharkboi_sketch",
-  "chesspiece_wormboss_sketch",
-]);
-
 /** Resolve image path for a loot item */
 export function lootImage(itemId: string): string {
   const base = itemId.replace(/_blueprint$/, "");
-  if (base.endsWith("_sketch")) {
-    return SKETCHES_WITH_ICONS.has(base)
-      ? `/images/game-items/${base}.png`
-      : "/images/game-items/sketch.png";
-  }
+  if (base.endsWith("_sketch")) return `/images/game-items/${sketchIcon(base)}`;
   return `/images/game-items/${base}.png`;
 }
 
 /** Resolve loot display name */
 export function lootDisplayName(itemId: string, locale: string): string {
   const baseId = itemId.replace(/_blueprint$/, "");
+  if (baseId.endsWith("_sketch")) return sketchName(baseId, locale);
   if (locale === "ko") {
     return lootNameKo[baseId] ?? lootNameKo[itemId] ?? baseId.replace(/_/g, " ");
   }

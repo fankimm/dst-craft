@@ -127,7 +127,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
    ```
 
 2. **답변 문구를 사용자에게 확인받는다** — 공개 게시판에 그대로 노출되므로 예외 없음
-   - **답변은 피드백 원문 언어로만 쓴다.** 한국어 피드백엔 한국어, 영어 피드백엔 영어. **한 답변에 두 언어를 병기하지 않는다** — 보드는 `pickDisplay`가 사용자 로캘에 맞춰 원문/번역 중 하나만 보여주는 구조라, 병기하면 모든 사용자가 두 언어를 다 보게 된다 (#106). 반대 언어는 4번의 번역 필드로 따로 넣는다
+   - **답변은 피드백 원문 언어로만 쓴다.** 한국어 피드백엔 한국어, 영어 피드백엔 영어, 그 외 언어(포르투갈어 등)도 그 언어로. **한 답변에 두 언어를 병기하지 않는다** — 보드는 `pickDisplay`가 사용자 로캘에 맞춰 원문/번역 중 하나만 보여주는 구조라, 병기하면 모든 사용자가 두 언어를 다 보게 된다 (#106). 반대 언어는 4번의 번역 필드로 따로 넣는다
 
 3. **등록** — 맥미니에서 `bun-api/scripts/reply-as-claude.ts` 실행 (`replyAuthor=claude` 고정):
    ```bash
@@ -143,6 +143,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
    ```
    - 맥미니 클론은 main이라 feat 브랜치의 수정본은 이렇게 scp로 넘겨 돌린다 (스크립트는 `bun:sqlite`만 써서 단독 실행 가능)
    - 이미 번역된 row는 `*_translated_at IS NULL` 조건으로 건너뛰므로 여러 번 돌려도 안전
+   - **원문이 ko/en이 아닐 때(pt 등)** — 답변은 그대로 원문 언어로 쓰고, `messageLang`/`replyLang`에 그 언어 코드를 넣은 뒤 번역 값을 문자열 대신 `{ ko: "…", en: "…" }` 두 벌로 준다. DB 칸은 하나라 JSON 맵으로 저장되고 `pickDisplay`가 사용자 로캘 키를 고른다 (#123). 새 언어면 스크립트의 `Lang` 타입에 코드를 추가할 것. **이 프론트 변경이 배포되기 전에 맵을 넣으면 사용자에게 JSON 원문이 그대로 보인다** — 순서 주의
    - **답변을 나중에 고치면 번역이 자동으로 지워지지 않는다** (PATCH는 `reply`/`reply_author`만 갱신). 답변을 바꿨으면 DB에서 그 row의 `reply_translated`/`reply_translated_at`을 NULL로 되돌린 뒤 다시 백필
 
 5. **확인** — 1번 curl을 다시 돌려 `replyAuthor: "claude"`와 `replyTranslated`가 채워졌는지 본다 (공개 목록 캐시 60초)
@@ -167,10 +168,12 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `src/components/crafting/` — 메인 앱 컴포넌트
 - `src/components/cooking/` — 요리 탭 컴포넌트
 - `src/components/console/` — 콘솔 명령어 탭 컴포넌트
+- `src/components/farming/` — 농사 탭 컴포넌트 (#120). 게임에 없는 문구는 `farming-text.ts`에만 둔다
 - `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지
 - `src/components/ads/AdSlot.tsx` — Ezoic 광고 자리 (자리별 placeholder id 고정, `?admock=`로 목업 미리보기). 자리 목록·규격은 `docs/ui.md` 참조
 - `src/data/skill-trees/` — 스킬트리 데이터 (11캐릭터, 번역, 타입)
+- `src/data/sketches.ts` — 체스기물 조각상 ↔ 도면(sketch) 매핑 + 도면 입수처 (보스/제작/회전초/석상/돼지왕/신월/성소) + 조각 재료별 결과물 이미지. 조각상 상세(`ItemDetail`)·SEO 아이템 페이지·보스탭 전리품 이름/아이콘이 모두 여기서 파생 (#111)
 - `src/hooks/` — 커스텀 훅 (use-crafting-state, use-settings, use-search, use-auth, use-favorites, use-skill-tree)
 - `src/lib/` — 유틸리티 (types, i18n, crafting-data, utils, favorites-api)
 - `src/lib/version.ts` — 앱 버전 (`APP_VERSION`)
@@ -189,7 +192,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `bun-api/infra/newsyslog-dstcraft-nginx.conf` — nginx 로그 로테이션 (#77, 100MB/7개/gzip). `/etc/newsyslog.d/dstcraft-nginx.conf`로 복사해야 적용 — **자동 배포 없음**
 - `scripts/optimize-boss-images.mjs` — 보스 이미지 UI용 축소본(**무손실** WebP, 긴 변 512px, `sharp`) 생성 → `public/images/bosses/thumb/`. **보스 이미지를 추가·교체하면 반드시 다시 실행**할 것 (`node scripts/optimize-boss-images.mjs`). 원본은 OG/schema용으로 남겨 두므로 덮어쓰지 않는다. 선화+알파 소재라 손실 압축은 윤곽선을 뭉갠다 — 무손실이 기본이다 (#88)
 - `scripts/optimize-ui-icons.mjs` — `public/images/category-icons/**` · `public/images/ui/**` PNG를 **무손실 WebP로 제자리 변환**(원본 삭제). 이 아이콘들은 OG·schema에 안 쓰여서 사본을 남길 이유가 없다 — 보스와 다른 점. **해상도는 절대 바꾸지 않는다**(밉맵 이슈는 #88 참조, 바꾸려면 브라우저 재측정 필수). 아이콘을 새로 추가하면 다시 실행할 것. WebP가 더 큰 파일이 나오면 비정상 종료해서 사람이 판단하게 한다 (#91)
-- `scripts/add-img-lazy.mjs` — `loading` 속성이 없는 `<img>` JSX에 `loading="lazy"` 일괄 적용. `--dry-run` 으로 누락 감시. 상세 페이지 히어로(LCP) 8곳은 스크립트 안 `EAGER_KEEP` 으로 제외 — 여기에 없는 `<img>` 는 전부 lazy가 기본이다 (#91)
+- `scripts/add-img-lazy.mjs` — `loading` 속성이 없는 `<img>` JSX에 `loading="lazy"` 일괄 적용. `--dry-run` 으로 누락 감시. 상세 페이지 히어로(LCP) 8곳은 스크립트 안 `EAGER_KEEP` 으로 제외 — 여기에 없는 `<img>` 는 전부 lazy가 기본이다 (#91). 키가 `경로:줄번호`라 위쪽 코드가 늘면 어긋난다 — 어긋나면 스크립트가 파일을 쓰지 않고 exit 1 하니 그때 줄번호를 갱신할 것 (#121)
 - `bun-api/scripts/recalc-visitor-os.ts` — `analytics_visitors.os` 재계산 (#63). `parseOS`에 `Bot`/`Unknown`/`HarmonyOS` 버킷이 생기기 전 행을 원본 `ua`로 다시 분류한다. 기본 dry-run, `--apply`로 반영. **집계 카운터는 원본 UA를 안 남겨 백필 불가** — OS 분포는 배포 시점부터 새 기준
 - `bun-api/src/lib/util.test.ts` — UA 분류 회귀 테스트 (`bun test`). 핵심 위험은 정상 방문자(네이버 인앱, CUBOT 단말 등)를 봇으로 오분류하는 것이라 그 케이스를 고정
 - `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta). prod 배포 시 IndexNow ping 호출
@@ -204,6 +207,11 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `docs/terminology.md` — UI 용어집
 - `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
 - `docs/scrapbook-migration.md` — 스크랩북 데이터 마이그레이션 설계 (히스토리)
+- `docs/farming-research.md` — 농사 탭 사전 조사 (#117): 공략 10개를 게임 소스와 대조 검증한 기록, 소스 기준 농사 메커니즘·상수, 작물/비료/도구 표, 계절별 무비료 조합, 공략 오류 로그. 농사 기능을 만들기 전에 먼저 읽을 것
+- `src/data/farming.ts` — 농사 데이터 (작물 14·잡초 4·비료 17·돌보기 도구·급수·스트레스 등급·도감 라벨) — 자동 생성, 수정 금지
+- `scripts/extract-farming.py` — 위 파일 생성 파이프라인 (아래 Farming Pipeline Rules)
+- `src/lib/farming-combos.ts` — 계절별 무비료 조합 계산 (`farmCombos`), 일반 씨앗 확률 (`randomSeedChances`)
+- `src/components/seo/FarmingContent.tsx` — `/farming`, `/ko/farming` 정적 페이지
 - `src/data/scrapbook-stats.ts` — 인게임 scrapbookdata.lua 기반 아이템 스펙 (1541개, specialinfo ko/en 799개) — 자동 생성, 수정 금지
 - `scripts/convert-scrapbook.py` — scrapbookdata.lua + strings.lua + ko.po → scrapbook-stats.ts 생성 파이프라인
 
@@ -286,8 +294,20 @@ jihwan-kim3 (macOS):
   3. `prefabs/{meats,butter,honey,egg,acorn,...}.lua`의 per-prefab `inst.components.edible.{foodtype,hungervalue,healthvalue,sanityvalue}` 직접 설정
 - 한국어 이름은 ko.po(`STRINGS.NAMES.<ID>`)에서 자동 매칭. 누락 시 영문 fallback
 - 정확하지 않은 항목은 스크립트 상단의 `OVERRIDES` dict에 명시적으로 수정 (예: butter → foodtype dairy)
+- **VEGGIES 행을 못 읽으면 스크립트가 목록을 찍고 exit 1로 죽는다** (파일 미기록) — `MakeVegStats(` 호출 수와 파싱 행 수도 대조. 조용한 누락 방지용이니 `continue`로 되돌리지 말 것. `IsSpecialEventActive(...) and X or Y` 같은 이벤트 조건식은 비이벤트 값(`or` 쪽)을 쓴다 (#122, 호박 누락 건)
 - 제외할 항목은 `EXCLUDE_IDS`에 ID 추가 (예: acorn — FOODTYPE.SEEDS, raw 식용 의미 없음)
 - 렌더링: `src/components/cooking/CookingApp.tsx`의 `RawFoodGrid` + `RawFoodDetail` (요리탭 "raw" 카테고리에서만)
+
+## Farming Pipeline Rules
+- 농사 탭의 모든 게임 수치는 `src/data/farming.ts` 한 곳에서 온다 — `scripts/extract-farming.py`가 자동 생성, **수동 편집 금지** (#120)
+- 갱신 절차: 통합 `bash scripts/sync-game-data.sh` 한 번이면 끝. (개별 실행: `python3 scripts/extract-farming.py`, 스냅샷 `~/dst-game-snapshot`을 직접 읽는다)
+- 소스: `prefabs/farm_plant_defs.lua`(양분·제철·물·성장 시간), `weed_defs.lua`, `veggies.lua`(일반 씨앗 가중치 — `MakeVegStats`의 **첫 인자만** 읽는다. 호박은 유통기한 인자에 `IsSpecialEventActive(...)` 괄호가 들어 있어 단순 정규식으로 뒤 인자를 읽으면 잘린다), `fertilizer_nutrient_defs.lua`, `components/farmplantstress.lua`(등급 경계), `tuning.lua`, ko.po(이름·도감 라벨·스트레스 대사 — msgid가 영문이라 ko.po 하나로 en/ko를 다 얻는다)
+- **assert가 곧 패치 감지기다.** 실패하면 데이터를 고치지 말고 규칙이 바뀐 것이니 `docs/farming-research.md`와 조합 계산식부터 재검토:
+  - 작물의 소비 총량이 되돌릴 양분 수로 나누어떨어진다 (아니면 소스의 "잉여 랜덤 분배" 경로가 발동해 순변화가 결정적이지 않다)
+  - 양분 인덱스 순서 = [성장 촉진제, 퇴비, 거름] / 스트레스 등급 경계 1·6·11 / 작물 14종 / 비료 항목이 전부 상수로 풀림
+- **조합은 데이터로 저장하지 않는다** — `src/lib/farming-combos.ts`가 `farming.ts`에서 계산한다. 기준값: 기본 조합 **봄 12 · 여름 4 · 가을 10 · 겨울 2**. 패치 후 이 수가 바뀌면 의도된 변화인지 확인할 것
+- 돌보기 도구·급수 수단의 "아이템 ↔ 상수" 매핑과 등급별 수확물(`FARM_HARVEST`)은 prefab 코드에서 확인해 고정한 값이다 (`docs/farming-research.md` 2장, 검증 수준 A). 새 도구가 추가되면 스크립트의 `TEND_TOOLS` / `WATER_SOURCES`에 수동으로 넣는다
+- 화면에 수치를 더할 땐 "게임 수치" / "계산값" 배지(`ValueBadge`)로 출처를 구분한다. `docs/farming-research.md` 2.0절의 **C등급(미검증) 항목은 화면에 사실로 쓰지 않는다**
 
 ## Skill Tree Verification
 - `scripts/verify-skill-trees.py` — 인게임 `skilltree_<char>.lua` vs 우리 `src/data/skill-trees/*.ts` 정적 비교

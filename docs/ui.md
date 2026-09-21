@@ -9,7 +9,7 @@
 ### AppShell (`src/components/AppShell.tsx`)
 ```
 ┌─ 상태바 커버 (z-60, safe-area-inset-top) ──────────────┐
-├─ 탭 바 (crafting | cooking | cookpot | bosses | skills | quests | console | settings)─┤
+├─ 탭 바 (crafting | cooking | cookpot | bosses | skills | skins | quests | farming | console | settings)─┤
 ├─ 활성 탭 컨텐츠 ──────────────────────────────────────────┤
 │                                                           │
 │  ┌─ CraftingApp / CookingApp / BossesApp / CookpotApp ─┐ │
@@ -69,7 +69,7 @@
 └──────────────────────────────────────────────┘
 ```
 - 왼쪽: SVG Rail (그룹 컬러 세로 라인 + 정션 포인트)
-- 오른쪽: 스킬 노드 카드 (아이콘 + 이름 + 토글)
+- 오른쪽: 스킬 노드 카드 (아이콘 + 이름 + 토글). 아이콘은 `SkillIcon` — 다크모드에서 밝은 배경판 (#113)
 - 상태 저장: localStorage (`dst:skills:${charId}`)
 
 ### 콘솔 탭 (ConsoleApp)
@@ -145,6 +145,34 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - 훅: `useQuestState` — toggle / resetQuest / countChecked
 - 아이템 아이콘은 게임 내 이미지 사용 (lureplantbulb, moon_altar_*, atrium_key, thurible 등)
 
+### 농사 탭 (FarmingApp) (#120)
+헤더의 보기 칩 3개로 화면을 바꾸는 단일 스크롤 탭. 상태는 전부 URL(`?tab=farming&view=&season=&with=&crop=`, `useFarmingState`).
+```
+┌─────────────────────────────────────────────┐
+│ 농사                                         │
+│ [계절별 조합] [작물] [참고표]                 │ ← 보기 칩 (TagChip + 선택 강조)
+├─────────────────────────────────────────────┤
+│ (계절별 조합)                                │
+│ [봄][여름][가을][겨울]                       │ ← 계절 칩 (텍스트 — 봄·가을 아이콘이 게임에 없다)
+│ ⚠ 일반 씨앗 → 거대 작물 불가 안내            │
+│ 이 작물이 들어간 조합: [전체][당근]…          │ ← 제철 작물만, 작물 상세에서 넘어오면 미리 선택됨
+│ ┌ 조합 카드 ───────────────────────────────┐ │
+│ │ [5 타일당 | 토마토란] + [5 | 감자 가지]   │ │ ← 칸 = 양분 역할, 칸 안 작물은 서로 대체 가능
+│ │ (타일 1개로 충분) (새 밭에서 안전)        │ │ ← 상태 배지 2개 (초록=좋음 / 호박색=주의)
+│ │ 최악 순서 수요 — 성장 촉진제 10 …         │ │
+│ └──────────────────────────────────────────┘ │
+│ (작물) CategoryCard 그리드 14개 → DetailPanel │
+│ (참고표) 비료 · 돌보기 도구 · 급수 · 스트레스 7항목 · 수확물 · 잡초 │
+│ <Footer />                                   │
+└──────────────────────────────────────────────┘
+```
+- **데이터**: `src/data/farming.ts`(자동 생성, `scripts/extract-farming.py`) — 이름·도감 라벨·스트레스 대사까지 ko.po에서 온다. 게임에 없는 말만 `src/components/farming/farming-text.ts`에 둔다 (홈 번들에 안 실리게 `i18n.ts`와 분리)
+- **조합은 저장하지 않고 계산한다**: `src/lib/farming-combos.ts` `farmCombos(season)`. 정렬은 ① 타일 하나로 끝남 ② 칸 수 적음 ③ 새 밭에서 안전 ④ 일반 씨앗에서 흔한 작물
+- **작물 상세(`CropDetail`)**: 인게임 식물 도감 순서 — 계절 → 물 소비량 → 양분 순환 → 씨앗·생산물·거대 작물(`ItemSlot`) → 성장 시간 → 일반 씨앗 확률 → 맞는 비료(`ItemSlot`, 배지 = 양분값) → 조합으로 이동 → 현장 기록
+- **`ValueBadge`**(`src/components/farming/ValueBadge.tsx`): "게임 수치" / "계산값" 구분 표시. 게임에서 그대로 온 값과 우리가 계산한 값(조합·포기 수·양분 수요·씨앗 확률)을 화면에서 나눈다 — 농사 화면에 수치를 더할 땐 반드시 둘 중 하나를 붙일 것
+- 스트레스 7항목 이름은 게임에 공식 라벨이 없어 나무위키식 표기를 쓰고 인게임 대사(윌슨)를 곁들인다
+- 양파 작물 이미지는 게임 파일명이 `quagmire_onion.png` — `cropImage()`가 처리한다
+
 ### SEO 전용 SSG 페이지
 클라이언트 앱과 별도로 서버 렌더링되는 정적 페이지:
 - `/item/[slug]` — 제작 아이템 상세 (JSON-LD: HowTo)
@@ -152,6 +180,7 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - `/boss/[slug]` — 보스 상세 (JSON-LD: GamePlayMode)
 - `/browse` — 전체 목록 디렉토리
 - `/cookpot` — 요리솥 랜딩페이지
+- `/farming` — 농사 가이드 (`seo/FarmingContent` — 계절별 조합을 빌드 시 계산해 표로 담는다. 참고표는 탭의 `FarmingGuide`를 그대로 재사용)
 
 > SSG 페이지는 클라이언트 컴포넌트(DetailPanel 등)를 사용하지 않음. 리팩토링 시 주의.
 
@@ -169,7 +198,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 ### DetailPanel (`src/components/ui/DetailPanel.tsx`)
 - **용도**: 바텀시트 상세 패널 (오버레이 + 슬라이드업 + 닫기 버튼 + SupportPill)
-- **사용처**: CraftingApp, CookingApp, BossesApp, SkinsApp, Wx78StatusPanel, Wx78CircuitBoard, FeedbackBoard (설정 탭)
+- **사용처**: CraftingApp, CookingApp, BossesApp, FarmingApp, SkinsApp, Wx78StatusPanel, Wx78CircuitBoard, FeedbackBoard (설정 탭)
 - **짝 훅**: `useDetailPanel` — 패널 open/close 애니메이션 상태 관리
 - **Props**: `open`, `onClose`, `onBack`/`backLabel`, `hideClose`, `children`
 - **스크롤 잠금 (#105)**: 열리는 동안 **자기 탭의** `[data-scroll-container]` 에 인라인 `overflow:hidden`. 대상은 `findScrollContainerFor(overlayRef)` 로 찾는다 — `document.querySelector` 첫 매치는 숨은 제작 탭이라 금지. 오버레이에 `data-detail-open="true|false"` 마커가 있어 `useScrollLockHeal` 이 "시트 없는 잠금" 을 판정한다
@@ -178,6 +207,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 ### FeedbackBoard (`src/components/settings/FeedbackBoard.tsx`)
 - **용도**: 사용자 피드백 게시판 (설정 탭에 임베드). 공개 목록 + 어드민 관리 UI를 한 컴포넌트에서 분기
 - **구조(공개)**: 피드백 카드 리스트(본문/상태 뱃지/자동 번역 배지+원문 토글) + 답변이 있으면 답변 블록
+- **번역 선택**: `pickDisplay`가 원문 언어와 사용자 로캘을 비교해 원문/번역 중 하나만 보여준다. 번역 칸은 보통 반대 언어 문자열 하나지만, 원문이 ko/en이 아니면(pt 등) `{"ko","en"}` JSON 맵이 들어오고 `translationFor`가 로캘 키를 고른다 (#123)
 - **구조(어드민)**: 상태 필터 칩 추가 + 항목 탭 시 DetailPanel(전체 메시지/메타/답변 작성/상태 변경/숨김/삭제)
 - **답변 작성자 표시**: 답변 블록 제목은 `ReplyAuthorLabel`이 그린다. `replyAuthor === "claude"`면 WX-78 얼굴 아이콘 + 보라색 "Claude 답변", 그 외에는 기존 회색 "개발자 답변". 작성자 선택 UI는 두지 않는다 — 화면 저장은 항상 `human`, `claude`는 API 직접 호출로만 (CLAUDE.md "Feedback Replies" 참조)
 - **모바일 최적화**: 좌우 스크롤 없음, 한 줄당 최소 정보만 노출
@@ -208,7 +238,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 ### CategoryCard (`src/components/ui/CategoryCard.tsx`)
 - **용도**: 카테고리 그리드 타일 (아이콘 + 라벨, 즐겨찾기/최근조회는 우하단 카운트 뱃지)
-- **사용처**: CraftingApp(CategoryGrid), CookingApp, BossesApp
+- **사용처**: CraftingApp(CategoryGrid), CookingApp, BossesApp, FarmingApp(작물 그리드)
 - **레이아웃 규칙**: 아이콘 영역 size-12 sm:size-14 고정 + 라벨 영역 `min-h-[2lh]` 고정 → 라벨이 1줄이든 2줄이든 모든 카드의 카드 높이 / 아이콘 수직 위치가 동일 (인게임 라벨이 단일 진실 공급원이라 텍스트 줄 수가 가변)
 - **Props**: `imageSrc`, `imageAlt?`, `label`, `badgeCount?`, `onClick`
 - **badge 동작**: `badgeCount === undefined`면 안쪽 이미지 크기를 size-12/14로 확장(뱃지 자리 없이 가득). 정의됐고 > 0이면 우하단에 카운트 뱃지
@@ -227,6 +257,12 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **v3 필드**: tags(TagChip), resistance, shadow_level, set_bonus(강조 카드), repair(아이템 이미지+이름), skill_tree(보라색 블록), immunities(에메랄드 뱃지), effects(불릿)
 - **v2 폴백**: v3 데이터 없을 시 기존 usage 텍스트 표시
 - **사용처**: ItemDetail
+
+### SkillIcon (`src/components/ui/SkillIcon.tsx`)
+- **용도**: 스킬트리 아이콘(`public/images/skill-icons/*.png`) 표시. 인게임 추출본이 **검은 선화 + 투명 배경**이라 다크모드에선 어두운 카드에 묻힌다 → 다크모드에서만 `dark:bg-zinc-200` 배경판을 깐다 (#113). 라이트모드는 배경 없음
+- **Props**: `icon`(파일명, 확장자 제외), `alt?`, `className?`(크기 — `size-10` 등)
+- **사용처**: `SkillNodeCard`(스킬트리 탭), `SkillTreePageContent`(SEO 스킬트리 페이지). 제작탭 상세의 "스킬 필요" 칩은 노란 배경이라 `TagChip` 그대로
+- **규칙**: 스킬 아이콘을 새로 그리는 곳은 `<img>` 직접 쓰지 말고 이 컴포넌트를 쓸 것
 
 ### SearchWithSuggestions (`src/components/ui/SearchWithSuggestions.tsx`)
 - **용도**: 드롭다운 서제스천 + 태그 지원 검색 입력
@@ -401,3 +437,11 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 
 - `itemStats[itemId]`로 매핑 — 아이템 `id`와 키가 일치해야 자동 연결
 - `usage` 필드는 `{ ko, en }` 구조로 다국어 지원
+
+### 조각상 도면·결과물 (`src/data/sketches.ts`)
+- **용도**: 도예가의 돌림판 조각상(`chesspiece_*_builder`)의 필요 도면과 입수처, 조각 재료별 결과물 이미지를 한 곳에서 파생 (#111)
+- **데이터**: `figureSketchSources` (조각상 id → `SketchSource[]`), `sketchName()`("{조각상} 도면" / "{Figure} Sketch" — 인게임 named 컴포넌트와 동일 규칙), `sketchIcon()`(전용 아이콘 없으면 `sketch.png`), `sculptResultImages()`(대리석 / `_stone` / `_moonglass` 접미사)
+- **사용처**: `ItemDetail`(도면 필요 칩 + 재료별 결과물 슬롯 + 도면 입수처 칩), `ItemPageContent`(SEO 페이지 같은 두 섹션), `bosses.ts`의 `lootDisplayName`/`lootImage`(도면 전리품 이름·아이콘), `BossesApp` 전리품 알약(도면 클릭 → 조각상 상세)
+- **입수처 칩 동작**: 보스 → `onBlueprintClick(sketchId)`로 보스탭 전리품 검색, 제작 도면 → `onItemClick(itemId)`로 그 도면 아이템 상세, 나머지(회전초·석상 채굴·돼지왕 교환·신월 부활·성소)는 `sketchSourceLabel()` 텍스트 칩
+- **조각 재료**: 인게임 `Ingredient(TECH_INGREDIENT.SCULPTING, 2)`는 "돌림판에 올린 조각용 돌 1개"라 재료 슬롯 `sculpting_material ×1`로 표현. 새 조각상을 추가하면 `figureSketchSources`에 입수처를 함께 등록할 것
+

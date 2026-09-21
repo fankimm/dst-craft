@@ -112,31 +112,45 @@ def parse_veggies(tuning: dict) -> list[dict]:
         return []
     block = m.group(1)
     out = []
+    dropped: list[str] = []  # rows we failed to parse — reported loudly at the end
     for row in re.finditer(
-        r"^\s*([a-z_][a-z0-9_]*)\s*=\s*MakeVegStats\(([\s\S]*?)\)",
+        r"^\s*([a-z_][a-z0-9_]*)\s*=\s*MakeVegStats\(",
         block,
         re.MULTILINE,
     ):
         name = row.group(1)
-        args_raw = row.group(2)
+        # Balanced-paren scan — a non-greedy `\)` match truncates rows whose args
+        # contain calls like `IsSpecialEventActive(...)` (pumpkin, #122).
+        args_raw = _balanced_args(block, row.end())
+        if args_raw is None:
+            dropped.append(f"{name}: unbalanced parentheses")
+            continue
         # Strip Lua comments + trim
         args = re.sub(r"--\[\[[\s\S]*?\]\]", "", args_raw)
         args = re.sub(r"--[^\n]*", "", args)
         # Split by commas at depth 0 (handle parens / braces / strings)
         args_list = _split_top_level(args)
         if len(args_list) < 5:
+            dropped.append(f"{name}: expected >= 5 args, got {len(args_list)}")
             continue
         # raw_hunger, raw_health, raw_perish_days, raw_sanity = positions 2..5 (index 1..4)
         hunger = lookup(tuning, args_list[1])
         health = lookup(tuning, args_list[2])
-        perish_arg = args_list[3]
-        # Some rows wrap perish in `IsSpecialEventActive(...) and X or Y` — pick the `or Y` fallback (default).
-        m_or = re.search(r"or\s+(TUNING\.[A-Z_]+)\b", perish_arg)
-        if m_or:
-            perish_arg = m_or.group(1)
+        perish_arg = _non_event_branch(args_list[3])
         perish = lookup(tuning, perish_arg)
         sanity = lookup(tuning, args_list[4])
-        if hunger is None or health is None or sanity is None:
+        unresolved = [
+            f"{label}={arg!r}"
+            for label, arg, val in (
+                ("hunger", args_list[1], hunger),
+                ("health", args_list[2], health),
+                ("perish", args_list[3], perish),
+                ("sanity", args_list[4], sanity),
+            )
+            if val is None and not (label == "perish" and perish_arg == "nil")
+        ]
+        if unresolved:
+            dropped.append(f"{name}: unresolved {', '.join(unresolved)}")
             continue
         # Convert seconds → DST days (480s/day)
         perish_days = round(perish / 480, 1) if perish else None
@@ -158,11 +172,7 @@ def parse_veggies(tuning: dict) -> list[dict]:
         if name in INCLUDE_COOKED_VARIANTS_VEGGIE and len(args_list) >= 9:
             c_hunger = lookup(tuning, args_list[5])
             c_health = lookup(tuning, args_list[6])
-            c_perish_arg = args_list[7]
-            c_or = re.search(r"or\s+(TUNING\.[A-Z_]+)\b", c_perish_arg)
-            if c_or:
-                c_perish_arg = c_or.group(1)
-            c_perish = lookup(tuning, c_perish_arg)
+            c_perish = lookup(tuning, _non_event_branch(args_list[7]))
             c_sanity = lookup(tuning, args_list[8])
             if c_hunger is not None and c_health is not None and c_sanity is not None:
                 c_perish_days = round(c_perish / 480, 1) if c_perish else None
@@ -176,7 +186,45 @@ def parse_veggies(tuning: dict) -> list[dict]:
                     "secondary_foodtype": secondary,  # monster carries to cooked variant
                     "source": "veggies.lua",
                 })
+            else:
+                dropped.append(f"{name}_cooked: unresolved cooked stats")
+    # Every `MakeVegStats(` in the block must have produced a row — never drop silently (#122).
+    expected = len(re.findall(r"MakeVegStats\(", block))
+    parsed = len({it["id"] for it in out if not it["id"].endswith("_cooked")})
+    if parsed + len([d for d in dropped if "_cooked:" not in d]) != expected:
+        dropped.append(f"row count mismatch: {expected} MakeVegStats calls, {parsed} parsed")
+    if dropped:
+        print("[!] VEGGIES rows dropped by parser:", file=sys.stderr)
+        for d in dropped:
+            print(f"      - {d}", file=sys.stderr)
+        print("    Fix parse_veggies() — refusing to write an incomplete raw-foods.ts.", file=sys.stderr)
+        sys.exit(1)
     return out
+
+
+def _non_event_branch(arg: str) -> str:
+    """`IsSpecialEventActive(...) and X or Y` → `Y` (the value outside the event).
+    Anything else is returned unchanged."""
+    m = re.fullmatch(r"[\s\S]+?\band\b[\s\S]+?\bor\s+(\S[\s\S]*)", arg.strip())
+    return m.group(1).strip() if m else arg.strip()
+
+
+def _balanced_args(text: str, start: int) -> str | None:
+    """Return the text between the `(` that ends at `start` and its matching `)`."""
+    depth = 1
+    in_str = False
+    for i in range(start, len(text)):
+        c = text[i]
+        if c == '"' and text[i - 1] != "\\":
+            in_str = not in_str
+        elif not in_str:
+            if c == "(":
+                depth += 1
+            elif c == ")":
+                depth -= 1
+                if depth == 0:
+                    return text[start:i]
+    return None
 
 
 def _split_top_level(s: str) -> list[str]:

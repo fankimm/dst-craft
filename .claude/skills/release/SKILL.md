@@ -168,6 +168,11 @@ git branch -d $RELEASE_BRANCH
 
 - 메인 워크트리는 `main` 그대로 유지 (CLAUDE.md 규칙). 임의로 brancht 변경 X
 - `git -C "$MAIN_WT" log -1 --oneline` + `git -C "$BETA_WT" log -1 --oneline` — 푸시 결과 확인
+- **production이 실제로 맥미니에서 나가는지 확인** (#112 — 2026-09-16 워치독 페일오버 뒤 failback을 안 해 약 44시간 동안 www가 Vercel의 옛 빌드였고, #111 릴리즈가 사용자에게 안 보였다):
+  ```bash
+  curl -sI https://www.dstcraft.com/ | grep -i x-vercel-id
+  ```
+  헤더가 나오면 DNS가 아직 Vercel(failover)이다. 맥미니가 정상(`ssh` 후 `curl -H "Host: www.dstcraft.com" localhost:8080/` 200, `/api/_debug/health` ok)이면 사용자에게 알리고 `gh workflow run watchdog.yml -f failback=true`로 되돌린 뒤 헤더가 사라지는지 다시 확인. 배포 워크플로우 성공 ≠ 사용자에게 보임
 - 사용자에게 결과 보고: 릴리즈된 feat, 머지된 커밋 수, 새 버전(있으면), www.dstcraft.com 배포 트리거 여부
 
 ## 규칙

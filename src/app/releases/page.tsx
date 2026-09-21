@@ -15,7 +15,7 @@ interface Release {
 
 const releases: Release[] = [
   {
-    version: "0.35.4",
+    version: "0.37.3",
     date: "2026-10-01",
     dev: [
       "refactor(ads): **상세 시트 안 광고 자리(`sheet`, placeholder 103 bottom_of_page) 제거** (#110). Ezoic Ad Placeholder 리포트에서 두 기간 연속 viewability 51%(다른 자리 78~93%)에 수익 비중 4.7%(9/2~9/15) — 사용자가 보러 온 스탯·재료가 광고 위에서 끝나 스크롤할 동기가 없고, 짧은 아이템은 광고가 시트를 늘리는 유일한 원인이었으며, 고정 `SupportPill`이 소재 위로 겹쳤다. `DetailPanel`의 `<AdSlot variant=\"sheet\">`와 `AdSlot`의 `sheet` variant·103 매핑·목업·`SLOT_BOX`, 그리고 시트 전용이던 claim/linger 안정화 타이머(#96 `SETTLE`)를 함께 걷어냈다 — 남은 자리(111·107·108)는 전부 상주라 즉시 등록/해제. 시트를 열고 닫을 때마다 나가던 4자리 재배치(~2초 공백)도 사라진다. `scripts/check-ad-slots.mjs`는 이제 시트 열기·유지·닫기 단계에서 배치 0을 요구한다. 숫자·결정 근거는 `docs/ezoic-decision.md` 2026-09-17 항목. 배포는 결정 문서의 측정 동결(9/15~10/01)이 끝난 뒤.",
@@ -26,6 +26,101 @@ const releases: Release[] = [
       ],
       en: [
         "Removed the ad at the bottom of the item detail sheet. Short items now fit on one screen without scrolling, and the support button no longer overlaps an ad.",
+      ],
+    },
+  },
+  {
+    version: "0.37.2",
+    date: "2026-09-21",
+    dev: [
+      "feat(feedback): **ko/en 외 언어 원문 피드백에 로캘별 번역 표시** (#123, 첫 포르투갈어 피드백 `1789865270352-qilbq4`). 번역 칸(`message_translated`/`reply_translated`)이 하나뿐이라 원문이 제3언어면 ko·en 중 한쪽만 번역을 볼 수 있었다. 같은 칸에 `{\"ko\":\"…\",\"en\":\"…\"}` JSON 맵을 허용하고 `FeedbackBoard`의 `translationFor()`가 사용자 로캘 키를 고른다. 일반 문자열 번역은 그대로 — 컬럼 추가·마이그레이션 없음. 로캘 키 없음/값이 문자열 아님 → 원문 fallback(배지 없음), `{`로 시작할 뿐인 깨진 JSON은 일반 문자열 취급.",
+      "scripts: `bun-api/scripts/translate-existing-feedback.ts` — `Lang`에 `pt` 추가, 번역 값으로 `string | { ko, en }` 허용(`serialize()`), 포르투갈어 피드백 항목 추가.",
+      "verify: beta 헤드리스 실측 — 기존 row 배지/토글 수 prod와 동일(ko 10/10, en 48/48). API 응답에 맵을 주입하면 ko는 한국어만, en은 영어만 표시(각 +2), JSON 원문 노출 없음, 콘솔 에러 없음.",
+      "docs: CLAUDE.md Feedback Replies(제3언어 절차 + 배포 순서 주의), `docs/ui.md` FeedbackBoard.",
+    ],
+    changes: {
+      ko: ["한국어·영어가 아닌 언어로 남긴 피드백과 답변도 사용 중인 언어로 번역되어 보입니다 ('원문 보기'로 원문 확인 가능)."],
+      en: ["Feedback and replies written in languages other than Korean or English are now shown translated into your language (tap 'View original' to see the source)."],
+    },
+  },
+  {
+    version: "0.37.1",
+    date: "2026-09-17",
+    dev: [
+      "fix(raw-foods): `scripts/extract-raw-foods.py`의 `parse_veggies`가 `MakeVegStats\\(([\\s\\S]*?)\\)` 비탐욕 정규식으로 인자를 잡아, pumpkin 행의 `IsSpecialEventActive(SPECIAL_EVENTS.HALLOWED_NIGHTS) and ... or TUNING.PERISH_MED` 안 첫 `)`에서 잘려 행이 조용히 버려지던 문제 (#122). 괄호 짝을 세는 `_balanced_args()`로 교체, 이벤트 조건식은 `_non_event_branch()`가 `or` 쪽(비이벤트 값) 선택.",
+      "pipeline: 파싱 못 한 VEGGIES 행은 목록 출력 + exit 1(파일 미기록). `MakeVegStats(` 호출 수와 파싱 행 수 대조. 구 파서 기준 누락은 20행 중 pumpkin 1건뿐.",
+      "data: `src/data/raw-foods.ts` 재생성 — pumpkin 1행 추가(37→38), 다른 행 무변화. 이름은 ko.po `STRINGS.NAMES.PUMPKIN`.",
+      "docs: `docs/mistakes.md`, CLAUDE.md Raw Foods Pipeline Rules.",
+    ],
+    changes: {
+      ko: ["요리 탭의 '생식 가능' 목록에서 빠져 있던 호박을 추가했습니다 (허기 +37.5, 체력 +3, 유통기한 10일)."],
+      en: ["Added the missing Pumpkin to the Cooking tab's raw-edible list (+37.5 hunger, +3 health, spoils in 10 days)."],
+    },
+  },
+  {
+    version: "0.37.0",
+    date: "2026-09-17",
+    dev: [
+      "feat(farming): **농사 탭 신설** (#120, 피드백 `1788012304165-qq9emx`). 조사(#117·#118)와 인수인계(#119) 위에 1~3단계 구현.",
+      "pipeline: `scripts/extract-farming.py` → `src/data/farming.ts` (작물 14·잡초 4·비료 17·돌보기 도구 8·급수 4·스트레스 등급·식물 도감 라벨·계절 이름). 이름은 전부 ko.po(msgid=영문, msgstr=한글모드). `sync-game-data.sh`에 연결. assert: 양분 잉여 분배 미발동, 양분 인덱스 순서, 스트레스 등급 경계 1·6·11, 작물 14종, 비료 상수 전부 해석 — 패치로 규칙이 바뀌면 빌드가 알려준다.",
+      "lib: `src/lib/farming-combos.ts` — 조합을 데이터로 저장하지 않고 `farming.ts`에서 계산(`farmCombos`, `randomSeedChances`). 조사용 프로토타입과 28개 조합(봄 12·여름 4·가을 10·겨울 2)의 포기 수·가족·수요·안전 여부가 전부 일치함을 확인하고 `scripts/farm-combos-prototype.py` 삭제.",
+      "ui: `src/components/farming/` — `FarmingApp`(보기 칩 3개: 계절별 조합/작물/참고표), `CropDetail`(인게임 식물 도감 순서), `FarmingGuide`(비료·돌보기 도구·급수·스트레스 7항목·수확물·잡초), `ValueBadge`(게임 수치/계산값 구분). 기존 `TagChip`·`ItemSlot`·`CategoryCard`·`DetailPanel`·`TabScrollArea`만 사용. 상태는 URL(`useFarmingState`: view/season/with/crop) + `useTabSync`(#105). AppShell에 `farming` 탭(10번째, dynamic 청크 + `isTabMounted`). 화면 문구는 홈 번들에 안 실리게 `farming-text.ts`로 분리(#91), `i18n.ts`에는 `tab_farming`만.",
+      "seo: `/farming`, `/ko/farming` SSG(`seo/FarmingContent`) — 계절별 조합 표를 빌드 시 계산, sitemap 등록, 히어로 2장은 `add-img-lazy.mjs` EAGER_KEEP.",
+      "assets: `wx78_foodbrick(_wet).png`를 게임 인벤토리 아틀라스에서 추출. 양파 작물 이미지는 게임 파일명 `quagmire_onion.png` 사용.",
+      "docs: `docs/ui.md` 농사 탭 구조도, 용어집, CLAUDE.md `Farming Pipeline Rules`, `todo.md`, `TODO-farming-tab.md`. 보류: 4단계 밭 배치도(정확히 1타일 거리의 가족 판정은 인게임 확인 필요).",
+      "verify: tsc·build 통과. beta 헤드리스 실측 — 탭 진입·계절 전환·시트 열고 뒤로가기로 닫기·탭 이탈 시 닫힘·작물 상세→조합 이동, 영어 로캘, 390px 가로 넘침 0, 깨진 이미지 0.",
+    ],
+    changes: {
+      ko: [
+        "농사 탭을 추가했습니다. 계절별로 비료 없이 양분이 유지되는 작물 조합과 타일당 몇 포기씩 심는지 보여 줍니다. 조합은 게임 데이터에서 직접 계산합니다.",
+        "작물을 누르면 제철, 양분 소비·배출, 물 소비량, 씨앗·거대 작물, 일반 씨앗에서 나올 확률, 맞는 비료를 볼 수 있습니다.",
+        "참고표에서 비료 양분값, 돌보기 도구 범위, 급수량, 스트레스 7항목, 스트레스 합계에 따른 수확물을 확인할 수 있습니다.",
+        "일반 씨앗에서 자란 작물은 거대 작물이 될 수 없습니다 — 거대 작물을 노린다면 작물 씨앗으로 심으세요.",
+      ],
+      en: [
+        "New Farming tab: crop combos for every season that keep soil nutrients balanced without fertilizer, with how many of each to plant per tile. Combos are calculated straight from game data.",
+        "Tap a crop to see its seasons, nutrient use, water use, seeds and giant crop, its chance from generic Seeds, and which fertilizers match.",
+        "The reference view lists fertilizer values, tending tool ranges, watering amounts, the 7 stressors, and what you harvest at each stress total.",
+        "Plants grown from generic Seeds can never become giant — use crop-specific seeds if you want giant crops.",
+      ],
+    },
+  },
+  {
+    version: "0.36.1",
+    date: "2026-09-17",
+    dev: [
+      "fix(skills): **다크모드에서 스킬 아이콘이 안 보이던 문제** (#113, 피드백 `1787854326772-cq0iie`). `public/images/skill-icons/*.png` 332장은 인게임 추출 **검은 선화 + 투명 배경**인데 `SkillNodeCard` 가 아이콘이 있으면 컨테이너 배경을 주지 않아(아이콘 없을 때만 `groupColor` 15%) 다크모드 카드(L≈8) 위에서 선이 묻혔다. 공유 컴포넌트 `src/components/ui/SkillIcon.tsx` 신설 — 다크모드에서만 `dark:bg-zinc-200` 배경판(L≈91), 라이트모드는 투명 그대로. `SkillNodeCard`(next/image → `<img loading=lazy>`, `images.unoptimized` 라 동작 동일)와 `SkillTreePageContent`(SEO)에 적용. 제작탭 \"스킬 필요\" 칩은 노란 배경이라 제외. beta 실측: 아이콘 26개 40×40 유지, 라이트 배경 `rgba(0,0,0,0)`.",
+      "docs: `docs/ui.md` 공유 컴포넌트에 SkillIcon + \"스킬 아이콘은 `<img>` 직접 쓰지 말 것\" 규칙.",
+    ],
+    changes: {
+      ko: [
+        "다크모드에서 스킬트리 아이콘이 어두운 배경에 묻혀 잘 안 보이던 문제를 고쳤습니다. 다크모드에서는 아이콘 뒤에 밝은 배경판이 깔립니다.",
+      ],
+      en: [
+        "Skill tree icons were hard to see in dark mode because the black line art blended into the dark cards. Icons now sit on a light plate in dark mode.",
+      ],
+    },
+  },
+  {
+    version: "0.36.0",
+    date: "2026-09-17",
+    dev: [
+      "feat(crafting): **체스기물 조각상 44종 제작법 수정** (#111, 피드백 `1789483590837-grx2ak` \"체스기물 도면 추가해주실수 있을까요?\"). `recipes.lua` 의 `Recipe2(\"chesspiece_*_builder\", {Ingredient(TECH_INGREDIENT.SCULPTING, 2), Ingredient(\"rocks\", 2)}, TECH.LOST)` 를 `station: \"none\"` + 돌 ×2 로만 적어 두어 \"손 제작\" 으로 나갔다. `station: \"potter_wheel\"`, 재료 `sculpting_material ×1`(`constants.lua:2140` `TECH_INGREDIENT.SCULPTING = \"sculpting_material\"` — 돌림판에 올리는 대리석/석재/달 파편 1개) 추가, 카테고리 `structures` → `decorations`(풍요의 뿔·방울 파이프와 통일). 새 재료 `sculpting_material`(\"Sculpting Block\" / 한글모드 \"조각용 돌\")을 `materials.ts` 와 12개 로캘(`scripts/languages/*.po` `STRINGS.NAMES.SCULPTING_MATERIAL`)에 등록. 돌림판 한글명 `station_potter_wheel` \"조각\" → ko.po `SCULPTINGTABLE` \"도예가의 돌림판\".",
+      "feat(data): **`src/data/sketches.ts` 신설** — 조각상 ↔ 도면(`chesspiece_*_sketch`) 매핑 + 입수처 `SketchSource`(boss / craft / tumbleweed / statue_marble / statue_maxwell / sculpture / pigking_trinket / vault_guard). 근거: `prefabs/sketch.lua` SKETCHES, 보스 loot 테이블, `tumbleweed.lua` CHESS_LOOT, `statue_marble.lua` SKETCH_UNLOCKS(뮤즈 type 1·2, 폰 type 4), `statuemaxwell.lua`, `sculptures.lua` 신월 부활, `trinkets.lua` TRADEFOR + `pigking.lua`(체스 장신구 → 도면), `vault_pillar_guard.lua` VAULT_LOOT_FINAL. `sketchName()` 은 인게임 `named` 컴포넌트와 같은 `STRINGS.NAMES.SKETCH` = \"{item} 도면\" 규칙, `sculptResultImages()` 는 `chesspieces.lua` MATERIALS 접미사(대리석 없음 / `_stone` / `_moonglass`). 고대의 수호탑은 석재·달유리 아이콘이 없어 대리석만.",
+      "feat(ui): `ItemDetail` 조각상 상세 — 블루프린트 칩 대신 **도면 필요** 칩(도면 아이콘), **재료별 결과물** 슬롯 3종, **도면 입수처** 블록(도면 슬롯 + 칩: 보스 → `onBlueprintClick(sketchId)` 로 보스탭 전리품 검색, 제작 도면 → 새 `onItemClick` 으로 그 아이템 상세, 나머지는 `sketchSourceLabel()` 텍스트 칩). `ItemPageContent`(SEO) 에 같은 두 섹션 + 보스/도면 링크. i18n 키 `sketch_required` / `sketch_source` / `sculpt_results`.",
+      "fix(bosses): 도면 전리품 이름을 `lootNameKo` 수기 23건(\"…스케치\"/\"…도면\" 혼용, \"수정 외눈사슴\" 등 ko.po 와 불일치) 대신 `sketchName()` 파생으로 일원화, 영어도 `chesspiece klaus sketch` → `Klaus Figure Sketch`. `SKETCHES_WITH_ICONS`(6개) → `SKETCH_ICON_IDS`(21개) 공유. 천상의 귀공자(`alterguardian_phase4_lunarrift.lua` `{\"chesspiece_wagboss_lunar_sketch\", 1.0}`) 전리품 누락 보강. `BossesApp` 전리품 알약: 도면 클릭 → 조각상 상세(`lootCraftingId()` 로 두 렌더 경로 공통화).",
+      "docs: `docs/ui.md` 조각상 도면·결과물 파생 패턴, `docs/terminology.md` 도면/도면 입수처/재료별 결과물, `docs/mistakes.md` tech ingredient 누락 재발 기록, `CLAUDE.md` Key Paths.",
+    ],
+    changes: {
+      ko: [
+        "체스기물 조각상 44종의 제작법을 바로잡았습니다. 제작대가 도예가의 돌림판으로, 재료에 조각용 돌(대리석·석재·달 파편 중 1개)이 추가됐고, 어떤 돌을 올리느냐에 따라 나오는 조각상 3종을 보여줍니다.",
+        "조각상 상세에 필요한 도면과 입수처를 표시합니다. 보스가 떨어뜨리는 도면은 눌러서 보스탭으로, 제작 가능한 도면은 그 도면 상세로 이동합니다. 회전초·대리석 조각상 채굴·맥스웰 석상·돼지왕 장신구 교환·신월 부활·성소 수호탑 경로도 적었습니다.",
+        "보스탭 전리품의 조각상 도면 이름을 게임과 같은 \"○○ 조각상 도면\"으로 통일했고, 도면을 누르면 그 조각상으로 이동합니다. 천상의 귀공자 도면이 전리품에 빠져 있던 것도 추가했습니다.",
+      ],
+      en: [
+        "Fixed the recipes of all 44 chess-piece figures: they are now crafted at the Potter's Wheel, need a Sculpting Block (Marble, Cut Stone or Moon Shard), and the detail shows the three figures you get depending on the block.",
+        "Figure details now show the required sketch and where to get it. Boss-dropped sketches jump to the Bosses tab, craftable sketches open their own recipe, and Tumbleweed, Marble Sculpture, Maxwell Statue, Pig King trinket trades, new-moon sculptures and the Sanctum guard tower are listed as text.",
+        "Boss loot now names figure sketches like the game (\"Klaus Figure Sketch\") and tapping one opens that figure. The Celestial Scion's sketch was missing from its loot and has been added.",
       ],
     },
   },

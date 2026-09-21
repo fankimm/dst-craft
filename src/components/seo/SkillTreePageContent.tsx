@@ -1,3 +1,4 @@
+import { SkillIcon } from "@/components/ui/SkillIcon";
 import { characters } from "@/data/characters";
 import { CHARACTERS_WITH_SKILLS, skillTrees } from "@/data/skill-trees/registry";
 import { groupTranslations, skillTranslations } from "@/data/skill-trees/translations";
@@ -216,14 +217,7 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
               const group = tree.groups.find((g) => g.id === node.group);
               return (
                 <div key={node.id} className="flex items-start gap-3 rounded-lg border border-border bg-surface px-4 py-3">
-                  {node.icon && (
-                    <img
-                      src={`/images/skill-icons/${node.icon}.png`}
-                      alt={titlePrimary}
-                      className="size-10 object-contain shrink-0 rounded"
-                      loading="lazy"
-                    />
-                  )}
+                  {node.icon && <SkillIcon icon={node.icon} alt={titlePrimary} className="size-10" />}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <p className="text-sm font-medium text-foreground leading-tight">{titlePrimary}</p>

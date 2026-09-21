@@ -710,6 +710,7 @@ export const ru: LocaleData = {
     "redgem": { name: "Красный самоцвет" },
     "reviver": { name: "Жертвенное сердце" },
     "rocks": { name: "Камни" },
+    "sculpting_material": { name: "Блок для скульптуры" },
     "rope": { name: "Веревка" },
     "rottenegg": { name: "Тухлое яйцо" },
     "royal_jelly": { name: "Маточное Молочко" },

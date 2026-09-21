@@ -14,18 +14,25 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DB_PATH = process.env.DB_PATH ?? join(homedir(), "dstcraft", "data", "app.db");
-const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16 추가)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
+const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16·09-17·09-21 추가, #120·#123 포함)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
 
-type Lang = "ko" | "en";
+type Lang = "ko" | "en" | "pt";
+// 원문이 ko↔en이면 반대 언어 문자열 하나. 원문이 제3언어(pt 등)면 ko·en 사용자 모두 번역이
+// 필요하므로 { ko, en } 두 벌을 넣는다 — DB 칸은 하나라 JSON 맵으로 직렬화되고, 프론트
+// `pickDisplay`가 사용자 로캘 키를 고른다 (#123).
+type Translated = string | { ko: string; en: string };
 interface Entry {
   id: string;
   messageLang: Lang;
-  messageTranslated: string;
+  messageTranslated: Translated;
   replyLang?: Lang;
-  replyTranslated?: string;
+  replyTranslated?: Translated;
 }
 
-// id 순서는 created_at ASC. message_lang은 원문 언어이고, translated는 반대 언어로 작성됨.
+const serialize = (t: Translated): string => (typeof t === "string" ? t : JSON.stringify(t));
+
+// id 순서는 created_at ASC. message_lang은 원문 언어이고, translated는 반대 언어로 작성됨
+// (원문이 ko/en이 아니면 { ko, en } 두 벌).
 const TRANSLATIONS: Entry[] = [
   {
     id: "1774682512455-cyeo4q",
@@ -163,6 +170,14 @@ const TRANSLATIONS: Entry[] = [
     replyTranslated: "Ewe've got my word — I'll keep it worth watching 🐑",
   },
   {
+    id: "1783434334431-cv284i",
+    messageLang: "ko",
+    messageTranslated: "Please add \"Cookie Cutter Shell\" (과자틀소라 조가비).",
+    replyLang: "ko",
+    replyTranslated:
+      "The Cookie Cutter Shell isn't craftable — it's a material dropped by Cookie Cutters at sea. That's why it has no card in the Crafting tab, but if you type \"Cookie Cutter\" in the search box it shows up as a material, and tapping it lists the 7 recipes that use it (Cookie Cutter Cap, the four Hermit lures, the Hermit relocation kit, and the Shellweaver). We don't show where materials come from yet, so we'll consider that as part of an item info feature.",
+  },
+  {
     id: "1785440343749-p1wxms",
     messageLang: "ko",
     messageTranslated: "You're an absolute legend.",
@@ -214,17 +229,26 @@ const TRANSLATIONS: Entry[] = [
     id: "1787476043177-txe21r",
     messageLang: "ko",
     messageTranslated: "Can the Hostile Flare only be used in winter?",
+    replyLang: "ko",
+    replyTranslated:
+      "You can craft and fire the Hostile Flare in any season. However, its Deerclops-summoning effect only triggers in winter (60% chance). Luring the MacTusk hunting party also works only in winter, when their camp is occupied. Fired at sea, it calls a Moon Quay pirate raid regardless of season (60% chance).",
   },
   {
     id: "1787854326772-cq0iie",
     messageLang: "ko",
     messageTranslated:
       "Minor thing: in dark mode the skill tree images are hard to make out — the background is dark and the images are dark too.",
+    replyLang: "ko",
+    replyTranslated:
+      "Confirmed — the skill icons are black line art, so they were blending into the dark background in dark mode. Icons now sit on a light plate in dark mode and are easy to see. Thanks for pointing out even the small things!",
   },
   {
     id: "1788012304165-qq9emx",
     messageLang: "ko",
     messageTranslated: "Any chance a Farming tab gets added?? (recommended fertilizer / crop combos, etc.)",
+    replyLang: "ko",
+    replyTranslated:
+      "We've added the Farming tab you asked for. It shows crop combos for each season that work without fertilizer, how many of each to plant per tile, every crop's nutrient and water use, and fertilizer values. It also points out that plants grown from generic Seeds can never become giant. Thanks for the suggestion!",
   },
   {
     // #105 스크롤 먹통 제보. 답변(한국어, reply_author=claude)은 2026-09-16 등록 — 번역은 #109
@@ -240,6 +264,23 @@ const TRANSLATIONS: Entry[] = [
     id: "1789483590837-grx2ak",
     messageLang: "ko",
     messageTranslated: "Could you add the chess piece sketches?",
+    replyLang: "ko",
+    replyTranslated:
+      "We fixed the recipes of all 44 chess-piece figures and added sketch info. Each figure's detail now shows the required sketch and where to get it (boss drops, Tumbleweeds, mining statues, Pig King trades, and more), and boss-dropped sketches jump to the Bosses tab when tapped. It also shows the three figures you get depending on the block placed on the Potter's Wheel (Marble, Cut Stone or Moon Shard). Thanks for the report!",
+  },
+  {
+    // 첫 포르투갈어 피드백 — 원문이 ko/en이 아니라 번역을 두 벌 넣는다 (#123).
+    id: "1789865270352-qilbq4",
+    messageLang: "pt",
+    messageTranslated: {
+      ko: "여러분 정말 대단해요!!! <3\nDS 팬으로서 완전히 반했어요 <3",
+      en: "You guys are amazing!!! <3\nAs a DS fan, I'm totally in love <3",
+    },
+    replyLang: "pt",
+    replyTranslated: {
+      ko: "반하셨다고요? 그러다 저희도 맞받아 반해버립니다 😏 <3 브라질 팬의 칭찬은 한겨울에 꽉 찬 냉장고보다 값져요. 자주 놀러 오세요! 한국에서 뽀뽀 날려요. 그리고 굶지 마세요!",
+      en: "In love, huh? Careful — we might just love you right back 😏 <3 Praise from a Brazilian fan is worth more than a full ice box in winter. Come back anytime! A big kiss from Korea — and don't starve!",
+    },
   },
 ];
 
@@ -270,10 +311,10 @@ const updateReply = db.query(
 );
 
 for (const e of TRANSLATIONS) {
-  const m = updateMessage.run(e.messageTranslated, e.messageLang, now, MODEL, e.id);
+  const m = updateMessage.run(serialize(e.messageTranslated), e.messageLang, now, MODEL, e.id);
   if (m.changes > 0) msgUpdated++;
   if (e.replyTranslated && e.replyLang) {
-    const r = updateReply.run(e.replyTranslated, e.replyLang, now, MODEL, e.id);
+    const r = updateReply.run(serialize(e.replyTranslated), e.replyLang, now, MODEL, e.id);
     if (r.changes > 0) replyUpdated++;
   }
 }

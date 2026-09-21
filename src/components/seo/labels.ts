@@ -12,6 +12,18 @@ export const L = {
   skillTreeGuide: { en: "Skill Tree Guide", ko: "스킬트리 가이드" },
   browseAll: { en: "Browse All", ko: "전체 둘러보기" },
   cookpotSimulator: { en: "Crock Pot Simulator", ko: "요리솥 시뮬레이터" },
+  // Farming guide (/farming)
+  farmingGuide: { en: "Farming Guide", ko: "농사 가이드" },
+  farmingPageHeading: {
+    en: "DST Farming Guide\nNo-Fertilizer Crop Combos by Season",
+    ko: "굶지마 투게더 농사 가이드\n계절별 무비료 작물 조합",
+  },
+  farmingIntro: {
+    en: "Crop combinations whose nutrients cancel out within a single farm tile, calculated from the game's own data for every season.",
+    ko: "텃밭 타일 하나 안에서 양분이 서로 상쇄되는 작물 조합을 게임 데이터에서 계절별로 계산했습니다.",
+  },
+  openFarming: { en: "Open the farming tab", ko: "농사 탭 열기" },
+  farmingCropTable: { en: "Crops: seasons, nutrients and water", ko: "작물별 제철 · 양분 · 물" },
 
   // Sections
   howToCook: { en: "How to Cook", ko: "조리 방법" },
@@ -33,6 +45,8 @@ export const L = {
   cookingStation: { en: "Cooking Station", ko: "조리 도구" },
   craftingStation: { en: "Crafting Station", ko: "제작대" },
   materialsRequired: { en: "Materials Required", ko: "필요한 재료" },
+  sculptResults: { en: "Result by Material", ko: "재료별 결과물" },
+  sketchSource: { en: "Where to Get the Sketch", ko: "도면 입수처" },
   usesAndTips: { en: "Uses and Tips", ko: "용도 및 팁" },
   categories: { en: "Categories", ko: "카테고리" },
   usedIn: { en: "Used In", ko: "사용처" },

@@ -710,6 +710,7 @@ export const ja: LocaleData = {
     "redgem": { name: "赤い宝石" },
     "reviver": { name: "裏切りの心臓" },
     "rocks": { name: "岩" },
+    "sculpting_material": { name: "彫刻ブロック" },
     "rope": { name: "ロープ" },
     "rottenegg": { name: "卵（腐敗）" },
     "royal_jelly": { name: "ローヤルゼリー" },
