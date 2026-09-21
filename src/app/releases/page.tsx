@@ -15,6 +15,35 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.37.3",
+    date: "2026-10-01",
+    dev: [
+      "refactor(ads): **상세 시트 안 광고 자리(`sheet`, placeholder 103 bottom_of_page) 제거** (#110). Ezoic Ad Placeholder 리포트에서 두 기간 연속 viewability 51%(다른 자리 78~93%)에 수익 비중 4.7%(9/2~9/15) — 사용자가 보러 온 스탯·재료가 광고 위에서 끝나 스크롤할 동기가 없고, 짧은 아이템은 광고가 시트를 늘리는 유일한 원인이었으며, 고정 `SupportPill`이 소재 위로 겹쳤다. `DetailPanel`의 `<AdSlot variant=\"sheet\">`와 `AdSlot`의 `sheet` variant·103 매핑·목업·`SLOT_BOX`, 그리고 시트 전용이던 claim/linger 안정화 타이머(#96 `SETTLE`)를 함께 걷어냈다 — 남은 자리(111·107·108)는 전부 상주라 즉시 등록/해제. 시트를 열고 닫을 때마다 나가던 4자리 재배치(~2초 공백)도 사라진다. `scripts/check-ad-slots.mjs`는 이제 시트 열기·유지·닫기 단계에서 배치 0을 요구한다. 숫자·결정 근거는 `docs/ezoic-decision.md` 2026-09-17 항목. 배포는 결정 문서의 측정 동결(9/15~10/01)이 끝난 뒤.",
+    ],
+    changes: {
+      ko: [
+        "아이템 상세 화면 아래에 있던 광고를 없앴습니다. 짧은 아이템도 스크롤 없이 한 화면에 들어오고, 후원 버튼이 광고를 가리는 일도 사라집니다.",
+      ],
+      en: [
+        "Removed the ad at the bottom of the item detail sheet. Short items now fit on one screen without scrolling, and the support button no longer overlaps an ad.",
+      ],
+    },
+  },
+  {
+    version: "0.37.2",
+    date: "2026-09-21",
+    dev: [
+      "feat(feedback): **ko/en 외 언어 원문 피드백에 로캘별 번역 표시** (#123, 첫 포르투갈어 피드백 `1789865270352-qilbq4`). 번역 칸(`message_translated`/`reply_translated`)이 하나뿐이라 원문이 제3언어면 ko·en 중 한쪽만 번역을 볼 수 있었다. 같은 칸에 `{\"ko\":\"…\",\"en\":\"…\"}` JSON 맵을 허용하고 `FeedbackBoard`의 `translationFor()`가 사용자 로캘 키를 고른다. 일반 문자열 번역은 그대로 — 컬럼 추가·마이그레이션 없음. 로캘 키 없음/값이 문자열 아님 → 원문 fallback(배지 없음), `{`로 시작할 뿐인 깨진 JSON은 일반 문자열 취급.",
+      "scripts: `bun-api/scripts/translate-existing-feedback.ts` — `Lang`에 `pt` 추가, 번역 값으로 `string | { ko, en }` 허용(`serialize()`), 포르투갈어 피드백 항목 추가.",
+      "verify: beta 헤드리스 실측 — 기존 row 배지/토글 수 prod와 동일(ko 10/10, en 48/48). API 응답에 맵을 주입하면 ko는 한국어만, en은 영어만 표시(각 +2), JSON 원문 노출 없음, 콘솔 에러 없음.",
+      "docs: CLAUDE.md Feedback Replies(제3언어 절차 + 배포 순서 주의), `docs/ui.md` FeedbackBoard.",
+    ],
+    changes: {
+      ko: ["한국어·영어가 아닌 언어로 남긴 피드백과 답변도 사용 중인 언어로 번역되어 보입니다 ('원문 보기'로 원문 확인 가능)."],
+      en: ["Feedback and replies written in languages other than Korean or English are now shown translated into your language (tap 'View original' to see the source)."],
+    },
+  },
+  {
     version: "0.37.1",
     date: "2026-09-17",
     dev: [
