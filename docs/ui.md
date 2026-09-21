@@ -207,6 +207,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 ### FeedbackBoard (`src/components/settings/FeedbackBoard.tsx`)
 - **용도**: 사용자 피드백 게시판 (설정 탭에 임베드). 공개 목록 + 어드민 관리 UI를 한 컴포넌트에서 분기
 - **구조(공개)**: 피드백 카드 리스트(본문/상태 뱃지/자동 번역 배지+원문 토글) + 답변이 있으면 답변 블록
+- **번역 선택**: `pickDisplay`가 원문 언어와 사용자 로캘을 비교해 원문/번역 중 하나만 보여준다. 번역 칸은 보통 반대 언어 문자열 하나지만, 원문이 ko/en이 아니면(pt 등) `{"ko","en"}` JSON 맵이 들어오고 `translationFor`가 로캘 키를 고른다 (#123)
 - **구조(어드민)**: 상태 필터 칩 추가 + 항목 탭 시 DetailPanel(전체 메시지/메타/답변 작성/상태 변경/숨김/삭제)
 - **답변 작성자 표시**: 답변 블록 제목은 `ReplyAuthorLabel`이 그린다. `replyAuthor === "claude"`면 WX-78 얼굴 아이콘 + 보라색 "Claude 답변", 그 외에는 기존 회색 "개발자 답변". 작성자 선택 UI는 두지 않는다 — 화면 저장은 항상 `human`, `claude`는 API 직접 호출로만 (CLAUDE.md "Feedback Replies" 참조)
 - **모바일 최적화**: 좌우 스크롤 없음, 한 줄당 최소 정보만 노출

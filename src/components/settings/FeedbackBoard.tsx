@@ -46,6 +46,25 @@ type BoardItem = {
 // "원문 보기/번역 보기" 토글은 isTranslated 일 때만 그린다 — 표시 중인 글이 이미 원문이면
 // 바꿀 대상이 없다. 예전엔 같은 언어여도 번역본만 있으면 토글이 떠서 눌러도 아무 변화가
 // 없었다 (#107). 반대 언어 번역본을 굳이 보여줄 이유는 없다.
+//
+// 번역 칸은 DB에 하나뿐이라 원문이 ko↔en이면 반대 언어 문자열 하나로 충분하지만, 원문이
+// 제3언어(pt 등)면 ko·en 사용자 모두 번역이 필요하다. 그 경우 같은 칸에 `{"ko":"…","en":"…"}`
+// JSON 맵을 넣고 여기서 사용자 로캘 키를 고른다 (#123). 맵에 로캘 키가 없으면 원문 그대로.
+function translationFor(translated: string | null | undefined, userLocale: Locale): string {
+  const raw = (translated ?? "").trim();
+  if (!raw.startsWith("{")) return raw;
+  try {
+    const map: unknown = JSON.parse(raw);
+    if (map && typeof map === "object" && !Array.isArray(map)) {
+      const hit = (map as Record<string, unknown>)[userLocale];
+      return typeof hit === "string" ? hit.trim() : "";
+    }
+  } catch {
+    // `{`로 시작할 뿐인 일반 문자열 번역 — 아래에서 그대로 쓴다
+  }
+  return raw;
+}
+
 function pickDisplay(
   original: string | null | undefined,
   translated: string | null | undefined,
@@ -54,7 +73,7 @@ function pickDisplay(
 ): { text: string; isTranslated: boolean } {
   const orig = (original ?? "").trim();
   if (!orig) return { text: "", isTranslated: false };
-  const trans = (translated ?? "").trim();
+  const trans = translationFor(translated, userLocale);
   const sameLang = origLang === userLocale;
   if (sameLang || !trans) return { text: orig, isTranslated: false };
   return { text: trans, isTranslated: true };
