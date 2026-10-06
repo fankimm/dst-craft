@@ -2,6 +2,8 @@ import { quests, type Quest } from "@/data/quests";
 import { canonicalForQuest } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { JsonLd } from "./JsonLd";
+import { itemListLd } from "./list-schema";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { resolveIconPath } from "@/lib/icon-path";
 
@@ -16,9 +18,19 @@ function countSubsteps(q: Quest): number {
 
 export function QuestsListContent({ lang }: { lang: SeoLang }) {
   const routePrefix = lang === "ko" ? "/ko" : "";
+  const listLd = itemListLd(
+    L.questsTitle[lang],
+    `${routePrefix}/quests`,
+    quests.map((q) => ({
+      name: lang === "ko" ? q.titleKo : q.titleEn,
+      path: `${routePrefix}/quest/${canonicalForQuest(q.id)}`,
+    })),
+    lang,
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <JsonLd data={listLd} />
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link

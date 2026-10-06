@@ -4,6 +4,7 @@ import { ko } from "@/data/locales/ko";
 import { canonicalForFood } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { itemListLd } from "./list-schema";
 import { JsonLd } from "./JsonLd";
 import { AdSlot } from "@/components/ads/AdSlot";
 
@@ -61,6 +62,15 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
   }
 
   const routePrefix = lang === "ko" ? "/ko" : "";
+  const listLd = itemListLd(
+    L.allCockpotRecipes[lang],
+    `${routePrefix}/cookpot`,
+    cookingRecipes.map((r) => ({
+      name: lang === "ko" ? (ko.foods?.[r.id]?.name ?? r.name) : r.name,
+      path: `${routePrefix}/food/${canonicalForFood(r.id)}`,
+    })),
+    lang,
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -79,6 +89,7 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <JsonLd data={jsonLd} />
+      <JsonLd data={listLd} />
 
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
@@ -255,6 +266,7 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
             </Link>
           </div>
         </section>
+
       </main>
     </div>
   );

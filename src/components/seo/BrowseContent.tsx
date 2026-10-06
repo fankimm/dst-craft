@@ -5,9 +5,12 @@ import { characters } from "@/data/characters";
 import { categories } from "@/data/categories";
 import { ko } from "@/data/locales/ko";
 import { quests } from "@/data/quests";
+import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 import { canonicalForBoss, canonicalForFood, canonicalForItem, canonicalForQuest } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { JsonLd } from "./JsonLd";
+import { itemListLd } from "./list-schema";
 import { AdSlot } from "@/components/ads/AdSlot";
 
 const SITE_URL = "https://www.dstcraft.com";
@@ -29,9 +32,23 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
     catNames[c.id] = lang === "ko" ? (ko.categories[c.id]?.name ?? c.name) : c.name;
   }
   const routePrefix = lang === "ko" ? "/ko" : "";
+  // 전체 아이템은 수백 개라 허브 페이지만 목록으로 (상세는 각 허브의 ItemList가 담당)
+  const listLd = itemListLd(
+    L.browseTitle[lang],
+    `${routePrefix}/browse`,
+    [
+      { name: L.cookpotSimulator[lang], path: `${routePrefix}/cookpot` },
+      { name: L.farmingGuide[lang], path: `${routePrefix}/farming` },
+      { name: L.charactersTitle[lang], path: `${routePrefix}/characters` },
+      { name: L.skillTreesTitle[lang], path: `${routePrefix}/skill-trees` },
+      { name: L.questsTitle[lang], path: `${routePrefix}/quests` },
+    ],
+    lang,
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <JsonLd data={listLd} />
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -182,6 +199,40 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
           </ul>
         </section>
 
+        <section>
+          <h2 className="text-lg font-semibold mb-4">
+            <Link href={`${routePrefix}/skill-trees`} className="hover:underline">
+              {L.skillTreesLink[lang]} ({CHARACTERS_WITH_SKILLS.length})
+            </Link>
+          </h2>
+          <ul className="columns-2 sm:columns-3 md:columns-4 gap-x-4 text-sm">
+            {CHARACTERS_WITH_SKILLS.map((id) => {
+              const c = characters.find((ch) => ch.id === id);
+              if (!c) return null;
+              const primary = lang === "ko" ? (c.nameKo ?? c.name) : c.name;
+              return (
+                <li key={id} className="mb-1 break-inside-avoid">
+                  <Link
+                    href={`${routePrefix}/skill-tree/${id}`}
+                    className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
+                  >
+                    {primary}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold">
+            <Link href={`${routePrefix}/farming`} className="hover:underline">
+              {L.farmingGuide[lang]}
+            </Link>
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">{L.farmingIntro[lang]}</p>
+        </section>
+
         <section className="rounded-xl border border-border bg-surface p-5 text-center space-y-2">
           <p className="text-sm font-medium text-foreground">{L.interactiveGuide[lang]}</p>
           <Link
@@ -191,6 +242,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
             {L.openGuide[lang]}
           </Link>
         </section>
+
       </main>
     </div>
   );

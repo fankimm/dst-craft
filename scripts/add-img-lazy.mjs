@@ -26,11 +26,11 @@ const EAGER_KEEP = new Set([
   "src/components/seo/CharacterPageContent.tsx:105",
   "src/components/seo/FoodPageContent.tsx:145",
   "src/components/seo/SkillTreePageContent.tsx:140",
-  "src/components/seo/CookpotContent.tsx:95",
-  "src/components/seo/CookpotContent.tsx:96",
+  "src/components/seo/CookpotContent.tsx:106",
+  "src/components/seo/CookpotContent.tsx:107",
   "src/components/seo/QuestPageContent.tsx:108",
-  "src/components/seo/FarmingContent.tsx:44",
-  "src/components/seo/FarmingContent.tsx:45",
+  "src/components/seo/FarmingContent.tsx:115",
+  "src/components/seo/FarmingContent.tsx:116",
 ]);
 
 const dryRun = process.argv.includes("--dry-run");

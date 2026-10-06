@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.38.0",
+    date: "2026-10-06",
+    dev: [
+      "feat(seo): **허브 페이지 내부 링크 보강** (#126). `/farming`(#120)이 사이트맵에만 있고 홈·`/browse`에서 링크되지 않던 것을 `SeoFooterLinks`·`BrowseContent`에 추가. 농사 페이지에서 도구·비료·급수 아이템 21개를 아이템 페이지로 링크(`FARM_FERTILIZERS`/`TEND_TOOLS`/`WATER_SOURCES` + 괭이·쟁기·도감 모자 등, 아이템 페이지가 있는 것만)",
+      "feat(seo): **`/skill-trees`, `/ko/skill-trees` 허브 신설** (`seo/SkillTreesListContent`) — 12캐릭터 카드(스킬·분기 수) + ItemList + FAQ, 사이트맵 `staticPaths`, 상세 페이지 \"다른 스킬트리\" → 허브 링크",
+      "feat(seo): `seo/list-schema.tsx` 공통화 — `itemListLd`·`faqLd`·`FaqSection`(화면 FAQ와 JSON-LD를 같은 배열로)·`fillTemplate`·`DataSourceNote`. characters·quests·cookpot·browse에 ItemList, `/farming`에 계절별 FAQ(작물·조합 수·예시는 `farmCombos`에서 계산, 문장 틀은 `farming-text.ts`의 `FARM_FAQ`)",
+      "feat(geo): `/llms.txt` 빌드 시 생성 (`src/app/llms.txt/route.ts`) + nginx `charset utf-8`. 데이터 출처 문구는 자동 추출(농사)·스크립트 대조(스킬트리) 페이지에만 — 손 데이터 페이지에 붙이면 직접 쓴 설명이 \"게임 원문\"으로 인용된다는 독립 리뷰 지적 반영",
+      "chore: `add-img-lazy.mjs` EAGER_KEEP 줄번호 갱신(Cookpot·Farming 히어로), docs/ui.md SEO 허브 체크리스트, 오답노트(허브 내부 링크 누락, 워크트리 node_modules 심볼릭 링크 → Turbopack 거부)",
+    ],
+    changes: {
+      ko: [
+        "스킬트리 모아보기 페이지를 새로 만들었습니다. 스킬트리가 있는 캐릭터 12명의 스킬 수와 분기를 한눈에 비교할 수 있습니다.",
+        "농사 가이드에 계절별 자주 묻는 질문과 농사 도구·비료 아이템 링크를 더했습니다.",
+      ],
+      en: [
+        "New skill tree overview page: compare skill and branch counts for all 12 characters that have a skill tree.",
+        "The farming guide now has a seasonal FAQ and links to farming tools and fertilizers.",
+      ],
+    },
+  },
+  {
     version: "0.37.4",
     date: "2026-10-06",
     dev: [

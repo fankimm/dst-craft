@@ -1115,3 +1115,8 @@ Monumetric 1만+셋업비 — 전부 문턱이 있고 **Ezoic만 무제한이다
 - **문제**: 요리탭 "생식 가능"에 호박이 없었다. `veggies.lua`의 pumpkin 행만 perish 인자가 `IsSpecialEventActive(SPECIAL_EVENTS.HALLOWED_NIGHTS) and TUNING.PERISH_PRESERVED or TUNING.PERISH_MED`라 괄호를 품고 있는데, `extract-raw-foods.py`가 `MakeVegStats\(([\s\S]*?)\)` **비탐욕 정규식**으로 인자를 잡아 조건식 안의 첫 `)`에서 잘렸다 → 인자 4개 → `len < 5: continue`. `or` 분기를 고르는 코드는 이미 있었지만 거기까지 도달하지 못했다
 - **해결**: 괄호 짝을 세는 `_balanced_args()`로 인자를 추출하고, 버려진 행은 목록으로 모아 **stderr 출력 + exit 1** (파일을 쓰지 않음). `MakeVegStats(` 호출 수와 파싱된 행 수도 대조한다
 - **교훈**: 자동 생성 파이프라인의 `continue`는 "데이터가 틀림"이 아니라 **"데이터가 없음"**을 만들어서 눈에 안 띈다 — 틀린 값은 누가 신고하지만 없는 항목은 아무도 모른다. 원본의 행 수를 세어 결과와 대조하고, 못 읽은 행은 조용히 넘기지 말고 실패시킬 것. 중첩 괄호가 나올 수 있는 Lua 호출을 비탐욕 `\)`로 자르지 말 것
+
+### 새 허브 페이지를 사이트맵에만 넣고 내부 링크를 빠뜨림 (2026-10-06, #126)
+- **문제**: `/farming`(#120)이 사이트맵에는 있었지만 홈·`/browse` 어디서도 링크되지 않았다. 다른 허브(`/cookpot` `/quests` 등)는 홈 `SeoFooterLinks`에 다 있었다. 스킬트리는 상세 11개만 있고 허브 자체가 없었다
+- **교훈**: SEO 페이지를 추가하면 **사이트맵 + 홈 `SeoFooterLinks` + `/browse`** 세 곳을 한 세트로 갱신할 것 (`docs/ui.md` SEO 절에 체크 항목으로 둠). 검증은 `out/index.html`에서 `href="/새경로"` grep 한 번이면 된다
+- **덤 (워크트리 빌드)**: 워크트리에 메인의 `node_modules`를 심볼릭 링크하면 Turbopack이 "Symlink node_modules is invalid, it points out of the filesystem root"로 빌드를 거부한다. `tsc`는 통과하니 착각하기 쉽다 — 워크트리에서는 `npm ci`로 실제 설치할 것

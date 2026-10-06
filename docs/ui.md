@@ -180,7 +180,16 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - `/boss/[slug]` — 보스 상세 (JSON-LD: GamePlayMode)
 - `/browse` — 전체 목록 디렉토리
 - `/cookpot` — 요리솥 랜딩페이지
-- `/farming` — 농사 가이드 (`seo/FarmingContent` — 계절별 조합을 빌드 시 계산해 표로 담는다. 참고표는 탭의 `FarmingGuide`를 그대로 재사용)
+- `/farming` — 농사 가이드 (`seo/FarmingContent` — 계절별 조합을 빌드 시 계산해 표로 담는다. 참고표는 탭의 `FarmingGuide`를 그대로 재사용 + 계절별 FAQ + 농사 관련 아이템 링크)
+- `/skill-trees` — 스킬트리 허브 (`seo/SkillTreesListContent` — 캐릭터 카드 + 스킬/분기 수 + FAQ, #126)
+- `/llms.txt` — AI 검색용 사이트 안내 (`src/app/llms.txt/route.ts`, 빌드 시 데이터에서 생성, #126)
+
+**목록(허브) 페이지 공통 — `seo/list-schema.tsx` (#126)**
+- `itemListLd()` — 허브 페이지 ItemList JSON-LD (characters·quests·cookpot·browse·skill-trees)
+- `faqLd()` + `FaqSection` — FAQ JSON-LD와 화면 FAQ를 **같은 배열**로 만든다 (구조화 데이터만 있고 화면에 없으면 구글이 무시). 답변은 게임 데이터에서 계산한 문장만
+- `DataSourceNote kind="extracted"|"verified"` — 게임 릴리즈 기준 출처 문구 (`DST_GAME_VERSION`). **게임 파일에서 자동 생성했거나(농사) 스크립트로 대조 검증한(스킬트리) 페이지에만** 붙인다. characters·cookpot·browse처럼 손으로 관리하는 데이터에 붙이면 직접 쓴 설명이 AI 검색에 "게임 원문"으로 인용된다 (#126 리뷰)
+- `fillTemplate()` — FAQ 문장 틀의 `{key}` 채우기
+- 새 허브 페이지를 만들면 `SeoFooterLinks`(홈)·`BrowseContent`·사이트맵 `staticPaths`에 링크를 같이 추가할 것 — `/farming`이 사이트맵에만 있고 내부 링크가 없던 게 #126의 발단
 
 > SSG 페이지는 클라이언트 컴포넌트(DetailPanel 등)를 사용하지 않음. 리팩토링 시 주의.
 

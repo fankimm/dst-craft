@@ -7,6 +7,8 @@ import { categories } from "@/data/categories";
 import { ko } from "@/data/locales/ko";
 import { quests } from "@/data/quests";
 import { canonicalForBoss, canonicalForFood, canonicalForItem, canonicalForQuest } from "@/lib/slug";
+import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
+import { FARM_CROPS } from "@/data/farming";
 
 /** Pick representative items from each category for a balanced link set */
 function pickRepresentativeItems(count: number) {
@@ -72,6 +74,36 @@ export function SeoFooterLinks() {
               </Link>
             ))}
           </div>
+        </section>
+
+        {/* Skill Trees */}
+        <section>
+          <h3 className="font-medium text-foreground/60 mb-1">
+            <Link href="/skill-trees" className="hover:underline">
+              Skill Trees ({CHARACTERS_WITH_SKILLS.length})
+            </Link>
+          </h3>
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+            {CHARACTERS_WITH_SKILLS.map((id) => (
+              <Link
+                key={id}
+                href={`/skill-tree/${id}`}
+                className="hover:text-foreground hover:underline"
+              >
+                {characters.find((c) => c.id === id)?.name ?? id} Skill Tree
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Farming */}
+        <section>
+          <h3 className="font-medium text-foreground/60 mb-1">
+            <Link href="/farming" className="hover:underline">
+              Farming Guide — Crop Combos by Season
+            </Link>
+          </h3>
+          <p>{FARM_CROPS.map((c) => c.name.en).join(", ")}</p>
         </section>
 
         {/* Bosses */}

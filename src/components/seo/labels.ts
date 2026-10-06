@@ -257,6 +257,28 @@ export const L = {
     ko: "브라우저에 저장되는 체크박스로 진행 상황 추적",
   },
   questsLink: { en: "Quest Checklists", ko: "퀘스트 체크리스트" },
+
+  // Skill tree hub (/skill-trees, #126)
+  skillTreesLink: { en: "Skill Trees", ko: "스킬트리" },
+  skillTreesTitle: { en: "Don't Starve Together Skill Trees", ko: "Don't Starve Together 스킬트리" },
+  skillTreesIntro: {
+    en: "{n} characters have a skill tree. Pick a survivor to see every skill, branch and unlockable item.",
+    ko: "스킬트리가 있는 캐릭터는 {n}명입니다. 캐릭터를 골라 모든 스킬과 분기, 해금 아이템을 확인하세요.",
+  },
+  skillTreeCardSummary: { en: "{skills} skills · {branches} branches", ko: "스킬 {skills}개 · 분기 {branches}개" },
+  skillTreesWhichQ: {
+    en: "Which characters have a skill tree in Don't Starve Together?",
+    ko: "굶지마 투게더에서 스킬트리가 있는 캐릭터는 누구인가요?",
+  },
+  skillTreesWhichA: {
+    en: "{n} characters have a skill tree: {names}.",
+    ko: "스킬트리가 있는 캐릭터는 {names}로 모두 {n}명입니다.",
+  },
+  skillTreesCountQ: {
+    en: "How many skills does each skill tree have?",
+    ko: "캐릭터별 스킬트리의 스킬 수는 몇 개인가요?",
+  },
+  skillTreesCountA: { en: "{list}.", ko: "{list}입니다." },
   questCardSummary: {
     en: "{steps} steps · {subs} substeps",
     ko: "{steps}단계 · {subs} 하위 단계",
