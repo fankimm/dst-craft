@@ -1,6 +1,8 @@
 import { characters } from "@/data/characters";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
+import { JsonLd } from "./JsonLd";
+import { DataSourceNote, itemListLd } from "./list-schema";
 import { AdSlot } from "@/components/ads/AdSlot";
 
 const SITE_URL = "https://www.dstcraft.com";
@@ -20,9 +22,20 @@ const diffKey = {
 export function CharactersListContent({ lang }: { lang: SeoLang }) {
   const playable = characters.filter((c) => c.id !== "wonkey");
   const routePrefix = lang === "ko" ? "/ko" : "";
+  const listLd = itemListLd(
+    L.charactersTitle[lang],
+    `${routePrefix}/characters`,
+    playable.map((c) => ({
+      name: lang === "ko" ? (c.nameKo ?? c.name) : c.name,
+      path: `${routePrefix}/character/${c.id}`,
+      image: `/images/characters/${c.portrait}.png`,
+    })),
+    lang,
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <JsonLd data={listLd} />
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link
@@ -90,6 +103,8 @@ export function CharactersListContent({ lang }: { lang: SeoLang }) {
             {L.openCraftingGuide[lang]}
           </Link>
         </section>
+
+        <DataSourceNote lang={lang} />
       </main>
     </div>
   );

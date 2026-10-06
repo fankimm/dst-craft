@@ -291,7 +291,9 @@ export function SkillTreePageContent({ slug, lang }: { slug: string; lang: SeoLa
 
         <section>
           <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-            {L.otherSkillTrees[lang]}
+            <Link href={`${routePrefix}/skill-trees`} className="hover:underline">
+              {L.otherSkillTrees[lang]} →
+            </Link>
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {otherChars.map((c) => {
