@@ -2,7 +2,7 @@ import { characters } from "@/data/characters";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
-import { DataSourceNote, itemListLd } from "./list-schema";
+import { itemListLd } from "./list-schema";
 import { AdSlot } from "@/components/ads/AdSlot";
 
 const SITE_URL = "https://www.dstcraft.com";
@@ -104,7 +104,6 @@ export function CharactersListContent({ lang }: { lang: SeoLang }) {
           </Link>
         </section>
 
-        <DataSourceNote lang={lang} />
       </main>
     </div>
   );

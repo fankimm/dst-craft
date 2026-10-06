@@ -5,7 +5,7 @@ import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
 import { AdSlot } from "@/components/ads/AdSlot";
-import { DataSourceNote, FaqSection, faqLd, itemListLd, type FaqEntry } from "./list-schema";
+import { DataSourceNote, FaqSection, faqLd, fillTemplate as fill, itemListLd, type FaqEntry } from "./list-schema";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -29,8 +29,6 @@ function skillTreeRows(lang: SeoLang) {
 }
 
 function skillTreesFaq(rows: ReturnType<typeof skillTreeRows>, lang: SeoLang): FaqEntry[] {
-  const fill = (tpl: string, vars: Record<string, string | number>) =>
-    tpl.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
   const list = rows
     .map((r) => (lang === "ko" ? `${r.name} ${r.skills}개` : `${r.name} has ${r.skills}`))
     .join(", ");
@@ -121,7 +119,7 @@ export function SkillTreesListContent({ lang }: { lang: SeoLang }) {
           </Link>
         </section>
 
-        <DataSourceNote lang={lang} />
+        <DataSourceNote kind="verified" lang={lang} />
       </main>
     </div>
   );

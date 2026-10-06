@@ -18,7 +18,7 @@ import { FarmingGuide } from "@/components/farming/FarmingGuide";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
-import { DataSourceNote, FaqSection, faqLd, type FaqEntry } from "./list-schema";
+import { DataSourceNote, FaqSection, faqLd, fillTemplate as fill, type FaqEntry } from "./list-schema";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -46,8 +46,6 @@ function farmRelatedItems() {
   return allItems.filter((i) => ids.has(i.id) && canonicalForItem(i.id));
 }
 
-const fill = (tpl: string, vars: Record<string, string | number>) =>
-  tpl.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
 
 function comboText(combo: FarmCombo, lang: SeoLang) {
   const crops = combo.slots
@@ -244,7 +242,7 @@ export function FarmingContent({ lang }: { lang: SeoLang }) {
           </section>
         )}
 
-        <DataSourceNote lang={lang} />
+        <DataSourceNote kind="extracted" lang={lang} />
       </main>
     </div>
   );

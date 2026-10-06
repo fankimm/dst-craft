@@ -4,7 +4,7 @@ import { ko } from "@/data/locales/ko";
 import { canonicalForFood } from "@/lib/slug";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
-import { DataSourceNote, itemListLd } from "./list-schema";
+import { itemListLd } from "./list-schema";
 import { JsonLd } from "./JsonLd";
 import { AdSlot } from "@/components/ads/AdSlot";
 
@@ -267,7 +267,6 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
           </div>
         </section>
 
-        <DataSourceNote lang={lang} />
       </main>
     </div>
   );

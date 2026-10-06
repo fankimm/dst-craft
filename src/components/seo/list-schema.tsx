@@ -70,14 +70,31 @@ export function FaqSection({ title, faq }: { title: string; faq: FaqEntry[] }) {
   );
 }
 
-/** "어느 게임 빌드 기준 데이터인지" — AI 검색이 인용할 때 근거로 쓰는 문장 (GEO) */
-export function dataSourceText(lang: SeoLang): string {
+/** `{key}` 자리표시자 채우기 — FAQ 문장 틀용 */
+export const fillTemplate = (tpl: string, vars: Record<string, string | number>) =>
+  tpl.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
+
+/**
+ * 데이터 출처 문구 — AI 검색이 인용할 때 근거로 쓰는 문장 (GEO).
+ * **실제로 게임 파일에서 뽑았거나 대조 검증한 페이지에만** 붙인다. characters·recipes·items 등
+ * 손으로 관리하는 데이터 페이지에 붙이면 직접 쓴 설명이 "게임 원문"으로 인용된다 (#126 리뷰).
+ * - extracted: 스크립트가 게임 파일에서 자동 생성 (farming.ts)
+ * - verified: 수작업 데이터를 게임 소스와 스크립트로 대조 (스킬트리, verify-skill-trees.py)
+ */
+export type DataSourceKind = "extracted" | "verified";
+
+export function dataSourceText(kind: DataSourceKind, lang: SeoLang): string {
   const { release, dataUpdatedAt } = DST_GAME_VERSION;
+  if (kind === "extracted") {
+    return lang === "ko"
+      ? `데이터 출처: Don't Starve Together 게임 파일(릴리즈 ${release})에서 직접 추출 · 갱신일 ${dataUpdatedAt}`
+      : `Data source: extracted directly from Don't Starve Together game files (release ${release}) · updated ${dataUpdatedAt}`;
+  }
   return lang === "ko"
-    ? `데이터 출처: Don't Starve Together 게임 파일(빌드 ${release})에서 직접 추출 · 갱신일 ${dataUpdatedAt}`
-    : `Data source: extracted directly from Don't Starve Together game files (build ${release}) · updated ${dataUpdatedAt}`;
+    ? `데이터 검증: Don't Starve Together 게임 소스(릴리즈 ${release})와 대조 · 갱신일 ${dataUpdatedAt}`
+    : `Data checked against Don't Starve Together game source (release ${release}) · updated ${dataUpdatedAt}`;
 }
 
-export function DataSourceNote({ lang }: { lang: SeoLang }) {
-  return <p className="text-xs text-muted-foreground">{dataSourceText(lang)}</p>;
+export function DataSourceNote({ kind, lang }: { kind: DataSourceKind; lang: SeoLang }) {
+  return <p className="text-xs text-muted-foreground">{dataSourceText(kind, lang)}</p>;
 }
