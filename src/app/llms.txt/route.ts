@@ -5,7 +5,7 @@ import { cookingRecipes } from "@/data/recipes";
 import { quests } from "@/data/quests";
 import { FARM_CROPS } from "@/data/farming";
 import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
-import { dataSourceText } from "@/components/seo/list-schema";
+import { DST_GAME_VERSION } from "@/data/game-version";
 import { canonicalForBoss, canonicalForFood, canonicalForQuest } from "@/lib/slug";
 
 // /llms.txt — AI 검색·에이전트용 사이트 안내 (llmstxt.org 형식, #126)
@@ -23,7 +23,7 @@ export function GET() {
     "",
     "> Free, unofficial guide for Don't Starve Together: every crafting recipe, crock pot recipe, boss, character, skill tree, quest checklist and farming crop combination. Korean versions live under /ko.",
     "",
-    `${dataSourceText("en")}. Numbers (recipes, stats, nutrients, skill trees) are taken from the game's own scripts, not from wikis. Korean names follow the community Korean translation mod.`,
+    `Game data version: release ${DST_GAME_VERSION.release} (updated ${DST_GAME_VERSION.dataUpdatedAt}). Farming numbers and item stat panels are generated directly from the game's scripts; skill trees are checked against them by script. Korean names follow the community Korean translation mod.`,
     "",
     "## Guides",
     `- [Browse everything](${SITE_URL}/browse): all ${allItems.length} crafting items, ${cookingRecipes.length} crock pot recipes and ${bosses.length} bosses`,
