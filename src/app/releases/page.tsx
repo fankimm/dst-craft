@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.37.4",
+    date: "2026-10-06",
+    dev: [
+      "feat(seo): **예전 슬러그를 nginx 301로 정식 주소에 합침** (#125). 서치콘솔 \"Google에서 사용자와 다른 표준을 선택함\" 85건이 전부 예전 ID 슬러그(`/item/cookpot` → `/item/crock-pot`)였다 — 정적 페이지 200 + canonical은 구글이 힌트로만 받아 무시. `src/app/nginx-legacy-redirects.conf/route.ts`가 빌드 때 item/food/boss/quest × en/ko `location = … { return 301 https://$host…; }` 표(약 3,300줄)를 만들고, nginx server 블록이 release 경로를 glob include, `deploy-frontend.sh`가 symlink swap 뒤 `nginx -t && nginx -s reload`. 정적 legacy 페이지는 Vercel failover fallback으로 유지",
+      "fix(seo): 404 17건 중 예전 주소 정리 — `slug.ts`가 언더스코어 원본 id(`/boss/stalker_atrium`)와 이름 변경 전 슬러그(`RENAMED_BOSS_SLUGS`: crystalline-deerclops·celestial-retinue, `RENAMED_ITEM_SLUGS`: winona-*-item)도 legacy로 받음",
+      "fix(nginx): apex `dstcraft.com`을 별도 server 블록으로 분리해 www로 308 — 그동안 www와 같은 블록에서 200 서빙(중복 페이지). 서치콘솔의 apex 307은 Vercel failover 상태의 기본 리디렉션이었고, 이번 조사 중 production이 Vercel에 남아 있던 걸 발견해 failback. 실서버 `listen 127.0.0.1:8080` drift를 레포에 반영",
+    ],
+    changes: {
+      ko: [
+        "예전 주소로 들어와도 바로 지금 주소로 이동합니다. 오래된 링크로 보스 페이지에 들어왔을 때 '페이지 없음'이 뜨던 문제도 고쳤습니다.",
+      ],
+      en: [
+        "Old page addresses now take you straight to the current page. Fixed outdated boss links that showed a \"page not found\" error.",
+      ],
+    },
+  },
+  {
     version: "0.37.3",
     date: "2026-09-21",
     dev: [
