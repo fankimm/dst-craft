@@ -93,6 +93,35 @@ export const FARM_TEXT = {
   stressPoints: { ko: "점", en: "pts" },
 } as const;
 
+/**
+ * `/farming` 자주 묻는 질문 템플릿 (#126). 답의 수치·작물은 전부 farming.ts / farmCombos 에서 채운다.
+ * {season} {n} {crops} {example} 자리표시자만 쓴다.
+ */
+export const FARM_FAQ = {
+  title: { ko: "자주 묻는 질문", en: "Frequently Asked Questions" },
+  seasonQ: {
+    ko: "굶지마 투게더 {season}에는 어떤 작물을 비료 없이 키울 수 있나요?",
+    en: "What crops can I grow without fertilizer in {season} in Don't Starve Together?",
+  },
+  seasonA: {
+    ko: "{season} 제철 작물은 {crops}입니다. 이 작물들로 양분이 서로 상쇄되는 조합이 {n}개 있으며, 예를 들면 {example}입니다.",
+    en: "Crops in season during {season}: {crops}. They form {n} combinations whose nutrients cancel out, for example {example}.",
+  },
+  seasonNoneA: {
+    ko: "{season} 제철 작물은 {crops}이며, 비료 없이 양분이 상쇄되는 조합은 없습니다.",
+    en: "Crops in season during {season}: {crops}. None of them form a combination whose nutrients cancel out without fertilizer.",
+  },
+  allSeasonQ: {
+    ko: "사계절 내내 키울 수 있는 작물은 무엇인가요?",
+    en: "Which crops can be grown in every season?",
+  },
+  allSeasonA: {
+    ko: "봄·여름·가을·겨울 모두 제철인 작물은 {crops}입니다.",
+    en: "Crops in season in spring, summer, autumn and winter: {crops}.",
+  },
+  related: { ko: "농사 관련 아이템", en: "Farming items" },
+} as const;
+
 /** 스트레스 항목 이름 (나무위키식) + 판정 규칙. 규칙의 수치는 FARM_CONSTANTS 에서 온다 */
 export const FARM_STRESSOR_TEXT: Record<FarmStressorId, { name: FarmText; rule: FarmText }> = {
   nutrients: {

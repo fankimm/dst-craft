@@ -213,6 +213,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `scripts/extract-farming.py` — 위 파일 생성 파이프라인 (아래 Farming Pipeline Rules)
 - `src/lib/farming-combos.ts` — 계절별 무비료 조합 계산 (`farmCombos`), 일반 씨앗 확률 (`randomSeedChances`)
 - `src/components/seo/FarmingContent.tsx` — `/farming`, `/ko/farming` 정적 페이지
+- `src/components/seo/list-schema.tsx` — 허브 페이지 공통 ItemList/FAQ JSON-LD + 데이터 출처 문구 (#126). 새 허브 페이지는 홈 `SeoFooterLinks`·`/browse`·사이트맵에 링크까지 같이 넣을 것
+- `src/app/llms.txt/route.ts` — `/llms.txt` 빌드 시 생성 (AI 검색용 사이트 안내, #126)
 - `src/data/scrapbook-stats.ts` — 인게임 scrapbookdata.lua 기반 아이템 스펙 (1541개, specialinfo ko/en 799개) — 자동 생성, 수정 금지
 - `scripts/convert-scrapbook.py` — scrapbookdata.lua + strings.lua + ko.po → scrapbook-stats.ts 생성 파이프라인
 

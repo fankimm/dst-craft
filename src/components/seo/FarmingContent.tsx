@@ -1,13 +1,83 @@
 import Link from "next/link";
-import { FARM_CROPS, FARM_LABELS, FARM_NUTRIENT_NAMES, FARM_SEASONS, FARM_SEASON_NAMES } from "@/data/farming";
-import { farmCombos, netNutrients } from "@/lib/farming-combos";
-import { FARM_TEXT, cropImage, ft } from "@/components/farming/farming-text";
+import {
+  FARM_CROPS,
+  FARM_FERTILIZERS,
+  FARM_LABELS,
+  FARM_NUTRIENT_NAMES,
+  FARM_SEASONS,
+  FARM_SEASON_NAMES,
+  FARM_TEND_TOOLS,
+  FARM_WATER_SOURCES,
+} from "@/data/farming";
+import { allItems } from "@/data/items";
+import { ko } from "@/data/locales/ko";
+import { canonicalForItem } from "@/lib/slug";
+import { farmCombos, netNutrients, type FarmCombo } from "@/lib/farming-combos";
+import { FARM_FAQ, FARM_TEXT, cropImage, ft } from "@/components/farming/farming-text";
 import { FarmingGuide } from "@/components/farming/FarmingGuide";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
+import { DataSourceNote, FaqSection, faqLd, type FaqEntry } from "./list-schema";
 
 const SITE_URL = "https://www.dstcraft.com";
+
+/** 농사 도구 중 farming.ts 표에 없는 것 (괭이·쟁기·도감 모자 등). 아이템 페이지가 있는 것만 링크된다 */
+const EXTRA_FARM_ITEM_IDS = [
+  "farm_hoe",
+  "golden_farm_hoe",
+  "fumarole_farm_hoe",
+  "farm_plow_item",
+  "plantregistryhat",
+  "nutrientsgoggleshat",
+  "seedpouch",
+  "compostingbin",
+  "soil_amender",
+  "trophyscale_oversizedveggies",
+];
+
+function farmRelatedItems() {
+  const ids = new Set([
+    ...EXTRA_FARM_ITEM_IDS,
+    ...FARM_FERTILIZERS.map((f) => f.id),
+    ...FARM_TEND_TOOLS.map((t) => t.id),
+    ...FARM_WATER_SOURCES.map((w) => w.id),
+  ]);
+  return allItems.filter((i) => ids.has(i.id) && canonicalForItem(i.id));
+}
+
+const fill = (tpl: string, vars: Record<string, string | number>) =>
+  tpl.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
+
+function comboText(combo: FarmCombo, lang: SeoLang) {
+  const crops = combo.slots
+    .map((slot) => `${slot.crops.map((c) => ft(c.name, lang)).join(" / ")} ×${slot.perTile}`)
+    .join(" + ");
+  return `${crops} (${ft(combo.familyInOneTile ? FARM_TEXT.badgeOneTile : FARM_TEXT.badgeAdjacent, lang)})`;
+}
+
+/** 계절별 FAQ — 문장 틀만 farming-text.ts, 작물·조합 수는 전부 데이터에서 */
+export function farmingFaq(lang: SeoLang): FaqEntry[] {
+  const join = (names: string[]) => names.join(", ");
+  const faq: FaqEntry[] = FARM_SEASONS.map((season) => {
+    const seasonName = ft(FARM_SEASON_NAMES[season], lang);
+    const crops = join(FARM_CROPS.filter((c) => c.seasons.includes(season)).map((c) => ft(c.name, lang)));
+    const combos = farmCombos(season);
+    const vars = { season: seasonName, crops, n: combos.length, example: combos[0] ? comboText(combos[0], lang) : "" };
+    return {
+      question: fill(ft(FARM_FAQ.seasonQ, lang), vars),
+      answer: fill(ft(combos.length ? FARM_FAQ.seasonA : FARM_FAQ.seasonNoneA, lang), vars),
+    };
+  });
+  const allSeason = FARM_CROPS.filter((c) => c.seasons.length === FARM_SEASONS.length);
+  if (allSeason.length) {
+    faq.push({
+      question: ft(FARM_FAQ.allSeasonQ, lang),
+      answer: fill(ft(FARM_FAQ.allSeasonA, lang), { crops: join(allSeason.map((c) => ft(c.name, lang))) }),
+    });
+  }
+  return faq;
+}
 
 /**
  * `/farming`, `/ko/farming` — 농사 탭의 검색용 정적 페이지 (#120).
@@ -24,10 +94,13 @@ export function FarmingContent({ lang }: { lang: SeoLang }) {
     inLanguage: lang === "ko" ? "ko-KR" : "en-US",
     image: `${SITE_URL}/images/game-items/farm_plow_item.png`,
   };
+  const faq = farmingFaq(lang);
+  const relatedItems = farmRelatedItems();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <JsonLd data={jsonLd} />
+      <JsonLd data={faqLd(faq, lang)} />
 
       <header className="border-b border-border px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
@@ -141,6 +214,37 @@ export function FarmingContent({ lang }: { lang: SeoLang }) {
           <h2 className="text-lg font-semibold">{ft(FARM_TEXT.viewGuide, lang)}</h2>
           <FarmingGuide locale={lang} />
         </section>
+
+        <FaqSection title={ft(FARM_FAQ.title, lang)} faq={faq} />
+
+        {relatedItems.length > 0 && (
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold">{ft(FARM_FAQ.related, lang)}</h2>
+            <ul className="columns-2 sm:columns-3 gap-x-4 text-sm">
+              {relatedItems.map((item) => {
+                const primary = lang === "ko" ? (ko.items[item.id]?.name ?? item.name) : item.name;
+                return (
+                  <li key={item.id} className="mb-1 break-inside-avoid">
+                    <Link
+                      href={`${routePrefix}/item/${canonicalForItem(item.id)}`}
+                      className="inline-flex items-center gap-2 text-foreground/80 hover:text-foreground hover:underline"
+                    >
+                      <img src={`/images/game-items/${item.image}`} alt="" className="size-6 object-contain" loading="lazy" />
+                      {primary}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="text-sm">
+              <Link href={`${routePrefix}/cookpot`} className="text-foreground/80 hover:text-foreground hover:underline">
+                {L.cookpotSimulator[lang]} →
+              </Link>
+            </p>
+          </section>
+        )}
+
+        <DataSourceNote lang={lang} />
       </main>
     </div>
   );
