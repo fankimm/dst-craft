@@ -104,6 +104,20 @@ ln -sfn "$NEW_RELEASE" "$LINK"
 log "symlink: $LINK -> $NEW_RELEASE"
 [ -n "$PREV" ] && log "  (previous: $PREV)"
 
+# nginx reload — 빌드 산출물 nginx-legacy-redirects.conf(예전 슬러그 301 표, #125)를 새 release 기준으로 다시 읽힌다.
+# 표는 symlink 경로로 include되므로 swap 뒤에 reload. -t 실패 시 reload 안 함(돌던 설정 유지) → deploy는 성공 처리.
+# nginx master가 fankimm 소유라 sudo 불필요.
+NGINX_BIN=/usr/local/opt/nginx/bin/nginx
+if [ -x "$NGINX_BIN" ]; then
+  if "$NGINX_BIN" -t >/dev/null 2>&1; then
+    "$NGINX_BIN" -s reload && log "nginx reloaded"
+  else
+    err "nginx -t failed — reload 생략 (예전 설정으로 계속 동작). 확인: $NGINX_BIN -t"
+  fi
+else
+  log "nginx reload skipped ($NGINX_BIN not found)"
+fi
+
 log "Pruning old releases for target=$TARGET (keep latest $KEEP)..."
 ACTIVE=$(readlink "$LINK")
 ls -1dt "$RELEASES"/*-"$TARGET" 2>/dev/null | tail -n "+$((KEEP+1))" | while read -r old; do
