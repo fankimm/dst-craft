@@ -26,7 +26,21 @@ interface SlugIndex {
   allSlugs: string[];
 }
 
-function buildIndex<T extends Indexable>(records: T[]): SlugIndex {
+// 이름이 바뀌어 사라진 옛 슬러그 → id. 외부에 남은 옛 링크가 404 나지 않도록 legacy로 받는다 (#125)
+const RENAMED_BOSS_SLUGS: Record<string, string> = {
+  "crystalline-deerclops": "mutateddeerclops", // #49 Crystalline → Crystal Deerclops
+  "celestial-retinue": "alterguardian_phase1_lunarrift", // #49 Celestial Retinue → Revenant
+};
+const RENAMED_ITEM_SLUGS: Record<string, string> = {
+  "winona-spotlight-item": "winona_spotlight",
+  "winona-battery-low-item": "winona_battery_low",
+  "winona-battery-high-item": "winona_battery_high",
+};
+
+function buildIndex<T extends Indexable>(
+  records: T[],
+  renamed: Record<string, string> = {},
+): SlugIndex {
   const idToSlug = new Map<string, string>();
   const slugToId = new Map<string, string>();
   const legacySlugToId = new Map<string, string>();
@@ -46,6 +60,13 @@ function buildIndex<T extends Indexable>(records: T[]): SlugIndex {
     if (old !== slug) {
       legacySlugToId.set(old, rec.id);
     }
+    // 하이픈 변환 전 원본 id 주소(/boss/stalker_atrium)도 외부 링크로 들어온다 (#125)
+    if (rec.id !== old && rec.id !== slug && /^[a-z0-9_-]+$/.test(rec.id)) {
+      legacySlugToId.set(rec.id, rec.id);
+    }
+  }
+  for (const [old, id] of Object.entries(renamed)) {
+    if (idToSlug.has(id) && !slugToId.has(old)) legacySlugToId.set(old, id);
   }
 
   const allSlugs = Array.from(
@@ -54,9 +75,9 @@ function buildIndex<T extends Indexable>(records: T[]): SlugIndex {
   return { idToSlug, slugToId, legacySlugToId, allSlugs };
 }
 
-export const itemSlugs = buildIndex(allItems);
+export const itemSlugs = buildIndex(allItems, RENAMED_ITEM_SLUGS);
 export const foodSlugs = buildIndex(cookingRecipes);
-export const bossSlugs = buildIndex(bosses);
+export const bossSlugs = buildIndex(bosses, RENAMED_BOSS_SLUGS);
 export const questSlugs = buildIndex(quests.map((q) => ({ id: q.id, name: q.titleEn })));
 
 export function resolveItemSlug(slug: string): string | undefined {

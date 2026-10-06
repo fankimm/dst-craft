@@ -195,7 +195,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `scripts/add-img-lazy.mjs` — `loading` 속성이 없는 `<img>` JSX에 `loading="lazy"` 일괄 적용. `--dry-run` 으로 누락 감시. 상세 페이지 히어로(LCP) 8곳은 스크립트 안 `EAGER_KEEP` 으로 제외 — 여기에 없는 `<img>` 는 전부 lazy가 기본이다 (#91). 키가 `경로:줄번호`라 위쪽 코드가 늘면 어긋난다 — 어긋나면 스크립트가 파일을 쓰지 않고 exit 1 하니 그때 줄번호를 갱신할 것 (#121)
 - `bun-api/scripts/recalc-visitor-os.ts` — `analytics_visitors.os` 재계산 (#63). `parseOS`에 `Bot`/`Unknown`/`HarmonyOS` 버킷이 생기기 전 행을 원본 `ua`로 다시 분류한다. 기본 dry-run, `--apply`로 반영. **집계 카운터는 원본 UA를 안 남겨 백필 불가** — OS 분포는 배포 시점부터 새 기준
 - `bun-api/src/lib/util.test.ts` — UA 분류 회귀 테스트 (`bun test`). 핵심 위험은 정상 방문자(네이버 인앱, CUBOT 단말 등)를 봇으로 오분류하는 것이라 그 케이스를 고정
-- `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta). prod 배포 시 IndexNow ping 호출
+- `scripts/deploy-frontend.sh` — 프론트엔드 배포 스크립트 (main/beta). prod 배포 시 IndexNow ping 호출·nginx reload
+- `src/app/nginx-legacy-redirects.conf/route.ts` — 예전 슬러그(ID형·언더스코어 원본 id·이름 변경 전) → 정식 슬러그 **301 표**를 빌드 때 생성 (`out/nginx-legacy-redirects.conf`). nginx가 server 블록에서 glob include하고 배포 스크립트가 `nginx -t` 후 reload. canonical만으론 구글이 무시해서 301로 바꿨다 (#125). **아이템/보스 이름이 바뀌면 옛 슬러그를 `src/lib/slug.ts`의 `RENAMED_*_SLUGS`에 추가**할 것 — 안 하면 옛 주소가 404
 - `scripts/indexnow-ping.py` — sitemap.xml의 전체 URL을 IndexNow API에 제출 (Bing 등 즉시 색인 유도). prod 배포에서만, best-effort
 - `public/<key>.txt` — IndexNow 키 파일 (`BingSiteAuth.xml`과 함께 SEO 검증 자산, 삭제 금지). 키 변경 시 `indexnow-ping.py`의 `KEY` 상수도 함께 갱신
 - `.github/workflows/deploy-beta.yml` — GitHub Actions 배포 워크플로우 (self-hosted runner, main+beta)
@@ -220,6 +221,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 1. **프론트엔드**: `main`/`beta` push → GitHub Actions가 자동 빌드+배포 (수동: `scripts/deploy-frontend.sh main|beta`)
 2. **bun-api**: `bun-api/` 변경 시 push하면 GitHub Actions가 자동 재시작 (main만, beta는 무시)
 3. **Nginx 설정**: `bun-api/infra/nginx-*.conf` 변경 시 Mac Mini에서 수동 `nginx -s reload` 필요
+   - apex `dstcraft.com`은 nginx가 www로 308 (#125). apex 응답에 `x-vercel-id`가 보이면 failover 상태라는 뜻
    - **Drift 주의**: 실서버 `/usr/local/etc/nginx/snippets/dstcraft-common.conf` ↔ 레포 `bun-api/infra/nginx-dstcraft-common.conf`. 실서버를 직접 편집했으면 반드시 레포에도 동일하게 반영해 단일 진실 공급원 유지 (안 그러면 다음 push 때 롤백됨)
 4. **watchdog Worker**: `watchdog/` 변경 시 자동 배포 없음 — `cd watchdog && npx wrangler deploy` 수동 실행 필요
 5. **환경변수**: `.env.local`에 새 `NEXT_PUBLIC_*` 변수 추가 시 Mac Mini의 빌드 환경에도 반영 확인
