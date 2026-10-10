@@ -14,6 +14,10 @@ enabled = true
 
 [vars]
 HEALTH_URL = "https://www.dstcraft.com/api/_debug/health"
+# failover 대상이 아닌(항상 터널) 호스트 — origin 생존 판정, 자동 failback 조건 (#127)
+ORIGIN_URL = "https://beta.dstcraft.com/api/_debug/health"
+# x-vercel-id 유무로 prod가 Vercel에 붙어 있는지 확인 (#127)
+PROD_URL = "https://www.dstcraft.com/robots.txt"
 # 3/3 실패 시 눌러줄 GitHub Actions 복구 워크플로우 (DNS failover 담당)
 GH_REPO = "fankimm/dst-craft"
 GH_WORKFLOW = "watchdog.yml"
