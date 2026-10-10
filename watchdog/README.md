@@ -10,14 +10,15 @@ prod `/api` 헬스 감시용 Cloudflare Worker. **1분마다** `https://www.dstc
 
 | | 감지 주기 | 알림 | 복구 |
 |---|---|---|---|
-| **CF Worker** (여기) | 1분, 정확 | 2/3·3/3 실패, 복구 | ✗ (SSH 불가) |
+| **CF Worker** (여기) | 1분, 정확 | 2/3·3/3 실패, 복구, failback | ✗ (SSH 불가) — 판정 후 워크플로우를 누름 |
 | **GitHub Actions** (`watchdog.yml`) | */5 예약이나 실제론 드문드문 (백업) | 3/3 실패만 | ✓ DNS failover, SSH kickstart |
 
-Worker가 3/3 실패를 확인하면 `workflow_dispatch`로 GitHub Actions를 눌러 복구를 맡긴다.
+Worker가 3/3 실패가 **3분 연속** 이어진 걸 확인하면 `workflow_dispatch`로 GitHub Actions를 눌러 복구를 맡긴다 (#127).
+워크플로우는 DNS를 넘기기 직전 약 60초 더 재확인해, 그 사이 한 번이라도 살아나면 넘기지 않는다.
 
 ## 판정과 알림 규칙
 
-3회 시도(각 5초 타임아웃, 2초 간격)의 실패 수로 판정한다.
+3회 시도(각 10초 타임아웃, 2초 간격)의 실패 수로 판정한다.
 
 - `0~1` → **ok** (1회 실패는 transient noise로 무시)
 - `2` → **degraded**
@@ -26,7 +27,7 @@ Worker가 3/3 실패를 확인하면 `workflow_dispatch`로 GitHub Actions를 �
 알림은 **상태가 바뀔 때만** 보낸다. 직전 상태를 KV에 저장해두기 때문에 장애가 이어져도 매분 텔레그램이 오지 않는다.
 
 - ok → degraded : ⚠️ 경고 1회
-- ok/degraded → down : 🔥 긴급 1회 + GitHub 복구 워크플로우 트리거 (구간당 1회)
+- ok/degraded → down : 🔥 긴급 1회. down이 3라운드(3분) 연속이면 GitHub 복구 워크플로우 트리거 (구간당 1회). 이미 Vercel에 붙어 있으면 트리거하지 않음
 - down → ok : ✅ 복구 알림 (중단 시간 포함)
 - degraded → ok : 알림 없음 (경미한 지연까지 알리면 시끄러움)
 - down 지속 : 30분마다 재알림
@@ -99,7 +100,11 @@ npx wrangler deploy                                                             
 
 ## 장애가 끝난 뒤 되돌리기 (failback)
 
-3/3 실패가 확인되면 GitHub Actions 쪽이 `dstcraft.com` / `www` CNAME을 Vercel로 넘긴다. **복귀는 자동이 아니다.** Mac mini가 살아난 걸 확인한 뒤 직접 눌러야 한다:
+failover가 확정되면 GitHub Actions 쪽이 `dstcraft.com` / `www` CNAME을 Vercel로 넘긴다.
+
+**복귀는 자동이다 (#127).** Worker가 매분 `PROD_URL`(robots.txt)에 HEAD를 보내 `x-vercel-id`로 지금 Vercel에 붙어 있는지 보고, 그 상태에서 `ORIGIN_URL`(beta 헬스 — 항상 터널)이 **30분 연속** 정상이면 아래 명령과 같은 dispatch를 대신 누른다. 실패하면 15분 간격으로 최대 3회까지 재시도하고, 3회 모두 안 되면 텔레그램으로 수동 복귀를 요청한다. `/status`의 `onVercel`·`originOkSinceISO`로 진행 상황을 볼 수 있다.
+
+수동으로 즉시 되돌리려면:
 
 ```bash
 gh workflow run watchdog.yml -f failback=true
@@ -109,7 +114,7 @@ gh workflow run watchdog.yml -f failback=true
 
 되돌릴 게 없으면(이미 터널) 아무것도 바꾸지 않고 끝난다. origin이 아직 죽어 있으면 스왑 전에 멈춘다 — 죽은 origin으로 되돌려 사이트를 통째로 내리는 사고 방지.
 
-자동 복귀로 만들지 않은 이유: origin이 오르내릴 때 DNS가 따라서 왔다갔다하면 캐시·세션이 더 지저분해진다. 복귀 시점은 사람이 정한다.
+#65에선 flapping(DNS가 왔다갔다) 우려로 수동만 두었다. 그런데 실제로는 오탐 failover가 매번 며칠씩 방치되는 쪽이 훨씬 비쌌다(9/16 약 44시간, 9/29 약 1주 Vercel 서빙 — 그동안 새 배포가 사용자에게 안 보임). flapping은 문턱을 비대칭으로 둬서 막는다: 넘길 땐 3분 지속 + 60초 재확인, 되돌릴 땐 30분 안정.
 
 필요한 설정: secrets `CF_API_TOKEN` / `CF_ZONE_ID`, variable `WATCHDOG_TUNNEL_CNAME`(터널 CNAME 타깃). 터널을 새로 만들면 이 변수도 같이 갱신할 것 — 워크플로우가 beta의 실제 CNAME과 대조해 다르면 실행을 거부한다.
 
@@ -117,4 +122,6 @@ gh workflow run watchdog.yml -f failback=true
 
 무료 플랜 안에서 돈다. 하루 1440회 실행, KV 읽기 1440회 (무료 한도 10만/일).
 
-KV **쓰기**는 무료 한도가 하루 1000회라 매분 쓰면 넘긴다. 그래서 평시(ok 유지)에는 저장할 내용이 직전과 같으므로 아예 쓰지 않는다. 쓰기가 발생하는 건 상태가 바뀌거나 알림을 보낸 순간뿐이라 하루 수 회 수준이다.
+KV **쓰기**는 무료 한도가 하루 1000회라 매분 쓰면 넘긴다. 그래서 평시(ok 유지)에는 저장할 내용이 직전과 같으므로 아예 쓰지 않는다. 쓰기가 발생하는 건 상태가 바뀌거나 알림을 보낸 순간, 그리고 down 지속 중(연속 라운드 카운트)뿐이라 하루 수 회 수준이다.
+
+라운드당 외부 요청은 www 헬스 3회 + beta 헬스 1회 + robots.txt HEAD 1회 (#127).
