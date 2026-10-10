@@ -201,8 +201,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `public/<key>.txt` — IndexNow 키 파일 (`BingSiteAuth.xml`과 함께 SEO 검증 자산, 삭제 금지). 키 변경 시 `indexnow-ping.py`의 `KEY` 상수도 함께 갱신
 - `.github/workflows/deploy-beta.yml` — GitHub Actions 배포 워크플로우 (self-hosted runner, main+beta)
 - `.github/workflows/deploy.yml` — GitHub Pages 배포 (레거시, 미사용)
-- `watchdog/` — 헬스 감지 Cloudflare Worker (Cron 1분, Telegram 알림, KV로 중복 알림 억제). 배포/시크릿 절차는 `watchdog/README.md`
-- `.github/workflows/watchdog.yml` — 헬스 복구 담당 (3/3 실패 시 Telegram 긴급 + DNS failover). schedule은 백업 감지. Mac mini 복구 후 DNS 복귀는 수동: `gh workflow run watchdog.yml -f failback=true`
+- `watchdog/` — 헬스 감지 Cloudflare Worker (Cron 1분, Telegram 알림, KV로 중복 알림 억제). down 3분 연속일 때만 failover 트리거, Vercel 서빙 중 origin(beta) 30분 안정이면 자동 failback 트리거 (#127). 배포/시크릿 절차는 `watchdog/README.md`
+- `.github/workflows/watchdog.yml` — 헬스 복구 담당 (3/3 실패 → 60초 재확인 후에도 죽어 있으면 Telegram 긴급 + DNS failover). schedule은 백업 감지. DNS 복귀는 Worker가 자동으로 누르고, 즉시 되돌리려면 수동: `gh workflow run watchdog.yml -f failback=true`
 - `worker/index.ts` — Cloudflare Worker (레거시, 일부 analytics)
 - `worker/wrangler.toml` — Worker 설정 (레거시)
 - `docs/terminology.md` — UI 용어집

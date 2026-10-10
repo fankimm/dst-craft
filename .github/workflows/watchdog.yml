@@ -10,18 +10,22 @@ name: watchdog (prod /api health)
 #
 # 흐름: curl https://www.dstcraft.com/api/_debug/health × 3회
 #   - 1~2회 실패 → workflow 성공, 알림 없음 (Worker가 이미 2/3부터 알림 — 중복 방지)
-#   - 3회 모두 실패 → workflow 실패(빨간 X) + Telegram 긴급 + 복구 시도
+#   - 3회 모두 실패 → 약 60초 재확인 (#127). 그 사이 한 번이라도 살아나면 순간 끊김으로 보고
+#     복구를 건너뛴다(Telegram으로 사유만 알림). 끝까지 실패해야 workflow 실패(빨간 X) + 복구 시도
+#   재확인을 넣은 이유: 9/16·9/29 두 번 모두 터널 앞단의 1~2분 끊김(CF 502)에 DNS가 Vercel로
+#   넘어갔고, 수동 복귀 전까지 며칠씩 Vercel이 서빙했다. 맥미니는 그동안 멀쩡했다.
 #
 # Mac mini 다운 시 self-hosted runner도 같이 죽으므로 외부 runner 필수.
 #
 # Phase 6 (CF DNS swap) 활성 시: vars.WATCHDOG_FAILOVER=1 + secrets.CF_API_TOKEN/CF_ZONE_ID 등록
 #   → 3/3 실패 시 dstcraft.com / www CNAME을 Vercel 대상으로 자동 rollback (Phase 6 후속).
 #
-# failback (#65): failover는 자동이지만 복귀는 수동이다. Mac mini가 살아난 뒤
-#   `gh workflow run watchdog.yml -f failback=true` 로 호출하면 헬스 프로브를 건너뛰고
-#   dstcraft.com / www CNAME을 CF 터널(vars.WATCHDOG_TUNNEL_CNAME)로 되돌린다.
-#   자동 복귀로 만들지 않은 이유: origin이 오르내릴 때 DNS가 왔다갔다(flapping)하면
-#   캐시·인증서·세션이 더 지저분해진다. 복귀 시점은 사람이 정한다.
+# failback (#65, 자동화 #127): `gh workflow run watchdog.yml -f failback=true` 로 호출하면
+#   헬스 프로브를 건너뛰고 dstcraft.com / www CNAME을 CF 터널(vars.WATCHDOG_TUNNEL_CNAME)로 되돌린다.
+#   #65에선 flapping 우려로 수동만 두었는데, 그 결과 오탐 failover가 매번 며칠씩 방치됐다.
+#   이제 CF Worker가 "Vercel 서빙 중 + origin(beta) 30분 연속 정상"이면 이 입력으로 자동 호출한다.
+#   flapping은 양쪽 문턱(넘길 땐 3분 지속 + 60초 재확인, 되돌릴 땐 30분 안정)으로 막는다.
+#   수동 호출도 그대로 쓸 수 있다.
 
 on:
   schedule:
@@ -49,7 +53,7 @@ concurrency:
 jobs:
   health:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
 
     steps:
       # failback 실행일 때는 감지·복구 경로를 통째로 건너뛴다. 이 스텝이 스킵되면
@@ -63,7 +67,7 @@ jobs:
           last_status=""
           last_err=""
           for i in 1 2 3; do
-            body=$(curl -fsS -m 5 -w "\n[HTTPCODE]%{http_code} [TIME]%{time_total}s" \
+            body=$(curl -fsS -m 10 -w "\n[HTTPCODE]%{http_code} [TIME]%{time_total}s" \
               -H "Cache-Control: no-cache" \
               "https://www.dstcraft.com/api/_debug/health?cb=$(date +%s%N)" 2>&1)
             rc=$?
@@ -78,16 +82,44 @@ jobs:
             [ "$i" -lt 3 ] && sleep 2
           done
 
+          # 3/3이어도 바로 넘기지 않는다 (#127). 10초 간격으로 6번 더 찔러 하나라도 살면
+          # 순간 끊김으로 보고 fails를 'transient'로 바꾼다 — 아래 복구 스텝은 전부 fails=='3' 조건이라 함께 스킵된다.
+          if [ "$fails" -ge 3 ]; then
+            for j in 1 2 3 4 5 6; do
+              sleep 10
+              if curl -fsS -m 10 -H "Cache-Control: no-cache" \
+                "https://www.dstcraft.com/api/_debug/health?cb=$(date +%s%N)" >/dev/null 2>&1; then
+                echo "[confirm #$j] ok — 순간 끊김으로 판단, 복구 건너뜀"
+                fails=transient
+                break
+              fi
+              echo "[confirm #$j] FAIL"
+            done
+          fi
+
           {
             echo "fails=$fails"
             echo "last_status=$last_status"
             echo "last_err=$last_err"
           } >> "$GITHUB_OUTPUT"
 
-          if [ "$fails" -ge 3 ]; then
+          if [ "$fails" = "3" ]; then
             echo "::error::Mac mini API 3/3 down. status=$last_status err=$last_err"
             exit 1
           fi
+
+      - name: Telegram notice (transient — failover 건너뜀)
+        if: always() && steps.check.outputs.fails == 'transient'
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+          STATUS: ${{ steps.check.outputs.last_status }}
+          REASON: ${{ inputs.reason || 'schedule' }}
+        run: |
+          if [ -z "$TG_TOKEN" ] || [ -z "$TG_CHAT" ]; then exit 0; fi
+          text="🟡 watchdog: 3/3 실패(http ${STATUS:-?})였지만 재확인 중 회복 — failover 건너뜀"$'\n'"trigger: ${REASON}"
+          curl -sS -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -d chat_id="$TG_CHAT" --data-urlencode "text=$text" >/dev/null
 
       # 2/3 이하 경고는 CF Worker(watchdog/)가 이미 보낸다 — 중복 방지를 위해 여기선 3/3만.
       - name: Telegram alert (down)
