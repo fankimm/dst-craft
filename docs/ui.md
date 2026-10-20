@@ -66,7 +66,8 @@
 - 문구는 `cookpot/trainer-text.ts` (`tt(key, locale)`) — 홈 번들에 안 실리게 `i18n.ts`와 분리 (농사 탭과 같은 이유)
 - 설정은 localStorage `dst:cookpot-trainer:config`. 요리 결과 미리보기는 **일부러 없다** (레시피 암기가 트레이닝의 목적)
 - 결과 화면 "결과 공유"는 `&seed=<base36>&n=&t=&s=&w=` 링크를 복사한다(`ShareButton label`). 그 링크로 들어오면 설정 화면에 배너 + 설정 잠금, 시작하면 같은 재료. 시작 직후 `replaceState`로 seed를 지운다 — 안 지우면 "새 라운드"도 같은 재료가 나온다
-- `DishCard`(재료 아이콘 → 요리 아이콘·이름 + 배율 + 스탯)는 플레이 로그·결과 플랜 양쪽이 같이 쓴다
+- `DishCard`(재료 2×2 → 요리 아이콘·이름 + 스탯 줄)는 플레이 로그·결과 플랜 양쪽이 같이 쓴다
+- **게임 화면 톤**: 조리대·점수판·히어로는 테마와 무관하게 항상 `bg-zinc-900` 다크 패널, 주요 버튼은 `bg-amber-500`. 연출 키프레임(`trainer-wobble`·`pop`·`float`·`bubble`·`pulse`·`stamp`)은 `globals.css` 끝에 있다. 요리하기 → 0.9초 흔들림(`COOK_MS`) → 결과 요리 2.2초 노출(`REVEAL_MS`), 그동안 입력 잠금
 
 ### 스킬트리 탭 (SkillSimulatorApp)
 2단계 네비게이션: 캐릭터 선택 그리드 → Git Graph 스타일 스킬트리 뷰
