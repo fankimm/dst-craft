@@ -60,6 +60,12 @@ export const TRAINER_TEXT = {
   memory: { ko: "기억하는 요리", en: "Dishes in memory" },
   memoryNext: { ko: "다음", en: "next" },
   timeUp: { ko: "시간 종료!", en: "Time's up!" },
+  cooking: { ko: "끓이는 중…", en: "Cooking…" },
+  eatShort: { ko: "먹기", en: "Eat" },
+  eatConfirmShort: { ko: "한 번 더", en: "Again?" },
+  rank: { ko: "등급", en: "Rank" },
+  tapPot: { ko: "재료 4개를 넣고 요리하세요", en: "Add 4 ingredients and cook" },
+  removeHint: { ko: "솥의 재료를 누르면 뺍니다", en: "Tap an ingredient in the pot to remove it" },
 
   // 결과
   resultTitle: { ko: "결과", en: "Result" },
