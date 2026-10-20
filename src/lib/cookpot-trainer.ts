@@ -32,7 +32,11 @@ export type StatWeights = Stats;
 
 export type ScoringMode = "hunger" | "balanced" | "random";
 
-export const INGREDIENT_COUNTS = [8, 12, 16] as const;
+/**
+ * 20이 상한인 이유: 최적해가 종류별 개수 DP(아래 `solveMultisetDp`)인데 24개는 상태 150만·약 3초,
+ * 20개는 상태 20만·0.3초 안팎이다 (2026-10-20 실측). 더 열려면 Web Worker가 필요하다.
+ */
+export const INGREDIENT_COUNTS = [8, 12, 16, 20] as const;
 export type IngredientCount = (typeof INGREDIENT_COUNTS)[number];
 
 /** 0 = 무제한 */
@@ -50,7 +54,7 @@ export interface TrainerConfig {
 }
 
 export const DEFAULT_CONFIG: TrainerConfig = {
-  ingredientCount: 8,
+  ingredientCount: 12,
   timeLimit: 120,
   scoring: "hunger",
   warly: false,
@@ -208,17 +212,27 @@ export function createRound(config: TrainerConfig, seed: number = randomSeed()):
   const count = config.warly ? Math.min(config.ingredientCount, WARLY_MAX_INGREDIENTS) : config.ingredientCount;
 
   const totalWeight = POOL.reduce((s, [, w]) => s + w, 0);
-  const items: TrainerItem[] = [];
-  for (let i = 0; i < count; i++) {
-    let r = rng() * totalWeight;
-    let id = POOL[POOL.length - 1][0];
-    for (const [pid, w] of POOL) {
-      r -= w;
-      if (r < 0) { id = pid; break; }
+  const draw = (): string[] => {
+    const ids: string[] = [];
+    for (let i = 0; i < count; i++) {
+      let r = rng() * totalWeight;
+      let id = POOL[POOL.length - 1][0];
+      for (const [pid, w] of POOL) {
+        r -= w;
+        if (r < 0) { id = pid; break; }
+      }
+      ids.push(id);
     }
+    return ids;
+  };
+  // 종류가 너무 흩어진 세트는 최적해 상태 수(Π(개수+1))가 폭발한다 — 같은 난수열로 다시 뽑는다 (seed 결정적)
+  let ids = draw();
+  for (let tries = 0; tries < 50 && multisetStateCount(ids) > MAX_DP_STATES; tries++) ids = draw();
+
+  const items: TrainerItem[] = ids.map((id, i) => {
     const ingredient = getIngredientById(id)!;
-    items.push({ uid: i, ingredient, raw: config.warly ? null : rawStatsOf(ingredient) });
-  }
+    return { uid: i, ingredient, raw: config.warly ? null : rawStatsOf(ingredient) };
+  });
 
   return {
     seed,
@@ -489,9 +503,158 @@ function finalizePlan(round: TrainerRound, pots: PlanPot[], rawUids: number[], d
   return { pots, rawUids, discardUids, totals, score: scoreOf(totals, round.weights) };
 }
 
-export function solveOptimal(round: TrainerRound): OptimalPlan {
-  return round.config.warly ? solveEnum(round) : solveDp(round);
+/** 종류별 개수 DP의 상태 수 상한 — 넘으면 `createRound`가 다시 뽑는다. 40만 상태 ≈ 0.6초 (20개 평균은 20만) */
+export const MAX_DP_STATES = 400_000;
+
+export function multisetStateCount(ids: readonly string[]): number {
+  const counts = new Map<string, number>();
+  for (const id of ids) counts.set(id, (counts.get(id) ?? 0) + 1);
+  let total = 1;
+  for (const c of counts.values()) total *= c + 1;
+  return total;
 }
+
+interface TypeInfo {
+  ingredient: CookpotIngredient;
+  uids: number[];
+  count: number;
+  raw: number; // 생식 점수 (0 이하면 0 = 안 먹음)
+  rawOk: boolean;
+}
+
+/**
+ * 일반 모드 — 종류별 개수 DP. 같은 재료는 구분할 이유가 없어서 상태를 "종류별 남은 개수"
+ * (혼합 기수 정수)로 두면 상태 수가 2^N 대신 Π(개수+1)이 된다 — 24개도 보통 수십만 상태.
+ * 전이: 가장 낮은 종류 하나를 (버림 | 생식 | 나머지에서 3개 골라 요리). 요리끼리 독립일 때만 (월리 제외).
+ */
+function solveMultisetDp(round: TrainerRound): OptimalPlan {
+  // 종류 묶기 (id 순 — seed가 같으면 결과도 같게)
+  const byId = new Map<string, TypeInfo>();
+  for (const it of round.items) {
+    let t = byId.get(it.ingredient.id);
+    if (!t) {
+      const rawScore = it.raw ? scoreOf(it.raw, round.weights) : 0;
+      t = { ingredient: it.ingredient, uids: [], count: 0, raw: Math.max(0, rawScore), rawOk: it.raw !== null && rawScore > 0 };
+      byId.set(it.ingredient.id, t);
+    }
+    t.uids.push(it.uid);
+    t.count++;
+  }
+  const types = [...byId.values()].sort((a, b) => (a.ingredient.id < b.ingredient.id ? -1 : 1));
+  const T = types.length;
+  const stride = new Array<number>(T);
+  let total = 1;
+  for (let t = 0; t < T; t++) { stride[t] = total; total *= types[t].count + 1; }
+  if (total > MAX_DP_STATES * 4) throw new Error(`[cookpot-trainer] too many DP states: ${total}`);
+
+  // --- 쓸모 있는 4개 묶음만 미리 뽑는다 ---
+  // 요리 점수가 그 4개를 각각 생식(또는 버림)한 합보다 크지 않으면 그 묶음은 절대 최적에 안 들어간다
+  // (생식은 항상 가능한 독립 대안이라 지배됨). 보통 묶음의 80~90%가 여기서 걸러진다.
+  // byMin[i] = 가장 낮은 종류가 i인 묶음들. 각 묶음은 (code, 종류별 필요 개수 ≤4쌍)
+  const byMin: { code: number; need: Int32Array; score: number }[][] = types.map(() => []);
+  {
+    const pick: number[] = [];
+    const rec = (startType: number, left: number) => {
+      if (left === 0) {
+        const ings = pick.map((t) => types[t].ingredient);
+        const recipes = dishFor(ings, round.station);
+        const score = scoreOf(expectedStats(recipes), round.weights);
+        const rawSum = pick.reduce((acc, t) => acc + types[t].raw, 0);
+        if (score > rawSum + 1e-9) {
+          let code = 0;
+          const need = new Int32Array(8); // [type,k]×4
+          let n = 0;
+          for (let x = 0; x < 4; x++) {
+            code += stride[pick[x]];
+            if (n > 0 && need[2 * (n - 1)] === pick[x]) need[2 * (n - 1) + 1]++;
+            else { need[2 * n] = pick[x]; need[2 * n + 1] = 1; n++; }
+          }
+          // 개수 상한을 넘는 묶음은 애초에 못 만든다
+          let ok = true;
+          for (let x = 0; x < n; x++) if (need[2 * x + 1] > types[need[2 * x]].count) ok = false;
+          if (ok) byMin[pick[0]].push({ code, need: need.slice(0, 2 * n), score });
+        }
+        return;
+      }
+      for (let j = startType; j < T; j++) {
+        pick.push(j);
+        rec(j, left - 1);
+        pick.pop();
+      }
+    };
+    rec(0, 4);
+  }
+
+  const dp = new Float64Array(total);
+  // choice: 0 = 버림, 1 = 생식, ≥2 = (요리에 쓴 4개 multiset 코드) + 2
+  const choice = new Int32Array(total);
+  const counts = new Int32Array(T);
+  const decode = (state: number) => {
+    let rem = state;
+    for (let t = T - 1; t >= 0; t--) { counts[t] = Math.floor(rem / stride[t]); rem -= counts[t] * stride[t]; }
+  };
+
+  for (let state = 1; state < total; state++) {
+    decode(state);
+    let i = 0;
+    while (counts[i] === 0) i++;
+    const rest = state - stride[i];
+    let best = dp[rest];
+    let bestChoice = 0;
+    if (types[i].rawOk) {
+      const v = types[i].raw + dp[rest];
+      if (v > best) { best = v; bestChoice = 1; }
+    }
+    const quads = byMin[i];
+    for (let q = 0; q < quads.length; q++) {
+      const { need, code, score } = quads[q];
+      let ok = true;
+      for (let x = 0; x < need.length; x += 2) if (counts[need[x]] < need[x + 1]) { ok = false; break; }
+      if (!ok) continue;
+      const v = score + dp[state - code];
+      if (v > best) { best = v; bestChoice = code + 2; }
+    }
+    dp[state] = best;
+    choice[state] = bestChoice;
+  }
+
+  // 역추적 — 각 종류의 uid를 앞에서부터 배정
+  const next = types.map(() => 0);
+  const takeUid = (t: number) => types[t].uids[next[t]++];
+  const pots: PlanPot[] = [];
+  const rawUids: number[] = [];
+  const discardUids: number[] = [];
+  let state = total - 1;
+  while (state > 0) {
+    decode(state);
+    let i = 0;
+    while (counts[i] === 0) i++;
+    const c = choice[state];
+    if (c === 0) { discardUids.push(takeUid(i)); state -= stride[i]; }
+    else if (c === 1) { rawUids.push(takeUid(i)); state -= stride[i]; }
+    else {
+      const code = c - 2;
+      const uids: number[] = [];
+      let r = code;
+      for (let t = T - 1; t >= 0; t--) {
+        const k = Math.floor(r / stride[t]);
+        r -= k * stride[t];
+        for (let x = 0; x < k; x++) uids.push(takeUid(t));
+      }
+      const recipes = dishFor(uids.map((u) => round.items[u].ingredient), round.station);
+      pots.push({ uids, recipes, mult: 1, stats: expectedStats(recipes) });
+      state -= code;
+    }
+  }
+  return finalizePlan(round, pots, rawUids, discardUids);
+}
+
+export function solveOptimal(round: TrainerRound): OptimalPlan {
+  return round.config.warly ? solveEnum(round) : solveMultisetDp(round);
+}
+
+/** 테스트용 — 자리 기준 비트마스크 DP (N ≤ 16). 종류별 DP와 결과가 같아야 한다 */
+export const _solveBitmaskDp = solveDp;
 
 // ---------------------------------------------------------------------------
 // 결과 비교
