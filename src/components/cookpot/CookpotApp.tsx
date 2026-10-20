@@ -57,6 +57,10 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
   const [mode, setMode] = useState<CookpotMode>("sim");
   useUrlStateSync(readModeFromUrl, setMode);
   useTabSync(() => setMode(readModeFromUrl()));
+  // 트레이너는 한 번 열면 언마운트하지 않는다 — 다른 탭에 갔다 오거나 결과의 레시피를 보고 돌아와도
+  // 진행 중인 라운드가 살아 있어야 한다 (탭 마운트 정책과 같은 이유, #91). 렌더 중 갱신은 AppShell의 openedTabs와 같은 패턴
+  const [trainerOpened, setTrainerOpened] = useState(false);
+  if (mode === "trainer" && !trainerOpened) setTrainerOpened(true);
   const switchMode = useCallback((next: CookpotMode) => {
     const params = new URLSearchParams(window.location.search);
     params.set("tab", "cookpot");
@@ -156,11 +160,12 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
         </div>
         )}
       </div>
-      {mode === "trainer" ? (
-        <div className="flex-1 min-h-0 flex flex-col">
+      {trainerOpened && (
+        <div className={mode === "trainer" ? "flex-1 min-h-0 flex flex-col" : "hidden"}>
           <CookpotTrainer locale={resolvedLocale} onViewRecipe={onViewRecipe} />
         </div>
-      ) : (
+      )}
+      {mode === "sim" && (
       <>
       {/* Result + Slots area — fixed, not scrollable */}
       <div className="shrink-0 px-3 pt-4 pb-2 max-w-4xl mx-auto w-full">

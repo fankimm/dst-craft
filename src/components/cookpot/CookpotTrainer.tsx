@@ -72,6 +72,24 @@ function loadConfig(): TrainerConfig {
   }
 }
 
+/** 설정별 최고 기록(최적 대비 %) — `dst:cookpot-trainer:best` = { "<n>-<t>-<s>-<w>": 87 } */
+const BEST_KEY = "dst:cookpot-trainer:best";
+function configKey(c: TrainerConfig): string {
+  return `${c.ingredientCount}-${c.timeLimit}-${c.scoring}-${c.warly ? 1 : 0}`;
+}
+function loadBest(): Record<string, number> {
+  try {
+    const raw = localStorage.getItem(BEST_KEY);
+    const obj = raw ? (JSON.parse(raw) as unknown) : null;
+    return obj && typeof obj === "object" ? (obj as Record<string, number>) : {};
+  } catch {
+    return {};
+  }
+}
+function saveBest(best: Record<string, number>) {
+  try { localStorage.setItem(BEST_KEY, JSON.stringify(best)); } catch { /* private mode 등 */ }
+}
+
 function saveConfig(c: TrainerConfig) {
   try { localStorage.setItem(CONFIG_KEY, JSON.stringify(c)); } catch { /* private mode 등 */ }
 }
@@ -161,6 +179,8 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
   const [play, setPlay] = useState<Play | null>(null);
   const [result, setResult] = useState<TrainerResult | null>(null);
   const [endedByTime, setEndedByTime] = useState(false);
+  const [best, setBest] = useState<Record<string, number>>(() => (typeof window === "undefined" ? {} : loadBest()));
+  const [isNewRecord, setIsNewRecord] = useState(false);
   // 공유 링크(`&seed=`)로 들어왔으면 그 설정·재료로 한 번 시작한다
   const [challenge, setChallenge] = useState<Challenge | null>(() => readChallengeFromUrl());
 
@@ -176,11 +196,24 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
   }, [config, challenge]);
 
   const finishWith = useCallback((p: Play, byTime: boolean) => {
+    const r = evaluateRound(p.round, p.actions);
     setPlay(p);
-    setResult(evaluateRound(p.round, p.actions));
+    setResult(r);
     setEndedByTime(byTime);
     setPhase("result");
+    // 최고 기록 (공유받은 라운드도 같은 설정 키로 센다)
+    const key = configKey(p.round.config);
+    const pct = Math.round(r.percent);
+    const prev = loadBest(); // localStorage가 진실 — 다른 탭에서 갱신됐을 수도 있다
+    const isNew = p.actions.length > 0 && pct > (prev[key] ?? -1);
+    setIsNewRecord(isNew);
+    if (isNew) {
+      const next = { ...prev, [key]: pct };
+      saveBest(next);
+      setBest(next);
+    }
     trackItemClick(byTime ? "trainer:timeup" : "trainer:finish");
+    trackItemClick(`trainer:pct:${Math.min(100, Math.floor(pct / 10) * 10)}`);
   }, []);
 
   // ---- 타이머 ----
@@ -235,6 +268,7 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
       <SetupScreen
         locale={locale}
         config={challenge?.config ?? config}
+        best={best[configKey(challenge?.config ?? config)]}
         challenge={challenge}
         onDismissChallenge={() => { setChallenge(null); clearChallengeFromUrl(); }}
         onChange={updateConfig}
@@ -254,6 +288,8 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
         onNew={() => startRound()}
         onSetup={() => setPhase("setup")}
         onViewRecipe={onViewRecipe}
+        isNewRecord={isNewRecord}
+        best={best[configKey(play.round.config)]}
       />
     );
   }
@@ -393,9 +429,11 @@ function DishCard({
 // 설정 화면
 // ---------------------------------------------------------------------------
 
-function SetupScreen({ locale, config, challenge, onDismissChallenge, onChange, onStart }: {
+function SetupScreen({ locale, config, best, challenge, onDismissChallenge, onChange, onStart }: {
   locale: Locale;
   config: TrainerConfig;
+  /** 이 설정의 최고 기록(최적 대비 %) */
+  best: number | undefined;
   challenge: Challenge | null;
   onDismissChallenge: () => void;
   onChange: (p: Partial<TrainerConfig>) => void;
@@ -468,6 +506,9 @@ function SetupScreen({ locale, config, challenge, onDismissChallenge, onChange, 
           <Play className="size-4" />
           {tt("start", locale)}
         </button>
+        {best !== undefined && (
+          <p className="text-center text-[11px] text-muted-foreground tabular-nums">{tt("bestRecord", locale)} {best}%</p>
+        )}
       </div>
     </TabScrollArea>
   );
@@ -506,6 +547,17 @@ function PlayScreen({
   const warly = round.config.warly;
   const memory = warly ? memoryCounts(actions) : null;
   const urgent = timeLeft !== null && timeLeft <= 10;
+  // 생식은 되돌릴 수 없어서 두 번 탭 — 첫 탭은 확인 상태(2초), 그 안에 다시 탭하면 먹는다
+  const [pendingEat, setPendingEat] = useState<number | null>(null);
+  useEffect(() => {
+    if (pendingEat === null) return;
+    const id = setTimeout(() => setPendingEat(null), 2000);
+    return () => clearTimeout(id);
+  }, [pendingEat]);
+  const handleEatTap = (uid: number) => {
+    if (pendingEat === uid) { setPendingEat(null); onEatRaw(uid); }
+    else setPendingEat(uid);
+  };
 
   return (
     <div className="flex flex-col h-full min-h-0">
@@ -598,12 +650,17 @@ function PlayScreen({
                     {!warly && (
                       <button
                         type="button"
-                        onClick={() => onEatRaw(item.uid)}
+                        onClick={() => handleEatTap(item.uid)}
                         disabled={!item.raw}
-                        className="h-6 border-t border-border text-[10px] text-muted-foreground hover:text-foreground hover:bg-surface-hover disabled:opacity-30 disabled:hover:bg-transparent"
+                        className={cn(
+                          "h-6 border-t border-border text-[10px] transition-colors disabled:opacity-30 disabled:hover:bg-transparent",
+                          pendingEat === item.uid
+                            ? "bg-amber-500/20 text-amber-700 dark:text-amber-300 font-semibold"
+                            : "text-muted-foreground hover:text-foreground hover:bg-surface-hover",
+                        )}
                         title={item.raw ? tt("eatRaw", locale) : tt("cantEatRaw", locale)}
                       >
-                        {tt("eatRaw", locale)}
+                        {pendingEat === item.uid ? tt("eatRawConfirm", locale) : tt("eatRaw", locale)}
                       </button>
                     )}
                   </div>
@@ -675,12 +732,14 @@ function ActionRow({ action, round, locale, onViewRecipe }: { action: TrainerAct
 // ---------------------------------------------------------------------------
 
 function ResultScreen({
-  locale, play, result, endedByTime, onRetrySame, onNew, onSetup, onViewRecipe,
+  locale, play, result, endedByTime, onRetrySame, onNew, onSetup, onViewRecipe, isNewRecord, best,
 }: {
   locale: Locale;
   play: Play;
   result: TrainerResult;
   endedByTime: boolean;
+  isNewRecord: boolean;
+  best: number | undefined;
   onRetrySame: () => void;
   onNew: () => void;
   onSetup: () => void;
@@ -699,6 +758,13 @@ function ResultScreen({
           {endedByTime && <div className="text-[11px] text-red-500 font-medium mb-1">{tt("timeUp", locale)}</div>}
           <div className={cn("text-4xl font-bold tabular-nums", verdictColor)}>{pct}%</div>
           <div className="text-xs text-muted-foreground mt-0.5">{tt("ofOptimal", locale)} · <span className={verdictColor}>{tt(verdict, locale)}</span></div>
+          {(isNewRecord || best !== undefined) && (
+            <div className="text-[11px] mt-1 tabular-nums">
+              {isNewRecord
+                ? <span className="font-semibold text-amber-600 dark:text-amber-400">{tt("newRecord", locale)}</span>
+                : <span className="text-muted-foreground">{tt("bestRecord", locale)} {best}%</span>}
+            </div>
+          )}
           <div className="mt-3 grid grid-cols-2 gap-2 text-left">
             <ScoreBox label={tt("yours", locale)} score={result.playerScore} stats={result.playerTotals} />
             <ScoreBox label={tt("optimal", locale)} score={result.optimal.score} stats={result.optimal.totals} />

@@ -169,7 +169,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `src/components/cooking/` — 요리 탭 컴포넌트
 - `src/components/console/` — 콘솔 명령어 탭 컴포넌트
 - `src/components/cookpot/` — 요리솥 탭: 시뮬레이터(`CookpotApp`·`IngredientPicker`) + 트레이너 미니게임(`CookpotTrainer`, #128). 트레이너 문구는 `trainer-text.ts`
-- `src/lib/cookpot-trainer.ts` — 요리솥 트레이너 엔진: 재료 풀(생식 수치가 `raw-foods.ts`에 있는 것만), 채점, 월리 기억 배율(`WARLY_SAME_OLD_MULTIPLIERS`), 최적해(DP/전수). 풀에 재료를 더할 땐 `raw-foods.ts`에 그 재료가 있어야 한다 — 없으면 모듈 로드 시 throw
+- `src/lib/cookpot-trainer.ts` — 요리솥 트레이너 엔진: 재료 풀(생식 수치가 `raw-foods.ts`에 있는 것만), 채점, 월리 기억 배율(`WARLY_SAME_OLD_MULTIPLIERS`), 최적해(종류별 개수 DP ≤20개 / 월리 전수 ≤12개 — 상한 근거는 파일 상단 주석). 풀에 재료를 더할 땐 `raw-foods.ts`에 그 재료가 있어야 한다 — 없으면 모듈 로드 시 throw
 - `src/components/farming/` — 농사 탭 컴포넌트 (#120). 게임에 없는 문구는 `farming-text.ts`에만 둔다
 - `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지
