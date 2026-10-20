@@ -35,7 +35,7 @@ export const TRAINER_TEXT = {
     ko: "생식 불가, 휴대용 요리솥 레시피 포함. 같은 요리를 또 먹으면 ×0.9 → 0.8 → 0.65 → 0.5 → 0.3",
     en: "No raw food, portable crock pot recipes included. Repeating a dish gives ×0.9 → 0.8 → 0.65 → 0.5 → 0.3",
   },
-  warlyMaxNote: { ko: "월리 모드는 재료 12개까지", en: "Warly mode: up to 12 ingredients" },
+  warlyMaxNote: { ko: "월리 모드는 재료 16개까지", en: "Warly mode: up to 16 ingredients" },
   start: { ko: "시작", en: "Start" },
 
   // 플레이
