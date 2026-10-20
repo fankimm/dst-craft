@@ -1126,3 +1126,8 @@ Monumetric 1만+셋업비 — 전부 문턱이 있고 **Ezoic만 무제한이다
 - **원인**: (1) Worker가 down 첫 라운드에 바로 dispatch, 워크플로우도 6초짜리 프로브 한 번으로 바로 swap — "지속성" 확인이 없었다. (2) #77에서 실패 형태(타임아웃인지, 즉시 502인지)를 구분하지 않고 한 가지 원인(QUIC 유실 → 지연)만 가정했다. (3) #65에서 flapping을 이유로 failback을 수동으로 둔 결과, 오탐 한 번의 비용이 "몇 분"이 아니라 "며칠"이 됐다
 - **해결**: Worker는 down 3분 연속일 때만 dispatch, 워크플로우는 swap 전 60초 재확인(하나라도 살면 중단). Worker가 `x-vercel-id`로 Vercel 서빙을 감지하고 origin(beta) 30분 안정이면 failback 자동 dispatch
 - **교훈**: 오탐을 고쳤다고 하려면 **실패 로그의 형태(상태코드·소요시간)**가 그 원인과 맞는지 봐야 한다 — 0.7초 502는 타임아웃 조정으로 안 잡힌다. 그리고 자동 failover를 둘 거면 복귀도 자동이어야 한다. 복귀가 수동이면 오탐 한 번이 사람이 알아챌 때까지 이어진다. flapping은 "자동 복귀 금지"가 아니라 **비대칭 문턱**(넘길 땐 짧게, 되돌릴 땐 길게 안정 확인)으로 막는다
+
+### React Compiler 린트에 두 번 걸림 — "렌더 중 ref 쓰기", "effect 안 setState" (2026-10-20, #128)
+- **문제**: 요리솥 트레이너 타이머에 `finishRef.current = finish`를 렌더 본문에서 갱신(`react-hooks/refs`), 설정 로드·"재료 다 쓰면 자동 종료"를 `useEffect` 안 `setState`로 처리(`react-hooks/set-state-in-effect`). `tsc`는 통과해서 eslint를 돌리기 전엔 몰랐다
+- **해결**: ref 갱신은 `useCallback([])`으로 안정된 함수를 effect deps에 그냥 넣어 없앴다. 초기 설정은 `useState(() => loadConfig())` 지연 초기화(컴포넌트가 `ssr:false` 청크 안에만 있어 hydration 불일치 없음). 자동 종료 같은 **파생 전환은 effect가 아니라 그 상태를 바꾸는 핸들러(`commit`)에서** 다음 상태를 계산해 바로 분기했다
+- **교훈**: 이 레포는 React Compiler 린트가 켜져 있어 "값 바뀌면 effect로 따라가기" 패턴이 전부 에러다. 새 컴포넌트는 `npx eslint <파일>`을 tsc와 같이 돌릴 것. 기존 에러(`IngredientPicker.tsx:97`)는 main에도 있는 것이라 내 변경분만 비교한다
