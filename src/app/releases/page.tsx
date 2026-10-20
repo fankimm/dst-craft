@@ -26,13 +26,16 @@ const releases: Release[] = [
       "balance(cookpot): 300라운드 최적 플랜 분석에서 허기 채점은 최적 요리의 70%가 미트볼·고기 스튜(요리 15종)였고 균형 채점은 28종 → 기본 채점을 **균형**으로, 풀 가중치 조정(잔가지 7→5·얼음 5→4·괴물고기 7→4, 알·꿀 5→6, 생선·고추·가지·수박·버터 ↑). 조정 후 균형 모드 미트볼 30%→21%, 요리 30종. llms.txt에 트레이너 한 줄",
       "ui(cookpot): 트레이너를 **게임 화면처럼** 재설계 — \"어드민 페이지 같다, 시인성이 나쁘다\"는 피드백. 어두운 조리대 패널 위에 큰 솥과 재료 4칸, 요리하기를 누르면 솥이 0.9초 흔들리고(`trainer-wobble`·거품) 결과 요리가 튀어나오며(`trainer-pop`) 점수가 떠오른다(`trainer-float`). 재료는 인벤토리 슬롯(같은 재료 ×N 스택, 64~72px), HUD는 큰 타이머+진행 바(10초 남으면 빨간 고동)·큰 점수, 결과는 S/A/B/C/D 등급 도장(`trainer-stamp`)과 큰 퍼센트, 주요 버튼은 호박색. 키프레임은 globals.css",
       "feat(cookpot): 트레이너는 한 번 열면 숨김 마운트 유지(탭 왕복·레시피 보기 후에도 라운드 보존), 생식은 두 번 탭(오탭 방지, 2초 확인), 설정별 최고 기록 localStorage `dst:cookpot-trainer:best` + 결과 \"신기록!\", 결과 구간 analytics `trainer:pct:<10단위>`",
+      "fix(sw): **배포 뒤 첫 접속마다 화면이 한 번 리로드되던 문제**. 새 SW가 activate에서 `SW_UPDATED`를 보내면 layout이 무조건 `location.reload()`했고 `client.navigate()`로 한 번 더 강제했다. navigation은 SW가 안 가로채서 첫 접속 HTML은 이미 새 빌드인데도 리로드된 것. 이제 `scripts/generate-sw.cjs`가 만든 `public/sw.js`의 해시를 layout이 빌드 때 읽어(`src/lib/build-hash.ts`) `window.__dstBuild`로 심고, SW는 `build`를 같이 보내 **다를 때만** 리로드. `client.navigate()` 제거(옛 셸이 사라진 chunk를 부르면 `CHUNK_MISSING` 경로가 리로드시킨다)",
       "chore: 문구 `cookpot/trainer-text.ts`(홈 번들 분리), docs/ui.md 요리솥 탭 구조도, CLAUDE.md Key Paths, 피드백 번역 백필, 오답노트(React Compiler 린트)",
     ],
     changes: {
       ko: [
+        "업데이트 직후 처음 접속할 때 화면이 한 번 새로고침되던 현상을 없앴습니다.",
         "요리솥 탭에 트레이너 미니게임을 추가했습니다. 랜덤 재료를 받아 제한 시간 안에 요리하거나 생으로 먹어 점수를 올리고, 끝나면 최적 조합과 비교해 줍니다. 재료 수·시간·채점 방식을 고를 수 있고, 월리 모드(생식 불가, 같은 요리 반복 페널티)도 있습니다. 결과 화면의 공유 링크로 친구에게 같은 재료 세트를 보내 겨룰 수 있고, 설정별 최고 기록도 남습니다.",
       ],
       en: [
+        "The page no longer reloads itself on the first visit after an update.",
         "New Crock Pot Trainer minigame in the Crock Pot tab: get random ingredients, cook or eat them raw before time runs out, then see how close you got to the optimal plan. Choose ingredient count, time limit and scoring mode, or try Warly mode (no raw food, repeat-dish penalty). Share a result link to challenge a friend with the same ingredient set, and your best score per setting is kept.",
       ],
     },
