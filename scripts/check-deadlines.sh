@@ -27,7 +27,7 @@ DEADLINES=$(
   cat <<'EOF'
 done:2026-09-08|Ad Manager 주소확인 PIN 재발송 요청 가능 최초일|미발동 — 8/31에 우편이 먼저 도착해 재발송이 필요 없었다
 done:2026-10-02|Ad Manager 주소확인 PIN 입력 마감|2026-08-31 인증 완료 (본인 인증·주소 확인 모두 '완료됨'). 32일 남기고 해소
-2026-11-11|Ezoic Ramp-up 종료 = 해지 통보 마지막 날 (계약서 §4, docs/ezoic-decision.md)|통보 시 +30일 효력. 통보 없이 넘기면 Initial Term 2027-08-13까지 묶이고 1년 단위 자동 갱신. 통보는 대시보드 Account Details → AGREEMENT → Ramp-up period 아이콘 → CONFIRM (되돌릴 수 없음)
+2026-11-11|Ezoic 해지 통보 제출 마감 (2026-10-20 해지 결정됨 — 통보는 아직 미제출. 계약서 §4, docs/ezoic-decision.md)|통보 시 +30일 효력. 통보 없이 넘기면 Initial Term 2027-08-13까지 묶이고 1년 단위 자동 갱신. 통보는 대시보드 Account Details → AGREEMENT → Ramp-up period 아이콘 → CONFIRM (되돌릴 수 없음)
 2027-05-15|Ezoic 다음 해지 통보 기한 (Initial Term 2027-08-13 갱신 90일 전, 계약서 §4)|넘기면 2028-08-13까지 1년 더 자동 갱신
 EOF
 )
