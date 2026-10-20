@@ -29,16 +29,14 @@ self.addEventListener("activate", (event) => {
       await self.clients.claim();
 
       if (isUpdate) {
-        // 활성 탭에 새 빌드 도착 알림.
-        // - postMessage: 새 layout(이번 빌드부터 listener 보유)이면 즉시 reload
-        // - client.navigate(): 옛 layout(listener 없음)인 PWA에 강제 reload — first migration safety net
+        // 활성 탭에 새 빌드 도착 알림. 페이지(layout)가 자기 빌드 해시(`window.__dstBuild`)와 비교해
+        // 다를 때만 reload한다 — navigation은 SW가 가로채지 않아 첫 접속 HTML은 대개 이미 새 빌드이고,
+        // 그런데도 무조건 reload하면 배포 뒤 첫 접속마다 화면이 깜빡였다 (#128).
+        // 예전의 `client.navigate()` 강제 reload(listener 없는 옛 PWA용 안전망)는 뺐다 — 옛 셸이 사라진
+        // chunk를 부르면 fetch 핸들러의 CHUNK_MISSING 경로가 어차피 reload시킨다
+        const build = APP_CACHE.replace("dst-app-", "");
         const clients = await self.clients.matchAll({ type: "window" });
-        for (const c of clients) {
-          c.postMessage({ type: "SW_UPDATED" });
-          if (typeof c.navigate === "function" && c.url) {
-            c.navigate(c.url).catch(() => {});
-          }
-        }
+        for (const c of clients) c.postMessage({ type: "SW_UPDATED", build });
       }
     })()
   );
