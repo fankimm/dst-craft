@@ -10,6 +10,7 @@ import { ingredientImage, type CookpotIngredient } from "@/data/cookpot-ingredie
 import type { CookingRecipe } from "@/data/recipes";
 import { ItemSlot } from "../ui/ItemSlot";
 import { TabScrollArea } from "../ui/TabScrollArea";
+import { ShareButton } from "../ui/ShareButton";
 import { trackItemClick } from "@/lib/analytics";
 import { tt } from "./trainer-text";
 import {
@@ -85,6 +86,52 @@ function remainingOf(p: Play): TrainerRound["items"] {
   return p.round.items.filter((it) => !used.has(it.uid));
 }
 
+/** 공유 링크 `?tab=cookpot&mode=trainer&seed=<base36>&n=12&t=120&s=balanced&w=1` */
+interface Challenge {
+  seed: number;
+  config: TrainerConfig;
+}
+
+function readChallengeFromUrl(): Challenge | null {
+  if (typeof window === "undefined") return null;
+  const q = new URLSearchParams(window.location.search);
+  if (q.get("tab") !== "cookpot" || q.get("mode") !== "trainer") return null;
+  const seedStr = q.get("seed");
+  if (!seedStr) return null;
+  const seed = parseInt(seedStr, 36);
+  if (!Number.isFinite(seed) || seed < 0) return null;
+  const n = Number(q.get("n"));
+  const t = Number(q.get("t"));
+  const sc = q.get("s");
+  return {
+    seed: seed >>> 0,
+    config: {
+      ingredientCount: (INGREDIENT_COUNTS as readonly number[]).includes(n) ? (n as IngredientCount) : DEFAULT_CONFIG.ingredientCount,
+      timeLimit: (TIME_LIMITS as readonly number[]).includes(t) ? (t as TimeLimit) : DEFAULT_CONFIG.timeLimit,
+      scoring: sc === "hunger" || sc === "balanced" || sc === "random" ? sc : DEFAULT_CONFIG.scoring,
+      warly: q.get("w") === "1",
+    },
+  };
+}
+
+function challengeUrl(round: TrainerRound): string {
+  const c = round.config;
+  const q = new URLSearchParams({
+    tab: "cookpot", mode: "trainer",
+    seed: round.seed.toString(36), n: String(c.ingredientCount), t: String(c.timeLimit), s: c.scoring,
+  });
+  if (c.warly) q.set("w", "1");
+  return `/?${q.toString()}`;
+}
+
+/** 공유 링크로 들어온 뒤 라운드를 시작하면 URL에서 seed를 지워 "새 라운드"가 같은 재료를 반복하지 않게 한다 */
+function clearChallengeFromUrl() {
+  const q = new URLSearchParams(window.location.search);
+  if (!q.has("seed")) return;
+  for (const k of ["seed", "n", "t", "s", "w"]) q.delete(k);
+  window.history.replaceState(window.history.state, "", `${window.location.pathname}?${q.toString()}`);
+}
+
 function formatTime(sec: number): string {
   const s = Math.max(0, Math.ceil(sec));
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
@@ -114,15 +161,19 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
   const [play, setPlay] = useState<Play | null>(null);
   const [result, setResult] = useState<TrainerResult | null>(null);
   const [endedByTime, setEndedByTime] = useState(false);
+  // 공유 링크(`&seed=`)로 들어왔으면 그 설정·재료로 한 번 시작한다
+  const [challenge, setChallenge] = useState<Challenge | null>(() => readChallengeFromUrl());
 
-  const startRound = useCallback((seed: number = randomSeed()) => {
-    const round = createRound(config, seed);
+  const startRound = useCallback((seed?: number) => {
+    const useChallenge = seed === undefined && challenge !== null;
+    const round = useChallenge ? createRound(challenge.config, challenge.seed) : createRound(config, seed ?? randomSeed());
+    if (useChallenge) { setChallenge(null); clearChallengeFromUrl(); }
     setPlay({ round, actions: [], pot: [], startedAt: Date.now() });
     setResult(null);
     setEndedByTime(false);
     setPhase("playing");
-    trackItemClick("trainer:start");
-  }, [config]);
+    trackItemClick(useChallenge ? "trainer:challenge" : "trainer:start");
+  }, [config, challenge]);
 
   const finishWith = useCallback((p: Play, byTime: boolean) => {
     setPlay(p);
@@ -180,7 +231,16 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
   const remaining = useMemo(() => (play ? remainingOf(play) : []), [play]);
 
   if (phase === "setup" || !play) {
-    return <SetupScreen locale={locale} config={config} onChange={updateConfig} onStart={() => startRound()} />;
+    return (
+      <SetupScreen
+        locale={locale}
+        config={challenge?.config ?? config}
+        challenge={challenge}
+        onDismissChallenge={() => { setChallenge(null); clearChallengeFromUrl(); }}
+        onChange={updateConfig}
+        onStart={() => startRound()}
+      />
+    );
   }
 
   if (phase === "result" && result) {
@@ -333,7 +393,15 @@ function DishCard({
 // 설정 화면
 // ---------------------------------------------------------------------------
 
-function SetupScreen({ locale, config, onChange, onStart }: { locale: Locale; config: TrainerConfig; onChange: (p: Partial<TrainerConfig>) => void; onStart: () => void }) {
+function SetupScreen({ locale, config, challenge, onDismissChallenge, onChange, onStart }: {
+  locale: Locale;
+  config: TrainerConfig;
+  challenge: Challenge | null;
+  onDismissChallenge: () => void;
+  onChange: (p: Partial<TrainerConfig>) => void;
+  onStart: () => void;
+}) {
+  const locked = challenge !== null;
   const scoringDesc: Record<ScoringMode, string> = {
     hunger: tt("scoringHungerDesc", locale),
     balanced: tt("scoringBalancedDesc", locale),
@@ -347,9 +415,20 @@ function SetupScreen({ locale, config, onChange, onStart }: { locale: Locale; co
           <p className="text-xs text-muted-foreground mt-1">{tt("intro", locale)}</p>
         </div>
 
+        {challenge && (
+          <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold">{tt("challengeTitle", locale)}</span>
+              <span className="text-[11px] text-muted-foreground tabular-nums">{tt("seed", locale)} {challenge.seed.toString(36)}</span>
+              <button type="button" onClick={onDismissChallenge} className="ml-auto text-[11px] text-muted-foreground underline">{tt("challengeDismiss", locale)}</button>
+            </div>
+            <p className="text-[11px] text-muted-foreground">{tt("challengeDesc", locale)}</p>
+          </div>
+        )}
+
         <Section label={tt("optIngredients", locale)}>
           {INGREDIENT_COUNTS.map((n) => (
-            <Chip key={n} active={config.ingredientCount === n} onClick={() => onChange({ ingredientCount: n })} disabled={config.warly && n > WARLY_MAX_INGREDIENTS}>
+            <Chip key={n} active={config.ingredientCount === n} onClick={() => onChange({ ingredientCount: n })} disabled={locked || (config.warly && n > WARLY_MAX_INGREDIENTS)}>
               {n}
             </Chip>
           ))}
@@ -358,7 +437,7 @@ function SetupScreen({ locale, config, onChange, onStart }: { locale: Locale; co
 
         <Section label={tt("optTime", locale)}>
           {TIME_LIMITS.map((s) => (
-            <Chip key={s} active={config.timeLimit === s} onClick={() => onChange({ timeLimit: s })}>
+            <Chip key={s} active={config.timeLimit === s} onClick={() => onChange({ timeLimit: s })} disabled={locked}>
               {s === 0 ? tt("timeNone", locale) : `${s}${tt("seconds", locale)}`}
             </Chip>
           ))}
@@ -366,7 +445,7 @@ function SetupScreen({ locale, config, onChange, onStart }: { locale: Locale; co
 
         <Section label={tt("optScoring", locale)} hint={scoringDesc[config.scoring]}>
           {(["hunger", "balanced", "random"] as const).map((m) => (
-            <Chip key={m} active={config.scoring === m} onClick={() => onChange({ scoring: m })}>
+            <Chip key={m} active={config.scoring === m} onClick={() => onChange({ scoring: m })} disabled={locked}>
               {m === "hunger" && <img src={assetPath("/images/ui/hunger.webp")} alt="" className="size-3.5" loading="lazy" />}
               {tt(m === "hunger" ? "scoringHunger" : m === "balanced" ? "scoringBalanced" : "scoringRandom", locale)}
             </Chip>
@@ -374,7 +453,7 @@ function SetupScreen({ locale, config, onChange, onStart }: { locale: Locale; co
         </Section>
 
         <Section label={tt("optWarly", locale)} hint={tt("warlyDesc", locale)}>
-          <Chip active={config.warly} onClick={() => onChange({ warly: !config.warly })}>
+          <Chip active={config.warly} onClick={() => onChange({ warly: !config.warly })} disabled={locked}>
             <img src={assetPath("/images/game-items/portablecookpot_item.png")} alt="" className="size-4 object-contain" loading="lazy" />
             {tt("optWarly", locale)}
             {config.warly && <Check className="size-3" />}
@@ -624,9 +703,15 @@ function ResultScreen({
             <ScoreBox label={tt("yours", locale)} score={result.playerScore} stats={result.playerTotals} />
             <ScoreBox label={tt("optimal", locale)} score={result.optimal.score} stats={result.optimal.totals} />
           </div>
-          <div className="mt-2 flex items-center justify-center gap-2">
+          <div className="mt-2 flex items-center justify-center gap-2 flex-wrap">
             <WeightsChip weights={round.weights} locale={locale} />
             <span className="text-[10px] text-muted-foreground tabular-nums">{tt("seed", locale)} {round.seed.toString(36)}</span>
+            <ShareButton
+              url={challengeUrl(round)}
+              toastMessage={tt("shareCopied", locale)}
+              label={tt("share", locale)}
+              className="inline-flex items-center gap-1 h-7 px-2.5 rounded-full border border-border bg-background text-[11px] font-medium"
+            />
           </div>
         </div>
 

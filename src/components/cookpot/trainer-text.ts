@@ -76,6 +76,11 @@ export const TRAINER_TEXT = {
   good: { ko: "괜찮아요", en: "Good" },
   tryAgain: { ko: "다시 도전해 보세요", en: "Try again" },
   seed: { ko: "라운드 번호", en: "Round #" },
+  share: { ko: "결과 공유", en: "Share" },
+  shareCopied: { ko: "같은 재료로 도전할 수 있는 링크를 복사했습니다", en: "Copied a link to challenge the same set" },
+  challengeTitle: { ko: "공유받은 라운드", en: "Shared round" },
+  challengeDesc: { ko: "같은 재료·같은 설정으로 도전합니다. 시작을 누르면 바로 시작돼요.", en: "Same ingredients and settings as the person who shared it. Press start to begin." },
+  challengeDismiss: { ko: "내 설정으로", en: "Use my settings" },
   solving: { ko: "최적해 계산 중…", en: "Computing optimal…" },
 } satisfies Record<string, Text>;
 

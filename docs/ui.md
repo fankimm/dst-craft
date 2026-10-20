@@ -64,6 +64,7 @@
 - 로직은 전부 `src/lib/cookpot-trainer.ts` — 라운드 생성(seed, mulberry32), 채점 가중치, 요리 기대값/실제값, 최적해(일반: 비트마스크 DP ≤16개 / 월리: 분할 전수 열거 ≤12개), 결과 비교. 컴포넌트는 상태와 그리기만
 - 문구는 `cookpot/trainer-text.ts` (`tt(key, locale)`) — 홈 번들에 안 실리게 `i18n.ts`와 분리 (농사 탭과 같은 이유)
 - 설정은 localStorage `dst:cookpot-trainer:config`. 요리 결과 미리보기는 **일부러 없다** (레시피 암기가 트레이닝의 목적)
+- 결과 화면 "결과 공유"는 `&seed=<base36>&n=&t=&s=&w=` 링크를 복사한다(`ShareButton label`). 그 링크로 들어오면 설정 화면에 배너 + 설정 잠금, 시작하면 같은 재료. 시작 직후 `replaceState`로 seed를 지운다 — 안 지우면 "새 라운드"도 같은 재료가 나온다
 - `DishCard`(재료 아이콘 → 요리 아이콘·이름 + 배율 + 스탯)는 플레이 로그·결과 플랜 양쪽이 같이 쓴다
 
 ### 스킬트리 탭 (SkillSimulatorApp)

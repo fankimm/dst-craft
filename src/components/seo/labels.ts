@@ -213,6 +213,12 @@ export const L = {
     ko: "인터랙티브 요리솥 시뮬레이터를 사용해보세요 — 재료를 추가하면 어떤 요리가 나오는지 알 수 있습니다!",
   },
   browseAllRecipes: { en: "Browse All Recipes →", ko: "전체 레시피 보기 →" },
+  trainerHeading: { en: "Crock Pot Trainer", ko: "요리솥 트레이너" },
+  trainerDesc: {
+    en: "A minigame to drill your recipe knowledge: get a random set of ingredients, cook or eat them raw before time runs out, then see how close you got to the optimal plan. Pick ingredient count, time limit and scoring, or try Warly mode with his repeat-dish penalty.",
+    ko: "레시피 암기용 미니게임: 랜덤 재료를 받아 제한 시간 안에 요리하거나 생으로 먹고, 끝나면 최적 조합과 몇 %인지 비교합니다. 재료 수·제한 시간·채점 방식을 고를 수 있고, 같은 요리 반복 페널티가 있는 월리 모드도 있습니다.",
+  },
+  openTrainer: { en: "Play the Trainer →", ko: "트레이너 하러 가기 →" },
 
   // Food types in cookpot/browse listings
   meatDishes: { en: "Meat Dishes", ko: "고기 요리" },

@@ -61,7 +61,10 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
     const params = new URLSearchParams(window.location.search);
     params.set("tab", "cookpot");
     if (next === "trainer") params.set("mode", "trainer");
-    else params.delete("mode");
+    else {
+      params.delete("mode");
+      for (const k of ["seed", "n", "t", "s", "w"]) params.delete(k); // 트레이너 공유 링크 잔여물
+    }
     window.history.pushState(window.history.state, "", `${window.location.pathname}?${params.toString()}`);
     setMode(next);
   }, []);
