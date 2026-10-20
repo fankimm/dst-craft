@@ -56,7 +56,8 @@ export interface TrainerConfig {
 export const DEFAULT_CONFIG: TrainerConfig = {
   ingredientCount: 12,
   timeLimit: 120,
-  scoring: "hunger",
+  // 허기만 세면 최적 요리의 70%가 미트볼·고기 스튜라(300라운드 분석) 기본은 균형
+  scoring: "balanced",
   warly: false,
 };
 
@@ -115,17 +116,20 @@ export interface OptimalPlan {
 // ---------------------------------------------------------------------------
 
 const POOL: ReadonlyArray<readonly [id: string, weight: number]> = [
+  // 가중치 메모 (2026-10-20 300라운드 분석): 처음엔 고기 6·괴물고기 7·잔가지 7·얼음 5였는데 허기 채점에서
+  // 최적 요리의 70%가 미트볼+고기 스튜였다. 채움 재료(잔가지·얼음·괴물고기)를 줄이고 알·꿀·생선·특정
+  // 채소를 올려 다양하게. 그래도 미트볼이 1위인 건 게임이 그런 것이라 그대로 둔다
   // 고기류
-  ["meat", 6], ["smallmeat", 6], ["monstermeat", 7], ["drumstick", 3], ["batwing", 2],
-  ["fishmeat_small", 3], ["fishmeat", 2], ["plantmeat", 2], ["batnose", 1], ["barnacle", 1],
+  ["meat", 5], ["smallmeat", 5], ["monstermeat", 4], ["drumstick", 3], ["batwing", 2],
+  ["fishmeat_small", 3], ["fishmeat", 3], ["plantmeat", 2], ["batnose", 1], ["barnacle", 1],
   // 채소·과일
-  ["berries", 7], ["berries_juicy", 2], ["carrot", 6], ["corn", 3], ["pumpkin", 3], ["potato", 4],
-  ["tomato", 3], ["onion", 3], ["garlic", 2], ["pepper", 2], ["eggplant", 2], ["asparagus", 2],
-  ["dragonfruit", 2], ["pomegranate", 2], ["watermelon", 2], ["durian", 2], ["cactus_meat", 2],
-  ["kelp", 2], ["fig", 1], ["cave_banana", 2],
+  ["berries", 6], ["berries_juicy", 2], ["carrot", 5], ["corn", 3], ["pumpkin", 3], ["potato", 4],
+  ["tomato", 3], ["onion", 3], ["garlic", 2], ["pepper", 3], ["eggplant", 3], ["asparagus", 2],
+  ["dragonfruit", 2], ["pomegranate", 2], ["watermelon", 3], ["durian", 2], ["cactus_meat", 2],
+  ["kelp", 2], ["fig", 2], ["cave_banana", 2],
   ["red_cap", 3], ["blue_cap", 3], ["green_cap", 3],
   // 알·감미료·기타
-  ["bird_egg", 5], ["honey", 5], ["butter", 1], ["twigs", 7], ["ice", 5],
+  ["bird_egg", 6], ["honey", 6], ["butter", 2], ["twigs", 5], ["ice", 4],
 ];
 
 const rawById = new Map<string, RawFood>(rawFoods.map((r) => [r.id, r]));
