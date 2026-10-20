@@ -43,8 +43,11 @@ export type IngredientCount = (typeof INGREDIENT_COUNTS)[number];
 export const TIME_LIMITS = [0, 60, 120, 180] as const;
 export type TimeLimit = (typeof TIME_LIMITS)[number];
 
-/** 월리 모드는 기억 배율 때문에 분할 단위로 전수 평가한다 — 12개(요리솥 3번)까지만 */
-export const WARLY_MAX_INGREDIENTS: IngredientCount = 12;
+/**
+ * 월리 모드 상한 16: 기억 배율 때문에 분기한정 탐색(`solveWarlyBnB`)을 쓰는데 16개 평균 47ms·최악 160ms,
+ * 20개는 평균 2.8초·최악 75초다 (2026-10-20, 40라운드 실측)
+ */
+export const WARLY_MAX_INGREDIENTS: IngredientCount = 16;
 
 export interface TrainerConfig {
   ingredientCount: IngredientCount;
@@ -653,9 +656,139 @@ function solveMultisetDp(round: TrainerRound): OptimalPlan {
   return finalizePlan(round, pots, rawUids, discardUids);
 }
 
-export function solveOptimal(round: TrainerRound): OptimalPlan {
-  return round.config.warly ? solveEnum(round) : solveMultisetDp(round);
+/**
+ * 월리 모드 — 종류별 개수 상태 + "지금까지 만든 요리별 횟수" 서명으로 메모하는 DFS.
+ * 같은 요리를 또 먹으면 배율이 줄어 요리끼리 독립이 아니지만, 서로 영향을 주는 건 **같은 요리 id**뿐이다.
+ * 그래서 상태에 (요리 id → 횟수)만 얹으면 정확해진다. 남은 재료 중 가장 낮은 종류를 "버림 | 그 종류를 포함한
+ * 요리" 둘 중 하나로 처리하는 정규 순서라 같은 분할을 두 번 세지 않는다. 생식은 불가(PrefersToEat).
+ */
+function solveWarlyBnB(round: TrainerRound): OptimalPlan {
+  const byId = new Map<string, TypeInfo>();
+  for (const it of round.items) {
+    let t = byId.get(it.ingredient.id);
+    if (!t) {
+      t = { ingredient: it.ingredient, uids: [], count: 0, raw: 0, rawOk: false };
+      byId.set(it.ingredient.id, t);
+    }
+    t.uids.push(it.uid);
+    t.count++;
+  }
+  const types = [...byId.values()].sort((a, b) => (a.ingredient.id < b.ingredient.id ? -1 : 1));
+  const T = types.length;
+  const stride = new Array<number>(T);
+  let total = 1;
+  for (let t = 0; t < T; t++) { stride[t] = total; total *= types[t].count + 1; }
+
+  // 쓸모 있는 묶음 = 점수 > 0 (생식 대안이 없으니 0 초과면 후보). 점수 내림차순 — 좋은 해를 먼저 찾아 가지를 많이 친다
+  interface Quad { code: number; need: Int32Array; score: number; dish: string; recipes: CookingRecipe[]; stats: Stats }
+  const byMin: Quad[][] = types.map(() => []);
+  {
+    const pick: number[] = [];
+    const rec = (startType: number, left: number) => {
+      if (left === 0) {
+        const recipes = dishFor(pick.map((t) => types[t].ingredient), round.station);
+        const stats = expectedStats(recipes);
+        const score = scoreOf(stats, round.weights);
+        if (score > 1e-9) {
+          let code = 0;
+          const need = new Int32Array(8);
+          let n = 0;
+          for (let x = 0; x < 4; x++) {
+            code += stride[pick[x]];
+            if (n > 0 && need[2 * (n - 1)] === pick[x]) need[2 * (n - 1) + 1]++;
+            else { need[2 * n] = pick[x]; need[2 * n + 1] = 1; n++; }
+          }
+          let ok = true;
+          for (let x = 0; x < n; x++) if (need[2 * x + 1] > types[need[2 * x]].count) ok = false;
+          if (ok) byMin[pick[0]].push({ code, need: need.slice(0, 2 * n), score, dish: memoryKey(recipes), recipes, stats });
+        }
+        return;
+      }
+      for (let j = startType; j < T; j++) { pick.push(j); rec(j, left - 1); pick.pop(); }
+    };
+    rec(0, 4);
+    for (const list of byMin) list.sort((a, b) => b.score - a.score);
+  }
+
+  const counts = new Int32Array(T);
+  const decode = (state: number) => {
+    let rem = state;
+    for (let t = T - 1; t >= 0; t--) { counts[t] = Math.floor(rem / stride[t]); rem -= counts[t] * stride[t]; }
+  };
+  const lowest = () => { let i = 0; while (counts[i] === 0) i++; return i; };
+  const feasible = (q: Quad) => {
+    for (let x = 0; x < q.need.length; x += 2) if (counts[q.need[x]] < q.need[x + 1]) return false;
+    return true;
+  };
+
+  // 상한: 기억 배율을 무시한 종류별 개수 DP. 배율은 점수를 깎기만 하므로 bound[state] ≥ 실제 최대
+  const bound = new Float64Array(total);
+  for (let state = 1; state < total; state++) {
+    decode(state);
+    const i = lowest();
+    let best = bound[state - stride[i]];
+    const quads = byMin[i];
+    for (let q = 0; q < quads.length; q++) {
+      if (!feasible(quads[q])) continue;
+      const v = quads[q].score + bound[state - quads[q].code];
+      if (v > best) best = v;
+    }
+    bound[state] = best;
+  }
+
+  // 분기한정 DFS: 남은 재료의 가장 낮은 종류를 (버림 | 그 종류를 포함한 요리) — 정규 순서라 같은 분할을 두 번 안 센다
+  let bestScore = 0;
+  let bestPath: Quad[] = [];
+  const path: Quad[] = [];
+  const made = new Map<string, number>();
+  const dfs = (state: number, acc: number) => {
+    if (acc > bestScore) { bestScore = acc; bestPath = [...path]; }
+    if (state === 0 || acc + bound[state] <= bestScore + 1e-9) return;
+    decode(state);
+    const i = lowest();
+    const quads = byMin[i];
+    for (let q = 0; q < quads.length; q++) {
+      const quad = quads[q];
+      decode(state); // 재귀가 counts를 덮어쓰므로 복원
+      if (!feasible(quad)) continue;
+      const before = made.get(quad.dish) ?? 0;
+      const gain = quad.score * warlyMultiplier(before);
+      // 이 묶음을 써도 상한을 못 넘기면 건너뜀 (묶음이 점수순이라 뒤는 더 나쁘지만 배율이 달라 break는 못 한다)
+      if (acc + gain + bound[state - quad.code] <= bestScore + 1e-9) continue;
+      made.set(quad.dish, before + 1);
+      path.push(quad);
+      dfs(state - quad.code, acc + gain);
+      path.pop();
+      if (before === 0) made.delete(quad.dish); else made.set(quad.dish, before);
+    }
+    // 버림
+    dfs(state - stride[i], acc);
+  };
+  dfs(total - 1, 0);
+
+  // 복원 — 경로의 묶음 순서대로 uid 배정, 배율은 같은 요리 등장 순
+  const next = types.map(() => 0);
+  const takeUid = (t: number) => types[t].uids[next[t]++];
+  const seen = new Map<string, number>();
+  const pots: PlanPot[] = bestPath.map((q) => {
+    const uids: number[] = [];
+    for (let x = 0; x < q.need.length; x += 2) for (let k = 0; k < q.need[x + 1]; k++) uids.push(takeUid(q.need[x]));
+    const before = seen.get(q.dish) ?? 0;
+    seen.set(q.dish, before + 1);
+    const mult = warlyMultiplier(before);
+    return { uids, recipes: q.recipes, mult, stats: scaleStats(q.stats, mult) };
+  });
+  const discardUids: number[] = [];
+  for (let t = 0; t < T; t++) while (next[t] < types[t].uids.length) discardUids.push(takeUid(t));
+  return finalizePlan(round, pots, [], discardUids);
 }
+
+export function solveOptimal(round: TrainerRound): OptimalPlan {
+  return round.config.warly ? solveWarlyBnB(round) : solveMultisetDp(round);
+}
+
+/** 테스트용 — 월리 분할 전수 열거 (N ≤ 12). 분기한정 탐색과 결과가 같아야 한다 */
+export const _solveWarlyEnum = solveEnum;
 
 /** 테스트용 — 자리 기준 비트마스크 DP (N ≤ 16). 종류별 DP와 결과가 같아야 한다 */
 export const _solveBitmaskDp = solveDp;

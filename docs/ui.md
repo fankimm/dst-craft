@@ -61,7 +61,7 @@
                                                 └──────────────────────────────────────┘   │ 내 플랜: 같은 카드               │
                                                                                             └────────────────────────────┘
 ```
-- 로직은 전부 `src/lib/cookpot-trainer.ts` — 라운드 생성(seed, mulberry32), 채점 가중치, 요리 기대값/실제값, 최적해(일반: 종류별 개수 DP ≤20개, 지배되는 묶음 제외 / 월리: 분할 전수 열거 ≤12개), 결과 비교. 컴포넌트는 상태와 그리기만. 비트마스크 DP(`_solveBitmaskDp`)는 대조 테스트용으로만 남겨 둠
+- 로직은 전부 `src/lib/cookpot-trainer.ts` — 라운드 생성(seed, mulberry32), 채점 가중치, 요리 기대값/실제값, 최적해(일반: 종류별 개수 DP ≤20개, 지배되는 묶음 제외 / 월리: 배율 없는 DP를 상한으로 쓰는 분기한정 ≤16개), 결과 비교. 컴포넌트는 상태와 그리기만. 비트마스크 DP(`_solveBitmaskDp`)·월리 전수 열거(`_solveWarlyEnum`)는 대조 테스트용으로만 남겨 둠
 - `CookpotApp`은 트레이너를 한 번 열면 `hidden`으로 숨길 뿐 언마운트하지 않는다 — 탭 왕복·레시피 보기 후 라운드 보존. 생식 버튼은 두 번 탭(2초 확인). 최고 기록은 localStorage `dst:cookpot-trainer:best`(설정 키 `n-t-s-w`)
 - 문구는 `cookpot/trainer-text.ts` (`tt(key, locale)`) — 홈 번들에 안 실리게 `i18n.ts`와 분리 (농사 탭과 같은 이유)
 - 설정은 localStorage `dst:cookpot-trainer:config`. 요리 결과 미리보기는 **일부러 없다** (레시피 암기가 트레이닝의 목적)
