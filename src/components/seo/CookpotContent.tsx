@@ -248,6 +248,20 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
           })}
         </section>
 
+        <section className="rounded-xl border border-border bg-surface p-6 space-y-3">
+          <div className="flex items-center gap-3">
+            <img src="/images/game-items/portablecookpot_item.png" alt="" className="size-10 object-contain" loading="lazy" />
+            <h2 className="text-lg font-semibold">{L.trainerHeading[lang]}</h2>
+          </div>
+          <p className="text-sm text-muted-foreground">{L.trainerDesc[lang]}</p>
+          <Link
+            href="/?tab=cookpot&mode=trainer"
+            className="inline-block rounded-lg border border-border text-foreground text-sm font-semibold px-5 py-2.5 hover:bg-surface-hover transition-colors"
+          >
+            {L.openTrainer[lang]}
+          </Link>
+        </section>
+
         <section className="rounded-xl border border-border bg-surface p-6 text-center space-y-3">
           <h2 className="text-base font-semibold">{L.readyToCook[lang]}</h2>
           <p className="text-sm text-muted-foreground">{L.readyToCookDesc[lang]}</p>
