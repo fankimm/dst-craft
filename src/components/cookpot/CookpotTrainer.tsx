@@ -359,7 +359,7 @@ function Chip({ active, onClick, children, disabled, size = "md" }: { active: bo
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-xl font-semibold border transition-colors disabled:opacity-30 disabled:pointer-events-none",
+        "inline-flex items-center gap-1.5 rounded-full font-semibold border transition-colors disabled:opacity-30 disabled:pointer-events-none",
         size === "lg" ? "h-10 px-4 text-sm" : "h-8 px-3 text-xs",
         active ? "bg-foreground text-background border-foreground" : "bg-surface border-border text-muted-foreground hover:text-foreground",
       )}
@@ -389,7 +389,7 @@ function StatRow({ stats, className, size = "sm" }: { stats: Stats; className?: 
 function WeightsChip({ weights, locale, dark }: { weights: StatWeights; locale: Locale; dark?: boolean }) {
   return (
     <span
-      className={cn("inline-flex items-center gap-2 h-8 px-2.5 rounded-lg border text-xs font-semibold tabular-nums", dark ? "border-zinc-700 bg-zinc-800 text-zinc-100" : "border-border bg-surface")}
+      className={cn("inline-flex items-center gap-2 h-8 px-2.5 rounded-full border border-border bg-surface text-xs font-semibold tabular-nums", dark && "bg-background")}
       title={tt("weights", locale)}
     >
       {STAT_KEYS.filter((k) => weights[k] > 0).map((k) => (
@@ -434,7 +434,7 @@ function DishCard({
       {/* 재료 2×2 */}
       <div className="grid grid-cols-2 gap-0.5 shrink-0">
         {ingredients.map((ing, i) => (
-          <IngredientIcon key={i} ing={ing} locale={locale} className="size-6 rounded-md bg-zinc-800/80 p-0.5" />
+          <IngredientIcon key={i} ing={ing} locale={locale} className="size-6 rounded-md bg-background border border-border p-0.5" />
         ))}
       </div>
       <span className="text-muted-foreground text-sm shrink-0">→</span>
@@ -485,13 +485,13 @@ function SetupScreen({ locale, config, best, challenge, onDismissChallenge, onCh
     <TabScrollArea scrollContainer noFooter>
       <div className="max-w-2xl mx-auto px-4 py-4 w-full space-y-5">
         {/* 히어로 */}
-        <div className="rounded-2xl bg-zinc-900 text-zinc-100 border border-zinc-800 p-5 flex items-center gap-4">
+        <div className="rounded-xl bg-surface border border-border p-4 flex items-center gap-4">
           <img src={assetPath("/images/game-items/cookpot.png")} alt="" className="size-20 object-contain drop-shadow-lg shrink-0" loading="lazy" />
           <div className="min-w-0">
             <h2 className="text-xl font-extrabold tracking-tight">{tt("title", locale)}</h2>
-            <p className="text-sm text-zinc-300 mt-1 leading-snug">{tt("intro", locale)}</p>
+            <p className="text-sm text-muted-foreground mt-1 leading-snug">{tt("intro", locale)}</p>
             {best !== undefined && (
-              <p className="text-xs text-amber-300 font-semibold mt-2 tabular-nums">{tt("bestRecord", locale)} {best}%</p>
+              <p className="text-xs text-amber-600 dark:text-amber-400 font-semibold mt-2 tabular-nums">{tt("bestRecord", locale)} {best}%</p>
             )}
           </div>
         </div>
@@ -545,7 +545,7 @@ function SetupScreen({ locale, config, best, challenge, onDismissChallenge, onCh
         <button
           type="button"
           onClick={onStart}
-          className="w-full h-14 rounded-2xl bg-amber-500 text-zinc-900 font-extrabold text-lg inline-flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 active:scale-[0.98] transition-transform"
+          className="w-full h-12 rounded-lg bg-foreground text-background font-bold text-base inline-flex items-center justify-center gap-2 hover:opacity-80 active:scale-[0.98] transition-all"
         >
           <Play className="size-5 fill-current" />
           {tt("start", locale)}
@@ -626,30 +626,30 @@ function PlayScreen({
       <div className="shrink-0 px-3 pt-2 max-w-4xl mx-auto w-full">
         <div className="flex items-center gap-2">
           <span className={cn(
-            "inline-flex items-center gap-1 h-9 px-3 rounded-xl border text-lg font-extrabold tabular-nums shrink-0",
+            "inline-flex items-center gap-1 h-9 px-3 rounded-full border text-lg font-bold tabular-nums shrink-0",
             urgent ? "border-red-500 bg-red-500/15 text-red-600 dark:text-red-400 animate-trainer-pulse" : "border-border bg-surface",
           )}>
             <Timer className="size-4" />
             {timeLeft === null ? "∞" : formatTime(timeLeft)}
           </span>
-          <span className="inline-flex items-baseline gap-1.5 h-9 px-3 rounded-xl border border-border bg-surface whitespace-nowrap shrink-0">
+          <span className="inline-flex items-baseline gap-1.5 h-9 px-3 rounded-full border border-border bg-surface whitespace-nowrap shrink-0">
             <span className="text-[11px] font-semibold text-muted-foreground">{tt("score", locale)}</span>
-            <span key={Math.round(score)} className="text-xl font-extrabold tabular-nums animate-trainer-pop">{Math.round(score)}</span>
+            <span key={Math.round(score)} className="text-xl font-bold tabular-nums animate-trainer-pop">{Math.round(score)}</span>
           </span>
           <span className="hidden sm:inline-flex"><WeightsChip weights={round.weights} locale={locale} /></span>
           <button
             type="button"
             onClick={onFinish}
-            className="ml-auto inline-flex items-center gap-1 h-9 px-3 rounded-xl border-2 border-red-500/60 text-red-600 dark:text-red-400 text-sm font-bold hover:bg-red-500/10 whitespace-nowrap shrink-0"
+            className="ml-auto inline-flex items-center gap-1 h-9 px-3.5 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-80 whitespace-nowrap shrink-0"
           >
             <Flag className="size-4" />
             {tt("finish", locale)}
           </button>
         </div>
         {/* 타이머 바 */}
-        <div className="mt-1.5 h-1.5 rounded-full bg-border overflow-hidden">
+        <div className="mt-2 h-1.5 rounded-full bg-surface-hover overflow-hidden">
           <div
-            className={cn("h-full rounded-full transition-[width] duration-200 ease-linear", urgent ? "bg-red-500" : timeFrac < 0.35 ? "bg-amber-500" : "bg-emerald-500")}
+            className={cn("h-full rounded-full transition-[width] duration-200 ease-linear", urgent ? "bg-red-500" : timeFrac < 0.35 ? "bg-amber-500" : "bg-foreground")}
             style={{ width: `${timeFrac * 100}%` }}
           />
         </div>
@@ -658,15 +658,15 @@ function PlayScreen({
       <TabScrollArea scrollContainer noFooter>
         <div className="max-w-4xl mx-auto px-3 pt-3 pb-4 w-full space-y-3">
           {/* 조리대 */}
-          <div className="rounded-2xl bg-zinc-900 text-zinc-100 border border-zinc-800 p-3 sm:p-4 shadow-inner">
+          <div className="rounded-xl bg-surface border border-border p-3 sm:p-4">
             <div className="flex items-center justify-between mb-2">
-              <StatRow stats={totals} size="md" className="text-zinc-100" />
+              <StatRow stats={totals} size="md" />
               {memory && memory.size > 0 && (
                 <div className="flex items-center gap-1">
                   {[...memory.entries()].map(([id, n]) => (
-                    <span key={id} className="relative inline-flex items-center rounded-md bg-zinc-800 border border-zinc-700 p-0.5" title={`${tt("memory", locale)} ×${n} · ${tt("memoryNext", locale)} ×${warlyMultiplier(n)}`}>
+                    <span key={id} className="relative inline-flex items-center rounded-md bg-background border border-border p-0.5" title={`${tt("memory", locale)} ×${n} · ${tt("memoryNext", locale)} ×${warlyMultiplier(n)}`}>
                       <img src={assetPath(`/images/game-items/${id}.png`)} alt="" className="size-6 object-contain" loading="lazy" />
-                      <span className="absolute -bottom-1 -right-1 text-[9px] font-bold bg-amber-400 text-zinc-900 rounded px-0.5 leading-tight">×{warlyMultiplier(n)}</span>
+                      <span className="absolute -bottom-1.5 -right-1.5 text-[9px] font-bold rounded-full px-1 leading-4 bg-amber-500/15 border border-amber-500/40 text-amber-600 dark:text-amber-400">×{warlyMultiplier(n)}</span>
                     </span>
                   ))}
                 </div>
@@ -688,17 +688,17 @@ function PlayScreen({
                     {cooking && (
                       <div className="absolute top-2 inset-x-0 flex justify-center gap-3 pointer-events-none">
                         {[0, 1, 2].map((i) => (
-                          <span key={i} className="size-2.5 rounded-full bg-zinc-200/80 animate-trainer-bubble" style={{ animationDelay: `${i * 0.25}s` }} />
+                          <span key={i} className="size-2.5 rounded-full bg-muted-foreground/60 animate-trainer-bubble" style={{ animationDelay: `${i * 0.25}s` }} />
                         ))}
                       </div>
                     )}
                     <img
                       src={assetPath(`/images/game-items/${warly ? "portablecookpot_item" : "cookpot"}.png`)}
                       alt=""
-                      className={cn("size-24 sm:size-28 object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,.6)]", cooking && "animate-trainer-wobble")}
+                      className={cn("size-24 sm:size-28 object-contain drop-shadow-md", cooking && "animate-trainer-wobble")}
                       loading="lazy"
                     />
-                    <span className="mt-1 text-xs font-bold tabular-nums text-zinc-300">{cooking ? tt("cooking", locale) : `${pot.length} / 4`}</span>
+                    <span className="mt-1 text-xs font-semibold tabular-nums text-muted-foreground">{cooking ? tt("cooking", locale) : `${pot.length} / 4`}</span>
                   </>
                 )}
               </div>
@@ -714,22 +714,22 @@ function PlayScreen({
               onClick={onCook}
               disabled={pot.length !== 4 || cooking}
               className={cn(
-                "mt-3 w-full h-12 rounded-xl text-base font-extrabold inline-flex items-center justify-center gap-2 transition-all",
+                "mt-3 w-full h-12 rounded-lg text-base font-bold inline-flex items-center justify-center gap-2 transition-all",
                 pot.length === 4 && !cooking
-                  ? "bg-amber-500 text-zinc-900 shadow-lg shadow-amber-500/30 active:scale-[0.98]"
-                  : "bg-zinc-800 text-zinc-500",
+                  ? "bg-foreground text-background hover:opacity-80 active:scale-[0.98]"
+                  : "bg-surface-hover text-muted-foreground",
               )}
             >
               <Utensils className="size-5" />
               {cooking ? tt("cooking", locale) : tt("cook", locale)}
             </button>
-            <p className="text-[11px] text-zinc-500 mt-1.5 text-center">{pot.length === 0 ? tt("tapPot", locale) : tt("removeHint", locale)}</p>
+            <p className="text-[11px] text-muted-foreground mt-1.5 text-center">{pot.length === 0 ? tt("tapPot", locale) : tt("removeHint", locale)}</p>
           </div>
 
           {/* 인벤토리 */}
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm font-bold">{tt("tray", locale)}</span>
+              <span className="text-sm font-semibold">{tt("tray", locale)}</span>
               <span className="text-xs font-semibold text-muted-foreground tabular-nums">{remaining.length}</span>
             </div>
             {stacks.length === 0 ? (
@@ -745,11 +745,11 @@ function PlayScreen({
                           type="button"
                           onClick={() => onAddToPot(s.uids[0])}
                           disabled={cooking || pot.length >= 4}
-                          className="relative flex items-center justify-center size-16 sm:size-[72px] rounded-xl bg-zinc-900 border-2 border-zinc-700 shadow-md active:scale-95 transition-transform disabled:opacity-40 hover:border-amber-400"
+                          className="relative flex items-center justify-center size-16 sm:size-[72px] rounded-lg bg-surface border border-border hover:border-ring active:bg-surface-hover active:scale-95 transition-all disabled:opacity-40"
                         >
                           <IngredientIcon ing={s.ingredient} locale={locale} className="size-12 sm:size-14" />
                           {s.uids.length > 1 && (
-                            <span className="absolute -bottom-1.5 -right-1.5 min-w-6 h-6 px-1.5 rounded-full bg-amber-400 text-zinc-900 text-xs font-extrabold tabular-nums flex items-center justify-center shadow">×{s.uids.length}</span>
+                            <span className="absolute -bottom-1.5 -right-1.5 min-w-6 h-6 px-1.5 rounded-full bg-surface-hover border border-ring text-foreground/80 text-xs font-bold tabular-nums flex items-center justify-center">×{s.uids.length}</span>
                           )}
                         </button>
                         {!warly && s.raw && (
@@ -760,8 +760,8 @@ function PlayScreen({
                             className={cn(
                               "absolute -top-1.5 -left-1.5 h-6 rounded-full text-[10px] font-bold flex items-center gap-0.5 px-1.5 shadow border transition-colors",
                               confirming
-                                ? "bg-amber-400 text-zinc-900 border-amber-500 animate-trainer-pop"
-                                : "bg-zinc-800 text-zinc-200 border-zinc-600 hover:bg-zinc-700",
+                                ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40 animate-trainer-pop"
+                                : "bg-background text-muted-foreground border-border hover:text-foreground",
                             )}
                             title={tt("eatRaw", locale)}
                           >
@@ -770,7 +770,7 @@ function PlayScreen({
                           </button>
                         )}
                       </div>
-                      <span className="text-[11px] font-medium leading-tight text-center line-clamp-2 min-h-[2lh] w-full">{ingredientName(s.ingredient, locale)}</span>
+                      <span className="text-[11px] text-foreground/80 font-medium leading-tight text-center line-clamp-2 min-h-[2lh] w-full">{ingredientName(s.ingredient, locale)}</span>
                     </div>
                   );
                 })}
@@ -781,7 +781,7 @@ function PlayScreen({
           {/* 먹은 것 */}
           {actions.length > 0 && (
             <div>
-              <div className="text-sm font-bold mb-2">{tt("log", locale)}</div>
+              <div className="text-sm font-semibold mb-2">{tt("log", locale)}</div>
               <div className="space-y-1.5">
                 {[...actions].reverse().map((a, i) => <ActionRow key={actions.length - i} action={a} round={round} locale={locale} />)}
               </div>
@@ -797,7 +797,7 @@ function PotSlot({ index, uid, round, locale, disabled, onRemove }: { index: num
   const item = uid !== undefined ? round.items[uid] : null;
   if (!item) {
     return (
-      <div className="flex items-center justify-center size-16 sm:size-[72px] rounded-xl border-2 border-dashed border-zinc-700 bg-zinc-800/50 text-sm font-bold text-zinc-600">
+      <div className="flex items-center justify-center size-16 sm:size-[72px] rounded-lg border-2 border-dashed border-border bg-background/50 text-sm font-semibold text-muted-foreground">
         {index + 1}
       </div>
     );
@@ -807,11 +807,11 @@ function PotSlot({ index, uid, round, locale, disabled, onRemove }: { index: num
       type="button"
       onClick={() => onRemove(item.uid)}
       disabled={disabled}
-      className="relative flex items-center justify-center size-16 sm:size-[72px] rounded-xl bg-zinc-800 border-2 border-amber-500/70 shadow-[0_0_12px_rgba(245,158,11,.25)] active:scale-95 transition-transform animate-trainer-pop"
+      className="relative flex items-center justify-center size-16 sm:size-[72px] rounded-lg bg-background border-2 border-primary/50 hover:border-primary hover:bg-primary/10 active:scale-95 transition-all animate-trainer-pop"
       title={ingredientName(item.ingredient, locale)}
     >
       <IngredientIcon ing={item.ingredient} locale={locale} className="size-12 sm:size-14" />
-      {!disabled && <X className="absolute -top-1.5 -right-1.5 size-4 rounded-full bg-zinc-700 text-zinc-200 p-0.5" />}
+      {!disabled && <X className="absolute -top-1.5 -right-1.5 size-4 rounded-full bg-surface-hover border border-ring text-foreground/80 p-0.5" />}
     </button>
   );
 }
@@ -825,19 +825,19 @@ function RevealView({ action, round, locale, score }: { action: TrainerAction; r
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full">
       <div className="absolute -top-1 inset-x-0 flex justify-center pointer-events-none">
-        <span className={cn("text-2xl font-extrabold tabular-nums animate-trainer-float drop-shadow", score > 0 ? "text-emerald-300" : score < 0 ? "text-red-400" : "text-zinc-400")}>
+        <span className={cn("text-2xl font-bold tabular-nums animate-trainer-float", statColor(score))}>
           {score > 0 ? "+" : ""}{Math.round(score)}
         </span>
       </div>
-      <img src={assetPath(img)} alt="" className="size-24 sm:size-28 object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,.6)] animate-trainer-pop" loading="lazy" />
-      <span className={cn("mt-1 text-sm font-extrabold text-center leading-tight line-clamp-1", inedible ? "text-red-400" : "text-amber-300")}>
+      <img src={assetPath(img)} alt="" className="size-24 sm:size-28 object-contain drop-shadow-md animate-trainer-pop" loading="lazy" />
+      <span className={cn("mt-1 text-sm font-bold text-center leading-tight line-clamp-1", inedible ? "text-red-500" : "text-foreground")}>
         {inedible ? tt("inedible", locale) : name}
       </span>
-      <div className="mt-1">
-        <StatRow stats={action.stats} className="text-zinc-100" />
+      <div className="mt-1 w-max max-w-none">
+        <StatRow stats={action.stats} className="flex-nowrap whitespace-nowrap text-[11px]" />
       </div>
-      {isCook && action.wasRandom && <span className="absolute top-0 right-0 text-[10px] text-amber-300 inline-flex items-center gap-0.5"><Shuffle className="size-3" />{tt("randomPick", locale)}</span>}
-      {isCook && action.mult !== 1 && <span className="absolute top-0 left-0 text-[10px] text-zinc-300">×{action.mult}</span>}
+      {isCook && action.wasRandom && <span className="absolute top-0 right-0 text-[10px] text-amber-600 dark:text-amber-400 inline-flex items-center gap-0.5"><Shuffle className="size-3" />{tt("randomPick", locale)}</span>}
+      {isCook && action.mult !== 1 && <span className="absolute top-0 left-0 text-[10px] text-muted-foreground">×{action.mult}</span>}
     </div>
   );
 }
@@ -873,11 +873,11 @@ function ActionRow({ action, round, locale, onViewRecipe }: { action: TrainerAct
 // ---------------------------------------------------------------------------
 
 function rankOf(pct: number): { letter: string; color: string; verdict: "perfect" | "great" | "good" | "tryAgain" } {
-  if (pct >= 100) return { letter: "S", color: "text-amber-400 border-amber-400", verdict: "perfect" };
-  if (pct >= 85) return { letter: "A", color: "text-emerald-400 border-emerald-400", verdict: "great" };
-  if (pct >= 70) return { letter: "B", color: "text-sky-400 border-sky-400", verdict: "good" };
-  if (pct >= 50) return { letter: "C", color: "text-zinc-300 border-zinc-400", verdict: "good" };
-  return { letter: "D", color: "text-red-400 border-red-400", verdict: "tryAgain" };
+  if (pct >= 100) return { letter: "S", color: "text-amber-600 dark:text-amber-400 border-amber-500", verdict: "perfect" };
+  if (pct >= 85) return { letter: "A", color: "text-green-600 dark:text-green-400 border-green-500", verdict: "great" };
+  if (pct >= 70) return { letter: "B", color: "text-sky-600 dark:text-sky-400 border-sky-500", verdict: "good" };
+  if (pct >= 50) return { letter: "C", color: "text-muted-foreground border-ring", verdict: "good" };
+  return { letter: "D", color: "text-red-500 border-red-500", verdict: "tryAgain" };
 }
 
 function ResultScreen({
@@ -902,19 +902,19 @@ function ResultScreen({
     <TabScrollArea scrollContainer noFooter>
       <div className="max-w-3xl mx-auto px-3 py-4 w-full space-y-4">
         {/* 점수판 */}
-        <div className="relative overflow-hidden rounded-2xl bg-zinc-900 text-zinc-100 border border-zinc-800 p-5 text-center">
-          {endedByTime && <div className="text-xs text-red-400 font-bold mb-1">{tt("timeUp", locale)}</div>}
+        <div className="relative overflow-hidden rounded-xl bg-surface border border-border p-5 text-center">
+          {endedByTime && <div className="text-xs text-red-500 font-semibold mb-1">{tt("timeUp", locale)}</div>}
           <div className="flex items-center justify-center gap-5">
-            <div className={cn("flex items-center justify-center size-24 rounded-2xl border-4 text-6xl font-black animate-trainer-stamp", rank.color)}>
+            <div className={cn("flex items-center justify-center size-24 rounded-xl border-4 text-6xl font-black bg-background animate-trainer-stamp", rank.color)}>
               {rank.letter}
             </div>
             <div className="text-left">
               <div className="text-5xl font-black tabular-nums leading-none">{pct}<span className="text-2xl">%</span></div>
-              <div className="text-sm text-zinc-400 mt-1">{tt("ofOptimal", locale)}</div>
-              <div className={cn("text-base font-extrabold mt-0.5", rank.color.split(" ")[0])}>{tt(rank.verdict, locale)}</div>
+              <div className="text-sm text-muted-foreground mt-1">{tt("ofOptimal", locale)}</div>
+              <div className={cn("text-base font-bold mt-0.5", rank.color.replace(/border-\S+/, ""))}>{tt(rank.verdict, locale)}</div>
               {isNewRecord
-                ? <div className="text-sm font-extrabold text-amber-300 mt-1 animate-trainer-pop">{tt("newRecord", locale)}</div>
-                : best !== undefined && <div className="text-xs text-zinc-400 mt-1 tabular-nums">{tt("bestRecord", locale)} {best}%</div>}
+                ? <div className="text-sm font-bold text-amber-600 dark:text-amber-400 mt-1 animate-trainer-pop">{tt("newRecord", locale)}</div>
+                : best !== undefined && <div className="text-xs text-muted-foreground mt-1 tabular-nums">{tt("bestRecord", locale)} {best}%</div>}
             </div>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-2 text-left">
@@ -923,27 +923,27 @@ function ResultScreen({
           </div>
           <div className="mt-3 flex items-center justify-center gap-2 flex-wrap">
             <WeightsChip weights={round.weights} locale={locale} dark />
-            <span className="text-[11px] text-zinc-400 tabular-nums">{tt("seed", locale)} {round.seed.toString(36)}</span>
+            <span className="text-[11px] text-muted-foreground tabular-nums">{tt("seed", locale)} {round.seed.toString(36)}</span>
             <ShareButton
               url={challengeUrl(round)}
               toastMessage={tt("shareCopied", locale)}
               label={tt("share", locale)}
-              className="inline-flex items-center gap-1 h-8 px-3 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-100 text-xs font-bold"
+              className="inline-flex items-center gap-1 h-8 px-3 rounded-full border border-border bg-background text-foreground text-xs font-semibold"
             />
           </div>
         </div>
 
         {/* 버튼 */}
         <div className="grid grid-cols-3 gap-2">
-          <button type="button" onClick={onRetrySame} className="h-12 rounded-xl border-2 border-border bg-surface text-sm font-bold inline-flex items-center justify-center gap-1"><RotateCcw className="size-4" />{tt("retrySame", locale)}</button>
-          <button type="button" onClick={onNew} className="h-12 rounded-xl bg-amber-500 text-zinc-900 text-sm font-extrabold inline-flex items-center justify-center gap-1 shadow-lg shadow-amber-500/25"><Play className="size-4 fill-current" />{tt("newRound", locale)}</button>
-          <button type="button" onClick={onSetup} className="h-12 rounded-xl border-2 border-border bg-surface text-sm font-bold inline-flex items-center justify-center gap-1"><Settings2 className="size-4" />{tt("backToSetup", locale)}</button>
+          <button type="button" onClick={onRetrySame} className="h-11 rounded-lg border border-border bg-surface text-sm font-semibold inline-flex items-center justify-center gap-1 hover:bg-surface-hover"><RotateCcw className="size-4" />{tt("retrySame", locale)}</button>
+          <button type="button" onClick={onNew} className="h-11 rounded-lg bg-foreground text-background text-sm font-bold inline-flex items-center justify-center gap-1 hover:opacity-80"><Play className="size-4 fill-current" />{tt("newRound", locale)}</button>
+          <button type="button" onClick={onSetup} className="h-11 rounded-lg border border-border bg-surface text-sm font-semibold inline-flex items-center justify-center gap-1 hover:bg-surface-hover"><Settings2 className="size-4" />{tt("backToSetup", locale)}</button>
         </div>
 
         <PlanSection title={tt("optimalPlan", locale)} plan={result.optimal} round={round} locale={locale} onViewRecipe={onViewRecipe} />
 
         <div>
-          <div className="text-sm font-bold mb-2">{tt("yourPlan", locale)}</div>
+          <div className="text-sm font-semibold mb-2">{tt("yourPlan", locale)}</div>
           {actions.length === 0 ? (
             <p className="text-xs text-muted-foreground">{tt("logEmpty", locale)}</p>
           ) : (
@@ -959,10 +959,10 @@ function ResultScreen({
 
 function ScoreBox({ label, score, stats, highlight }: { label: string; score: number; stats: Stats; highlight?: boolean }) {
   return (
-    <div className={cn("rounded-xl border px-3 py-2.5", highlight ? "border-amber-500/50 bg-amber-500/10" : "border-zinc-700 bg-zinc-800")}>
-      <div className="text-[11px] font-semibold text-zinc-400">{label}</div>
+    <div className={cn("rounded-lg border px-3 py-2.5", highlight ? "border-amber-500/40 bg-amber-500/10" : "border-border bg-background")}>
+      <div className="text-[11px] font-semibold text-muted-foreground">{label}</div>
       <div className="text-2xl font-black tabular-nums leading-tight">{Math.round(score)}</div>
-      <StatRow stats={stats} className="mt-1 text-zinc-100" />
+      <StatRow stats={stats} className="mt-1" />
     </div>
   );
 }
@@ -970,7 +970,7 @@ function ScoreBox({ label, score, stats, highlight }: { label: string; score: nu
 function PlanSection({ title, plan, round, locale, onViewRecipe }: { title: string; plan: OptimalPlan; round: TrainerRound; locale: Locale; onViewRecipe?: (id: string) => void }) {
   return (
     <div className="space-y-2">
-      <div className="text-sm font-bold">{title}</div>
+      <div className="text-sm font-semibold">{title}</div>
       {plan.pots.length === 0 && plan.rawUids.length === 0 && (
         <p className="text-xs text-muted-foreground">—</p>
       )}
