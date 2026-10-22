@@ -376,6 +376,8 @@ Fast3G에서 홈·characters는 `window load`가 30초 내에 발화하지 않�
    - `public/ads.txt` 추가, nginx conf의 `/ads.txt` 301 제거(**실서버 복사·reload는 11/19 이후**)
    - Ezoic 전용 회귀 스크립트 5종 삭제 → `scripts/check-adsense-beta.mjs`
 
+   **beta 검증 (2026-10-22, `scripts/check-adsense-beta.mjs`)** — ✅ 구조·테스트 플래그·콘솔 오류 0·CLS(앱 0.002 / 모바일 0.005 / SEO 0) 통과. 규격 실측: top 728×90(모바일 320×100), 레일 336×600. **채움은 전부 `unfilled`** — Google이 응답은 하지만 루트 도메인 ads.txt가 Ezoic 것이라 우리 게시자 ID를 미승인으로 보고 테스트 광고도 안 내보낸다. **11/19 ads.txt 교체 뒤 `--expect-fill`로 재검증**할 것. beta.dstcraft.com은 feat/134 테스트 모드로 올라가 있다.
+
    **사용자가 콘솔에서 해야 하는 것** (코드로 못 한다):
    - [x] **광고 단위 3개 생성** — ✅ 2026-10-22 생성: `dstcraft top` 5509948095 / `dstcraft rail-left` 5098884559 / `dstcraft rail-right` 9831677346 (디스플레이·반응형). `src/lib/adsense.ts`의 `ADSENSE_SLOT`에 반영됨
    - [ ] **자동 광고 설정** (사이트 → dstcraft.com → 수정) — 앵커·전면(vignette)만 켜고 페이지 내 자동 삽입·사이드레일은 끈다 (근거 `docs/ui.md`). production에만 적용된다(beta는 `?client=` 없이 로드)
