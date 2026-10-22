@@ -31,7 +31,7 @@ done:2026-09-08|Ad Manager 주소확인 PIN 재발송 요청 가능 최초일|�
 done:2026-10-02|Ad Manager 주소확인 PIN 입력 마감|2026-08-31 인증 완료 (본인 인증·주소 확인 모두 '완료됨'). 32일 남기고 해소
 done:2026-11-11|Ezoic 해지 통보 제출 마감 (Ramp-up 종료, 계약서 §4)|2026-10-20 대시보드 모달로 통보 제출 완료 — 22일 남기고 해소
 done:2027-05-15|Ezoic 다음 해지 통보 기한 (Initial Term 갱신 90일 전)|해지 통보로 Initial Term에 들어가지 않아 해당 없음
-2026-11-19|Ezoic 계약 종료 — 이날부터 AdSense 전환 작업(docs/ezoic-decision.md B절) 시작|그 전에는 §2 독점이 살아 있어 AdSense 광고 코드·ads.txt 교체·MCM 위임 해제를 하면 계약 위반. AdSense 사이트 검토 요청은 10/20 제출 완료, 승인 결과 확인만 남음 (승인 전이면 전환을 승인 뒤로 미룬다)
+2026-11-19|Ezoic 계약 종료 — 이날부터 AdSense 전환 작업(docs/ezoic-decision.md B절) 시작|그 전에는 §2 독점이 살아 있어 AdSense 광고 코드·ads.txt 교체·MCM 위임 해제를 하면 계약 위반. AdSense 승인 완료(10/21) — 11/19 당일 전환 가능
 EOF
 )
 
