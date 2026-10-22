@@ -12,7 +12,7 @@
 import { chromium } from "playwright-core";
 const base = process.argv[2] ?? "https://beta.dstcraft.com";
 const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
-const AD = ["ezojs","ezoic","ezodn","gatekeeperconsent","doubleclick","googlesyndication","imasdk"];
+const AD = ["doubleclick","googlesyndication","googleadservices","imasdk"];
 const b = await chromium.launch({ channel: "chrome", headless: true });
 const p = await (await b.newContext({ userAgent: UA, viewport:{width:1512,height:900} })).newPage();
 await p.route("**/*", r => AD.some(h=>r.request().url().includes(h)) ? r.abort() : r.continue());

@@ -37,8 +37,8 @@ interface Metrics {
   legacyPwa: boolean;
   /** 뷰포트 상단 100px에 걸친 position:fixed 요소들 — 탭 바를 덮는 게 광고 컨테이너인지 OS 블러인지 가른다 */
   topFixed: string[];
-  /** Ezoic 앵커·상단 띠 상태 */
-  ezoic: string;
+  /** 앵커·상단 띠 상태 */
+  anchor: string;
   scroll: string;
   /** 광고 파이프라인 — 스크립트가 막힌 건지, 떴는데 안 채워진 건지 */
   ads: string;
@@ -46,17 +46,18 @@ interface Metrics {
 
 /** 광고 엔진 상태. AdVisibilityProbe와 같은 판정 함수 + 리소스 타이밍으로 실제 로드된 광고 호스트 수 */
 function scanAds(): string {
-  const scripts = document.querySelectorAll('script[src*="ezojs"], script[src*="ezoic"]').length;
+  const scripts = document.querySelectorAll('script[src*="adsbygoogle"]').length;
   const res = performance.getEntriesByType("resource") as PerformanceResourceTiming[];
   const count = (re: RegExp) => res.filter((r) => re.test(r.name)).length;
-  const creatives = document.querySelectorAll('[id^="ezoic-pub-ad-placeholder-"] iframe').length;
+  const ins = Array.from(document.querySelectorAll("ins.adsbygoogle"));
+  const status = (v: string) => ins.filter((e) => e.getAttribute("data-ad-status") === v).length;
   return [
-    `ezoic script tag=${scripts}`,
-    `engine(showAds)=${adEngineReady()}`,
+    `adsbygoogle script tag=${scripts}`,
+    `engine(loaded)=${adEngineReady()}`,
     `cmp(__tcfapi)=${cmpPresent()}`,
     `bait hidden(차단기 의심)=${detectAdFilter()}`,
-    `loaded: ezoic=${count(/ezojs|ezodn|ezoic/)} gam=${count(/doubleclick|googlesyndication/)} other=${count(/adsrvr|rubicon|pubmatic|openx|criteo|amazon-adsystem/)}`,
-    `creatives=${creatives} rendered=${anyCreativeRendered()}`,
+    `loaded: google=${count(/googlesyndication|doubleclick|googleadservices/)} other=${count(/adsrvr|rubicon|pubmatic|openx|criteo|amazon-adsystem/)}`,
+    `ins=${ins.length} filled=${status("filled")} unfilled=${status("unfilled")} adtest=${ins.filter((e) => e.getAttribute("data-adtest") === "on").length} rendered=${anyCreativeRendered()}`,
     `online=${navigator.onLine}`,
   ].join(" · ");
 }
@@ -78,21 +79,21 @@ function scanTopFixed(): string[] {
   return out;
 }
 
-function scanEzoic(): string {
-  // AppShell 과 같은 후보 목록·판정(fixed) — 표시값이 실제 `--ez-anchor-h` 계산과 어긋나지 않게 (#105)
+function scanAnchor(): string {
+  // AppShell 과 같은 후보 목록·판정(fixed) — 표시값이 실제 `--ad-anchor-h` 계산과 어긋나지 않게 (#105)
   const anchor =
     Array.from(document.querySelectorAll<HTMLElement>(ANCHOR_AD_SELECTOR)).find(
       (e) => getComputedStyle(e).position === "fixed",
     ) ?? document.querySelector<HTMLElement>(ANCHOR_AD_SELECTOR);
-  const band = document.querySelector<HTMLElement>("#ezoic-pub-ad-placeholder-111");
+  const band = document.querySelector<HTMLElement>('[data-ad-slot="top"] ins.adsbygoogle');
   const a = anchor
-    ? `anchor ${anchor.id || anchor.className} top=${Math.round(anchor.getBoundingClientRect().top)} h=${Math.round(anchor.getBoundingClientRect().height)} pos=${getComputedStyle(anchor).position}`
+    ? `anchor ${anchor.getAttribute("data-anchor-status")} top=${Math.round(anchor.getBoundingClientRect().top)} h=${Math.round(anchor.getBoundingClientRect().height)} pos=${getComputedStyle(anchor).position}`
     : "anchor 없음";
   const b = band
-    ? `111 h=${Math.round(band.getBoundingClientRect().height)} iframes=${band.querySelectorAll("iframe").length}`
-    : "111 없음";
-  const v = getComputedStyle(document.documentElement).getPropertyValue("--ez-anchor-h").trim() || "(unset)";
-  return `${a} / ${b} / --ez-anchor-h=${v}`;
+    ? `top h=${Math.round(band.getBoundingClientRect().height)} status=${band.getAttribute("data-ad-status") ?? "(대기)"} iframes=${band.querySelectorAll("iframe").length}`
+    : "top ins 없음";
+  const v = getComputedStyle(document.documentElement).getPropertyValue("--ad-anchor-h").trim() || "(unset)";
+  return `${a} / ${b} / --ad-anchor-h=${v}`;
 }
 
 /** 스크롤 먹통 진단 (#105): 셸 인라인 높이 / 보이는 컨테이너의 넘침·인라인 overflow / 잠금·열린 시트 수.
@@ -153,7 +154,7 @@ function readMetrics(): Metrics {
       screen.height - innerHeight > 20 &&
       probe("env(safe-area-inset-top, 0px)") > 0,
     topFixed: scanTopFixed(),
-    ezoic: scanEzoic(),
+    anchor: scanAnchor(),
     scroll: scanScroll(),
     ads: scanAds(),
   };
@@ -193,7 +194,7 @@ export function EnvDiagOverlay({ onClose }: { onClose: () => void }) {
     ["status-bar meta", m.statusBarMeta],
     ["viewport meta", m.viewportMeta],
     ["legacy 웹클립 판정(#61)", m.legacyPwa],
-    ["ezoic", m.ezoic],
+    ["anchor/top", m.anchor],
     ["스크롤 진단(#105)", m.scroll],
     ["ads", m.ads],
     ["fixed 요소(상단 100px)", m.topFixed.length ? m.topFixed.join(" ‖ ") : "(없음)"],

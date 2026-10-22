@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { hasCreative } from "./AdSlot";
+import { isAdFilled } from "./AdSlot";
+import { adsenseLoaded } from "@/lib/adsense";
 import { useAuth } from "@/hooks/use-auth";
 import { trackAdVisibility } from "@/lib/analytics";
 
@@ -9,9 +10,10 @@ import { trackAdVisibility } from "@/lib/analytics";
  * 광고가 이 방문자에게 **실제로 도달했는지**, 도달했다면 **얼마나 걸렸는지**를
  * 세션당 한 번 보고한다 (#85, 판정 방식 교정 #86).
  *
- * 왜 필요한가: Ezoic 대시보드는 **채워진 노출만** 보여준다. ePMV가 낮을 때 원인이
+ * 왜 필요한가: 광고망 대시보드는 **채워진 노출만** 보여준다. 수익이 낮을 때 원인이
  * 재고가 안 붙어서(no-fill)인지 단가가 낮아서인지 가릴 수 없다. 우리 쪽에서
- * "요청은 나갔는데 소재가 안 왔다"를 직접 세면 그 구분이 선다.
+ * "요청은 나갔는데 소재가 안 왔다"를 직접 세면 그 구분이 선다. Ezoic → AdSense 전환(#134)
+ * 전후 도달률 비교의 근거이기도 하다 — 판정 함수만 AdSense 기준으로 바꿨고 버킷은 그대로다.
  *
  * 이 자리가 **우리 트래킹은 살아 있고 광고만 죽은 세션**까지 잡을 수 있는 유일한
  * 지점이다 — 자체 트래킹은 이미 광고차단 필터를 피하는 경로(`/_t`)를 쓴다 (#34).
@@ -74,34 +76,32 @@ export function detectAdFilter(): boolean {
 }
 
 /**
- * Ezoic 본체(`sa.min.js`)가 실제로 실행됐는가.
+ * 광고 본체(`adsbygoogle.js`)가 실제로 실행됐는가.
  *
- * **`ezstandalone`의 존재로 판정하면 안 된다.** 그 객체와 `cmd` 큐는 우리 부트스트랩
- * 인라인 스크립트가 항상 먼저 만든다(`layout.tsx`의 `adBootstrapScript`). 스크립트가
- * 차단돼도 껍데기는 남으므로 언제나 참이 된다. `showAds`는 본체만 정의한다.
+ * **`window.adsbygoogle` 배열의 존재로 판정하면 안 된다.** 그 큐는 `AdSlot`이 push하면서
+ * 먼저 만든다. 스크립트가 차단돼도 배열은 남는다. 본체만 `loaded = true`를 세운다.
  */
 /** 진단 오버레이(#103)에서도 같은 판정을 쓴다 */
 export function adEngineReady(): boolean {
-  const ez = (window as unknown as { ezstandalone?: { showAds?: unknown } }).ezstandalone;
-  return typeof ez?.showAds === "function";
+  return adsenseLoaded();
 }
 
 /**
  * 자리 중 하나라도 실제 소재가 들어왔는가.
  *
- * 판정은 `AdSlot`의 `hasCreative`를 그대로 쓴다 — 재고가 없어도 Ezoic이 18×18 뱃지를
- * 넣기 때문에, 자식 유무로 세면 no-fill이 통째로 노출로 잡혀 결과가 뒤집힌다.
+ * 판정은 `AdSlot`의 `isAdFilled`를 그대로 쓴다 — AdSense가 응답 뒤 `<ins>`에
+ * `data-ad-status="filled"|"unfilled"`를 박으므로 자식 유무를 셀 필요가 없다.
+ * 자동 광고(앵커·전면)의 `<ins>`도 같은 속성을 받아 함께 잡힌다.
  */
 /** 진단 오버레이(#103)에서도 같은 판정을 쓴다 */
 export function anyCreativeRendered(): boolean {
-  const nodes = document.querySelectorAll<HTMLElement>('[id^="ezoic-pub-ad-placeholder-"]');
-  for (const el of nodes) {
-    if (getComputedStyle(el).display !== "none" && hasCreative(el)) return true;
+  for (const el of document.querySelectorAll("ins.adsbygoogle")) {
+    if (isAdFilled(el)) return true;
   }
   return false;
 }
 
-/** TCF CMP가 떠 있는가 — no-fill이 동의 거부 때문인지 가릴 때 쓴다. */
+/** TCF CMP가 떠 있는가 — no-fill이 동의 거부 때문인지 가릴 때 쓴다. AdSense의 GDPR 동의 메시지(콘솔 "개인 정보 보호 및 메시지")도 `__tcfapi`를 세운다. */
 /** 진단 오버레이(#103)에서도 같은 판정을 쓴다 */
 export function cmpPresent(): boolean {
   return typeof (window as unknown as { __tcfapi?: unknown }).__tcfapi === "function";
@@ -132,9 +132,8 @@ export function AdVisibilityProbe() {
      * `elapsed` — navigationStart 기준 경과 ms.
      *
      * 이 값이 이번 교정의 핵심 산출물이다. 지연 조사는 전부 headless에서 나왔는데,
-     * 기본 headless UA로는 Ezoic 계열 사이트가 전부 0% 충전됐다 — Ezoic이 클라이언트를
-     * 분류한다는 뜻이라 실측 절대값이 실사용자와 다를 수 있다. 실사용자 도착 시각을
-     * 직접 받아야 그 의심이 풀린다.
+     * 광고망이 클라이언트를 분류하면 실측 절대값이 실사용자와 다를 수 있다.
+     * 실사용자 도착 시각을 직접 받아야 그 의심이 풀린다.
      */
     const send = (reason: "filled" | "deadline" | "early") => {
       if (sent) return;
@@ -152,8 +151,8 @@ export function AdVisibilityProbe() {
         script: adEngineReady(),
         filled,
         cmp: cmpPresent(),
-        // 이탈은 판정이 이르므로 별도 버킷으로 뺀다 — 버리지는 않는다. Ezoic도 이탈
-        // 세션을 visit로 세므로, 빼면 우리 분모가 Ezoic 분모보다 작아져 비교가 깨진다.
+        // 이탈은 판정이 이르므로 별도 버킷으로 뺀다 — 버리지는 않는다. 광고망도 이탈
+        // 세션을 visit로 세므로, 빼면 우리 분모가 그쪽 분모보다 작아져 비교가 깨진다.
         // 단 소재가 이미 왔다면 이탈이든 아니든 그 세션은 노출된 것이다.
         early: reason === "early",
         elapsed: Math.round(performance.now()),
