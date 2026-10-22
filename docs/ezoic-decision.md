@@ -385,6 +385,13 @@ Fast3G에서 홈·characters는 `window load`가 30초 내에 발화하지 않�
    - [ ] **지급 정보** — 수익 $10에서 주소 PIN 우편, $100에서 지급. 은행 계좌는 미리 등록해 둔다
    - [ ] **11/19 당일**: `/release` → 맥미니에서 `bun-api/infra/nginx-dstcraft-common.conf`를 `/usr/local/etc/nginx/snippets/dstcraft-common.conf`로 복사 + `nginx -t && nginx -s reload` → `curl -sL https://www.dstcraft.com/ads.txt`에 우리 pub ID 1줄 확인 → Ad Manager 네트워크 `23368262432`에서 상위 게시자 `Ezoic NA 8` MCM 위임 철회 → AdSense 사이트 목록의 Ads.txt 상태가 "승인됨"으로 바뀌는지(수일 소요) 확인
    - 참고: AdSense 계정 `pub-4567930429443718` — 활성, dstcraft.com 등록·**사이트 승인 완료(2026-10-21)**
+   **🔎 2026-10-22 리서치 — "11/19 전에 올리면 확실히 안 되나?"** (사용자 질문)
+   - **계약상 안 된다.** 서명한 계약서 §2: *"exclusive worldwide rights to manage and represent all programmatic advertising inventory on the Site(s) during the Term"* + *"You agree to only have Ezoic's ads.txt entries for your Site(s), unless otherwise approved by us in writing."* §4: 통보는 수령 30일 뒤 효력, 그때까지 Agreement가 살아 있다. §7 전체합의 조항이 있어 Ezoic 블로그(2021 "no contracts, no exclusivity")로 반박할 수 없다 — 서명본이 우선
+   - **위반 시 실제 리스크**: 계약서 자체엔 손해배상·지급 보류 조항이 없다. 대신 계약서가 편입한 Ezoic Terms of Use(2026-06판) §9·§10 — 위반으로 Ezoic이 해지하면 *"not entitled to any further payment"*, 임계($20) 미만 잔액은 미지급, *"withhold and offset"* 권한. 즉 **걸리면 미지급 잔액 약 $26(11/30 입금 예정)을 잃는 것**이 상한이고, 그 이상의 청구 근거는 없다. 관할은 캘리포니아·AAA 중재
+   - **기술적으로도 헛수고다**: AdSense는 루트 도메인 ads.txt에 게시자 ID가 없으면("Unauthorized") 광고를 안 내보낸다 — Google 문서는 ID를 넣어 상태를 고치면 *"then ads will start to show"*라고만 적고, beta 실측(10/22)은 테스트 광고조차 전부 `unfilled`. 그러니 production에 코드만 올려도 광고는 안 나오고, 광고를 나오게 하려면 ads.txt를 건드려야 하는데 그게 §2에 명시된 가장 분명한 위반이다
+   - **베타에서 미리 보는 합법 경로는 있다**: Ezoic 자체 ads.txt 관리 흐름이 "**Google AdSense 네트워크 항목 추가**"를 공식 지원한다(Ezoic KB *"add any other entries you need, such as your AdSense ID"*, 대시보드 EzoicAds → Ad Transparency → Ads.txt → Automatic Setup → "+ Add a New Network"). Ezoic이 문서로 안내하는 기능이라 §2의 "unless otherwise approved by us in writing"에 해당한다고 볼 수 있고, production 광고 코드는 안 건드린다. 이걸 하면 Google이 승인으로 보고 **beta 테스트 광고가 채워진다**. 단 우리 `/ads.txt`는 공용 계정 19390으로 301이라 항목을 못 넣는다 — Ezoic 대시보드의 Ads.txt 설정에서 우리 계정용 ID를 받아 nginx 301 대상을 바꿔야 한다(conf 수정 + reload). 효과는 "4주 먼저 베타에서 보는 것"뿐이고 수익과 무관하다
+   - **결론: 11/19까지 production엔 안 올린다.** 베타에서 미리 보고 싶으면 위 ads.txt 경로만 쓴다
+
 3. **전환 후 4주간 ePMV 비교** — 예상보다 나쁘면 기록해 둘 것. Ezoic 복귀는 새 1년 계약이므로
    가볍게 결정하지 말 것
 
