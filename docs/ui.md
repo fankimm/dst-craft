@@ -333,9 +333,11 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **레일 브레이크포인트 근거**: 아이템 그리드 최대폭 896 + 좌우 300씩 = 1496 → `min-[1500px]`
 - **검증 스크립트** — 자리를 건드렸으면 beta에 올린 뒤 반드시 돌린다 (`npm i -D playwright-core`, 설치된 Chrome 사용):
   ```bash
-  node scripts/check-adsense-beta.mjs https://beta.dstcraft.com
+  node scripts/check-adsense-beta.mjs https://beta.dstcraft.com                # 구조·플래그·오류·CLS
+  node scripts/check-adsense-beta.mjs https://beta.dstcraft.com --expect-fill  # + 채움 (ads.txt 승인 뒤에만)
   ```
-  판정: 로더 태그 1개·본체 로드 / 보이는 자리마다 `<ins>` 1개, 숨은 탭엔 0개 / beta는 전부 `data-adtest` + `filled` / 탭·카테고리·시트 왕복 뒤 콘솔 adsbygoogle 오류 0 / 띠 높이 도착 전후 동일·누적 layout-shift ≤ 0.1 / beta에 자동 광고 `<ins>` 없음. beta는 테스트 소재가 결정적으로 와서 채움까지 판정한다(production 주소를 넘기면 채움은 뺀다)
+  판정: 로더 태그 1개·본체 로드 / 보이는 자리마다 `<ins>` 1개, 숨은 탭엔 0개 / beta는 전부 `data-adtest` / 응답(`data-ad-status`) 도착 / 탭·카테고리·시트 왕복 뒤 콘솔 adsbygoogle 오류 0 / 띠 높이 도착 전후 동일·누적 layout-shift ≤ 0.1 / beta에 자동 광고 `<ins>` 없음. **채움(`filled`)은 ads.txt가 우리 게시자 ID를 승인한 뒤에만 판정**(`--expect-fill`) — 2026-11-19 전엔 루트 도메인 ads.txt가 Ezoic 것이라 Google이 테스트 광고도 안 내보낸다(2026-10-22 실측: 응답은 오고 전부 `unfilled`). `adsbygoogle.js`가 심는 0×0 숨김 `<ins>`(`adsbygoogle-noablate`)는 광고 자리가 아니라 제외한다
+- **자리 컨테이너 속성은 `data-ad-place="<variant>"`** — `data-ad-slot`은 AdSense가 `<ins>` 유닛 id에 쓰는 이름이라 겹치면 셀렉터가 꼬인다
 - **목업 모드**: `?admock=<자리>[:<규격>]` (쉼표로 복수, `all` 지원). 실제 광고 대신 규격만큼의 점선 박스를 그린다 — 예 `?admock=all`, `?admock=top:320x100,rail-left`
 
 ### LegacyPwaNotice (`src/components/ui/LegacyPwaNotice.tsx`)

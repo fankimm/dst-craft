@@ -1,10 +1,12 @@
 // AdSense 자리 검증 (headless) — #134
 //
-//   node scripts/check-adsense-beta.mjs [base=https://beta.dstcraft.com]
+//   node scripts/check-adsense-beta.mjs [base=https://beta.dstcraft.com] [--expect-fill]
 //
-// beta는 테스트 광고 모드(`data-adtest="on"`)라 실광고와 달리 결정적으로 채워진다. 그래서
-// 여기서는 "채움" 자체를 판정에 넣는다 (Ezoic 시절 스크립트는 채움을 판정에서 뺐다 —
-// 세션·스로틀에 따라 흔들렸기 때문). production 주소를 넘기면 채움 판정은 끄고 나머지만 본다.
+// beta는 테스트 광고 모드(`data-adtest="on"`)라 실광고와 달리 결정적으로 채워진다 — **단
+// ads.txt가 우리 게시자 ID를 승인한 뒤부터다.** Ezoic 계약 종료(2026-11-19) 전엔 루트 도메인
+// ads.txt가 Ezoic 것이라 Google이 미승인으로 보고 테스트 광고도 안 내보낸다(응답은 오고
+// `data-ad-status="unfilled"`). 그래서 채움은 기본값으로는 **통계만 찍고**, `--expect-fill`을
+// 주면 판정에 넣는다. production 주소에서는 채움 판정을 쓰지 않는다(세션·스로틀에 흔들린다).
 //
 // 확인 항목
 //  1. `adsbygoogle.js` 스크립트 태그가 문서에 정확히 1개, 본체 로드(`adsbygoogle.loaded`)
@@ -17,7 +19,9 @@
 // `npm i -D playwright-core` + 설치된 Chrome 사용.
 import { chromium } from "playwright-core";
 
-const BASE = (process.argv[2] ?? "https://beta.dstcraft.com").replace(/\/$/, "");
+const args = process.argv.slice(2);
+const EXPECT_FILL = args.includes("--expect-fill");
+const BASE = (args.find((a) => !a.startsWith("--")) ?? "https://beta.dstcraft.com").replace(/\/$/, "");
 const IS_BETA = /beta\./.test(BASE);
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36";
@@ -38,10 +42,13 @@ const CLS_INIT = `
 async function snapshot(page) {
   return page.evaluate(() => {
     const ins = [...document.querySelectorAll("ins.adsbygoogle")].map((e) => {
-      const host = e.closest("[data-ad-slot]");
+      const host = e.closest("[data-ad-place]");
       const r = e.getBoundingClientRect();
+      // adsbygoogle.js가 자기 용도로 심는 0×0 숨김 <ins>(adsbygoogle-noablate, display:none) — 광고 자리가 아니다
+      const probe = !host && r.width === 0 && r.height === 0 && getComputedStyle(e).display === "none";
       return {
-        variant: host?.getAttribute("data-ad-slot") ?? (e.getAttribute("data-anchor-status") ? "anchor" : e.getAttribute("data-vignette-loaded") ? "vignette" : "auto"),
+        variant: host?.getAttribute("data-ad-place") ?? (probe ? "probe" : e.getAttribute("data-anchor-status") ? "anchor" : e.getAttribute("data-vignette-loaded") ? "vignette" : "auto"),
+        cls: e.className,
         status: e.getAttribute("data-ad-status"),
         processed: e.getAttribute("data-adsbygoogle-status"),
         adtest: e.getAttribute("data-adtest"),
@@ -51,8 +58,8 @@ async function snapshot(page) {
         iframe: !!e.querySelector("iframe"),
       };
     });
-    const hosts = [...document.querySelectorAll("[data-ad-slot]")].map((h) => ({
-      variant: h.getAttribute("data-ad-slot"),
+    const hosts = [...document.querySelectorAll("[data-ad-place]")].map((h) => ({
+      variant: h.getAttribute("data-ad-place"),
       visible: h.getClientRects().length > 0,
       ins: h.querySelectorAll("ins.adsbygoogle").length,
       h: Math.round(h.getBoundingClientRect().height),
@@ -104,11 +111,13 @@ async function run(label, { viewport, path, actions = [] }) {
       if (h.visible && h.ins !== 1) problems.push(`${label}/${s.step}: 보이는 자리 ${h.variant}에 ins ${h.ins}개`);
       if (!h.visible && h.ins !== 0) problems.push(`${label}/${s.step}: 숨은 자리 ${h.variant}에 ins ${h.ins}개`);
     }
-    // 3. 테스트 플래그·채움 (beta만 결정적)
+    // 3. 테스트 플래그·채움 (beta만 결정적 — 채움은 --expect-fill 일 때만 판정)
     for (const i of s.ins) {
-      if (IS_BETA && i.adtest !== "on") problems.push(`${label}/${s.step}: ${i.variant} ins에 data-adtest 없음 — beta에서 실광고 요청`);
+      if (i.variant === "probe") continue;
+      if (IS_BETA && i.adtest !== "on") problems.push(`${label}/${s.step}: ${i.variant} ins에 data-adtest 없음 — beta에서 실광고 요청 (${i.cls})`);
       if (!i.processed) problems.push(`${label}/${s.step}: ${i.variant} ins가 처리되지 않음 (push 누락 또는 폭 0: ${i.w}×${i.h})`);
-      if (IS_BETA && i.variant !== "anchor" && i.variant !== "vignette" && i.status !== "filled") {
+      if (!i.status) problems.push(`${label}/${s.step}: ${i.variant} 응답 없음 (data-ad-status 미설정) iframe=${i.iframe}`);
+      if (IS_BETA && EXPECT_FILL && i.variant !== "anchor" && i.variant !== "vignette" && i.status !== "filled") {
         problems.push(`${label}/${s.step}: ${i.variant} status=${i.status ?? "(없음)"} iframe=${i.iframe}`);
       }
       // 6. beta에 자동 광고가 있으면 테스트 플래그 없는 실광고
