@@ -19,6 +19,9 @@ export type { AdVariant };
  * "No slot size for availableWidth=0" 으로 거부한다. 그래서 **보이는 자리만** `<ins>`를 그린다
  * (아래 활성 판정).
  *
+ * 자리 컨테이너는 `data-ad-place="<variant>"`로 표시한다 — `data-ad-slot`은 AdSense가 `<ins>`의
+ * 유닛 id 속성으로 쓰는 이름이라 겹치면 셀렉터가 꼬인다 (베타 검증에서 실측).
+ *
  * 목업 모드: `?admock=<자리>[:<규격>]` (쉼표로 복수). 실제 광고 대신 규격만큼의
  * 자리 표시 박스를 그린다. 자리를 옮기거나 규격을 비교할 때 쓴다.
  *   ?admock=all                      모든 자리 기본 규격
@@ -184,7 +187,7 @@ export function AdSlot({ variant, className = "" }: { variant: AdVariant; classN
   if (isMock) return <AdSlotMock variant={variant} sizeKey={mocks.get(variant) ?? null} className={className} />;
 
   return (
-    <div ref={hostRef} className={`flex justify-center py-2 shrink-0 ${className}`} data-ad-slot={variant}>
+    <div ref={hostRef} className={`flex justify-center py-2 shrink-0 ${className}`} data-ad-place={variant}>
       {/* **비활성일 때도 같은 껍데기를 그린다.** 빈 div만 두면 활성으로 바뀌는 순간 껍데기
           (라벨 줄 + 상하 패딩)가 새로 생겨 컨텐츠가 밀린다 — 백그라운드 탭에서 로드된 뒤
           포커스가 오면 IntersectionObserver가 그제야 돌아 그대로 CLS다 (#75 실측).
@@ -303,7 +306,7 @@ function AdSlotMock({
   return (
     <div
       className={`flex justify-center py-2 shrink-0 ${className}`}
-      data-ad-slot={variant}
+      data-ad-place={variant}
       data-ad-size={key}
       aria-hidden="true"
     >

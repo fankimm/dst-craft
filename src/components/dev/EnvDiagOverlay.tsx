@@ -85,7 +85,7 @@ function scanAnchor(): string {
     Array.from(document.querySelectorAll<HTMLElement>(ANCHOR_AD_SELECTOR)).find(
       (e) => getComputedStyle(e).position === "fixed",
     ) ?? document.querySelector<HTMLElement>(ANCHOR_AD_SELECTOR);
-  const band = document.querySelector<HTMLElement>('[data-ad-slot="top"] ins.adsbygoogle');
+  const band = document.querySelector<HTMLElement>('[data-ad-place="top"] ins.adsbygoogle');
   const a = anchor
     ? `anchor ${anchor.getAttribute("data-anchor-status")} top=${Math.round(anchor.getBoundingClientRect().top)} h=${Math.round(anchor.getBoundingClientRect().height)} pos=${getComputedStyle(anchor).position}`
     : "anchor 없음";
