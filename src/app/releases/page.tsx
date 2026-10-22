@@ -16,7 +16,7 @@ interface Release {
 const releases: Release[] = [
   {
     version: "0.39.0",
-    date: "2026-10-20",
+    date: "2026-10-22",
     dev: [
       "feat(cookpot): **요리솥 트레이너 미니게임** (#128, 피드백 `1791946906467-l2z1ch`). 요리솥 탭 헤더에 \"시뮬레이터 | 트레이너\" 토글(`?tab=cookpot&mode=trainer`). 랜덤 재료(8/12/16) → 제한 시간(무제한/60/120/180초) 안에 요리솥 4칸에 넣어 끓이거나 생으로 먹기 → 최적해 대비 백분율 + 최적 플랜 공개. 채점은 허기만 / 균형(세 스탯 합) / 랜덤 가중치. 월리 모드: 생식 불가(`eater.lua` PrefersToEat), 휴대용 요리솥 레시피 포함, 같은 요리 반복 시 `WARLY_SAME_OLD_MULTIPLIERS` {.9,.8,.65,.5,.3} 배율(foodmemory.lua) + 기억 목록 표시",
       "feat(cookpot): 엔진 `src/lib/cookpot-trainer.ts` — 재료 풀 38종(생식 수치가 `raw-foods.ts`에 있는 것 + 잔가지·얼음), mulberry32 seed(같은 재료로 재도전), 랜덤 결과 레시피는 기대값으로 채점·실제 요리는 무작위 선택, 소 먹이(roughage)·비식품은 0점. 최적해: 일반 모드 비트마스크 DP(16개 28ms), 월리 모드 분할 전수 열거(≤12개, 기억 배율이 요리끼리 독립이 아니라서). n=8 브루트포스 30회 대조 일치",
