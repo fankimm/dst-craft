@@ -27,7 +27,7 @@ export function GET() {
     "",
     "## Guides",
     `- [Browse everything](${SITE_URL}/browse): all ${allItems.length} crafting items, ${cookingRecipes.length} crock pot recipes and ${bosses.length} bosses`,
-    `- [Crock Pot simulator & recipes](${SITE_URL}/cookpot): ingredient rules and stats for every crock pot dish`,
+    `- [Crock Pot simulator & recipes](${SITE_URL}/cookpot): ingredient rules and stats for every crock pot dish, plus a trainer minigame (random ingredients, time limit, score vs optimal plan)`,
     `- [Farming guide](${SITE_URL}/farming): no-fertilizer crop combinations for each season, nutrients and water for ${FARM_CROPS.length} crops`,
     `- [Characters](${SITE_URL}/characters): stats, perks and exclusive items for every survivor`,
     `- [Skill trees](${SITE_URL}/skill-trees): skills and branches for ${CHARACTERS_WITH_SKILLS.length} characters`,

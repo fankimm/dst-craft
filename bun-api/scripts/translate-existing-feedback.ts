@@ -14,7 +14,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DB_PATH = process.env.DB_PATH ?? join(homedir(), "dstcraft", "data", "app.db");
-const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16·09-17·09-21 추가, #120·#123 포함)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
+const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16·09-17·09-21·10-20 추가, #120·#123·#128 포함)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
 
 type Lang = "ko" | "en" | "pt";
 // 원문이 ko↔en이면 반대 언어 문자열 하나. 원문이 제3언어(pt 등)면 ko·en 사용자 모두 번역이
@@ -281,6 +281,16 @@ const TRANSLATIONS: Entry[] = [
       ko: "반하셨다고요? 그러다 저희도 맞받아 반해버립니다 😏 <3 브라질 팬의 칭찬은 한겨울에 꽉 찬 냉장고보다 값져요. 자주 놀러 오세요! 한국에서 뽀뽀 날려요. 그리고 굶지 마세요!",
       en: "In love, huh? Careful — we might just love you right back 😏 <3 Praise from a Brazilian fan is worth more than a full ice box in winter. Come back anytime! A big kiss from Korea — and don't starve!",
     },
+  },
+  {
+    // 요리솥 트레이너 제안 (#128) — 원문 영어, 답변도 영어라 번역본은 한국어.
+    id: "1791946906467-l2z1ch",
+    messageLang: "en",
+    messageTranslated:
+      "좀 엉뚱한 요청인데, 요리솥 트레이너 미니게임 아이디어가 있어요. 예를 들어 랜덤 재료를 받아서 제한 시간 안에 요리하거나 그냥 생으로 먹어서 스탯 이득을 최대로 올리고, 끝나면 최적 선택 대비 퍼센트를 보여주는 식이요. 가상으로는 넣을 게 많겠죠. 채점 방식 선택(허기 집중, 평균 스탯, 랜덤 스탯 우선순위), 월리 모드(월리 메커니즘 추가, 이미 기억에 있는 요리 목록 포함), 재료 수와 시간을 대략 고를 수 있는 것 등등. 사이트 나머지와 안 어울릴 수도 있고 구현하기엔 좀 과할 수도 있지만, 제가 직접 만들 일은 없을 것 같아서 혹시 흥미로우실까 싶어 여기 꺼내봅니다.",
+    replyLang: "en",
+    replyTranslated:
+      "좋은 아이디어예요, 자세히 적어줘서 고마워요! 바로 작업 시작할게요. 아마 작게 시작해서(고정 재료 세트, 허기 중심 점수) 점점 키울 테니 릴리즈 노트 지켜봐 주세요.",
   },
 ];
 

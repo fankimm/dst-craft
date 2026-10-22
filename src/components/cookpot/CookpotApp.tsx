@@ -12,6 +12,10 @@ import { ingredientImage, type CookpotIngredient } from "@/data/cookpot-ingredie
 import { simulate } from "@/lib/cookpot-engine";
 import type { CookingRecipe } from "@/data/recipes";
 import { IngredientPicker } from "./IngredientPicker";
+import { CookpotTrainer } from "./CookpotTrainer";
+import { tt } from "./trainer-text";
+import { useUrlStateSync } from "@/hooks/use-url-state";
+import { useTabSync } from "@/hooks/use-tab-sync";
 import { Footer } from "../crafting/Footer";
 import { trackItemClick, trackCombo } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
@@ -22,6 +26,14 @@ import { usePopularity } from "@/hooks/use-popularity";
 
 type Station = "cookpot" | "portablecookpot";
 type Slots = (CookpotIngredient | null)[];
+/** `?tab=cookpot&mode=trainer` → 트레이너 (#128). 없으면 시뮬레이터 */
+type CookpotMode = "sim" | "trainer";
+
+function readModeFromUrl(): CookpotMode {
+  if (typeof window === "undefined") return "sim";
+  const params = new URLSearchParams(window.location.search);
+  return params.get("tab") === "cookpot" && params.get("mode") === "trainer" ? "trainer" : "sim";
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -40,6 +52,26 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
   // State
   const [slots, setSlots] = useState<Slots>([null, null, null, null]);
   const [station, setStation] = useState<Station>("cookpot");
+
+  // 모드 — URL이 진실. 첫 렌더는 서버와 같은 "sim", layout effect에서 URL 반영
+  const [mode, setMode] = useState<CookpotMode>("sim");
+  useUrlStateSync(readModeFromUrl, setMode);
+  useTabSync(() => setMode(readModeFromUrl()));
+  // 트레이너는 한 번 열면 언마운트하지 않는다 — 다른 탭에 갔다 오거나 결과의 레시피를 보고 돌아와도
+  // 진행 중인 라운드가 살아 있어야 한다 (탭 마운트 정책과 같은 이유, #91). 렌더 중 갱신은 AppShell의 openedTabs와 같은 패턴
+  const [trainerOpened, setTrainerOpened] = useState(false);
+  if (mode === "trainer" && !trainerOpened) setTrainerOpened(true);
+  const switchMode = useCallback((next: CookpotMode) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", "cookpot");
+    if (next === "trainer") params.set("mode", "trainer");
+    else {
+      params.delete("mode");
+      for (const k of ["seed", "n", "t", "s", "w"]) params.delete(k); // 트레이너 공유 링크 잔여물
+    }
+    window.history.pushState(window.history.state, "", `${window.location.pathname}?${params.toString()}`);
+    setMode(next);
+  }, []);
 
   // Simulation result
   const filledIngredients = slots.filter((s): s is CookpotIngredient => s !== null);
@@ -91,8 +123,27 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
     <div className="flex flex-col h-full bg-background text-foreground overflow-hidden">
       {/* Header */}
       <div className="shrink-0 border-b border-border bg-background/80 px-4 py-2.5 space-y-2">
-        <CookpotBreadcrumb locale={resolvedLocale} />
+        <div className="flex items-center gap-2">
+          <CookpotBreadcrumb locale={resolvedLocale} />
+          {/* 시뮬레이터 | 트레이너 (#128) */}
+          <div className="ml-auto inline-flex rounded-full border border-border bg-surface p-0.5">
+            {(["sim", "trainer"] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => switchMode(m)}
+                className={cn(
+                  "h-6 px-2.5 rounded-full text-[11px] font-medium transition-colors",
+                  mode === m ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {tt(m === "sim" ? "modeSim" : "modeTrainer", resolvedLocale)}
+              </button>
+            ))}
+          </div>
+        </div>
         {/* Station toggle */}
+        {mode === "sim" && (
         <div className="flex items-center gap-1.5">
           <StationButton
             station="cookpot"
@@ -107,7 +158,15 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
             onClick={() => setStation("portablecookpot")}
           />
         </div>
+        )}
       </div>
+      {trainerOpened && (
+        <div className={mode === "trainer" ? "flex-1 min-h-0 flex flex-col" : "hidden"}>
+          <CookpotTrainer locale={resolvedLocale} onViewRecipe={onViewRecipe} />
+        </div>
+      )}
+      {mode === "sim" && (
+      <>
       {/* Result + Slots area — fixed, not scrollable */}
       <div className="shrink-0 px-3 pt-4 pb-2 max-w-4xl mx-auto w-full">
         <div className="flex gap-2">
@@ -149,6 +208,8 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
           disabled={allFilled}
         />
       </div>
+      </>
+      )}
 
       {/* Footer pinned to bottom — stays visible at all times */}
       <Footer />

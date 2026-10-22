@@ -8,13 +8,15 @@ interface ShareButtonProps {
   url: string;
   toastMessage?: string;
   className?: string;
+  /** 아이콘 옆 텍스트 (없으면 아이콘만) */
+  label?: string;
 }
 
 /**
  * Copy a deep-link URL to clipboard and show a brief toast.
  * Falls back to navigator.share on supported devices.
  */
-export function ShareButton({ url, toastMessage = "링크가 복사되었습니다", className }: ShareButtonProps) {
+export function ShareButton({ url, toastMessage = "링크가 복사되었습니다", className, label }: ShareButtonProps) {
   const handleShare = useCallback(async () => {
     const fullUrl = `${window.location.origin}${url}`;
     try {
@@ -38,9 +40,10 @@ export function ShareButton({ url, toastMessage = "링크가 복사되었습니�
     <button
       onClick={handleShare}
       className={cn("p-0.5 rounded-full transition-colors shrink-0 text-muted-foreground hover:text-foreground", className)}
-      aria-label="share"
+      aria-label={label ?? "share"}
     >
       <Link2 className="size-4" />
+      {label}
     </button>
   );
 }

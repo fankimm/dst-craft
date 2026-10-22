@@ -9,6 +9,7 @@ import { SettingsProvider } from "@/hooks/use-settings";
 import { AuthProvider } from "@/hooks/use-auth";
 import { FavoritesProvider } from "@/hooks/use-favorites";
 import { APP_VERSION } from "@/lib/version";
+import { readBuildHash } from "@/lib/build-hash";
 import iosSplashDevices from "@/lib/ios-splash-devices.json";
 import { JsonLd } from "@/components/seo/JsonLd";
 import "./globals.css";
@@ -266,6 +267,7 @@ const themeScript = `
     document.documentElement.lang = lang;
   } catch(e) {}
   try {
+    window.__dstBuild = '${readBuildHash()}';
     var CV = '${APP_VERSION}';
     var PV = localStorage.getItem('dst-version');
     if (PV !== CV) {
@@ -320,6 +322,9 @@ ${process.env.NODE_ENV === "production" ? `if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', function(ev) {
     if (!ev.data) return;
     if (ev.data.type === 'SW_UPDATED') {
+      // 새 SW가 활성화됐어도 이 페이지가 이미 그 빌드면 새로고침할 이유가 없다 — 배포 뒤 첫 접속마다
+      // 화면이 한 번 깜빡이며 리로드되던 원인 (#128). 빌드 정보가 없으면(옛 SW) 예전처럼 리로드
+      if (ev.data.build && window.__dstBuild && ev.data.build === window.__dstBuild) return;
       window.location.reload();
     } else if (ev.data.type === 'CHUNK_MISSING') {
       (window.__dstChunkReload || function(){ window.location.reload(); })();

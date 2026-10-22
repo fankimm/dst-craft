@@ -15,6 +15,32 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.39.0",
+    date: "2026-10-22",
+    dev: [
+      "feat(cookpot): **요리솥 트레이너 미니게임** (#128, 피드백 `1791946906467-l2z1ch`). 요리솥 탭 헤더에 \"시뮬레이터 | 트레이너\" 토글(`?tab=cookpot&mode=trainer`). 랜덤 재료(8/12/16) → 제한 시간(무제한/60/120/180초) 안에 요리솥 4칸에 넣어 끓이거나 생으로 먹기 → 최적해 대비 백분율 + 최적 플랜 공개. 채점은 허기만 / 균형(세 스탯 합) / 랜덤 가중치. 월리 모드: 생식 불가(`eater.lua` PrefersToEat), 휴대용 요리솥 레시피 포함, 같은 요리 반복 시 `WARLY_SAME_OLD_MULTIPLIERS` {.9,.8,.65,.5,.3} 배율(foodmemory.lua) + 기억 목록 표시",
+      "feat(cookpot): 엔진 `src/lib/cookpot-trainer.ts` — 재료 풀 38종(생식 수치가 `raw-foods.ts`에 있는 것 + 잔가지·얼음), mulberry32 seed(같은 재료로 재도전), 랜덤 결과 레시피는 기대값으로 채점·실제 요리는 무작위 선택, 소 먹이(roughage)·비식품은 0점. 최적해: 일반 모드 비트마스크 DP(16개 28ms), 월리 모드 분할 전수 열거(≤12개, 기억 배율이 요리끼리 독립이 아니라서). n=8 브루트포스 30회 대조 일치",
+      "feat(cookpot): 결과 화면 \"결과 공유\" — `?tab=cookpot&mode=trainer&seed=<base36>&n=&t=&s=&w=` 링크 복사(`ShareButton`에 `label` prop 추가). 링크로 들어오면 설정 화면에 \"공유받은 라운드\" 배너 + 설정 잠금, 시작하면 같은 재료. 시작 후 URL에서 seed를 지워 \"새 라운드\"가 같은 재료를 반복하지 않는다. `/cookpot` 랜딩에 트레이너 소개 섹션 + 링크",
+      "perf(cookpot): 최적해를 자리 기준 비트마스크 DP(2^N) 대신 **종류별 개수 DP**(상태 Π(개수+1))로 교체 + \"요리 점수 ≤ 그 4개 생식 합\"인 묶음은 지배돼서 제외. 8/12/16 × 60라운드 비트마스크와 전부 일치. 20개 평균 0.24초·최악 0.8초, 24개는 약 3초라 선택지는 8/12/16/**20**, 기본값 **12**(8은 요리 두 번이면 끝나 너무 짧다는 피드백). 상태 40만 초과 세트는 `createRound`가 같은 난수열로 다시 뽑는다. 탐욕 방식은 16개·랜덤 가중치에서 60%가 최적을 놓쳐(최악 25%) 채택 안 함",
+      "perf(cookpot): 월리 모드 최적해를 분할 전수 열거(≤12개) 대신 **분기한정 탐색**으로 — 기억 배율을 뺀 종류별 DP 값을 상한으로 쓰고 묶음을 점수순으로 시도. 8/12 × 80라운드 전수 열거와 전부 일치, 16개 평균 47ms·최악 160ms라 월리 상한 12→**16**. 20개는 최악 75초라 제외. (요리 횟수 서명을 메모하는 DFS도 시도했으나 16개에서 10분 넘게 걸려 폐기)",
+      "balance(cookpot): 300라운드 최적 플랜 분석에서 허기 채점은 최적 요리의 70%가 미트볼·고기 스튜(요리 15종)였고 균형 채점은 28종 → 기본 채점을 **균형**으로, 풀 가중치 조정(잔가지 7→5·얼음 5→4·괴물고기 7→4, 알·꿀 5→6, 생선·고추·가지·수박·버터 ↑). 조정 후 균형 모드 미트볼 30%→21%, 요리 30종. llms.txt에 트레이너 한 줄",
+      "ui(cookpot): 트레이너를 **게임 화면처럼** 재설계 — \"어드민 페이지 같다, 시인성이 나쁘다\"는 피드백. 어두운 조리대 패널 위에 큰 솥과 재료 4칸, 요리하기를 누르면 솥이 0.9초 흔들리고(`trainer-wobble`·거품) 결과 요리가 튀어나오며(`trainer-pop`) 점수가 떠오른다(`trainer-float`). 재료는 인벤토리 슬롯(같은 재료 ×N 스택, 64~72px), HUD는 큰 타이머+진행 바(10초 남으면 빨간 고동)·큰 점수, 결과는 S/A/B/C/D 등급 도장(`trainer-stamp`)과 큰 퍼센트. 색은 사이트 토큰 그대로(`bg-surface`·`bg-foreground` 버튼·`ItemSlot` 배지) — 1차의 검정 패널+호박색은 \"통일감이 없다\"는 피드백으로 되돌림. 키프레임은 globals.css",
+      "feat(cookpot): 트레이너는 한 번 열면 숨김 마운트 유지(탭 왕복·레시피 보기 후에도 라운드 보존), 생식은 두 번 탭(오탭 방지, 2초 확인), 설정별 최고 기록 localStorage `dst:cookpot-trainer:best` + 결과 \"신기록!\", 결과 구간 analytics `trainer:pct:<10단위>`",
+      "fix(sw): **배포 뒤 첫 접속마다 화면이 한 번 리로드되던 문제**. 새 SW가 activate에서 `SW_UPDATED`를 보내면 layout이 무조건 `location.reload()`했고 `client.navigate()`로 한 번 더 강제했다. navigation은 SW가 안 가로채서 첫 접속 HTML은 이미 새 빌드인데도 리로드된 것. 이제 `scripts/generate-sw.cjs`가 만든 `public/sw.js`의 해시를 layout이 빌드 때 읽어(`src/lib/build-hash.ts`) `window.__dstBuild`로 심고, SW는 `build`를 같이 보내 **다를 때만** 리로드. `client.navigate()` 제거(옛 셸이 사라진 chunk를 부르면 `CHUNK_MISSING` 경로가 리로드시킨다)",
+      "chore: 문구 `cookpot/trainer-text.ts`(홈 번들 분리), docs/ui.md 요리솥 탭 구조도, CLAUDE.md Key Paths, 피드백 번역 백필, 오답노트(React Compiler 린트)",
+    ],
+    changes: {
+      ko: [
+        "업데이트 직후 처음 접속할 때 화면이 한 번 새로고침되던 현상을 없앴습니다.",
+        "요리솥 탭에 트레이너 미니게임을 추가했습니다. 랜덤 재료를 받아 제한 시간 안에 요리하거나 생으로 먹어 점수를 올리고, 끝나면 최적 조합과 비교해 줍니다. 재료 수·시간·채점 방식을 고를 수 있고, 월리 모드(생식 불가, 같은 요리 반복 페널티)도 있습니다. 결과 화면의 공유 링크로 친구에게 같은 재료 세트를 보내 겨룰 수 있고, 설정별 최고 기록도 남습니다.",
+      ],
+      en: [
+        "The page no longer reloads itself on the first visit after an update.",
+        "New Crock Pot Trainer minigame in the Crock Pot tab: get random ingredients, cook or eat them raw before time runs out, then see how close you got to the optimal plan. Choose ingredient count, time limit and scoring mode, or try Warly mode (no raw food, repeat-dish penalty). Share a result link to challenge a friend with the same ingredient set, and your best score per setting is kept.",
+      ],
+    },
+  },
+  {
     version: "0.38.0",
     date: "2026-10-06",
     dev: [
