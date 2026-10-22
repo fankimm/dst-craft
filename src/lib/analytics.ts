@@ -57,7 +57,7 @@ export interface AnalyticsData {
 export interface AdVisibilitySample {
   /** 미끼 엘리먼트가 숨겨졌다 = 광고 필터가 걸려 있다 */
   adblock: boolean;
-  /** Ezoic 본체(sa.min.js)가 실행됐다 */
+  /** 광고 본체 스크립트(`adsbygoogle.js`)가 실행됐다 */
   script: boolean;
   /** 자리 중 하나라도 실제 소재가 그려졌다 */
   filled: boolean;
@@ -68,7 +68,7 @@ export interface AdVisibilitySample {
   /**
    * navigationStart 기준 판정 시각(ms) — `filled`면 곧 첫 소재 도착 시각 (#86).
    *
-   * 지연 조사가 전부 headless에서 나왔는데 Ezoic이 클라이언트를 분류하는 정황이 있어
+   * 지연 조사가 전부 headless에서 나왔는데 광고망이 클라이언트를 분류하는 정황이 있어
    * 절대값을 실사용자로 확증할 방법이 없었다. 이 값이 그 확증이다.
    */
   elapsed: number;

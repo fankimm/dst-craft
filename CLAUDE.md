@@ -175,7 +175,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `src/components/farming/` — 농사 탭 컴포넌트 (#120). 게임에 없는 문구는 `farming-text.ts`에만 둔다
 - `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지
-- `src/components/ads/AdSlot.tsx` — Ezoic 광고 자리 (자리별 placeholder id 고정, `?admock=`로 목업 미리보기). 자리 목록·규격은 `docs/ui.md` 참조
+- `src/components/ads/AdSlot.tsx` — Google AdSense 광고 자리 (#134). 상수(게시자 ID·slot id·테스트 모드)는 `src/lib/adsense.ts`, `?admock=`로 목업 미리보기. 자리 목록·규격·콘솔 설정 권장값은 `docs/ui.md` 참조. **beta 빌드는 항상 테스트 광고 모드**(`data-adtest`, 자동 광고 꺼짐)
+- `scripts/check-adsense-beta.mjs` — AdSense 자리 headless 검증 (로더 1회·자리별 ins·테스트 플래그·채움·콘솔 오류·띠 CLS). 자리를 건드렸으면 beta 배포 뒤 돌릴 것
 - `src/data/skill-trees/` — 스킬트리 데이터 (11캐릭터, 번역, 타입)
 - `src/data/sketches.ts` — 체스기물 조각상 ↔ 도면(sketch) 매핑 + 도면 입수처 (보스/제작/회전초/석상/돼지왕/신월/성소) + 조각 재료별 결과물 이미지. 조각상 상세(`ItemDetail`)·SEO 아이템 페이지·보스탭 전리품 이름/아이콘이 모두 여기서 파생 (#111)
 - `src/hooks/` — 커스텀 훅 (use-crafting-state, use-settings, use-search, use-auth, use-favorites, use-skill-tree)
@@ -227,6 +228,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 1. **프론트엔드**: `main`/`beta` push → GitHub Actions가 자동 빌드+배포 (수동: `scripts/deploy-frontend.sh main|beta`)
 2. **bun-api**: `bun-api/` 변경 시 push하면 GitHub Actions가 자동 재시작 (main만, beta는 무시)
 3. **Nginx 설정**: `bun-api/infra/nginx-*.conf` 변경 시 Mac Mini에서 수동 `nginx -s reload` 필요
+   - `ads.txt`는 `public/ads.txt` 정적 파일 (#134). Ezoic 시절의 `/ads.txt` 301은 conf에서 지웠고 **실서버 적용은 2026-11-19 이후** (그 전엔 §2 위반)
    - apex `dstcraft.com`은 nginx가 www로 308 (#125). apex 응답에 `x-vercel-id`가 보이면 failover 상태라는 뜻
    - **Drift 주의**: 실서버 `/usr/local/etc/nginx/snippets/dstcraft-common.conf` ↔ 레포 `bun-api/infra/nginx-dstcraft-common.conf`. 실서버를 직접 편집했으면 반드시 레포에도 동일하게 반영해 단일 진실 공급원 유지 (안 그러면 다음 push 때 롤백됨)
 4. **watchdog Worker**: `watchdog/` 변경 시 자동 배포 없음 — `cd watchdog && npx wrangler deploy` 수동 실행 필요

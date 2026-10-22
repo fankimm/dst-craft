@@ -8,7 +8,7 @@ const CONTACT = "balocoding@gmail.com";
 const CONTENT: { ko: LegalDocContent; en: LegalDocContent } = {
   ko: {
     title: "개인정보처리방침",
-    updated: "2026-07-01",
+    updated: "2026-11-19",
     intro:
       "dstcraft.com(이하 “서비스”)은 Don't Starve Together 공략을 제공하는 비영리 팬 사이트입니다. 본 방침은 서비스가 어떤 정보를 수집하고 어떻게 이용하는지 설명합니다.",
     sections: [
@@ -25,14 +25,14 @@ const CONTENT: { ko: LegalDocContent; en: LegalDocContent } = {
         h: "2. 쿠키 및 유사 기술",
         body: [
           "서비스는 로그인 세션 유지와 설정 저장을 위해 쿠키·로컬 저장소를 사용합니다.",
-          "이 사이트는 광고 게재와 콘텐츠 최적화를 위해 Ezoic을 사용합니다. Ezoic 및 그 광고 파트너(Google 등)는 쿠키·유사 기술을 사용해 관련 광고를 제공하고 성과를 측정할 수 있습니다.",
+          "이 사이트는 광고 게재를 위해 Google AdSense를 사용합니다. Google 및 그 광고 파트너는 쿠키·유사 기술을 사용해 이용자의 이 사이트 및 다른 사이트 방문 기록을 바탕으로 관련 광고를 제공하고 성과를 측정할 수 있습니다. 맞춤 광고는 Google 광고 설정(https://www.google.com/settings/ads)에서 해제할 수 있습니다.",
           "EU·영국 등 개인정보 규제 지역의 방문자에게는 광고·쿠키 사용에 대한 동의를 묻는 배너(CMP)가 표시되며, 동의 여부에 따라 광고 개인화가 조정됩니다.",
         ],
       },
       {
         h: "3. 제3자 서비스",
         body: [
-          "Ezoic — 광고 서빙·최적화 및 사이트 분석 플랫폼. Ezoic과 그 광고 파트너(Google 등)가 IP·기기 정보·쿠키 등 방문 데이터를 처리해 광고를 제공·측정할 수 있습니다. Ezoic의 데이터 처리는 Ezoic 개인정보처리방침(https://g.ezoic.net/privacy/dstcraft.com)을 따릅니다.",
+          "Google AdSense — 광고 서빙. Google과 그 광고 파트너가 IP·기기 정보·쿠키 등 방문 데이터를 처리해 광고를 제공·측정할 수 있습니다. Google의 데이터 처리는 Google 개인정보처리방침(https://policies.google.com/privacy)과 광고 기술 파트너 안내(https://policies.google.com/technologies/partner-sites)를 따릅니다.",
           "Google Identity Services — 로그인 인증(이메일). Google의 개인정보처리방침이 함께 적용됩니다.",
           "Cloudflare — CDN·보안·트래픽 라우팅. 접속 과정에서 IP 등 기술 정보가 처리될 수 있습니다.",
           "Ko-fi — 후원 결제. 결제 정보는 Ko-fi가 처리하며 서비스는 카드·계좌 정보를 저장하지 않습니다.",
@@ -71,7 +71,7 @@ const CONTENT: { ko: LegalDocContent; en: LegalDocContent } = {
   },
   en: {
     title: "Privacy Policy",
-    updated: "2026-07-01",
+    updated: "2026-11-19",
     intro:
       "dstcraft.com (the “Service”) is a non-commercial fan site providing Don't Starve Together guides. This policy explains what information the Service collects and how it is used.",
     sections: [
@@ -88,14 +88,14 @@ const CONTENT: { ko: LegalDocContent; en: LegalDocContent } = {
         h: "2. Cookies and Similar Technologies",
         body: [
           "The Service uses cookies and local storage to keep you signed in and to remember your settings.",
-          "This site uses Ezoic to serve ads and optimize content. Ezoic and its advertising partners (including Google) may use cookies and similar technologies to serve relevant ads and measure their performance.",
+          "This site uses Google AdSense to serve ads. Google and its advertising partners may use cookies and similar technologies to serve relevant ads based on your visits to this and other websites and to measure their performance. You can opt out of personalized advertising in Google Ads Settings (https://www.google.com/settings/ads).",
           "Visitors in regions with data-protection regulations (e.g. the EU and UK) are shown a consent banner (CMP) for advertising and cookie use; ad personalization is adjusted based on your choice.",
         ],
       },
       {
         h: "3. Third-Party Services",
         body: [
-          "Ezoic — ad serving / optimization and site analytics. Ezoic and its advertising partners (including Google) may process visit data such as IP, device information, and cookies to serve and measure ads. Ezoic's data handling follows Ezoic's privacy policy (https://g.ezoic.net/privacy/dstcraft.com).",
+          "Google AdSense — ad serving. Google and its advertising partners may process visit data such as IP, device information, and cookies to serve and measure ads. Google's data handling follows the Google Privacy Policy (https://policies.google.com/privacy) and its guide to how Google uses data from partner sites (https://policies.google.com/technologies/partner-sites).",
           "Google Identity Services — sign-in authentication (email). Google's own privacy policy also applies.",
           "Cloudflare — CDN, security, and traffic routing. Technical data such as IP may be processed during access.",
           "Ko-fi — donation payments. Payment details are handled by Ko-fi; the Service does not store card or bank information.",
@@ -137,10 +137,5 @@ const CONTENT: { ko: LegalDocContent; en: LegalDocContent } = {
 export default function PrivacyPage() {
   const { resolvedLocale } = useSettings();
   const doc = resolvedLocale === "ko" ? CONTENT.ko : CONTENT.en;
-  return (
-    <LegalDoc doc={doc} locale={resolvedLocale}>
-      {/* Ezoic이 이 앵커 위치에 자기네 고지문(파트너·쿠키 목록)을 자동 주입 (대시보드 Privacy Policy URL 등록됨) */}
-      <span id="ezoic-privacy-policy-embed"></span>
-    </LegalDoc>
-  );
+  return <LegalDoc doc={doc} locale={resolvedLocale} />;
 }

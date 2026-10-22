@@ -15,7 +15,7 @@ export interface LegalDocContent {
 /**
  * 법적 고지 문서(개인정보처리방침·이용약관)용 공통 레이아웃.
  * 페이지는 locale별 LegalDocContent만 넘긴다.
- * children은 본문 섹션 뒤에 렌더된다 (예: privacy의 Ezoic 고지문 주입 앵커).
+ * children은 본문 섹션 뒤에 렌더된다 (서드파티 고지문 주입 앵커 같은 용도).
  */
 export function LegalDoc({
   doc,

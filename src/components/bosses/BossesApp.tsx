@@ -317,7 +317,7 @@ export function BossesApp({
   // Loot search results view
   // -----------------------------------------------------------------------
   // 화면(전리품 검색 / 카테고리 홈 / 보스 목록)을 여러 `return` 으로 나누지 않는다 (#95).
-  // 나누면 `AdSlot` 이 화면마다 별개 노드가 되어 전환할 때마다 Ezoic이 재요청한다
+  // 나누면 `AdSlot` 이 화면마다 별개 노드가 되어 전환할 때마다 광고를 새로 요청한다
   // (#93 참조). 헤더·본문만 갈리고 자리는 트리에 하나만 둔다.
   const isLootSearch = lootSearchResults !== null;
   const isHomeView = !isLootSearch && selectedCategory === null;
