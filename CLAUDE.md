@@ -153,7 +153,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 ## Ad Decision Deadline (놓치면 1년 묶임)
 - **`docs/ezoic-decision.md`** — Ezoic 계속 여부 결정 문서. 판단 기준·데이터 읽는 법·분기별 절차가 전부 여기 있다
 - 🟢 **2026-10-20 해지 통보 제출 완료 → 계약 종료 2026-11-19** (대시보드 AGREEMENT: "dstcraft.com — until Nov 19, 2026 (Notice given)"). 결정은 해지 → AdSense 단독(근거는 수익이 아니라 광고 스택 무게·지연)
-  - **11/19까지 §2 독점이 살아 있다.** AdSense 광고 코드 삽입·ads.txt 교체·MCM 위임 해제 등 B절 전환 작업은 **2026-11-19부터**. AdSense 사이트 검토 요청은 **2026-10-20 제출 완료**, 승인 결과만 대기(사이트 목록 승인 상태 열: `https://adsense.google.com/adsense/u/0/pub-4567930429443718/sites/list` — 경로에 pub ID 필수). **승인 전이면 전환을 승인 뒤로 미룬다(광고 공백 감수)**
+  - **11/19까지 §2 독점이 살아 있다.** AdSense 광고 코드 삽입·ads.txt 교체·MCM 위임 해제 등 B절 전환 작업은 **2026-11-19부터**. AdSense 사이트는 **2026-10-21 승인 완료**(검토 요청 10/20 다음 날, `pub-4567930429443718`) → **11/19 당일 전환 가능**. 사이트 목록: `https://adsense.google.com/adsense/u/0/pub-4567930429443718/sites/list` (경로에 pub ID 필수)
   - 히스토리: ~~2026-10-15 통보 기한~~은 §2 오독(#129), 실제 마감은 Ramp-up 종료 ~~2026-11-11~~(§4)이었고 22일 남기고 통보 제출. 2027-05-15 다음 통보 기한은 해당 없음. `2026-10-02` PIN 건은 2026-08-31 인증 완료로 종료
 - 세션 시작 시 `scripts/check-deadlines.sh`가 D-30부터 자동 경고 (SessionStart 훅)
 - 광고 관련 질문/작업을 받으면 이 문서를 먼저 확인할 것
