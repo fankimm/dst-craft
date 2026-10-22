@@ -377,7 +377,7 @@ Fast3G에서 홈·characters는 `window load`가 30초 내에 발화하지 않�
    - Ezoic 전용 회귀 스크립트 5종 삭제 → `scripts/check-adsense-beta.mjs`
 
    **사용자가 콘솔에서 해야 하는 것** (코드로 못 한다):
-   - [ ] **광고 단위 3개 생성** — AdSense → 광고 → 광고 단위별 → 디스플레이 광고 → 이름 `dstcraft top` / `dstcraft rail-left` / `dstcraft rail-right`, 규격 "반응형" → 생성된 코드의 `data-ad-slot` 숫자를 `src/lib/adsense.ts`의 `ADSENSE_SLOT`에 넣는다. **beta 테스트 광고도 이 id가 있어야 뜬다**
+   - [x] **광고 단위 3개 생성** — ✅ 2026-10-22 생성: `dstcraft top` 5509948095 / `dstcraft rail-left` 5098884559 / `dstcraft rail-right` 9831677346 (디스플레이·반응형). `src/lib/adsense.ts`의 `ADSENSE_SLOT`에 반영됨
    - [ ] **자동 광고 설정** (사이트 → dstcraft.com → 수정) — 앵커·전면(vignette)만 켜고 페이지 내 자동 삽입·사이드레일은 끈다 (근거 `docs/ui.md`). production에만 적용된다(beta는 `?client=` 없이 로드)
    - [ ] **개인 정보 보호 및 메시지** — GDPR(EU)·미국 주 규제 메시지를 켠다. 안 켜면 EEA 트래픽에 광고가 제한된다. Ezoic CMP는 코드와 함께 사라진다
    - [ ] **지급 정보** — 수익 $10에서 주소 PIN 우편, $100에서 지급. 은행 계좌는 미리 등록해 둔다

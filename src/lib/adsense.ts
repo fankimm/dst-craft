@@ -38,9 +38,9 @@ export const ADSENSE_TEST = IS_BETA_BUILD;
  * 비어 있으면 그 자리는 껍데기만 그리고 광고를 요청하지 않는다 (개발 빌드에서 경고).
  */
 export const ADSENSE_SLOT: Record<AdVariant, string> = {
-  top: "",
-  "rail-left": "",
-  "rail-right": "",
+  top: "5509948095", // "dstcraft top" (2026-10-22 생성)
+  "rail-left": "5098884559", // "dstcraft rail-left"
+  "rail-right": "9831677346", // "dstcraft rail-right"
 };
 
 /**
