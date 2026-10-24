@@ -171,7 +171,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `src/components/cooking/` — 요리 탭 컴포넌트
 - `src/components/console/` — 콘솔 명령어 탭 컴포넌트
 - `src/components/cookpot/` — 요리솥 탭: 시뮬레이터(`CookpotApp`·`IngredientPicker`) + 트레이너 미니게임(`CookpotTrainer`, #128). 트레이너 문구는 `trainer-text.ts`
-- `src/lib/cookpot-trainer.ts` — 요리솥 트레이너 엔진: 재료 풀(생식 수치가 `raw-foods.ts`에 있는 것만), 채점, 월리 기억 배율(`WARLY_SAME_OLD_MULTIPLIERS`), 최적해(종류별 개수 DP ≤20개 / 월리 분기한정 ≤16개 — 상한 근거는 상수 주석). 풀에 재료를 더할 땐 `raw-foods.ts`에 그 재료가 있어야 한다 — 없으면 모듈 로드 시 throw
+- `src/lib/cookpot-trainer.ts` — 요리솥 트레이너 엔진: 재료 풀(생식 수치가 `raw-foods.ts`에 있는 것만, 구울 수 있으면 `cookedFoods`에 구운 수치도), 모닥불 굽기·무제한 잔가지(#135), 채점, 월리 기억 배율(`WARLY_SAME_OLD_MULTIPLIERS`), 최적해(종류별 개수 DP ≤20개 / 월리 분기한정 ≤16개 — 상한 근거는 상수 주석). 풀에 재료를 더할 땐 `raw-foods.ts`에 그 재료가 있어야 한다 — 없으면 모듈 로드 시 throw
 - `src/components/farming/` — 농사 탭 컴포넌트 (#120). 게임에 없는 문구는 `farming-text.ts`에만 둔다
 - `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지
@@ -306,6 +306,8 @@ jihwan-kim3 (macOS):
 - 정확하지 않은 항목은 스크립트 상단의 `OVERRIDES` dict에 명시적으로 수정 (예: butter → foodtype dairy)
 - **VEGGIES 행을 못 읽으면 스크립트가 목록을 찍고 exit 1로 죽는다** (파일 미기록) — `MakeVegStats(` 호출 수와 파싱 행 수도 대조. 조용한 누락 방지용이니 `continue`로 되돌리지 말 것. `IsSpecialEventActive(...) and X or Y` 같은 이벤트 조건식은 비이벤트 값(`or` 쪽)을 쓴다 (#122, 호박 누락 건)
 - 제외할 항목은 `EXCLUDE_IDS`에 ID 추가 (예: acorn — FOODTYPE.SEEDS, raw 식용 의미 없음)
+- **구운 재료는 별도 배열 `cookedFoods`** (#135) — id는 요리솥 재료 id(`<원재료>_cooked`)와 같다. meats.lua의 `cookedmeat`처럼 접두형 prefab은 스크립트가 `meat_cooked`로 바꾼다. `rawFoods`(요리탭 생식 목록)에는 `INCLUDE_COOKED_VARIANTS_VEGGIE` 화이트리스트만 들어간다
+- `SPECIAL_FILES`의 파일이 없으면 exit 1 — 얼음이 `ice.lua`(실제는 `inv_rocks_ice.lua`) 때문에 조용히 빠져 있었다 (#135). 수치식은 `TUNING.X`, `-TUNING.X`, `TUNING.X*k`, `TUNING.X/k`까지 읽는다
 - 렌더링: `src/components/cooking/CookingApp.tsx`의 `RawFoodGrid` + `RawFoodDetail` (요리탭 "raw" 카테고리에서만)
 
 ## Farming Pipeline Rules
