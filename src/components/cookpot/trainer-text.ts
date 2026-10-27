@@ -14,8 +14,8 @@ export const TRAINER_TEXT = {
 
   title: { ko: "요리솥 트레이너", en: "Crock Pot Trainer" },
   intro: {
-    ko: "랜덤 재료를 받아 제한 시간 안에 요리하거나 생으로 먹어 점수를 최대로 올리세요. 끝나면 최적 조합과 비교합니다.",
-    en: "Get a random set of ingredients and maximize your score in time by cooking or eating them raw. At the end, compare with the optimal plan.",
+    ko: "랜덤 재료를 받아 제한 시간 안에 요리솥에 끓이거나, 모닥불에 굽거나, 그냥 먹어서 점수를 최대로 올리세요. 잔가지는 무제한입니다. 끝나면 최적 조합과 비교합니다.",
+    en: "Get a random set of ingredients and maximize your score in time by cooking them in the pot, roasting them on a fire, or just eating them. Twigs are unlimited. At the end, compare with the optimal plan.",
   },
 
   // 설정
@@ -62,6 +62,9 @@ export const TRAINER_TEXT = {
   timeUp: { ko: "시간 종료!", en: "Time's up!" },
   cooking: { ko: "끓이는 중…", en: "Cooking…" },
   eatShort: { ko: "먹기", en: "Eat" },
+  roastShort: { ko: "굽기", en: "Roast" },
+  roastHint: { ko: "모닥불에 굽기 (되돌릴 수 없음)", en: "Roast on a fire (can't be undone)" },
+  twigHint: { ko: "잔가지는 무제한으로 넣을 수 있어요", en: "Twigs are unlimited" },
   eatConfirmShort: { ko: "한 번 더", en: "Again?" },
   rank: { ko: "등급", en: "Rank" },
   tapPot: { ko: "재료 4개를 넣고 요리하세요", en: "Add 4 ingredients and cook" },
@@ -74,7 +77,7 @@ export const TRAINER_TEXT = {
   optimal: { ko: "최적", en: "Optimal" },
   optimalPlan: { ko: "최적 플랜", en: "Optimal plan" },
   yourPlan: { ko: "내 플랜", en: "Your plan" },
-  rawEaten: { ko: "생으로 먹음", en: "Eaten raw" },
+  rawEaten: { ko: "그냥 먹음", en: "Eaten as is" },
   discarded: { ko: "안 씀", en: "Unused" },
   expected: { ko: "기대값", en: "expected" },
   retrySame: { ko: "같은 재료로 다시", en: "Retry same set" },

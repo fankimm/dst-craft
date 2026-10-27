@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo, useRef } from "react";
-import { Flag, Play, RotateCcw, Shuffle, Timer, Utensils, X, Settings2, Check } from "lucide-react";
+import { Flag, Flame, Play, RotateCcw, Shuffle, Timer, Utensils, X, Settings2, Check } from "lucide-react";
 
 /** 요리하기 → 결과가 나오기까지 솥이 흔들리는 시간 */
 const COOK_MS = 900;
@@ -22,6 +22,8 @@ import {
   DEFAULT_CONFIG,
   INGREDIENT_COUNTS,
   TIME_LIMITS,
+  TWIG,
+  TWIG_UID,
   WARLY_MAX_INGREDIENTS,
   createRound,
   cookActual,
@@ -35,6 +37,7 @@ import {
   warlyMultiplier,
   isPlayerEdible,
   type IngredientCount,
+  type ItemForm,
   type OptimalPlan,
   type ScoringMode,
   type StatWeights,
@@ -55,7 +58,10 @@ type Phase = "setup" | "playing" | "result";
 interface Play {
   round: TrainerRound;
   actions: TrainerAction[];
+  /** 재료 uid, 잔가지는 `TWIG_UID` (여러 개 가능) */
   pot: number[];
+  /** 모닥불에 구운 재료 uid — 되돌릴 수 없다 */
+  roasted: number[];
   startedAt: number;
 }
 
@@ -99,9 +105,20 @@ function saveConfig(c: TrainerConfig) {
   try { localStorage.setItem(CONFIG_KEY, JSON.stringify(c)); } catch { /* private mode 등 */ }
 }
 
+/** 그 재료의 지금 형태 — 구웠으면 구운 것 */
+function formOf(p: Play, uid: number): ItemForm {
+  const it = p.round.items[uid];
+  return it.roasted && p.roasted.includes(uid) ? it.roasted : it;
+}
+
+/** 솥 칸의 재료 (잔가지 포함) */
+function potIngredient(p: Play, uid: number) {
+  return uid === TWIG_UID ? TWIG : formOf(p, uid).ingredient;
+}
+
 /** 아직 솥에도 안 넣고 먹지도 않은 재료 */
 function remainingOf(p: Play): TrainerRound["items"] {
-  const used = new Set<number>(p.pot);
+  const used = new Set<number>(p.pot.filter((u) => u !== TWIG_UID));
   for (const a of p.actions) {
     if (a.type === "cook") a.uids.forEach((u) => used.add(u));
     else used.add(a.uid);
@@ -201,7 +218,7 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
     const useChallenge = seed === undefined && challenge !== null;
     const round = useChallenge ? createRound(challenge.config, challenge.seed) : createRound(config, seed ?? randomSeed());
     if (useChallenge) { setChallenge(null); clearChallengeFromUrl(); }
-    setPlay({ round, actions: [], pot: [], startedAt: Date.now() });
+    setPlay({ round, actions: [], pot: [], roasted: [], startedAt: Date.now() });
     setResult(null);
     setEndedByTime(false);
     setCooking(false);
@@ -256,18 +273,24 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
   }, [reveal]);
 
   // ---- 플레이 조작 ----
-  /** 재료를 다 쓰면(솥도 비어 있으면) 바로 결과로 */
+  /** 재료를 다 쓰면(솥에 잔가지만 남았어도) 바로 결과로 */
   const commit = useCallback((next: Play) => {
-    if (next.pot.length === 0 && remainingOf(next).length === 0) finishWith(next, false);
+    if (next.pot.every((u) => u === TWIG_UID) && remainingOf(next).length === 0) finishWith(next, false);
     else setPlay(next);
   }, [finishWith]);
 
   const addToPot = useCallback((uid: number) => {
-    if (!play || cooking || play.pot.length >= 4 || play.pot.includes(uid)) return;
+    if (!play || cooking || play.pot.length >= 4 || (uid !== TWIG_UID && play.pot.includes(uid))) return;
     setPlay({ ...play, pot: [...play.pot, uid] });
   }, [play, cooking]);
-  const removeFromPot = useCallback((uid: number) => {
-    if (play && !cooking) setPlay({ ...play, pot: play.pot.filter((u) => u !== uid) });
+  /** 칸 위치로 뺀다 — 잔가지는 uid가 같아서 */
+  const removeFromPot = useCallback((index: number) => {
+    if (play && !cooking) setPlay({ ...play, pot: play.pot.filter((_, i) => i !== index) });
+  }, [play, cooking]);
+  const roast = useCallback((uid: number) => {
+    if (!play || cooking || !play.round.items[uid].roasted || play.roasted.includes(uid) || play.pot.includes(uid)) return;
+    setPlay({ ...play, roasted: [...play.roasted, uid] });
+    trackItemClick("trainer:roast");
   }, [play, cooking]);
   const cook = useCallback(() => {
     if (!play || cooking || play.pot.length !== 4) return;
@@ -276,11 +299,14 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
     setTimeout(() => {
       const p = playRef.current;
       if (!p || phaseRef.current !== "playing" || p.pot.length !== 4) { setCooking(false); return; }
-      const ings = p.pot.map((u) => p.round.items[u].ingredient);
+      const ings = p.pot.map((u) => potIngredient(p, u));
       const { recipe, wasRandom } = cookActual(ings, p.round.station);
       const before = p.round.config.warly ? (memoryCounts(p.actions).get(recipe.id) ?? 0) : 0;
       const mult = warlyMultiplier(before);
-      const action: TrainerAction = { type: "cook", uids: p.pot, recipe, wasRandom, mult, stats: scaleStats(recipeStats(recipe), mult) };
+      const action: TrainerAction = {
+        type: "cook", uids: p.pot.filter((u) => u !== TWIG_UID), ingredients: ings, recipe, wasRandom, mult,
+        stats: scaleStats(recipeStats(recipe), mult),
+      };
       setCooking(false);
       setReveal({ action, id: Date.now() });
       commit({ ...p, actions: [...p.actions, action], pot: [] });
@@ -288,9 +314,9 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
   }, [play, cooking, commit]);
   const eatRaw = useCallback((uid: number) => {
     if (!play || cooking) return;
-    const raw = play.round.items[uid].raw;
+    const { ingredient, raw } = formOf(play, uid);
     if (!raw || play.pot.includes(uid)) return;
-    const action: TrainerAction = { type: "raw", uid, stats: raw };
+    const action: TrainerAction = { type: "raw", uid, ingredient, stats: raw };
     setReveal({ action, id: Date.now() });
     commit({ ...play, actions: [...play.actions, action] });
   }, [play, cooking, commit]);
@@ -343,6 +369,7 @@ export function CookpotTrainer({ locale, onViewRecipe }: { locale: Locale; onVie
       onRemoveFromPot={removeFromPot}
       onCook={cook}
       onEatRaw={eatRaw}
+      onRoast={roast}
       onFinish={() => finishWith(play, false)}
     />
   );
@@ -569,10 +596,10 @@ function Section({ label, hint, children }: { label: string; hint?: string; chil
 // 플레이 화면 — 어두운 조리대 패널 위에 큰 솥, 인벤토리 슬롯, HUD
 // ---------------------------------------------------------------------------
 
-interface Stack { ingredient: CookpotIngredient; uids: number[]; raw: Stats | null }
+interface Stack { ingredient: CookpotIngredient; uids: number[]; raw: Stats | null; canRoast: boolean }
 
 function PlayScreen({
-  locale, play, remaining, timeLeft, cooking, reveal, onAddToPot, onRemoveFromPot, onCook, onEatRaw, onFinish,
+  locale, play, remaining, timeLeft, cooking, reveal, onAddToPot, onRemoveFromPot, onCook, onEatRaw, onRoast, onFinish,
 }: {
   locale: Locale;
   play: Play;
@@ -581,9 +608,10 @@ function PlayScreen({
   cooking: boolean;
   reveal: { action: TrainerAction; id: number } | null;
   onAddToPot: (uid: number) => void;
-  onRemoveFromPot: (uid: number) => void;
+  onRemoveFromPot: (index: number) => void;
   onCook: () => void;
   onEatRaw: (uid: number) => void;
+  onRoast: (uid: number) => void;
   onFinish: () => void;
 }) {
   const { round, actions, pot } = play;
@@ -595,27 +623,30 @@ function PlayScreen({
   const urgent = timeLeft !== null && timeLeft <= 10;
   const timeFrac = timeLeft === null ? 1 : Math.max(0, Math.min(1, timeLeft / limit));
 
-  // 같은 재료는 한 칸에 ×N (인벤토리처럼)
+  // 같은 재료(같은 형태)는 한 칸에 ×N (인벤토리처럼) — 구운 고기와 받은 구운 고기는 같은 칸
   const stacks = useMemo(() => {
     const m = new Map<string, Stack>();
     for (const it of remaining) {
-      const s = m.get(it.ingredient.id);
+      const form = formOf(play, it.uid);
+      const s = m.get(form.ingredient.id);
       if (s) s.uids.push(it.uid);
-      else m.set(it.ingredient.id, { ingredient: it.ingredient, uids: [it.uid], raw: it.raw });
+      else m.set(form.ingredient.id, { ingredient: form.ingredient, uids: [it.uid], raw: form.raw, canRoast: !!it.roasted && !play.roasted.includes(it.uid) });
     }
     return [...m.values()];
-  }, [remaining]);
+  }, [remaining, play]);
 
-  // 생식은 되돌릴 수 없어서 두 번 탭 — 첫 탭은 확인 상태(2초)
-  const [pendingEat, setPendingEat] = useState<string | null>(null);
+  // 생식·굽기는 되돌릴 수 없어서 두 번 탭 — 첫 탭은 확인 상태(2초)
+  const [pending, setPending] = useState<{ kind: "eat" | "roast"; id: string } | null>(null);
   useEffect(() => {
-    if (pendingEat === null) return;
-    const id = setTimeout(() => setPendingEat(null), 2000);
+    if (pending === null) return;
+    const id = setTimeout(() => setPending(null), 2000);
     return () => clearTimeout(id);
-  }, [pendingEat]);
-  const handleEatTap = (s: Stack) => {
-    if (pendingEat === s.ingredient.id) { setPendingEat(null); onEatRaw(s.uids[0]); }
-    else setPendingEat(s.ingredient.id);
+  }, [pending]);
+  const handleTap = (kind: "eat" | "roast", s: Stack) => {
+    if (pending?.kind === kind && pending.id === s.ingredient.id) {
+      setPending(null);
+      if (kind === "eat") onEatRaw(s.uids[0]); else onRoast(s.uids[0]);
+    } else setPending({ kind, id: s.ingredient.id });
   };
 
   const lastScore = reveal ? scoreOf(reveal.action.stats, round.weights) : 0;
@@ -676,13 +707,13 @@ function PlayScreen({
             <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4">
               {/* 왼쪽 슬롯 1·2 */}
               <div className="flex flex-col gap-2 items-end">
-                {[0, 1].map((i) => <PotSlot key={i} index={i} uid={pot[i]} round={round} locale={locale} disabled={cooking} onRemove={onRemoveFromPot} />)}
+                {[0, 1].map((i) => <PotSlot key={i} index={i} ingredient={pot[i] !== undefined ? potIngredient(play, pot[i]) : null} locale={locale} disabled={cooking} onRemove={onRemoveFromPot} />)}
               </div>
 
               {/* 솥 / 결과 연출 */}
               <div className="relative flex flex-col items-center justify-center w-36 h-36 sm:w-44 sm:h-44">
                 {reveal && !cooking ? (
-                  <RevealView action={reveal.action} round={round} locale={locale} score={lastScore} />
+                  <RevealView action={reveal.action} locale={locale} score={lastScore} />
                 ) : (
                   <>
                     {cooking && (
@@ -705,7 +736,7 @@ function PlayScreen({
 
               {/* 오른쪽 슬롯 3·4 */}
               <div className="flex flex-col gap-2 items-start">
-                {[2, 3].map((i) => <PotSlot key={i} index={i} uid={pot[i]} round={round} locale={locale} disabled={cooking} onRemove={onRemoveFromPot} />)}
+                {[2, 3].map((i) => <PotSlot key={i} index={i} ingredient={pot[i] !== undefined ? potIngredient(play, pot[i]) : null} locale={locale} disabled={cooking} onRemove={onRemoveFromPot} />)}
               </div>
             </div>
 
@@ -732,12 +763,24 @@ function PlayScreen({
               <span className="text-sm font-semibold">{tt("tray", locale)}</span>
               <span className="text-xs font-semibold text-muted-foreground tabular-nums">{remaining.length}</span>
             </div>
-            {stacks.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-6 text-center">{tt("trayEmpty", locale)}</p>
-            ) : (
-              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+                {/* 잔가지 — 지급 재료가 아니라 언제든 무제한 (#135) */}
+                <div className="flex flex-col items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => onAddToPot(TWIG_UID)}
+                    disabled={cooking || pot.length >= 4}
+                    className="relative flex items-center justify-center size-16 sm:size-[72px] rounded-lg bg-background border border-dashed border-ring hover:border-foreground active:bg-surface-hover active:scale-95 transition-all disabled:opacity-40"
+                    title={tt("twigHint", locale)}
+                  >
+                    <IngredientIcon ing={TWIG} locale={locale} className="size-12 sm:size-14" />
+                    <span className="absolute -bottom-1.5 -right-1.5 min-w-6 h-6 px-1.5 rounded-full bg-surface-hover border border-ring text-foreground/80 text-sm font-bold flex items-center justify-center">∞</span>
+                  </button>
+                  <span className="text-[11px] text-foreground/80 font-medium leading-tight text-center line-clamp-2 min-h-[2lh] w-full">{ingredientName(TWIG, locale)}</span>
+                </div>
                 {stacks.map((s) => {
-                  const confirming = pendingEat === s.ingredient.id;
+                  const confirming = pending?.kind === "eat" && pending.id === s.ingredient.id;
+                  const confirmingRoast = pending?.kind === "roast" && pending.id === s.ingredient.id;
                   return (
                     <div key={s.ingredient.id} className="flex flex-col items-center gap-1">
                       <div className="relative">
@@ -755,7 +798,7 @@ function PlayScreen({
                         {!warly && s.raw && (
                           <button
                             type="button"
-                            onClick={() => handleEatTap(s)}
+                            onClick={() => handleTap("eat", s)}
                             disabled={cooking}
                             className={cn(
                               "absolute -top-1.5 -left-1.5 h-6 rounded-full text-[10px] font-bold flex items-center gap-0.5 px-1.5 shadow border transition-colors",
@@ -769,13 +812,30 @@ function PlayScreen({
                             {confirming ? tt("eatConfirmShort", locale) : tt("eatShort", locale)}
                           </button>
                         )}
+                        {s.canRoast && (
+                          <button
+                            type="button"
+                            onClick={() => handleTap("roast", s)}
+                            disabled={cooking}
+                            className={cn(
+                              "absolute -top-1.5 -right-1.5 h-6 rounded-full text-[10px] font-bold flex items-center gap-0.5 px-1.5 shadow border transition-colors",
+                              confirmingRoast
+                                ? "bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-500/40 animate-trainer-pop"
+                                : "bg-background text-muted-foreground border-border hover:text-foreground",
+                            )}
+                            title={tt("roastHint", locale)}
+                          >
+                            <Flame className="size-3" />
+                            {confirmingRoast ? tt("eatConfirmShort", locale) : tt("roastShort", locale)}
+                          </button>
+                        )}
                       </div>
                       <span className="text-[11px] text-foreground/80 font-medium leading-tight text-center line-clamp-2 min-h-[2lh] w-full">{ingredientName(s.ingredient, locale)}</span>
                     </div>
                   );
                 })}
-              </div>
-            )}
+            </div>
+            {stacks.length === 0 && <p className="text-sm text-muted-foreground py-4 text-center">{tt("trayEmpty", locale)}</p>}
           </div>
 
           {/* 먹은 것 */}
@@ -783,7 +843,7 @@ function PlayScreen({
             <div>
               <div className="text-sm font-semibold mb-2">{tt("log", locale)}</div>
               <div className="space-y-1.5">
-                {[...actions].reverse().map((a, i) => <ActionRow key={actions.length - i} action={a} round={round} locale={locale} />)}
+                {[...actions].reverse().map((a, i) => <ActionRow key={actions.length - i} action={a} locale={locale} />)}
               </div>
             </div>
           )}
@@ -793,9 +853,8 @@ function PlayScreen({
   );
 }
 
-function PotSlot({ index, uid, round, locale, disabled, onRemove }: { index: number; uid: number | undefined; round: TrainerRound; locale: Locale; disabled: boolean; onRemove: (uid: number) => void }) {
-  const item = uid !== undefined ? round.items[uid] : null;
-  if (!item) {
+function PotSlot({ index, ingredient, locale, disabled, onRemove }: { index: number; ingredient: CookpotIngredient | null; locale: Locale; disabled: boolean; onRemove: (index: number) => void }) {
+  if (!ingredient) {
     return (
       <div className="flex items-center justify-center size-16 sm:size-[72px] rounded-lg border-2 border-dashed border-border bg-background/50 text-sm font-semibold text-muted-foreground">
         {index + 1}
@@ -805,22 +864,22 @@ function PotSlot({ index, uid, round, locale, disabled, onRemove }: { index: num
   return (
     <button
       type="button"
-      onClick={() => onRemove(item.uid)}
+      onClick={() => onRemove(index)}
       disabled={disabled}
       className="relative flex items-center justify-center size-16 sm:size-[72px] rounded-lg bg-background border-2 border-primary/50 hover:border-primary hover:bg-primary/10 active:scale-95 transition-all animate-trainer-pop"
-      title={ingredientName(item.ingredient, locale)}
+      title={ingredientName(ingredient, locale)}
     >
-      <IngredientIcon ing={item.ingredient} locale={locale} className="size-12 sm:size-14" />
+      <IngredientIcon ing={ingredient} locale={locale} className="size-12 sm:size-14" />
       {!disabled && <X className="absolute -top-1.5 -right-1.5 size-4 rounded-full bg-surface-hover border border-ring text-foreground/80 p-0.5" />}
     </button>
   );
 }
 
 /** 방금 먹은 것 — 요리면 요리 이미지, 생식이면 재료 이미지가 크게 튀어나오고 스탯이 떠오른다 */
-function RevealView({ action, round, locale, score }: { action: TrainerAction; round: TrainerRound; locale: Locale; score: number }) {
+function RevealView({ action, locale, score }: { action: TrainerAction; locale: Locale; score: number }) {
   const isCook = action.type === "cook";
-  const img = isCook ? `/images/game-items/${action.recipe.id}.png` : `/images/game-items/${ingredientImage(round.items[action.uid].ingredient)}`;
-  const name = isCook ? foodName(action.recipe, locale) : ingredientName(round.items[action.uid].ingredient, locale);
+  const img = isCook ? `/images/game-items/${action.recipe.id}.png` : `/images/game-items/${ingredientImage(action.ingredient)}`;
+  const name = isCook ? foodName(action.recipe, locale) : ingredientName(action.ingredient, locale);
   const inedible = isCook && !isPlayerEdible(action.recipe);
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full">
@@ -842,7 +901,7 @@ function RevealView({ action, round, locale, score }: { action: TrainerAction; r
   );
 }
 
-function ActionRow({ action, round, locale, onViewRecipe }: { action: TrainerAction; round: TrainerRound; locale: Locale; onViewRecipe?: (id: string) => void }) {
+function ActionRow({ action, locale, onViewRecipe }: { action: TrainerAction; locale: Locale; onViewRecipe?: (id: string) => void }) {
   if (action.type === "cook") {
     return (
       <DishCard
@@ -851,12 +910,12 @@ function ActionRow({ action, round, locale, onViewRecipe }: { action: TrainerAct
         mult={action.mult}
         wasRandom={action.wasRandom}
         locale={locale}
-        ingredients={action.uids.map((u) => round.items[u].ingredient)}
+        ingredients={action.ingredients}
         onViewRecipe={onViewRecipe}
       />
     );
   }
-  const ing = round.items[action.uid].ingredient;
+  const ing = action.ingredient;
   return (
     <div className="flex items-center gap-2.5 rounded-xl border border-border bg-surface px-2.5 py-2">
       <IngredientIcon ing={ing} locale={locale} className="size-11 shrink-0" />
@@ -948,7 +1007,7 @@ function ResultScreen({
             <p className="text-xs text-muted-foreground">{tt("logEmpty", locale)}</p>
           ) : (
             <div className="space-y-1.5">
-              {actions.map((a, i) => <ActionRow key={i} action={a} round={round} locale={locale} onViewRecipe={onViewRecipe} />)}
+              {actions.map((a, i) => <ActionRow key={i} action={a} locale={locale} onViewRecipe={onViewRecipe} />)}
             </div>
           )}
         </div>
@@ -971,22 +1030,21 @@ function PlanSection({ title, plan, round, locale, onViewRecipe }: { title: stri
   return (
     <div className="space-y-2">
       <div className="text-sm font-semibold">{title}</div>
-      {plan.pots.length === 0 && plan.rawUids.length === 0 && (
+      {plan.pots.length === 0 && plan.raws.length === 0 && (
         <p className="text-xs text-muted-foreground">—</p>
       )}
       <div className="space-y-1.5">
         {plan.pots.map((p, i) => (
-          <DishCard key={i} recipes={p.recipes} stats={p.stats} mult={p.mult} locale={locale} ingredients={p.uids.map((u) => round.items[u].ingredient)} onViewRecipe={onViewRecipe} />
+          <DishCard key={i} recipes={p.recipes} stats={p.stats} mult={p.mult} locale={locale} ingredients={p.ingredients} onViewRecipe={onViewRecipe} />
         ))}
       </div>
-      {plan.rawUids.length > 0 && (
+      {plan.raws.length > 0 && (
         <div>
           <div className="text-xs font-semibold text-muted-foreground mb-1">{tt("rawEaten", locale)}</div>
           <div className="flex flex-wrap gap-2">
-            {plan.rawUids.map((u) => {
-              const it = round.items[u];
-              return <ItemSlot key={u} icon={ingredientImage(it.ingredient)} label={ingredientName(it.ingredient, locale)} badge={it.raw ? fmt1(scoreOf(it.raw, round.weights)) : undefined} />;
-            })}
+            {plan.raws.map((r) => (
+              <ItemSlot key={r.uid} icon={ingredientImage(r.ingredient)} label={ingredientName(r.ingredient, locale)} badge={fmt1(scoreOf(r.stats, round.weights))} />
+            ))}
           </div>
         </div>
       )}
