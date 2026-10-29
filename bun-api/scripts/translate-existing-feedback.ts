@@ -14,7 +14,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DB_PATH = process.env.DB_PATH ?? join(homedir(), "dstcraft", "data", "app.db");
-const MODEL = "claude-opus-5-5"; // 이번 실행분(2026-10-27 추가, #135)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5 / claude-fable-5-1로 기록돼 있고 덮어쓰지 않는다.
+const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-10-29 추가, #137)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5 / claude-fable-5-1 / claude-opus-5-5로 기록돼 있고 덮어쓰지 않는다.
 
 type Lang = "ko" | "en" | "pt";
 // 원문이 ko↔en이면 반대 언어 문자열 하나. 원문이 제3언어(pt 등)면 ko·en 사용자 모두 번역이
@@ -299,6 +299,15 @@ const TRANSLATIONS: Entry[] = [
     replyLang: "en",
     replyTranslated:
       "자세한 피드백 고마워요, 전부 반영했어요! 이제 재료를 불에 구울 수 있고(굽기를 누른 뒤 먹거나 요리솥에 넣으면 돼요), 일부 재료는 처음부터 구워진 채로 나와요. 잔가지는 더 이상 지급되지 않고 언제든 쓸 수 있는 ∞ 칸에 있어서 어떤 요리솥에도 넣을 수 있고, 얼음도 이제 먹을 수 있어요. 최적 플랜도 굽기와 무제한 잔가지를 고려해요. 다른 문제가 보이면 알려주세요!",
+  },
+  {
+    id: "1793252068746-m08eq5",
+    messageLang: "en",
+    messageTranslated:
+      "요리솥 시뮬레이터에, 재료를 넣고 칸을 몇 개 비워 둔 상태에서 최종적으로 만들 수 있는 요리들을 보여주는 기능이 있으면 좋겠어요. dont-starve-companion.com처럼요.",
+    replyLang: "en",
+    replyTranslated:
+      "반영했어요! 이제 요리솥 시뮬레이터에 재료를 1~3개만 넣어도 될 수 있는 요리가 바로 보여요. 남은 칸을 어떤 재료로 채워도 나올 수 있는 요리만, 흔하게 나오는 순으로요. 탭하면 레시피가 열려요. 제안 고마워요!",
   },
 ];
 
