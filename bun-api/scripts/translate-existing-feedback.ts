@@ -14,7 +14,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DB_PATH = process.env.DB_PATH ?? join(homedir(), "dstcraft", "data", "app.db");
-const MODEL = "claude-fable-5-1"; // 이번 실행분(2026-09-16·09-17·09-21·10-20 추가, #120·#123·#128 포함)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5로 기록돼 있고 덮어쓰지 않는다.
+const MODEL = "claude-opus-5-5"; // 이번 실행분(2026-10-27 추가, #135)의 번역 작성자. 이전 row들은 claude-opus-4-7 / claude-opus-5 / claude-fable-5-1로 기록돼 있고 덮어쓰지 않는다.
 
 type Lang = "ko" | "en" | "pt";
 // 원문이 ko↔en이면 반대 언어 문자열 하나. 원문이 제3언어(pt 등)면 ko·en 사용자 모두 번역이
@@ -291,6 +291,14 @@ const TRANSLATIONS: Entry[] = [
     replyLang: "en",
     replyTranslated:
       "좋은 아이디어예요, 자세히 적어줘서 고마워요! 바로 작업 시작할게요. 아마 작게 시작해서(고정 재료 세트, 허기 중심 점수) 점점 키울 테니 릴리즈 노트 지켜봐 주세요.",
+  },  {
+    id: "1792800424528-9shbx3",
+    messageLang: "en",
+    messageTranslated:
+      "요리솥 트레이너에 아주 중요한 변경이 몇 가지 필요해요. 하나는 재료를 불에 구울 수 있어야 한다는 것(아마 이미 구워진 재료도 나오면 좋겠고요), 그리고 잔가지는 일반 재료에서 빼고, 게임 대부분의 상황에서 구하기 아주 쉬우니 언제든 무한히 레시피에 넣을 수 있는 별도 옵션으로 두면 좋겠어요. 얼음을 먹을 수 없는 것 같은 다른 사소한 문제도 있어요.",
+    replyLang: "en",
+    replyTranslated:
+      "자세한 피드백 고마워요, 전부 반영했어요! 이제 재료를 불에 구울 수 있고(굽기를 누른 뒤 먹거나 요리솥에 넣으면 돼요), 일부 재료는 처음부터 구워진 채로 나와요. 잔가지는 더 이상 지급되지 않고 언제든 쓸 수 있는 ∞ 칸에 있어서 어떤 요리솥에도 넣을 수 있고, 얼음도 이제 먹을 수 있어요. 최적 플랜도 굽기와 무제한 잔가지를 고려해요. 다른 문제가 보이면 알려주세요!",
   },
 ];
 

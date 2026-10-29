@@ -15,6 +15,47 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.41.0",
+    date: "2026-10-29",
+    dev: [
+      "feat(cookpot): **시뮬레이터 '될 수 있는 요리'** (#137, 피드백 `1793252068746-m08eq5`). 재료를 1~3개만 넣으면 결과 자리에 남은 칸을 어떤 재료로 채워도 최종 결과가 될 수 있는 요리 목록(`CandidatePanel`, `ItemSlot` 그리드, 탭 → 레시피 상세). `cookpot-engine.ts`의 `reachableRecipes`가 남은 칸 조합을 전부 열거해 `topMatches`에 든 레시피만 모은다 — 조건은 맞아도 우선순위에 밀리는 요리는 제외, 곤죽 제외, 정렬은 그 요리로 끝나는 조합 수(일반 요리 먼저)",
+      "perf(cookpot): 엔진 bag을 Proxy에서 0으로 깐 평범한 객체로, 레시피는 우선순위 내림차순으로 정렬해 첫 매치 뒤 break. 기존 `simulate`와 4만 조합 대조 일치. 열거는 이름으로 참조되는 재료(`NAME_REFERENCED_IDS`)만 각자 두고 나머지는 태그 조합별 대표 1개 — 전체 재료 열거와 240건 대조 일치. 그래도 재료 1개(빈 칸 3개, C(91,3)≈12만 조합)는 0.3~0.5초라 `scripts/generate-cookpot-reachable.mts`가 미리 계산해 `src/data/cookpot-reachable.ts`(37KB, 요리솥 청크)에 저장. 레시피 순서·재료 id 불일치면 표를 버리고 직접 계산, 개발 모드는 throw + 잔가지 한 건 실계산 대조",
+      "chore: `scripts/ts-import-hooks.mjs`(Node 24 type stripping용 `@/` 로더), `useDelayedReady` 훅으로 고스트 클릭 가드 공통화, docs/ui.md·terminology·CLAUDE.md, /task 스킬에 node_modules 심볼릭 링크 함정",
+    ],
+    changes: {
+      ko: [
+        "요리솥 시뮬레이터에 재료를 1~3개만 넣어도 '될 수 있는 요리'가 바로 보입니다. 남은 칸을 어떤 재료로 채워도 나올 수 있는 요리만, 흔하게 나오는 순으로 보여주고 탭하면 레시피로 갑니다.",
+      ],
+      en: [
+        "Crock Pot Simulator now shows the possible dishes as soon as you add 1–3 ingredients — only dishes the pot can still become with any remaining ingredients, most common first. Tap one to open its recipe.",
+      ],
+    },
+  },
+  {
+    version: "0.40.0",
+    date: "2026-10-27",
+    dev: [
+      "feat(cookpot): **요리솥 트레이너 — 모닥불 굽기** (#135, 피드백 `1792800424528-9shbx3`). 재료 칸에 \"굽기\" 버튼(두 번 탭, 되돌릴 수 없음) — `TrainerItem.roasted`(요리솥 재료 `<id>_cooked`)로 형태가 바뀌고, 구운 재료는 따로 먹거나 솥에 넣는다. 월리 모드도 굽기 가능(솥 재료 바꾸기용). 풀에 이미 구워진 재료 7종(가중치 1) 추가",
+      "feat(cookpot): **잔가지 무제한** — 풀에서 빼고 남은 재료 맨 앞 `∞` 칸으로. 솥 칸 값 `TWIG_UID`(-1, 중복 가능), 솥에서 빼기는 칸 위치 기준. 액션·플랜에 `ingredients`(실제 넣은 4개) 기록",
+      "feat(cookpot): 최적해를 (종류, 형태) 슬롯 1~4개 + 잔가지 솥 후보로 일반화(`buildProblem`) — 같은 종류 조합은 최선의 형태 배정만, 월리는 요리별로 따로 유지. 8개 120라운드(월리 포함) 전수 탐색과 일치. 20개 평균 0.35초·최악 0.9초, 월리 16개 평균 0.17초. 테스트 전용 `_solveBitmaskDp`/`_solveWarlyEnum` 제거",
+      "fix(data): **얼음 생식 누락** — `extract-raw-foods.py`가 없는 `ice.lua`를 `exists()`로 건너뛰고 있었다(실제 `inv_rocks_ice.lua`). 없는 특수 파일은 exit 1, `TUNING.X*k`/`X/k` 상수식 해석(수박 구이·얼음). 요리탭 생식 목록에 얼음 추가",
+      "feat(data): 구운 재료 36종 수치를 `raw-foods.ts`의 `cookedFoods`로 자동 생성 (veggies.lua 조리 열, mushrooms.lua cooked*, meats.lua·egg.lua의 `cookedX`→`X_cooked` 정규화)",
+      "chore: CLAUDE.md 파이프라인 규칙, docs/ui.md 트레이너, 오답노트(추출 스크립트 exists() 누락)",
+    ],
+    changes: {
+      ko: [
+        "요리솥 트레이너에서 재료를 모닥불에 구울 수 있습니다. 구운 재료는 그냥 먹거나 요리솥에 넣을 수 있고, 처음부터 구워진 재료가 나오기도 합니다.",
+        "요리솥 트레이너의 잔가지가 무제한이 됐습니다. 남은 재료 맨 앞 칸에서 언제든 원하는 만큼 넣을 수 있고, 최적 조합도 굽기와 잔가지를 함께 따져 계산합니다.",
+        "얼음을 생으로 먹을 수 있게 고쳤습니다 (요리탭 생식 목록에도 추가).",
+      ],
+      en: [
+        "Crock Pot Trainer: you can now roast ingredients on a fire, then eat them or put them in the pot. Some ingredients also come already cooked.",
+        "Crock Pot Trainer: twigs are now unlimited — add them from the first slot anytime. The optimal plan accounts for roasting and twigs too.",
+        "Ice is now edible raw (also added to the raw food list in the Cooking tab).",
+      ],
+    },
+  },
+  {
     version: "0.39.0",
     date: "2026-10-22",
     dev: [

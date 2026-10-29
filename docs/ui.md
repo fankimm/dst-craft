@@ -49,6 +49,7 @@
 ### 요리솥 탭 (CookpotApp)
 헤더 우측 "시뮬레이터 | 트레이너" 토글로 두 화면을 바꾼다. URL `?tab=cookpot&mode=trainer` (#128, `useUrlStateSync` + `useTabSync` 패턴)
 - **시뮬레이터**: 카테고리/리스트 없이 단일 화면: 스테이션 선택 + 재료 슬롯 + 결과 + 재료 피커
+  - 결과 패널(왼쪽 절반)은 3상태 — 0개: 안내 문구 / 1~3개: **될 수 있는 요리**(`CandidatePanel`, #137) / 4개: 결과 카드. 후보는 남은 칸을 어떤 재료로 채워도 최종 결과가 될 수 있는 요리만(우선순위 반영, 곤죽 제외), "그 요리로 끝나는 조합 수" 많은 순. 계산은 `src/lib/cookpot-engine.ts`의 `reachableRecipes` — 재료 1개는 `src/data/cookpot-reachable.ts`(생성 표), 2~3개는 즉석 열거(≤10ms). 패널은 슬롯 칸 높이에 `absolute`로 맞추고 안에서 스크롤, 항목은 `ItemSlot`(탭 → 레시피 상세). 후보 패널·결과 카드 모두 `useDelayedReady`로 고스트 클릭 방지
 - **트레이너** (`cookpot/CookpotTrainer.tsx`): 설정 → 플레이 → 결과 3단계 단일 컴포넌트 (URL에는 모드만, 라운드 상태는 로컬)
 ```
 ┌ 설정 ─────────────────────────────────────┐   ┌ 플레이 ──────────────────────────────┐   ┌ 결과 ───────────────────────┐
@@ -379,6 +380,10 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 ### usePopularity (`src/hooks/use-popularity.ts`)
 - **용도**: Redis 기반 클릭 수 조회 (싱글턴 캐시)
 - **반환**: `{ getClicks }`
+
+### useDelayedReady (`src/hooks/use-delayed-ready.ts`)
+- 마운트 뒤 350ms(기본)가 지나야 `true` — 피커를 탭한 자리에 새로 나타난 클릭 요소가 지연 터치로 눌리는 모바일 고스트 클릭 방지
+- **사용처**: CookpotApp 결과 카드·후보 패널. 내용이 바뀔 때 다시 기다리게 하려면 호출 컴포넌트에 `key`를 바꿔 다시 마운트한다
 
 ### useUrlStateSync (`src/hooks/use-url-state.ts`)
 - **용도**: URL 쿼리에서 읽어오는 화면 상태를 hydration-safe하게 초기화. 첫 렌더는 서버 HTML과 동일한 기본값, 커밋 직후 layout effect에서 URL을 반영해 딥링크 플리커도 없앤다
