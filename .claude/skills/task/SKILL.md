@@ -72,7 +72,7 @@ git worktree add ../dst-craft-<issue-num> -b feat/<issue-num>-<slug> origin/main
 대신 다음 규칙으로 워크트리 작업:
 - **Bash 명령**: 매번 `cd ../dst-craft-<num> &&` 프리픽스를 붙이거나, git 명령은 `git -C ../dst-craft-<num> ...` 형태로 호출
 - **Read / Edit / Write**: 항상 워크트리 절대 경로(`/Users/jihwan-kim3/private-works/dst-craft-<num>/...`)로 호출 — 이건 cwd 영향 안 받음
-- **빌드 등 node_modules 필요한 작업**: feat 워크트리엔 `node_modules`가 없을 수 있음. `npm run build` / `npx tsc`는 메인 워크트리에서 main 머지 후 검증하거나, 워크트리에서 `npm ci` 먼저(11초). 메인의 node_modules를 **심볼릭 링크로 끌어오면 tsc는 되지만 Turbopack(`next dev`)이 "Symlink node_modules is invalid" 로 죽는다** (#137)
+- **빌드 등 node_modules 필요한 작업**: feat 워크트리엔 `node_modules`가 없음. 워크트리에서 `npm ci --prefer-offline`으로 설치한다(캐시로 10초대). **메인 워크트리의 `node_modules`를 심볼릭 링크하지 말 것** — Turbopack이 루트 밖 링크를 거부해 빌드가 죽는다 (`docs/mistakes.md` 2026-10-22)
 
 > 메모: 만약 이후 환경 변경으로 cwd가 유지되도록 바뀌면, 위 프리픽스 규칙은 단순 `cd` 한 번으로 대체 가능.
 
