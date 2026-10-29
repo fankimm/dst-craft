@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.41.0",
+    date: "2026-10-29",
+    dev: [
+      "feat(cookpot): **시뮬레이터 '될 수 있는 요리'** (#137, 피드백 `1793252068746-m08eq5`). 재료를 1~3개만 넣으면 결과 자리에 남은 칸을 어떤 재료로 채워도 최종 결과가 될 수 있는 요리 목록(`CandidatePanel`, `ItemSlot` 그리드, 탭 → 레시피 상세). `cookpot-engine.ts`의 `reachableRecipes`가 남은 칸 조합을 전부 열거해 `topMatches`에 든 레시피만 모은다 — 조건은 맞아도 우선순위에 밀리는 요리는 제외, 곤죽 제외, 정렬은 그 요리로 끝나는 조합 수(일반 요리 먼저)",
+      "perf(cookpot): 엔진 bag을 Proxy에서 0으로 깐 평범한 객체로, 레시피는 우선순위 내림차순으로 정렬해 첫 매치 뒤 break. 기존 `simulate`와 4만 조합 대조 일치. 열거는 이름으로 참조되는 재료(`NAME_REFERENCED_IDS`)만 각자 두고 나머지는 태그 조합별 대표 1개 — 전체 재료 열거와 240건 대조 일치. 그래도 재료 1개(빈 칸 3개, C(91,3)≈12만 조합)는 0.3~0.5초라 `scripts/generate-cookpot-reachable.mts`가 미리 계산해 `src/data/cookpot-reachable.ts`(37KB, 요리솥 청크)에 저장. 레시피 순서·재료 id 불일치면 표를 버리고 직접 계산, 개발 모드는 throw + 잔가지 한 건 실계산 대조",
+      "chore: `scripts/ts-import-hooks.mjs`(Node 24 type stripping용 `@/` 로더), `useDelayedReady` 훅으로 고스트 클릭 가드 공통화, docs/ui.md·terminology·CLAUDE.md, /task 스킬에 node_modules 심볼릭 링크 함정",
+    ],
+    changes: {
+      ko: [
+        "요리솥 시뮬레이터에 재료를 1~3개만 넣어도 '될 수 있는 요리'가 바로 보입니다. 남은 칸을 어떤 재료로 채워도 나올 수 있는 요리만, 흔하게 나오는 순으로 보여주고 탭하면 레시피로 갑니다.",
+      ],
+      en: [
+        "Crock Pot Simulator now shows the possible dishes as soon as you add 1–3 ingredients — only dishes the pot can still become with any remaining ingredients, most common first. Tap one to open its recipe.",
+      ],
+    },
+  },
+  {
     version: "0.40.0",
     date: "2026-10-27",
     dev: [

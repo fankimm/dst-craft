@@ -171,6 +171,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `src/components/cooking/` — 요리 탭 컴포넌트
 - `src/components/console/` — 콘솔 명령어 탭 컴포넌트
 - `src/components/cookpot/` — 요리솥 탭: 시뮬레이터(`CookpotApp`·`IngredientPicker`) + 트레이너 미니게임(`CookpotTrainer`, #128). 트레이너 문구는 `trainer-text.ts`
+- `src/lib/cookpot-engine.ts` — 요리솥 시뮬레이터 엔진 (preparedfoods.lua 포팅). `simulate`(4개 결과) + `reachableRecipes`(1~3개일 때 될 수 있는 요리, #137). 재료 1개 경우는 열거가 0.3초 넘게 걸려 `src/data/cookpot-reachable.ts`에 **미리 계산한 표**를 둔다 — **`recipeTests`·`recipes.ts`·`cookpot-ingredients.ts`를 바꾸면 `node --import ./scripts/ts-import-hooks.mjs ./scripts/generate-cookpot-reachable.mts` 재실행**(약 80초, `--check`로 대조). 레시피 순서·재료 id가 어긋나면 엔진이 표를 버리고 직접 계산하고 개발 모드는 throw. 테스트에 새 `n.<id>`를 쓰면 `NAME_REFERENCED_IDS`에도 추가(개발 모드 self-check가 잡는다)
+- `scripts/ts-import-hooks.mjs` — Node 24가 `src/`의 TS를 그대로 실행하게 하는 로더(`@/` 별칭·확장자 보완). `node --import ./scripts/ts-import-hooks.mjs ./<스크립트>.mts`. src/lib 로직을 헤드리스로 검증할 때도 쓴다
 - `src/lib/cookpot-trainer.ts` — 요리솥 트레이너 엔진: 재료 풀(생식 수치가 `raw-foods.ts`에 있는 것만, 구울 수 있으면 `cookedFoods`에 구운 수치도), 모닥불 굽기·무제한 잔가지(#135), 채점, 월리 기억 배율(`WARLY_SAME_OLD_MULTIPLIERS`), 최적해(종류별 개수 DP ≤20개 / 월리 분기한정 ≤16개 — 상한 근거는 상수 주석). 풀에 재료를 더할 땐 `raw-foods.ts`에 그 재료가 있어야 한다 — 없으면 모듈 로드 시 throw
 - `src/components/farming/` — 농사 탭 컴포넌트 (#120). 게임에 없는 문구는 `farming-text.ts`에만 둔다
 - `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
