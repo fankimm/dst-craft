@@ -67,6 +67,12 @@ export const figureSketchSources: Record<string, SketchSource[]> = {
   chesspiece_wormboss_builder: [boss("worm_boss")],
   chesspiece_wagboss_robot_builder: [boss("wagboss_robot")],
   chesspiece_wagboss_lunar_builder: [boss("alterguardian_phase4_lunarrift")],
+  // Cursed Confrontation Part 2 (#138)
+  chesspiece_charlie_boss_builder: [boss("charlie_boss")],
+  chesspiece_shrouden_builder: [boss("shrouden")],
+  chesspiece_batboss_shadow_builder: [boss("bat_boss_shadow")],
+  chesspiece_rockyboss_shadow_builder: [boss("rocky_boss_shadow")],
+  chesspiece_wormboss_shadow_builder: [boss("worm_boss_shadow")],
   // 성소(볼트)
   chesspiece_vault_pillar_guard_builder: [{ kind: "vault_guard" }],
   // 제작 가능한 도면
@@ -94,6 +100,8 @@ export const SKETCH_ICON_IDS = new Set([
   "chesspiece_manrabbit_sketch", "chesspiece_moon_sketch", "chesspiece_sharkboi_sketch",
   "chesspiece_wagboss_lunar_sketch", "chesspiece_wagboss_robot_sketch", "chesspiece_wormboss_sketch",
   "chesspiece_yotd_sketch", "chesspiece_yoth_sketch", "chesspiece_yots_sketch",
+  "chesspiece_charlie_boss_sketch", "chesspiece_shrouden_sketch", "chesspiece_batboss_shadow_sketch",
+  "chesspiece_rockyboss_shadow_sketch", "chesspiece_wormboss_shadow_sketch",
 ]);
 
 /**
