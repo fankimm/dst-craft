@@ -1147,3 +1147,13 @@ Monumetric 1만+셋업비 — 전부 문턱이 있고 **Ezoic만 무제한이다
 - **원인**: (1) #122에서 "행을 못 읽으면 죽기"는 넣었지만 "파일을 못 찾으면 죽기"는 없었다. (2) 소비하는 쪽(트레이너 풀 assert)이 데이터 누락을 예외로 흡수했다. (3) 얼음 수치는 `TUNING.CALORIES_TINY/4`라 파일을 찾았어도 lookup이 None을 돌려 또 조용히 빠졌을 것이다
 - **해결**: 없는 파일은 exit 1, lookup이 `*k`·`/k` 상수식을 읽게 했다. 트레이너 풀은 "생식 수치 없음"을 예외 없이 에러로 처리
 - **교훈**: #122와 같은 계열 — 자동 추출의 `exists()`·`continue`·`None`은 셋 다 "없음"을 만든다. 그리고 **소비 쪽 assert에 예외를 두면 상류의 누락이 영영 안 보인다**. 예외를 넣고 싶어지면 상류 데이터부터 의심할 것
+
+### sync가 Pillow 없는 python3에서 중간에 죽어 game-version.ts가 옛 빌드로 남음 (2026-10-30, #138)
+- **문제**: `sync-game-data.sh`가 `extract-skin-icons` 단계에서 `Pillow is required`로 종료됐는데, 앞 단계(scrapbook·raw-foods·farming·verify)는 이미 끝나 있어 "동기화 됐다"고 보였다. 마지막 단계인 `game-version.ts` 갱신(buildid·날짜)과 skins 갱신이 빠진 채였다 — 그대로 커밋했으면 데이터는 새 빌드, 표기는 옛 빌드
+- **원인**: `set -e`라 중간 실패는 즉시 종료인데, 버전 갱신이 맨 끝에 있다. 맥 시스템 `python3`엔 Pillow가 없고(이전엔 있었거나 다른 python이었음), 스크립트는 시작 전에 의존성을 확인하지 않는다
+- **해결**: 스크립트 시작부에 Pillow preflight를 넣어 **아무것도 바꾸기 전에** 죽게 했다. 이번엔 scratchpad venv에 Pillow를 깔고 `PATH`에 앞세워 `--force` 재실행
+- **교훈**: 파이프라인 마지막 단계가 "완료 표식"이면, 실패 시 표식만 빠지고 산출물은 남는 어정쩡한 상태가 된다. 의존성 확인은 맨 앞에, 완료 표식은 실패 시 명확히 안 찍혔다는 걸 출력에서 확인할 것
+
+### prefab id를 영문 이름으로 짐작 — `shrouden`을 Shrouded Queen으로 (2026-10-30, #138)
+- **문제**: 새 보스 prefab 목록에서 `shrouden.lua`를 보고 Shrouded Queen이라 가정하고 전리품을 읽기 시작했다. 실제는 `charlie_boss` = Shrouded Queen(장막의 여왕), `shrouden` = Umbral Abomination(본영의 흉물). ko.po의 `STRINGS.NAMES.*`를 먼저 뽑아서 알아챘다
+- **교훈**: 이름이 비슷한 prefab일수록 `STRINGS.NAMES.<ID>`로 먼저 확정한 뒤 소스를 읽는다. 특히 스토리 보스는 코드명(캐릭터 이름·가칭)으로 지어진 경우가 많다
