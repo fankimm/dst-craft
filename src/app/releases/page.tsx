@@ -15,6 +15,29 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.42.0",
+    date: "2026-10-31",
+    dev: [
+      "feat(bosses): **Cursed Confrontation Part 2 보스 7종** (#138). 장막의 여왕(`charlie_boss`)·본영의 흉물(`shrouden`)·사냥개 바틸리스크(`bat_boss`)·장수돌가재(`rocky_boss`)와 먹빛 변형 3종(`bat_boss_shadow`·`rocky_boss_shadow`·`worm_boss_shadow`). 전리품은 각 prefab의 `SetSharedLootTable`/`LOOT` 그대로 — 본영의 흉물은 사망 표 `shrouden` + 웅덩이 상태(`SGshrouden` death)의 `shrouden2`(공포석·어둠의 넝마·도면) 합산",
+      "feat(bosses): `BossLoot.labelEn` 추가 — 조건부 전리품 소제목을 보스탭·SEO 보스 페이지 모두 로캘별 렌더. 장수돌가재 산성비 초석 4개(`SetNitre` → `NITRELOOT`)에 사용",
+      "feat(data): 조각상 5종(`items.ts`·`locales/ko.ts`·`sketches.ts` 보스 입수처), 아이콘 26개(인벤토리 아틀라스 KTEX 추출), 보스 이미지 7장 + 무손실 WebP thumb",
+      "chore(data): 게임 데이터 빌드 26306684(release 760944) 동기화 — scrapbook-stats, skins(+58 아이콘), spawnable-prefabs를 ko.po NAMES로 재생성(+125)",
+      "chore: `sync-game-data.sh`에 Pillow preflight(중간 실패로 game-version만 빠지는 상태 방지), 오답노트 2건",
+    ],
+    changes: {
+      ko: [
+        "보스탭에 새 보스 7종이 추가됐습니다: 장막의 여왕, 본영의 흉물, 사냥개 바틸리스크, 장수돌가재, 그리고 먹빛 사냥개 바틸리스크·먹빛 장수돌가재·먹빛 거대 동굴지렁이. 전리품은 게임 데이터 기준입니다.",
+        "새 보스 조각상 5종을 제작 탭에서 찾을 수 있습니다.",
+        "게임 데이터를 최신 업데이트(Cursed Confrontation Part 2) 기준으로 갱신했습니다.",
+      ],
+      en: [
+        "Added 7 new bosses to the Bosses tab: Shrouded Queen, Umbral Abomination, Hound Batilisk, Rock Master, plus Blighted Hound Batilisk, Blighted Rock Master and Blighted Great Depths Worm. Loot is taken from the game data.",
+        "The 5 new boss figures are now in the Crafting tab.",
+        "Game data updated to the latest update (Cursed Confrontation Part 2).",
+      ],
+    },
+  },
+  {
     version: "0.41.0",
     date: "2026-10-29",
     dev: [
