@@ -74,7 +74,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "mole", name: "Naked Mole Bat", nameKo: "두더지렁이", tags: { meat: 0.5 }, category: "meats" },
   { id: "trunk_summer", name: "Koalefant Trunk", nameKo: "코알라판트 코", tags: { meat: 1 }, category: "meats" },
   { id: "trunk_winter", name: "Winter Koalefant Trunk", nameKo: "겨울 코알라판트 코", tags: { meat: 1 }, category: "meats" },
-  { id: "trunk_cooked", name: "Cooked Koalefant Trunk", nameKo: "구운 코알라판트 코", tags: { meat: 1 }, category: "meats" },
+  { id: "trunk_cooked", name: "Cooked Koalefant Trunk", nameKo: "코알라판트 코 스테이크", tags: { meat: 1 }, category: "meats" },
   { id: "plantmeat", name: "Leafy Meat", nameKo: "풀고기", tags: { meat: 1 }, category: "meats" },
   { id: "plantmeat_cooked", name: "Cooked Leafy Meat", nameKo: "구운 풀고기", tags: { meat: 1 }, category: "meats" },
 
@@ -87,7 +87,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "fishmeat", name: "Fish Morsel", nameKo: "날생선", tags: { fish: 1, meat: 1 }, category: "fish", cookable: true, dryable: true },
   { id: "wobster_sheller_land", name: "Wobster", nameKo: "왑스터", tags: { fish: 1, meat: 1 }, category: "fish" },
   { id: "barnacle", name: "Barnacle", nameKo: "거북순", tags: { fish: 0.25, meat: 0.25 }, category: "fish" },
-  { id: "barnacle_cooked", name: "Cooked Barnacle", nameKo: "구운 거북순", tags: { fish: 0.25, meat: 0.25 }, category: "fish" },
+  { id: "barnacle_cooked", name: "Cooked Barnacle", nameKo: "거북순 구이", tags: { fish: 0.25, meat: 0.25 }, category: "fish" },
   { id: "oceanfish_small_5_inv", name: "Corn Cod", nameKo: "강냉이복어", tags: { fish: 0.5, meat: 0.5 }, category: "fish" },
   { id: "oceanfish_medium_5_inv", name: "Corn Cod", nameKo: "옥수수대구", tags: { fish: 1, meat: 1 }, category: "fish" },
 
@@ -110,7 +110,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "acorn", name: "Birchnut", nameKo: "버치넛", tags: { seed: 1 }, category: "misc" },
   { id: "acorn_cooked", name: "Roasted Birchnut", nameKo: "구운 버치넛", tags: { seed: 1 }, category: "misc" },
   { id: "goatmilk", name: "Electric Milk", nameKo: "전기 우유", tags: { dairy: 1 }, category: "misc" },
-  { id: "milkywhites", name: "Milky Whites", nameKo: "흰자위", tags: { dairy: 1 }, category: "misc" },
+  { id: "milkywhites", name: "Milky Whites", nameKo: "우유빛 흰자위", tags: { dairy: 1 }, category: "misc" },
   { id: "nightmarefuel", name: "Nightmare Fuel", nameKo: "악몽 연료", tags: { inedible: 1, magic: 1 }, category: "misc" },
   { id: "boneshard", name: "Bone Shards", nameKo: "뼛조각", tags: { inedible: 1 }, category: "misc" },
   { id: "refined_dust", name: "Collected Dust", nameKo: "먼지 덩어리", tags: { decoration: 2 }, category: "misc" },
@@ -119,11 +119,11 @@ const baseIngredients: CookpotIngredient[] = [
   // Dried-only ingredients (raw forms are NOT cooking ingredients in the game)
   { id: "petals_dried", name: "Dried Petals", nameKo: "말린 꽃잎", tags: { decoration: 1, dried: 1 }, category: "misc" },
   { id: "petals_evil_dried", name: "Dried Dark Petals", nameKo: "말린 어둠의 꽃잎", tags: { decoration: 1, magic: 0.5, dried: 1 }, category: "misc" },
-  { id: "foliage_dried", name: "Dried Foliage", nameKo: "말린 나뭇잎", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "foliage_dried", name: "Dried Foliage", nameKo: "말린 고사리잎", tags: { decoration: 1, dried: 1 }, category: "misc" },
   { id: "succulent_picked_dried", name: "Dried Succulent", nameKo: "말린 다육식물", tags: { decoration: 1, dried: 1 }, category: "misc" },
-  { id: "firenettles_dried", name: "Dried Fire Nettles", nameKo: "말린 불쐐기풀", tags: { decoration: 1, dried: 1 }, category: "misc" },
-  { id: "tillweed_dried", name: "Dried Tillweed", nameKo: "말린 잡초", tags: { decoration: 1, dried: 1 }, category: "misc" },
-  { id: "moon_tree_blossom_dried", name: "Dried Moon Tree Blossom", nameKo: "말린 달나무 꽃", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "firenettles_dried", name: "Dried Fire Nettles", nameKo: "말린 불쐐기 잎", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "tillweed_dried", name: "Dried Tillweed", nameKo: "말린 뒤엎시라", tags: { decoration: 1, dried: 1 }, category: "misc" },
+  { id: "moon_tree_blossom_dried", name: "Dried Moon Tree Blossom", nameKo: "말린 달빛나무 꽃", tags: { decoration: 1, dried: 1 }, category: "misc" },
   { id: "forgetmelots_dried", name: "Dried Forget-Me-Lots", nameKo: "말린 건망초", tags: { decoration: 1, dried: 1 }, category: "misc" },
   // Pearl's Tea Shop bottle — not a cookpot ingredient, but listed so requirements icons resolve.
   { id: "messagebottleempty", name: "Empty Bottle", nameKo: "빈 병", tags: {}, category: "misc" },
