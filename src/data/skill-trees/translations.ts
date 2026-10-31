@@ -1370,7 +1370,7 @@ export const skillTranslations: Record<
     desc: { en: "Processing Circuits gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "연산 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
     details: {
       en: "Processing: negative sanity auras -20% (per circuit)\nSuper-Processing: negative sanity auras -50% (per circuit)\nBeanbooster: negative sanity auras -50%\nGastrogain: Hunger drain -5% (per circuit)\nSuper-Gastrogain: Hunger drain -25% (per circuit)",
-      ko: "연산 회로: 적의 정신력 감소 오라 20% 상쇄 (회로당)\n초연산 회로: 적의 정신력 감소 오라 50% 상쇄 (회로당)\n빈부스터 모듈: 적의 정신력 감소 오라 50% 상쇄\n소화기 확장 회로: 허기 감소 속도 -5% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -25% (회로당)",
+      ko: "연산 회로: 적의 정신력 감소 오라 20% 상쇄 (회로당)\n초연산 회로: 적의 정신력 감소 오라 50% 상쇄 (회로당)\n빈부스터 회로: 적의 정신력 감소 오라 50% 상쇄\n소화기 확장 회로: 허기 감소 속도 -5% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -25% (회로당)",
     },
   },
   wx78_circuitry_alphabuffs_2: {
@@ -1378,7 +1378,7 @@ export const skillTranslations: Record<
     desc: { en: "Hardy Circuits, Processing Circuits, and Beanbooster Circuit gain a new effect in addition to their original effect. Gastrogain Circuits are boosted.", ko: "체력 증진 회로, 연산 회로, 빈부스터 회로에 새로운 기능이 추가됩니다. 소화기 확장 회로의 성능이 강화됩니다." },
     details: {
       en: "Hardy: damage taken -2.5% (per circuit)\nSuper-Hardy: damage taken -5% (per circuit)\nProcessing: Sanity from clothing +10% (per circuit)\nSuper-Processing: Sanity from clothing +30% (per circuit)\nBeanbooster: shield = 20% max Health × circuits, regen 0.25/s; Sanity from clothing +30%\nGastrogain: Hunger drain -10% (per circuit)\nSuper-Gastrogain: Hunger drain -30% (per circuit)",
-      ko: "체력 증진 회로: 받는 피해 2.5% 감소 (회로당)\n체력 초증진 회로: 받는 피해 5% 감소 (회로당)\n연산 회로: 정신력 회복 장비 효율 +10% (회로당)\n초연산 회로: 정신력 회복 장비 효율 +30% (회로당)\n빈부스터 모듈: 보호막 = 최대 체력 20% × 회로 수, 초당 0.25 재생, 정신력 회복 장비 효율 +30%\n소화기 확장 회로: 허기 감소 속도 -10% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -30% (회로당)",
+      ko: "체력 증진 회로: 받는 피해 2.5% 감소 (회로당)\n체력 초증진 회로: 받는 피해 5% 감소 (회로당)\n연산 회로: 정신력 회복 장비 효율 +10% (회로당)\n초연산 회로: 정신력 회복 장비 효율 +30% (회로당)\n빈부스터 회로: 보호막 = 최대 체력 20% × 회로 수, 초당 0.25 재생, 정신력 회복 장비 효율 +30%\n소화기 확장 회로: 허기 감소 속도 -10% (회로당)\n소화기 초확장 회로: 허기 감소 속도 -30% (회로당)",
     },
   },
   wx78_circuitry_betabuffs_1: {

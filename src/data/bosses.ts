@@ -631,7 +631,7 @@ export const bosses: Boss[] = [
   {
     id: "wagboss_robot",
     name: "W.A.R.B.O.T.",
-    nameKo: "W.A.R.B.O.T.",
+    nameKo: "워.보.트.",
     categories: ["story", "raid"],
     image: "wagboss_robot.png",
     loot: [
@@ -756,8 +756,8 @@ export const bosses: Boss[] = [
 /** Korean names for loot items (from ko.po) */
 export const lootNameKo: Record<string, string> = {
   meat: "고기", monstermeat: "괴물고기", charcoal: "숯", goldnugget: "금", horrorfuel: "순수한 공포",
-  sandblock: "모래성 블록", antliontrinket: "사막의 장신구", townportaltalisman: "사막석",
-  redgem: "빨간 보석", orangegem: "주황 보석", purplegem: "보라 보석",
+  sandblock: "모래성", antliontrinket: "모래놀이 장난감", townportaltalisman: "사막석",
+  redgem: "붉은 보석", orangegem: "주황 보석", purplegem: "보라 보석",
   silk: "거미줄", bluegem: "푸른 보석", yellowgem: "노란 보석",
   nightmarefuel: "악몽 연료", honey: "꿀", honeycomb: "벌집", stinger: "벌침",
   deerclops_eyeball: "외눈사슴의 눈알", drumstick: "닭다리",
@@ -768,7 +768,7 @@ export const lootNameKo: Record<string, string> = {
   shadowheart: "그림자 심장", thurible: "그림자 향로",
   armorskeleton: "뼈 갑옷", skeletonhat: "뼈 투구",
   malbatross_beak: "꽉새치 부리",
-  shieldofterror: "공포의 방패", milkywhites: "흰자위", eyemaskhat: "눈알 가면",
+  shieldofterror: "공포의 방패", milkywhites: "우유빛 흰자위", eyemaskhat: "눈알 가면",
   gears: "톱니바퀴", transistor: "전기 장치", greengem: "초록 보석", trinket_6: "낡아빠진 전선",
   minotaurhorn: "수호자의 뿔", atrium_key: "고대의 열쇠",
   orangestaff: "게으른 탐험가", yellowstaff: "별부름 지팡이",
@@ -795,7 +795,7 @@ export const lootNameKo: Record<string, string> = {
   purebrilliance: "순수한 광휘", spoiled_food: "부패물",
   plantmeat: "풀고기", fruitflyfruit: "친절한 초파리의 과일",
   wormlight: "발광 베리",
-  beardhair: "수염털",
+  beardhair: "수염",
   rabbitkingspear: "토끼왕의 곤봉",
   rocks: "돌", boat_bumper_crabking_kit: "대게왕 범퍼 키트", barnacle: "거북순", messagebottle: "편지가 든 병",
   singingshell_octave3: "바리톤 소리고둥", singingshell_octave4: "알토 소리고둥", singingshell_octave5: "소프라노 소리고둥",

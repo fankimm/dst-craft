@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.42.1",
+    date: "2026-10-31",
+    dev: [
+      "fix(i18n): 한글모드 개명 반영 (#139) — 수작업 한글명 38건을 ko.po `STRINGS.NAMES` 기준으로 동기화. `bosses.ts`(nameKo·lootNameKo), `locales/ko.ts`, `cookpot-ingredients.ts`, `game-items-db.ts`(+`docs/item-list.md`), `wx78-circuits.ts`, 스킬 번역 본문의 설명문 언급까지",
+      "refactor(dev): 개발용 보스 페이지의 `lootNameKo` 사본 제거 → `lootDisplayName` 공통 사용",
+      "`carnival_gametoken_multiple`의 '까악제 토큰 3개'는 단품과 구분용으로 유지. 슬러그는 영문 name 기준이라 변경 없음",
+    ],
+    changes: {
+      ko: [
+        "한글모드에서 바뀐 아이템·보스 이름을 반영했습니다. 예: 워.보.트., 위.노.봇, 수.다.쟁.이., 염합기, 빈부스터 회로, 우유빛 흰자위, 말린 고사리잎.",
+      ],
+      en: [
+        "Updated Korean item and boss names to match the latest Korean translation mod.",
+      ],
+    },
+  },
+  {
     version: "0.42.0",
     date: "2026-10-31",
     dev: [

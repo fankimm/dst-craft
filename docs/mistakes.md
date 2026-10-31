@@ -2,6 +2,11 @@
 
 ## 게임 데이터
 
+### 한글모드 개명이 수작업 파일엔 반영되지 않아 옛 이름이 남음 (2026-10-31, #139)
+- **문제**: #138 sync에서 `spawnable-prefabs.ts`(ko.po 자동 생성)는 새 이름(워.보.트., 염합기, 우유빛 흰자위 등)으로 바뀌었는데, 같은 아이템의 한글명이 손으로 관리하는 파일 7곳에는 옛 이름 그대로 남았다 (38건)
+- **흩어진 위치**: `bosses.ts`(`nameKo`·`lootNameKo`), `locales/ko.ts`(items/materials/foods), `cookpot-ingredients.ts`(`nameKo`), `game-items-db.ts`(`ko`·`desc_ko`) + 원본 `docs/item-list.md`, `wx78-circuits.ts`(`nameI18n.ko`), 스킬 번역 본문, 그리고 개발용 보스 페이지의 `lootNameKo` 사본(이번에 `lootDisplayName`으로 공통화해 제거)
+- **교훈**: (1) sync 후엔 ko.po `STRINGS.NAMES.<ID>`와 위 파일들의 한글명을 id 기준으로 대조할 것 — 이름 필드만이 아니라 다른 아이템 설명문 속 언급(예: "엽합기에서 제작")도 같이 바뀐다. (2) 슬러그는 영문 `name`으로 만들어지므로 한글명만 바뀌면 `RENAMED_*_SLUGS`는 필요 없다. (3) `까악제 토큰 3개`(`carnival_gametoken_multiple`)는 단품 토큰과 구분하려는 의도적 표기라 ko.po("까악제 토큰")와 달라도 유지한다
+
 ### 게임 데이터 sync 후 "새 아이템 반영 완료"로 성급히 보고 — 제작 탭은 수작업 카탈로그 (2026-06-26, #53)
 - **문제**: `sync-game-data.sh` 실행 후 scrapbook-stats.ts에 신규 아이템(fumaroleaxe 등)이 들어온 것만 보고 "새 아이템 반영 완료"라 보고. 실제로는 제작 탭에서 `fumaroleaxe` 검색 시 "아이템이 없습니다" — sync는 반영의 절반만 한 것
 - **근본 원인**: "게임 데이터"는 단일 소스가 아니라 **두 갈래**다.
