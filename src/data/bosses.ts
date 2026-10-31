@@ -5,7 +5,10 @@ export interface BossLoot {
   chance: number; // 1.0 = 100%
   count?: number;
   blueprint?: boolean;
+  /** 이 항목부터 시작하는 전리품 묶음의 소제목 (직전 항목과 다를 때만 표시). 한국어 */
   label?: string;
+  /** label의 영문 — 없으면 label을 그대로 쓴다 */
+  labelEn?: string;
   pool?: string;
   poolCount?: number;
   poolChance?: number;
@@ -639,6 +642,115 @@ export const bosses: Boss[] = [
       { item: "chesspiece_wagboss_robot_sketch", chance: 1 },
     ],
   },
+  // ── Cursed Confrontation Part 2 (#138) — 전리품은 각 prefab의 SetSharedLootTable 그대로 ──
+  {
+    id: "charlie_boss",
+    name: "Shrouded Queen",
+    nameKo: "장막의 여왕",
+    categories: ["story", "raid"],
+    image: "charlie_boss.png",
+    loot: [
+      { item: "horrorfuel", chance: 1, count: 5 },
+      { item: "horrorfuel", chance: 0.75 },
+      { item: "nightmarefuel", chance: 1, count: 2 },
+      { item: "nightmarefuel", chance: 0.75 },
+      { item: "chesspiece_charlie_boss_sketch", chance: 1 },
+    ],
+  },
+  {
+    // 장막의 여왕 처치 직후 같은 아레나에서 등장. 죽으면 "shrouden" 표 + 웅덩이 상태(SGshrouden death)에서 "shrouden2" 표를 추가로 떨군다
+    id: "shrouden",
+    name: "Umbral Abomination",
+    nameKo: "본영의 흉물",
+    categories: ["story", "raid"],
+    image: "shrouden.png",
+    loot: [
+      { item: "horrorfuel", chance: 1, count: 5 },
+      { item: "horrorfuel", chance: 0.75 },
+      { item: "nightmarefuel", chance: 1, count: 2 },
+      { item: "nightmarefuel", chance: 0.75 },
+      { item: "dreadstone", chance: 1, count: 4 },
+      { item: "dreadstone", chance: 0.75 },
+      { item: "dreadstone", chance: 0.5 },
+      { item: "voidcloth", chance: 1, count: 4 },
+      { item: "voidcloth", chance: 0.75 },
+      { item: "voidcloth", chance: 0.5 },
+      { item: "chesspiece_shrouden_sketch", chance: 1 },
+    ],
+  },
+  {
+    id: "bat_boss",
+    name: "Hound Batilisk",
+    nameKo: "사냥개 바틸리스크",
+    categories: ["underground", "mini"],
+    image: "bat_boss.png",
+    loot: [
+      { item: "bat_bosscorpsehat", chance: 1 },
+    ],
+  },
+  {
+    // 사냥개 바틸리스크를 고대 연료직조자/타락한 왕의 지팡이로 물들인 형태 (아트리움 의식 중)
+    id: "bat_boss_shadow",
+    name: "Blighted Hound Batilisk",
+    nameKo: "먹빛 사냥개 바틸리스크",
+    categories: ["story", "underground", "mini"],
+    image: "bat_boss_shadow.png",
+    loot: [
+      { item: "atrium_ritual_organ_bat", chance: 1 },
+      { item: "horrorfuel", chance: 1 },
+      { item: "horrorfuel", chance: 0.67 },
+      { item: "nightmarefuel", chance: 1 },
+      { item: "nightmarefuel", chance: 0.33 },
+      { item: "chesspiece_batboss_shadow_sketch", chance: 1 },
+    ],
+  },
+  {
+    id: "rocky_boss",
+    name: "Rock Master",
+    nameKo: "장수돌가재",
+    categories: ["underground", "mini"],
+    image: "rocky_boss.png",
+    loot: [
+      { item: "armor_rocky", chance: 1 },
+      { item: "rocks", chance: 1, count: 2 },
+      { item: "flint", chance: 1, count: 2 },
+      { item: "meat", chance: 1 },
+      // 산성비로 초석이 자란 상태(SetNitre → NITRELOOT)에서만 추가
+      { item: "nitre", chance: 1, count: 4, label: "산성비로 초석이 자랐을 때 추가", labelEn: "Extra when nitre-grown (Acid Rain)" },
+    ],
+  },
+  {
+    id: "rocky_boss_shadow",
+    name: "Blighted Rock Master",
+    nameKo: "먹빛 장수돌가재",
+    categories: ["story", "underground", "mini"],
+    image: "rocky_boss_shadow.png",
+    loot: [
+      { item: "atrium_ritual_organ_rocky", chance: 1 },
+      { item: "horrorfuel", chance: 1, count: 2 },
+      { item: "horrorfuel", chance: 0.5 },
+      { item: "nightmarefuel", chance: 1 },
+      { item: "nightmarefuel", chance: 0.67 },
+      { item: "chesspiece_rockyboss_shadow_sketch", chance: 1 },
+    ],
+  },
+  {
+    id: "worm_boss_shadow",
+    name: "Blighted Great Depths Worm",
+    nameKo: "먹빛 거대 동굴지렁이",
+    categories: ["story", "underground", "raid"],
+    image: "worm_boss_shadow.png",
+    loot: [
+      { item: "atrium_ritual_organ_worm", chance: 1 },
+      { item: "horrorfuel", chance: 1, count: 2 },
+      { item: "horrorfuel", chance: 0.67 },
+      { item: "nightmarefuel", chance: 1 },
+      { item: "nightmarefuel", chance: 0.33 },
+      { item: "nightmarefuel", chance: 0.33 },
+      { item: "fused_shadeling_bomb", chance: 1 },
+      { item: "chesspiece_wormboss_shadow_sketch", chance: 1 },
+    ],
+  },
 ];
 
 /** Korean names for loot items (from ko.po) */
@@ -688,6 +800,10 @@ export const lootNameKo: Record<string, string> = {
   rocks: "돌", boat_bumper_crabking_kit: "대게왕 범퍼 키트", barnacle: "거북순", messagebottle: "편지가 든 병",
   singingshell_octave3: "바리톤 소리고둥", singingshell_octave4: "알토 소리고둥", singingshell_octave5: "소프라노 소리고둥",
   ice: "얼음", lunar_seed: "천상의 보석",
+  // Cursed Confrontation Part 2 (#138)
+  dreadstone: "공포석", voidcloth: "어둠의 넝마", flint: "부싯돌", nitre: "초석",
+  armor_rocky: "우락부락 껍데기", bat_bosscorpsehat: "박쥐 모자", fused_shadeling_bomb: "공포진드기",
+  atrium_ritual_organ_bat: "먹빛 목울대", atrium_ritual_organ_rocky: "먹빛 집게발", atrium_ritual_organ_worm: "먹빛 창자",
 };
 
 /** Resolve image path for a loot item */

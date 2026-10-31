@@ -25,6 +25,16 @@ KOPO_SRC="${GAME_BASE}/workshop/content/322330/2391246365/scripts/languages/ko.p
 
 FORCE="${1:-}"
 
+# ─── 0. Preflight: fail before touching anything ───────────────────────────
+# extract-skin-icons(7단계)가 Pillow를 요구한다. 거기서 죽으면 앞 단계 산출물은
+# 남고 맨 끝의 game-version.ts 갱신만 빠지는 어정쩡한 상태가 된다 (#138,
+# docs/mistakes.md). 시작 전에 확인해서 아무것도 바꾸기 전에 멈춘다.
+if ! python3 -c 'import PIL' 2>/dev/null; then
+  echo "ERROR: python3 ($(command -v python3)) has no Pillow — extract-skin-icons would abort mid-sync." >&2
+  echo "       pip3 install Pillow, or put a venv with Pillow first on PATH, then re-run." >&2
+  exit 1
+fi
+
 # ─── 1. Read Steam manifest ────────────────────────────────────────────────
 if [[ ! -f "$MANIFEST" ]]; then
   echo "ERROR: Steam manifest not found at $MANIFEST" >&2
