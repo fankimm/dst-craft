@@ -1,9 +1,18 @@
 # CLAUDE.md
 
 ## Communication Rules
-- 유저가 모호하게 요청하면 바로 작업하지 말고, 용어집(docs/terminology.md)의 용어로 확인 질문을 한 뒤 진행할 것
+- 유저가 모호하게 요청하면 바로 작업하지 말고, 용어집(docs/terminology.md)의 용어로 확인 질문을 한 뒤 진행할 것 (사용자와 대화 중일 때. 예약 실행 등 무인 회차에서는 용어집 기준으로 스스로 해석해 진행한다)
 - 용어집에 없는 새 UI 요소나 개념이 등장하면 용어집에 추가 제안할 것
 - 작업 중 발견한 프로젝트 구조, 배포 방식, 기술 스택 등 중요한 정보는 이 CLAUDE.md에 자동으로 추가/갱신할 것
+
+## Autopilot (완전 위임 운영, 2026-11-07~)
+- 사용자가 이 프로젝트의 운영을 Claude에게 **완전 위임**했다 (#140). 범위·매일 사이클·되돌리기는 **`docs/autopilot.md`** 가 단일 기준이다 — 작업 전에 읽을 것
+- **묻지 않고 한다**: 코드 변경의 프로덕션 배포(`/task`→`/beta`→`/release`), 피드백 답변 등록, 이슈·백로그 정리. 이 문서의 다른 절에 "사용자에게 확인/보고 후"라고 적힌 단계는, 아래 "사용자 몫"이 아닌 한 Claude가 판단으로 대신한다
+- **사용자 몫으로 남는다**: 돈·계약·계정 콘솔(광고 포함), 시크릿, 되돌릴 수 없는 삭제·히스토리 재작성, dstcraft 밖 맥미니 서비스. 상세는 `docs/autopilot.md` 1장
+- **프로덕션에 내보낸 것은 전부 `docs/autopilot-ledger.md`에 적는다** (릴리즈 전에, 그 feat 브랜치에서). 장부가 롤백의 근거다
+- 복귀 기준점: 태그 `pre-autopilot-2026-11-07` + 맥미니 `~/Backups/dstcraft/pinned/pre-autopilot-2026-11-07.db.gz` — **지우지 말 것**
+- "자동 운영 전으로 돌려줘" 요청을 받으면 `docs/autopilot.md` 4.3절대로 — 통째 되감기가 아니라 장부를 보고 골라서 revert
+- 매일 실행은 맥북 Claude 앱의 예약 작업 `dstcraft-autopilot-daily`
 
 ## Code Quality Rules
 - **한 탭에 요청된 기능/변경은 나머지 탭(제작/요리/보스)에도 자동 적용할 것** — 요리솥 탭은 구조가 다르므로 예외이나, 적용 가능하다고 판단되면 함께 적용
@@ -121,30 +130,33 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 
 **사용자에게 토큰을 받지 않는다.** 맥미니 안에서 `.env`의 `JWT_SECRET`으로 단기(10분) 관리자 토큰을 만들어 로컬 API로만 호출한다 — 시크릿도 토큰도 서버 밖으로 나가지 않는다.
 
+**등록 경로는 `scripts/feedback-reply.sh`** (#140) — 맥미니 self-hosted 러너의 `feedback-reply` 워크플로우를 불러 답변과 번역을 한 번에 저장한다. ssh가 필요 없어 맥북이 집 밖이어도 된다. 러너가 실행하는 스크립트는 맥미니의 **main 클론**이므로, `reply-as-claude.ts`를 고쳤다면 main 머지 뒤에 반영된다.
+
 1. **답변할 피드백 id 확인**
    ```bash
    curl -s https://www.dstcraft.com/api/feedback/public | jq '.items[] | {id, message, messageLang, reply, replyAuthor, replyTranslated}'
    ```
 
-2. **답변 문구를 사용자에게 확인받는다** — 공개 게시판에 그대로 노출되므로 예외 없음
+2. **답변 문구를 정한다** — 자동 운영 위임(2026-11-07, #140) 이후로는 사용자 확인 없이 등록한다. 공개 게시판에 그대로 노출되므로 `docs/autopilot.md` 3장 "피드백 답변 원칙"을 지킬 것 (프로덕션 확인 뒤에만 "반영했어요", 약속·날짜 금지, 내부 정보 금지). 위임이 종료되면 이 단계는 "사용자에게 확인받는다 — 예외 없음"으로 되돌아간다
    - **답변은 피드백 원문 언어로만 쓴다.** 한국어 피드백엔 한국어, 영어 피드백엔 영어, 그 외 언어(포르투갈어 등)도 그 언어로. **한 답변에 두 언어를 병기하지 않는다** — 보드는 `pickDisplay`가 사용자 로캘에 맞춰 원문/번역 중 하나만 보여주는 구조라, 병기하면 모든 사용자가 두 언어를 다 보게 된다 (#106). 반대 언어는 4번의 번역 필드로 따로 넣는다
 
-3. **등록** — 맥미니에서 `bun-api/scripts/reply-as-claude.ts` 실행 (`replyAuthor=claude` 고정):
+3. **등록 + 번역** — 한 번에:
    ```bash
-   ssh fankimm@100.85.118.4 '~/.bun/bin/bun run ~/works/dst-craft/bun-api/scripts/reply-as-claude.ts "<피드백 id>" "<답변 본문>" done'
+   scripts/feedback-reply.sh "<피드백 id>" done ko "<답변 본문>" "<반대 언어 번역>"
    ```
-   - 3번째 인자는 status — `new` / `done` / `hold` / `rejected` (생략 시 `done`)
-   - 답변은 500자에서 잘림
+   - 인자: `<id> <status> <답변 언어> <답변> <답변 번역> [<피드백 언어> <피드백 번역>]`. status는 `new` / `done` / `hold` / `rejected`
+   - 그 피드백의 메시지가 아직 미번역이면(1번 출력에서 `messageLang: null`) 뒤의 두 인자도 준다. 이미 번역돼 있으면 건너뛴다
+   - 답변은 500자에서 잘림 (스크립트가 미리 막는다)
+   - **원문이 ko/en이 아닐 때(pt 등)** — 답변은 그대로 원문 언어로 쓰고, 번역 값을 문자열 대신 `'{"ko":"…","en":"…"}'` JSON으로 준다. DB 칸은 하나라 JSON 맵으로 저장되고 `pickDisplay`가 사용자 로캘 키를 고른다 (#123)
+   - **답변을 고치면 옛 번역은 자동으로 지워진다** — 새 번역을 같이 주지 않으면 번역 없음 상태가 되니 항상 같이 줄 것
+   - 출력의 `이전 상태` 줄은 릴리즈에 묶인 답변이면 `docs/autopilot-ledger.md`에 적는다 (롤백 때 그 상태로 돌린다)
    - 공개 목록 캐시가 60초라 사이트 반영에 최대 1분
 
-4. **번역 백필** — 등록 스크립트는 `reply`만 쓰고 번역 필드(`replyLang`/`replyTranslated`)는 채우지 않는다. `bun-api/scripts/translate-existing-feedback.ts`의 `TRANSLATIONS` 끝에 항목을 추가한다 — `replyLang`은 답변 원문 언어, `replyTranslated`는 반대 언어 번역. 그 피드백의 메시지가 아직 미번역이면(1번 출력에서 `messageLang: null`) `messageLang`/`messageTranslated`도 같은 항목에 채운다. `MODEL` 상수는 이번 번역을 쓴 모델로 갱신한다(기존 row는 덮어쓰지 않아 안전). 그리고 맥미니에서 실행:
+4. **러너가 안 될 때의 대안** — 맥미니에 ssh로 들어가 같은 스크립트를 직접 실행 (집 랜 `192.168.0.61` 또는 Tailscale `100.85.118.4`):
    ```bash
-   scp bun-api/scripts/translate-existing-feedback.ts fankimm@100.85.118.4:/tmp/ && ssh fankimm@100.85.118.4 '~/.bun/bin/bun run /tmp/translate-existing-feedback.ts'
+   ssh fankimm@192.168.0.61 '~/.bun/bin/bun run ~/works/dst-craft/bun-api/scripts/reply-as-claude.ts "<id>" "<답변>" done --reply-lang=ko --reply-translated="<번역>"'
    ```
-   - 맥미니 클론은 main이라 feat 브랜치의 수정본은 이렇게 scp로 넘겨 돌린다 (스크립트는 `bun:sqlite`만 써서 단독 실행 가능)
-   - 이미 번역된 row는 `*_translated_at IS NULL` 조건으로 건너뛰므로 여러 번 돌려도 안전
-   - **원문이 ko/en이 아닐 때(pt 등)** — 답변은 그대로 원문 언어로 쓰고, `messageLang`/`replyLang`에 그 언어 코드를 넣은 뒤 번역 값을 문자열 대신 `{ ko: "…", en: "…" }` 두 벌로 준다. DB 칸은 하나라 JSON 맵으로 저장되고 `pickDisplay`가 사용자 로캘 키를 고른다 (#123). 새 언어면 스크립트의 `Lang` 타입에 코드를 추가할 것. **이 프론트 변경이 배포되기 전에 맵을 넣으면 사용자에게 JSON 원문이 그대로 보인다** — 순서 주의
-   - **답변을 나중에 고치면 번역이 자동으로 지워지지 않는다** (PATCH는 `reply`/`reply_author`만 갱신). 답변을 바꿨으면 DB에서 그 row의 `reply_translated`/`reply_translated_at`을 NULL로 되돌린 뒤 다시 백필
+   - 여러 건의 번역만 따로 채워야 하면 예전 방식(`bun-api/scripts/translate-existing-feedback.ts`의 `TRANSLATIONS`에 항목 추가 → scp → 맥미니에서 실행)도 그대로 동작한다. 이미 번역된 row는 건너뛴다
 
 5. **확인** — 1번 curl을 다시 돌려 `replyAuthor: "claude"`와 `replyTranslated`가 채워졌는지 본다 (공개 목록 캐시 60초)
 
@@ -211,6 +223,8 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `.github/workflows/watchdog.yml` — 헬스 복구 담당 (3/3 실패 → 60초 재확인 후에도 죽어 있으면 Telegram 긴급 + DNS failover). schedule은 백업 감지. DNS 복귀는 Worker가 자동으로 누르고, 즉시 되돌리려면 수동: `gh workflow run watchdog.yml -f failback=true`
 - `worker/index.ts` — Cloudflare Worker (레거시, 일부 analytics)
 - `worker/wrangler.toml` — Worker 설정 (레거시)
+- `docs/autopilot.md` — 자동 운영 규칙 (권한 범위, 매일 사이클, 피드백 답변 원칙, 되돌리기). `docs/autopilot-ledger.md` — 자동 운영이 프로덕션에 내보낸 것의 장부
+- `scripts/feedback-reply.sh` + `.github/workflows/feedback-reply.yml` — 맥미니 러너 경유 피드백 답변·번역 등록 (#140)
 - `docs/terminology.md` — UI 용어집
 - `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
 - `docs/scrapbook-migration.md` — 스크랩북 데이터 마이그레이션 설계 (히스토리)

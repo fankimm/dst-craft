@@ -1,0 +1,80 @@
+name: feedback reply (Mac mini)
+
+# 피드백에 Claude 명의 답변 + 번역을 등록한다 (#140).
+#
+# 왜 워크플로우인가: 답변 등록은 맥미니 안에서만 된다(.env의 JWT_SECRET, localhost:3001, SQLite).
+# 예전엔 ssh(Tailscale/집 랜)로 들어갔는데, 맥북이 집 밖이고 Tailscale이 꺼져 있으면 막혔다.
+# 맥미니의 self-hosted 러너는 항상 GitHub에 붙어 있으므로 이 경로는 어디서든 된다.
+#
+# 호출은 직접 하지 말고 `scripts/feedback-reply.sh`를 쓸 것 (실행 완료까지 기다리고 결과를 보여 준다).
+#
+# 실행되는 스크립트는 맥미니의 main 클론(~/works/dst-craft)에 있는 것이다 —
+# feat 브랜치에서 reply-as-claude.ts를 고쳤다면 main에 머지된 뒤에야 여기 반영된다.
+#
+# 입력값은 전부 env로 넘긴다. `${{ inputs.* }}`를 셸 본문에 직접 끼워 넣으면 답변 문구의
+# 따옴표·$()가 명령으로 실행된다.
+
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "피드백 id"
+        required: true
+        type: string
+      reply:
+        description: "답변 본문 (피드백 원문 언어, 500자 이내)"
+        required: true
+        type: string
+      status:
+        description: "상태"
+        type: choice
+        options: [done, hold, rejected, new]
+        default: done
+      reply_lang:
+        description: "답변 원문 언어 (ko/en/pt…)"
+        required: false
+        type: string
+      reply_translated:
+        description: "답변 번역 (원문이 ko/en이 아니면 {\"ko\":…,\"en\":…} JSON)"
+        required: false
+        type: string
+      message_lang:
+        description: "피드백 원문 언어 (미번역일 때만 저장)"
+        required: false
+        type: string
+      message_translated:
+        description: "피드백 번역"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: feedback-reply
+  cancel-in-progress: false
+
+jobs:
+  reply:
+    runs-on: [self-hosted, macOS]
+    timeout-minutes: 5
+    env:
+      WORKS_REPO: /Users/fankimm/works/dst-craft
+      FB_ID: ${{ inputs.id }}
+      FB_REPLY: ${{ inputs.reply }}
+      FB_STATUS: ${{ inputs.status }}
+      FB_REPLY_LANG: ${{ inputs.reply_lang }}
+      FB_REPLY_TRANSLATED: ${{ inputs.reply_translated }}
+      FB_MESSAGE_LANG: ${{ inputs.message_lang }}
+      FB_MESSAGE_TRANSLATED: ${{ inputs.message_translated }}
+    steps:
+      - name: Register reply
+        run: |
+          set -euo pipefail
+          # 빈 옵션도 그대로 넘긴다 — 스크립트가 빈 값을 "안 줌"으로 처리한다.
+          "$HOME/.bun/bin/bun" run "$WORKS_REPO/bun-api/scripts/reply-as-claude.ts" \
+            "$FB_ID" "$FB_REPLY" "$FB_STATUS" \
+            "--reply-lang=$FB_REPLY_LANG" \
+            "--reply-translated=$FB_REPLY_TRANSLATED" \
+            "--message-lang=$FB_MESSAGE_LANG" \
+            "--message-translated=$FB_MESSAGE_TRANSLATED"
