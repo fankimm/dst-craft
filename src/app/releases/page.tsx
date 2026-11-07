@@ -15,6 +15,32 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.42.2",
+    date: "2026-11-07",
+    dev: [
+      "fix(cookpot): 요리솥 트레이너 제보 4건 (#141, 피드백 `1793294780693-wxp1kf`)",
+      "우유 짜는 모자(`batnosehat`)를 '먹을 수 없음'이 아니라 착용 효과로 채점 — hats.lua `batnose_equip`의 `hungerregenbuff`: 5초마다 `HUNGERREGEN_TICK_VALUE`(3.90625) × 0.5일(240초) = 허기 187.5, dapperness −`DAPPERNESS_TINY` × 240초 ≈ 정신력 −5.3. `recipeStats`가 `WEARABLE_STATS`를 보므로 최적해·월리 기억 배율에도 같이 적용. 위그프리드만 못 쓰는 건 트레이너가 일반 플레이어 기준이라 무시",
+      "먹기·굽기 버튼은 평소 아이콘만, 첫 탭에 '먹기?'/'굽기?'로 펼쳐지고 그동안 반대쪽 버튼은 숨김 — 64px 칸에서 두 텍스트 버튼이 겹치던 문제",
+      "재료 칸 순서를 라운드 전체 재료로 미리 고정(`formOrder`: 지급 순서, 구운 형태는 날것 바로 오른쪽) — 한 칸을 먹거나 구우면 나머지 칸이 뒤로 밀리던 문제",
+      "`cookpot-ingredients.ts` `missingCookedImages`에서 `tomato_cooked` 제거 — `public/images/game-items/tomato_cooked.png`가 이미 있는데 날것 이미지를 쓰고 있었다 (요리솥 시뮬레이터·트레이너 공통)",
+      "docs(autopilot): '검토 목록에 넣었어요' 답변의 status를 `hold`가 아니라 `new`로 정정",
+    ],
+    changes: {
+      ko: [
+        "요리솥 트레이너: 우유 짜는 모자를 만들면 '먹을 수 없음'이 아니라 쓰고 있는 동안의 효과(허기 +187.5, 정신력 −5.3)로 계산합니다. 최적 플랜에도 반영됩니다.",
+        "요리솥 트레이너: 먹기·굽기 버튼이 겹치지 않게 평소엔 아이콘만 보이고, 한 번 누르면 '먹기?'/'굽기?'로 확인합니다.",
+        "요리솥 트레이너: 재료 칸의 순서가 라운드 내내 고정됩니다. 먹거나 구워도 나머지 칸이 밀리지 않고, 구운 재료는 날것 바로 오른쪽에 생깁니다.",
+        "구운 토마토란에 전용 이미지를 표시합니다 (요리솥 시뮬레이터·트레이너).",
+      ],
+      en: [
+        "Crock Pot Trainer: the Milkmade Hat now counts its worn effect (+187.5 hunger, −5.3 sanity over its lifetime) instead of showing as inedible, and the optimal plan uses it too.",
+        "Crock Pot Trainer: the Eat and Roast buttons no longer overlap — they show as icons and expand to \"Eat?\" / \"Roast?\" on the first tap.",
+        "Crock Pot Trainer: ingredient slots keep their order for the whole round. Eating or roasting no longer shifts the rest, and roasted items appear right next to the raw ones.",
+        "Roasted Toma Root now has its own sprite (Crock Pot simulator and trainer).",
+      ],
+    },
+  },
+  {
     version: "0.42.1",
     date: "2026-10-31",
     dev: [
