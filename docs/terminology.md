@@ -40,6 +40,9 @@
 | **기본 조합** | `src/lib/farming-combos.ts` | 양분 프로필 3칸 이하이면서 더 작은 균형 조합으로 쪼개지지 않는 조합. 봄 12 · 여름 4 · 가을 10 · 겨울 2 |
 | **게임 수치 / 계산값** | `farming/ValueBadge.tsx` | 농사 화면의 수치 출처 표시. 게임 파일에서 그대로 온 값 vs dstcraft가 계산한 값 |
 | **스트레스 7항목** | `farming/farming-text.ts` | 영양분·수분·분위기 파괴자·제철·가족·과밀·행복. 게임에 공식 라벨이 없어 나무위키식 이름을 쓴다 |
+| **은둔자 거래 카드** | `quests/HermitInfo.tsx` | 퀘스트 탭 은둔자 카드 아래의 참고표 카드. 보기 칩 3개(병 교환 / 찻집 / 집 꾸미기) (#142) |
+| **병 교환** | `data/hermit-trades.ts` | 진주에게 빈 병을 주고 받는 품목(게임 용어 `STRINGS.UI.CRAFTING_STATION_FILTERS.HERMITCRABSHOP` = "병 교환"). 친구 Lv1·3·6·8·9·10에 품목이 늘어난다 |
+| **꾸미기 점수** | `data/hermit-trades.ts` | 진주의 섬 안 물건으로 10초마다 다시 계산되는 0~100점(`pearldecorationscore`). 90 이상 "만족". Lv10이면 점수로 가로등·찻집·온천·대형 건조대가 열린다 |
 | **콘솔 (탭)** | `ConsoleApp.tsx` | 자주 쓰는 DST 콘솔 명령어 모음 탭. 아이템 소환 빌더 + 카테고리별 명령어 카드 |
 | **아이템 소환 빌더** | `ConsoleApp.tsx` | 아이템 검색+선택+갯수 입력 → c_give/c_spawn 명령어 자동 생성 |
 | **명령어 카드** | `ConsoleApp.tsx` | 개별 콘솔 명령어 표시 카드. 이름+설명+파라미터+복사 버튼 |
