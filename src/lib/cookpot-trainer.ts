@@ -315,8 +315,31 @@ export function isPlayerEdible(r: CookingRecipe): boolean {
   return PLAYER_EDIBLE.has(r.foodType);
 }
 
-/** 플레이어가 먹었을 때 수치 — 못 먹는 요리는 0 */
+/**
+ * 요리솥에서 나오는 착용품 — 먹는 게 아니라 쓰고 있는 동안 수치를 준다 (#141).
+ * 우유 짜는 모자 (hats.lua `batnose_equip`): 쓰면 `hungerregenbuff`가 붙어 `HUNGERREGEN_TICK_RATE`(5초)마다
+ * `HUNGERREGEN_TICK_VALUE` = 5 × (calories_per_day 75 × 2.5) / (0.5 × total_day_time 480) = 3.90625 허기를 주고,
+ * 모자는 쓰는 동안만 `BATNOSEHAT_PERISHTIME`(0.5일 = 240초)으로 삭는다 → 48틱 × 3.90625 = 187.5 (= 2.5일치 허기).
+ * 정신력은 dapperness −DAPPERNESS_TINY = −100/(day_time 300 × 15) /초 × 240초 ≈ −5.33. 체력 변화 없음.
+ * 위그프리드만 못 쓴다(`usesvegetarianequipment` 태그 제거) — 트레이너는 일반 플레이어 기준.
+ * 월리의 기억(foodmemory)도 `hungerregenbuff` 이름으로 똑같이 적용돼 반복 착용 배율은 요리와 같다.
+ */
+const WEARABLE_STATS: Record<string, Stats> = {
+  batnosehat: { hunger: 75 * 2.5, health: 0, sanity: -(100 / (300 * 15)) * 240 },
+};
+
+export function isWearable(r: CookingRecipe): boolean {
+  return r.id in WEARABLE_STATS;
+}
+
+/** 먹거나(음식) 써서(착용품) 수치를 얻을 수 있는 요리 */
+export function isPlayerUsable(r: CookingRecipe): boolean {
+  return isPlayerEdible(r) || isWearable(r);
+}
+
+/** 플레이어가 먹었을 때(착용품은 다 쓸 때까지 쓰고 있을 때) 수치 — 못 쓰는 요리는 0 */
 export function recipeStats(r: CookingRecipe): Stats {
+  if (isWearable(r)) return WEARABLE_STATS[r.id];
   if (!isPlayerEdible(r)) return ZERO;
   return { hunger: r.hunger, health: r.health, sanity: r.sanity };
 }
