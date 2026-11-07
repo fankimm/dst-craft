@@ -1167,3 +1167,7 @@ Monumetric 1만+셋업비 — 전부 문턱이 있고 **Ezoic만 무제한이다
 ### prefab id를 영문 이름으로 짐작 — `shrouden`을 Shrouded Queen으로 (2026-10-30, #138)
 - **문제**: 새 보스 prefab 목록에서 `shrouden.lua`를 보고 Shrouded Queen이라 가정하고 전리품을 읽기 시작했다. 실제는 `charlie_boss` = Shrouded Queen(장막의 여왕), `shrouden` = Umbral Abomination(본영의 흉물). ko.po의 `STRINGS.NAMES.*`를 먼저 뽑아서 알아챘다
 - **교훈**: 이름이 비슷한 prefab일수록 `STRINGS.NAMES.<ID>`로 먼저 확정한 뒤 소스를 읽는다. 특히 스토리 보스는 코드명(캐릭터 이름·가칭)으로 지어진 경우가 많다
+
+### 영문 아이템 이름을 기억으로 적을 뻔함 — 16개 중 8개가 틀렸다 (2026-11-08, #142)
+- **문제**: 은둔자 병 교환 품목의 `nameEn`을 "Crow Bobber", "Dusk Lure"처럼 기억으로 적었다. 커밋 전에 strings.lua와 대조하니 찌 6종은 전부 "… Quill Float", 루어 2종은 "Stupefying Lure"·"Heavy Weighted Lure"로 달랐다 — 절반이 오답
+- **교훈**: ko.po를 보는 것과 똑같이 **영문도 strings.lua `STRINGS.NAMES.<ID>`에서 뽑아 적는다**. 한 번의 grep 루프면 끝나는 일이고, 기억으로 적은 영문명은 검색 유입(SEO 페이지 h2·FAQ)에 그대로 노출된다. "ko는 ko.po에서" 규칙은 en에도 같은 무게로 적용할 것
