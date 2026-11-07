@@ -167,7 +167,7 @@ const driedNameKoMap: Record<string, string> = {
 
 // Images that do NOT exist for cooked variants — use base image
 const missingCookedImages = new Set([
-  "tomato_cooked", "pondeel_cooked", "cutlichen_cooked",
+  "pondeel_cooked", "cutlichen_cooked",
 ]);
 
 function generateVariants(bases: CookpotIngredient[]): CookpotIngredient[] {

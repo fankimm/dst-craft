@@ -32,6 +32,12 @@
 
 ## 기록
 
+### 2026-11-07 · #141 · v0.42.2 · bugfix
+요리솥 트레이너 제보 4건 — 우유 짜는 모자 착용 효과 채점, 먹기·굽기 버튼 겹침, 재료 칸 순서 고정, 구운 토마토란 이미지. 메타: `docs/autopilot.md` 3장 "검토 목록" status `hold`→`new` 정정.
+- 피드백: `1793294780693-wxp1kf` — 이전(status=new, 답변 "Thanks for the detailed report — very helpful! All four points are noted (Milkmade Hat, the overlapping Eat/Roast buttons, the ingredient order jumping around, and the missing Roasted Toma Root sprite) and they're on the trainer fix list. I'll update this reply once the fixes are live.") → 등록(status=done) "All four are live in v0.42.2 — thanks again for the detailed report! The Milkmade Hat now counts its worn effect (+187.5 hunger, −5.3 sanity over its lifetime) instead of showing as inedible, and the optimal plan uses it too. Eat and Roast are icon-only until the first tap, which expands to \"Eat?\" / \"Roast?\" so they no longer overlap. Ingredient slots keep their order for the whole round, with roasted items right next to the raw ones. And Roasted Toma Root has its own sprite now."
+- git 밖 변경: 없음
+- DB 변경: 없음
+
 ### 2026-11-07 · #140 · v— · meta
 자동 운영 기반 — 운영 규칙(`docs/autopilot.md`)·이 장부·CLAUDE.md 위임 규칙, 맥미니 러너 경유 피드백 답변(`feedback-reply.yml`, `scripts/feedback-reply.sh`), `reply-as-claude.ts`에 번역 동시 저장.
 - 피드백: 없음

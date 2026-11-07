@@ -35,7 +35,8 @@ import {
   scoreOf,
   totalsOf,
   warlyMultiplier,
-  isPlayerEdible,
+  isPlayerUsable,
+  isWearable,
   type IngredientCount,
   type ItemForm,
   type OptimalPlan,
@@ -453,7 +454,8 @@ function DishCard({
   onViewRecipe?: (id: string) => void;
 }) {
   const main = recipes[0];
-  const inedible = !recipes.some(isPlayerEdible);
+  const inedible = !recipes.some(isPlayerUsable);
+  const worn = recipes.some(isWearable);
   const canNav = !!onViewRecipe && recipes.length === 1 && main.id !== "wetgoop";
   const name = recipes.length === 1 ? foodName(main, locale) : recipes.map((r) => foodName(r, locale)).join(" / ");
   return (
@@ -481,6 +483,7 @@ function DishCard({
             <span className="inline-flex items-center gap-0.5 text-[11px] text-amber-600 dark:text-amber-400"><Shuffle className="size-3" />{tt(recipes.length > 1 ? "expected" : "randomPick", locale)}</span>
           )}
           {inedible && <span className="text-[11px] text-red-500 font-semibold">{tt("inedible", locale)}</span>}
+          {worn && <span className="text-[11px] text-muted-foreground">{tt("worn", locale)}</span>}
           {mult !== 1 && <span className="text-[11px] text-muted-foreground tabular-nums">×{mult}</span>}
         </div>
       </div>
@@ -623,6 +626,20 @@ function PlayScreen({
   const urgent = timeLeft !== null && timeLeft <= 10;
   const timeFrac = timeLeft === null ? 1 : Math.max(0, Math.min(1, timeLeft / limit));
 
+  // 칸 순서는 라운드 내내 고정 (#141): 지급 순서대로, 구운 형태는 날것 바로 오른쪽. 먹거나 구워도 나머지 칸이
+  // 밀리지 않아 같은 자리에서 연속으로 누를 수 있다. 라운드 전체 재료로 미리 계산해 남은 것과 무관하다
+  const formOrder = useMemo(() => {
+    const firstUid = new Map<string, number>();
+    const order = new Map<string, number>();
+    for (const it of round.items) {
+      const base = firstUid.get(it.ingredient.id) ?? it.uid;
+      firstUid.set(it.ingredient.id, base);
+      order.set(it.ingredient.id, Math.min(order.get(it.ingredient.id) ?? Infinity, base * 2));
+      if (it.roasted) order.set(it.roasted.ingredient.id, Math.min(order.get(it.roasted.ingredient.id) ?? Infinity, base * 2 + 1));
+    }
+    return order;
+  }, [round]);
+
   // 같은 재료(같은 형태)는 한 칸에 ×N (인벤토리처럼) — 구운 고기와 받은 구운 고기는 같은 칸
   const stacks = useMemo(() => {
     const m = new Map<string, Stack>();
@@ -632,8 +649,8 @@ function PlayScreen({
       if (s) s.uids.push(it.uid);
       else m.set(form.ingredient.id, { ingredient: form.ingredient, uids: [it.uid], raw: form.raw, canRoast: !!it.roasted && !play.roasted.includes(it.uid) });
     }
-    return [...m.values()];
-  }, [remaining, play]);
+    return [...m.values()].sort((a, b) => (formOrder.get(a.ingredient.id) ?? 0) - (formOrder.get(b.ingredient.id) ?? 0));
+  }, [remaining, play, formOrder]);
 
   // 생식·굽기는 되돌릴 수 없어서 두 번 탭 — 첫 탭은 확인 상태(2초)
   const [pending, setPending] = useState<{ kind: "eat" | "roast"; id: string } | null>(null);
@@ -795,38 +812,41 @@ function PlayScreen({
                             <span className="absolute -bottom-1.5 -right-1.5 min-w-6 h-6 px-1.5 rounded-full bg-surface-hover border border-ring text-foreground/80 text-xs font-bold tabular-nums flex items-center justify-center">×{s.uids.length}</span>
                           )}
                         </button>
-                        {!warly && s.raw && (
+                        {/* 먹기·굽기는 평소엔 아이콘만(겹침 방지, #141), 첫 탭에 "먹기?"/"굽기?"로 펼쳐지고 그동안 반대쪽은 숨긴다 */}
+                        {!warly && s.raw && !confirmingRoast && (
                           <button
                             type="button"
                             onClick={() => handleTap("eat", s)}
                             disabled={cooking}
                             className={cn(
-                              "absolute -top-1.5 -left-1.5 h-6 rounded-full text-[10px] font-bold flex items-center gap-0.5 px-1.5 shadow border transition-colors",
+                              "absolute -top-1.5 -left-1.5 h-6 min-w-6 rounded-full text-[10px] font-bold flex items-center justify-center gap-0.5 shadow border transition-colors",
                               confirming
-                                ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40 animate-trainer-pop"
+                                ? "z-10 px-1.5 bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/40 animate-trainer-pop"
                                 : "bg-background text-muted-foreground border-border hover:text-foreground",
                             )}
                             title={tt("eatRaw", locale)}
+                            aria-label={tt("eatRaw", locale)}
                           >
                             <Utensils className="size-3" />
-                            {confirming ? tt("eatConfirmShort", locale) : tt("eatShort", locale)}
+                            {confirming && tt("eatConfirmShort", locale)}
                           </button>
                         )}
-                        {s.canRoast && (
+                        {s.canRoast && !confirming && (
                           <button
                             type="button"
                             onClick={() => handleTap("roast", s)}
                             disabled={cooking}
                             className={cn(
-                              "absolute -top-1.5 -right-1.5 h-6 rounded-full text-[10px] font-bold flex items-center gap-0.5 px-1.5 shadow border transition-colors",
+                              "absolute -top-1.5 -right-1.5 h-6 min-w-6 rounded-full text-[10px] font-bold flex items-center justify-center gap-0.5 shadow border transition-colors",
                               confirmingRoast
-                                ? "bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-500/40 animate-trainer-pop"
+                                ? "z-10 px-1.5 bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-500/40 animate-trainer-pop"
                                 : "bg-background text-muted-foreground border-border hover:text-foreground",
                             )}
                             title={tt("roastHint", locale)}
+                            aria-label={tt("roastShort", locale)}
                           >
                             <Flame className="size-3" />
-                            {confirmingRoast ? tt("eatConfirmShort", locale) : tt("roastShort", locale)}
+                            {confirmingRoast && tt("roastConfirmShort", locale)}
                           </button>
                         )}
                       </div>
@@ -880,7 +900,7 @@ function RevealView({ action, locale, score }: { action: TrainerAction; locale: 
   const isCook = action.type === "cook";
   const img = isCook ? `/images/game-items/${action.recipe.id}.png` : `/images/game-items/${ingredientImage(action.ingredient)}`;
   const name = isCook ? foodName(action.recipe, locale) : ingredientName(action.ingredient, locale);
-  const inedible = isCook && !isPlayerEdible(action.recipe);
+  const inedible = isCook && !isPlayerUsable(action.recipe);
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full">
       <div className="absolute -top-1 inset-x-0 flex justify-center pointer-events-none">
