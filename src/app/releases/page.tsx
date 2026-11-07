@@ -15,6 +15,26 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.43.0",
+    date: "2026-11-08",
+    dev: [
+      "feat(quests): 게팍한 은둔자 거래 목록 + 집 꾸미기 점수표 (#142, 피드백 `1779535886458-v1mko8` `1779971540965-gv1yyh`)",
+      "`src/data/hermit-trades.ts` — 병 교환 19품목(recipes.lua 932-950, 해금 Lv은 hermitcrab.lua `friendlevel_N_reward`의 EnableShop 1/2/3/4 = Lv1/3/6/8 + Lv9·10 LearnItem, 겨울 장식은 집 수리 3단계+겨울 축제), 차 8종(hermitcrabtea_defs.lua TEA_DEFS·BUFF_DEFS, 레벨별 재료 수 recipes.lua 1503-1505, 레벨 기준 hermitcrab_teashop.lua 점수 50/75), 꾸미기 점수(components/pearldecorationscore.lua + tuning HERMITCRAB_DECOR_*), 점수 해금(hermithouse.lua UNLOCKABLE_RECIPES, shellweaver.lua 2단계 40/30, 온천 담그기 30→60초)",
+      "`quests/HermitInfo.tsx` — 퀘스트 탭 은둔자 카드 아래 접이식 카드(보기 칩: 병 교환/찻집/집 꾸미기). 표시 컴포넌트 3개는 `/quest/hermit` SEO 페이지(ko/en)에도 섹션으로 삽입, `seo-text.ts` 은둔자 FAQ 2개 추가",
+      "문구는 `quests/hermit-text.ts`(게임에 없는 말만), 이름은 ko.po/strings.lua. 영문 품목명은 기억이 아니라 strings.lua 대조로 확정(찌는 'Quill Float', 루어는 'Stupefying'/'Heavy Weighted')",
+    ],
+    changes: {
+      ko: [
+        "퀘스트 탭 은둔자 카드 아래에 '은둔자 거래 · 집 꾸미기' 카드가 생겼습니다. 병 교환: 친구 레벨별로 열리는 품목과 빈 병 가격. 찻집: 차 8종의 재료 수(점수별)와 마실 때 효과. 집 꾸미기: 항목별 점수·상한·감점과 점수로 열리는 가로등·찻집·온천·대형 건조대 조건.",
+        "은둔자 퀘스트 페이지(/quest/hermit)에도 같은 표가 들어갑니다.",
+      ],
+      en: [
+        "New 'Hermit Trades & Home Decor' card under the Hermit quest in the Quests tab. Bottle Exchange: what unlocks at each friendship level and its Empty Bottle price. Tea Shop: ingredient counts (by decor score) and effects of all 8 teas. Home Decor: per-item points, caps and penalties, plus the score thresholds for the Light Post, Tea Shop, Hot Spring and Large Drying Rack.",
+        "The same tables are on the Hermit quest page (/quest/hermit).",
+      ],
+    },
+  },
+  {
     version: "0.42.2",
     date: "2026-11-07",
     dev: [

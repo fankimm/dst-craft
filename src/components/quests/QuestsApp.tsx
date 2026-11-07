@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { RotateCcw, Check, ChevronDown, ChevronUp, Star, ExternalLink } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
 import { useQuestState } from "@/hooks/use-quest-state";
@@ -11,6 +11,8 @@ import { assetPath } from "@/lib/asset-path";
 import { TabScrollArea } from "@/components/ui/TabScrollArea";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { resolveIconPath } from "@/lib/icon-path";
+import { HermitInfoSection } from "./HermitInfo";
+import { hermitLang } from "./hermit-text";
 
 function stepTitle(step: QuestStep, locale: Locale): string {
   return locale === "ko" ? step.titleKo : step.titleEn;
@@ -70,14 +72,19 @@ export function QuestsApp({ onViewCraftingItem, onViewBoss }: { onViewCraftingIt
         <AdSlot variant="top" />
         <div className="max-w-3xl mx-auto px-3 py-3 space-y-3 w-full">
           {quests.map((quest) => (
-            <QuestSection
-              key={quest.id}
-              quest={quest}
-              locale={resolvedLocale}
-              state={state}
-              onViewCraftingItem={onViewCraftingItem}
-              onViewBoss={onViewBoss}
-            />
+            <Fragment key={quest.id}>
+              <QuestSection
+                quest={quest}
+                locale={resolvedLocale}
+                state={state}
+                onViewCraftingItem={onViewCraftingItem}
+                onViewBoss={onViewBoss}
+              />
+              {/* 은둔자 거래·찻집·집 꾸미기 (#142) — 체크리스트가 아니라 참고표라 별도 카드 */}
+              {quest.id === "hermit" && (
+                <HermitInfoSection lang={hermitLang(resolvedLocale)} onViewCraftingItem={onViewCraftingItem} />
+              )}
+            </Fragment>
           ))}
         </div>
       </TabScrollArea>

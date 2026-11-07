@@ -165,6 +165,10 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - 데이터: `src/data/quests/{hermit,celestial,fuelweaver}.ts` (인게임 + Challenge Board 모드 원천)
 - 훅: `useQuestState` — toggle / resetQuest / countChecked
 - 아이템 아이콘은 게임 내 이미지 사용 (lureplantbulb, moon_altar_*, atrium_key, thurible 등)
+- **은둔자 거래·집 꾸미기 카드** (`quests/HermitInfo.tsx`, #142) — 은둔자 퀘스트 카드 바로 아래, 체크리스트가 아닌 참고표라 별도 접이식 카드. 보기 칩 3개(병 교환 / 찻집 / 집 꾸미기)로 전환
+  - 병 교환: 친구 Lv별 그룹 → 행(아이콘 박스 + 이름 + `TagChip` 빈 병 ×N + 제작 탭 점프). 찻집: 차별 행(빈 병 ×1 + 말린 재료 "8 / 6 / 4" 칩 + 마실 때 수치 + 효과 한 줄). 집 꾸미기: 점수로 열리는 것 목록 + 항목별 점수표(`ValueBadge` "게임 수치")
+  - 데이터 `src/data/hermit-trades.ts`(소스 경로 주석 참조), 문구 `quests/hermit-text.ts`(게임에 없는 말만). 같은 표가 `/quest/hermit` SEO 페이지(`QuestPageContent`)에도 섹션 3개로 들어간다 — `HermitTrades`·`HermitTeas`·`HermitDecor`는 훅 없는 표시 컴포넌트라 서버 페이지에서 그대로 쓴다
+  - `IconBox`(40px, `ItemSlot`과 같은 규격, 라벨은 오른쪽 행에)는 이 파일 안에서만 쓴다 — 다른 곳에서도 필요해지면 `ui/`로 승격할 것
 
 ### 농사 탭 (FarmingApp) (#120)
 헤더의 보기 칩 3개로 화면을 바꾸는 단일 스크롤 탭. 상태는 전부 URL(`?tab=farming&view=&season=&with=&crop=`, `useFarmingState`).
