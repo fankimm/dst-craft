@@ -15,6 +15,18 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.43.1",
+    date: "2026-11-09",
+    dev: [
+      "scripts/extract-books.py 신규 — prefabs/books.lua의 read/peruse sanity와 reader 코드 경로를 assert로 고정해 src/data/book-sanity.ts 생성, sync-game-data.sh에 연결 (#143)",
+      "ItemStatsPanel에 BookSanityRow 추가 — 위커바텀 read, 맥스웰 read × MAXWELL_READING_SANITY_MULT(2.5), 워트 peruse",
+    ],
+    changes: {
+      ko: ["책 상세 화면에 위커바텀·맥스웰·워트가 읽을 때의 정신력 변화를 표시합니다"],
+      en: ["Book details now show the Sanity change when read by Wickerbottom, Maxwell, and Wurt"],
+    },
+  },
+  {
     version: "0.43.0",
     date: "2026-11-08",
     dev: [
