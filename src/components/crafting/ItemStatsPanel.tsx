@@ -5,6 +5,8 @@ import { itemName, materialName, lookupName } from "@/lib/i18n";
 import { getItemById, getMaterialById } from "@/lib/crafting-data";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
+import { characters } from "@/data/characters";
+import { bookSanity, MAXWELL_READING_SANITY_MULT } from "@/data/book-sanity";
 
 function resolveItemName(id: string, locale: string): string {
   const item = getItemById(id);
@@ -41,6 +43,41 @@ interface ItemStatsPanelProps {
   itemId: string;
   stats: ScrapbookStats;
   locale: string;
+}
+
+function formatSigned(value: number): string {
+  return value > 0 ? `+${value}` : String(value);
+}
+
+function BookSanityRow({ itemId, l }: { itemId: string; l: "ko" | "en" }) {
+  const book = bookSanity[itemId];
+  if (!book) return null;
+  const readers = [
+    { id: "wickerbottom", delta: book.read },
+    { id: "maxwell", delta: book.read * MAXWELL_READING_SANITY_MULT },
+    { id: "wurt", delta: book.peruse },
+  ];
+  return (
+    <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs">
+      <span className="text-muted-foreground">{l === "ko" ? "읽을 때 정신력" : "Sanity on read"}</span>
+      {readers.map(({ id, delta }) => {
+        const character = characters.find((c) => c.id === id);
+        if (!character) return null;
+        return (
+          <span key={id} className="inline-flex items-center gap-1">
+            <img
+              src={assetPath(`/images/category-icons/characters/${character.portrait}.webp`)}
+              alt=""
+              className="size-4 object-contain"
+              loading="lazy"
+            />
+            <span className="text-muted-foreground">{l === "ko" ? character.nameKo : character.name}</span>
+            <span className="font-semibold tabular-nums text-foreground">{formatSigned(delta)}</span>
+          </span>
+        );
+      })}
+    </div>
+  );
 }
 
 function StatRow({ label, value, sub }: { label: string; value: string; sub?: string }) {
@@ -147,6 +184,9 @@ export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
   // --- Sanity (dapperness) ---
   if (stats.dapperness && stats.dapperness !== 0) {
     rows.push(<StatRow key="dapper" label={l === "ko" ? "정신력" : "Sanity"} value={formatDapperness(stats.dapperness, l)} />);
+  }
+  if (bookSanity[itemId]) {
+    rows.push(<BookSanityRow key="book-sanity" itemId={itemId} l={l} />);
   }
 
   // --- Fuel duration ---

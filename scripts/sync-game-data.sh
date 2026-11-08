@@ -127,6 +127,10 @@ echo
 echo "═══ extract-farming ═══"
 python3 scripts/extract-farming.py
 
+echo ""
+echo "═══ extract-books ═══"
+python3 scripts/extract-books.py
+
 echo
 echo "═══ verify-skill-trees ═══"
 python3 scripts/verify-skill-trees.py || echo "(verify-skill-trees reported divergences — review above)"

@@ -290,6 +290,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **구조**: 4개 그룹 (전투/방어/유틸리티/특수) + 빈 그룹 자동 숨김
 - **v3 필드**: tags(TagChip), resistance, shadow_level, set_bonus(강조 카드), repair(아이템 이미지+이름), skill_tree(보라색 블록), immunities(에메랄드 뱃지), effects(불릿)
 - **v2 폴백**: v3 데이터 없을 시 기존 usage 텍스트 표시
+- **책**: `BookSanityRow` — 위커바텀·맥스웰·워트의 읽을 때 정신력 변화 (#143, `src/data/book-sanity.ts`)
 - **사용처**: ItemDetail
 
 ### SkillIcon (`src/components/ui/SkillIcon.tsx`)
