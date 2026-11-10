@@ -15,6 +15,18 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.44.0",
+    date: "2026-11-10",
+    dev: [
+      "scripts/extract-item-names.py 신규 — ko.po STRINGS.NAMES로 스크랩북 아이템 843개 이름(en/ko)과 STRINGS.SCRAPBOOK.SUBCATS 분류 이름을 src/data/item-names.ts로 생성. 겨울 장식품은 winter_ornaments.lua의 이름 override 추적, 누락 시 exit 1. sync-game-data.sh에 연결 (#148)",
+      "/items, /ko/items 아이템 도감(seo/ItemsCatalogContent) — 분류별 묶음, /item 페이지 있는 451개는 링크, 제작 불가 392개는 ItemStatsPanel 인라인. ItemList JSON-LD, 사이트맵·llms.txt·browse·홈 푸터 링크",
+    ],
+    changes: {
+      ko: ["아이템 도감 페이지를 열었습니다 — 인게임 스크랩북의 아이템 843개를 분류별로 모았고, 보석·잡동사니·장식품처럼 제작할 수 없는 아이템도 스펙을 바로 볼 수 있습니다"],
+      en: ["New Item Catalog page — all 843 items from the in-game Scrapbook by category, including stats for items you can't craft (gems, trinkets, ornaments and more)"],
+    },
+  },
+  {
     version: "0.43.1",
     date: "2026-11-09",
     dev: [

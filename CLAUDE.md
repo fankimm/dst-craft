@@ -231,6 +231,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `docs/farming-research.md` — 농사 탭 사전 조사 (#117): 공략 10개를 게임 소스와 대조 검증한 기록, 소스 기준 농사 메커니즘·상수, 작물/비료/도구 표, 계절별 무비료 조합, 공략 오류 로그. 농사 기능을 만들기 전에 먼저 읽을 것
 - `src/data/farming.ts` — 농사 데이터 (작물 14·잡초 4·비료 17·돌보기 도구·급수·스트레스 등급·도감 라벨) — 자동 생성, 수정 금지
 - `scripts/extract-farming.py` — 위 파일 생성 파이프라인 (아래 Farming Pipeline Rules)
+- `src/data/item-names.ts` — 스크랩북 아이템 이름(en/ko)·분류 이름 (#148) — `scripts/extract-item-names.py` 자동 생성(ko.po `STRINGS.NAMES.*`, 겨울 장식품은 `winter_ornaments.lua`의 이름 override를 따라간다), 수정 금지. 이름 없는 아이템이 생기면 exit 1 — 스크립트의 `NAME_ALIASES`에 매핑. `/items` 아이템 도감(`src/components/seo/ItemsCatalogContent.tsx`)이 쓴다
 - `src/data/book-sanity.ts` — 책별 읽기/워트 정독 정신력 (#143) — `scripts/extract-books.py` 자동 생성, 수정 금지. assert 실패는 패치로 코드 경로가 바뀌었다는 뜻
 - `src/lib/farming-combos.ts` — 계절별 무비료 조합 계산 (`farmCombos`), 일반 씨앗 확률 (`randomSeedChances`)
 - `src/components/seo/FarmingContent.tsx` — `/farming`, `/ko/farming` 정적 페이지

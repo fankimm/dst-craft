@@ -37,6 +37,7 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
     L.browseTitle[lang],
     `${routePrefix}/browse`,
     [
+      { name: L.itemCatalog[lang], path: `${routePrefix}/items` },
       { name: L.cookpotSimulator[lang], path: `${routePrefix}/cookpot` },
       { name: L.farmingGuide[lang], path: `${routePrefix}/farming` },
       { name: L.charactersTitle[lang], path: `${routePrefix}/characters` },
@@ -222,6 +223,15 @@ export function BrowseContent({ lang }: { lang: SeoLang }) {
               );
             })}
           </ul>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-semibold">
+            <Link href={`${routePrefix}/items`} className="hover:underline">
+              {L.itemCatalog[lang]}
+            </Link>
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">{L.itemCatalogShort[lang]}</p>
         </section>
 
         <section>

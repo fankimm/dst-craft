@@ -23,6 +23,21 @@ export const L = {
     ko: "텃밭 타일 하나 안에서 양분이 서로 상쇄되는 작물 조합을 게임 데이터에서 계절별로 계산했습니다.",
   },
   openFarming: { en: "Open the farming tab", ko: "농사 탭 열기" },
+  // Item catalog (/items, #148)
+  itemCatalog: { en: "Item Catalog", ko: "아이템 도감" },
+  itemCatalogHeading: { en: "DST Item Catalog", ko: "굶지마 투게더 아이템 도감" },
+  itemCatalogIntro: {
+    en: "All {n} items from the in-game Scrapbook, grouped by its categories. {c} craftable items link to their recipe pages; the other {u} (gems, trinkets, ornaments, turfs, boss drops and more) show their stats right here.",
+    ko: "인게임 스크랩북의 아이템 {n}개를 스크랩북 분류대로 모았습니다. 제작할 수 있는 {c}개는 제작법 페이지로 이어지고, 나머지 {u}개(보석·잡동사니·장식품·바닥·보스 전리품 등)는 이 페이지에서 바로 스펙을 볼 수 있습니다.",
+  },
+  itemCatalogShort: {
+    en: "Every Scrapbook item by category — including stats for items you can't craft.",
+    ko: "스크랩북의 모든 아이템을 분류별로 — 제작할 수 없는 아이템의 스펙까지.",
+  },
+  itemCatalogOther: { en: "Other", ko: "기타" },
+  itemCatalogCraftable: { en: "Craftable — see recipe", ko: "제작 가능 — 제작법 보기" },
+  itemCatalogNotCraftable: { en: "Not craftable", ko: "제작 불가" },
+  itemCatalogNoStats: { en: "No stats in the Scrapbook.", ko: "스크랩북에 표시되는 수치가 없습니다." },
   farmingCropTable: { en: "Crops: seasons, nutrients and water", ko: "작물별 제철 · 양분 · 물" },
 
   // Sections
