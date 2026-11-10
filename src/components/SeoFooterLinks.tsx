@@ -96,6 +96,15 @@ export function SeoFooterLinks() {
           </div>
         </section>
 
+        {/* Item catalog */}
+        <section>
+          <h3 className="font-medium text-foreground/60 mb-1">
+            <Link href="/items" className="hover:underline">
+              Item Catalog — Every Scrapbook Item
+            </Link>
+          </h3>
+        </section>
+
         {/* Farming */}
         <section>
           <h3 className="font-medium text-foreground/60 mb-1">
