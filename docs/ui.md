@@ -206,6 +206,7 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - `/browse` — 전체 목록 디렉토리
 - `/cookpot` — 요리솥 랜딩페이지
 - `/farming` — 농사 가이드 (`seo/FarmingContent` — 계절별 조합을 빌드 시 계산해 표로 담는다. 참고표는 탭의 `FarmingGuide`를 그대로 재사용 + 계절별 FAQ + 농사 관련 아이템 링크)
+- `/items` — 아이템 도감 (`seo/ItemsCatalogContent` — 스크랩북 `type: "item"` 전부를 스크랩북 분류(subcat)별로. `/item/<slug>`가 있으면 링크 카드, 없으면(제작 불가) 그 자리에서 `ItemStatsPanel`. 이름·분류명은 `src/data/item-names.ts`(자동 생성). 아이콘은 `ItemSlot`과 같은 40px 상자에 이름을 오른쪽에 둔 파일 내부 `IconBox` — ItemSlot 라벨은 60px에서 잘려 도감 목록엔 안 맞는다. #148, 후속은 #144)
 - `/skill-trees` — 스킬트리 허브 (`seo/SkillTreesListContent` — 캐릭터 카드 + 스킬/분기 수 + FAQ, #126)
 - `/llms.txt` — AI 검색용 사이트 안내 (`src/app/llms.txt/route.ts`, 빌드 시 데이터에서 생성, #126)
 
