@@ -1,0 +1,8 @@
+import { CreaturesCatalogContent, buildCreaturesCatalogMetadata } from "@/components/seo/CreaturesCatalogContent";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = buildCreaturesCatalogMetadata("ko");
+
+export default function CreaturesPage() {
+  return <CreaturesCatalogContent lang="ko" />;
+}

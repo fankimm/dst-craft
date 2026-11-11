@@ -21,7 +21,7 @@ import { DataSourceNote, fillTemplate as fill, itemListLd } from "./list-schema"
 const SITE_URL = "https://www.dstcraft.com";
 const OTHER = "_other";
 
-interface CatalogEntry {
+export interface CatalogEntry {
   id: string;
   name: string;
   /** 반대 언어 이름 (ko 페이지에서 영문 병기용) */
@@ -30,7 +30,7 @@ interface CatalogEntry {
   image?: string;
 }
 
-const hasImage = (id: string) =>
+export const hasGameItemImage = (id: string) =>
   existsSync(path.join(process.cwd(), "public/images/game-items", `${id}.png`));
 
 function buildCatalog(lang: SeoLang) {
@@ -47,7 +47,7 @@ function buildCatalog(lang: SeoLang) {
       name: lang === "ko" ? ko : en,
       altName: lang === "ko" ? en : ko,
       slug: itemSlugs.idToSlug.get(id),
-      image: hasImage(id) ? `/images/game-items/${id}.png` : undefined,
+      image: hasGameItemImage(id) ? `/images/game-items/${id}.png` : undefined,
     });
     groups.set(key, list);
   }
@@ -64,7 +64,7 @@ function buildCatalog(lang: SeoLang) {
   }));
 }
 
-function IconBox({ entry }: { entry: CatalogEntry }) {
+export function CatalogIconBox({ entry }: { entry: CatalogEntry }) {
   // ItemSlot 과 같은 40px 상자 — 라벨을 오른쪽에 두려고 아이콘만 쓴다 (ItemSlot 라벨은 60px에서 잘린다)
   return (
     <div className="flex shrink-0 items-center justify-center size-10 rounded border border-input bg-surface">
@@ -148,7 +148,7 @@ export function ItemsCatalogContent({ lang }: { lang: SeoLang }) {
                         href={`${routePrefix}/item/${e.slug}`}
                         className="flex items-center gap-2 rounded-lg border border-border bg-surface px-2 py-1.5 hover:border-ring transition-colors"
                       >
-                        <IconBox entry={e} />
+                        <CatalogIconBox entry={e} />
                         <span className="text-sm text-primary underline decoration-dotted truncate">{e.name}</span>
                       </Link>
                     ))}
@@ -169,7 +169,7 @@ export function ItemsCatalogContent({ lang }: { lang: SeoLang }) {
                         className="scroll-mt-4 rounded-lg border border-border bg-surface p-3 space-y-2"
                       >
                         <div className="flex items-center gap-2">
-                          <IconBox entry={e} />
+                          <CatalogIconBox entry={e} />
                           <div className="min-w-0">
                             <h3 className="text-sm font-semibold text-foreground">{e.name}</h3>
                             {e.altName !== e.name && <p className="text-xs text-muted-foreground">{e.altName}</p>}

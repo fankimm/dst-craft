@@ -15,6 +15,19 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.45.0",
+    date: "2026-11-11",
+    dev: [
+      "scripts/extract-item-names.py 확장 — 스크랩북 type creature 188종의 이름(en/ko)·분류명·관련 항목(deps) 이름·STRINGS.SCRAPBOOK.SANITYDESC 문구와 TUNING.SANITYAURA_MED/HUGE 경계를 src/data/creature-names.ts로 생성. 이름 override 4종은 CREATURE_ALIASES(prefab SetPrefabNameOverride 확인), 누락 시 exit 1 (#149)",
+      "/creatures, /ko/creatures 생물 도감(seo/CreaturesCatalogContent) — 분류별 카드, deps를 관련 항목 칩으로(아이템·도감 링크). ItemList JSON-LD, 사이트맵·llms.txt·browse·홈 푸터 링크. CatalogIconBox를 /items와 공유",
+      "ItemStatsPanel에 체력·정신력 오라 행 추가 — 오라는 scrapbookscreen.lua의 6단계 분기 그대로 문구로 표시",
+    ],
+    changes: {
+      ko: ["생물 도감 페이지를 열었습니다 — 인게임 스크랩북의 생물 188종을 분류별로 모아 체력·공격력·정신력 오라를 볼 수 있습니다"],
+      en: ["New Creature Catalog page — all 188 creatures from the in-game Scrapbook by category, with health, damage and sanity aura"],
+    },
+  },
+  {
     version: "0.44.0",
     date: "2026-11-10",
     dev: [
