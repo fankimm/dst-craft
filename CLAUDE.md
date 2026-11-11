@@ -12,7 +12,8 @@
 - **프로덕션에 내보낸 것은 전부 `docs/autopilot-ledger.md`에 적는다** (릴리즈 전에, 그 feat 브랜치에서). 장부가 롤백의 근거다
 - 복귀 기준점: 태그 `pre-autopilot-2026-11-07` + 맥미니 `~/Backups/dstcraft/pinned/pre-autopilot-2026-11-07.db.gz` — **지우지 말 것**
 - "자동 운영 전으로 돌려줘" 요청을 받으면 `docs/autopilot.md` 4.3절대로 — 통째 되감기가 아니라 장부를 보고 골라서 revert
-- 매일 실행은 맥북 Claude 앱의 예약 작업 `dstcraft-autopilot-daily`
+- 매일 실행은 운영 기기 Claude 앱의 예약 작업 `dstcraft-autopilot-daily` — **한 기기에서만** 돌린다. 프롬프트 원본은 `docs/autopilot-daily-prompt.md`
+- 운영 기기를 옮기거나 멈추거나 다시 켤 때는 **`docs/autopilot-handover.md`** (레포 밖에만 있는 것, 재개 절차, 알려진 공백)
 
 ## Code Quality Rules
 - **한 탭에 요청된 기능/변경은 나머지 탭(제작/요리/보스)에도 자동 적용할 것** — 요리솥 탭은 구조가 다르므로 예외이나, 적용 가능하다고 판단되면 함께 적용
@@ -224,7 +225,7 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `.github/workflows/watchdog.yml` — 헬스 복구 담당 (3/3 실패 → 60초 재확인 후에도 죽어 있으면 Telegram 긴급 + DNS failover). schedule은 백업 감지. DNS 복귀는 Worker가 자동으로 누르고, 즉시 되돌리려면 수동: `gh workflow run watchdog.yml -f failback=true`
 - `worker/index.ts` — Cloudflare Worker (레거시, 일부 analytics)
 - `worker/wrangler.toml` — Worker 설정 (레거시)
-- `docs/autopilot.md` — 자동 운영 규칙 (권한 범위, 매일 사이클, 피드백 답변 원칙, 되돌리기). `docs/autopilot-ledger.md` — 자동 운영이 프로덕션에 내보낸 것의 장부
+- `docs/autopilot.md` — 자동 운영 규칙 (권한 범위, 매일 사이클, 피드백 답변 원칙, 되돌리기). `docs/autopilot-ledger.md` — 자동 운영이 프로덕션에 내보낸 것의 장부. `docs/autopilot-handover.md` — 기기 이전·중단·재개 인계 문서. `docs/autopilot-daily-prompt.md` — 예약 작업 프롬프트 원본
 - `scripts/feedback-reply.sh` + `.github/workflows/feedback-reply.yml` — 맥미니 러너 경유 피드백 답변·번역 등록 (#140)
 - `docs/terminology.md` — UI 용어집
 - `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
