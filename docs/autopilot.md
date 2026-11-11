@@ -10,6 +10,7 @@
 
 - 복귀 기준점: git 태그 **`pre-autopilot-2026-11-07`** (v0.42.1) + 맥미니 `~/Backups/dstcraft/pinned/pre-autopilot-2026-11-07.db.gz`
 - 한 일의 기록: [`docs/autopilot-ledger.md`](autopilot-ledger.md) (릴리즈) · DB의 `reply_author='claude'` (답변) · GitHub 이슈 `autopilot` 라벨 (백로그)
+- 기기를 옮기거나 멈출 때: [`docs/autopilot-handover.md`](autopilot-handover.md) · 예약 작업 프롬프트 원본: [`docs/autopilot-daily-prompt.md`](autopilot-daily-prompt.md)
 
 ---
 
@@ -47,7 +48,7 @@
 
 ## 2. 매일 사이클
 
-작업 디렉터리는 메인 워크트리 `/Users/jihwan-kim3/private-works/dst-craft` (항상 main). 코드 변경은 `/task`가 만드는 워크트리에서 한다.
+작업 디렉터리는 레포의 메인 워크트리 (항상 main. `git worktree list`의 첫 줄). 코드 변경은 `/task`가 만드는 워크트리에서 한다.
 
 ### 2.1 점검 (매번, 몇 분)
 1. **헬스** — `curl -sI https://www.dstcraft.com/`(200, `x-vercel-id` 없음), `https://www.dstcraft.com/api/_debug/health`, `https://beta.dstcraft.com/`
@@ -56,7 +57,7 @@
 3. **진행 중인 작업** — `git worktree list`, `gh issue list --label autopilot --state open`. 지난 회차가 중간에 끊겼으면(워크트리에 미커밋·미릴리즈) 그것부터 이어서 끝낸다
 4. **장부 대조** — 장부에 "답변 예정"으로 적힌 피드백이 공개 목록에 그대로 반영돼 있는지. 어긋나면 다시 등록한다
 5. **새 피드백** — `curl -s https://www.dstcraft.com/api/feedback/public | jq '.items[] | select((.reply // "") == "")'`
-6. **게임 업데이트** — `bash scripts/sync-game-data.sh` (buildid가 같으면 즉시 끝난다. Steam이 이 맥에서 게임을 업데이트했을 때만 변화가 잡힌다)
+6. **게임 업데이트** — `bash scripts/sync-game-data.sh` (buildid가 같으면 즉시 끝난다. Steam이 이 기기에서 게임을 업데이트했을 때만 변화가 잡힌다). 운영 기기에 DST가 설치돼 있지 않으면 `Steam manifest not found`로 끝난다 — 알려진 공백이니 재조사하지 말고 넘어간다 (`autopilot-handover.md` 3장)
 
 ### 2.2 고르기 — 한 회차에 1건
 우선순위:
@@ -156,6 +157,7 @@ git log origin/main --merges --oneline --grep 'feat/<num>-'
 
 ## 5. 운영 메모
 
-- **예약 작업은 이 맥북의 Claude 앱이 켜져 있을 때만 돈다.** 꺼져 있었으면 다음에 켤 때 돈다. 하루를 건너뛰어도 따라잡을 필요는 없다 — 다음 회차가 그날의 상태를 보고 판단한다
+- **자동 운영은 한 기기에서만 돌린다.** 두 기기에서 같이 돌면 답변·작업이 겹친다. 기기를 옮기는 절차는 `autopilot-handover.md` 4장
+- **예약 작업은 그 기기의 Claude 앱이 켜져 있을 때만 돈다.** 꺼져 있었으면 다음에 켤 때 돈다. 하루를 건너뛰어도 따라잡을 필요는 없다 — 다음 회차가 그날의 상태를 보고 판단한다
 - **맥미니 접속**: 답변 등록은 러너 경유라 ssh가 필요 없다. 그 외에 ssh가 필요하면 집 랜 `192.168.0.61` → Tailscale `100.85.118.4` 순으로 시도하고, 둘 다 안 되면 그 일은 미루고 보고한다(Tailscale을 켜는 건 사용자 몫)
 - 이 문서를 고치는 것도 자동 운영의 일이다. 사이클을 돌다 규칙이 현실과 안 맞으면 고치되, 1장의 "사용자 몫"을 줄이는 변경만은 하지 않는다
