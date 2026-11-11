@@ -23,6 +23,18 @@ export const L = {
     ko: "텃밭 타일 하나 안에서 양분이 서로 상쇄되는 작물 조합을 게임 데이터에서 계절별로 계산했습니다.",
   },
   openFarming: { en: "Open the farming tab", ko: "농사 탭 열기" },
+  // Creature catalog (/creatures, #149)
+  creatureCatalog: { en: "Creature Catalog", ko: "생물 도감" },
+  creatureCatalogHeading: { en: "DST Creature Catalog", ko: "굶지마 투게더 생물 도감" },
+  creatureCatalogIntro: {
+    en: "All {n} creatures from the in-game Scrapbook, grouped by its categories — health, damage, sanity aura and the Scrapbook's notes for each. Giants are covered on the boss pages.",
+    ko: "인게임 스크랩북의 생물 {n}종을 스크랩북 분류대로 모았습니다. 체력·공격력·정신력 오라와 스크랩북 설명을 볼 수 있습니다. 거인은 보스 페이지에서 다룹니다.",
+  },
+  creatureCatalogShort: {
+    en: "Every Scrapbook creature by category — health, damage and sanity aura.",
+    ko: "스크랩북의 모든 생물을 분류별로 — 체력·공격력·정신력 오라.",
+  },
+  creatureCatalogRelated: { en: "Related in the Scrapbook", ko: "스크랩북 관련 항목" },
   // Item catalog (/items, #148)
   itemCatalog: { en: "Item Catalog", ko: "아이템 도감" },
   itemCatalogHeading: { en: "DST Item Catalog", ko: "굶지마 투게더 아이템 도감" },

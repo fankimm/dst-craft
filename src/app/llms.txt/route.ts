@@ -28,6 +28,7 @@ export function GET() {
     "## Guides",
     `- [Browse everything](${SITE_URL}/browse): all ${allItems.length} crafting items, ${cookingRecipes.length} crock pot recipes and ${bosses.length} bosses`,
     `- [Item catalog](${SITE_URL}/items): every item from the in-game Scrapbook by category, with stats for non-craftable items (gems, trinkets, ornaments, turfs, boss drops)`,
+    `- [Creature catalog](${SITE_URL}/creatures): every creature from the in-game Scrapbook by category, with health, damage and sanity aura`,
     `- [Crock Pot simulator & recipes](${SITE_URL}/cookpot): ingredient rules and stats for every crock pot dish, plus a trainer minigame (random ingredients, time limit, score vs optimal plan)`,
     `- [Farming guide](${SITE_URL}/farming): no-fertilizer crop combinations for each season, nutrients and water for ${FARM_CROPS.length} crops`,
     `- [Characters](${SITE_URL}/characters): stats, perks and exclusive items for every survivor`,

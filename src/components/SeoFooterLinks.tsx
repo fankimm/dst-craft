@@ -105,6 +105,15 @@ export function SeoFooterLinks() {
           </h3>
         </section>
 
+        {/* Creature catalog */}
+        <section>
+          <h3 className="font-medium text-foreground/60 mb-1">
+            <Link href="/creatures" className="hover:underline">
+              Creature Catalog — Mob Health &amp; Damage
+            </Link>
+          </h3>
+        </section>
+
         {/* Farming */}
         <section>
           <h3 className="font-medium text-foreground/60 mb-1">

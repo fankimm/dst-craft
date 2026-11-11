@@ -7,6 +7,23 @@ import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { characters } from "@/data/characters";
 import { bookSanity, MAXWELL_READING_SANITY_MULT } from "@/data/book-sanity";
+import { SANITYAURA_HUGE, SANITYAURA_MED, sanityAuraDesc } from "@/data/creature-names";
+
+/** 정신력 오라 → 인게임 스크랩북 문구 (scrapbookscreen.lua 의 6단계 분기 그대로). 0이면 표시 없음 */
+function sanityAuraLabel(aura: number, l: "ko" | "en"): string | null {
+  const key =
+    aura >= SANITYAURA_HUGE ? "POSHIGH"
+    : aura >= SANITYAURA_MED ? "POSMED"
+    : aura > 0 ? "POSSMALL"
+    : aura === 0 ? null
+    : aura > -SANITYAURA_MED ? "NEGSMALL"
+    : aura > -SANITYAURA_HUGE ? "NEGMED"
+    : "NEGHIGH";
+  if (!key) return null;
+  const [en, ko] = sanityAuraDesc[key];
+  // 영문 원문은 전부 대문자 — 문장형으로 낮춘다
+  return l === "ko" ? ko : en.charAt(0) + en.slice(1).toLowerCase();
+}
 
 function resolveItemName(id: string, locale: string): string {
   const item = getItemById(id);
@@ -109,6 +126,12 @@ export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
 
   const rows: React.ReactNode[] = [];
 
+  // --- Health (생물·구조물) — 인게임 순서상 맨 앞 ---
+  if (stats.health != null) {
+    const hp = typeof stats.health === "string" ? stats.health : String(Math.floor(stats.health));
+    rows.push(<StatRow key="health" label={l === "ko" ? "체력" : "Health"} value={hp} />);
+  }
+
   // --- Combat: damage + planar ---
   const dmg = stats.damage ?? stats.weapondamage;
   if (dmg != null) {
@@ -120,6 +143,19 @@ export function ItemStatsPanel({ itemId, stats, locale }: ItemStatsPanelProps) {
       const cond = WEAPON_CONDITION_LABELS[itemId];
       const condText = cond ? cond[l] : (l === "ko" ? "최대" : "max");
       rows.push(<StatRow key="dmg-max" label={condText} value={String(Math.floor(stats.weapondamage_max))} />);
+    }
+  }
+  // --- Sanity aura (근처에 있을 때) ---
+  if (stats.sanityaura != null) {
+    const auraText = sanityAuraLabel(stats.sanityaura, l);
+    if (auraText) {
+      rows.push(
+        <StatRow
+          key="aura"
+          label={l === "ko" ? "정신력 오라" : "Sanity aura"}
+          value={auraText}
+        />,
+      );
     }
   }
   if (stats.weaponrange) {
