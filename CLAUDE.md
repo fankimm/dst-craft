@@ -14,7 +14,7 @@
 - 복귀 기준점: 태그 `pre-autopilot-2026-11-07` + 맥미니 `~/Backups/dstcraft/pinned/pre-autopilot-2026-11-07.db.gz` — **지우지 말 것**
 - "자동 운영 전으로 돌려줘" 요청을 받으면 `docs/autopilot.md` 4.3절대로 — 통째 되감기가 아니라 장부를 보고 골라서 revert
 - **수익 수치는 Claude in Chrome으로 광고 콘솔을 읽기 전용으로 조회**해 비공개 레포 `fankimm/dst-craft-ops`(로컬 `../dst-craft-ops`)의 `revenue-log.md`에 적는다 (2026-11-16 사용자 지정, #152 #153). **이 레포는 공개라 수익 수치를 여기에는 적지 않는다.** 읽기를 넘는 콘솔 조작은 여전히 사용자 몫 — `docs/autopilot.md` 0.1절
-- **#134 AdSense 전환 릴리즈도 자동 운영이 한다** (2026-11-16 사용자 지정, #154). 단 Ezoic 계약 때문에 **2026-11-20 17:00 KST 전에는 하지 않는다** — 조건·순서는 `docs/autopilot.md` 1.1절. MCM 위임 해제 등 콘솔 설정 변경은 사용자 몫
+- **#134 AdSense 전환 릴리즈도 자동 운영이 한다** (2026-11-16 사용자 지정, #154). 단 Ezoic 계약 때문에 **2026-11-20 17:00 KST 전에는 하지 않는다** — 조건·순서는 `docs/autopilot.md` 1.1절. Ad Manager **MCM 위임 해제 한 가지도 위임됐다**(#156) — 그 밖의 콘솔 설정 변경은 사용자 몫
 - 실행은 운영 기기 Claude 앱의 예약 작업 `dstcraft-autopilot-daily` (하루 3회, 횟수 조정 가능) — **한 기기에서만** 돌린다. 프롬프트 원본은 `docs/autopilot-daily-prompt.md`
 - 운영 기기를 옮기거나 멈추거나 다시 켤 때는 **`docs/autopilot-handover.md`** (레포 밖에만 있는 것, 재개 절차, 알려진 공백)
 
