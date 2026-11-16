@@ -13,7 +13,8 @@
 - **프로덕션에 내보낸 것은 전부 `docs/autopilot-ledger.md`에 적는다** (릴리즈 전에, 그 feat 브랜치에서). 장부가 롤백의 근거다
 - 복귀 기준점: 태그 `pre-autopilot-2026-11-07` + 맥미니 `~/Backups/dstcraft/pinned/pre-autopilot-2026-11-07.db.gz` — **지우지 말 것**
 - "자동 운영 전으로 돌려줘" 요청을 받으면 `docs/autopilot.md` 4.3절대로 — 통째 되감기가 아니라 장부를 보고 골라서 revert
-- 매일 실행은 운영 기기 Claude 앱의 예약 작업 `dstcraft-autopilot-daily` — **한 기기에서만** 돌린다. 프롬프트 원본은 `docs/autopilot-daily-prompt.md`
+- **수익 수치는 Claude in Chrome으로 광고 콘솔을 읽기 전용으로 조회**해 `docs/revenue-log.md`에 적는다 (2026-11-16 사용자 지정, #152). 읽기를 넘는 콘솔 조작은 여전히 사용자 몫 — `docs/autopilot.md` 0.1절
+- 실행은 운영 기기 Claude 앱의 예약 작업 `dstcraft-autopilot-daily` (하루 3회, 횟수 조정 가능) — **한 기기에서만** 돌린다. 프롬프트 원본은 `docs/autopilot-daily-prompt.md`
 - 운영 기기를 옮기거나 멈추거나 다시 켤 때는 **`docs/autopilot-handover.md`** (레포 밖에만 있는 것, 재개 절차, 알려진 공백)
 
 ## Code Quality Rules
