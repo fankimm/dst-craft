@@ -64,10 +64,12 @@
 
 ## 3. 알려진 공백 — 게임 데이터 동기화
 
-2026-11-07부터 운영 맥북에 Steam `steamapps` 폴더가 없어서 `scripts/sync-game-data.sh`가 manifest를 못 찾고 끝난다. 즉 **10/30 이후의 게임 패치는 사이트에 반영되지 않고 있다.** 추출 스크립트는 남아 있는 스냅샷으로 계속 동작하므로 기능 개발에는 지장이 없다.
+**10/30 이후의 게임 패치는 사이트에 반영되지 않고 있다.** 추출 스크립트는 남아 있는 스냅샷으로 계속 동작하므로 기능 개발에는 지장이 없다.
 
-- 해결: DST가 설치된 Mac에서 운영하거나(경로가 다르면 `sync-game-data.sh`의 `GAME_BASE` 수정), 그런 Mac에서 가끔 `bash scripts/sync-game-data.sh`만 돌려 결과를 커밋한다
-- 매 회차에서 이 실패를 다시 조사하지 말 것. Steam 설치는 사용자 몫이다
+- 2026-11-07~: 옛 운영 맥북에 Steam `steamapps` 폴더가 없어 `scripts/sync-game-data.sh`가 manifest를 못 찾고 끝났다
+- 2026-11-16~ (새 맥, #158): Steam과 DST는 깔려 있지만 **옛 빌드**(buildid 23690848, 6월)다 — 사이트 데이터 기준(26306684)보다 낮다. 게임 스냅샷 `~/dst-game-snapshot`도 Pillow도 없다. sync는 "installed game is OLDER than the site data"로 멈춘다(#158에서 넣은 안전장치). **이 안전장치를 `ALLOW_DOWNGRADE=1`로 넘기지 말 것** — 데이터가 6월로 돌아간다
+- 해결(사용자 몫): 이 맥의 Steam에서 DST와 한글모드를 최신으로 업데이트. 그다음 회차가 할 일: Pillow가 든 venv를 PATH 앞에 두고 `bash scripts/sync-game-data.sh` — 스냅샷은 첫 실행 때 새로 만들어진다. 스냅샷이 없는 동안은 게임 소스를 읽는 추출 스크립트(`extract-*.py`, `convert-scrapbook.py`)를 이 기기에서 돌릴 수 없다
+- 매 회차에서 이 실패를 다시 조사하지 말 것. Steam에서 게임을 업데이트하는 것은 사용자 몫이다
 
 ---
 
