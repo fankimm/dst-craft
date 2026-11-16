@@ -32,6 +32,12 @@
 
 ## 기록
 
+### 2026-11-16 · #158 · v— · infra
+`scripts/sync-game-data.sh`에 역행 방지 — 설치된 게임 buildid가 `game-version.ts`의 `steamBuildId`보다 낮으면 아무것도 바꾸기 전에 멈춘다(`ALLOW_DOWNGRADE=1`로만 넘김). 새 운영 맥의 DST가 6월 빌드(23690848)라 Pillow만 깔리면 데이터가 뒤로 갈 상황이었다. `date -r`의 GNU date 대응. 인계 문서 3장·운영 문서 2.1-6 갱신.
+- 피드백: 없음
+- git 밖 변경: 없음
+- DB 변경: 없음
+
 ### 2026-11-16 · #157 · v— · infra
 새 운영 맥에서 맥미니 ssh 복구(사용자 요청). 사용자가 손으로 넣은 키가 오타 파일(`authorized.keys`)로 들어가, 임시 브랜치 `tmp/ssh-diag`의 일회성 러너 작업으로 원인을 찾고 `authorized_keys`에 새 맥 공개키 한 줄을 추가했다. 임시 브랜치와 오타 파일은 삭제.
 - 피드백: 없음
