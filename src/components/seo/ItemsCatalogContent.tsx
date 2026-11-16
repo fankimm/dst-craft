@@ -4,6 +4,7 @@ import Link from "next/link";
 import { scrapbookStats } from "@/data/scrapbook-stats";
 import { itemNames, itemSubcatNames } from "@/data/item-names";
 import { itemSlugs } from "@/lib/slug";
+import { catalogItemSlugs } from "@/lib/catalog-slug";
 import { assetPath } from "@/lib/asset-path";
 import { ItemStatsPanel } from "@/components/crafting/ItemStatsPanel";
 import { AdSlot } from "@/components/ads/AdSlot";
@@ -14,7 +15,8 @@ import { DataSourceNote, fillTemplate as fill, itemListLd } from "./list-schema"
 /**
  * 아이템 도감 (/items, /ko/items) — #148, #144 1단계.
  * 인게임 스크랩북의 `type: "item"` 전부를 스크랩북 분류(subcat)대로 묶는다.
- * 제작 가능(= /item/<slug> 페이지가 있는) 아이템은 링크만, 제작 불가 아이템은 여기서 스펙까지 보여 준다.
+ * 제작 가능 아이템은 제작법 페이지 링크, 제작 불가 아이템 중 스크랩북 설명이 있는 것은 상세 페이지 링크(#159),
+ * 나머지(설명 없이 수치만 있는 것)는 여기서 스펙까지 보여 준다.
  * 이름·분류 이름은 scripts/extract-item-names.py 가 ko.po 에서 뽑은 것만 쓴다.
  */
 
@@ -27,6 +29,8 @@ export interface CatalogEntry {
   /** 반대 언어 이름 (ko 페이지에서 영문 병기용) */
   altName: string;
   slug?: string;
+  /** 제작 아이템이 아니지만 상세 페이지가 있는 경우의 슬러그 (#159) */
+  detailSlug?: string;
   image?: string;
 }
 
@@ -47,6 +51,7 @@ function buildCatalog(lang: SeoLang) {
       name: lang === "ko" ? ko : en,
       altName: lang === "ko" ? en : ko,
       slug: itemSlugs.idToSlug.get(id),
+      detailSlug: catalogItemSlugs.idToSlug.get(id),
       image: hasGameItemImage(id) ? `/images/game-items/${id}.png` : undefined,
     });
     groups.set(key, list);
@@ -88,7 +93,7 @@ export function ItemsCatalogContent({ lang }: { lang: SeoLang }) {
     `${routePrefix}/items`,
     all.map((e) => ({
       name: e.name,
-      path: e.slug ? `${routePrefix}/item/${e.slug}` : `${routePrefix}/items#${e.id}`,
+      path: e.slug || e.detailSlug ? `${routePrefix}/item/${e.slug ?? e.detailSlug}` : `${routePrefix}/items#${e.id}`,
       ...(e.image ? { image: e.image } : {}),
     })),
     lang,
@@ -110,7 +115,12 @@ export function ItemsCatalogContent({ lang }: { lang: SeoLang }) {
         <section>
           <h1 className="text-2xl font-bold text-foreground">{L.itemCatalogHeading[lang]}</h1>
           <p className="text-sm text-foreground/80 mt-2 leading-relaxed">
-            {fill(L.itemCatalogIntro[lang], { n: all.length, c: craftable, u: all.length - craftable })}
+            {fill(L.itemCatalogIntro[lang], {
+              n: all.length,
+              c: craftable,
+              u: all.length - craftable,
+              d: all.filter((e) => e.detailSlug).length,
+            })}
           </p>
         </section>
 
@@ -130,7 +140,8 @@ export function ItemsCatalogContent({ lang }: { lang: SeoLang }) {
 
         {groups.map((g) => {
           const linked = g.items.filter((e) => e.slug);
-          const inline = g.items.filter((e) => !e.slug);
+          const detailed = g.items.filter((e) => !e.slug && e.detailSlug);
+          const inline = g.items.filter((e) => !e.slug && !e.detailSlug);
           return (
             <section key={g.key} id={`cat-${g.key}`} className="scroll-mt-4 space-y-3">
               <h2 className="text-base font-semibold text-foreground">
@@ -156,9 +167,28 @@ export function ItemsCatalogContent({ lang }: { lang: SeoLang }) {
                 </div>
               )}
 
+              {detailed.length > 0 && (
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1.5">{L.itemCatalogDetail[lang]}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1.5">
+                    {detailed.map((e) => (
+                      <Link
+                        key={e.id}
+                        id={e.id}
+                        href={`${routePrefix}/item/${e.detailSlug}`}
+                        className="flex items-center gap-2 rounded-lg border border-border bg-surface px-2 py-1.5 hover:border-ring transition-colors"
+                      >
+                        <CatalogIconBox entry={e} />
+                        <span className="text-sm text-primary underline decoration-dotted truncate">{e.name}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {inline.length > 0 && (
                 <div>
-                  {linked.length > 0 && (
+                  {(linked.length > 0 || detailed.length > 0) && (
                     <p className="text-xs text-muted-foreground mb-1.5">{L.itemCatalogNotCraftable[lang]}</p>
                   )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

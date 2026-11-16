@@ -39,8 +39,8 @@ export const L = {
   itemCatalog: { en: "Item Catalog", ko: "아이템 도감" },
   itemCatalogHeading: { en: "DST Item Catalog", ko: "굶지마 투게더 아이템 도감" },
   itemCatalogIntro: {
-    en: "All {n} items from the in-game Scrapbook, grouped by its categories. {c} craftable items link to their recipe pages; the other {u} (gems, trinkets, ornaments, turfs, boss drops and more) show their stats right here.",
-    ko: "인게임 스크랩북의 아이템 {n}개를 스크랩북 분류대로 모았습니다. 제작할 수 있는 {c}개는 제작법 페이지로 이어지고, 나머지 {u}개(보석·잡동사니·장식품·바닥·보스 전리품 등)는 이 페이지에서 바로 스펙을 볼 수 있습니다.",
+    en: "All {n} items from the in-game Scrapbook, grouped by its categories. {c} craftable items link to their recipe pages; of the other {u} (gems, trinkets, ornaments, turfs, boss drops and more), {d} have their own detail page and the rest show their stats right here.",
+    ko: "인게임 스크랩북의 아이템 {n}개를 스크랩북 분류대로 모았습니다. 제작할 수 있는 {c}개는 제작법 페이지로 이어지고, 나머지 {u}개(보석·잡동사니·장식품·바닥·보스 전리품 등) 중 {d}개는 상세 페이지로, 그 밖의 아이템은 이 페이지에서 바로 스펙을 볼 수 있습니다.",
   },
   itemCatalogShort: {
     en: "Every Scrapbook item by category — including stats for items you can't craft.",
@@ -50,6 +50,19 @@ export const L = {
   itemCatalogCraftable: { en: "Craftable — see recipe", ko: "제작 가능 — 제작법 보기" },
   itemCatalogNotCraftable: { en: "Not craftable", ko: "제작 불가" },
   itemCatalogNoStats: { en: "No stats in the Scrapbook.", ko: "스크랩북에 표시되는 수치가 없습니다." },
+  itemCatalogDetail: { en: "Not craftable — see details", ko: "제작 불가 — 상세 보기" },
+  catalogItemTitleSuffix: { en: "Don't Starve Together Item Guide", ko: "Don't Starve Together 아이템 정보" },
+  catalogItemIntro: {
+    en: "{name} is listed under “{cat}” in the Don't Starve Together in-game Scrapbook. The stats and description below are the Scrapbook's own.",
+    ko: "{name} 굶지마 투게더 인게임 스크랩북의 '{cat}' 분류에 실린 아이템입니다. 아래 수치와 설명은 스크랩북에 나오는 그대로입니다.",
+  },
+  catalogItemIntroNoCat: {
+    en: "{name} is an item from the Don't Starve Together in-game Scrapbook. The stats and description below are the Scrapbook's own.",
+    ko: "{name} 굶지마 투게더 인게임 스크랩북에 실린 아이템입니다. 아래 수치와 설명은 스크랩북에 나오는 그대로입니다.",
+  },
+  catalogItemScrapbook: { en: "Stats and Description", ko: "수치 · 설명" },
+  catalogItemUsedIn: { en: "Crafting recipes that use this", ko: "이 아이템을 재료로 쓰는 제작법" },
+  catalogItemOpenCatalog: { en: "Open Item Catalog →", ko: "아이템 도감 열기 →" },
   farmingCropTable: { en: "Crops: seasons, nutrients and water", ko: "작물별 제철 · 양분 · 물" },
 
   // Sections

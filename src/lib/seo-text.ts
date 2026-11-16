@@ -569,7 +569,8 @@ function hasJongseong(s: string): boolean {
   if (/[a-z]/.test(c)) return true;
   return false;
 }
-function pp(s: string, withFinal: string, withoutFinal: string): string {
+/** 이름 뒤에 받침에 맞는 조사를 붙인다 — `pp("거미샘", "은", "는")` → "거미샘은" */
+export function pp(s: string, withFinal: string, withoutFinal: string): string {
   return s + (hasJongseong(s) ? withFinal : withoutFinal);
 }
 
