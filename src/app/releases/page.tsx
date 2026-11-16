@@ -15,6 +15,20 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.46.0",
+    date: "2026-11-17",
+    dev: [
+      "src/lib/catalog-slug.ts — 제작 탭에 없는 스크랩북 아이템의 상세 페이지 슬러그. 대상: 스크랩북 설명 있음 · 제작 아이템 슬러그(정식·레거시)와 이름이 안 겹침 · 도감 안 이름 유일 → 136개. itemHref(id)로 제작 페이지 → 도감 상세 → 도감 앵커 순 링크 (#159)",
+      "seo/CatalogItemPageContent — /item/<slug>, /ko/item/<slug>. ItemStatsPanel + 이 아이템을 재료로 쓰는 제작법 + 스크랩북 관련 항목(buildRelated·RelatedChip을 생물 도감과 공유). BreadcrumbList JSON-LD, canonical·hreflang, 사이트맵 272개 추가. item/[slug]/page.tsx가 resolveCatalogItemSlug로 분기",
+      "아이템 도감 허브: 상세 페이지가 생긴 아이템은 인라인 스펙 대신 링크 카드. 생물 도감 관련 항목 칩도 상세 페이지로 연결",
+      "seo-text.ts의 조사 헬퍼 pp() export",
+    ],
+    changes: {
+      ko: ["제작할 수 없는 아이템 136개에 상세 페이지가 생겼습니다 — 거미샘·비팔로 뿔·푸른 달수정 같은 아이템의 스크랩북 수치와 설명, 그 아이템을 재료로 쓰는 제작법을 한 화면에서 볼 수 있습니다 (아이템 도감에서 이동)"],
+      en: ["136 non-craftable items now have their own page — Scrapbook stats and description plus every crafting recipe that uses the item (e.g. Spider Gland, Beefalo Horn). Reach them from the Item Catalog"],
+    },
+  },
+  {
     version: "0.45.0",
     date: "2026-11-11",
     dev: [
