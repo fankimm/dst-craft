@@ -32,6 +32,12 @@
 
 ## 기록
 
+### 2026-11-16 · #157 · v— · infra
+새 운영 맥에서 맥미니 ssh 복구(사용자 요청). 사용자가 손으로 넣은 키가 오타 파일(`authorized.keys`)로 들어가, 임시 브랜치 `tmp/ssh-diag`의 일회성 러너 작업으로 원인을 찾고 `authorized_keys`에 새 맥 공개키 한 줄을 추가했다. 임시 브랜치와 오타 파일은 삭제.
+- 피드백: 없음
+- git 밖 변경: 맥미니 `~/.ssh/authorized_keys`에 공개키 1줄 추가(`fankim@jihwan-kim3-2.local`) — 되돌리기: 그 줄 삭제
+- DB 변경: 없음
+
 ### 2026-11-16 · #156 · v— · meta
 AdSense 전환 때의 Ad Manager MCM 위임 해제(상위 게시자 `Ezoic NA 8`)를 자동 운영에 위임(사용자 지정). `docs/autopilot.md` 1.1절에 범위(이 조작 하나)와 멈출 조건. 실제 해제는 전환 회차에서 하고 그때 따로 기록한다.
 - 피드백: 없음

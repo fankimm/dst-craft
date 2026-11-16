@@ -79,11 +79,11 @@
 위임으로 바뀐 것은 "누가 하나"뿐이다. "언제부터 할 수 있나"는 사용자와의 약속이 아니라 Ezoic과의 계약(§2 독점)에서 오므로 그대로다.
 
 - **언제**: **2026-11-20 17:00 KST 이후의 첫 회차** (예약 주기로는 11/20 20:30 회차). 계약 종료일은 대시보드 표기로 "until Nov 19, 2026"인데 그날이 포함인지, 어느 시간대 기준인지 적혀 있지 않다. Ezoic은 미국 서부 회사이므로 태평양 시간으로 11/19가 완전히 끝난 시각(= 11/20 17:00 KST)을 기준으로 잡는다. 하루 이르게 해서 얻는 것보다 계약 위반 위험이 크다. **그 전에는 main 머지·ads.txt 교체·nginx 변경 어느 것도 하지 않는다** — 회차가 일찍 돌았으면 그냥 넘어간다
-- **전환 전 준비** (11/20 전 회차들에서): `feat/134-adsense-switch`에 `origin/main`을 머지해 최신으로 맞추고 beta에서 다시 검증(`scripts/check-adsense-beta.mjs`). nginx 적용 경로 마련(#155 — 이 기기에서는 맥미니 ssh가 안 된다)
+- **전환 전 준비** (11/20 전 회차들에서): `feat/134-adsense-switch`에 `origin/main`을 머지해 최신으로 맞추고 beta에서 다시 검증(`scripts/check-adsense-beta.mjs`). nginx 적용 경로 확인 — 운영 기기에서 `ssh mac-mini`가 된다(2026-11-16 복구, #157). 실서버 `/usr/local/etc/nginx/snippets/dstcraft-common.conf`가 레포의 `bun-api/infra/nginx-dstcraft-common.conf`와 같은지 미리 diff 해 둔다. 러너 경유 워크플로(#155)는 ssh가 안 되는 기기를 위한 예비 수단
 - **전환 회차의 순서**:
   1. Ezoic 대시보드에서 계약 상태와 미지급 잔액·지급 예정을 읽어 둔다(0.1절, 읽기만). 사용자 말로는 아직 지급받은 적이 없다 — 잔액과 지급 조건을 그 회차 보고에 적는다(수치는 비공개 기록에만)
   2. `/release feat/134-adsense-switch` → 프로덕션 확인(Ezoic 도메인 요청 0건, `adsbygoogle.js` 1회 로드, 콘솔 오류 0, CLS)
-  3. nginx의 `ads.txt` 301 제거 적용(#155의 러너 경유 워크플로) → `curl -sI https://www.dstcraft.com/ads.txt`가 200이고 본문이 AdSense 게시자 줄인지 확인
+  3. nginx의 `ads.txt` 301 제거 적용 — ssh로 레포 conf를 실서버 경로에 복사(기존 파일은 `.bak-134`로 남긴다) → `/usr/local/bin/nginx -t` 통과 시에만 `/usr/local/bin/nginx -s reload`, 실패하면 백업으로 되돌린다. 비대화형 ssh에서는 `nginx`가 PATH에 없어 전체 경로를 쓴다 → `curl -sI https://www.dstcraft.com/ads.txt`가 200이고 본문이 AdSense 게시자 줄인지 확인
   4. 채움 검증 — `--expect-fill`. ads.txt 재크롤에 시간이 걸릴 수 있으니 안 채워져도 그 회차에서 되돌리지 않고, 다음 회차들에서 다시 본다
   5. 장부 기록(종류 `infra`, git 밖 변경에 nginx 적용 명시), `scripts/check-deadlines.sh`의 11/19 줄 `done:` 처리, `docs/ezoic-decision.md` B절 체크
 - **MCM 위임 해제도 자동 운영이 한다** (2026-11-16 사용자 지정, #156 — 크롬으로 할지 묻자 "그것도 네가 해"). 전환 순서의 3번(nginx)과 4번(채움 검증) 사이에 한다:
