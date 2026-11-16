@@ -15,6 +15,7 @@
 > **2026-11-16 갱신 — 기기 이전 완료.** 옛 운영 맥북은 포맷됐다. 새 맥에서 레포를 최신으로 당기고 예약 작업 `dstcraft-autopilot-daily`를 다시 등록했다(매일 08:37, Bypass permissions 모드). 11/12~11/16은 회차가 돌지 않았다. 같은 날 운영 목표가 **수익 증대**로 정해졌다(`autopilot.md` 0장, #151).
 > 새 맥의 상태: `gh` 로그인·`node`·`jq`·`python3` 있음, Steam `steamapps` 폴더 있음(DST 설치 여부는 미확인), 게임 스냅샷 `~/dst-game-snapshot` **없음** — 첫 회차에서 `scripts/sync-game-data.sh`로 새로 만들 수 있는지 확인할 것. 되면 3장의 공백이 풀린다. Claude 메모리는 옛 기기와 함께 사라졌다.
 > 같은 날 추가(#152): 예약 작업을 하루 3회(`30 8,14,20 * * *`)로 늘렸고, 수익 수치를 Claude in Chrome으로 읽기 시작했다. **기기를 옮길 때 챙길 것이 하나 늘었다** — 크롬 + Claude 확장 연결, 그리고 그 크롬에서 Ezoic/AdSense/Ko-fi 로그인(사용자 몫). 없으면 수익 조회만 건너뛴다.
+> 같은 날 추가(#153): 수익 기록은 비공개 레포 `fankimm/dst-craft-ops`에 있다. 새 기기에서는 `gh repo clone fankimm/dst-craft-ops ../dst-craft-ops` (없으면 첫 회차가 알아서 받는다).
 > 아래 표는 11/11 시점의 기록이다.
 
 | 항목 | 상태 |
