@@ -863,7 +863,7 @@ function BossDetail({
               <React.Fragment key={i}>
                 {showLabel && (
                   <span className="basis-full text-[11px] text-muted-foreground font-medium mt-1 first:mt-0">
-                    {loot.label}
+                    {locale === "ko" ? loot.label : (loot.labelEn ?? loot.label)}
                   </span>
                 )}
                 {isClickable ? (

@@ -2854,7 +2854,7 @@
   desc_es_MX: Caja misteriosa de temporada 1 que revela una figura aleatoria al abrirla. Apilable hasta 10.
 158.carnivaldecor_figure_kit_season2
   en: Gold Mystery Box
-  ko: 황금 수수께끼의 상자
+  ko: 노랑 수수께끼의 상자
   app: O
   source: Deployable kit for carnivaldecor_figure_season2 (season 2); opens with unwrap FX to reveal a random figure; small fuel (15s), stackable 10.
   desc_en: Season 2 mystery box that reveals a random collectible figure when opened. Stackable to 10.
@@ -4177,11 +4177,11 @@
   desc_es_MX: Estatua de mármol del Vástago Celestial. Objeto pesado (velocidad ×0.15, peso gym 4). Destruible en 1 martillazo.
 231.chesspiece_wagboss_robot_builder
   en: W.A.R.B.O.T. Figure
-  ko: W.A.R.B.O.T. 조각상
+  ko: 워.보.트. 조각상
   app: O
   source: Builder item. Spawns a W.A.R.B.O.T. chesspiece (marble) on placement. Heavy item, gym weight 4, walk speed mult 0.15. Hammerable in 1 hit.
   desc_en: Marble statue of W.A.R.B.O.T.. Heavy item (walk speed ×0.15, gym weight 4). Hammerable in 1 hit.
-  desc_ko: W.A.R.B.O.T.의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
+  desc_ko: 워.보.트.의 대리석 조각상. 무거운 아이템(이동 속도 ×0.15, 체육 무게 4). 망치 1회로 파괴 가능.
   desc_ja: W.A.R.B.O.T.の大理石像。重量アイテム（移動速度×0.15、ジム重量4）。ハンマー1回で破壊可能。
   desc_zh_CN: W.A.R.B.O.T.的大理石雕像。重型物品（移速×0.15，锻炼重量4）。1次锤击可破坏。
   desc_zh_TW: W.A.R.B.O.T.的大理石雕像。重型物品（移速×0.15，鍛鍊重量4）。1次錘擊可破壞。
@@ -11992,7 +11992,7 @@
   desc_es_MX: Invocación exclusiva de Maxwell. Crea un Minero de Sombra que pica rocas automáticamente. Cuesta cordura (15 %) y combustible de pesadilla.
 657.shellweaver
   en: Combriner
-  ko: 엽합기
+  ko: 염합기
   app: O
   source: Placed crafting station (prototyper + mad science lab). Unlocks Shellweaver tech tree recipes (L1 = tier 1, L2 = tier 3). Crafting takes 6s with cooking animation. Hammerable (drops recipe ingredients if crafting). Requires proximity to use.
   desc_en: Crafting station that unlocks Shellweaver recipes (tier 1-3). Crafting takes 6s with a cooking animation.
@@ -12014,7 +12014,7 @@
   app: O
   source: Shellweaver-crafted item. Absorbs wetness from items or the environment. Basic tier desiccant. Crafted at the Combriner.
   desc_en: Basic desiccant that absorbs wetness from items or the environment. Crafted at the Combriner.
-  desc_ko: 아이템이나 환경의 습기를 흡수하는 기본 흡습제. 엽합기에서 제작합니다.
+  desc_ko: 아이템이나 환경의 습기를 흡수하는 기본 흡습제. 염합기에서 제작합니다.
   desc_ja: アイテムや環境の湿気を吸収する基本的な乾燥剤。コンブライナーで製作します。
   desc_zh_CN: 从物品或环境中吸收湿气的基础干燥剂。在拼合器中制作。
   desc_zh_TW: 從物品或環境中吸收濕氣的基礎乾燥劑。在拼合器中製作。
@@ -12032,7 +12032,7 @@
   app: O
   source: Shellweaver-crafted item. Upgraded desiccant with enhanced wetness absorption. Crafted at the Combriner (higher tier).
   desc_en: Upgraded desiccant with enhanced wetness absorption. Higher-tier version crafted at the Combriner.
-  desc_ko: 향상된 습기 흡수력을 가진 상위 흡습제. 엽합기에서 제작하는 고급 버전입니다.
+  desc_ko: 향상된 습기 흡수력을 가진 상위 흡습제. 염합기에서 제작하는 고급 버전입니다.
   desc_ja: 強化された湿気吸収力を持つ上位乾燥剤。コンブライナーで製作する上級バージョンです。
   desc_zh_CN: 升级版干燥剂，吸湿能力增强。在拼合器中制作的高级版本。
   desc_zh_TW: 升級版乾燥劑，吸濕能力增強。在拼合器中製作的高級版本。
@@ -12050,7 +12050,7 @@
   app: O
   source: Shellweaver-crafted item. Hermit crab shell container that enables remote item sending. Crafted at the Combriner.
   desc_en: Hermit crab shell container that enables remote item sending. Crafted at the Combriner.
-  desc_ko: 원격으로 아이템을 보낼 수 있는 소라게 껍데기 컨테이너. 엽합기에서 제작합니다.
+  desc_ko: 원격으로 아이템을 보낼 수 있는 소라게 껍데기 컨테이너. 염합기에서 제작합니다.
   desc_ja: アイテムを遠隔送信できるヤドカリの殻コンテナ。コンブライナーで製作します。
   desc_zh_CN: 可远程发送物品的寄居蟹壳容器。在拼合器中制作。
   desc_zh_TW: 可遠程發送物品的寄居蟹殼容器。在拼合器中製作。
@@ -12068,7 +12068,7 @@
   app: O
   source: Shellweaver-crafted weapon/tool. Upgraded ice staff variant. Freezes targets on hit. Crafted at the Combriner.
   desc_en: Upgraded ice staff variant that freezes targets on hit. Crafted at the Combriner.
-  desc_ko: 명중 시 대상을 얼리는 상위 얼음 지팡이. 엽합기에서 제작합니다.
+  desc_ko: 명중 시 대상을 얼리는 상위 얼음 지팡이. 염합기에서 제작합니다.
   desc_ja: 命中時にターゲットを凍結させる上位アイススタッフ。コンブライナーで製作します。
   desc_zh_CN: 命中时冻结目标的升级版冰杖。在拼合器中制作。
   desc_zh_TW: 命中時凍結目標的升級版冰杖。在拼合器中製作。
@@ -12086,7 +12086,7 @@
   app: O
   source: Shellweaver-crafted weapon/tool. Top-tier ice staff variant with enhanced freezing capability. Crafted at the Combriner.
   desc_en: Top-tier ice staff with enhanced freezing capability. The strongest Shellweaver freezing weapon, crafted at the Combriner.
-  desc_ko: 강화된 빙결 능력을 가진 최상위 얼음 지팡이. 엽합기에서 제작하는 가장 강력한 셸위버 빙결 무기입니다.
+  desc_ko: 강화된 빙결 능력을 가진 최상위 얼음 지팡이. 염합기에서 제작하는 가장 강력한 셸위버 빙결 무기입니다.
   desc_ja: 強化された凍結能力を持つ最上位アイススタッフ。コンブライナーで製作する最強のシェルウィーバー凍結武器です。
   desc_zh_CN: 拥有增强冻结能力的顶级冰杖。在拼合器中制作的最强贝壳编织者冻结武器。
   desc_zh_TW: 擁有增強凍結能力的頂級冰杖。在拼合器中製作的最強貝殼編織者凍結武器。
@@ -12104,7 +12104,7 @@
   app: O
   source: Shellweaver-crafted item. Empty bottle that can be filled and sent as a message. Crafted at the Combriner.
   desc_en: Empty bottle that can be filled and sent as a message in a bottle. Crafted at the Combriner.
-  desc_ko: 메시지를 넣어 보낼 수 있는 빈 병. 엽합기에서 제작합니다.
+  desc_ko: 메시지를 넣어 보낼 수 있는 빈 병. 염합기에서 제작합니다.
   desc_ja: メッセージを入れて送れる空き瓶。コンブライナーで製作します。
   desc_zh_CN: 可装入信息并发送的空瓶。在拼合器中制作。
   desc_zh_TW: 可裝入訊息並發送的空瓶。在拼合器中製作。
@@ -12122,7 +12122,7 @@
   app: O
   source: Shellweaver-crafted item. Sprinkles grit on icy ground to prevent slipping. Basic tier. Crafted at the Combriner.
   desc_en: Sprinkles grit on icy ground to prevent slipping. Basic-tier anti-slip tool crafted at the Combriner.
-  desc_ko: 빙판에 소금을 뿌려 미끄러짐을 방지하는 기본 도구. 엽합기에서 제작합니다.
+  desc_ko: 빙판에 소금을 뿌려 미끄러짐을 방지하는 기본 도구. 염합기에서 제작합니다.
   desc_ja: 凍った地面に砂を撒いて滑り止めにする基本ツール。コンブライナーで製作します。
   desc_zh_CN: 在冰面上撒砂砾防滑的基础工具。在拼合器中制作。
   desc_zh_TW: 在冰面上撒砂礫防滑的基礎工具。在拼合器中製作。
@@ -12140,7 +12140,7 @@
   app: O
   source: Shellweaver-crafted item. Upgraded grit duster with enhanced anti-slip coverage. Crafted at the Combriner.
   desc_en: Upgraded grit tool with enhanced anti-slip coverage area. Higher-tier version crafted at the Combriner.
-  desc_ko: 향상된 미끄럼 방지 범위를 가진 상위 소금 도구. 엽합기에서 제작하는 고급 버전입니다.
+  desc_ko: 향상된 미끄럼 방지 범위를 가진 상위 소금 도구. 염합기에서 제작하는 고급 버전입니다.
   desc_ja: 滑り止め範囲が拡大された上位砂撒きツール。コンブライナーで製作する上級バージョンです。
   desc_zh_CN: 升级版砂砾工具，防滑覆盖范围扩大。在拼合器中制作的高级版本。
   desc_zh_TW: 升級版砂礫工具，防滑覆蓋範圍擴大。在拼合器中製作的高級版本。
@@ -12158,7 +12158,7 @@
   app: O
   source: Hat. Shellweaver-crafted headwear. Crafted at the Combriner. Themed around salt/ocean content.
   desc_en: Shellweaver-crafted hat with a salt/ocean theme. Crafted at the Combriner.
-  desc_ko: 소금/바다 테마의 셸위버 제작 모자. 엽합기에서 제작합니다.
+  desc_ko: 소금/바다 테마의 셸위버 제작 모자. 염합기에서 제작합니다.
   desc_ja: 塩・海をテーマにしたシェルウィーバー製の帽子。コンブライナーで製作します。
   desc_zh_CN: 以盐/海洋为主题的贝壳编织者帽子。在拼合器中制作。
   desc_zh_TW: 以鹽/海洋為主題的貝殼編織者帽子。在拼合器中製作。
@@ -15478,13 +15478,13 @@
   desc_es_MX: Sombrero sombrío con armadura. Absorción basada en la fórmula de armadura de tela del vacío. Nivel de sombra 3.
 846.wagboss_robot_constructionsite_kit
   en: W.A.R.B.O.T. Base Kit
-  ko: W.A.R.B.O.T. 기단부 키트
+  ko: 워.보.트. 기단부 키트
   app: O
   source: Deployable kit. Places W.A.R.B.O.T. construction site for the Wagstaff boss encounter.
     tuning.lua:
     WAGBOSS_ROBOT_CONSTRUCTIONSITE_KIT_PLACEMENT_RADIUS = 4,
   desc_en: Deployable kit that places a W.A.R.B.O.T. construction base. Placement radius 4.
-  desc_ko: W.A.R.B.O.T. 건설 기단부를 설치하는 배치 키트. 설치 반경 4.
+  desc_ko: 워.보.트. 건설 기단부를 설치하는 배치 키트. 설치 반경 4.
   desc_ja: W.A.R.B.O.T.建設基地を配置するキット。配置半径4。
   desc_zh_CN: 部署W.A.R.B.O.T.建设基地的套件。放置半径4。
   desc_zh_TW: 部署W.A.R.B.O.T.建設基地的套件。放置半徑4。
@@ -15498,11 +15498,11 @@
   desc_es_MX: Kit desplegable que coloca una base de construcción W.A.R.B.O.T. Radio de colocación 4.
 847.wagboss_robot_creation_parts
   en: W.A.R.B.O.T. Parts
-  ko: W.A.R.B.O.T. 부품
+  ko: 워.보.트. 부품
   app: O
   source: Crafting material (wagboss_robot_constructionsite.lua). Inventory item used to fill the W.A.R.B.O.T. construction site. Stackable.
   desc_en: Crafting material used to fill the W.A.R.B.O.T. construction site. Stackable.
-  desc_ko: W.A.R.B.O.T. 건설 현장을 채우는 데 사용하는 제작 재료. 중첩 가능.
+  desc_ko: 워.보.트. 건설 현장을 채우는 데 사용하는 제작 재료. 중첩 가능.
   desc_ja: W.A.R.B.O.T.建設現場を埋めるための素材。スタック可能。
   desc_zh_CN: 用于填充W.A.R.B.O.T.建设工地的制作材料。可堆叠。
   desc_zh_TW: 用於填充W.A.R.B.O.T.建設工地的製作材料。可堆疊。
@@ -16671,7 +16671,7 @@
   desc_es_MX: Kit desplegable. Coloca una estructura de Reflector de Winona.
 906.winona_storage_robot
   en: W.I.N.bot
-  ko: W.I.N봇
+  ko: 위.노.봇
   app: O
   source: Automated storage robot with 480s (1 day) fuel, work radius 15, run speed 5, footprint 1; recharges at rate -2 from battery (power load 0.1); low fuel warning at 2%
   desc_en: Automated storage robot. 480s (1 day) fuel, work radius 15, speed 5. Power load 0.1. Low fuel warning at 2%.
@@ -17590,7 +17590,7 @@
   desc_es_MX: Herramienta inicial de WX-78. Escanea criaturas para producir módulos de circuito. Exclusivo de WX-78.
 957.wx78module_bee
   en: Beanbooster Circuit
-  ko: 빈부스터 모듈
+  ko: 빈부스터 회로
   app: O
   source: WX-78 upgrade module; 4 uses before breaking; installed into WX-78's circuit slots; bee-related effect
   desc_en: WX-78 circuit module. 4 uses. Provides bee-related boost when installed.

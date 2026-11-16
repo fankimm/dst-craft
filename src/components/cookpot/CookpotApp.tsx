@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { statColor, formatStat } from "@/lib/stat-utils";
 import { assetPath } from "@/lib/asset-path";
 import { ingredientImage, type CookpotIngredient } from "@/data/cookpot-ingredients";
-import { simulate } from "@/lib/cookpot-engine";
+import { simulate, reachableRecipes } from "@/lib/cookpot-engine";
 import type { CookingRecipe } from "@/data/recipes";
 import { IngredientPicker } from "./IngredientPicker";
 import { CookpotTrainer } from "./CookpotTrainer";
@@ -17,6 +17,8 @@ import { tt } from "./trainer-text";
 import { useUrlStateSync } from "@/hooks/use-url-state";
 import { useTabSync } from "@/hooks/use-tab-sync";
 import { Footer } from "../crafting/Footer";
+import { ItemSlot } from "../ui/ItemSlot";
+import { useDelayedReady } from "@/hooks/use-delayed-ready";
 import { trackItemClick, trackCombo } from "@/lib/analytics";
 import { usePopularity } from "@/hooks/use-popularity";
 
@@ -81,6 +83,13 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
     if (!allFilled) return null;
     return simulate(filledIngredients, station);
   }, [allFilled, filledIngredients, station]);
+
+  // 1~3개만 넣었을 때 "아직 될 수 있는 요리" (#137). slots가 state라 재료가 바뀔 때만 다시 계산
+  const candidates = useMemo(() => {
+    const filled = slots.filter((s): s is CookpotIngredient => s !== null);
+    return filled.length > 0 && filled.length < 4 ? reachableRecipes(filled, station) : [];
+  }, [slots, station]);
+  const candidatesKey = `${station}:${filledIngredients.map((i) => i.id).join(",")}`;
 
   // Track simulation results
   const prevResultId = useRef<string | null>(null);
@@ -171,8 +180,17 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
       <div className="shrink-0 px-3 pt-4 pb-2 max-w-4xl mx-auto w-full">
         <div className="flex gap-2">
           {/* Left: result card or empty placeholder — 50% */}
-          <div className="w-1/2 min-w-0">
-            <ResultPanel result={result} allFilled={allFilled} locale={resolvedLocale} onViewRecipe={onViewRecipe} getSimClicks={(id) => getClicks(`sim:${id}`)} />
+          <div className="w-1/2 min-w-0 relative">
+            <ResultPanel
+              result={result}
+              allFilled={allFilled}
+              candidates={candidates}
+              candidatesKey={candidatesKey}
+              filledCount={filledIngredients.length}
+              locale={resolvedLocale}
+              onViewRecipe={onViewRecipe}
+              getSimClicks={(id) => getClicks(`sim:${id}`)}
+            />
           </div>
 
           {/* Right: vertical slots + clear button — 50% */}
@@ -329,16 +347,29 @@ function IngredientSlot({
 function ResultPanel({
   result,
   allFilled,
+  candidates,
+  candidatesKey,
+  filledCount,
   locale,
   onViewRecipe,
   getSimClicks,
 }: {
   result: ReturnType<typeof simulate> | null;
   allFilled: boolean;
+  /** 1~3개 넣은 상태에서 아직 될 수 있는 요리 (#137) */
+  candidates: CookingRecipe[];
+  /** 재료 구성이 바뀌면 후보 패널을 다시 마운트해 고스트 클릭 가드를 재시작 */
+  candidatesKey: string;
+  filledCount: number;
   locale: Locale;
   onViewRecipe?: (recipeId: string) => void;
   getSimClicks: (id: string) => number;
 }) {
+  // Partially filled — show what the pot can still become
+  if (!allFilled && filledCount > 0) {
+    return <CandidatePanel key={candidatesKey} candidates={candidates} locale={locale} onViewRecipe={onViewRecipe} />;
+  }
+
   // No result — show dashed placeholder
   if (!allFilled || !result || result.recipes.length === 0) {
     return (
@@ -376,6 +407,51 @@ function ResultPanel({
 }
 
 // ---------------------------------------------------------------------------
+// Candidate panel — dishes the pot can still become (#137)
+// ---------------------------------------------------------------------------
+// 슬롯 칸 높이에 맞춰 absolute로 채우고 안에서 스크롤한다 — 후보가 60개를 넘어도 재료 피커 영역을 밀어내지 않게
+
+function CandidatePanel({
+  candidates,
+  locale,
+  onViewRecipe,
+}: {
+  candidates: CookingRecipe[];
+  locale: Locale;
+  onViewRecipe?: (recipeId: string) => void;
+}) {
+  const ready = useDelayedReady();
+  const canNavigate = !!onViewRecipe && ready;
+
+  return (
+    <div className="absolute inset-0 flex flex-col rounded-xl border border-border bg-surface/50 overflow-hidden">
+      <div className="shrink-0 flex items-center justify-between gap-1 px-2 py-1 border-b border-border text-[10px] text-muted-foreground">
+        <span className="truncate">{t(locale, "cookpot_candidates")}</span>
+        <span className="font-semibold tabular-nums text-foreground/80">{candidates.length}</span>
+      </div>
+      {candidates.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center px-2 text-[10px] text-muted-foreground text-center">
+          {t(locale, "cookpot_candidates_none")}
+        </div>
+      ) : (
+        <div className="flex-1 min-h-0 overflow-y-auto p-1.5">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(56px,1fr))] gap-y-1.5 gap-x-0.5 justify-items-center">
+            {candidates.map((recipe) => (
+              <ItemSlot
+                key={recipe.id}
+                icon={`${recipe.id}.png`}
+                label={foodName(recipe, locale)}
+                onClick={canNavigate ? () => onViewRecipe(recipe.id) : undefined}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Result card (compact inline)
 // ---------------------------------------------------------------------------
 
@@ -392,14 +468,8 @@ function ResultCard({
   onViewRecipe?: (recipeId: string) => void;
   simCount: number;
 }) {
-  // Prevent ghost-click on mobile: delay interactivity after mount
-  // so a delayed touch event from the ingredient picker doesn't
-  // trigger navigation on the newly-appeared result card.
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 350);
-    return () => clearTimeout(timer);
-  }, []);
+  // Prevent ghost-click on mobile: the picker tap that filled the 4th slot must not land on this card
+  const ready = useDelayedReady();
 
   const localName = foodName(recipe, locale);
   const showAltName = locale !== "en" && localName !== recipe.name;

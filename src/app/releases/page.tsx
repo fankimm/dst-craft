@@ -15,6 +15,170 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.45.0",
+    date: "2026-11-11",
+    dev: [
+      "scripts/extract-item-names.py 확장 — 스크랩북 type creature 188종의 이름(en/ko)·분류명·관련 항목(deps) 이름·STRINGS.SCRAPBOOK.SANITYDESC 문구와 TUNING.SANITYAURA_MED/HUGE 경계를 src/data/creature-names.ts로 생성. 이름 override 4종은 CREATURE_ALIASES(prefab SetPrefabNameOverride 확인), 누락 시 exit 1 (#149)",
+      "/creatures, /ko/creatures 생물 도감(seo/CreaturesCatalogContent) — 분류별 카드, deps를 관련 항목 칩으로(아이템·도감 링크). ItemList JSON-LD, 사이트맵·llms.txt·browse·홈 푸터 링크. CatalogIconBox를 /items와 공유",
+      "ItemStatsPanel에 체력·정신력 오라 행 추가 — 오라는 scrapbookscreen.lua의 6단계 분기 그대로 문구로 표시",
+    ],
+    changes: {
+      ko: ["생물 도감 페이지를 열었습니다 — 인게임 스크랩북의 생물 188종을 분류별로 모아 체력·공격력·정신력 오라를 볼 수 있습니다"],
+      en: ["New Creature Catalog page — all 188 creatures from the in-game Scrapbook by category, with health, damage and sanity aura"],
+    },
+  },
+  {
+    version: "0.44.0",
+    date: "2026-11-10",
+    dev: [
+      "scripts/extract-item-names.py 신규 — ko.po STRINGS.NAMES로 스크랩북 아이템 843개 이름(en/ko)과 STRINGS.SCRAPBOOK.SUBCATS 분류 이름을 src/data/item-names.ts로 생성. 겨울 장식품은 winter_ornaments.lua의 이름 override 추적, 누락 시 exit 1. sync-game-data.sh에 연결 (#148)",
+      "/items, /ko/items 아이템 도감(seo/ItemsCatalogContent) — 분류별 묶음, /item 페이지 있는 451개는 링크, 제작 불가 392개는 ItemStatsPanel 인라인. ItemList JSON-LD, 사이트맵·llms.txt·browse·홈 푸터 링크",
+    ],
+    changes: {
+      ko: ["아이템 도감 페이지를 열었습니다 — 인게임 스크랩북의 아이템 843개를 분류별로 모았고, 보석·잡동사니·장식품처럼 제작할 수 없는 아이템도 스펙을 바로 볼 수 있습니다"],
+      en: ["New Item Catalog page — all 843 items from the in-game Scrapbook by category, including stats for items you can't craft (gems, trinkets, ornaments and more)"],
+    },
+  },
+  {
+    version: "0.43.1",
+    date: "2026-11-09",
+    dev: [
+      "scripts/extract-books.py 신규 — prefabs/books.lua의 read/peruse sanity와 reader 코드 경로를 assert로 고정해 src/data/book-sanity.ts 생성, sync-game-data.sh에 연결 (#143)",
+      "ItemStatsPanel에 BookSanityRow 추가 — 위커바텀 read, 맥스웰 read × MAXWELL_READING_SANITY_MULT(2.5), 워트 peruse",
+    ],
+    changes: {
+      ko: ["책 상세 화면에 위커바텀·맥스웰·워트가 읽을 때의 정신력 변화를 표시합니다"],
+      en: ["Book details now show the Sanity change when read by Wickerbottom, Maxwell, and Wurt"],
+    },
+  },
+  {
+    version: "0.43.0",
+    date: "2026-11-08",
+    dev: [
+      "feat(quests): 게팍한 은둔자 거래 목록 + 집 꾸미기 점수표 (#142, 피드백 `1779535886458-v1mko8` `1779971540965-gv1yyh`)",
+      "`src/data/hermit-trades.ts` — 병 교환 19품목(recipes.lua 932-950, 해금 Lv은 hermitcrab.lua `friendlevel_N_reward`의 EnableShop 1/2/3/4 = Lv1/3/6/8 + Lv9·10 LearnItem, 겨울 장식은 집 수리 3단계+겨울 축제), 차 8종(hermitcrabtea_defs.lua TEA_DEFS·BUFF_DEFS, 레벨별 재료 수 recipes.lua 1503-1505, 레벨 기준 hermitcrab_teashop.lua 점수 50/75), 꾸미기 점수(components/pearldecorationscore.lua + tuning HERMITCRAB_DECOR_*), 점수 해금(hermithouse.lua UNLOCKABLE_RECIPES, shellweaver.lua 2단계 40/30, 온천 담그기 30→60초)",
+      "`quests/HermitInfo.tsx` — 퀘스트 탭 은둔자 카드 아래 접이식 카드(보기 칩: 병 교환/찻집/집 꾸미기). 표시 컴포넌트 3개는 `/quest/hermit` SEO 페이지(ko/en)에도 섹션으로 삽입, `seo-text.ts` 은둔자 FAQ 2개 추가",
+      "문구는 `quests/hermit-text.ts`(게임에 없는 말만), 이름은 ko.po/strings.lua. 영문 품목명은 기억이 아니라 strings.lua 대조로 확정(찌는 'Quill Float', 루어는 'Stupefying'/'Heavy Weighted')",
+    ],
+    changes: {
+      ko: [
+        "퀘스트 탭 은둔자 카드 아래에 '은둔자 거래 · 집 꾸미기' 카드가 생겼습니다. 병 교환: 친구 레벨별로 열리는 품목과 빈 병 가격. 찻집: 차 8종의 재료 수(점수별)와 마실 때 효과. 집 꾸미기: 항목별 점수·상한·감점과 점수로 열리는 가로등·찻집·온천·대형 건조대 조건.",
+        "은둔자 퀘스트 페이지(/quest/hermit)에도 같은 표가 들어갑니다.",
+      ],
+      en: [
+        "New 'Hermit Trades & Home Decor' card under the Hermit quest in the Quests tab. Bottle Exchange: what unlocks at each friendship level and its Empty Bottle price. Tea Shop: ingredient counts (by decor score) and effects of all 8 teas. Home Decor: per-item points, caps and penalties, plus the score thresholds for the Light Post, Tea Shop, Hot Spring and Large Drying Rack.",
+        "The same tables are on the Hermit quest page (/quest/hermit).",
+      ],
+    },
+  },
+  {
+    version: "0.42.2",
+    date: "2026-11-07",
+    dev: [
+      "fix(cookpot): 요리솥 트레이너 제보 4건 (#141, 피드백 `1793294780693-wxp1kf`)",
+      "우유 짜는 모자(`batnosehat`)를 '먹을 수 없음'이 아니라 착용 효과로 채점 — hats.lua `batnose_equip`의 `hungerregenbuff`: 5초마다 `HUNGERREGEN_TICK_VALUE`(3.90625) × 0.5일(240초) = 허기 187.5, dapperness −`DAPPERNESS_TINY` × 240초 ≈ 정신력 −5.3. `recipeStats`가 `WEARABLE_STATS`를 보므로 최적해·월리 기억 배율에도 같이 적용. 위그프리드만 못 쓰는 건 트레이너가 일반 플레이어 기준이라 무시",
+      "먹기·굽기 버튼은 평소 아이콘만, 첫 탭에 '먹기?'/'굽기?'로 펼쳐지고 그동안 반대쪽 버튼은 숨김 — 64px 칸에서 두 텍스트 버튼이 겹치던 문제",
+      "재료 칸 순서를 라운드 전체 재료로 미리 고정(`formOrder`: 지급 순서, 구운 형태는 날것 바로 오른쪽) — 한 칸을 먹거나 구우면 나머지 칸이 뒤로 밀리던 문제",
+      "`cookpot-ingredients.ts` `missingCookedImages`에서 `tomato_cooked` 제거 — `public/images/game-items/tomato_cooked.png`가 이미 있는데 날것 이미지를 쓰고 있었다 (요리솥 시뮬레이터·트레이너 공통)",
+      "docs(autopilot): '검토 목록에 넣었어요' 답변의 status를 `hold`가 아니라 `new`로 정정",
+    ],
+    changes: {
+      ko: [
+        "요리솥 트레이너: 우유 짜는 모자를 만들면 '먹을 수 없음'이 아니라 쓰고 있는 동안의 효과(허기 +187.5, 정신력 −5.3)로 계산합니다. 최적 플랜에도 반영됩니다.",
+        "요리솥 트레이너: 먹기·굽기 버튼이 겹치지 않게 평소엔 아이콘만 보이고, 한 번 누르면 '먹기?'/'굽기?'로 확인합니다.",
+        "요리솥 트레이너: 재료 칸의 순서가 라운드 내내 고정됩니다. 먹거나 구워도 나머지 칸이 밀리지 않고, 구운 재료는 날것 바로 오른쪽에 생깁니다.",
+        "구운 토마토란에 전용 이미지를 표시합니다 (요리솥 시뮬레이터·트레이너).",
+      ],
+      en: [
+        "Crock Pot Trainer: the Milkmade Hat now counts its worn effect (+187.5 hunger, −5.3 sanity over its lifetime) instead of showing as inedible, and the optimal plan uses it too.",
+        "Crock Pot Trainer: the Eat and Roast buttons no longer overlap — they show as icons and expand to \"Eat?\" / \"Roast?\" on the first tap.",
+        "Crock Pot Trainer: ingredient slots keep their order for the whole round. Eating or roasting no longer shifts the rest, and roasted items appear right next to the raw ones.",
+        "Roasted Toma Root now has its own sprite (Crock Pot simulator and trainer).",
+      ],
+    },
+  },
+  {
+    version: "0.42.1",
+    date: "2026-10-31",
+    dev: [
+      "fix(i18n): 한글모드 개명 반영 (#139) — 수작업 한글명 38건을 ko.po `STRINGS.NAMES` 기준으로 동기화. `bosses.ts`(nameKo·lootNameKo), `locales/ko.ts`, `cookpot-ingredients.ts`, `game-items-db.ts`(+`docs/item-list.md`), `wx78-circuits.ts`, 스킬 번역 본문의 설명문 언급까지",
+      "refactor(dev): 개발용 보스 페이지의 `lootNameKo` 사본 제거 → `lootDisplayName` 공통 사용",
+      "`carnival_gametoken_multiple`의 '까악제 토큰 3개'는 단품과 구분용으로 유지. 슬러그는 영문 name 기준이라 변경 없음",
+    ],
+    changes: {
+      ko: [
+        "한글모드에서 바뀐 아이템·보스 이름을 반영했습니다. 예: 워.보.트., 위.노.봇, 수.다.쟁.이., 염합기, 빈부스터 회로, 우유빛 흰자위, 말린 고사리잎.",
+      ],
+      en: [
+        "Updated Korean item and boss names to match the latest Korean translation mod.",
+      ],
+    },
+  },
+  {
+    version: "0.42.0",
+    date: "2026-10-31",
+    dev: [
+      "feat(bosses): **Cursed Confrontation Part 2 보스 7종** (#138). 장막의 여왕(`charlie_boss`)·본영의 흉물(`shrouden`)·사냥개 바틸리스크(`bat_boss`)·장수돌가재(`rocky_boss`)와 먹빛 변형 3종(`bat_boss_shadow`·`rocky_boss_shadow`·`worm_boss_shadow`). 전리품은 각 prefab의 `SetSharedLootTable`/`LOOT` 그대로 — 본영의 흉물은 사망 표 `shrouden` + 웅덩이 상태(`SGshrouden` death)의 `shrouden2`(공포석·어둠의 넝마·도면) 합산",
+      "feat(bosses): `BossLoot.labelEn` 추가 — 조건부 전리품 소제목을 보스탭·SEO 보스 페이지 모두 로캘별 렌더. 장수돌가재 산성비 초석 4개(`SetNitre` → `NITRELOOT`)에 사용",
+      "feat(data): 조각상 5종(`items.ts`·`locales/ko.ts`·`sketches.ts` 보스 입수처), 아이콘 26개(인벤토리 아틀라스 KTEX 추출), 보스 이미지 7장 + 무손실 WebP thumb",
+      "chore(data): 게임 데이터 빌드 26306684(release 760944) 동기화 — scrapbook-stats, skins(+58 아이콘), spawnable-prefabs를 ko.po NAMES로 재생성(+125)",
+      "chore: `sync-game-data.sh`에 Pillow preflight(중간 실패로 game-version만 빠지는 상태 방지), 오답노트 2건",
+    ],
+    changes: {
+      ko: [
+        "보스탭에 새 보스 7종이 추가됐습니다: 장막의 여왕, 본영의 흉물, 사냥개 바틸리스크, 장수돌가재, 그리고 먹빛 사냥개 바틸리스크·먹빛 장수돌가재·먹빛 거대 동굴지렁이. 전리품은 게임 데이터 기준입니다.",
+        "새 보스 조각상 5종을 제작 탭에서 찾을 수 있습니다.",
+        "게임 데이터를 최신 업데이트(Cursed Confrontation Part 2) 기준으로 갱신했습니다.",
+      ],
+      en: [
+        "Added 7 new bosses to the Bosses tab: Shrouded Queen, Umbral Abomination, Hound Batilisk, Rock Master, plus Blighted Hound Batilisk, Blighted Rock Master and Blighted Great Depths Worm. Loot is taken from the game data.",
+        "The 5 new boss figures are now in the Crafting tab.",
+        "Game data updated to the latest update (Cursed Confrontation Part 2).",
+      ],
+    },
+  },
+  {
+    version: "0.41.0",
+    date: "2026-10-29",
+    dev: [
+      "feat(cookpot): **시뮬레이터 '될 수 있는 요리'** (#137, 피드백 `1793252068746-m08eq5`). 재료를 1~3개만 넣으면 결과 자리에 남은 칸을 어떤 재료로 채워도 최종 결과가 될 수 있는 요리 목록(`CandidatePanel`, `ItemSlot` 그리드, 탭 → 레시피 상세). `cookpot-engine.ts`의 `reachableRecipes`가 남은 칸 조합을 전부 열거해 `topMatches`에 든 레시피만 모은다 — 조건은 맞아도 우선순위에 밀리는 요리는 제외, 곤죽 제외, 정렬은 그 요리로 끝나는 조합 수(일반 요리 먼저)",
+      "perf(cookpot): 엔진 bag을 Proxy에서 0으로 깐 평범한 객체로, 레시피는 우선순위 내림차순으로 정렬해 첫 매치 뒤 break. 기존 `simulate`와 4만 조합 대조 일치. 열거는 이름으로 참조되는 재료(`NAME_REFERENCED_IDS`)만 각자 두고 나머지는 태그 조합별 대표 1개 — 전체 재료 열거와 240건 대조 일치. 그래도 재료 1개(빈 칸 3개, C(91,3)≈12만 조합)는 0.3~0.5초라 `scripts/generate-cookpot-reachable.mts`가 미리 계산해 `src/data/cookpot-reachable.ts`(37KB, 요리솥 청크)에 저장. 레시피 순서·재료 id 불일치면 표를 버리고 직접 계산, 개발 모드는 throw + 잔가지 한 건 실계산 대조",
+      "chore: `scripts/ts-import-hooks.mjs`(Node 24 type stripping용 `@/` 로더), `useDelayedReady` 훅으로 고스트 클릭 가드 공통화, docs/ui.md·terminology·CLAUDE.md, /task 스킬에 node_modules 심볼릭 링크 함정",
+    ],
+    changes: {
+      ko: [
+        "요리솥 시뮬레이터에 재료를 1~3개만 넣어도 '될 수 있는 요리'가 바로 보입니다. 남은 칸을 어떤 재료로 채워도 나올 수 있는 요리만, 흔하게 나오는 순으로 보여주고 탭하면 레시피로 갑니다.",
+      ],
+      en: [
+        "Crock Pot Simulator now shows the possible dishes as soon as you add 1–3 ingredients — only dishes the pot can still become with any remaining ingredients, most common first. Tap one to open its recipe.",
+      ],
+    },
+  },
+  {
+    version: "0.40.0",
+    date: "2026-10-27",
+    dev: [
+      "feat(cookpot): **요리솥 트레이너 — 모닥불 굽기** (#135, 피드백 `1792800424528-9shbx3`). 재료 칸에 \"굽기\" 버튼(두 번 탭, 되돌릴 수 없음) — `TrainerItem.roasted`(요리솥 재료 `<id>_cooked`)로 형태가 바뀌고, 구운 재료는 따로 먹거나 솥에 넣는다. 월리 모드도 굽기 가능(솥 재료 바꾸기용). 풀에 이미 구워진 재료 7종(가중치 1) 추가",
+      "feat(cookpot): **잔가지 무제한** — 풀에서 빼고 남은 재료 맨 앞 `∞` 칸으로. 솥 칸 값 `TWIG_UID`(-1, 중복 가능), 솥에서 빼기는 칸 위치 기준. 액션·플랜에 `ingredients`(실제 넣은 4개) 기록",
+      "feat(cookpot): 최적해를 (종류, 형태) 슬롯 1~4개 + 잔가지 솥 후보로 일반화(`buildProblem`) — 같은 종류 조합은 최선의 형태 배정만, 월리는 요리별로 따로 유지. 8개 120라운드(월리 포함) 전수 탐색과 일치. 20개 평균 0.35초·최악 0.9초, 월리 16개 평균 0.17초. 테스트 전용 `_solveBitmaskDp`/`_solveWarlyEnum` 제거",
+      "fix(data): **얼음 생식 누락** — `extract-raw-foods.py`가 없는 `ice.lua`를 `exists()`로 건너뛰고 있었다(실제 `inv_rocks_ice.lua`). 없는 특수 파일은 exit 1, `TUNING.X*k`/`X/k` 상수식 해석(수박 구이·얼음). 요리탭 생식 목록에 얼음 추가",
+      "feat(data): 구운 재료 36종 수치를 `raw-foods.ts`의 `cookedFoods`로 자동 생성 (veggies.lua 조리 열, mushrooms.lua cooked*, meats.lua·egg.lua의 `cookedX`→`X_cooked` 정규화)",
+      "chore: CLAUDE.md 파이프라인 규칙, docs/ui.md 트레이너, 오답노트(추출 스크립트 exists() 누락)",
+    ],
+    changes: {
+      ko: [
+        "요리솥 트레이너에서 재료를 모닥불에 구울 수 있습니다. 구운 재료는 그냥 먹거나 요리솥에 넣을 수 있고, 처음부터 구워진 재료가 나오기도 합니다.",
+        "요리솥 트레이너의 잔가지가 무제한이 됐습니다. 남은 재료 맨 앞 칸에서 언제든 원하는 만큼 넣을 수 있고, 최적 조합도 굽기와 잔가지를 함께 따져 계산합니다.",
+        "얼음을 생으로 먹을 수 있게 고쳤습니다 (요리탭 생식 목록에도 추가).",
+      ],
+      en: [
+        "Crock Pot Trainer: you can now roast ingredients on a fire, then eat them or put them in the pot. Some ingredients also come already cooked.",
+        "Crock Pot Trainer: twigs are now unlimited — add them from the first slot anytime. The optimal plan accounts for roasting and twigs too.",
+        "Ice is now edible raw (also added to the raw food list in the Cooking tab).",
+      ],
+    },
+  },
+  {
     version: "0.39.0",
     date: "2026-10-22",
     dev: [

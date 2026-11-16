@@ -1,9 +1,22 @@
 # CLAUDE.md
 
 ## Communication Rules
-- 유저가 모호하게 요청하면 바로 작업하지 말고, 용어집(docs/terminology.md)의 용어로 확인 질문을 한 뒤 진행할 것
+- 유저가 모호하게 요청하면 바로 작업하지 말고, 용어집(docs/terminology.md)의 용어로 확인 질문을 한 뒤 진행할 것 (사용자와 대화 중일 때. 예약 실행 등 무인 회차에서는 용어집 기준으로 스스로 해석해 진행한다)
 - 용어집에 없는 새 UI 요소나 개념이 등장하면 용어집에 추가 제안할 것
 - 작업 중 발견한 프로젝트 구조, 배포 방식, 기술 스택 등 중요한 정보는 이 CLAUDE.md에 자동으로 추가/갱신할 것
+
+## Autopilot (완전 위임 운영, 2026-11-07~)
+- 사용자가 이 프로젝트의 운영을 Claude에게 **완전 위임**했다 (#140). 범위·매일 사이클·되돌리기는 **`docs/autopilot.md`** 가 단일 기준이다 — 작업 전에 읽을 것
+- **운영 목표는 수익 증대** (2026-11-16 사용자 지정, #151) — 무엇을 할지 고를 때의 기준. 레버와 넘지 않는 선은 `docs/autopilot.md` 0장. 목표가 "사용자 몫"을 줄이지는 않는다
+- **묻지 않고 한다**: 코드 변경의 프로덕션 배포(`/task`→`/beta`→`/release`), 피드백 답변 등록, 이슈·백로그 정리. 이 문서의 다른 절에 "사용자에게 확인/보고 후"라고 적힌 단계는, 아래 "사용자 몫"이 아닌 한 Claude가 판단으로 대신한다
+- **사용자 몫으로 남는다**: 돈·계약·계정 콘솔(광고 포함), 시크릿, 되돌릴 수 없는 삭제·히스토리 재작성, dstcraft 밖 맥미니 서비스. 상세는 `docs/autopilot.md` 1장
+- **프로덕션에 내보낸 것은 전부 `docs/autopilot-ledger.md`에 적는다** (릴리즈 전에, 그 feat 브랜치에서). 장부가 롤백의 근거다
+- 복귀 기준점: 태그 `pre-autopilot-2026-11-07` + 맥미니 `~/Backups/dstcraft/pinned/pre-autopilot-2026-11-07.db.gz` — **지우지 말 것**
+- "자동 운영 전으로 돌려줘" 요청을 받으면 `docs/autopilot.md` 4.3절대로 — 통째 되감기가 아니라 장부를 보고 골라서 revert
+- **수익 수치는 Claude in Chrome으로 광고 콘솔을 읽기 전용으로 조회**해 비공개 레포 `fankimm/dst-craft-ops`(로컬 `../dst-craft-ops`)의 `revenue-log.md`에 적는다 (2026-11-16 사용자 지정, #152 #153). **이 레포는 공개라 수익 수치를 여기에는 적지 않는다.** 읽기를 넘는 콘솔 조작은 여전히 사용자 몫 — `docs/autopilot.md` 0.1절
+- **#134 AdSense 전환 릴리즈도 자동 운영이 한다** (2026-11-16 사용자 지정, #154). 단 Ezoic 계약 때문에 **2026-11-20 17:00 KST 전에는 하지 않는다** — 조건·순서는 `docs/autopilot.md` 1.1절. Ad Manager **MCM 위임 해제 한 가지도 위임됐다**(#156) — 그 밖의 콘솔 설정 변경은 사용자 몫
+- 실행은 운영 기기 Claude 앱의 예약 작업 `dstcraft-autopilot-daily` (하루 3회, 횟수 조정 가능) — **한 기기에서만** 돌린다. 프롬프트 원본은 `docs/autopilot-daily-prompt.md`
+- 운영 기기를 옮기거나 멈추거나 다시 켤 때는 **`docs/autopilot-handover.md`** (레포 밖에만 있는 것, 재개 절차, 알려진 공백)
 
 ## Code Quality Rules
 - **한 탭에 요청된 기능/변경은 나머지 탭(제작/요리/보스)에도 자동 적용할 것** — 요리솥 탭은 구조가 다르므로 예외이나, 적용 가능하다고 판단되면 함께 적용
@@ -121,30 +134,33 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 
 **사용자에게 토큰을 받지 않는다.** 맥미니 안에서 `.env`의 `JWT_SECRET`으로 단기(10분) 관리자 토큰을 만들어 로컬 API로만 호출한다 — 시크릿도 토큰도 서버 밖으로 나가지 않는다.
 
+**등록 경로는 `scripts/feedback-reply.sh`** (#140) — 맥미니 self-hosted 러너의 `feedback-reply` 워크플로우를 불러 답변과 번역을 한 번에 저장한다. ssh가 필요 없어 맥북이 집 밖이어도 된다. 러너가 실행하는 스크립트는 맥미니의 **main 클론**이므로, `reply-as-claude.ts`를 고쳤다면 main 머지 뒤에 반영된다.
+
 1. **답변할 피드백 id 확인**
    ```bash
    curl -s https://www.dstcraft.com/api/feedback/public | jq '.items[] | {id, message, messageLang, reply, replyAuthor, replyTranslated}'
    ```
 
-2. **답변 문구를 사용자에게 확인받는다** — 공개 게시판에 그대로 노출되므로 예외 없음
+2. **답변 문구를 정한다** — 자동 운영 위임(2026-11-07, #140) 이후로는 사용자 확인 없이 등록한다. 공개 게시판에 그대로 노출되므로 `docs/autopilot.md` 3장 "피드백 답변 원칙"을 지킬 것 (프로덕션 확인 뒤에만 "반영했어요", 약속·날짜 금지, 내부 정보 금지). 위임이 종료되면 이 단계는 "사용자에게 확인받는다 — 예외 없음"으로 되돌아간다
    - **답변은 피드백 원문 언어로만 쓴다.** 한국어 피드백엔 한국어, 영어 피드백엔 영어, 그 외 언어(포르투갈어 등)도 그 언어로. **한 답변에 두 언어를 병기하지 않는다** — 보드는 `pickDisplay`가 사용자 로캘에 맞춰 원문/번역 중 하나만 보여주는 구조라, 병기하면 모든 사용자가 두 언어를 다 보게 된다 (#106). 반대 언어는 4번의 번역 필드로 따로 넣는다
 
-3. **등록** — 맥미니에서 `bun-api/scripts/reply-as-claude.ts` 실행 (`replyAuthor=claude` 고정):
+3. **등록 + 번역** — 한 번에:
    ```bash
-   ssh fankimm@100.85.118.4 '~/.bun/bin/bun run ~/works/dst-craft/bun-api/scripts/reply-as-claude.ts "<피드백 id>" "<답변 본문>" done'
+   scripts/feedback-reply.sh "<피드백 id>" done ko "<답변 본문>" "<반대 언어 번역>"
    ```
-   - 3번째 인자는 status — `new` / `done` / `hold` / `rejected` (생략 시 `done`)
-   - 답변은 500자에서 잘림
+   - 인자: `<id> <status> <답변 언어> <답변> <답변 번역> [<피드백 언어> <피드백 번역>]`. status는 `new` / `done` / `hold` / `rejected`
+   - 그 피드백의 메시지가 아직 미번역이면(1번 출력에서 `messageLang: null`) 뒤의 두 인자도 준다. 이미 번역돼 있으면 건너뛴다
+   - 답변은 500자에서 잘림 (스크립트가 미리 막는다)
+   - **원문이 ko/en이 아닐 때(pt 등)** — 답변은 그대로 원문 언어로 쓰고, 번역 값을 문자열 대신 `'{"ko":"…","en":"…"}'` JSON으로 준다. DB 칸은 하나라 JSON 맵으로 저장되고 `pickDisplay`가 사용자 로캘 키를 고른다 (#123)
+   - **답변을 고치면 옛 번역은 자동으로 지워진다** — 새 번역을 같이 주지 않으면 번역 없음 상태가 되니 항상 같이 줄 것
+   - 출력의 `이전 상태` 줄은 릴리즈에 묶인 답변이면 `docs/autopilot-ledger.md`에 적는다 (롤백 때 그 상태로 돌린다)
    - 공개 목록 캐시가 60초라 사이트 반영에 최대 1분
 
-4. **번역 백필** — 등록 스크립트는 `reply`만 쓰고 번역 필드(`replyLang`/`replyTranslated`)는 채우지 않는다. `bun-api/scripts/translate-existing-feedback.ts`의 `TRANSLATIONS` 끝에 항목을 추가한다 — `replyLang`은 답변 원문 언어, `replyTranslated`는 반대 언어 번역. 그 피드백의 메시지가 아직 미번역이면(1번 출력에서 `messageLang: null`) `messageLang`/`messageTranslated`도 같은 항목에 채운다. `MODEL` 상수는 이번 번역을 쓴 모델로 갱신한다(기존 row는 덮어쓰지 않아 안전). 그리고 맥미니에서 실행:
+4. **러너가 안 될 때의 대안** — 맥미니에 ssh로 들어가 같은 스크립트를 직접 실행 (집 랜 `192.168.0.61` 또는 Tailscale `100.85.118.4`):
    ```bash
-   scp bun-api/scripts/translate-existing-feedback.ts fankimm@100.85.118.4:/tmp/ && ssh fankimm@100.85.118.4 '~/.bun/bin/bun run /tmp/translate-existing-feedback.ts'
+   ssh fankimm@192.168.0.61 '~/.bun/bin/bun run ~/works/dst-craft/bun-api/scripts/reply-as-claude.ts "<id>" "<답변>" done --reply-lang=ko --reply-translated="<번역>"'
    ```
-   - 맥미니 클론은 main이라 feat 브랜치의 수정본은 이렇게 scp로 넘겨 돌린다 (스크립트는 `bun:sqlite`만 써서 단독 실행 가능)
-   - 이미 번역된 row는 `*_translated_at IS NULL` 조건으로 건너뛰므로 여러 번 돌려도 안전
-   - **원문이 ko/en이 아닐 때(pt 등)** — 답변은 그대로 원문 언어로 쓰고, `messageLang`/`replyLang`에 그 언어 코드를 넣은 뒤 번역 값을 문자열 대신 `{ ko: "…", en: "…" }` 두 벌로 준다. DB 칸은 하나라 JSON 맵으로 저장되고 `pickDisplay`가 사용자 로캘 키를 고른다 (#123). 새 언어면 스크립트의 `Lang` 타입에 코드를 추가할 것. **이 프론트 변경이 배포되기 전에 맵을 넣으면 사용자에게 JSON 원문이 그대로 보인다** — 순서 주의
-   - **답변을 나중에 고치면 번역이 자동으로 지워지지 않는다** (PATCH는 `reply`/`reply_author`만 갱신). 답변을 바꿨으면 DB에서 그 row의 `reply_translated`/`reply_translated_at`을 NULL로 되돌린 뒤 다시 백필
+   - 여러 건의 번역만 따로 채워야 하면 예전 방식(`bun-api/scripts/translate-existing-feedback.ts`의 `TRANSLATIONS`에 항목 추가 → scp → 맥미니에서 실행)도 그대로 동작한다. 이미 번역된 row는 건너뛴다
 
 5. **확인** — 1번 curl을 다시 돌려 `replyAuthor: "claude"`와 `replyTranslated`가 채워졌는지 본다 (공개 목록 캐시 60초)
 
@@ -171,7 +187,9 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `src/components/cooking/` — 요리 탭 컴포넌트
 - `src/components/console/` — 콘솔 명령어 탭 컴포넌트
 - `src/components/cookpot/` — 요리솥 탭: 시뮬레이터(`CookpotApp`·`IngredientPicker`) + 트레이너 미니게임(`CookpotTrainer`, #128). 트레이너 문구는 `trainer-text.ts`
-- `src/lib/cookpot-trainer.ts` — 요리솥 트레이너 엔진: 재료 풀(생식 수치가 `raw-foods.ts`에 있는 것만), 채점, 월리 기억 배율(`WARLY_SAME_OLD_MULTIPLIERS`), 최적해(종류별 개수 DP ≤20개 / 월리 분기한정 ≤16개 — 상한 근거는 상수 주석). 풀에 재료를 더할 땐 `raw-foods.ts`에 그 재료가 있어야 한다 — 없으면 모듈 로드 시 throw
+- `src/lib/cookpot-engine.ts` — 요리솥 시뮬레이터 엔진 (preparedfoods.lua 포팅). `simulate`(4개 결과) + `reachableRecipes`(1~3개일 때 될 수 있는 요리, #137). 재료 1개 경우는 열거가 0.3초 넘게 걸려 `src/data/cookpot-reachable.ts`에 **미리 계산한 표**를 둔다 — **`recipeTests`·`recipes.ts`·`cookpot-ingredients.ts`를 바꾸면 `node --import ./scripts/ts-import-hooks.mjs ./scripts/generate-cookpot-reachable.mts` 재실행**(약 80초, `--check`로 대조). 레시피 순서·재료 id가 어긋나면 엔진이 표를 버리고 직접 계산하고 개발 모드는 throw. 테스트에 새 `n.<id>`를 쓰면 `NAME_REFERENCED_IDS`에도 추가(개발 모드 self-check가 잡는다)
+- `scripts/ts-import-hooks.mjs` — Node 24가 `src/`의 TS를 그대로 실행하게 하는 로더(`@/` 별칭·확장자 보완). `node --import ./scripts/ts-import-hooks.mjs ./<스크립트>.mts`. src/lib 로직을 헤드리스로 검증할 때도 쓴다
+- `src/lib/cookpot-trainer.ts` — 요리솥 트레이너 엔진: 재료 풀(생식 수치가 `raw-foods.ts`에 있는 것만, 구울 수 있으면 `cookedFoods`에 구운 수치도), 모닥불 굽기·무제한 잔가지(#135), 채점, 월리 기억 배율(`WARLY_SAME_OLD_MULTIPLIERS`), 최적해(종류별 개수 DP ≤20개 / 월리 분기한정 ≤16개 — 상한 근거는 상수 주석). 풀에 재료를 더할 땐 `raw-foods.ts`에 그 재료가 있어야 한다 — 없으면 모듈 로드 시 throw
 - `src/components/farming/` — 농사 탭 컴포넌트 (#120). 게임에 없는 문구는 `farming-text.ts`에만 둔다
 - `src/components/skills/` — 스킬트리 시뮬레이터 탭 컴포넌트
 - `src/components/settings/` — 설정 페이지
@@ -210,12 +228,17 @@ Vercel은 watchdog failover 용도로만 유지 (Phase 6 자동 DNS 전환).
 - `.github/workflows/watchdog.yml` — 헬스 복구 담당 (3/3 실패 → 60초 재확인 후에도 죽어 있으면 Telegram 긴급 + DNS failover). schedule은 백업 감지. DNS 복귀는 Worker가 자동으로 누르고, 즉시 되돌리려면 수동: `gh workflow run watchdog.yml -f failback=true`
 - `worker/index.ts` — Cloudflare Worker (레거시, 일부 analytics)
 - `worker/wrangler.toml` — Worker 설정 (레거시)
+- `docs/autopilot.md` — 자동 운영 규칙 (권한 범위, 매일 사이클, 피드백 답변 원칙, 되돌리기). `docs/autopilot-ledger.md` — 자동 운영이 프로덕션에 내보낸 것의 장부. `docs/autopilot-handover.md` — 기기 이전·중단·재개 인계 문서. `docs/autopilot-daily-prompt.md` — 예약 작업 프롬프트 원본
+- `scripts/feedback-reply.sh` + `.github/workflows/feedback-reply.yml` — 맥미니 러너 경유 피드백 답변·번역 등록 (#140)
 - `docs/terminology.md` — UI 용어집
 - `docs/ui.md` — UI/UX 가이드 (컴포넌트 패턴, 레이아웃 규칙)
 - `docs/scrapbook-migration.md` — 스크랩북 데이터 마이그레이션 설계 (히스토리)
 - `docs/farming-research.md` — 농사 탭 사전 조사 (#117): 공략 10개를 게임 소스와 대조 검증한 기록, 소스 기준 농사 메커니즘·상수, 작물/비료/도구 표, 계절별 무비료 조합, 공략 오류 로그. 농사 기능을 만들기 전에 먼저 읽을 것
 - `src/data/farming.ts` — 농사 데이터 (작물 14·잡초 4·비료 17·돌보기 도구·급수·스트레스 등급·도감 라벨) — 자동 생성, 수정 금지
 - `scripts/extract-farming.py` — 위 파일 생성 파이프라인 (아래 Farming Pipeline Rules)
+- `src/data/item-names.ts` — 스크랩북 아이템 이름(en/ko)·분류 이름 (#148) — `scripts/extract-item-names.py` 자동 생성(ko.po `STRINGS.NAMES.*`, 겨울 장식품은 `winter_ornaments.lua`의 이름 override를 따라간다), 수정 금지. 이름 없는 아이템이 생기면 exit 1 — 스크립트의 `NAME_ALIASES`에 매핑. `/items` 아이템 도감(`src/components/seo/ItemsCatalogContent.tsx`)이 쓴다
+- `src/data/creature-names.ts` — 스크랩북 생물 이름·분류명·관련 항목(deps) 이름·정신력 오라 문구/경계 (#149) — 같은 `scripts/extract-item-names.py`가 생성, 수정 금지. 이름 없는 생물이 생기면 exit 1 — prefab의 `SetPrefabNameOverride`를 확인해 `CREATURE_ALIASES`에 매핑. `/creatures` 생물 도감(`src/components/seo/CreaturesCatalogContent.tsx`)이 쓴다
+- `src/data/book-sanity.ts` — 책별 읽기/워트 정독 정신력 (#143) — `scripts/extract-books.py` 자동 생성, 수정 금지. assert 실패는 패치로 코드 경로가 바뀌었다는 뜻
 - `src/lib/farming-combos.ts` — 계절별 무비료 조합 계산 (`farmCombos`), 일반 씨앗 확률 (`randomSeedChances`)
 - `src/components/seo/FarmingContent.tsx` — `/farming`, `/ko/farming` 정적 페이지
 - `src/components/seo/list-schema.tsx` — 허브 페이지 공통 ItemList/FAQ JSON-LD + 데이터 출처 문구 (#126). 새 허브 페이지는 홈 `SeoFooterLinks`·`/browse`·사이트맵에 링크까지 같이 넣을 것
@@ -306,6 +329,8 @@ jihwan-kim3 (macOS):
 - 정확하지 않은 항목은 스크립트 상단의 `OVERRIDES` dict에 명시적으로 수정 (예: butter → foodtype dairy)
 - **VEGGIES 행을 못 읽으면 스크립트가 목록을 찍고 exit 1로 죽는다** (파일 미기록) — `MakeVegStats(` 호출 수와 파싱 행 수도 대조. 조용한 누락 방지용이니 `continue`로 되돌리지 말 것. `IsSpecialEventActive(...) and X or Y` 같은 이벤트 조건식은 비이벤트 값(`or` 쪽)을 쓴다 (#122, 호박 누락 건)
 - 제외할 항목은 `EXCLUDE_IDS`에 ID 추가 (예: acorn — FOODTYPE.SEEDS, raw 식용 의미 없음)
+- **구운 재료는 별도 배열 `cookedFoods`** (#135) — id는 요리솥 재료 id(`<원재료>_cooked`)와 같다. meats.lua의 `cookedmeat`처럼 접두형 prefab은 스크립트가 `meat_cooked`로 바꾼다. `rawFoods`(요리탭 생식 목록)에는 `INCLUDE_COOKED_VARIANTS_VEGGIE` 화이트리스트만 들어간다
+- `SPECIAL_FILES`의 파일이 없으면 exit 1 — 얼음이 `ice.lua`(실제는 `inv_rocks_ice.lua`) 때문에 조용히 빠져 있었다 (#135). 수치식은 `TUNING.X`, `-TUNING.X`, `TUNING.X*k`, `TUNING.X/k`까지 읽는다
 - 렌더링: `src/components/cooking/CookingApp.tsx`의 `RawFoodGrid` + `RawFoodDetail` (요리탭 "raw" 카테고리에서만)
 
 ## Farming Pipeline Rules

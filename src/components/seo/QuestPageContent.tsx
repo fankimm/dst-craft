@@ -13,6 +13,8 @@ import { JsonLd } from "./JsonLd";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { AdBleed } from "@/components/ads/AdBleed";
 import { resolveIconPath } from "@/lib/icon-path";
+import { HermitDecor, HermitTeas, HermitTrades } from "@/components/quests/HermitInfo";
+import { ht } from "@/components/quests/hermit-text";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -259,6 +261,24 @@ export function QuestPageContent({ slug, lang }: { slug: string; lang: SeoLang }
             })}
           </ol>
         </section>
+
+        {/* 은둔자 전용: 병 교환 · 찻집 · 집 꾸미기 점수 (#142) */}
+        {quest.id === "hermit" && (
+          <>
+            <section>
+              <h2 className="text-base font-semibold text-foreground mb-3">{ht("viewTrades", lang)}</h2>
+              <HermitTrades lang={lang} routePrefix={routePrefix} />
+            </section>
+            <section>
+              <h2 className="text-base font-semibold text-foreground mb-3">{ht("viewTeas", lang)}</h2>
+              <HermitTeas lang={lang} />
+            </section>
+            <section>
+              <h2 className="text-base font-semibold text-foreground mb-3">{ht("viewDecor", lang)}</h2>
+              <HermitDecor lang={lang} />
+            </section>
+          </>
+        )}
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">{L.questTips[lang]}</h2>

@@ -318,6 +318,22 @@ const SKINS_0: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "amulet_blue_shadow",
+    "base_prefab": "blueamulet",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "AMULET_BLUE",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Brumal Amulet",
+    "name_ko": "겨울빛 부적",
+    "icon": "/images/skins/amulet_blue_shadow.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "amulet_green_relic",
     "base_prefab": "greenamulet",
     "type": "item",
@@ -331,6 +347,22 @@ const SKINS_0: SkinEntry[] = [
     "name_en": "Robustum Amulet",
     "name_ko": "강건의 부적",
     "icon": "/images/skins/amulet_green_relic.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "amulet_green_shadow",
+    "base_prefab": "greenamulet",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "AMULET_GREEN",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Verdigris Amulet",
+    "name_ko": "청녹의 부적",
+    "icon": "/images/skins/amulet_green_shadow.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -365,6 +397,22 @@ const SKINS_0: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "amulet_orange_shadow",
+    "base_prefab": "orangeamulet",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "AMULET_ORANGE",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Carnelian Amulet",
+    "name_ko": "홍옥수 부적",
+    "icon": "/images/skins/amulet_orange_shadow.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "amulet_purple_relic",
     "base_prefab": "purpleamulet",
     "type": "item",
@@ -378,6 +426,22 @@ const SKINS_0: SkinEntry[] = [
     "name_en": "Qualming Amulet",
     "name_ko": "흉조의 부적",
     "icon": "/images/skins/amulet_purple_relic.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "amulet_purple_shadow",
+    "base_prefab": "purpleamulet",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "AMULET_PURPLE",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Lolite Amulet",
+    "name_ko": "근청석 부적",
+    "icon": "/images/skins/amulet_purple_shadow.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -444,6 +508,22 @@ const SKINS_0: SkinEntry[] = [
     "icon": "/images/skins/amulet_red_rose.png"
   },
   {
+    "id": "amulet_red_shadow",
+    "base_prefab": "amulet",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "AMULET_RED",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Sanguine Amulet",
+    "name_ko": "선혈의 부적",
+    "icon": "/images/skins/amulet_red_shadow.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "amulet_yellow_an",
     "base_prefab": "yellowamulet",
     "type": "item",
@@ -502,6 +582,22 @@ const SKINS_0: SkinEntry[] = [
     "name_en": "Faint Gleam Amulet",
     "name_ko": "한 줄기 빛의 부적",
     "icon": "/images/skins/amulet_yellow_relic.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "amulet_yellow_shadow",
+    "base_prefab": "yellowamulet",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "AMULET_YELLOW",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Orpiment Amulet",
+    "name_ko": "웅황의 부적",
+    "icon": "/images/skins/amulet_yellow_shadow.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -750,6 +846,20 @@ const SKINS_0: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "armor_rocky_spikey",
+    "base_prefab": "armor_rocky",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "ARMORROCKY",
+      "CRAFTABLE"
+    ],
+    "release_group": 187,
+    "name_en": "Spiky Carapace",
+    "name_ko": "뾰족뾰족 껍데기",
+    "icon": "/images/skins/armor_rocky_spikey.png"
+  },
+  {
     "id": "armor_ruins_an",
     "base_prefab": "armorruins",
     "type": "item",
@@ -792,8 +902,24 @@ const SKINS_0: SkinEntry[] = [
     ],
     "release_group": 51,
     "name_en": "Steadfast Grand Suit",
-    "name_ko": "위대한 견고함의 갑옷",
+    "name_ko": "위대한 굳건함의 갑옷",
     "icon": "/images/skins/armor_ruins_bulky.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "armor_ruins_chess",
+    "base_prefab": "armorruins",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ARMORRUINS",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Cavalier Grand Suit",
+    "name_ko": "위대한 기마병의 갑옷",
+    "icon": "/images/skins/armor_ruins_chess.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -951,6 +1077,38 @@ const SKINS_0: SkinEntry[] = [
     "name_en": "Quilted Puffy Vest",
     "name_ko": "누빔 부푼 조끼",
     "icon": "/images/skins/armor_trunkvest_winter_quilted.png"
+  },
+  {
+    "id": "armor_voidcloth_ribbon",
+    "base_prefab": "armor_voidcloth",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ARMOR_VOIDCLOTH",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Patched Void Robe",
+    "name_ko": "기운 공허의 로브",
+    "icon": "/images/skins/armor_voidcloth_ribbon.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "armor_voidcloth_spooky",
+    "base_prefab": "armor_voidcloth",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "ARMOR_VOIDCLOTH",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Void Rags",
+    "name_ko": "공허의 거적",
+    "icon": "/images/skins/armor_voidcloth_spooky.png",
+    "rarity_modifier": "Woven"
   },
   {
     "id": "armor_wood_fangedcollar",
@@ -1773,6 +1931,22 @@ const SKINS_0: SkinEntry[] = [
     "icon": "/images/skins/beargervest_rose.png"
   },
   {
+    "id": "beargervest_shadow",
+    "base_prefab": "beargervest",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "BEARGERVEST",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Sanguine Bearger Vest",
+    "name_ko": "핏빛 곰소리 조끼",
+    "icon": "/images/skins/beargervest_shadow.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "beargervest_yule",
     "base_prefab": "beargervest",
     "type": "item",
@@ -2417,6 +2591,18 @@ const SKINS_0: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "boat_shadow_item",
+    "base_prefab": "boat_item",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Sanguine Skiff",
+    "name_ko": "핏빛 쪽배",
+    "icon": "/images/skins/boat_shadow_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "boat_tesla_item",
     "base_prefab": "boat_item",
     "type": "item",
@@ -2841,7 +3027,10 @@ const SKINS_0: SkinEntry[] = [
     "name_ko": "생존주의자 모닥불",
     "icon": "/images/skins/campfire_cabin.png",
     "rarity_modifier": "Woven"
-  },
+  }
+];
+
+const SKINS_1: SkinEntry[] = [
   {
     "id": "cane_ancient",
     "base_prefab": "cane",
@@ -2871,6 +3060,22 @@ const SKINS_0: SkinEntry[] = [
     "name_en": "Candy Cane",
     "name_ko": "지팡이 사탕",
     "icon": "/images/skins/cane_candycane.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "cane_chess",
+    "base_prefab": "cane",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "CANE",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Castle Cane",
+    "name_ko": "성채 지팡이",
+    "icon": "/images/skins/cane_chess.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -3028,10 +3233,7 @@ const SKINS_0: SkinEntry[] = [
     "name_ko": "의자버섯",
     "icon": "/images/skins/chair_stool_fantasy.png",
     "rarity_modifier": "Woven"
-  }
-];
-
-const SKINS_1: SkinEntry[] = [
+  },
   {
     "id": "chair_stool_hallowed",
     "base_prefab": "wood_stool",
@@ -3158,6 +3360,22 @@ const SKINS_1: SkinEntry[] = [
     "name_en": "Nouveau Frigid Firepit",
     "name_ko": "누보 냉화덕",
     "icon": "/images/skins/coldfirepit_an.png"
+  },
+  {
+    "id": "coldfirepit_chess",
+    "base_prefab": "coldfirepit",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "COLDFIREPIT",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Cold Gambit Firepit",
+    "name_ko": "냉정한 수의 화덕",
+    "icon": "/images/skins/coldfirepit_chess.png",
+    "rarity_modifier": "Woven"
   },
   {
     "id": "coldfirepit_flower",
@@ -3899,7 +4117,7 @@ const SKINS_1: SkinEntry[] = [
     ],
     "release_group": 182,
     "name_en": "The Wain",
-    "name_ko": "꽃수레",
+    "name_ko": "꽃을 보는 캣쿤",
     "icon": "/images/skins/decor_portraitframe_rose.png",
     "rarity_modifier": "Woven"
   },
@@ -3968,6 +4186,78 @@ const SKINS_1: SkinEntry[] = [
     "name_en": "Monkey Post",
     "name_ko": "원숭이 말뚝",
     "icon": "/images/skins/dock_woodposts_carved_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "dock_woodposts_chessblack2_item",
+    "base_prefab": "dock_woodposts_item",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Black Pawn Post",
+    "name_ko": "검은 폰 말뚝",
+    "icon": "/images/skins/dock_woodposts_chessblack2_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "dock_woodposts_chessblack3_item",
+    "base_prefab": "dock_woodposts_item",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Black Bishop Post",
+    "name_ko": "검은 비숍 말뚝",
+    "icon": "/images/skins/dock_woodposts_chessblack3_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "dock_woodposts_chessblack_item",
+    "base_prefab": "dock_woodposts_item",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Black Rook Post",
+    "name_ko": "검은 룩 말뚝",
+    "icon": "/images/skins/dock_woodposts_chessblack_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "dock_woodposts_chesswhite2_item",
+    "base_prefab": "dock_woodposts_item",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "White Pawn Post",
+    "name_ko": "하얀 폰 말뚝",
+    "icon": "/images/skins/dock_woodposts_chesswhite2_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "dock_woodposts_chesswhite3_item",
+    "base_prefab": "dock_woodposts_item",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "White Bishop Post",
+    "name_ko": "하얀 비숍 말뚝",
+    "icon": "/images/skins/dock_woodposts_chesswhite3_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "dock_woodposts_chesswhite_item",
+    "base_prefab": "dock_woodposts_item",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "White Rook Post",
+    "name_ko": "하얀 룩 말뚝",
+    "icon": "/images/skins/dock_woodposts_chesswhite_item.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -4132,7 +4422,7 @@ const SKINS_1: SkinEntry[] = [
     ],
     "release_group": 31,
     "name_en": "Vampire Batling",
-    "name_ko": "뱀파이어 박쥐들링",
+    "name_ko": "흡혈박쥐들링",
     "icon": "/images/skins/dragonling_bat.png"
   },
   {
@@ -4147,7 +4437,7 @@ const SKINS_1: SkinEntry[] = [
     ],
     "release_group": 105,
     "name_en": "Vampire Batling",
-    "name_ko": "뱀파이어 박쥐들링",
+    "name_ko": "흡혈박쥐들링",
     "icon": "/images/skins/dragonling_batp.png",
     "rarity_modifier": "Woven"
   },
@@ -4414,6 +4704,22 @@ const SKINS_1: SkinEntry[] = [
     "name_en": "Cawnival Endtable",
     "name_ko": "까악제 작은 탁자",
     "icon": "/images/skins/endtable_cawnival_alt.png"
+  },
+  {
+    "id": "endtable_chess",
+    "base_prefab": "endtable",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "ENDTABLE",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Knightstand",
+    "name_ko": "마상의 탁자",
+    "icon": "/images/skins/endtable_chess.png",
+    "rarity_modifier": "Woven"
   },
   {
     "id": "endtable_dragonfly",
@@ -4715,6 +5021,18 @@ const SKINS_1: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "fence_hallowed_item",
+    "base_prefab": "fence_item",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 187,
+    "name_en": "Pumpkin Patch Fence",
+    "name_ko": "호박밭 울타리",
+    "icon": "/images/skins/fence_hallowed_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "fence_picketbrown_item",
     "base_prefab": "fence_item",
     "type": "item",
@@ -4847,6 +5165,18 @@ const SKINS_1: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "fencegate_hallowed_item",
+    "base_prefab": "fence_gate_item",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 187,
+    "name_en": "Pumpkin Patch Gate",
+    "name_ko": "호박밭 울타리문",
+    "icon": "/images/skins/fencegate_hallowed_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "fencegate_picketbrown_item",
     "base_prefab": "fence_gate_item",
     "type": "item",
@@ -4940,6 +5270,22 @@ const SKINS_1: SkinEntry[] = [
     "name_en": "Antique Bronze Gate",
     "name_ko": "고풍스런 청동 대문",
     "icon": "/images/skins/fencegate_victorianbronze_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "firepit_chess",
+    "base_prefab": "firepit",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FIREPIT",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Pawnfire",
+    "name_ko": "폰화덕",
+    "icon": "/images/skins/firepit_chess.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -5099,6 +5445,18 @@ const SKINS_1: SkinEntry[] = [
     "icon": "/images/skins/firestaff_bee.png"
   },
   {
+    "id": "firestaff_chess",
+    "base_prefab": "firestaff",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Fiery Royal Staff",
+    "name_ko": "타오르는 왕가의 지팡이",
+    "icon": "/images/skins/firestaff_chess.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "firestaff_flamelash",
     "base_prefab": "firestaff",
     "type": "item",
@@ -5229,6 +5587,22 @@ const SKINS_1: SkinEntry[] = [
     "name_en": "Fling-o-Tron 4000",
     "name_ko": "플링오트론 4000",
     "icon": "/images/skins/firesuppressor_robot.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "firesuppressor_shadow",
+    "base_prefab": "firesuppressor",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "FIRESUPPRESSOR",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Sanguine Suppressor",
+    "name_ko": "핏빛 진압기",
+    "icon": "/images/skins/firesuppressor_shadow.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -5526,7 +5900,10 @@ const SKINS_1: SkinEntry[] = [
     "name_ko": "테라프리즈마",
     "icon": "/images/skins/glasscutter_terraprisma.png",
     "rarity_modifier": "Woven"
-  },
+  }
+];
+
+const SKINS_2: SkinEntry[] = [
   {
     "id": "glomling_beardeddragon",
     "base_prefab": "critter_glomling",
@@ -5757,6 +6134,22 @@ const SKINS_1: SkinEntry[] = [
     "icon": "/images/skins/greenstaff_an.png"
   },
   {
+    "id": "greenstaff_chess",
+    "base_prefab": "greenstaff",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "CHESS",
+      "GREENSTAFF",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Gallant Deconstructor",
+    "name_ko": "용감한 해체기",
+    "icon": "/images/skins/greenstaff_chess.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "greenstaff_clockwork",
     "base_prefab": "greenstaff",
     "type": "item",
@@ -5927,10 +6320,7 @@ const SKINS_1: SkinEntry[] = [
     "name_ko": "맹그로브 투구",
     "icon": "/images/skins/hat_antlion_swamp.png",
     "rarity_modifier": "Woven"
-  }
-];
-
-const SKINS_2: SkinEntry[] = [
+  },
   {
     "id": "hat_catcoon_costume",
     "base_prefab": "tophat",
@@ -6148,6 +6538,20 @@ const SKINS_2: SkinEntry[] = [
     "icon": "/images/skins/hat_woodcarved_swamp.png",
     "rarity_modifier": "Woven",
     "character": "woodie"
+  },
+  {
+    "id": "hatbat_bosscorpse_vampire",
+    "base_prefab": "bat_bosscorpsehat",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "HATBATBOSSCORPSE",
+      "CRAFTABLE"
+    ],
+    "release_group": 187,
+    "name_en": "Vampire Bat Hat",
+    "name_ko": "흡혈박쥐 모자",
+    "icon": "/images/skins/hatbat_bosscorpse_vampire.png"
   },
   {
     "id": "heatrock_fantasy",
@@ -6397,6 +6801,22 @@ const SKINS_2: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "hivehat_shadow",
+    "base_prefab": "hivehat",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HIVEHAT",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Sanguine Queen's Crown",
+    "name_ko": "핏빛 여왕의 왕관",
+    "icon": "/images/skins/hivehat_shadow.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "hutch_fishbowl_fantasy",
     "base_prefab": "hutch_fishbowl",
     "type": "item",
@@ -6526,6 +6946,18 @@ const SKINS_2: SkinEntry[] = [
     "icon": "/images/skins/icestaff_bee.png"
   },
   {
+    "id": "icestaff_chess",
+    "base_prefab": "icestaff",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Icy Queen Staff",
+    "name_ko": "얼음 여왕의 지팡이",
+    "icon": "/images/skins/icestaff_chess.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "icestaff_gungnir",
     "base_prefab": "icestaff",
     "type": "item",
@@ -6612,6 +7044,20 @@ const SKINS_2: SkinEntry[] = [
     "icon": "/images/skins/icestaff_rw_swamp.png"
   },
   {
+    "id": "king_cane_scorpion",
+    "base_prefab": "king_cane",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "KINGCANE",
+      "CRAFTABLE"
+    ],
+    "release_group": 187,
+    "name_en": "Scorpion Cane",
+    "name_ko": "전갈 지팡이",
+    "icon": "/images/skins/king_cane_scorpion.png"
+  },
+  {
     "id": "kitten_black",
     "base_prefab": "critter_kitten",
     "type": "item",
@@ -6671,6 +7117,22 @@ const SKINS_2: SkinEntry[] = [
     "name_en": "Foraging Sack",
     "name_ko": "채집 주머니",
     "icon": "/images/skins/krampus_sack_garden.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "krampus_sack_shadow",
+    "base_prefab": "krampus_sack",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "KRAMPUS_SACK",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Sanguine Sack",
+    "name_ko": "핏빛 보따리",
+    "icon": "/images/skins/krampus_sack_shadow.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -7321,6 +7783,18 @@ const SKINS_2: SkinEntry[] = [
     "icon": "/images/skins/mast_rose_item.png"
   },
   {
+    "id": "mast_shadow_item",
+    "base_prefab": "mast_item",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Sanguine Sail",
+    "name_ko": "핏빛 돛",
+    "icon": "/images/skins/mast_shadow_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "mastupgrade_lightningrod_item_nautical",
     "base_prefab": "mastupgrade_lightningrod_item",
     "type": "item",
@@ -7850,6 +8324,18 @@ const SKINS_2: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "moonstaff_chess",
+    "base_prefab": "opalstaff",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Bishop's Moon Staff",
+    "name_ko": "주교의 달 지팡이",
+    "icon": "/images/skins/moonstaff_chess.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "moonstaff_crystal",
     "base_prefab": "opalstaff",
     "type": "item",
@@ -8302,7 +8788,10 @@ const SKINS_2: SkinEntry[] = [
     "name_ko": "핫라인 낚시대",
     "icon": "/images/skins/oceanfishingrod_hotline.png",
     "rarity_modifier": "Woven"
-  },
+  }
+];
+
+const SKINS_3: SkinEntry[] = [
   {
     "id": "oceanfishingrod_ice",
     "base_prefab": "oceanfishingrod",
@@ -8369,6 +8858,18 @@ const SKINS_2: SkinEntry[] = [
     "name_en": "Candy Explorer",
     "name_ko": "사탕 탐험가",
     "icon": "/images/skins/orangestaff_candycane.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "orangestaff_chess",
+    "base_prefab": "orangestaff",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Castle Explorer",
+    "name_ko": "성채 탐험가",
+    "icon": "/images/skins/orangestaff_chess.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -8507,7 +9008,7 @@ const SKINS_2: SkinEntry[] = [
     ],
     "release_group": 184,
     "name_en": "Polka Dot Parasol",
-    "name_ko": "Polka Dot Parasol",
+    "name_ko": "땡땡이 파라솔",
     "icon": "/images/skins/parasol_polkadot.png"
   },
   {
@@ -8760,6 +9261,22 @@ const SKINS_2: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "piggyback_shadow",
+    "base_prefab": "piggyback",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIGGYBACK",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Sanguine Pack",
+    "name_ko": "핏빛 가방",
+    "icon": "/images/skins/piggyback_shadow.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "pighouse_cabin",
     "base_prefab": "pighouse",
     "type": "item",
@@ -8792,6 +9309,22 @@ const SKINS_2: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "pighouse_hallowed",
+    "base_prefab": "pighouse",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "PIGHOUSE",
+      "CRAFTABLE"
+    ],
+    "release_group": 187,
+    "name_en": "Haunted Hovel",
+    "name_ko": "귀신들린 오두막",
+    "icon": "/images/skins/pighouse_hallowed.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "pighouse_logcabin",
     "base_prefab": "pighouse",
     "type": "item",
@@ -8806,10 +9339,7 @@ const SKINS_2: SkinEntry[] = [
     "name_ko": "소박한 통나무집",
     "icon": "/images/skins/pighouse_logcabin.png",
     "rarity_modifier": "Woven"
-  }
-];
-
-const SKINS_3: SkinEntry[] = [
+  },
   {
     "id": "pitchfork_fork",
     "base_prefab": "pitchfork",
@@ -8821,7 +9351,7 @@ const SKINS_3: SkinEntry[] = [
     ],
     "release_group": 184,
     "name_en": "Giant's Fork",
-    "name_ko": "Giant's Fork",
+    "name_ko": "거인의 포크",
     "icon": "/images/skins/pitchfork_fork.png"
   },
   {
@@ -9192,6 +9722,20 @@ const SKINS_3: SkinEntry[] = [
     "icon": "/images/skins/puppy_winter.png"
   },
   {
+    "id": "queen_torch_lotus",
+    "base_prefab": "queen_torch",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "QUEENTORCH",
+      "CRAFTABLE"
+    ],
+    "release_group": 187,
+    "name_en": "Dark Bloom Torch",
+    "name_ko": "흑련의 횃불",
+    "icon": "/images/skins/queen_torch_lotus.png"
+  },
+  {
     "id": "rabbithouse_carrat",
     "base_prefab": "rabbithouse",
     "type": "item",
@@ -9470,6 +10014,22 @@ const SKINS_3: SkinEntry[] = [
     "name_en": "Alchemy Table",
     "name_ko": "연금술 탁자",
     "icon": "/images/skins/researchlab2_alchemytable.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "researchlab2_chess",
+    "base_prefab": "researchlab2",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "CHESS",
+      "ALCHEMY",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Royal Alchemy Engine",
+    "name_ko": "왕가의 연금술 엔진",
+    "icon": "/images/skins/researchlab2_chess.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -9878,6 +10438,22 @@ const SKINS_3: SkinEntry[] = [
     "name_en": "Prestiwitchatator",
     "name_ko": "마녀 모자 장치",
     "icon": "/images/skins/researchlab4_witch_pyre.png"
+  },
+  {
+    "id": "researchlab_chess",
+    "base_prefab": "researchlab",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SCIENCEMACHINE",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "King's Science Machine",
+    "name_ko": "왕립 과학 기계",
+    "icon": "/images/skins/researchlab_chess.png",
+    "rarity_modifier": "Woven"
   },
   {
     "id": "researchlab_gothic",
@@ -10298,6 +10874,22 @@ const SKINS_3: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "ruins_bat_chess",
+    "base_prefab": "ruins_bat",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "RUINS_BAT",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Chess Club",
+    "name_ko": "체스 몽동아리",
+    "icon": "/images/skins/ruins_bat_chess.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "ruins_bat_heavy",
     "base_prefab": "ruins_bat",
     "type": "item",
@@ -10342,6 +10934,22 @@ const SKINS_3: SkinEntry[] = [
     "name_en": "Arcane Headpiece",
     "name_ko": "신비로운 투구",
     "icon": "/images/skins/ruinshat_arcane.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "ruinshat_chess",
+    "base_prefab": "ruinshat",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "CHESS",
+      "RUINSHAT",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Cavalier Crown",
+    "name_ko": "기마병 왕관",
+    "icon": "/images/skins/ruinshat_chess.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -10475,6 +11083,22 @@ const SKINS_3: SkinEntry[] = [
     "name_en": "Victorian Salt Box",
     "name_ko": "빅토리아풍 소금 상자",
     "icon": "/images/skins/saltbox_victorian.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "sculptingtable_chess",
+    "base_prefab": "sculptingtable",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SCULPTINGTABLE",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Piecemaker",
+    "name_ko": "기물 생성기",
+    "icon": "/images/skins/sculptingtable_chess.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -10662,7 +11286,7 @@ const SKINS_3: SkinEntry[] = [
     ],
     "release_group": 184,
     "name_en": "Giant's Spoon",
-    "name_ko": "Giant's Spoon",
+    "name_ko": "거인의 수저",
     "icon": "/images/skins/shovel_spoon.png"
   },
   {
@@ -10902,6 +11526,22 @@ const SKINS_3: SkinEntry[] = [
     "icon": "/images/skins/spear_bee.png"
   },
   {
+    "id": "spear_chess",
+    "base_prefab": "spear",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SPEAR",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Royal Spear",
+    "name_ko": "왕가의 창",
+    "icon": "/images/skins/spear_chess.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "spear_forge_gungnir",
     "base_prefab": "spear",
     "type": "item",
@@ -11062,7 +11702,10 @@ const SKINS_3: SkinEntry[] = [
     "icon": "/images/skins/spear_wathgrithr_lightning_valkyrie.png",
     "rarity_modifier": "Woven",
     "character": "wigfrid"
-  },
+  }
+];
+
+const SKINS_4: SkinEntry[] = [
   {
     "id": "spear_wathgrithr_lightning_wrestle",
     "base_prefab": "spear_wathgrithr_lightning",
@@ -11209,6 +11852,22 @@ const SKINS_3: SkinEntry[] = [
     "character": "warly"
   },
   {
+    "id": "starstaff_chess",
+    "base_prefab": "yellowstaff",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "YELLOWSTAFF",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Blazing Bishop Staff",
+    "name_ko": "불타는 비숍 지팡이",
+    "icon": "/images/skins/starstaff_chess.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "starstaff_crystal",
     "base_prefab": "yellowstaff",
     "type": "item",
@@ -11283,6 +11942,18 @@ const SKINS_3: SkinEntry[] = [
     "icon": "/images/skins/steeringwheel_nautical_item.png"
   },
   {
+    "id": "steeringwheel_shadow_item",
+    "base_prefab": "steeringwheel_item",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 186,
+    "name_en": "Sanguine Helm",
+    "name_ko": "핏빛 타륜",
+    "icon": "/images/skins/steeringwheel_shadow_item.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "steeringwheel_tesla_item",
     "base_prefab": "steeringwheel_item",
     "type": "item",
@@ -11290,7 +11961,7 @@ const SKINS_3: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 177,
     "name_en": "Arc Welded Helm",
-    "name_ko": "테슬라 코일 조타륜",
+    "name_ko": "아크 용접 타륜",
     "icon": "/images/skins/steeringwheel_tesla_item.png"
   },
   {
@@ -11746,10 +12417,7 @@ const SKINS_3: SkinEntry[] = [
     "name_ko": "셸락 마감 낚시 도구함",
     "icon": "/images/skins/tacklecontainer_shell.png",
     "rarity_modifier": "Woven"
-  }
-];
-
-const SKINS_4: SkinEntry[] = [
+  },
   {
     "id": "tacklecontainer_shiny",
     "base_prefab": "tacklecontainer",
@@ -11764,6 +12432,22 @@ const SKINS_4: SkinEntry[] = [
     "name_en": "Pearly Tackle Box",
     "name_ko": "진주 도구함",
     "icon": "/images/skins/tacklecontainer_shiny.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "telebase_chess",
+    "base_prefab": "telebase",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "TELEBASE",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Royal Position Marker",
+    "name_ko": "왕가의 위치 표시기",
+    "icon": "/images/skins/telebase_chess.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -11811,6 +12495,22 @@ const SKINS_4: SkinEntry[] = [
     "name_en": "Mystic Marker",
     "name_ko": "신비로운 이정표",
     "icon": "/images/skins/telebase_mystical.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "telestaff_chess",
+    "base_prefab": "telestaff",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "TELESTAFF",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Royal Advance Staff",
+    "name_ko": "왕가의 진군 지팡이",
+    "icon": "/images/skins/telestaff_chess.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -11908,6 +12608,22 @@ const SKINS_4: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "tent_chess",
+    "base_prefab": "tent",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "TENT",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Royal Pavilion",
+    "name_ko": "왕궁 별채",
+    "icon": "/images/skins/tent_chess.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "tent_circus",
     "base_prefab": "tent",
     "type": "item",
@@ -11965,6 +12681,38 @@ const SKINS_4: SkinEntry[] = [
     "name_en": "Webwam",
     "name_ko": "소름거미집",
     "icon": "/images/skins/tent_spider.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "thurible_chess",
+    "base_prefab": "thurible",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "THURIBLE",
+      "CHESS",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Knight's Thurible",
+    "name_ko": "기사의 향로",
+    "icon": "/images/skins/thurible_chess.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "thurible_shadow",
+    "base_prefab": "thurible",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "THURIBLE",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Sanguine Thurible",
+    "name_ko": "핏빛 향로",
+    "icon": "/images/skins/thurible_shadow.png",
     "rarity_modifier": "Woven"
   },
   {
@@ -12954,6 +13702,38 @@ const SKINS_4: SkinEntry[] = [
     "icon": "/images/skins/umbrella_spider.png"
   },
   {
+    "id": "voidclothhat_ribbon",
+    "base_prefab": "voidclothhat",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VOIDCLOTHHAT",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Infernal Bonnet",
+    "name_ko": "지옥의 보닛",
+    "icon": "/images/skins/voidclothhat_ribbon.png",
+    "rarity_modifier": "Woven"
+  },
+  {
+    "id": "voidclothhat_spooky",
+    "base_prefab": "voidclothhat",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VOIDCLOTHHAT",
+      "SHADOW",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Cursed Cowl",
+    "name_ko": "저주받은 두건",
+    "icon": "/images/skins/voidclothhat_spooky.png",
+    "rarity_modifier": "Woven"
+  },
+  {
     "id": "wagdrone_rolling_fancy",
     "base_prefab": "wagdrone_rolling",
     "type": "item",
@@ -12965,6 +13745,19 @@ const SKINS_4: SkinEntry[] = [
     "name_en": "Gilded Terramite",
     "name_ko": "도금된 굴러지",
     "icon": "/images/skins/wagdrone_rolling_fancy.png"
+  },
+  {
+    "id": "wagdrone_rolling_fire",
+    "base_prefab": "wagdrone_rolling",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "WAGDRONE_ROLLING"
+    ],
+    "release_group": 185,
+    "name_en": "Alit Terramite",
+    "name_ko": "불 붙은 굴러지",
+    "icon": "/images/skins/wagdrone_rolling_fire.png"
   },
   {
     "id": "wagdrone_rolling_spikey",
@@ -13001,6 +13794,18 @@ const SKINS_4: SkinEntry[] = [
     "name_en": "Maize Wall",
     "name_ko": "옥수수 벽",
     "icon": "/images/skins/wall_hay_cornitem.png"
+  },
+  {
+    "id": "wall_hay_halloweditem",
+    "base_prefab": "wall_hay_item",
+    "type": "item",
+    "rarity": "Elegant",
+    "skin_tags": [],
+    "release_group": 187,
+    "name_en": "Pumpkin Patch Wall",
+    "name_ko": "호박밭 담",
+    "icon": "/images/skins/wall_hay_halloweditem.png",
+    "rarity_modifier": "Woven"
   },
   {
     "id": "wall_moonrock_victorianitem",
@@ -13217,7 +14022,7 @@ const SKINS_4: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 183,
     "name_en": "Egg Caddy Cap",
-    "name_ko": "Egg Caddy Cap",
+    "name_ko": "달걀 골프모자",
     "icon": "/images/skins/walrushat_minigolf_green.png",
     "rarity_modifier": "Woven"
   },
@@ -13229,7 +14034,7 @@ const SKINS_4: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 183,
     "name_en": "Bow Caddy Cap",
-    "name_ko": "Bow Caddy Cap",
+    "name_ko": "리본 골프모자",
     "icon": "/images/skins/walrushat_minigolf_purple.png",
     "rarity_modifier": "Woven"
   },
@@ -13241,7 +14046,7 @@ const SKINS_4: SkinEntry[] = [
     "skin_tags": [],
     "release_group": 183,
     "name_en": "Flag Caddy Cap",
-    "name_ko": "Flag Caddy Cap",
+    "name_ko": "깃발 골프모자",
     "icon": "/images/skins/walrushat_minigolf_red.png",
     "rarity_modifier": "Woven"
   },
@@ -13438,6 +14243,25 @@ const SKINS_4: SkinEntry[] = [
     "name_en": "Walter",
     "name_ko": "월터",
     "body_image": "/images/skins-body/Walter_Original_in_game.png",
+    "character": "walter"
+  },
+  {
+    "id": "walter_pirate",
+    "base_prefab": "walter",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WALTER"
+    ],
+    "release_group": 186,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Walter_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Think we'll find a sea-monster, Woby?\"",
+    "quote_ko": "\"우리 바다 괴물을 찾을 수 있을까, 워비?\"",
     "character": "walter"
   },
   {
@@ -13709,6 +14533,23 @@ const SKINS_4: SkinEntry[] = [
     "character": "walter"
   },
   {
+    "id": "walterhat_pirate",
+    "base_prefab": "walterhat",
+    "type": "item",
+    "rarity": "Distinguished",
+    "skin_tags": [
+      "PIRATE",
+      "WALTERHAT",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Pirate's Tricorne",
+    "name_ko": "해적의 삼각모",
+    "icon": "/images/skins/walterhat_pirate.png",
+    "rarity_modifier": "Woven",
+    "character": "walter"
+  },
+  {
     "id": "walterhat_rose",
     "base_prefab": "walterhat",
     "type": "item",
@@ -13955,6 +14796,28 @@ const SKINS_4: SkinEntry[] = [
     "body_image": "/images/skins-body/Wanda_Original_in_game.png",
     "rarity_modifier": "CharacterModifier",
     "character": "wanda"
+  }
+];
+
+const SKINS_5: SkinEntry[] = [
+  {
+    "id": "wanda_pirate",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "PIRATE",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 186,
+    "name_en": "The Swashbuckler",
+    "name_ko": "불한당",
+    "body_image": "/images/skins-body/Wanda_Swashbuckler_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I feel adrift on the sea of time.\"",
+    "quote_ko": "\"시간의 파도 위에서 표류하는 기분이야.\"",
+    "character": "wanda"
   },
   {
     "id": "wanda_rose",
@@ -14013,6 +14876,44 @@ const SKINS_4: SkinEntry[] = [
     "character": "wanda"
   },
   {
+    "id": "wanda_survivor",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "SURVIVOR",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 186,
+    "name_en": "The Survivor",
+    "name_ko": "생존자",
+    "body_image": "/images/skins-body/Wanda_Survivor_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I just need to get my bearings.\"",
+    "quote_ko": "\"그냥 조정하고 적응할 시간이 좀 필요해.\"",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_victorian",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "VICTORIAN",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 186,
+    "name_en": "The Victorian",
+    "name_ko": "빅토리아인",
+    "body_image": "/images/skins-body/Wanda_Victorian_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"Constant travel is no excuse for being underdressed.\"",
+    "quote_ko": "\"여행을 계속 한다고 해서 허름하게 입고 다닐 필요는 없지.\"",
+    "character": "wanda"
+  },
+  {
     "id": "wanda_western",
     "base_prefab": "wanda",
     "type": "base",
@@ -14024,12 +14925,31 @@ const SKINS_4: SkinEntry[] = [
     ],
     "release_group": 167,
     "name_en": "The Stampeder",
-    "name_ko": "무법자",
+    "name_ko": "개척민",
     "body_image": "/images/skins-body/Wanda_Stampeder_in_game.png",
     "rarity_modifier": "Woven",
     "quote_en": "\"There's always more to do than there is time to do it.\"",
     "quote_ko": "\"항상 일거리에 비해 시간은 턱없이 모자르단 말이지.\"",
     "set_id": "emote_tiphat",
+    "character": "wanda"
+  },
+  {
+    "id": "wanda_whiterabbit",
+    "base_prefab": "wanda",
+    "type": "base",
+    "rarity": "Elegant",
+    "skin_tags": [
+      "HALLOWED",
+      "BASE",
+      "WANDA"
+    ],
+    "release_group": 186,
+    "name_en": "The White Rabbit",
+    "name_ko": "흰 토끼",
+    "body_image": "/images/skins-body/Wanda_White_Rabbit_in_game.png",
+    "rarity_modifier": "Woven",
+    "quote_en": "\"I'm late!\"",
+    "quote_ko": "\"늦었다 늦었어!\"",
     "character": "wanda"
   },
   {
@@ -14114,6 +15034,21 @@ const SKINS_4: SkinEntry[] = [
     "name_ko": "사랑꾼의 옷장",
     "icon": "/images/skins/wardrobe_heart.png",
     "rarity_modifier": "Woven"
+  },
+  {
+    "id": "wardrobe_insect",
+    "base_prefab": "wardrobe",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "WARDROBE",
+      "INSECT",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Butterfly Wardrobe",
+    "name_ko": "나비 옷장",
+    "icon": "/images/skins/wardrobe_insect.png"
   },
   {
     "id": "wardrobe_vine",
@@ -14471,7 +15406,7 @@ const SKINS_4: SkinEntry[] = [
     ],
     "release_group": 184,
     "name_en": "Bugburst Waterballoon",
-    "name_ko": "Bugburst Waterballoon",
+    "name_ko": "벌레잡이 물풍선",
     "icon": "/images/skins/waterballoon_insect.png"
   },
   {
@@ -14941,10 +15876,7 @@ const SKINS_4: SkinEntry[] = [
     "quote_en": "\"Applause röars as red, red röses flööd my stage!\"",
     "quote_ko": "\"붉디 붉은 장미가 무대를 메우고 우레 같은 박수가 전당에 울린다!\"",
     "character": "wigfrid"
-  }
-];
-
-const SKINS_5: SkinEntry[] = [
+  },
   {
     "id": "wathgrithr_rosep",
     "base_prefab": "wathgrithr",
@@ -15088,7 +16020,7 @@ const SKINS_5: SkinEntry[] = [
     ],
     "release_group": 167,
     "name_en": "The Stampeder",
-    "name_ko": "무법자",
+    "name_ko": "개척민",
     "body_image": "/images/skins-body/Wigfrid_Stampeder_in_game.png",
     "rarity_modifier": "Woven",
     "quote_en": "\"No beast withstandeth the will of one whose heart runneth wild.\"",
@@ -15689,7 +16621,7 @@ const SKINS_5: SkinEntry[] = [
     ],
     "release_group": 182,
     "name_en": "The Stampeder",
-    "name_ko": "무법자",
+    "name_ko": "개척민",
     "body_image": "/images/skins-body/Maxwell_Stampeder_in_game.png",
     "rarity_modifier": "Woven",
     "quote_en": "\"You live fast out here... or not at all.\"",
@@ -17120,7 +18052,7 @@ const SKINS_5: SkinEntry[] = [
     ],
     "release_group": 167,
     "name_en": "The Stampeder",
-    "name_ko": "무법자",
+    "name_ko": "개척민",
     "body_image": "/images/skins-body/Wes_Stampeder_in_game.png",
     "rarity_modifier": "Woven",
     "set_id": "emote_tiphat",
@@ -17429,7 +18361,10 @@ const SKINS_5: SkinEntry[] = [
     "quote_en": "\"Let the pursuit of knowledge stretch beyond every horizon.\"",
     "quote_ko": "\"지식을 추구하며 모든 수평선 너머를 향해.\"",
     "character": "wickerbottom"
-  },
+  }
+];
+
+const SKINS_6: SkinEntry[] = [
   {
     "id": "wickerbottom_rose",
     "base_prefab": "wickerbottom",
@@ -18576,10 +19511,7 @@ const SKINS_5: SkinEntry[] = [
     "name_ko": "좀도둑 도르레",
     "icon": "/images/skins/winch_pirate.png",
     "rarity_modifier": "Woven"
-  }
-];
-
-const SKINS_6: SkinEntry[] = [
+  },
   {
     "id": "winona_20s",
     "base_prefab": "winona",
@@ -19336,6 +20268,20 @@ const SKINS_6: SkinEntry[] = [
     "character": "winona"
   },
   {
+    "id": "winterhat_bearger",
+    "base_prefab": "winterhat",
+    "type": "item",
+    "rarity": "ProofOfPurchase",
+    "skin_tags": [
+      "WINTERHAT",
+      "CRAFTABLE"
+    ],
+    "release_group": 186,
+    "name_en": "Bearger Cap",
+    "name_ko": "곰소리 모자",
+    "icon": "/images/skins/winterhat_bearger.png"
+  },
+  {
     "id": "winterhat_black_davys",
     "base_prefab": "winterhat",
     "type": "item",
@@ -19537,7 +20483,7 @@ const SKINS_6: SkinEntry[] = [
     "name_ko": "도전자",
     "body_image": "/images/skins-body/Wolfgang_Challenger_in_game.png",
     "quote_en": "\"Mighty Wolfgang cannot wait to step into ring!\"",
-    "quote_ko": "\"힘센 볼프강 경기장 빨리 올라가고 싶다!\"",
+    "quote_ko": "\"천하장사 볼프강은 어서 경기장에 나서고 싶다!\"",
     "character": "wolfgang"
   },
   {
@@ -19792,7 +20738,7 @@ const SKINS_6: SkinEntry[] = [
     "name_ko": "승리자",
     "body_image": "/images/skins-body/Wolfgang_Triumphant_in_game.png",
     "quote_en": "\"Do not challenge the Mighty Wolfgang!\"",
-    "quote_ko": "\"강력한 볼프강에게 함부로 덤비지 마라!\"",
+    "quote_ko": "\"천하장사 볼프강에게 함부로 덤비지 마라!\"",
     "character": "wolfgang"
   },
   {
@@ -19811,7 +20757,7 @@ const SKINS_6: SkinEntry[] = [
     "body_image": "/images/skins-body/Wolfgang_Triumphant_in_game.png",
     "rarity_modifier": "Woven",
     "quote_en": "\"Do not challenge the Mighty Wolfgang!\"",
-    "quote_ko": "\"강력한 볼프강에게 함부로 덤비지 마라!\"",
+    "quote_ko": "\"천하장사 볼프강에게 함부로 덤비지 마라!\"",
     "character": "wolfgang"
   },
   {
@@ -19901,7 +20847,7 @@ const SKINS_6: SkinEntry[] = [
     ],
     "release_group": 182,
     "name_en": "The Stampeder",
-    "name_ko": "무법자",
+    "name_ko": "개척민",
     "body_image": "/images/skins-body/Wolfgang_Stampeder_in_game.png",
     "rarity_modifier": "Woven",
     "quote_en": "\"Wolfgang is mighty man of the land!\"",
@@ -21007,7 +21953,10 @@ const SKINS_6: SkinEntry[] = [
     "quote_en": "\"Hrrm... mff! Mmmf!\"",
     "quote_ko": "\"후앙... 무앙! 무앙!\"",
     "character": "wortox"
-  },
+  }
+];
+
+const SKINS_7: SkinEntry[] = [
   {
     "id": "wortox_ice",
     "base_prefab": "wortox",
@@ -21563,7 +22512,7 @@ const SKINS_6: SkinEntry[] = [
     ],
     "release_group": 182,
     "name_en": "The Stampeder",
-    "name_ko": "무법자",
+    "name_ko": "개척민",
     "body_image": "/images/skins-body/Wurt_Stampeder_in_game.png",
     "rarity_modifier": "Woven",
     "quote_en": "\"Yeee-flurp!\"",
@@ -21879,4 +22828,4 @@ const SKINS_6: SkinEntry[] = [
   }
 ];
 
-export const SKINS: SkinEntry[] = [...SKINS_0, ...SKINS_1, ...SKINS_2, ...SKINS_3, ...SKINS_4, ...SKINS_5, ...SKINS_6];
+export const SKINS: SkinEntry[] = [...SKINS_0, ...SKINS_1, ...SKINS_2, ...SKINS_3, ...SKINS_4, ...SKINS_5, ...SKINS_6, ...SKINS_7];

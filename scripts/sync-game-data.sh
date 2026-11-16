@@ -32,10 +32,41 @@ if [[ ! -f "$MANIFEST" ]]; then
 fi
 CURR_BUILDID=$(grep -E '"buildid"' "$MANIFEST" | head -1 | awk -F'"' '{print $4}')
 LAST_UPDATED_TS=$(grep -E '"LastUpdated"' "$MANIFEST" | head -1 | awk -F'"' '{print $4}')
-LAST_UPDATED_HUMAN=$(date -r "$LAST_UPDATED_TS" "+%Y-%m-%d %H:%M %Z")
+# BSD date는 -r <epoch>, GNU date(coreutils가 PATH 앞에 있는 기기)는 -d @<epoch> (#158)
+LAST_UPDATED_HUMAN=$(date -r "$LAST_UPDATED_TS" "+%Y-%m-%d %H:%M %Z" 2>/dev/null \
+  || date -d "@$LAST_UPDATED_TS" "+%Y-%m-%d %H:%M %Z" 2>/dev/null \
+  || echo "epoch $LAST_UPDATED_TS")
 
 echo "Game buildid:    $CURR_BUILDID"
 echo "Game updated at: $LAST_UPDATED_HUMAN"
+
+# ─── 1b. Refuse to go backwards (#158) ─────────────────────────────────────
+# 설치된 게임이 사이트 데이터 기준(src/data/game-version.ts)보다 옛 빌드면 멈춘다.
+# 스냅샷이 없는 새 기기에서는 2번 비교가 "새 빌드"로 보고 전체 변환을 돌려
+# 데이터를 뒤로 돌린다 — Steam에서 게임을 업데이트한 뒤 다시 실행할 것.
+# 정말 옛 빌드로 되돌려야 하면 ALLOW_DOWNGRADE=1.
+SITE_BUILDID=$(grep -E 'steamBuildId' "$REPO_ROOT/src/data/game-version.ts" | head -1 | awk -F'"' '{print $2}')
+if [[ ! "$CURR_BUILDID" =~ ^[0-9]+$ || ! "$SITE_BUILDID" =~ ^[0-9]+$ ]]; then
+  echo "ERROR: buildid를 읽지 못함 (game='$CURR_BUILDID', site='$SITE_BUILDID')" >&2
+  exit 1
+fi
+echo "Site data buildid: $SITE_BUILDID"
+if (( CURR_BUILDID < SITE_BUILDID )) && [[ "${ALLOW_DOWNGRADE:-}" != "1" ]]; then
+  echo "ERROR: installed game (buildid $CURR_BUILDID) is OLDER than the site data ($SITE_BUILDID)." >&2
+  echo "       Syncing would roll game data back. Update DST in Steam, then re-run." >&2
+  echo "       (ALLOW_DOWNGRADE=1 to override on purpose.)" >&2
+  exit 1
+fi
+
+# ─── 1c. Preflight: fail before touching anything ───────────────────────────
+# extract-skin-icons(7단계)가 Pillow를 요구한다. 거기서 죽으면 앞 단계 산출물은
+# 남고 맨 끝의 game-version.ts 갱신만 빠지는 어정쩡한 상태가 된다 (#138,
+# docs/mistakes.md). 시작 전에 확인해서 아무것도 바꾸기 전에 멈춘다.
+if ! python3 -c 'import PIL' 2>/dev/null; then
+  echo "ERROR: python3 ($(command -v python3)) has no Pillow — extract-skin-icons would abort mid-sync." >&2
+  echo "       pip3 install Pillow, or put a venv with Pillow first on PATH, then re-run." >&2
+  exit 1
+fi
 
 # ─── 2. Compare with snapshot ──────────────────────────────────────────────
 PREV_BUILDID=""
@@ -116,6 +147,13 @@ python3 scripts/extract-raw-foods.py
 echo
 echo "═══ extract-farming ═══"
 python3 scripts/extract-farming.py
+
+echo ""
+echo "═══ extract-books ═══"
+python3 scripts/extract-books.py
+
+echo "═══ extract-item-names ═══"
+python3 scripts/extract-item-names.py
 
 echo
 echo "═══ verify-skill-trees ═══"

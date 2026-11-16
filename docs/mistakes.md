@@ -2,6 +2,11 @@
 
 ## 게임 데이터
 
+### 한글모드 개명이 수작업 파일엔 반영되지 않아 옛 이름이 남음 (2026-10-31, #139)
+- **문제**: #138 sync에서 `spawnable-prefabs.ts`(ko.po 자동 생성)는 새 이름(워.보.트., 염합기, 우유빛 흰자위 등)으로 바뀌었는데, 같은 아이템의 한글명이 손으로 관리하는 파일 7곳에는 옛 이름 그대로 남았다 (38건)
+- **흩어진 위치**: `bosses.ts`(`nameKo`·`lootNameKo`), `locales/ko.ts`(items/materials/foods), `cookpot-ingredients.ts`(`nameKo`), `game-items-db.ts`(`ko`·`desc_ko`) + 원본 `docs/item-list.md`, `wx78-circuits.ts`(`nameI18n.ko`), 스킬 번역 본문, 그리고 개발용 보스 페이지의 `lootNameKo` 사본(이번에 `lootDisplayName`으로 공통화해 제거)
+- **교훈**: (1) sync 후엔 ko.po `STRINGS.NAMES.<ID>`와 위 파일들의 한글명을 id 기준으로 대조할 것 — 이름 필드만이 아니라 다른 아이템 설명문 속 언급(예: "엽합기에서 제작")도 같이 바뀐다. (2) 슬러그는 영문 `name`으로 만들어지므로 한글명만 바뀌면 `RENAMED_*_SLUGS`는 필요 없다. (3) `까악제 토큰 3개`(`carnival_gametoken_multiple`)는 단품 토큰과 구분하려는 의도적 표기라 ko.po("까악제 토큰")와 달라도 유지한다
+
 ### 게임 데이터 sync 후 "새 아이템 반영 완료"로 성급히 보고 — 제작 탭은 수작업 카탈로그 (2026-06-26, #53)
 - **문제**: `sync-game-data.sh` 실행 후 scrapbook-stats.ts에 신규 아이템(fumaroleaxe 등)이 들어온 것만 보고 "새 아이템 반영 완료"라 보고. 실제로는 제작 탭에서 `fumaroleaxe` 검색 시 "아이템이 없습니다" — sync는 반영의 절반만 한 것
 - **근본 원인**: "게임 데이터"는 단일 소스가 아니라 **두 갈래**다.
@@ -1147,3 +1152,22 @@ Monumetric 1만+셋업비 — 전부 문턱이 있고 **Ezoic만 무제한이다
 - **원인**: Turbopack은 프로젝트 루트 밖을 가리키는 심볼릭 링크를 허용하지 않는다
 - **교훈**: 워크트리에선 `npm ci --prefer-offline`으로 직접 설치한다(캐시 덕에 10초 남짓). 백그라운드 빌드의 exit 코드는 마지막 명령이 아니라 **빌드 명령의 코드를 따로 기록**해 확인할 것
 
+### 추출 스크립트가 없는 파일을 `if path.exists()`로 건너뜀 — 얼음이 "생으로 못 먹음"으로 나옴 (2026-10-24, #135)
+- **문제**: 요리솥 트레이너에서 얼음을 먹을 수 없었다(사용자 피드백). `extract-raw-foods.py`의 `SPECIAL_FILES`가 `ice.lua`를 찾는데 얼음 prefab은 `inv_rocks_ice.lua`에 있다. 파일이 없으면 조용히 넘어가서 얼음이 `raw-foods.ts`에 한 번도 들어간 적이 없었고, 트레이너는 얼음(`frozen` 태그)을 "못 먹는 재료" 예외로 허용해 그 누락을 덮었다. 같은 목록의 `oceanfishingset.lua`도 존재하지 않는 파일이었다
+- **원인**: (1) #122에서 "행을 못 읽으면 죽기"는 넣었지만 "파일을 못 찾으면 죽기"는 없었다. (2) 소비하는 쪽(트레이너 풀 assert)이 데이터 누락을 예외로 흡수했다. (3) 얼음 수치는 `TUNING.CALORIES_TINY/4`라 파일을 찾았어도 lookup이 None을 돌려 또 조용히 빠졌을 것이다
+- **해결**: 없는 파일은 exit 1, lookup이 `*k`·`/k` 상수식을 읽게 했다. 트레이너 풀은 "생식 수치 없음"을 예외 없이 에러로 처리
+- **교훈**: #122와 같은 계열 — 자동 추출의 `exists()`·`continue`·`None`은 셋 다 "없음"을 만든다. 그리고 **소비 쪽 assert에 예외를 두면 상류의 누락이 영영 안 보인다**. 예외를 넣고 싶어지면 상류 데이터부터 의심할 것
+
+### sync가 Pillow 없는 python3에서 중간에 죽어 game-version.ts가 옛 빌드로 남음 (2026-10-30, #138)
+- **문제**: `sync-game-data.sh`가 `extract-skin-icons` 단계에서 `Pillow is required`로 종료됐는데, 앞 단계(scrapbook·raw-foods·farming·verify)는 이미 끝나 있어 "동기화 됐다"고 보였다. 마지막 단계인 `game-version.ts` 갱신(buildid·날짜)과 skins 갱신이 빠진 채였다 — 그대로 커밋했으면 데이터는 새 빌드, 표기는 옛 빌드
+- **원인**: `set -e`라 중간 실패는 즉시 종료인데, 버전 갱신이 맨 끝에 있다. 맥 시스템 `python3`엔 Pillow가 없고(이전엔 있었거나 다른 python이었음), 스크립트는 시작 전에 의존성을 확인하지 않는다
+- **해결**: 스크립트 시작부에 Pillow preflight를 넣어 **아무것도 바꾸기 전에** 죽게 했다. 이번엔 scratchpad venv에 Pillow를 깔고 `PATH`에 앞세워 `--force` 재실행
+- **교훈**: 파이프라인 마지막 단계가 "완료 표식"이면, 실패 시 표식만 빠지고 산출물은 남는 어정쩡한 상태가 된다. 의존성 확인은 맨 앞에, 완료 표식은 실패 시 명확히 안 찍혔다는 걸 출력에서 확인할 것
+
+### prefab id를 영문 이름으로 짐작 — `shrouden`을 Shrouded Queen으로 (2026-10-30, #138)
+- **문제**: 새 보스 prefab 목록에서 `shrouden.lua`를 보고 Shrouded Queen이라 가정하고 전리품을 읽기 시작했다. 실제는 `charlie_boss` = Shrouded Queen(장막의 여왕), `shrouden` = Umbral Abomination(본영의 흉물). ko.po의 `STRINGS.NAMES.*`를 먼저 뽑아서 알아챘다
+- **교훈**: 이름이 비슷한 prefab일수록 `STRINGS.NAMES.<ID>`로 먼저 확정한 뒤 소스를 읽는다. 특히 스토리 보스는 코드명(캐릭터 이름·가칭)으로 지어진 경우가 많다
+
+### 영문 아이템 이름을 기억으로 적을 뻔함 — 16개 중 8개가 틀렸다 (2026-11-08, #142)
+- **문제**: 은둔자 병 교환 품목의 `nameEn`을 "Crow Bobber", "Dusk Lure"처럼 기억으로 적었다. 커밋 전에 strings.lua와 대조하니 찌 6종은 전부 "… Quill Float", 루어 2종은 "Stupefying Lure"·"Heavy Weighted Lure"로 달랐다 — 절반이 오답
+- **교훈**: ko.po를 보는 것과 똑같이 **영문도 strings.lua `STRINGS.NAMES.<ID>`에서 뽑아 적는다**. 한 번의 grep 루프면 끝나는 일이고, 기억으로 적은 영문명은 검색 유입(SEO 페이지 h2·FAQ)에 그대로 노출된다. "ko는 ko.po에서" 규칙은 en에도 같은 무게로 적용할 것

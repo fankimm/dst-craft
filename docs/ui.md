@@ -49,6 +49,7 @@
 ### 요리솥 탭 (CookpotApp)
 헤더 우측 "시뮬레이터 | 트레이너" 토글로 두 화면을 바꾼다. URL `?tab=cookpot&mode=trainer` (#128, `useUrlStateSync` + `useTabSync` 패턴)
 - **시뮬레이터**: 카테고리/리스트 없이 단일 화면: 스테이션 선택 + 재료 슬롯 + 결과 + 재료 피커
+  - 결과 패널(왼쪽 절반)은 3상태 — 0개: 안내 문구 / 1~3개: **될 수 있는 요리**(`CandidatePanel`, #137) / 4개: 결과 카드. 후보는 남은 칸을 어떤 재료로 채워도 최종 결과가 될 수 있는 요리만(우선순위 반영, 곤죽 제외), "그 요리로 끝나는 조합 수" 많은 순. 계산은 `src/lib/cookpot-engine.ts`의 `reachableRecipes` — 재료 1개는 `src/data/cookpot-reachable.ts`(생성 표), 2~3개는 즉석 열거(≤10ms). 패널은 슬롯 칸 높이에 `absolute`로 맞추고 안에서 스크롤, 항목은 `ItemSlot`(탭 → 레시피 상세). 후보 패널·결과 카드 모두 `useDelayedReady`로 고스트 클릭 방지
 - **트레이너** (`cookpot/CookpotTrainer.tsx`): 설정 → 플레이 → 결과 3단계 단일 컴포넌트 (URL에는 모드만, 라운드 상태는 로컬)
 ```
 ┌ 설정 ─────────────────────────────────────┐   ┌ 플레이 ──────────────────────────────┐   ┌ 결과 ───────────────────────┐
@@ -62,7 +63,7 @@
                                                                                             └────────────────────────────┘
 ```
 - 로직은 전부 `src/lib/cookpot-trainer.ts` — 라운드 생성(seed, mulberry32), 채점 가중치, 요리 기대값/실제값, 최적해(일반: 종류별 개수 DP ≤20개, 지배되는 묶음 제외 / 월리: 배율 없는 DP를 상한으로 쓰는 분기한정 ≤16개), 결과 비교. 컴포넌트는 상태와 그리기만. 비트마스크 DP(`_solveBitmaskDp`)·월리 전수 열거(`_solveWarlyEnum`)는 대조 테스트용으로만 남겨 둠
-- `CookpotApp`은 트레이너를 한 번 열면 `hidden`으로 숨길 뿐 언마운트하지 않는다 — 탭 왕복·레시피 보기 후 라운드 보존. 생식 버튼은 두 번 탭(2초 확인). 최고 기록은 localStorage `dst:cookpot-trainer:best`(설정 키 `n-t-s-w`)
+- `CookpotApp`은 트레이너를 한 번 열면 `hidden`으로 숨길 뿐 언마운트하지 않는다 — 탭 왕복·레시피 보기 후 라운드 보존. 생식·굽기 버튼은 두 번 탭(2초 확인). 남은 재료 맨 앞 칸은 무제한 잔가지(∞, 솥 칸 값 `TWIG_UID`) — 솥에서 뺄 땐 칸 위치 기준(#135). 최고 기록은 localStorage `dst:cookpot-trainer:best`(설정 키 `n-t-s-w`)
 - 문구는 `cookpot/trainer-text.ts` (`tt(key, locale)`) — 홈 번들에 안 실리게 `i18n.ts`와 분리 (농사 탭과 같은 이유)
 - 설정은 localStorage `dst:cookpot-trainer:config`. 요리 결과 미리보기는 **일부러 없다** (레시피 암기가 트레이닝의 목적)
 - 결과 화면 "결과 공유"는 `&seed=<base36>&n=&t=&s=&w=` 링크를 복사한다(`ShareButton label`). 그 링크로 들어오면 설정 화면에 배너 + 설정 잠금, 시작하면 같은 재료. 시작 직후 `replaceState`로 seed를 지운다 — 안 지우면 "새 라운드"도 같은 재료가 나온다
@@ -164,6 +165,10 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - 데이터: `src/data/quests/{hermit,celestial,fuelweaver}.ts` (인게임 + Challenge Board 모드 원천)
 - 훅: `useQuestState` — toggle / resetQuest / countChecked
 - 아이템 아이콘은 게임 내 이미지 사용 (lureplantbulb, moon_altar_*, atrium_key, thurible 등)
+- **은둔자 거래·집 꾸미기 카드** (`quests/HermitInfo.tsx`, #142) — 은둔자 퀘스트 카드 바로 아래, 체크리스트가 아닌 참고표라 별도 접이식 카드. 보기 칩 3개(병 교환 / 찻집 / 집 꾸미기)로 전환
+  - 병 교환: 친구 Lv별 그룹 → 행(아이콘 박스 + 이름 + `TagChip` 빈 병 ×N + 제작 탭 점프). 찻집: 차별 행(빈 병 ×1 + 말린 재료 "8 / 6 / 4" 칩 + 마실 때 수치 + 효과 한 줄). 집 꾸미기: 점수로 열리는 것 목록 + 항목별 점수표(`ValueBadge` "게임 수치")
+  - 데이터 `src/data/hermit-trades.ts`(소스 경로 주석 참조), 문구 `quests/hermit-text.ts`(게임에 없는 말만). 같은 표가 `/quest/hermit` SEO 페이지(`QuestPageContent`)에도 섹션 3개로 들어간다 — `HermitTrades`·`HermitTeas`·`HermitDecor`는 훅 없는 표시 컴포넌트라 서버 페이지에서 그대로 쓴다
+  - `IconBox`(40px, `ItemSlot`과 같은 규격, 라벨은 오른쪽 행에)는 이 파일 안에서만 쓴다 — 다른 곳에서도 필요해지면 `ui/`로 승격할 것
 
 ### 농사 탭 (FarmingApp) (#120)
 헤더의 보기 칩 3개로 화면을 바꾸는 단일 스크롤 탭. 상태는 전부 URL(`?tab=farming&view=&season=&with=&crop=`, `useFarmingState`).
@@ -201,6 +206,8 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - `/browse` — 전체 목록 디렉토리
 - `/cookpot` — 요리솥 랜딩페이지
 - `/farming` — 농사 가이드 (`seo/FarmingContent` — 계절별 조합을 빌드 시 계산해 표로 담는다. 참고표는 탭의 `FarmingGuide`를 그대로 재사용 + 계절별 FAQ + 농사 관련 아이템 링크)
+- `/items` — 아이템 도감 (`seo/ItemsCatalogContent` — 스크랩북 `type: "item"` 전부를 스크랩북 분류(subcat)별로. `/item/<slug>`가 있으면 링크 카드, 없으면(제작 불가) 그 자리에서 `ItemStatsPanel`. 이름·분류명은 `src/data/item-names.ts`(자동 생성). 아이콘은 `ItemSlot`과 같은 40px 상자에 이름을 오른쪽에 둔 파일 내부 `IconBox` — ItemSlot 라벨은 60px에서 잘려 도감 목록엔 안 맞는다. #148, 후속은 #144)
+- `/creatures` — 생물 도감 (`seo/CreaturesCatalogContent` — 스크랩북 `type: "creature"` 전부를 분류별 카드로. 체력·공격력·정신력 오라는 `ItemStatsPanel`(체력·오라 행은 #149에서 추가, 오라는 인게임 6단계 문구), 아래에 스크랩북 deps를 "관련 항목" 칩으로 — 전리품만이 아니라 "전리품"이라 부르지 않는다. 이름은 `src/data/creature-names.ts`(자동 생성). 아이콘 상자는 `/items`의 `CatalogIconBox` 공유, 이미지 없는 생물은 상자 없이 이름만. #149, 후속은 #145)
 - `/skill-trees` — 스킬트리 허브 (`seo/SkillTreesListContent` — 캐릭터 카드 + 스킬/분기 수 + FAQ, #126)
 - `/llms.txt` — AI 검색용 사이트 안내 (`src/app/llms.txt/route.ts`, 빌드 시 데이터에서 생성, #126)
 
@@ -285,6 +292,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **구조**: 4개 그룹 (전투/방어/유틸리티/특수) + 빈 그룹 자동 숨김
 - **v3 필드**: tags(TagChip), resistance, shadow_level, set_bonus(강조 카드), repair(아이템 이미지+이름), skill_tree(보라색 블록), immunities(에메랄드 뱃지), effects(불릿)
 - **v2 폴백**: v3 데이터 없을 시 기존 usage 텍스트 표시
+- **책**: `BookSanityRow` — 위커바텀·맥스웰·워트의 읽을 때 정신력 변화 (#143, `src/data/book-sanity.ts`)
 - **사용처**: ItemDetail
 
 ### SkillIcon (`src/components/ui/SkillIcon.tsx`)
@@ -379,6 +387,10 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 ### usePopularity (`src/hooks/use-popularity.ts`)
 - **용도**: Redis 기반 클릭 수 조회 (싱글턴 캐시)
 - **반환**: `{ getClicks }`
+
+### useDelayedReady (`src/hooks/use-delayed-ready.ts`)
+- 마운트 뒤 350ms(기본)가 지나야 `true` — 피커를 탭한 자리에 새로 나타난 클릭 요소가 지연 터치로 눌리는 모바일 고스트 클릭 방지
+- **사용처**: CookpotApp 결과 카드·후보 패널. 내용이 바뀔 때 다시 기다리게 하려면 호출 컴포넌트에 `key`를 바꿔 다시 마운트한다
 
 ### useUrlStateSync (`src/hooks/use-url-state.ts`)
 - **용도**: URL 쿼리에서 읽어오는 화면 상태를 hydration-safe하게 초기화. 첫 렌더는 서버 HTML과 동일한 기본값, 커밋 직후 layout effect에서 URL을 반영해 딥링크 플리커도 없앤다

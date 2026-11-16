@@ -7,6 +7,7 @@ import type { CookingRecipe } from "@/data/recipes";
 import type { Boss } from "@/data/bosses";
 import type { CharacterSkillTree } from "@/data/skill-trees/types";
 import type { Quest } from "@/data/quests";
+import { HERMIT_TEAS, HERMIT_TRADES } from "@/data/hermit-trades";
 
 // ===========================
 // FOOD SEO
@@ -1127,6 +1128,19 @@ export function generateQuestSeoText(quest: Quest): QuestSeoContent {
     });
   }
 
+  if (quest.id === "hermit") {
+    faq.push(
+      {
+        question: "What can I trade with Pearl for Empty Bottles in DST?",
+        answer: `Pearl's Bottle Exchange has ${HERMIT_TRADES.length} items: Shell Bell Bundle, Pinchin' Winch and Shell Turf blueprints at friendship Lv1, quill floats and the Tackle Box at Lv3, four lures at Lv6, more floats plus Fish Food at Lv8, the Spectackler Box at Lv9 and a Sentimental Adornment at Lv10. Each costs 1–8 Empty Bottles; the full price list is on this page.`,
+      },
+      {
+        question: "How does Pearl's home decoration score work?",
+        answer: `Everything on Pearl's island is scored every 10 seconds, from 0 to 100. Turf, flowers, bee boxes, light posts, chairs, tables, potted plants, trophy fish and Pearl's own facilities add points (each with a cap), while mob spawners, items left on the ground and blocked fishing spots subtract. At 90+ Pearl is happy. With friendship Lv10 the score unlocks the Light Post (10), Tea Shop (25), Hot Spring (60) and Large Drying Rack (90); the Tea Shop's ${HERMIT_TEAS.length} teas get cheaper at 50 and 75.`,
+      },
+    );
+  }
+
   return { overview, stepsSummary, tips, faq };
 }
 
@@ -1180,6 +1194,19 @@ export function generateQuestSeoTextKo(quest: Quest): QuestSeoContent {
       question: `${nameKo}의 ${totalSteps}단계를 모두 완료해야 하나요?`,
       answer: `아니요. 메인 보상에는 ${totalSteps}단계 중 ${goal}단계만 필요합니다. 나머지는 선택 사항이지만 추가 콘텐츠를 제공합니다.`,
     });
+  }
+
+  if (quest.id === "hermit") {
+    faq.push(
+      {
+        question: "진주(게팍한 은둔자)와 빈 병으로 무엇을 교환할 수 있나요?",
+        answer: `병 교환 품목은 ${HERMIT_TRADES.length}가지입니다. 친구 Lv1에 소리고둥 묶음·집게 도르래 청사진·조개 껍질 바닥 청사진, Lv3에 깃털 찌 4종과 낚시 도구함, Lv6에 루어 4종, Lv8에 찌 2종과 물고기 밥, Lv9에 멋에 찌든 도구함, Lv10에 감성적인 장식품이 열립니다. 가격은 빈 병 1~8개이고 전체 표는 이 페이지에 있습니다.`,
+      },
+      {
+        question: "진주의 집 꾸미기 점수는 어떻게 계산되나요?",
+        answer: `진주의 섬 안에 있는 것들을 10초마다 다시 세어 0~100점으로 매깁니다. 바닥·꽃·벌통·가로등·의자·탁자·화분·전시한 물고기·진주의 시설은 항목별 상한까지 점수를 더하고, 몬스터 둥지·바닥에 떨어진 아이템·막힌 낚시터는 점수를 깎습니다. 90점 이상이면 진주가 만족합니다. 친구 Lv10이면 점수에 따라 가로등(10)·찻집(25)·온천(60)·대형 건조대(90)가 열리고, 찻집의 차 ${HERMIT_TEAS.length}종은 50점·75점에서 재료가 줄어듭니다.`,
+      },
+    );
   }
 
   return { overview, stepsSummary, tips, faq };

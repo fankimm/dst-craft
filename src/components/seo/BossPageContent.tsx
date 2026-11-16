@@ -195,6 +195,11 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                         </span>
                       )}
                     </div>
+                    {loot.label && (
+                      <p className="text-[10px] text-muted-foreground truncate">
+                        {lang === "ko" ? loot.label : (loot.labelEn ?? loot.label)}
+                      </p>
+                    )}
                   </div>
                 </>
               );

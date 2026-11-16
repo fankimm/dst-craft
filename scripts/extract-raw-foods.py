@@ -85,6 +85,14 @@ def lookup(tuning: dict, token: str):
     if token.startswith("-"):
         sign = -1
         token = token[1:].strip()
+    # `TUNING.X*1.5` (watermelon_cooked), `TUNING.X/4` (ice) — one constant factor only
+    scaled = re.fullmatch(r"(.+?)\s*([*/])\s*(\d+(?:\.\d+)?)", token)
+    if scaled:
+        base = lookup(tuning, scaled.group(1))
+        if base is None:
+            return None
+        k = float(scaled.group(3))
+        return sign * (base * k if scaled.group(2) == "*" else base / k)
     if token.startswith("TUNING."):
         key = token[len("TUNING."):]
         if key in tuning:
@@ -168,8 +176,9 @@ def parse_veggies(tuning: dict) -> list[dict]:
             "secondary_foodtype": secondary,
             "source": "veggies.lua",
         })
-        # Emit cooked variant when whitelisted (positions 5..8 of MakeVegStats)
-        if name in INCLUDE_COOKED_VARIANTS_VEGGIE and len(args_list) >= 9:
+        # Cooked variant (positions 5..8 of MakeVegStats) — every row, flagged `cooked`.
+        # main() routes them to `cookedFoods`; whitelisted ids also stay in `rawFoods`.
+        if len(args_list) >= 9:
             c_hunger = lookup(tuning, args_list[5])
             c_health = lookup(tuning, args_list[6])
             c_perish = lookup(tuning, _non_event_branch(args_list[7]))
@@ -185,6 +194,7 @@ def parse_veggies(tuning: dict) -> list[dict]:
                     "perish_days": c_perish_days,
                     "secondary_foodtype": secondary,  # monster carries to cooked variant
                     "source": "veggies.lua",
+                    "cooked": True,
                 })
             else:
                 dropped.append(f"{name}_cooked: unresolved cooked stats")
@@ -297,6 +307,24 @@ def parse_mushrooms(tuning: dict) -> list[dict]:
             "secondary_foodtype": None,
             "source": "mushrooms.lua",
         })
+        # cookedfn: edible = data.cooked{health,hunger,sanity}, SetPerishTime(TUNING.PERISH_MED)
+        c_hunger = lookup(tuning, fields.get("cookedhunger", "0"))
+        c_health = lookup(tuning, fields.get("cookedhealth", "0"))
+        c_sanity = lookup(tuning, fields.get("cookedsanity", "0"))
+        if c_hunger is None or c_health is None or c_sanity is None:
+            print(f"[!] {name}_cooked: unresolved cooked stats", file=sys.stderr)
+            sys.exit(1)
+        out.append({
+            "id": f"{name}_cooked",
+            "foodtype": "veggie",
+            "hunger": c_hunger,
+            "health": c_health,
+            "sanity": c_sanity,
+            "perish_days": round(tuning.get("PERISH_MED", 4800) / 480, 1),
+            "secondary_foodtype": None,
+            "source": "mushrooms.lua",
+            "cooked": True,
+        })
     return out
 
 
@@ -332,11 +360,14 @@ def _parse_per_prefab_edible(tuning: dict, path: Path, default_foodtype: str) ->
         if not fnm:
             continue
         body = fnm.group(1)
-        # Skip cooked / dried / spoiled variants by id pattern (we want raw only)
-        if re.search(r"_(cooked|dried|spoiled|rotten)$", prefab_id):
+        # Skip dried / spoiled / event variants. Cooked variants are kept (flagged) under the
+        # cookpot id — meats.lua names some `cookedmeat` while cooking.lua calls it `meat_cooked`
+        if re.search(r"_(dried|spoiled|rotten)$", prefab_id) or prefab_id.startswith(("dried", "quagmire_")):
             continue
-        if prefab_id.startswith("cooked") or prefab_id.startswith("dried"):
-            continue
+        cooked = prefab_id.endswith("_cooked") or prefab_id.startswith("cooked")
+        name_id = prefab_id  # STRINGS.NAMES key stays the prefab name
+        if prefab_id.startswith("cooked"):
+            prefab_id = prefab_id[len("cooked"):] + "_cooked"
         fields = {}
         for fm in re.finditer(
             r"inst\.components\.edible\.(foodtype|hungervalue|healthvalue|sanityvalue|secondaryfoodtype)\s*=\s*([^\n]+)",
@@ -375,6 +406,8 @@ def _parse_per_prefab_edible(tuning: dict, path: Path, default_foodtype: str) ->
             "perish_days": round(perish_days, 2) if perish_days else None,
             "secondary_foodtype": secondary,
             "source": path.name,
+            "cooked": cooked,
+            "name_id": name_id,
         })
     return out
 
@@ -387,9 +420,8 @@ SPECIAL_FILES = [
     ("egg.lua",        "egg"),
     ("butter.lua",     "meat"),     # butter foodtype is dairy in DST but we'll let parser pick up actual
     ("honey.lua",      "goodies"),
-    ("ice.lua",        "veggie"),
+    ("inv_rocks_ice.lua", "generic"),  # the `ice` prefab (there is no ice.lua)
     ("acorn.lua",      "veggie"),
-    ("oceanfishingset.lua", "meat"),  # fishmeat / fishmeat_small via separate; may not match
 ]
 
 
@@ -397,8 +429,11 @@ def parse_specials(tuning: dict) -> list[dict]:
     out = []
     for fname, default_ft in SPECIAL_FILES:
         path = PREFABS / fname
-        if path.exists():
-            out.extend(_parse_per_prefab_edible(tuning, path, default_foodtype=default_ft))
+        if not path.exists():
+            # Silently skipping hid ice for months (#135) — a renamed file must stop the build
+            print(f"[!] special prefab file missing: {fname}", file=sys.stderr)
+            sys.exit(1)
+        out.extend(_parse_per_prefab_edible(tuning, path, default_foodtype=default_ft))
     return out
 
 
@@ -504,7 +539,11 @@ def main():
         if it["id"] in OVERRIDES:
             it.update(OVERRIDES[it["id"]])
         by_id[it["id"]] = it
-    items = sorted(by_id.values(), key=lambda x: x["id"])
+    everything = sorted(by_id.values(), key=lambda x: x["id"])
+    # rawFoods = 요리탭 "생식 가능" 목록 (조리 변형은 화이트리스트만), cookedFoods = 모닥불에 구운 재료 (요리솥 트레이너, #135)
+    whitelisted = {f"{v}_cooked" for v in INCLUDE_COOKED_VARIANTS_VEGGIE}
+    items = [it for it in everything if not it.get("cooked") or it["id"] in whitelisted]
+    cooked_items = [it for it in everything if it.get("cooked")]
 
     eng_names = load_english_names()
     ko_names = load_kopo_names()
@@ -534,25 +573,36 @@ def main():
         "",
         "export const rawFoods: RawFood[] = [",
     ]
-    for it in items:
-        eng = eng_names.get(it["id"], it["id"].replace("_", " ").title())
-        ko = ko_names.get(it["id"], "")
+    def render(it: dict) -> str:
+        key = it.get("name_id", it["id"])
+        eng = eng_names.get(key, it["id"].replace("_", " ").title())
+        ko = ko_names.get(key, "")
         ko_field = f', nameKo: {json.dumps(ko, ensure_ascii=False)}' if ko else ""
         secondary = it.get("secondary_foodtype")
         secondary_field = f', secondaryFoodType: "{secondary}"' if secondary else ""
         image = IMAGE_OVERRIDES.get(it["id"])
         image_field = f', image: "{image}"' if image else ""
-        lines.append(
+        return (
             f'  {{ id: "{it["id"]}", name: {json.dumps(eng)}{ko_field}, '
             f'foodType: "{it["foodtype"]}"{secondary_field}, '
             f'hunger: {it["hunger"]}, health: {it["health"]}, sanity: {it["sanity"]}, '
             f'perishDays: {it["perish_days"]}{image_field} }},'
         )
+
+    for it in items:
+        lines.append(render(it))
+    lines += ["];", ""]
+    lines += [
+        "/** 모닥불에 구운 재료 — id는 요리솥 재료 id(`<원재료>_cooked`)와 같다 */",
+        "export const cookedFoods: RawFood[] = [",
+    ]
+    for it in cooked_items:
+        lines.append(render(it))
     lines += ["];", ""]
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text("\n".join(lines))
-    print(f"[✓] wrote {OUTPUT} ({len(items)} entries)", file=sys.stderr)
+    print(f"[✓] wrote {OUTPUT} ({len(items)} raw + {len(cooked_items)} cooked entries)", file=sys.stderr)
 
 
 if __name__ == "__main__":

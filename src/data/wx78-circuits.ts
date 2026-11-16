@@ -232,7 +232,7 @@ export const WX78_CIRCUITS: CircuitModule[] = [
     name: "bee",
     type: "alpha",
     slots: 3,
-    nameI18n: { ko: "빈부스터 모듈", en: "Beanbooster Circuit" },
+    nameI18n: { ko: "빈부스터 회로", en: "Beanbooster Circuit" },
     desc: { ko: "몸과 마음에 강력한 퍼텐셜을 붕붕!", en: "Get your brain and body buzzing with powerful potential!" },
     scanFrom: ["beequeen"],
     stats: [
