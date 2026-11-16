@@ -16,6 +16,7 @@
 > 새 맥의 상태: `gh` 로그인·`node`·`jq`·`python3` 있음, Steam `steamapps` 폴더 있음(DST 설치 여부는 미확인), 게임 스냅샷 `~/dst-game-snapshot` **없음** — 첫 회차에서 `scripts/sync-game-data.sh`로 새로 만들 수 있는지 확인할 것. 되면 3장의 공백이 풀린다. Claude 메모리는 옛 기기와 함께 사라졌다.
 > 같은 날 추가(#152): 예약 작업을 하루 3회(`30 8,14,20 * * *`)로 늘렸고, 수익 수치를 Claude in Chrome으로 읽기 시작했다. **기기를 옮길 때 챙길 것이 하나 늘었다** — 크롬 + Claude 확장 연결, 그리고 그 크롬에서 Ezoic/AdSense/Ko-fi 로그인(사용자 몫). 없으면 수익 조회만 건너뛴다.
 > 같은 날 추가(#153): 수익 기록은 비공개 레포 `fankimm/dst-craft-ops`에 있다. 새 기기에서는 `gh repo clone fankimm/dst-craft-ops ../dst-craft-ops` (없으면 첫 회차가 알아서 받는다).
+> 같은 날 추가(#154): **#134 AdSense 전환 릴리즈도 자동 운영이 한다** — 아래 표의 "사용자는 11/19 전환 때만 개입", "손대지 않는 것: #134"는 더는 맞지 않는다. 날짜 조건(11/20 17:00 KST 이후)과 절차는 `autopilot.md` 1.1절. 사용자 몫은 Ad Manager MCM 위임 해제뿐. 새 맥에서 맥미니 ssh는 안 된다(`Permission denied (publickey)`) — nginx 적용은 러너 경유(#155).
 > 아래 표는 11/11 시점의 기록이다.
 
 | 항목 | 상태 |
