@@ -32,6 +32,12 @@
 
 ## 기록
 
+### 2026-11-16 · #151 · v— · meta
+운영 목표 명시 — 수익 증대(사용자 지정). `docs/autopilot.md` 0장 신설, 2.2 고르기 우선순위·월요일 점검에 반영, CLAUDE.md Autopilot 절에 한 줄. 운영 기기 이전 반영(`autopilot-handover.md` 1장): 옛 맥북은 포맷됐고 새 맥에 예약 작업을 다시 등록. 11/12~11/16 회차는 돌지 않았다.
+- 피드백: 없음
+- git 밖 변경: 새 맥 Claude 앱에 예약 작업 `dstcraft-autopilot-daily` 등록(매일 08:37, Bypass permissions 모드) — 되돌리기: 예약 작업 끄기
+- DB 변경: 없음
+
 ### 2026-11-11 · #150 · v— · meta
 자동 운영 문서 정리 — 운영 맥북에 보안 프로그램 설치 예정이라 이전·중단 대비. 인계 문서(`docs/autopilot-handover.md`), 예약 작업 프롬프트 원본(`docs/autopilot-daily-prompt.md`), 운영 규칙에서 기기 의존 경로 제거.
 - 피드백: 없음
