@@ -7,6 +7,7 @@ import {
 } from "@/data/creature-names";
 import { itemNames } from "@/data/item-names";
 import { itemHref } from "@/lib/catalog-slug";
+import { creatureHref, creatureSlugs } from "@/lib/creature-slug";
 import { assetPath } from "@/lib/asset-path";
 import { ItemStatsPanel } from "@/components/crafting/ItemStatsPanel";
 import { AdSlot } from "@/components/ads/AdSlot";
@@ -32,13 +33,8 @@ interface RelatedEntry {
   image?: string;
 }
 
-/** 스크랩북 deps → 이름·링크. `creaturesPath`는 생물 도감 주소 — 생물 도감 안에서는 ""(같은 페이지 앵커) */
-export function buildRelated(
-  deps: string[] | undefined,
-  lang: SeoLang,
-  routePrefix: string,
-  creaturesPath = "",
-): RelatedEntry[] {
+/** 스크랩북 deps → 이름·링크. 생물은 상세 페이지(없으면 생물 도감 앵커), 아이템은 `itemHref` */
+export function buildRelated(deps: string[] | undefined, lang: SeoLang, routePrefix: string): RelatedEntry[] {
   const idx = lang === "ko" ? 1 : 0;
   const out: RelatedEntry[] = [];
   for (const id of deps ?? []) {
@@ -47,7 +43,7 @@ export function buildRelated(
     out.push({
       id,
       name: names[idx],
-      href: creatureNames[id] ? `${creaturesPath}#${id}` : itemHref(id, routePrefix),
+      href: creatureHref(id, routePrefix) ?? itemHref(id, routePrefix),
       image: hasGameItemImage(id) ? `/images/game-items/${id}.png` : undefined,
     });
   }
@@ -112,7 +108,7 @@ export function CreaturesCatalogContent({ lang }: { lang: SeoLang }) {
     `${routePrefix}/creatures`,
     all.map((e) => ({
       name: e.name,
-      path: `${routePrefix}/creatures#${e.id}`,
+      path: creatureHref(e.id, routePrefix) ?? `${routePrefix}/creatures#${e.id}`,
       ...(e.image ? { image: e.image } : {}),
     })),
     lang,
@@ -169,11 +165,30 @@ export function CreaturesCatalogContent({ lang }: { lang: SeoLang }) {
                     <div className="flex items-center gap-2">
                       {e.image && <CatalogIconBox entry={e} />}
                       <div className="min-w-0">
-                        <h3 className="text-sm font-semibold text-foreground">{e.name}</h3>
+                        <h3 className="text-sm font-semibold text-foreground">
+                          {creatureSlugs.idToSlug.has(e.id) ? (
+                            <Link
+                              href={`${routePrefix}/creature/${creatureSlugs.idToSlug.get(e.id)}`}
+                              className="hover:text-primary transition-colors"
+                            >
+                              {e.name}
+                            </Link>
+                          ) : (
+                            e.name
+                          )}
+                        </h3>
                         {e.altName !== e.name && <p className="text-xs text-muted-foreground">{e.altName}</p>}
                       </div>
                     </div>
                     <ItemStatsPanel itemId={e.id} stats={scrapbookStats[e.id]} locale={lang} />
+                    {creatureSlugs.idToSlug.has(e.id) && (
+                      <Link
+                        href={`${routePrefix}/creature/${creatureSlugs.idToSlug.get(e.id)}`}
+                        className="inline-block text-[11px] text-primary hover:underline"
+                      >
+                        {L.creatureCatalogDetail[lang]}
+                      </Link>
+                    )}
                     {related.length > 0 && (
                       <div>
                         <p className="text-[11px] text-muted-foreground mb-1">{L.creatureCatalogRelated[lang]}</p>
