@@ -76,6 +76,10 @@ export const L = {
   },
   catalogItemScrapbook: { en: "Stats and Description", ko: "수치 · 설명" },
   catalogItemUsedIn: { en: "Crafting recipes that use this", ko: "이 아이템을 재료로 쓰는 제작법" },
+  catalogItemUsedInCount: {
+    en: "It is an ingredient in {n} crafting recipes, listed below.",
+    ko: "제작법 {n}개의 재료로 쓰이며, 목록은 아래에 있습니다.",
+  },
   catalogItemOpenCatalog: { en: "Open Item Catalog →", ko: "아이템 도감 열기 →" },
   farmingCropTable: { en: "Crops: seasons, nutrients and water", ko: "작물별 제철 · 양분 · 물" },
 
