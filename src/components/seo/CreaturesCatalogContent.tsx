@@ -6,7 +6,7 @@ import {
   creatureSubcatNames,
 } from "@/data/creature-names";
 import { itemNames } from "@/data/item-names";
-import { itemSlugs } from "@/lib/slug";
+import { itemHref } from "@/lib/catalog-slug";
 import { assetPath } from "@/lib/asset-path";
 import { ItemStatsPanel } from "@/components/crafting/ItemStatsPanel";
 import { AdSlot } from "@/components/ads/AdSlot";
@@ -32,24 +32,22 @@ interface RelatedEntry {
   image?: string;
 }
 
-function buildRelated(deps: string[] | undefined, lang: SeoLang, routePrefix: string): RelatedEntry[] {
+/** 스크랩북 deps → 이름·링크. `creaturesPath`는 생물 도감 주소 — 생물 도감 안에서는 ""(같은 페이지 앵커) */
+export function buildRelated(
+  deps: string[] | undefined,
+  lang: SeoLang,
+  routePrefix: string,
+  creaturesPath = "",
+): RelatedEntry[] {
   const idx = lang === "ko" ? 1 : 0;
   const out: RelatedEntry[] = [];
   for (const id of deps ?? []) {
-    const names = creatureNames[id] ?? creatureRelatedNames[id];
+    const names = creatureNames[id] ?? creatureRelatedNames[id] ?? itemNames[id];
     if (!names) continue; // 게임에 이름 문자열이 없는 표시용 prefab — 생성 스크립트가 개수를 알린다
-    const slug = itemSlugs.idToSlug.get(id);
-    const href = creatureNames[id]
-      ? `#${id}`
-      : slug
-        ? `${routePrefix}/item/${slug}`
-        : itemNames[id]
-          ? `${routePrefix}/items#${id}`
-          : undefined;
     out.push({
       id,
       name: names[idx],
-      href,
+      href: creatureNames[id] ? `${creaturesPath}#${id}` : itemHref(id, routePrefix),
       image: hasGameItemImage(id) ? `/images/game-items/${id}.png` : undefined,
     });
   }
@@ -85,7 +83,7 @@ function buildCatalog(lang: SeoLang) {
   }));
 }
 
-function RelatedChip({ entry }: { entry: RelatedEntry }) {
+export function RelatedChip({ entry }: { entry: RelatedEntry }) {
   const body = (
     <>
       {entry.image && (

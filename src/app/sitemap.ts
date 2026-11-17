@@ -7,6 +7,7 @@ import {
   itemSlugs,
   questSlugs,
 } from "@/lib/slug";
+import { catalogItemSlugs } from "@/lib/catalog-slug";
 import { characters } from "@/data/characters";
 import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 import {
@@ -86,7 +87,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]);
 
   const dynamicEntries: { path: string; slugs: string[] }[] = [
-    { path: "/item", slugs: Array.from(itemSlugs.idToSlug.values()) },
+    { path: "/item", slugs: [...itemSlugs.idToSlug.values(), ...catalogItemSlugs.allSlugs] },
     { path: "/food", slugs: Array.from(foodSlugs.idToSlug.values()) },
     { path: "/boss", slugs: Array.from(bossSlugs.idToSlug.values()) },
     { path: "/character", slugs: characters.map((c) => c.id) },
