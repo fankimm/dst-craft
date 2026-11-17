@@ -15,6 +15,15 @@
 
 set -e
 
+# Preview(feat·beta 브랜치) 빌드는 전부 건너뛴다 (#161).
+# Vercel은 failover 전용이라 Production(main) 배포만 쓰인다. 정적 산출물 한 벌이
+# 800MB를 넘는데 브랜치 push마다 Preview가 쌓여 배포 용량 한도를 채웠다.
+# VERCEL_ENV가 비어 있으면(로컬 실행 등) 아래 기존 판정으로 넘어간다.
+if [ -n "${VERCEL_ENV:-}" ] && [ "$VERCEL_ENV" != "production" ]; then
+  echo "vercel-ignore: VERCEL_ENV=$VERCEL_ENV (production 아님) — skipping"
+  exit 0
+fi
+
 # Determine previous SHA. Vercel exposes VERCEL_GIT_PREVIOUS_SHA on commits
 # beyond the first; fall back to HEAD^ otherwise.
 if [ -n "${VERCEL_GIT_PREVIOUS_SHA:-}" ]; then
