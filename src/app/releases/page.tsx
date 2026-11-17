@@ -15,6 +15,20 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.47.0",
+    date: "2026-11-17",
+    dev: [
+      "src/lib/creature-slug.ts — 스크랩북 생물 상세 페이지 슬러그. 대상: type creature · 체력·공격력·설명 중 하나는 있음 · 도감 안 영문 이름 유일 → 154종. creatureHref(id)로 상세 → 생물 도감 앵커 순 링크 (#160)",
+      "seo/CreaturePageContent — /creature/<slug>, /ko/creature/<slug>. ItemStatsPanel + 스크랩북 관련 항목 + 같은 분류의 다른 생물. BreadcrumbList JSON-LD, canonical·hreflang, 사이트맵 308개 추가, llms.txt 안내",
+      "생물 도감 허브 카드 이름·'상세 보기' 링크, buildRelated의 생물 칩이 상세 페이지로 연결(creaturesPath 인자 제거)",
+      "scripts/add-img-lazy.mjs EAGER_KEEP 줄번호 정리(QuestPageContent 어긋남, CatalogItemPageContent·CreaturePageContent 히어로 추가)",
+    ],
+    changes: {
+      ko: ["생물 154종에 상세 페이지가 생겼습니다 — 거미·비팔로 같은 생물의 체력·공격력·정신력 오라와 스크랩북 설명, 관련 항목을 한 화면에서 볼 수 있습니다 (생물 도감에서 이동)"],
+      en: ["154 creatures now have their own page — health, damage, sanity aura, Scrapbook notes and related entries for mobs like Spider and Beefalo. Reach them from the Creature Catalog"],
+    },
+  },
+  {
     version: "0.46.0",
     date: "2026-11-17",
     dev: [
