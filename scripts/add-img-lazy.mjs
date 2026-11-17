@@ -21,15 +21,15 @@ import path from "node:path";
  * 파일을 쓰기 전에 실패하므로, 그때 여기 줄번호를 현재 위치로 고칠 것.
  */
 const EAGER_KEEP = new Set([
-  "src/components/seo/ItemPageContent.tsx:237",
-  "src/components/seo/BossPageContent.tsx:129",
+  "src/components/seo/ItemPageContent.tsx:240",
+  "src/components/seo/BossPageContent.tsx:128",
   "src/components/seo/CharacterPageContent.tsx:105",
   "src/components/seo/FoodPageContent.tsx:145",
   "src/components/seo/SkillTreePageContent.tsx:140",
   "src/components/seo/CookpotContent.tsx:106",
   "src/components/seo/CookpotContent.tsx:107",
   "src/components/seo/QuestPageContent.tsx:110",
-  "src/components/seo/CatalogItemPageContent.tsx:87",
+  "src/components/seo/CatalogItemPageContent.tsx:92",
   "src/components/seo/CreaturePageContent.tsx:97",
   "src/components/seo/FarmingContent.tsx:115",
   "src/components/seo/FarmingContent.tsx:116",

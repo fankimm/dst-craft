@@ -1,7 +1,7 @@
 import { bosses, lootImage, lootDisplayName } from "@/data/bosses";
-import { allItems } from "@/data/items";
 import { generateBossSeoText, generateBossSeoTextKo } from "@/lib/seo-text";
-import { canonicalForBoss, canonicalForItem, resolveBossSlug } from "@/lib/slug";
+import { canonicalForBoss, resolveBossSlug } from "@/lib/slug";
+import { materialHref } from "@/lib/catalog-slug";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
@@ -12,7 +12,6 @@ import { bossImageSrc } from "@/lib/asset-path";
 
 const SITE_URL = "https://www.dstcraft.com";
 
-const craftableIds = new Set(allItems.map((i) => i.id));
 
 const categoryKey = {
   seasonal: "bcSeasonal",
@@ -170,7 +169,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               const isBlueprint = loot.blueprint;
               const chanceLabel =
                 loot.chance >= 1 ? "100%" : `${Math.round(loot.chance * 100)}%`;
-              const isCraftable = craftableIds.has(loot.item);
+              const lootHref = materialHref(loot.item, routePrefix);
 
               const inner = (
                 <>
@@ -204,10 +203,10 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 </>
               );
               const cls = "flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2";
-              return isCraftable ? (
+              return lootHref ? (
                 <Link
                   key={`${loot.item}-${i}`}
-                  href={`${routePrefix}/item/${canonicalForItem(loot.item)}`}
+                  href={lootHref}
                   className={`${cls} hover:border-ring transition-colors`}
                 >
                   {inner}
@@ -240,7 +239,7 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                   : loot.chance >= 1
                     ? "100%"
                     : `${Math.round(loot.chance * 100)}%`;
-                const isCraftable = craftableIds.has(loot.item);
+                const lootHref = materialHref(loot.item, routePrefix);
 
                 const inner = (
                   <>
@@ -273,10 +272,10 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                   </>
                 );
                 const cls = "flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2";
-                return isCraftable ? (
+                return lootHref ? (
                   <Link
                     key={`stash-${loot.item}-${i}`}
-                    href={`${routePrefix}/item/${canonicalForItem(loot.item)}`}
+                    href={lootHref}
                     className={`${cls} hover:border-ring transition-colors`}
                   >
                     {inner}

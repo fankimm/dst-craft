@@ -7,6 +7,7 @@ import { stationImages } from "@/lib/crafting-data";
 import { stationName } from "@/lib/i18n";
 import { generateItemSeoText, generateItemSeoTextKo } from "@/lib/seo-text";
 import { canonicalForBoss, canonicalForItem, resolveItemSlug } from "@/lib/slug";
+import { materialHref, materialIdsOf } from "@/lib/catalog-slug";
 import { bosses } from "@/data/bosses";
 import { figureSketchSources, figureSketchId, sketchIcon, sketchName, sculptResultImages, sketchSourceLabel } from "@/data/sketches";
 import { isWx78PriorityItem } from "@/lib/seo-priority";
@@ -74,9 +75,11 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
     item.category.includes(c.id as never),
   );
 
+  // 변환·상점 레시피 페이지(금덩이 등)는 원래 재료 id로 쓰인 곳까지 모은다 (#162)
+  const selfMaterialIds = new Set(materialIdsOf(item.id));
   const usedIn = allItems
-    .filter((other) => other.materials.some((m) => m.materialId === item.id))
-    .slice(0, 8);
+    .filter((other) => other.id !== item.id && other.materials.some((m) => selfMaterialIds.has(m.materialId)))
+    .slice(0, selfMaterialIds.size > 1 ? undefined : 8);
 
   const materialItems = item.materials.map((m) => ({
     ...m,
@@ -96,8 +99,8 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
     const matNameKo = ko.materials[m.materialId]?.name ?? ko.items[m.materialId]?.name ?? mat?.name ?? m.materialId;
     return { nameKo: matNameKo, quantity: m.quantity };
   });
-  const usedInNamesEn = usedIn.map((u) => u.name);
-  const usedInNamesKo = usedIn.map((u) => ko.items[u.id]?.name ?? u.name);
+  const usedInNamesEn = usedIn.slice(0, 8).map((u) => u.name);
+  const usedInNamesKo = usedIn.slice(0, 8).map((u) => ko.items[u.id]?.name ?? u.name);
 
   const seo = lang === "ko"
     ? generateItemSeoTextKo(
@@ -333,10 +336,11 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 </>
               );
               const cls = "flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2";
-              return m.item ? (
+              const href = materialHref(m.materialId, routePrefix);
+              return href ? (
                 <Link
                   key={m.materialId}
-                  href={`${routePrefix}/item/${canonicalForItem(m.materialId)}`}
+                  href={href}
                   className={`${cls} hover:border-ring transition-colors`}
                 >
                   {inner}
