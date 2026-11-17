@@ -28,7 +28,9 @@ const EAGER_KEEP = new Set([
   "src/components/seo/SkillTreePageContent.tsx:140",
   "src/components/seo/CookpotContent.tsx:106",
   "src/components/seo/CookpotContent.tsx:107",
-  "src/components/seo/QuestPageContent.tsx:108",
+  "src/components/seo/QuestPageContent.tsx:110",
+  "src/components/seo/CatalogItemPageContent.tsx:87",
+  "src/components/seo/CreaturePageContent.tsx:97",
   "src/components/seo/FarmingContent.tsx:115",
   "src/components/seo/FarmingContent.tsx:116",
 ]);

@@ -53,7 +53,7 @@ export function CatalogItemPageContent({ slug, lang }: { slug: string; lang: Seo
   const usedIn = allItems.filter((other) => other.materials.some((m) => m.materialId === item.id)).slice(0, 12);
   // 한국어 문장은 이름에 주제 조사를 붙여 넣는다 (템플릿의 {name} 뒤에 조사 없음)
   const introName = lang === "ko" ? pp(item.name, "은", "는") : item.name;
-  const related = buildRelated(item.stats.deps, lang, routePrefix, `${routePrefix}/creatures`);
+  const related = buildRelated(item.stats.deps, lang, routePrefix);
 
   const breadcrumbLd = {
     "@context": "https://schema.org",

@@ -35,6 +35,20 @@ export const L = {
     ko: "스크랩북의 모든 생물을 분류별로 — 체력·공격력·정신력 오라.",
   },
   creatureCatalogRelated: { en: "Related in the Scrapbook", ko: "스크랩북 관련 항목" },
+  // Creature detail pages (/creature/<slug>, #160)
+  creatureTitleSuffix: { en: "Don't Starve Together Creature Guide", ko: "Don't Starve Together 생물 정보" },
+  creatureIntro: {
+    en: "{name} is listed under “{cat}” in the Don't Starve Together in-game Scrapbook. The stats and notes below are the Scrapbook's own.",
+    ko: "{name} 굶지마 투게더 인게임 스크랩북의 '{cat}' 분류에 실린 생물입니다. 아래 수치와 설명은 스크랩북에 나오는 그대로입니다.",
+  },
+  creatureIntroNoCat: {
+    en: "{name} is a creature from the Don't Starve Together in-game Scrapbook. The stats and notes below are the Scrapbook's own.",
+    ko: "{name} 굶지마 투게더 인게임 스크랩북에 실린 생물입니다. 아래 수치와 설명은 스크랩북에 나오는 그대로입니다.",
+  },
+  creatureScrapbook: { en: "Stats and Notes", ko: "수치 · 설명" },
+  creatureSameCategory: { en: "More in “{cat}”", ko: "'{cat}' 분류의 다른 생물" },
+  creatureOpenCatalog: { en: "Open Creature Catalog →", ko: "생물 도감 열기 →" },
+  creatureCatalogDetail: { en: "Details →", ko: "상세 보기 →" },
   // Item catalog (/items, #148)
   itemCatalog: { en: "Item Catalog", ko: "아이템 도감" },
   itemCatalogHeading: { en: "DST Item Catalog", ko: "굶지마 투게더 아이템 도감" },
