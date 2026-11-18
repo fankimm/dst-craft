@@ -44,13 +44,18 @@ function load(slug: string, lang: SeoLang) {
   };
 }
 
+/** 이 아이템을 재료로 쓰는 제작법 전체 — 설명 없는 재료 페이지에선 이 목록이 본문이다 (#162) */
+function usedInOf(id: string) {
+  return allItems.filter((other) => other.materials.some((m) => m.materialId === id));
+}
+
 export function CatalogItemPageContent({ slug, lang }: { slug: string; lang: SeoLang }) {
   const item = load(slug, lang);
   if (!item) notFound();
   const routePrefix = lang === "ko" ? "/ko" : "";
   const catalogPath = `${routePrefix}/items`;
 
-  const usedIn = allItems.filter((other) => other.materials.some((m) => m.materialId === item.id)).slice(0, 12);
+  const usedIn = usedInOf(item.id);
   // 한국어 문장은 이름에 주제 조사를 붙여 넣는다 (템플릿의 {name} 뒤에 조사 없음)
   const introName = lang === "ko" ? pp(item.name, "은", "는") : item.name;
   const related = buildRelated(item.stats.deps, lang, routePrefix);
@@ -96,6 +101,7 @@ export function CatalogItemPageContent({ slug, lang }: { slug: string; lang: Seo
               {item.subcatLabel
                 ? fill(L.catalogItemIntro[lang], { name: introName, cat: item.subcatLabel })
                 : fill(L.catalogItemIntroNoCat[lang], { name: introName })}
+              {usedIn.length > 0 && ` ${fill(L.catalogItemUsedInCount[lang], { n: String(usedIn.length) })}`}
             </p>
             {item.subcat && (
               <Link
@@ -124,7 +130,7 @@ export function CatalogItemPageContent({ slug, lang }: { slug: string; lang: Seo
         {usedIn.length > 0 && (
           <section>
             <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-              {L.catalogItemUsedIn[lang]}
+              {L.catalogItemUsedIn[lang]} ({usedIn.length})
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {usedIn.map((other) => {
@@ -193,7 +199,15 @@ export function buildCatalogItemMetadata(slug: string, lang: SeoLang) {
     lang === "ko"
       ? `굶지마 투게더 ${item.name}${item.subcatLabel ? ` (${item.subcatLabel})` : ""}의 인게임 스크랩북 수치와 설명.`
       : `In-game Scrapbook stats and description for ${item.name}${item.subcatLabel ? ` (${item.subcatLabel})` : ""} in Don't Starve Together.`;
-  const description = `${lead} ${firstLine}`.trim().slice(0, 300);
+  const usedIn = usedInOf(item.id);
+  const usedNames = usedIn.slice(0, 5).map((o) => (lang === "ko" ? (ko.items[o.id]?.name ?? o.name) : o.name));
+  const usedLine =
+    usedIn.length === 0
+      ? ""
+      : lang === "ko"
+        ? `제작법 ${usedIn.length}개의 재료: ${usedNames.join(", ")}${usedIn.length > usedNames.length ? " 등" : ""}.`
+        : `Used in ${usedIn.length} crafting recipe${usedIn.length > 1 ? "s" : ""}: ${usedNames.join(", ")}${usedIn.length > usedNames.length ? " and more" : ""}.`;
+  const description = `${lead} ${usedLine} ${firstLine}`.replace(/\s+/g, " ").trim().slice(0, 300);
 
   const enUrl = `${SITE_URL}/item/${canonicalSlug}`;
   const koUrl = `${SITE_URL}/ko/item/${canonicalSlug}`;

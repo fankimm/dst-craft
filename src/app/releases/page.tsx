@@ -15,6 +15,27 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.48.0",
+    date: "2026-11-18",
+    dev: [
+      "src/lib/catalog-slug.ts — 도감 상세 페이지 조건을 '스크랩북 설명 있음'에서 '설명이 있거나 제작 재료로 쓰임'으로 넓힘(136 → 178개, 기존 주소 유지). materialHref(id): 제작 페이지 → 도감 상세 → 같은 이름의 제작 페이지(변환·상점 레시피 29종) 순. materialIdsOf(craftedId): 변환 레시피 페이지의 사용처를 원래 재료 id 기준으로 (#162)",
+      "seo/ItemPageContent — 재료 타일이 materialHref로 링크(금덩이·돌·잔가지·거미줄 등). 변환·상점 레시피 페이지의 '사용처'가 원래 재료가 쓰인 제작법 전체로 채워짐. SEO 문장에 넣는 사용처 이름은 8개까지",
+      "seo/BossPageContent — 전리품·보관함 타일도 materialHref로 링크(craftableIds 제거)",
+      "seo/CatalogItemPageContent — 사용처 12개 제한을 없애고 개수 표시, 소개 문장·메타 설명에 '제작법 N개의 재료' 추가",
+      "scripts/add-img-lazy.mjs EAGER_KEEP 줄번호 갱신",
+    ],
+    changes: {
+      ko: [
+        "제작법 페이지의 재료와 보스 전리품을 누르면 그 아이템 페이지로 이동합니다 — 금덩이·돌·잔가지 같은 기본 재료도 포함",
+        "거미줄·숯·재 등 재료 42종에 '어떤 제작법에 쓰이는지' 전체 목록을 보여 주는 페이지가 생겼습니다",
+      ],
+      en: [
+        "Ingredients on recipe pages and boss drops now link to that item's page — including basics like Gold Nugget, Rocks and Twigs",
+        "42 more materials such as Silk, Charcoal and Ashes have their own page listing every recipe that uses them",
+      ],
+    },
+  },
+  {
     version: "0.47.0",
     date: "2026-11-17",
     dev: [
