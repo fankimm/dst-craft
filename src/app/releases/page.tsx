@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.49.1",
+    date: "2026-11-19",
+    dev: [
+      "seo/FoodPageContent — 추천 재료(cardIngredients) 칩을 ingredientHref(id)가 있으면 Link로 (재료 페이지 없는 재료는 div 그대로) (#164)",
+    ],
+    changes: {
+      ko: ["음식 페이지의 추천 재료를 누르면 그 재료의 상세 페이지로 이동합니다"],
+      en: ["Recommended ingredients on food pages now link to each ingredient's detail page"],
+    },
+  },
+  {
     version: "0.49.0",
     date: "2026-11-18",
     dev: [
