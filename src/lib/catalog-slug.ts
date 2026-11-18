@@ -2,6 +2,7 @@ import { scrapbookStats } from "@/data/scrapbook-stats";
 import { itemNames } from "@/data/item-names";
 import { allItems } from "@/data/items";
 import { itemSlugs, nameToSlug } from "@/lib/slug";
+import { ingredientHref } from "@/lib/ingredient-slug";
 
 /**
  * 제작 탭에 없는 스크랩북 아이템의 상세 페이지 슬러그 (#159, #144 2단계).
@@ -72,11 +73,14 @@ const craftedToMaterials = new Map<string, string[]>();
   }
 }
 
-/** 재료 타일의 링크 주소: 제작 페이지 → 도감 상세 페이지 → 같은 이름의 제작 페이지. 없으면 undefined */
+/**
+ * 재료 타일의 링크 주소: 제작 페이지 → 도감 상세 페이지 → 같은 이름의 제작 페이지 → 요리솥 재료 페이지(#163).
+ * 없으면 undefined
+ */
 export function materialHref(id: string, routePrefix: string): string | undefined {
   const slug =
     itemSlugs.idToSlug.get(id) ?? idToSlug.get(id) ?? itemSlugs.idToSlug.get(sameNameCrafted.get(id) ?? "");
-  return slug ? `${routePrefix}/item/${slug}` : undefined;
+  return slug ? `${routePrefix}/item/${slug}` : ingredientHref(id, routePrefix);
 }
 
 /** 제작 아이템 페이지가 "사용처"를 모을 때 같이 볼 재료 id (자기 id 포함) */
