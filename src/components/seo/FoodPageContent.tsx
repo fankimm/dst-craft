@@ -3,6 +3,7 @@ import { cookpotIngredients } from "@/data/cookpot-ingredients";
 import { ko } from "@/data/locales/ko";
 import { generateFoodSeoText, generateFoodSeoTextKo } from "@/lib/seo-text";
 import { canonicalForFood, resolveFoodSlug } from "@/lib/slug";
+import { ingredientHref } from "@/lib/ingredient-slug";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
@@ -250,11 +251,10 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                 const ing = cookpotIngredients.find((x) => x.id === id);
                 const ingName = lang === "ko" ? (ing?.nameKo ?? ing?.name ?? id) : (ing?.name ?? id);
                 const imgFile = ing?.image ?? `${id}.png`;
-                return (
-                  <div
-                    key={id}
-                    className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2"
-                  >
+                const href = ingredientHref(id, routePrefix);
+                const chipClass = "flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2";
+                const chip = (
+                  <>
                     <div className="relative shrink-0">
                       <img
                         src={`/images/game-items/${imgFile}`}
@@ -267,6 +267,15 @@ export function FoodPageContent({ slug, lang }: { slug: string; lang: SeoLang })
                       </span>
                     </div>
                     <span className="text-xs font-medium">{ingName}</span>
+                  </>
+                );
+                return href ? (
+                  <Link key={id} href={href} className={`${chipClass} hover:bg-surface-hover transition-colors`}>
+                    {chip}
+                  </Link>
+                ) : (
+                  <div key={id} className={chipClass}>
+                    {chip}
                   </div>
                 );
               })}
