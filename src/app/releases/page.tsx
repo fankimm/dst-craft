@@ -15,6 +15,37 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.49.1",
+    date: "2026-11-19",
+    dev: [
+      "seo/FoodPageContent — 추천 재료(cardIngredients) 칩을 ingredientHref(id)가 있으면 Link로 (재료 페이지 없는 재료는 div 그대로) (#164)",
+    ],
+    changes: {
+      ko: ["음식 페이지의 추천 재료를 누르면 그 재료의 상세 페이지로 이동합니다"],
+      en: ["Recommended ingredients on food pages now link to each ingredient's detail page"],
+    },
+  },
+  {
+    version: "0.49.0",
+    date: "2026-11-18",
+    dev: [
+      "src/lib/ingredient-slug.ts — 요리솥 재료 상세 페이지 슬러그. 대상: 태그 값이 있는 재료 · 구운/말린 변형은 원재료 페이지에 합침 · 영문 이름 유일 → 76개. ingredientHref(id) (#163)",
+      "seo/IngredientPageContent — /ingredient/<slug>, /ko/ingredient/<slug>. 요리솥 태그 값, 먹었을 때 수치(생·구움·말림, scrapbook-stats), 재료 1개로 도달 가능한 요리(reachableRecipes 표) + 휴대용 요리솥 전용, 제작 사용처, FAQ·BreadcrumbList JSON-LD, canonical·hreflang",
+      "seo/CookpotContent 재료 칩이 재료 페이지로 링크, catalog-slug materialHref의 마지막 순위로 ingredientHref 추가(제작·보스 페이지의 음식 재료 타일 44종)",
+      "사이트맵 152개 추가, llms.txt 안내, scripts/add-img-lazy.mjs EAGER_KEEP 갱신",
+    ],
+    changes: {
+      ko: [
+        "요리솥 재료 76종에 상세 페이지가 생겼습니다 — 요리솥에서 어떤 값으로 계산되는지, 생·구움·말림 상태로 먹었을 때 수치, 그 재료로 만들 수 있는 요리 전체 목록",
+        "요리솥 안내 페이지의 재료 목록과 제작법 페이지의 음식 재료(꿀·꽃잎 등)를 누르면 재료 페이지로 이동합니다",
+      ],
+      en: [
+        "76 Crock Pot ingredients now have their own page — what each one counts as in the pot, stats when eaten raw, cooked or dried, and every dish you can cook with it",
+        "The ingredient list on the Crock Pot page and food ingredients on recipe pages (Honey, petals and more) link to those pages",
+      ],
+    },
+  },
+  {
     version: "0.48.0",
     date: "2026-11-18",
     dev: [
