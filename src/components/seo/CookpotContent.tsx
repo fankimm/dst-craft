@@ -1,5 +1,6 @@
 import { cookingRecipes } from "@/data/recipes";
 import { cookpotIngredients } from "@/data/cookpot-ingredients";
+import { ingredientHref } from "@/lib/ingredient-slug";
 import { ko } from "@/data/locales/ko";
 import { canonicalForFood } from "@/lib/slug";
 import Link from "next/link";
@@ -232,13 +233,22 @@ export function CookpotContent({ lang }: { lang: SeoLang }) {
                 <div className="flex flex-wrap gap-2">
                   {ings.map((ing) => {
                     const ingName = lang === "ko" ? (ing.nameKo ?? ing.name) : ing.name;
-                    return (
-                      <span
-                        key={ing.id}
-                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 py-1 text-xs"
-                      >
+                    const href = ingredientHref(ing.id, routePrefix);
+                    const chipClass =
+                      "inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 py-1 text-xs";
+                    const body = (
+                      <>
                         <img src={`/images/game-items/${ing.image ?? ing.id + ".png"}`} alt={ingName} className="size-4 object-contain" loading="lazy" />
                         {ingName}
+                      </>
+                    );
+                    return href ? (
+                      <Link key={ing.id} href={href} className={`${chipClass} hover:border-ring transition-colors`}>
+                        {body}
+                      </Link>
+                    ) : (
+                      <span key={ing.id} className={chipClass}>
+                        {body}
                       </span>
                     );
                   })}
