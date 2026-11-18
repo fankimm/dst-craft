@@ -9,6 +9,7 @@ import {
 } from "@/lib/slug";
 import { catalogItemSlugs } from "@/lib/catalog-slug";
 import { creatureSlugs } from "@/lib/creature-slug";
+import { ingredientSlugs } from "@/lib/ingredient-slug";
 import { characters } from "@/data/characters";
 import { CHARACTERS_WITH_SKILLS } from "@/data/skill-trees/registry";
 import {
@@ -91,6 +92,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/item", slugs: [...itemSlugs.idToSlug.values(), ...catalogItemSlugs.allSlugs] },
     { path: "/creature", slugs: creatureSlugs.allSlugs },
     { path: "/food", slugs: Array.from(foodSlugs.idToSlug.values()) },
+    { path: "/ingredient", slugs: ingredientSlugs.allSlugs },
     { path: "/boss", slugs: Array.from(bossSlugs.idToSlug.values()) },
     { path: "/character", slugs: characters.map((c) => c.id) },
     { path: "/skill-tree", slugs: [...CHARACTERS_WITH_SKILLS] },
