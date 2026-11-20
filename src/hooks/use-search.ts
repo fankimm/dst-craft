@@ -83,6 +83,8 @@ export function useSearch() {
     removeTag,
     clearAll,
     results,
+    /** 디바운스된 검색어 (도감 검색 #165 이 같이 쓴다) */
+    debouncedTags,
     isSearching,
   };
 }
