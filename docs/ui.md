@@ -213,6 +213,7 @@ AppShell 의 탭 래퍼에는 `data-tab-root="<tabId>"` 가 붙어 있어 탭 �
 - `/ingredient/<slug>` — 요리솥 재료 상세 (`seo/IngredientPageContent`, #163). 대상은 `src/lib/ingredient-slug.ts`가 정한다: 태그 값이 있는 요리솥 재료 중 구운·말린 변형이 아니고 영문 이름이 유일한 것(76개). 구성: 이름·이미지 → 요리솥 태그 값 칩 → 먹었을 때 수치 표(생·구움·말림, 스크랩북 수치) → 이 재료 1개로 될 수 있는 요리(`reachableRecipes`, 음식 페이지 링크) → 휴대용 요리솥 전용 → 제작 사용처 → FAQ. `/cookpot` 허브의 재료 칩과 제작·보스 페이지의 재료 타일(`materialHref`의 마지막 순위)이 이 페이지로 링크한다(`ingredientHref`)
 - `/skill-trees` — 스킬트리 허브 (`seo/SkillTreesListContent` — 캐릭터 카드 + 스킬/분기 수 + FAQ, #126)
 - `/llms.txt` — AI 검색용 사이트 안내 (`src/app/llms.txt/route.ts`, 빌드 시 데이터에서 생성, #126)
+- `/catalog-search.json` — 제작 탭 검색이 같이 찾는 도감 아이템·생물·요리솥 재료 상세 페이지 색인 (`src/app/catalog-search.json/route.ts`, #165). 앱은 첫 검색 때 `useCatalogSearch`로 한 번 불러와 검색 결과 아래 `CatalogSearchResults`("도감" 섹션, `ItemSlot` 링크)로 보여 준다. 상세 페이지 대상 규칙(`catalog-slug`·`creature-slug`·`ingredient-slug`)이 바뀌면 자동으로 따라간다
 
 **목록(허브) 페이지 공통 — `seo/list-schema.tsx` (#126)**
 - `itemListLd()` — 허브 페이지 ItemList JSON-LD (characters·quests·cookpot·browse·skill-trees)

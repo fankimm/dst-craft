@@ -16,6 +16,8 @@ import { CategoryHeader } from "./CategoryHeader";
 import { Breadcrumb } from "./Breadcrumb";
 import { SearchBar } from "./SearchBar";
 import { ItemGrid } from "./ItemGrid";
+import { CatalogSearchResults } from "./CatalogSearchResults";
+import { useCatalogSearch } from "@/hooks/use-catalog-search";
 import { ItemDetail } from "./ItemDetail";
 import { CharacterSelector } from "./CharacterSelector";
 import { Footer } from "./Footer";
@@ -95,8 +97,11 @@ export function CraftingApp({
     removeTag: removeSearchTag,
     clearAll: clearSearch,
     results: searchResults,
+    debouncedTags: debouncedSearchTags,
     isSearching,
   } = useSearch();
+  // 제작법이 없는 도감 아이템·생물·요리솥 재료 상세 페이지도 같이 찾는다 (#165)
+  const catalogHits = useCatalogSearch(debouncedSearchTags.map((tag) => tag.text));
 
   const handleSelectItem = useCallback((item: import("@/lib/types").CraftingItem) => {
     setItem(item);
@@ -288,10 +293,20 @@ export function CraftingApp({
     />
   );
 
+  // 검색 결과 — 제작 아이템 + 도감 상세 페이지 링크(#165). 제작 결과가 없어도 도감 결과가 있으면 "없음" 문구를 띄우지 않는다
+  const searchBody = (
+    <>
+      {(searchResults.length > 0 || catalogHits.length === 0) && (
+        <ItemGrid items={searchResults} selectedItem={selectedItem} onSelectItem={handleSelectItem} />
+      )}
+      <CatalogSearchResults hits={catalogHits} locale={resolvedLocale} />
+    </>
+  );
+
   // 스크롤 영역 본문 — 광고 아래에서만 갈린다.
   const body = showCategoryGrid ? (
     isSearching ? (
-      <ItemGrid items={searchResults} selectedItem={selectedItem} onSelectItem={handleSelectItem} />
+      searchBody
     ) : (
       <CategoryGrid
         categories={categories}
@@ -310,6 +325,8 @@ export function CraftingApp({
       getClicks={getClicks}
       onSelectCharacter={handleSelectCharacter}
     />
+  ) : isSearching ? (
+    searchBody
   ) : (
     <ItemGrid
       items={displayItems}
