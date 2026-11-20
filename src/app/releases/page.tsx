@@ -15,6 +15,19 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.50.0",
+    date: "2026-11-20",
+    dev: [
+      "app/catalog-search.json/route.ts — 도감 아이템(catalog-slug)·생물(creature-slug)·요리솥 재료(ingredient-slug) 상세 페이지 408개의 이름 en/ko·경로·아이콘 색인을 빌드 때 정적 생성 (#165)",
+      "hooks/use-catalog-search + lib/catalog-search — 첫 검색 때 색인을 한 번 fetch, 이름 부분 일치(검색어 전부) + 접두 일치 우선, 최대 24개",
+      "crafting/CatalogSearchResults — 검색 결과 아래 '도감' 섹션(종류별 ItemSlot 링크, ko는 /ko 접두). 제작 결과 0개 + 도감 결과 있음이면 '없음' 문구 생략. useSearch가 debouncedTags 노출",
+    ],
+    changes: {
+      ko: ["제작 탭에서 검색하면 결과 아래에 제작법이 없는 아이템·생물·요리솥 재료도 함께 나오고, 누르면 그 상세 페이지로 이동합니다"],
+      en: ["Searching in the Crafting tab now also lists matching non-craftable items, creatures and Crock Pot ingredients below the results, linking to their detail pages"],
+    },
+  },
+  {
     version: "0.49.1",
     date: "2026-11-19",
     dev: [
