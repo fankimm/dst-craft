@@ -15,6 +15,20 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.51.0",
+    date: "2026-11-20",
+    dev: [
+      "광고 Ezoic → Google AdSense 단독 전환 (#134) — layout.tsx에서 Ezoic 헤더 스크립트·CMP·sa.min.js 제거, lib/adsense.ts로 adsbygoogle.js 1회 로드",
+      "ads/AdSlot — Ezoic placeholder 대신 AdSense ins(자리별 slot id), 자리 컨테이너 속성 data-ad-place, 자리·규격(top·rail-left·rail-right)은 그대로",
+      "public/ads.txt — AdSense 게시자 한 줄. nginx common conf의 adstxtmanager 301 제거(실서버 반영)",
+      "privacy — 광고 사업자 설명을 Google AdSense로 갱신. 옛 Ezoic 검증 스크립트 제거, scripts/check-adsense-beta.mjs 추가",
+    ],
+    changes: {
+      ko: ["광고 제공 업체를 Google AdSense로 바꿨습니다. 광고 스크립트가 가벼워져 페이지가 더 빨리 뜹니다", "개인정보처리방침의 광고 관련 내용을 갱신했습니다"],
+      en: ["Switched the ad provider to Google AdSense — a lighter ad script, so pages load faster", "Updated the advertising section of the Privacy Policy"],
+    },
+  },
+  {
     version: "0.50.0",
     date: "2026-11-20",
     dev: [
