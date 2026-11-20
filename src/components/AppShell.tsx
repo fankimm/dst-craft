@@ -302,7 +302,7 @@ export function AppShell() {
   // ensures the layout always matches the actual visible area.
   //
   // #58/#60: 높이는 body가 아니라 앱 루트 컨테이너(fixed)에 건다.
-  // body height를 잠그는 방식은 서드파티(Ezoic CMP 등)가 body에 iframe/div를
+  // body height를 잠그는 방식은 서드파티(광고 동의 메시지 등)가 body에 iframe/div를
   // flow로 삽입하면 앱이 밀려 하단이 잘리고 흰 공간이 생겼다. fixed 컨테이너는
   // body 형제 요소의 영향을 받지 않으므로 구조적으로 면역.
   const shellRef = useRef<HTMLDivElement>(null);
@@ -361,34 +361,30 @@ export function AppShell() {
   }, []);
 
   /**
-   * 앵커(하단 고정) 광고 높이를 `--ez-anchor-h` 로 노출한다 (#97).
+   * 앵커(하단 고정) 광고 높이를 `--ad-anchor-h` 로 노출한다 (#97).
    *
-   * Ezoic은 앵커를 띄우면서 `body` 에 `padding-bottom` 을 넣어 콘텐츠를 밀어올린다.
-   * 그런데 이 앱의 루트는 `fixed inset-x-0 top-0` 로 **body 흐름을 벗어나** 있어서 그
-   * 패딩이 전혀 먹지 않는다 — beta 실측에서 앵커 91px가 마지막 카드 줄을 그대로 덮었다
-   * (`body padding-bottom: 101px` 는 들어와 있는데도).
+   * 광고망의 앵커는 `position: fixed` 로 화면 아래에 겹쳐 뜬다. 이 앱의 루트도
+   * `fixed inset-x-0 top-0` 라 둘이 겹치면 앵커가 마지막 카드 줄을 그대로 덮는다
+   * (Ezoic 시절 beta 실측: 앵커 91px가 목록 끝을 가렸다). 그래서 실제 앵커 엘리먼트의
+   * 높이를 직접 재서 루트 높이에서 뺀다 — 눈에 보이는 것을 기준으로 삼는 편이 어긋나지 않는다.
    *
-   * 그래서 실제 앵커 엘리먼트의 높이를 직접 재서 루트 높이에서 뺀다. `body` 의 패딩을
-   * 읽지 않는 이유는 Ezoic이 앵커 없이도 패딩을 남겨 두는 경우가 있어서다 — 눈에 보이는
-   * 것을 기준으로 삼는 편이 어긋나지 않는다.
-   *
-   * 앵커는 페이지 로드 20초쯤 뒤에야 붙고 규격도 바뀌므로(320×50 / 320×100 / 728×90),
-   * 등장은 `MutationObserver`(body 자식 추가)로, 이후 높이 변화는 `ResizeObserver` 로 쫓는다.
-   * 폴링은 쓰지 않는다 — `getBoundingClientRect` 를 주기적으로 부르면 강제 레이아웃이 걸린다.
+   * 앵커는 페이지 로드 한참 뒤에야 붙고 규격도 바뀌므로, 등장은 `MutationObserver` 로,
+   * 이후 높이 변화는 `ResizeObserver` 로 쫓는다. 폴링은 쓰지 않는다 —
+   * `getBoundingClientRect` 를 주기적으로 부르면 강제 레이아웃이 걸린다.
+   * AdSense 앵커(#134)는 `data-anchor-status` 를 가진 `<ins>` 다 (`src/lib/ad-anchor.ts`).
    */
   useEffect(() => {
     const root = document.documentElement;
-    // 앵커 후보. **`querySelector` 로 첫 번째를 집으면 안 된다** — 문서 순서상
-    // `placeholder-100`(높이 24px, `position: static`)이 먼저 나와서 그걸 앵커로 오인하고
-    // 높이를 0으로 계산한다(실측). 실제로 자리를 차지하는 건 `position: fixed` 인 쪽이므로
-    // 후보를 전부 훑어 fixed 이면서 높이가 있는 것을 고른다.
-    // 후보 목록은 `src/lib/ad-anchor.ts` 에서 진단 오버레이와 공유한다 (#105).
+    // 앵커 후보. **`querySelector` 로 첫 번째를 집으면 안 된다** — 접힌(dismissed) 앵커는
+    // 높이 0으로 남는다. 실제로 자리를 차지하는 건 `position: fixed` 이면서 높이가 있는
+    // 쪽이므로 후보를 전부 훑는다. 후보 목록은 `src/lib/ad-anchor.ts` 에서 진단 오버레이와
+    // 공유한다 (#105).
     const CANDS = ANCHOR_AD_SELECTOR;
     let ro: ResizeObserver | undefined;
     let watched: Element | null = null;
 
     const setH = (px: number) => {
-      root.style.setProperty("--ez-anchor-h", px > 0 ? `${Math.round(px)}px` : "0px");
+      root.style.setProperty("--ad-anchor-h", px > 0 ? `${Math.round(px)}px` : "0px");
     };
 
     const pick = (): Element | null =>
@@ -412,23 +408,23 @@ export function AppShell() {
 
     sync();
     const mo = new MutationObserver(sync);
-    // `body` 가 아니라 `documentElement` 를 본다 — GPT Adhesion 앵커는 `<html>` 직계 자식으로
-    // 붙어서 body 관찰로는 등장을 놓친다 (#105 실측).
+    // `body` 가 아니라 `documentElement` 를 본다 — 광고망이 앵커를 `<html>` 직계 자식으로
+    // 붙이는 경우가 있어 body 관찰로는 등장을 놓친다 (#105 실측).
     mo.observe(document.documentElement, { childList: true, subtree: true });
     return () => {
       mo.disconnect();
       ro?.disconnect();
-      root.style.removeProperty("--ez-anchor-h");
+      root.style.removeProperty("--ad-anchor-h");
     };
   }, []);
 
   return (
     <div
       ref={shellRef}
-      // 높이는 `.app-shell`(globals.css) 클래스가 준다: `calc(100dvh - var(--ez-anchor-h))`.
-      // 앵커(하단 고정) 광고가 뜬 만큼 앱 높이를 줄이는 값이다 (#97) — Ezoic은 `body` 에
-      // `padding-bottom` 을 넣어 콘텐츠를 밀어올리는데, 이 루트는 `fixed` 라 body 흐름
-      // 밖이라서 그 패딩이 안 먹는다. `--ez-anchor-h` 는 아래 effect가 실제 앵커 높이로 채운다.
+      // 높이는 `.app-shell`(globals.css) 클래스가 준다: `calc(100dvh - var(--ad-anchor-h))`.
+      // 앵커(하단 고정) 광고가 뜬 만큼 앱 높이를 줄이는 값이다 (#97) — 앵커는 `fixed` 로
+      // 겹쳐 뜨고 이 루트도 `fixed` 라 안 빼면 마지막 줄이 가려진다.
+      // `--ad-anchor-h` 는 위 effect가 실제 앵커 높이로 채운다.
       // **인라인 style 로 옮기지 말 것** (#105): 위 vv 핸들러가 키보드가 닫힐 때
       // `style.height = ""` 로 지우는데, 인라인이면 그게 높이 선언 자체를 지워 앱이
       // 콘텐츠 높이로 늘어나고 모든 탭의 스크롤이 죽는다.
@@ -480,8 +476,8 @@ export function AppShell() {
       </div>
 
       {/* Tab content — 데스크탑에서는 좌우에 광고 레일이 붙는다 (#75).
-          레일은 컨텐츠와 나란한 flex 아이템이라 본문을 가리지 않는다. Ezoic이 세로로
-          여러 유닛을 쌓아 뷰포트보다 길어지는 경우가 있어(실측 1068px vs 뷰포트 772px)
+          레일은 컨텐츠와 나란한 flex 아이템이라 본문을 가리지 않는다. 세로 소재가
+          뷰포트보다 길어지는 경우가 있어(Ezoic 시절 실측 1068px vs 뷰포트 772px)
           `max-h-full overflow-y-auto`로 레일 안에서 높이를 흡수한다 — 잘라내면 광고
           정책 위반이라 스크롤로 접근 가능하게 둔다.
           1500px 미만에서는 아예 렌더하지 않는다 (그리드 896 + 좌우 352).

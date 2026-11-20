@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Sans_KR } from "next/font/google";
 import Script from "next/script";
 import { AdVisibilityProbe } from "@/components/ads/AdVisibilityProbe";
+import { ADSENSE_CLIENT, ADSENSE_SCRIPT_SRC } from "@/lib/adsense";
 import ReactDOM from "react-dom";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -87,11 +88,9 @@ export const metadata: Metadata = {
     "돈스타브 제작",
   ],
   metadataBase: new URL(SITE_URL),
-  // AdSense 사이트 소유권 확인용. 광고를 게재하지 않고 광고 요청도 하지 않는다 —
-  // `adsbygoogle.js` 대신 쓰라고 구글이 안내하는 방법이다(#100). Ezoic이 금지하는 것은
-  // "non-Ezoic ad code"이고 이건 ad code가 아니다. 되돌리려면 이 한 줄만 지우고 재배포.
+  // AdSense 사이트 소유권 확인용 메타 태그(#100). 광고 로더는 아래 `adBootstrapScript`.
   other: {
-    "google-adsense-account": "ca-pub-4567930429443718",
+    "google-adsense-account": ADSENSE_CLIENT,
   },
   alternates: {
     canonical: "/",
@@ -154,89 +153,27 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-/** Ezoic/CMP 로더 (#79).
+/** AdSense 로더 (#134 — Ezoic·CMP 4종을 `adsbygoogle.js` 1장으로 교체).
  *
- * 이전에는 이 네 개를 JSX `<script>`로 직접 렌더했는데, React 19가 `async` 스크립트를
- * hoistable resource로 보고 `<head>` 최상단으로 끌어올린다. 그 결과 광고 본체
- * `sa.min.js`가 CMP 동의 스크립트와 아래 `ezstandalone.cmd` 큐보다 **먼저** 나갔다
- * (프로덕션 HTML에서 @2.1KB vs @20.8KB). 의도(#75: CMP 먼저, 큐 먼저)와 정반대.
- * 덤으로, hoisting으로 흐트러진 head에 Ezoic이 자기 스크립트를 끼워넣으면 React가
- * 위치로 매칭하던 자식들이 밀려 hydration 경고가 떴다.
+ * JSX `<script async>`로 두지 않고 인라인 스크립트가 동적 삽입하는 이유는 #79와 같다:
+ * React 19는 `async` 스크립트를 hoistable resource로 보고 `<head>` 최상단으로 끌어올리는데,
+ * 광고 로더가 head에 자기 노드를 끼워 넣으면 React가 위치로 매칭하던 head 자식들이 밀려
+ * hydration 경고가 났다. 이 스크립트를 `</head>` 직전에 두면 주입분이 React가 렌더한
+ * 자식들 뒤로 빠져 매칭이 흔들리지 않는다. 동적 삽입은 파서를 막지 않는다.
  *
- * 그래서 JSX에서는 `async` 스크립트를 아예 없애고(=hoist될 것이 없음), 이 인라인
- * 스크립트 하나가 순서대로 동적 삽입한다. 동적 삽입 스크립트는 기본이 async라
- * 순서가 안 지켜지므로 `s.async = false`로 **삽입 순서 = 실행 순서**를 고정한다.
- * 동적 삽입은 파서를 막지 않으므로 렌더 블로킹도 없다 (원래 async를 쓴 이유).
+ * head 끝이라 파서가 URL을 늦게 발견하는 몫은 `ReactDOM.preload()`로 되돌린다
+ * (JSX `<link rel="preload">`는 hoist 사본과 원본이 둘 다 나가 HTML에 중복된다).
  *
- * 이 스크립트는 `</head>` 직전에 둔다. head 중간에서 append하면 주입된 노드가
- * 아직 파싱되지 않은 뒤쪽 요소들보다 앞에 꽂혀, React가 위치로 매칭하는 head
- * 자식들이 통째로 밀린다(#79에서 8/8 재현). 마지막에 두면 주입분이 React가
- * 렌더한 자식들 뒤로 빠져 매칭이 흔들리지 않는다.
- *
- * 대신 head 끝이라 파서가 URL을 늦게 발견한다 — beta 실측에서 요청 시작이
- * prod 대비 중앙값 274ms → 487ms로 밀렸다. 그래서 `ReactDOM.preload()`로
- * head 앞쪽에 preload를 심어 발견 시점을 되돌린다 (JSX `<link rel="preload">`는
- * React가 hoist한 사본과 원본이 둘 다 나가 HTML에 중복된다). preload는
- * 다운로드만 앞당길 뿐 실행 순서에는 관여하지 않는다. */
-/** 삽입 순서 = 실행 순서. CMP 두 개가 먼저, 그다음 광고 본체, 마지막이 분석. */
-const AD_SCRIPT_SRCS = [
-  "https://cmp.gatekeeperconsent.com/min.js",
-  "https://the.gatekeeperconsent.com/cmp.min.js",
-  "https://www.ezojs.com/ezoic/sa.min.js",
-  "https://ezoicanalytics.com/analytics.js",
-] as const;
-
-/** Cloudflare Rocket Loader가 건드리지 못하게 하는 대상 (CMP 두 개). */
-const AD_SCRIPT_CFASYNC_OFF = 2;
-
-/**
- * beta 전용 `ezstandalone.config()` 실험.
- *
- * `limitCookies` — 쿠키 싱크 요청 감축. 감소폭 측정 중이고 첫 소재 시각과는 무관하다.
- *
- * ---
- * ⛔ **`disableInterstitial` 과 `disableVideo` 는 다시 켜지 말 것** (#92에서 제거).
- *
- * #91에서 HAR 3회가 전부 "Interstitial이 `br1` 500→0까지 내려가고도 빈 응답"이라
- * 꺼도 된다고 판단해 잠깐 켰다. **Ezoic 대시보드 실측이 정반대였다** (최근 7일):
- *
- * | 포맷 | RPM | 수익 | 비중 |
- * |---|---|---|---|
- * | display (#111) | $0.31 | $0.99 | 48% |
- * | **interstitial** | **$0.72** | **$0.61** | **29%** |
- * | side rails (#107·108) | $0.39 | $0.28 | 13% |
- *
- * 전면 광고는 수익의 29%이고 **RPM이 셋 중 가장 높다**(display의 2.3배). 끄면 그냥 손해다.
- * HAR 3회는 no-fill 세션만 우연히 잡은 표본이었다 — 페이지뷰 3개로 수익 유닛을 판정하려
- * 한 것이 잘못이다.
- *
- * `disableVideo` 도 근거가 없다: Ezoic Video는 대시보드에서 "Get Started" 상태(= 미설정)라
- * 이 옵션이 끄는 건 우리가 안 쓰는 플레이어가 아니라 **아웃스트림 비디오 광고**인데, 그건
- * 별도 수익 항목이 없어 위 `display $0.99`에 섞여 있을 수 있다(3개 포맷 합 $1.88 vs 7일
- * 총액 $2.08 — $0.20이 미분류다). 끄면 display 수익을 깎을 위험이 있다.
- *
- * 다시 검토하려면 **대시보드 Ad Format Revenue를 먼저 보고** 판단할 것. HAR·헤드리스로는
- * 채움 판정 자체가 안 된다(Ezoic이 클라이언트를 분류한다 — `docs/mistakes.md`).
- */
-const BETA_AD_CONFIG = { limitCookies: true };
-
+ * 주소에 `?client=`가 붙는지(=자동 광고 적용 여부)는 `ADSENSE_SCRIPT_SRC`가 정한다 —
+ * beta 빌드는 테스트 모드라 떼어 둔다 (`src/lib/adsense.ts`). 실제 광고 자리는
+ * `AdSlot`(components/ads)이 `<ins class="adsbygoogle">` + `adsbygoogle.push({})`로 요청한다. */
 const adBootstrapScript = `
-window.ezstandalone = window.ezstandalone || {};
-ezstandalone.cmd = ezstandalone.cmd || [];${
-  IS_BETA
-    ? `\nezstandalone.cmd.push(function(){ ezstandalone.config && ezstandalone.config(${JSON.stringify(BETA_AD_CONFIG)}); });`
-    : ""
-}
 (function(){
-  var srcs = ${JSON.stringify(AD_SCRIPT_SRCS)};
-  var cfasyncOff = ${AD_SCRIPT_CFASYNC_OFF};
-  for (var i = 0; i < srcs.length; i++) {
-    var s = document.createElement('script');
-    s.src = srcs[i];
-    s.async = false;
-    if (i < cfasyncOff) s.setAttribute('data-cfasync', 'false');
-    document.head.appendChild(s);
-  }
+  var s = document.createElement('script');
+  s.src = ${JSON.stringify(ADSENSE_SCRIPT_SRC)};
+  s.async = true;
+  s.crossOrigin = 'anonymous';
+  document.head.appendChild(s);
 })();
 `;
 
@@ -391,20 +328,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // 광고/CMP 스크립트를 미리 받아둔다 (adBootstrapScript 주석 참조).
-  for (const href of AD_SCRIPT_SRCS) ReactDOM.preload(href, { as: "script" });
+  // 광고 로더를 미리 받아둔다 (adBootstrapScript 주석 참조).
+  ReactDOM.preload(ADSENSE_SCRIPT_SRC, { as: "script", crossOrigin: "anonymous" });
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Ezoic — CMP(동의) + 광고 시스템 + 분석 스크립트.
-            #58에서 iOS Safari 하단 흰 공간 원인으로 확정 → #60에서 재활성화.
-            CMP가 body에 삽입하는 iframe/div가 레이아웃을 못 흔들도록 AppShell이
-            fixed-position 컨테이너를 쓴다 (AppShell.tsx 뷰포트 로직 참조).
+        {/* 광고(AdSense) — 서드파티가 body에 삽입하는 iframe/div(앵커·전면·동의 메시지)가
+            레이아웃을 못 흔들도록 AppShell이 fixed-position 컨테이너를 쓴다 (#58/#60,
+            AppShell.tsx 뷰포트 로직 참조).
 
-            CMP·광고·분석 스크립트는 JSX가 아니라 `adBootstrapScript`가 순서대로
-            동적 삽입한다 (#79 — 이유는 그 상수의 주석 참조). 실제 광고 자리는
-            `AdSlot`(components/ads)이 placeholder div + showAds()로 요청한다 (#75). */}
+            로더는 JSX가 아니라 `adBootstrapScript`가 동적 삽입한다 (#79 — 이유는 그 상수의
+            주석 참조). 실제 광고 자리는 `AdSlot`(components/ads)이 그린다 (#134). */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: trackingScript }} />
@@ -448,7 +383,7 @@ export default function RootLayout({
             ],
           }}
         />
-        {/* 광고/CMP 로더는 반드시 head의 **마지막** 요소로 (#79).
+        {/* 광고 로더는 반드시 head의 **마지막** 요소로 (#79).
             여기서 append하면 주입된 <script>들이 React가 렌더한 head 자식들
             뒤에 놓여, React의 자식 위치 매칭을 흔들지 않는다. */}
         <script dangerouslySetInnerHTML={{ __html: adBootstrapScript }} />

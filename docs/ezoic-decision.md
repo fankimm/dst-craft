@@ -358,22 +358,40 @@ Fast3G에서 홈·characters는 `window load`가 30초 내에 발화하지 않�
    → 확인 모달(종료일 표시) → 체크박스 + **CONFIRM**. **되돌릴 수 없다.** 모달의 종료일을 캡처해
    증빙으로 보관하고, 보조로 `support@ezoic.com`에도 같은 내용을 보내 둔다 (관할이 캘리포니아 법 /
    샌디에이고, Ezoic 재량으로 AAA 중재 강제 가능). ~~서면 발송이 1차 수단~~ — 2026-10-20 교정
-2. **전환 작업 — 반드시 계약 종료일 2026-11-19 이후에 한다.** 그날까지는 §2 독점이
-   살아 있으므로 아래 항목 중 어느 것도 먼저 건드리지 않는다 (MCM 위임 해제, ads.txt 리다이렉트
-   제거, Ezoic 스크립트 제거, AdSense 광고 코드 삽입 전부 포함). 효력일 전에 할 수 있는 건 AdSense
-   사이트 검토 요청(메타 태그 확인, 광고 게재 없음)뿐이다 — ✅ 2026-10-20 제출 완료
-   - ~~**AdSense 승인이 아직이면 전환을 승인 뒤로 미룬다 (광고 공백 감수).**~~ → ✅ **2026-10-21 승인 완료**,
-     이 조건은 해소됐다. 11/19 당일 `adsbygoogle.js`를 넣으면 광고가 나온다. 승인 상태는
-     `https://adsense.google.com/adsense/u/0/pub-4567930429443718/sites/list` 의 승인 상태 열
-   - AdSense 계정 `pub-4567930429443718` — 이미 활성, dstcraft.com 등록·**사이트 승인 완료(2026-10-21)**
-   - MCM 위임 해제: Ad Manager 네트워크 `23368262432`에서 상위 게시자 `Ezoic NA 8` 위임 철회
-   - `ads.txt`: 현재 `srv.adstxtmanager.com/19390/dstcraft.com`으로 301 리다이렉트
-     (`bun-api/infra/nginx-dstcraft-common.conf`) → AdSense 자체 ads.txt로 교체 + nginx reload
-   - `src/app/layout.tsx`의 Ezoic·CMP 스크립트 4종 제거 → `adsbygoogle.js` 1장으로 교체
-   - `src/components/ads/AdSlot.tsx` — placeholder 방식에서 AdSense 광고 단위로 교체.
-     **예약 높이 구조(`reserve`)는 유지할 것** — CLS 방어는 광고망과 무관하다
-   - `/privacy`의 Ezoic 조항 + `ezoic-privacy-policy-embed` 앵커 정리
-   - CMP: AdSense는 Google Funding Choices를 쓸 수 있고, 임계경로 밖이라 속도 이점이 여기서 나온다
+2. **전환 작업 — production 반영은 반드시 계약 종료일 2026-11-19 이후에 한다.** 그날까지는
+   §2 독점이 살아 있으므로 실광고·ads.txt 교체·MCM 위임 해제를 먼저 올리지 않는다.
+   **코드는 #134(`feat/134-adsense-switch`)에 미리 만들어 두었고, beta에는 테스트 광고
+   모드(`data-adtest="on"`, 노출·수익 집계 없음, 자동 광고 꺼짐)로만 올려 검증한다** —
+   인벤토리를 다른 데 파는 게 아니라서 §2 상황이 성립하지 않는다. 베타에 실광고 유닛은
+   금지(ads.txt가 루트 도메인 기준이라 어차피 "승인되지 않음"으로 제한된다).
+   - ~~AdSense 승인이 아직이면 전환을 승인 뒤로 미룬다~~ → ✅ **2026-10-21 승인 완료**.
+     승인 상태는 `https://adsense.google.com/adsense/u/0/pub-4567930429443718/sites/list`
+
+   **#134가 바꾼 것** (코드 기준, 2026-10-22):
+   - `src/lib/adsense.ts` — 게시자 ID·slot id·테스트 모드(`NEXT_PUBLIC_DEPLOY_ENV=beta`면 항상)·로더 주소
+   - `src/app/layout.tsx` — Ezoic·Gatekeeper CMP·ezoicanalytics 4종 → `adsbygoogle.js` 1장 (동적 삽입 #79 방식 유지)
+   - `src/components/ads/AdSlot.tsx` — placeholder/showAds 배칭 → `<ins class="adsbygoogle">` + `push({})`. 띠는 CSS 고정 규격(320×100 / 728×90)으로 CLS 0, 레일은 반응형 세로. 규칙은 `docs/ui.md` AdSlot 절
+   - `AdVisibilityProbe`·`EnvDiagOverlay`·`ad-anchor.ts` — `data-ad-status`·`adsbygoogle.loaded`·`data-anchor-status` 기준으로 교체. 도달 계측 버킷은 그대로라 전환 전후 비교 가능
+   - `/privacy` — Ezoic 조항 → Google AdSense, `ezoic-privacy-policy-embed` 앵커 제거, 갱신일 2026-11-19
+   - `public/ads.txt` 추가, nginx conf의 `/ads.txt` 301 제거(**실서버 복사·reload는 11/19 이후**)
+   - Ezoic 전용 회귀 스크립트 5종 삭제 → `scripts/check-adsense-beta.mjs`
+
+   **beta 검증 (2026-10-22, `scripts/check-adsense-beta.mjs`)** — ✅ 구조·테스트 플래그·콘솔 오류 0·CLS(앱 0.002 / 모바일 0.005 / SEO 0) 통과. 규격 실측: top 728×90(모바일 320×100), 레일 336×600. **채움은 전부 `unfilled`** — Google이 응답은 하지만 루트 도메인 ads.txt가 Ezoic 것이라 우리 게시자 ID를 미승인으로 보고 테스트 광고도 안 내보낸다. **11/19 ads.txt 교체 뒤 `--expect-fill`로 재검증**할 것. beta.dstcraft.com은 feat/134 테스트 모드로 올라가 있다.
+
+   **사용자가 콘솔에서 해야 하는 것** (코드로 못 한다):
+   - [x] **광고 단위 3개 생성** — ✅ 2026-10-22 생성: `dstcraft top` 5509948095 / `dstcraft rail-left` 5098884559 / `dstcraft rail-right` 9831677346 (디스플레이·반응형). `src/lib/adsense.ts`의 `ADSENSE_SLOT`에 반영됨
+   - [ ] **자동 광고 설정** (사이트 → dstcraft.com → 수정) — 앵커·전면(vignette)만 켜고 페이지 내 자동 삽입·사이드레일은 끈다 (근거 `docs/ui.md`). production에만 적용된다(beta는 `?client=` 없이 로드)
+   - [ ] **개인 정보 보호 및 메시지** — GDPR(EU)·미국 주 규제 메시지를 켠다. 안 켜면 EEA 트래픽에 광고가 제한된다. Ezoic CMP는 코드와 함께 사라진다
+   - [ ] **지급 정보** — 수익 $10에서 주소 PIN 우편, $100에서 지급. 은행 계좌는 미리 등록해 둔다
+   - [ ] **11/19 당일**: `/release` → 맥미니에서 `bun-api/infra/nginx-dstcraft-common.conf`를 `/usr/local/etc/nginx/snippets/dstcraft-common.conf`로 복사 + `nginx -t && nginx -s reload` → `curl -sL https://www.dstcraft.com/ads.txt`에 우리 pub ID 1줄 확인 → Ad Manager 네트워크 `23368262432`에서 상위 게시자 `Ezoic NA 8` MCM 위임 철회 → AdSense 사이트 목록의 Ads.txt 상태가 "승인됨"으로 바뀌는지(수일 소요) 확인
+   - 참고: AdSense 계정 `pub-4567930429443718` — 활성, dstcraft.com 등록·**사이트 승인 완료(2026-10-21)**
+   **🔎 2026-10-22 리서치 — "11/19 전에 올리면 확실히 안 되나?"** (사용자 질문)
+   - **계약상 안 된다.** 서명한 계약서 §2: *"exclusive worldwide rights to manage and represent all programmatic advertising inventory on the Site(s) during the Term"* + *"You agree to only have Ezoic's ads.txt entries for your Site(s), unless otherwise approved by us in writing."* §4: 통보는 수령 30일 뒤 효력, 그때까지 Agreement가 살아 있다. §7 전체합의 조항이 있어 Ezoic 블로그(2021 "no contracts, no exclusivity")로 반박할 수 없다 — 서명본이 우선
+   - **위반 시 실제 리스크**: 계약서 자체엔 손해배상·지급 보류 조항이 없다. 대신 계약서가 편입한 Ezoic Terms of Use(2026-06판) §9·§10 — 위반으로 Ezoic이 해지하면 *"not entitled to any further payment"*, 임계($20) 미만 잔액은 미지급, *"withhold and offset"* 권한. 즉 **걸리면 미지급 잔액 약 $26(11/30 입금 예정)을 잃는 것**이 상한이고, 그 이상의 청구 근거는 없다. 관할은 캘리포니아·AAA 중재
+   - **기술적으로도 헛수고다**: AdSense는 루트 도메인 ads.txt에 게시자 ID가 없으면("Unauthorized") 광고를 안 내보낸다 — Google 문서는 ID를 넣어 상태를 고치면 *"then ads will start to show"*라고만 적고, beta 실측(10/22)은 테스트 광고조차 전부 `unfilled`. 그러니 production에 코드만 올려도 광고는 안 나오고, 광고를 나오게 하려면 ads.txt를 건드려야 하는데 그게 §2에 명시된 가장 분명한 위반이다
+   - **베타에서 미리 보는 합법 경로는 있다**: Ezoic 자체 ads.txt 관리 흐름이 "**Google AdSense 네트워크 항목 추가**"를 공식 지원한다(Ezoic KB *"add any other entries you need, such as your AdSense ID"*, 대시보드 EzoicAds → Ad Transparency → Ads.txt → Automatic Setup → "+ Add a New Network"). Ezoic이 문서로 안내하는 기능이라 §2의 "unless otherwise approved by us in writing"에 해당한다고 볼 수 있고, production 광고 코드는 안 건드린다. 이걸 하면 Google이 승인으로 보고 **beta 테스트 광고가 채워진다**. 단 우리 `/ads.txt`는 공용 계정 19390으로 301이라 항목을 못 넣는다 — Ezoic 대시보드의 Ads.txt 설정에서 우리 계정용 ID를 받아 nginx 301 대상을 바꿔야 한다(conf 수정 + reload). 효과는 "4주 먼저 베타에서 보는 것"뿐이고 수익과 무관하다
+   - **결론: 11/19까지 production엔 안 올린다.** 베타에서 미리 보고 싶으면 위 ads.txt 경로만 쓴다
+
 3. **전환 후 4주간 ePMV 비교** — 예상보다 나쁘면 기록해 둘 것. Ezoic 복귀는 새 1년 계약이므로
    가볍게 결정하지 말 것
 

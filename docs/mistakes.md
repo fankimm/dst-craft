@@ -1147,6 +1147,11 @@ Monumetric 1만+셋업비 — 전부 문턱이 있고 **Ezoic만 무제한이다
 - **해결**: 배율은 점수를 깎기만 하므로 **배율 없는 DP 값이 정확한 상한**이다. 그 상한으로 가지치기하는 분기한정 DFS(묶음은 점수순)로 바꾸니 16개 평균 47ms. 정답성은 ≤12개 전수 열거와 160라운드 대조로 확인
 - **교훈**: 메모 키에 경로 의존 정보가 들어가면 메모가 아니라 전수 열거다. 그런 제약이 "완화하면 쉬워지는" 종류(여기선 배율 제거)면 완화 문제의 해를 상한으로 쓰는 분기한정이 정석. 그리고 알고리즘을 바꿀 땐 작은 N에서 느린 정답 구현과 반드시 대조할 것 — 이번에 `_solveWarlyEnum`·`_solveBitmaskDp`를 테스트용으로 남겨 둔 이유
 
+## 2026-10-22 — feat 워크트리에서 `node_modules`를 심볼릭 링크하면 Turbopack 빌드가 죽는다 (#134)
+- **증상**: `ln -s ../dst-craft/node_modules`로 링크한 뒤 `npm run build` → `TurbopackInternalError: Symlink node_modules is invalid, it points out of the filesystem root`. 게다가 백그라운드로 돌린 명령 뒤에 `tail`을 붙여 두어 exit 0으로 보였다 — **빌드가 성공한 줄 알았다**
+- **원인**: Turbopack은 프로젝트 루트 밖을 가리키는 심볼릭 링크를 허용하지 않는다
+- **교훈**: 워크트리에선 `npm ci --prefer-offline`으로 직접 설치한다(캐시 덕에 10초 남짓). 백그라운드 빌드의 exit 코드는 마지막 명령이 아니라 **빌드 명령의 코드를 따로 기록**해 확인할 것
+
 ### 추출 스크립트가 없는 파일을 `if path.exists()`로 건너뜀 — 얼음이 "생으로 못 먹음"으로 나옴 (2026-10-24, #135)
 - **문제**: 요리솥 트레이너에서 얼음을 먹을 수 없었다(사용자 피드백). `extract-raw-foods.py`의 `SPECIAL_FILES`가 `ice.lua`를 찾는데 얼음 prefab은 `inv_rocks_ice.lua`에 있다. 파일이 없으면 조용히 넘어가서 얼음이 `raw-foods.ts`에 한 번도 들어간 적이 없었고, 트레이너는 얼음(`frozen` 태그)을 "못 먹는 재료" 예외로 허용해 그 누락을 덮었다. 같은 목록의 `oceanfishingset.lua`도 존재하지 않는 파일이었다
 - **원인**: (1) #122에서 "행을 못 읽으면 죽기"는 넣었지만 "파일을 못 찾으면 죽기"는 없었다. (2) 소비하는 쪽(트레이너 풀 assert)이 데이터 누락을 예외로 흡수했다. (3) 얼음 수치는 `TUNING.CALORIES_TINY/4`라 파일을 찾았어도 lookup이 None을 돌려 또 조용히 빠졌을 것이다
