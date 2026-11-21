@@ -2,13 +2,14 @@
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { ChevronRight, X, RotateCcw, Shuffle, ExternalLink } from "lucide-react";
+import { ChevronRight, X, RotateCcw, Shuffle, ExternalLink, Star } from "lucide-react";
 import { useSettings } from "@/hooks/use-settings";
 import { t, foodName, ingredientName, type Locale, type TranslationKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { statColor, formatStat } from "@/lib/stat-utils";
 import { assetPath } from "@/lib/asset-path";
-import { ingredientImage, type CookpotIngredient } from "@/data/cookpot-ingredients";
+import { ingredientImage, getIngredientById, type CookpotIngredient } from "@/data/cookpot-ingredients";
+import { useFavorites } from "@/hooks/use-favorites";
 import { simulate, reachableRecipes } from "@/lib/cookpot-engine";
 import type { CookingRecipe } from "@/data/recipes";
 import { IngredientPicker } from "./IngredientPicker";
@@ -43,6 +44,33 @@ function readModeFromUrl(): CookpotMode {
 
 
 const COOK_TIME_BASE = 40;
+
+// 내 조합 (#167) — 즐겨찾기 저장소를 그대로 쓴다(로그인하면 계정에 동기화). 키: `combo:<station>:<id,id,id,id>`
+// 재료 순서는 결과에 영향이 없어 정렬해 둔다 → 같은 조합을 순서만 바꿔 두 번 저장하지 않는다
+const COMBO_FAV_PREFIX = "combo:";
+const MAX_SAVED_COMBOS = 20;
+
+interface SavedCombo {
+  key: string;
+  station: Station;
+  ingredients: CookpotIngredient[];
+}
+
+function comboKey(station: Station, ingredients: CookpotIngredient[]): string {
+  return `${COMBO_FAV_PREFIX}${station}:${ingredients.map((i) => i.id).sort().join(",")}`;
+}
+
+function parseComboKey(key: string): SavedCombo | null {
+  if (!key.startsWith(COMBO_FAV_PREFIX)) return null;
+  const rest = key.slice(COMBO_FAV_PREFIX.length);
+  const sep = rest.indexOf(":");
+  if (sep < 0) return null;
+  const station = rest.slice(0, sep);
+  if (station !== "cookpot" && station !== "portablecookpot") return null;
+  const ingredients = rest.slice(sep + 1).split(",").map((id) => getIngredientById(id));
+  if (ingredients.length !== 4 || ingredients.some((i) => !i)) return null; // 게임 패치로 사라진 재료 등
+  return { key, station, ingredients: ingredients as CookpotIngredient[] };
+}
 
 // ---------------------------------------------------------------------------
 // CookpotApp
@@ -104,6 +132,27 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
   }, [result]);
 
   const { getClicks } = usePopularity();
+
+  // 내 조합 (#167)
+  const { favorites, isFavorite, toggleFavorite } = useFavorites();
+  const savedCombos = useMemo(() => {
+    const list: SavedCombo[] = [];
+    favorites.forEach((fav) => {
+      const combo = parseComboKey(fav);
+      if (combo) list.push(combo);
+    });
+    return list.reverse(); // 최근에 저장한 것이 앞
+  }, [favorites]);
+  const currentComboKey = allFilled ? comboKey(station, filledIngredients) : null;
+  const currentSaved = currentComboKey !== null && isFavorite(currentComboKey);
+  const canSave = currentComboKey !== null && (currentSaved || savedCombos.length < MAX_SAVED_COMBOS);
+  const handleToggleSave = useCallback(() => {
+    if (currentComboKey) toggleFavorite(currentComboKey);
+  }, [currentComboKey, toggleFavorite]);
+  const handleLoadCombo = useCallback((combo: SavedCombo) => {
+    setSlots([...combo.ingredients]);
+    setStation(combo.station);
+  }, []);
 
   // Handlers
   const handleAddIngredient = useCallback((ingredient: CookpotIngredient) => {
@@ -204,18 +253,45 @@ export function CookpotApp({ onViewRecipe }: { onViewRecipe?: (recipeId: string)
                 onRemove={handleRemoveSlot}
               />
             ))}
+            <div className="flex items-center gap-1 mt-0.5">
             {/* Clear button — always visible, disabled when empty */}
             <button
               onClick={handleClear}
               disabled={filledIngredients.length === 0}
-              className="flex items-center gap-1 mt-0.5 px-2 py-1 rounded-full text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-surface border border-border transition-colors disabled:opacity-30 disabled:pointer-events-none"
+              className="flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium text-muted-foreground hover:text-foreground hover:bg-surface border border-border transition-colors disabled:opacity-30 disabled:pointer-events-none"
               title={t(resolvedLocale, "cookpot_clear")}
             >
               <RotateCcw className="size-3" />
               {t(resolvedLocale, "cookpot_clear")}
             </button>
+            {/* 내 조합 저장 (#167) — 4칸이 다 찼을 때만 */}
+            <button
+              onClick={handleToggleSave}
+              disabled={!canSave}
+              aria-pressed={currentSaved}
+              className={cn(
+                "flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium border transition-colors disabled:opacity-30 disabled:pointer-events-none",
+                currentSaved
+                  ? "border-amber-400/60 text-amber-500 bg-amber-400/10"
+                  : "border-border text-muted-foreground hover:text-foreground hover:bg-surface",
+              )}
+              title={t(resolvedLocale, currentSaved ? "cookpot_combo_saved" : "cookpot_combo_save")}
+            >
+              <Star className={cn("size-3", currentSaved && "fill-current")} />
+              {t(resolvedLocale, currentSaved ? "cookpot_combo_saved" : "cookpot_combo_save")}
+            </button>
+            </div>
           </div>
         </div>
+        {savedCombos.length > 0 && (
+          <SavedComboStrip
+            combos={savedCombos}
+            activeKey={currentSaved ? currentComboKey : null}
+            locale={resolvedLocale}
+            onLoad={handleLoadCombo}
+            onRemove={toggleFavorite}
+          />
+        )}
       </div>
 
       {/* Ingredient picker — fills remaining space, scrolls internally */}
@@ -250,6 +326,81 @@ function CookpotBreadcrumb({ locale }: { locale: Locale }) {
         {t(locale, "tab_cookpot")}
       </span>
     </nav>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// 내 조합 목록 (#167) — 가로 스크롤 띠. 누르면 슬롯에 불러오고, ×로 삭제
+// ---------------------------------------------------------------------------
+
+function SavedComboStrip({
+  combos,
+  activeKey,
+  locale,
+  onLoad,
+  onRemove,
+}: {
+  combos: SavedCombo[];
+  activeKey: string | null;
+  locale: Locale;
+  onLoad: (combo: SavedCombo) => void;
+  onRemove: (key: string) => void;
+}) {
+  return (
+    <div className="mt-2.5">
+      <div className="text-[10px] font-semibold text-muted-foreground mb-1 px-0.5">
+        {t(locale, "cookpot_combo_mine")}
+      </div>
+      <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-0.5 px-0.5">
+        {combos.map((combo) => {
+          const names = combo.ingredients.map((i) => ingredientName(i, locale)).join(", ");
+          return (
+            <div
+              key={combo.key}
+              className={cn(
+                "relative shrink-0 flex items-center rounded-lg border bg-surface",
+                combo.key === activeKey ? "border-amber-400/70" : "border-border",
+              )}
+            >
+              <button
+                type="button"
+                onClick={() => onLoad(combo)}
+                className="flex items-center gap-0.5 pl-1.5 pr-5 py-1 hover:bg-muted/50 rounded-lg"
+                title={names}
+                aria-label={`${t(locale, "cookpot_combo_load")}: ${names}`}
+              >
+                {combo.station === "portablecookpot" && (
+                  <img
+                    src={assetPath("/images/game-items/portablecookpot_item.png")}
+                    alt=""
+                    className="size-4 object-contain mr-0.5 opacity-70"
+                    loading="lazy"
+                  />
+                )}
+                {combo.ingredients.map((ing, i) => (
+                  <img
+                    key={i}
+                    src={assetPath(`/images/game-items/${ingredientImage(ing)}`)}
+                    alt=""
+                    className="size-6 object-contain"
+                    loading="lazy"
+                  />
+                ))}
+              </button>
+              <button
+                type="button"
+                onClick={() => onRemove(combo.key)}
+                className="absolute top-0.5 right-0.5 size-4 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-muted"
+                aria-label={t(locale, "cookpot_combo_remove")}
+                title={t(locale, "cookpot_combo_remove")}
+              >
+                <X className="size-2.5" />
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
