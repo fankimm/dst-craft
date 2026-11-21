@@ -15,6 +15,18 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.52.0",
+    date: "2026-11-21",
+    dev: [
+      "cookpot/CookpotApp — 내 조합 (#167): 4칸이 찼을 때 [저장] 토글, 슬롯 아래 SavedComboStrip(불러오기·삭제). 저장소는 useFavorites, 키 combo:<station>:<정렬한 재료 id 4개>, 최대 20개, 없어진 재료 id는 건너뜀",
+      "i18n — cookpot_combo_{save,saved,mine,load,remove} ko/en",
+    ],
+    changes: {
+      ko: ["요리솥 탭 시뮬레이터에서 직접 만든 재료 조합을 저장할 수 있어요. 4칸을 채우고 [저장]을 누르면 슬롯 아래 '내 조합'에 모이고, 누르면 바로 다시 불러옵니다 (로그인하면 다른 기기에서도 보여요)"],
+      en: ["You can now save your own Crock Pot combos in the simulator. Fill all four slots and tap Save — they appear under \"My combos\" below the slots, and one tap loads them back (synced across devices when signed in)"],
+    },
+  },
+  {
     version: "0.51.0",
     date: "2026-11-20",
     dev: [
