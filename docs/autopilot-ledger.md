@@ -32,6 +32,20 @@
 
 ## 기록
 
+### 2026-11-21 · #166 · v— · meta
+AdSense 전환 마무리 기록 — `check-deadlines.sh`의 11/19 줄 `done:` 처리(매 세션 경고 종료), `docs/ezoic-decision.md` B절 진행 상태, #134 항목에 프로덕션 채움 확인, 인계 문서 3.1절(크롬 확장이 페이지를 못 읽는 공백).
+- 피드백: 없음
+- git 밖 변경: 없음
+- DB 변경: 없음
+
+### 2026-11-20 · #134 · v0.51.0 · infra
+광고를 Ezoic → Google AdSense 단독으로 전환(Ezoic 계약 종료 2026-11-19 이후, 11/20 17:00 KST 뒤 첫 회차). Ezoic 스크립트·CMP·placeholder 제거, 기존 3자리(top·rail-left·rail-right)에 AdSense 광고 단위, `public/ads.txt`를 AdSense 게시자 한 줄로, 개인정보처리방침 갱신.
+- 피드백: 없음
+- git 밖 변경: 맥미니 nginx `/usr/local/etc/nginx/snippets/dstcraft-common.conf`에서 `ads.txt` → adstxtmanager 301 제거(레포 conf 복사, 기존은 `dstcraft-common.conf.bak-134`) — 되돌리기: `.bak-134`를 원래 이름으로 복사 → `/usr/local/bin/nginx -t && /usr/local/bin/nginx -s reload`. 단 Ezoic 복귀는 선택지가 아니라(`docs/ezoic-decision.md`) 되돌릴 일은 사실상 없다 — 4.3절 기본값도 "유지"
+- git 밖 변경(미완): Ad Manager MCM 위임 해제(상위 게시자 `Ezoic NA 8`) — 이 회차엔 크롬 확장이 페이지를 읽지 못해(document_idle 시간 초과) 하지 못했다. 다음 회차에서 1.1절대로
+- 채움 확인: 2026-11-21 `check-adsense-beta.mjs https://www.dstcraft.com --expect-fill` — top·rail-left·rail-right 전부 filled, 콘솔 오류 0, CLS 0. 11/21 08시 회차도 크롬 확장이 example.com까지 어떤 페이지에도 스크립트를 주입하지 못해 MCM 해제 미완 (#166)
+- DB 변경: 없음
+
 ### 2026-11-20 · #165 · v0.50.0 · feature
 제작 탭 검색 결과 아래 "도감" 섹션 — 검색어가 이름(en/ko)에 든 도감 아이템·생물·요리솥 재료 상세 페이지(최대 24개)를 `ItemSlot` 링크로. 색인 `/catalog-search.json`(408개, gzip 약 11KB)은 빌드 때 생성하고 첫 검색 때만 불러온다. 제작 결과가 없어도 도감 결과가 있으면 "없음" 문구 대신 보인다. #144·#145 앱 안 연결.
 - 피드백: 없음
