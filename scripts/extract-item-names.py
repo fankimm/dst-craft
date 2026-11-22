@@ -72,9 +72,30 @@ def parse_po(text: str) -> dict[str, tuple[str, str]]:
     return names
 
 
+def parse_strings_names() -> dict[str, str]:
+    """strings.lua 의 최상위 `STRINGS.NAMES = { ... }` 블록 → {KEY: 영문 이름}.
+    한글모드(ko.po)는 게임 패치보다 늦게 갱신된다 — 새 이름이 ko.po 에 아직 없을 때의 영문 fallback 용"""
+    text = (SNAPSHOT / "scripts/strings.lua").read_text(encoding="utf-8")
+    m = re.search(r"^    NAMES =\s*\n\s*\{(.*?)^\s*\},\s*$\n\s*\n?    NAME_DETAIL_EXTENTION", text, re.M | re.S)
+    assert m, "strings.lua STRINGS.NAMES 블록을 못 찾음"
+    out = dict(re.findall(r'^\s+([A-Z0-9_]+)\s*=\s*"((?:[^"\\]|\\.)*)"', m.group(1), re.M))
+    assert len(out) > 1000, f"strings.lua STRINGS.NAMES 파싱 실패 ({len(out)})"
+    return out
+
+
+def with_en_fallback(names: dict[str, tuple[str, str]]) -> dict[str, tuple[str, str]]:
+    """ko.po 에 없는 키는 strings.lua 영문을 en/ko 양쪽에 쓴다 (자체 번역 금지 — 한글모드가 따라오면 자동으로 바뀐다)"""
+    fallback = [k for k in parse_strings_names().items() if k[0] not in names]
+    for key, en in fallback:
+        names[key] = (en.replace('\\"', '"'), "")
+    return names
+
+
 def main() -> None:
     names = parse_po(KO_PO.read_text(encoding="utf-8"))
     assert len(names) > 1000, f"ko.po STRINGS.NAMES 파싱 실패 ({len(names)})"
+    po_keys = set(names)
+    names = with_en_fallback(names)
 
     ids = re.findall(r'^  ([a-z0-9_]+): \{type: "item"', STATS.read_text(encoding="utf-8"), re.M)
     assert len(ids) > 500, f"scrapbook-stats.ts item 파싱 실패 ({len(ids)})"
@@ -88,6 +109,8 @@ def main() -> None:
             missing.append(id_)
             continue
         en, ko = names[key]
+        if key not in po_keys:
+            print(f"[warn] {id_}: ko.po 에 {key} 없음 — 영문 이름으로 대신 ({en})", file=sys.stderr)
         rows.append((id_, en, ko or en))
 
     if missing:

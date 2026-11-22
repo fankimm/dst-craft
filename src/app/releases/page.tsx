@@ -15,6 +15,31 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.52.1",
+    date: "2026-11-23",
+    dev: [
+      "data-sync (#168): DST buildid 26306684 → 26474873 (2026-11-22 패치, 할로윈 2026). sync-game-data.sh 전체 재실행 — scrapbook-stats·item-names·creature-names 갱신",
+      "extract-item-names.py — ko.po에 아직 없는 STRINGS.NAMES는 strings.lua 영문을 en/ko 양쪽에 fallback(경고 출력). 할로윈 장식 7~10이 한글모드 미번역",
+      "convert-scrapbook.py — KO_TRANSLATION_FIXES의 연산 회로 +100 오역 보정 제거(한글모드가 고침)",
+    ],
+    changes: {
+      ko: ["게임 데이터를 최신 패치(할로윈 2026)에 맞췄어요. 새 할로윈 장식 4종과 동굴 분기공 바닥이 아이템 도감에 추가됐고, 마녀 빗자루 수치가 새 값으로 바뀌었어요. 한글모드에 아직 번역이 없는 새 이름은 당분간 영문으로 보여요"],
+      en: ["Game data updated to the latest patch (Hallowed Nights 2026): four new Halloween decorations and Cave Fumarole Turf in the item catalog, plus updated Witch's Broom stats"],
+    },
+  },
+  {
+    version: "0.52.0",
+    date: "2026-11-21",
+    dev: [
+      "cookpot/CookpotApp — 내 조합 (#167): 4칸이 찼을 때 [저장] 토글, 슬롯 아래 SavedComboStrip(불러오기·삭제). 저장소는 useFavorites, 키 combo:<station>:<정렬한 재료 id 4개>, 최대 20개, 없어진 재료 id는 건너뜀",
+      "i18n — cookpot_combo_{save,saved,mine,load,remove} ko/en",
+    ],
+    changes: {
+      ko: ["요리솥 탭 시뮬레이터에서 직접 만든 재료 조합을 저장할 수 있어요. 4칸을 채우고 [저장]을 누르면 슬롯 아래 '내 조합'에 모이고, 누르면 바로 다시 불러옵니다 (로그인하면 다른 기기에서도 보여요)"],
+      en: ["You can now save your own Crock Pot combos in the simulator. Fill all four slots and tap Save — they appear under \"My combos\" below the slots, and one tap loads them back (synced across devices when signed in)"],
+    },
+  },
+  {
     version: "0.51.0",
     date: "2026-11-20",
     dev: [
