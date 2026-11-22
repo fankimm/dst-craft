@@ -64,7 +64,9 @@
 
 ## 3. 알려진 공백 — 게임 데이터 동기화
 
-**10/30 이후의 게임 패치는 사이트에 반영되지 않고 있다.** 추출 스크립트는 남아 있는 스냅샷으로 계속 동작하므로 기능 개발에는 지장이 없다.
+🟢 **2026-11-23 해소 (#168)** — 운영 기기 Steam이 11/22에 DST(buildid 26474873)와 한글모드를 업데이트했고, Pillow venv `~/.venvs/dstcraft`를 만들어 sync를 끝냈다. 스냅샷 `~/dst-game-snapshot`도 이때 새로 생겼다. **이 기기에서 sync는 `PATH=$HOME/.venvs/dstcraft/bin:$PATH bash scripts/sync-game-data.sh`로 돌린다** (시스템 python에는 Pillow가 없다). 아래는 해소 전 기록.
+
+~~10/30 이후의 게임 패치는 사이트에 반영되지 않고 있다.~~
 
 - 2026-11-07~: 옛 운영 맥북에 Steam `steamapps` 폴더가 없어 `scripts/sync-game-data.sh`가 manifest를 못 찾고 끝났다
 - 2026-11-16~ (새 맥, #158): Steam과 DST는 깔려 있지만 **옛 빌드**(buildid 23690848, 6월)다 — 사이트 데이터 기준(26306684)보다 낮다. 게임 스냅샷 `~/dst-game-snapshot`도 Pillow도 없다. sync는 "installed game is OLDER than the site data"로 멈춘다(#158에서 넣은 안전장치). **이 안전장치를 `ALLOW_DOWNGRADE=1`로 넘기지 말 것** — 데이터가 6월로 돌아간다

@@ -145,9 +145,8 @@ def parse_specialinfo_en(path: Path) -> dict:
 
 # 인게임 한글 ko.po의 명백한 번역 버그 보정. (영문/실제 코드 기준이 정답)
 # key: SPECIALINFO key, value: list of (find_pattern, replacement) 튜플
-KO_TRANSLATION_FIXES = {
-    # 연산 회로: 영문은 "+40", 한글 ko.po는 "+100"으로 잘못 번역되어 있음
-    "WX78MODULE_MAXSANITY1": [("최대 정신력이 100 증가한다", "최대 정신력이 40 증가한다")],
+KO_TRANSLATION_FIXES: dict[str, list[tuple[str, str]]] = {
+    # 연산 회로(WX78MODULE_MAXSANITY1) "+100" 오역 보정은 한글모드가 2026-11 갱신에서 고쳐 제거 (#168)
 }
 
 
