@@ -123,7 +123,7 @@
 3. **진행 중인 작업** — `git worktree list`, `gh issue list --label autopilot --state open`. 지난 회차가 중간에 끊겼으면(워크트리에 미커밋·미릴리즈) 그것부터 이어서 끝낸다
 4. **장부 대조** — 장부에 "답변 예정"으로 적힌 피드백이 공개 목록에 그대로 반영돼 있는지. 어긋나면 다시 등록한다
 5. **새 피드백** — `curl -s https://www.dstcraft.com/api/feedback/public | jq '.items[] | select((.reply // "") == "")'`
-6. **게임 업데이트** (그날 첫 회차만) — `bash scripts/sync-game-data.sh` (buildid가 같으면 즉시 끝난다. Steam이 이 기기에서 게임을 업데이트했을 때만 변화가 잡힌다). `installed game is OLDER than the site data`(운영 기기의 DST가 옛 빌드, #158)나 `Steam manifest not found`로 끝나면 알려진 공백이니 재조사하지 말고 넘어간다 — `ALLOW_DOWNGRADE`로 넘기지 않는다 (`autopilot-handover.md` 3장)
+6. **게임 업데이트** (그날 첫 회차만) — `PATH=$HOME/.venvs/dstcraft/bin:$PATH bash scripts/sync-game-data.sh` (운영 기기의 시스템 python에 Pillow가 없다, #168) (buildid가 같으면 즉시 끝난다. Steam이 이 기기에서 게임을 업데이트했을 때만 변화가 잡힌다). `installed game is OLDER than the site data`(운영 기기의 DST가 옛 빌드, #158)나 `Steam manifest not found`로 끝나면 알려진 공백이니 재조사하지 말고 넘어간다 — `ALLOW_DOWNGRADE`로 넘기지 않는다 (`autopilot-handover.md` 3장)
 7. **수익** (그날 첫 회차만) — 0.1절대로 읽어 `../dst-craft-ops/revenue-log.md`에 한 줄
 
 ### 2.2 고르기 — 한 회차에 1건

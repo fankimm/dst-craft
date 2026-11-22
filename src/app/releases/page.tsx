@@ -15,6 +15,19 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.52.1",
+    date: "2026-11-23",
+    dev: [
+      "data-sync (#168): DST buildid 26306684 → 26474873 (2026-11-22 패치, 할로윈 2026). sync-game-data.sh 전체 재실행 — scrapbook-stats·item-names·creature-names 갱신",
+      "extract-item-names.py — ko.po에 아직 없는 STRINGS.NAMES는 strings.lua 영문을 en/ko 양쪽에 fallback(경고 출력). 할로윈 장식 7~10이 한글모드 미번역",
+      "convert-scrapbook.py — KO_TRANSLATION_FIXES의 연산 회로 +100 오역 보정 제거(한글모드가 고침)",
+    ],
+    changes: {
+      ko: ["게임 데이터를 최신 패치(할로윈 2026)에 맞췄어요. 새 할로윈 장식 4종과 동굴 분기공 바닥이 아이템 도감에 추가됐고, 마녀 빗자루 수치가 새 값으로 바뀌었어요. 한글모드에 아직 번역이 없는 새 이름은 당분간 영문으로 보여요"],
+      en: ["Game data updated to the latest patch (Hallowed Nights 2026): four new Halloween decorations and Cave Fumarole Turf in the item catalog, plus updated Witch's Broom stats"],
+    },
+  },
+  {
     version: "0.52.0",
     date: "2026-11-21",
     dev: [

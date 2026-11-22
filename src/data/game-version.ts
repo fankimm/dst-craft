@@ -3,7 +3,7 @@ export const DST_GAME_VERSION = {
   /** 스팀 라이브러리에 표시되는 릴리즈 번호 (예: "hotfix 727204") */
   release: 760944,
   /** Steam appmanifest buildid */
-  steamBuildId: "26306684",
+  steamBuildId: "26474873",
   /** 데이터를 마지막으로 갱신한 날짜 */
-  dataUpdatedAt: "2026-10-30",
+  dataUpdatedAt: "2026-11-23",
 };
