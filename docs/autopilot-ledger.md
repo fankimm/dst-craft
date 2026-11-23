@@ -32,6 +32,12 @@
 
 ## 기록
 
+### 2026-11-24 · #171 · v0.52.4 · bugfix
+요리솥 재료에서 이끼(`cutlichen`)의 "구운 이끼" 변형 제거 — 게임 소스(`prefabs/cutlichen.lua`)에 `cookable` 컴포넌트가 없고 `cutlichen_cooked` prefab도 없어 구울 수 없다(`cooking.lua`의 재료 등록은 이름표뿐). 재료 선택기·트레이너·재료 상세 페이지에서 사라짐, `cookpot-reachable.ts` 재생성. 주소 변화 없음.
+- 피드백: 없음
+- git 밖 변경: 없음
+- DB 변경: 없음
+
 ### 2026-11-23 · #170 · v0.52.3 · bugfix
 신비의 밤 실험 6종(공포증·핏빛·향정신성·유황·달빛·수목학 실험)을 손 제작 → 새 제작 조건 `madscience_lab`("미치광이 과학 실험실")로 바로잡고, 게임 소스(`recipes.lua` `CHARACTER_INGREDIENT.SANITY`)대로 정신력 비용(10, 수목학 20)을 `sanityCost`로 추가. 제작 탭 상세에 정신력 소모 슬롯, SEO 문구에 정신력 비용과 "실험실은 신비의 밤 기간에만 지을 수 있음" 반영. 주소 변화 없음.
 - 피드백: 없음
