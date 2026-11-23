@@ -1171,3 +1171,7 @@ Monumetric 1만+셋업비 — 전부 문턱이 있고 **Ezoic만 무제한이다
 ### 영문 아이템 이름을 기억으로 적을 뻔함 — 16개 중 8개가 틀렸다 (2026-11-08, #142)
 - **문제**: 은둔자 병 교환 품목의 `nameEn`을 "Crow Bobber", "Dusk Lure"처럼 기억으로 적었다. 커밋 전에 strings.lua와 대조하니 찌 6종은 전부 "… Quill Float", 루어 2종은 "Stupefying Lure"·"Heavy Weighted Lure"로 달랐다 — 절반이 오답
 - **교훈**: ko.po를 보는 것과 똑같이 **영문도 strings.lua `STRINGS.NAMES.<ID>`에서 뽑아 적는다**. 한 번의 grep 루프면 끝나는 일이고, 기억으로 적은 영문명은 검색 유입(SEO 페이지 h2·FAQ)에 그대로 노출된다. "ko는 ko.po에서" 규칙은 en에도 같은 무게로 적용할 것
+
+### "제작 탭에 없다"를 grep 결과 한 줄로 단정 — 4개 중 3개는 이미 있었다 (2026-11-23, #169)
+- **문제**: 할로윈 제작법 4종이 제작 탭에 없다고 보고 4개를 `items.ts` 끝에 새로 붙였다. 빌드해 보니 슬러그가 `candy-bag-candybag`처럼 중복 접미사로 나와서 알아챘다 — `madscience_lab`·`candybag`·`pumpkinhat`은 이미 있었고 `station: "none"`(손 제작)으로 잘못 들어가 있었을 뿐이다. 앞서 `grep -l`이 `items.ts`를 목록에 띄웠는데 다른 파일 결과와 섞여 지나쳤다
+- **교훈**: "없다"를 판단할 땐 파일 목록(`-l`)이 아니라 `grep -c 'id: "<id>"' src/data/items.ts`로 **id별 개수**를 본다. 새 항목을 넣은 뒤엔 `out/item/`에 `-<id>` 접미사 슬러그가 생겼는지 확인하면 중복이 바로 드러난다

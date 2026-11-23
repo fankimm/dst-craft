@@ -310,6 +310,8 @@ export function generateItemSeoText(
   howToCraft += `To craft ${item.name}, you need: ${matList}. `;
   if (isHandCraft) {
     howToCraft += `It can be crafted by hand without any crafting station.`;
+  } else if (item.station === "hallowed_nights") {
+    howToCraft += `It can only be crafted during the Hallowed Nights event, by hand without any crafting station.`;
   } else {
     howToCraft += `You need a ${stationLabel} to craft this item.`;
   }
@@ -332,7 +334,7 @@ export function generateItemSeoText(
   const faq: { question: string; answer: string }[] = [
     {
       question: `How do you craft ${item.name} in DST?`,
-      answer: `To craft ${item.name}, you need ${matList}. ${isHandCraft ? "It can be crafted by hand." : `Use a ${stationLabel} to craft it.`}`,
+      answer: `To craft ${item.name}, you need ${matList}. ${isHandCraft ? "It can be crafted by hand." : item.station === "hallowed_nights" ? "It can be crafted by hand only during the Hallowed Nights event." : `Use a ${stationLabel} to craft it.`}`,
     },
     {
       question: `What materials are needed for ${item.name}?`,
@@ -843,6 +845,8 @@ export function generateItemSeoTextKo(
   howToCraft += `${pp(item.nameKo, "을", "를")} 제작하려면 다음 재료가 필요합니다: ${matList}. `;
   if (isHandCraft) {
     howToCraft += `제작대 없이 손으로 만들 수 있습니다.`;
+  } else if (item.station === "hallowed_nights") {
+    howToCraft += `신비의 밤 이벤트 기간에만 제작대 없이 손으로 만들 수 있습니다.`;
   } else {
     howToCraft += `제작에는 ${stationLabelKo}이(가) 필요합니다.`;
   }
@@ -865,7 +869,7 @@ export function generateItemSeoTextKo(
   const faq: { question: string; answer: string }[] = [
     {
       question: `DST에서 ${item.nameKo}은(는) 어떻게 만드나요?`,
-      answer: `${item.nameKo}을(를) 만들려면 ${matList}이(가) 필요합니다. ${isHandCraft ? "손으로 제작할 수 있습니다." : `${stationLabelKo}을(를) 사용하여 제작하세요.`}`,
+      answer: `${item.nameKo}을(를) 만들려면 ${matList}이(가) 필요합니다. ${isHandCraft ? "손으로 제작할 수 있습니다." : item.station === "hallowed_nights" ? "신비의 밤 이벤트 기간에만 손으로 제작할 수 있습니다." : `${stationLabelKo}을(를) 사용하여 제작하세요.`}`,
     },
     {
       question: `${item.nameKo} 제작에는 어떤 재료가 필요한가요?`,

@@ -41,6 +41,7 @@ const stationLabelsEn: Record<string, string> = {
   turfcraftingstation: "Turf Crafting Station",
   wagpunk_workstation: "Notional Fabricator",
   critter_lab: "Rock Den",
+  hallowed_nights: "Hallowed Nights",
   character: "Character Specific",
 };
 
@@ -188,7 +189,9 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
             text:
               item.station === "none"
                 ? "손으로 제작합니다 (제작대 불필요)."
-                : `${stationLabel}을(를) 사용하여 제작합니다.`,
+                : item.station === "hallowed_nights"
+                  ? "신비의 밤 이벤트 기간에 손으로 제작합니다."
+                  : `${stationLabel}을(를) 사용하여 제작합니다.`,
           },
         ]
       : [
@@ -201,7 +204,9 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
             text:
               item.station === "none"
                 ? "Craft by hand (no station required)."
-                : `Use a ${stationLabel} to craft.`,
+                : item.station === "hallowed_nights"
+                  ? "Craft by hand during the Hallowed Nights event."
+                  : `Use a ${stationLabel} to craft.`,
           },
         ],
   };
