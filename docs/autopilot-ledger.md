@@ -32,6 +32,12 @@
 
 ## 기록
 
+### 2026-11-23 · #169 · v0.52.2 · bugfix
+신비의 밤(할로윈) 제작법을 이벤트 전용으로 표시 — 제작 탭에 `station: "none"`(손 제작)으로 들어가 있던 미치광이 과학 실험실·사탕 주머니·얼굴 없는 호박을 새 제작 조건 `hallowed_nights`("신비의 밤")로 바꾸고, 빠져 있던 마녀 빗자루를 추가(아이콘은 게임 `inventoryimages`에서 추출). 얼굴 없는 호박의 영문 이름·설명 오류("Pumpkinhat"/"Faceless Pumpkin") 바로잡음 → 주소가 `/item/pumpkinhat`에서 `/item/faceless-pumpkin`으로 바뀌고 옛 주소는 자동 301. SEO 문구에 "이벤트 기간에만 손으로 제작" 반영.
+- 피드백: 없음
+- git 밖 변경: 없음
+- DB 변경: 없음
+
 ### 2026-11-23 · #168 · v0.52.1 · data-sync
 게임 데이터 동기화 — DST buildid 26306684 → 26474873(2026-11-22 패치, 할로윈 2026). 운영 기기 Steam이 게임·한글모드를 업데이트해 `autopilot-handover.md` 3장 공백 해소. 스냅샷 `~/dst-game-snapshot` 새로 생성(이전 빌드 소스는 없음). 한글모드 미번역 새 이름은 영문 fallback(`extract-item-names.py`), 한글모드가 고친 오역 보정 제거(`convert-scrapbook.py`).
 - 피드백: 없음

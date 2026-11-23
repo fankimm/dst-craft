@@ -49,6 +49,7 @@ export const stationImages: Record<CraftingStation, string | null> = {
   wagpunk_workstation: null,
   vault_refiner: "game-items/Sanctum_Smithy.png",
   critter_lab: "category-icons/critter_lab.webp",
+  hallowed_nights: "game-items/pumpkin_lantern.png",
   character: null,
 };
 
