@@ -15,6 +15,18 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.52.3",
+    date: "2026-11-23",
+    dev: [
+      "fix(crafting) (#170): CraftingStation에 madscience_lab 추가(types·i18n station_·stationItemId·stationImages·ItemPageContent 라벨). halloween_experiment_* 6종 station none → madscience_lab (recipes.lua TECH.MADSCIENCE_ONE)",
+      "CraftingItem.sanityCost 필드 추가 — CHARACTER_INGREDIENT.SANITY 10(수목학 실험 20). ItemDetail에 정신력 소모 ItemSlot(ui/sanity.webp), seo-text en/ko HowTo에 정신력 비용 + 실험실은 신비의 밤에만 건설 문구",
+    ],
+    changes: {
+      ko: ["신비의 밤 실험 6종(공포증·핏빛·향정신성·유황·달빛·수목학 실험)이 손 제작으로 잘못 나와 있던 것을 바로잡았어요. 이제 미치광이 과학 실험실에서 만든다는 것과, 만들 때 드는 정신력(10, 수목학 실험은 20)이 함께 보여요"],
+      en: ["The six Hallowed Nights experiments were wrongly shown as hand crafts — they now show the Mad Scientist Lab as their station, along with the sanity they cost to brew (10, or 20 for the Arboretum Experiment)"],
+    },
+  },
+  {
     version: "0.52.2",
     date: "2026-11-23",
     dev: [

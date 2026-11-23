@@ -221,6 +221,13 @@ export function ItemDetail({ item, onMaterialClick, onCategoryClick, onCharacter
               badge={`-${item.healthCost}`}
             />
           )}
+          {item.sanityCost && (
+            <ItemSlot
+              iconPath="/images/ui/sanity.webp"
+              label={t(resolvedLocale, "sanity_cost")}
+              badge={`-${item.sanityCost}`}
+            />
+          )}
         </div>
 
         {/* Sculpting: 돌림판에 올린 재료(대리석/석재/달 파편)에 따라 다른 조각상이 나온다 */}

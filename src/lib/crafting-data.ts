@@ -50,6 +50,7 @@ export const stationImages: Record<CraftingStation, string | null> = {
   vault_refiner: "game-items/Sanctum_Smithy.png",
   critter_lab: "category-icons/critter_lab.webp",
   hallowed_nights: "game-items/pumpkin_lantern.png",
+  madscience_lab: "game-items/madscience_lab.png",
   character: null,
 };
 

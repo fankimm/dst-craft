@@ -54,6 +54,7 @@ const translations = {
     station_vault_refiner: "성소 대장간",
     station_critter_lab: "동물 친구",
     station_hallowed_nights: "신비의 밤",
+    station_madscience_lab: "미치광이 과학 실험실",
     station_character: "생존자 아이템",
     tab_crafting: "제작",
     tab_cooking: "요리",
@@ -150,6 +151,7 @@ const translations = {
     support_anonymous: "익명 후원자",
     support_thanks: "후원해주신",
     health_cost: "체력 소모",
+    sanity_cost: "정신력 소모",
     skill_tree_required: "스킬트리",
     station_required: "스테이션 필요",
     blueprint_required: "블루프린트 필요",
@@ -326,6 +328,7 @@ const translations = {
     station_vault_refiner: "Sanctum Smithy",
     station_critter_lab: "Rock Den",
     station_hallowed_nights: "Hallowed Nights",
+    station_madscience_lab: "Mad Scientist Lab",
     station_character: "Character Specific",
     tab_crafting: "Crafting",
     tab_cooking: "Cooking",
@@ -422,6 +425,7 @@ const translations = {
     support_anonymous: "Anonymous",
     support_thanks: "Thanks to",
     health_cost: "Health Cost",
+    sanity_cost: "Sanity Cost",
     skill_tree_required: "Skill Tree",
     station_required: "Station Required",
     blueprint_required: "Blueprint Required",
@@ -681,6 +685,7 @@ const stationItemId: Partial<Record<CraftingStation, string>> = {
   bookstation: "bookstation",
   carpentry_station: "carpentry_station",
   turfcraftingstation: "turfcraftingstation",
+  madscience_lab: "madscience_lab",
 };
 
 // Lazy-built English name lookup (from items.ts)
