@@ -294,6 +294,7 @@ export function generateItemSeoText(
     characterOnly?: string | null;
     category: string[];
     healthCost?: number;
+    sanityCost?: number;
   },
   stationLabel: string,
   characterName?: string | null,
@@ -317,6 +318,12 @@ export function generateItemSeoText(
   }
   if (item.healthCost) {
     howToCraft += ` Crafting costs ${item.healthCost} health.`;
+  }
+  if (item.sanityCost) {
+    howToCraft += ` Crafting costs ${item.sanityCost} sanity.`;
+  }
+  if (item.station === "madscience_lab") {
+    howToCraft += ` The Mad Scientist Lab can only be built during the Hallowed Nights event.`;
   }
 
   // Uses and tips
@@ -829,6 +836,7 @@ export function generateItemSeoTextKo(
     characterOnly?: string | null;
     category: string[];
     healthCost?: number;
+    sanityCost?: number;
   },
   stationLabelKo: string,
   characterNameKo?: string | null,
@@ -852,6 +860,12 @@ export function generateItemSeoTextKo(
   }
   if (item.healthCost) {
     howToCraft += ` 제작 시 체력 ${item.healthCost}을(를) 소모합니다.`;
+  }
+  if (item.sanityCost) {
+    howToCraft += ` 제작 시 정신력 ${item.sanityCost}을(를) 소모합니다.`;
+  }
+  if (item.station === "madscience_lab") {
+    howToCraft += ` 미치광이 과학 실험실은 신비의 밤 이벤트 기간에만 지을 수 있습니다.`;
   }
 
   // Uses and tips
