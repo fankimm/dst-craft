@@ -854,6 +854,7 @@ export const ko: LocaleData = {
     "carnivalgame_puckdrop_kit": { name: "새장에 공떨구기 키트", desc: "공을 안전히 둥지로 튕겨주세요." },
     "madscience_lab": { name: "미치광이 과학 실험실", desc: "미친 과학에 끝은 없다. 정신력만 빼고." },
     "candybag": { name: "사탕 주머니", desc: "신비의 밤 사탕만 담습니다." },
+    "witchbroom": { name: "마녀 빗자루", desc: "그만 깔깔대고 청소나 합시다!" },
     "halloween_experiment_bravery": { name: "공포증 실험", desc: "마시면 뵈는 게 없습니다." },
     "halloween_experiment_health": { name: "핏빛 실험", desc: "심장에 좋습니다." },
     "halloween_experiment_sanity": { name: "향정신성 실험", desc: "심신에 안정을." },
@@ -1243,6 +1244,7 @@ export const ko: LocaleData = {
     "shadow_forge": { name: "그림자 공예" },
     "critter_lab": { name: "동물 친구" },
     "vault_refiner": { name: "성소 대장간" },
+    "hallowed_nights": { name: "신비의 밤" },
     "character": { name: "캐릭터 고유" },
   },
   foods: {

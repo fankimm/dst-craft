@@ -19,6 +19,7 @@ export type CraftingStation =
   | "wagpunk_workstation"
   | "vault_refiner"
   | "critter_lab"
+  | "hallowed_nights"
   | "character";
 
 export type CategoryId =

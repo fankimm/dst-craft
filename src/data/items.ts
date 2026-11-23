@@ -4704,11 +4704,11 @@ export const allItems: CraftingItem[] = [
   },
   {
     id: "pumpkinhat",
-    name: "Pumpkinhat",
-    description: "Faceless Pumpkin",
+    name: "Faceless Pumpkin",
+    description: "It's only natural to wear a pumpkin on your head after you've carved a face into it.",
     image: "pumpkinhat.png",
     category: ["clothing", "summer"],
-    station: "none",
+    station: "hallowed_nights",
     materials: [
       { materialId: "pumpkin", quantity: 1 },
     ],
@@ -11609,7 +11609,7 @@ export const allItems: CraftingItem[] = [
     description: "Mad science has no limits. Except sanity.",
     image: "madscience_lab.png",
     category: ["prototypers", "structures"],
-    station: "none",
+    station: "hallowed_nights",
     materials: [
       { materialId: "cutstone", quantity: 2 },
       { materialId: "transistor", quantity: 2 },
@@ -11622,7 +11622,7 @@ export const allItems: CraftingItem[] = [
     description: "Only carries Hallowed Nights goodies.",
     image: "candybag.png",
     category: ["storage"],
-    station: "none",
+    station: "hallowed_nights",
     materials: [
       { materialId: "cutgrass", quantity: 6 },
     ],
@@ -12883,5 +12883,19 @@ export const allItems: CraftingItem[] = [
     ],
     nounlock: true,
     sortOrder: 66,
+  },
+  {
+    id: "witchbroom",
+    name: "Witch's Broom",
+    description: "Less cackling, more sweeping!",
+    image: "witchbroom.png",
+    category: ["tools"],
+    station: "hallowed_nights",
+    materials: [
+      { materialId: "twigs", quantity: 2 },
+      { materialId: "rope", quantity: 1 },
+      { materialId: "cutgrass", quantity: 3 },
+    ],
+    sortOrder: 20,
   },
 ];
