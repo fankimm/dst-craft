@@ -15,6 +15,19 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.52.2",
+    date: "2026-11-23",
+    dev: [
+      "fix(crafting) (#169): CraftingStation에 hallowed_nights 추가(types·i18n·ko.ts stations·stationImages=pumpkin_lantern·ItemPageContent 라벨). recipes.lua TECH.HALLOWED_NIGHTS 4종 — madscience_lab·candybag·pumpkinhat을 station none → hallowed_nights, witchbroom 신규(아이콘은 inventoryimages에서 추출)",
+      "pumpkinhat 영문 name/description 오류(Pumpkinhat / Faceless Pumpkin) → strings.lua 값으로. 슬러그 /item/pumpkinhat → /item/faceless-pumpkin (legacy 301 자동)",
+      "seo-text·ItemPageContent HowTo — hallowed_nights면 '이벤트 기간에만 손으로 제작' 문구",
+    ],
+    changes: {
+      ko: ["신비의 밤(할로윈) 제작법 4종에 '신비의 밤' 표시를 달았어요. 미치광이 과학 실험실·사탕 주머니·얼굴 없는 호박이 그동안 손 제작으로 잘못 나와 있었는데, 이벤트 기간에만 만들 수 있다는 걸 알 수 있게 됐어요. 빠져 있던 마녀 빗자루도 제작 탭에 추가했어요"],
+      en: ["Hallowed Nights recipes are now marked as event-only: Mad Scientist Lab, Candy Bag and Faceless Pumpkin were wrongly shown as regular hand crafts. The missing Witch's Broom is now in the crafting tab too"],
+    },
+  },
+  {
     version: "0.52.1",
     date: "2026-11-23",
     dev: [
