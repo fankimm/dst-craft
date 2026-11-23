@@ -15,6 +15,17 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.52.4",
+    date: "2026-11-24",
+    dev: [
+      "fix(cookpot) (#171): cookpot-ingredients.ts 이끼(cutlichen) cookable 제거 — prefabs/cutlichen.lua에 cookable 컴포넌트·cutlichen_cooked prefab 없음(cooking.lua 재료 등록만 있음). missingCookedImages에서 cutlichen_cooked 제거, cookpot-reachable.ts 재생성",
+    ],
+    changes: {
+      ko: ["요리솥 재료에 게임에 없는 '구운 이끼'가 있던 것을 지웠어요. 이끼는 구울 수 없어요"],
+      en: ["Removed 'Cooked Lichen' from the Crock Pot ingredients — lichen can't be cooked in the game"],
+    },
+  },
+  {
     version: "0.52.3",
     date: "2026-11-23",
     dev: [

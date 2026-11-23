@@ -46,7 +46,7 @@ const baseIngredients: CookpotIngredient[] = [
   { id: "corn", name: "Corn", nameKo: "옥수수", tags: { veggie: 1 }, category: "veggies", cookable: true },
   { id: "pumpkin", name: "Pumpkin", nameKo: "호박", tags: { veggie: 1 }, category: "veggies", cookable: true },
   { id: "eggplant", name: "Eggplant", nameKo: "가지", tags: { veggie: 1 }, category: "veggies", cookable: true },
-  { id: "cutlichen", name: "Cut Lichen", nameKo: "이끼", tags: { veggie: 1 }, category: "veggies", cookable: true },
+  { id: "cutlichen", name: "Cut Lichen", nameKo: "이끼", tags: { veggie: 1 }, category: "veggies" },
   { id: "asparagus", name: "Asparagus", nameKo: "아스파라거스", tags: { veggie: 1 }, category: "veggies", cookable: true },
   { id: "onion", name: "Onion", nameKo: "양파", tags: { veggie: 1 }, category: "veggies", image: "quagmire_onion.png", cookable: true, cookedImage: "quagmire_onion_cooked.png" },
   { id: "garlic", name: "Garlic", nameKo: "마늘", tags: { veggie: 1 }, category: "veggies", cookable: true },
@@ -167,7 +167,7 @@ const driedNameKoMap: Record<string, string> = {
 
 // Images that do NOT exist for cooked variants — use base image
 const missingCookedImages = new Set([
-  "pondeel_cooked", "cutlichen_cooked",
+  "pondeel_cooked",
 ]);
 
 function generateVariants(bases: CookpotIngredient[]): CookpotIngredient[] {
