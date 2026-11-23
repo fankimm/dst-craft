@@ -20,6 +20,7 @@ export type CraftingStation =
   | "vault_refiner"
   | "critter_lab"
   | "hallowed_nights"
+  | "madscience_lab"
   | "character";
 
 export type CategoryId =
@@ -61,6 +62,8 @@ export interface CraftingItem {
   materials: { materialId: string; quantity: number }[];
   characterOnly?: string;
   healthCost?: number;
+  /** Sanity spent per craft (CHARACTER_INGREDIENT.SANITY). */
+  sanityCost?: number;
   nounlock?: boolean;
   blueprint?: boolean;
   builderSkill?: string;

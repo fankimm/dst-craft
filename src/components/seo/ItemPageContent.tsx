@@ -42,6 +42,7 @@ const stationLabelsEn: Record<string, string> = {
   wagpunk_workstation: "Notional Fabricator",
   critter_lab: "Rock Den",
   hallowed_nights: "Hallowed Nights",
+  madscience_lab: "Mad Scientist Lab",
   character: "Character Specific",
 };
 
@@ -113,6 +114,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
           characterOnly: item.characterOnly,
           category: item.category,
           healthCost: (item as { healthCost?: number }).healthCost,
+          sanityCost: item.sanityCost,
         },
         stationLabel,
         characterName,
@@ -127,6 +129,7 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
           characterOnly: item.characterOnly,
           category: item.category,
           healthCost: (item as { healthCost?: number }).healthCost,
+          sanityCost: item.sanityCost,
         },
         stationLabel,
         characterName,
