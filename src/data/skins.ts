@@ -439,7 +439,7 @@ const SKINS_0: SkinEntry[] = [
       "CRAFTABLE"
     ],
     "release_group": 186,
-    "name_en": "Lolite Amulet",
+    "name_en": "Iolite Amulet",
     "name_ko": "근청석 부적",
     "icon": "/images/skins/amulet_purple_shadow.png",
     "rarity_modifier": "Woven"
@@ -5273,6 +5273,20 @@ const SKINS_1: SkinEntry[] = [
     "rarity_modifier": "Woven"
   },
   {
+    "id": "firepit_baker",
+    "base_prefab": "firepit",
+    "type": "item",
+    "rarity": "Loyal",
+    "skin_tags": [
+      "FIREPIT",
+      "CRAFTABLE"
+    ],
+    "release_group": 187,
+    "name_en": "Homestyle Hearth",
+    "name_ko": "Homestyle Hearth",
+    "icon": "/images/skins/firepit_baker.png"
+  },
+  {
     "id": "firepit_chess",
     "base_prefab": "firepit",
     "type": "item",
@@ -5884,7 +5898,10 @@ const SKINS_1: SkinEntry[] = [
     "name_ko": "꿰뚫는 유리 절단기",
     "icon": "/images/skins/glasscutter_mystical.png",
     "rarity_modifier": "Woven"
-  },
+  }
+];
+
+const SKINS_2: SkinEntry[] = [
   {
     "id": "glasscutter_terraprisma",
     "base_prefab": "glasscutter",
@@ -5900,10 +5917,7 @@ const SKINS_1: SkinEntry[] = [
     "name_ko": "테라프리즈마",
     "icon": "/images/skins/glasscutter_terraprisma.png",
     "rarity_modifier": "Woven"
-  }
-];
-
-const SKINS_2: SkinEntry[] = [
+  },
   {
     "id": "glomling_beardeddragon",
     "base_prefab": "critter_glomling",
@@ -8772,7 +8786,10 @@ const SKINS_2: SkinEntry[] = [
     "name_ko": "쌍뼈다귀 어망",
     "icon": "/images/skins/ocean_trawler_pirate_kit.png",
     "rarity_modifier": "Woven"
-  },
+  }
+];
+
+const SKINS_3: SkinEntry[] = [
   {
     "id": "oceanfishingrod_hotline",
     "base_prefab": "oceanfishingrod",
@@ -8788,10 +8805,7 @@ const SKINS_2: SkinEntry[] = [
     "name_ko": "핫라인 낚시대",
     "icon": "/images/skins/oceanfishingrod_hotline.png",
     "rarity_modifier": "Woven"
-  }
-];
-
-const SKINS_3: SkinEntry[] = [
+  },
   {
     "id": "oceanfishingrod_ice",
     "base_prefab": "oceanfishingrod",
@@ -11689,7 +11703,10 @@ const SKINS_3: SkinEntry[] = [
     "icon": "/images/skins/spear_wathgrithr_lightning_northern.png",
     "rarity_modifier": "Woven",
     "character": "wigfrid"
-  },
+  }
+];
+
+const SKINS_4: SkinEntry[] = [
   {
     "id": "spear_wathgrithr_lightning_valkyrie",
     "base_prefab": "spear_wathgrithr_lightning",
@@ -11702,10 +11719,7 @@ const SKINS_3: SkinEntry[] = [
     "icon": "/images/skins/spear_wathgrithr_lightning_valkyrie.png",
     "rarity_modifier": "Woven",
     "character": "wigfrid"
-  }
-];
-
-const SKINS_4: SkinEntry[] = [
+  },
   {
     "id": "spear_wathgrithr_lightning_wrestle",
     "base_prefab": "spear_wathgrithr_lightning",
@@ -14779,7 +14793,10 @@ const SKINS_4: SkinEntry[] = [
     "quote_en": "\"Time seems to move slower in the depths of the forest.\"",
     "quote_ko": "\"숲 한가운데서는 시간이 더 느리게 흐르는 것 같아.\"",
     "character": "wanda"
-  },
+  }
+];
+
+const SKINS_5: SkinEntry[] = [
   {
     "id": "wanda_none",
     "base_prefab": "wanda",
@@ -14796,10 +14813,7 @@ const SKINS_4: SkinEntry[] = [
     "body_image": "/images/skins-body/Wanda_Original_in_game.png",
     "rarity_modifier": "CharacterModifier",
     "character": "wanda"
-  }
-];
-
-const SKINS_5: SkinEntry[] = [
+  },
   {
     "id": "wanda_pirate",
     "base_prefab": "wanda",
@@ -18342,7 +18356,10 @@ const SKINS_5: SkinEntry[] = [
     "rarity_modifier": "Woven",
     "quote_en": "\"Ah, the reckless abandon of youth. To think I used to dabble in fiction...\"",
     "character": "wickerbottom"
-  },
+  }
+];
+
+const SKINS_6: SkinEntry[] = [
   {
     "id": "wickerbottom_pirate",
     "base_prefab": "wickerbottom",
@@ -18361,10 +18378,7 @@ const SKINS_5: SkinEntry[] = [
     "quote_en": "\"Let the pursuit of knowledge stretch beyond every horizon.\"",
     "quote_ko": "\"지식을 추구하며 모든 수평선 너머를 향해.\"",
     "character": "wickerbottom"
-  }
-];
-
-const SKINS_6: SkinEntry[] = [
+  },
   {
     "id": "wickerbottom_rose",
     "base_prefab": "wickerbottom",
@@ -21939,7 +21953,10 @@ const SKINS_6: SkinEntry[] = [
     "quote_en": "\"Charmed, I'm sure.\"",
     "quote_ko": "\"풍채는 확실히 좋군.\"",
     "character": "wortox"
-  },
+  }
+];
+
+const SKINS_7: SkinEntry[] = [
   {
     "id": "wortox_hazard",
     "base_prefab": "wortox",
@@ -21953,10 +21970,7 @@ const SKINS_6: SkinEntry[] = [
     "quote_en": "\"Hrrm... mff! Mmmf!\"",
     "quote_ko": "\"후앙... 무앙! 무앙!\"",
     "character": "wortox"
-  }
-];
-
-const SKINS_7: SkinEntry[] = [
+  },
   {
     "id": "wortox_ice",
     "base_prefab": "wortox",
