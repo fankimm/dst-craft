@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.52.5",
+    date: "2026-11-24",
+    dev: [
+      "fix(crafting) (#172): items.ts 제작법 919개를 recipes.lua(buildid 26474873)와 일괄 대조해 어긋난 3건 수정 — tillweedsalve 재료 4/4/1 → 1/1/1·station science_2 → science_1(TECH.SCIENCE_ONE), nightlight goldnugget 8 → 4, purpleamulet purplegem 2 → 1",
+    ],
+    changes: {
+      ko: [
+        "제작법 재료 수가 게임과 달랐던 3가지를 바로잡았어요 — 뒤엎시라 고약(뒤엎시라·꽃잎·숯 각 1개, 과학 기계), 어둠의 등불(금 4개), 악몽의 부적(보라 보석 1개)",
+      ],
+      en: [
+        "Fixed 3 recipes whose ingredient counts didn't match the game — Tillweed Salve (1 Tillweed, 1 Petals, 1 Charcoal at the Science Machine), Night Light (4 Gold Nuggets), Nightmare Amulet (1 Purple Gem)",
+      ],
+    },
+  },
+  {
     version: "0.52.4",
     date: "2026-11-24",
     dev: [
