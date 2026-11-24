@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.52.7",
+    date: "2026-11-25",
+    dev: [
+      "data-sync (#174): DST buildid 26474873 → 26797476(2026-11-25 패치). sync-game-data.sh 결과 skins.ts — firepit_baker(Homestyle Hearth, 한글모드 미번역 영문 fallback) 추가·아이콘 추출, amulet_purple_shadow 영문명 Lolite → Iolite Amulet. 그 밖의 소스 변경(upgrademodulesdisplay·lunarriftmutationsmanager)은 앱 데이터 영향 없음",
+    ],
+    changes: {
+      ko: [
+        "11월 25일 게임 업데이트를 반영했어요 — 스킨 탭에 새 모닥불 스킨 'Homestyle Hearth'가 추가됐어요",
+      ],
+      en: [
+        "Updated for the Nov 25 game patch — the new Homestyle Hearth fire pit skin is now in the Skins tab, and the Iolite Amulet skin name is corrected",
+      ],
+    },
+  },
+  {
     version: "0.52.6",
     date: "2026-11-24",
     dev: [
