@@ -1,5 +1,5 @@
 export type CookingStation = "cookpot" | "portablecookpot" | "campfire" | "dryingrack" | "teashop";
-export type FoodType = "meat" | "veggie" | "goodies" | "roughage" | "generic" | "nonfood";
+export type FoodType = "meat" | "veggie" | "goodies" | "roughage" | "generic" | "seeds" | "nonfood";
 
 export interface CookingRecipe {
   id: string;
@@ -1371,7 +1371,7 @@ export const cookingRecipes: CookingRecipe[] = [
   { id: "eel_cooked", name: "Cooked Eel", requirements: "Eel ×1", foodType: "meat", health: 8, hunger: 12.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
   { id: "barnacle_cooked", name: "Cooked Barnacle", requirements: "Barnacle ×1", foodType: "meat", health: 1, hunger: 12.5, sanity: 0, perishDays: 15, cookTime: 1, priority: 0, station: "campfire" },
   { id: "plantmeat_cooked", name: "Cooked Leafy Meat", requirements: "Leafy Meat ×1", foodType: "meat", health: 1, hunger: 18.75, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
-  { id: "bird_egg_cooked", name: "Cooked Egg", requirements: "Egg ×1", foodType: "generic", health: 0, hunger: 12.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "bird_egg_cooked", name: "Cooked Egg", requirements: "Egg ×1", foodType: "meat", health: 0, hunger: 12.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
   { id: "carrot_cooked", name: "Roasted Carrot", requirements: "Carrot ×1", foodType: "veggie", health: 3, hunger: 12.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
   { id: "corn_cooked", name: "Popcorn", requirements: "Corn ×1", foodType: "veggie", health: 3, hunger: 12.5, sanity: 0, perishDays: 15, cookTime: 1, priority: 0, station: "campfire" },
   { id: "pumpkin_cooked", name: "Hot Pumpkin", requirements: "Pumpkin ×1", foodType: "veggie", health: 8, hunger: 37.5, sanity: 0, perishDays: 6, cookTime: 1, priority: 0, station: "campfire" },
@@ -1390,7 +1390,7 @@ export const cookingRecipes: CookingRecipe[] = [
   { id: "blue_cap_cooked", name: "Cooked Blue Cap", requirements: "Blue Cap ×1", foodType: "veggie", health: -3, hunger: 0, sanity: 10, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
   { id: "moon_cap_cooked", name: "Cooked Moon Shroom", requirements: "Moon Shroom ×1", foodType: "veggie", health: 0, hunger: -12.5, sanity: -10, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
   { id: "berries_cooked", name: "Roasted Berries", requirements: "Berries ×1", foodType: "veggie", health: 1, hunger: 12.5, sanity: 0, perishDays: 3, cookTime: 1, priority: 0, station: "campfire" },
-  { id: "seeds_cooked", name: "Toasted Seeds", requirements: "Seeds ×1", foodType: "generic", health: 1, hunger: 4.6875, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
+  { id: "seeds_cooked", name: "Toasted Seeds", requirements: "Seeds ×1", foodType: "seeds", health: 1, hunger: 4.6875, sanity: 0, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
   { id: "kelp_cooked", name: "Dried Kelp Fronds", requirements: "Kelp Fronds ×1", foodType: "veggie", health: 0, hunger: 9.375, sanity: -5, perishDays: 10, cookTime: 1, priority: 0, station: "campfire" },
 
   // ============================================================

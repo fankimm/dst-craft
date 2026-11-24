@@ -8,6 +8,7 @@ import { rawFoods, type RawFood } from "@/data/raw-foods";
 import { foodName, t } from "@/lib/i18n";
 import type { Locale, TranslationKey } from "@/lib/i18n";
 import { trackEvent } from "@/lib/analytics";
+import { FOOD_TYPE_META } from "@/lib/food-type-meta";
 import { useAuth } from "@/hooks/use-auth";
 
 // ── Tag types for cooking search ──
@@ -190,13 +191,7 @@ function ingredientImage(ing: { id: string; image?: string }): string {
 
 // ── Catalog metadata for foodType / station / effect suggestions ──
 
-const foodTypeMeta: Record<string, { key: TranslationKey; image: string }> = {
-  meat:     { key: "foodtype_meat",     image: "game-items/meat.png" },
-  veggie:   { key: "foodtype_veggie",   image: "game-items/carrot.png" },
-  goodies:  { key: "foodtype_goodies",  image: "game-items/honey.png" },
-  roughage: { key: "foodtype_roughage", image: "game-items/cutlichen.png" },
-  nonfood:  { key: "foodtype_nonfood",  image: "game-items/batnosehat.png" },
-};
+const foodTypeMeta = FOOD_TYPE_META;
 
 const stationMeta: Record<string, { key: TranslationKey; image: string }> = {
   cookpot:         { key: "cooking_cookpot",         image: "game-items/cookpot.png" },

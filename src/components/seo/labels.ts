@@ -139,6 +139,7 @@ export const L = {
   ftRoughage: { en: "Roughage", ko: "거친음식" },
   ftNonfood: { en: "Non-Food", ko: "비식품" },
   ftGeneric: { en: "Generic", ko: "일반" },
+  ftSeeds: { en: "Seeds", ko: "씨앗류" },
 
   warlyExclusive: { en: "Warly Exclusive", ko: "월리 전용" },
   characterExclusive: { en: "Character Exclusive", ko: "캐릭터 전용" },

@@ -417,9 +417,12 @@ def _parse_per_prefab_edible(tuning: dict, path: Path, default_foodtype: str) ->
 # ─────────────────────────────────────────────────────────────────────────────
 
 SPECIAL_FILES = [
-    ("egg.lua",        "egg"),
-    ("butter.lua",     "meat"),     # butter foodtype is dairy in DST but we'll let parser pick up actual
-    ("honey.lua",      "goodies"),
+    # default = what the game uses when the per-prefab fn has no `edible.foodtype` line.
+    # components/edible.lua defaults to FOODTYPE.GENERIC (butter, honey never set it).
+    # egg.lua sets FOODTYPE.MEAT in the shared commonfn, which the per-prefab parser doesn't see (#173).
+    ("egg.lua",        "meat"),
+    ("butter.lua",     "generic"),
+    ("honey.lua",      "generic"),
     ("inv_rocks_ice.lua", "generic"),  # the `ice` prefab (there is no ice.lua)
     ("acorn.lua",      "veggie"),
 ]
@@ -503,12 +506,10 @@ EXCLUDE_IDS = {
 # (cooked_hunger, cooked_health, cooked_perish_time, cooked_sanity).
 INCLUDE_COOKED_VARIANTS_VEGGIE: set[str] = {"durian"}
 
-# Field overrides for items the parser gets wrong (foodtype defaults to MEAT in
-# component, so dairy items end up tagged "meat"). Keep this small and grounded
-# in actual DST source — verify before adding.
-OVERRIDES: dict[str, dict] = {
-    "butter": {"foodtype": "dairy"},  # FOODTYPE.DAIRY in DST source
-}
+# Field overrides for items the parser gets wrong. Keep this small and grounded
+# in actual DST source — verify before adding. (butter used to be forced to
+# "dairy" here, but DAIRY is a cookpot tag, not a FOODTYPE — butter is GENERIC, #173)
+OVERRIDES: dict[str, dict] = {}
 
 # Image filename overrides — used when prefab id doesn't match the icon asset
 # we have in `public/images/game-items/`. Verify the file exists locally before
