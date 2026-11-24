@@ -308,8 +308,8 @@ export function warlyMultiplier(timesEatenBefore: number): number {
   return WARLY_SAME_OLD_MULTIPLIERS[Math.min(WARLY_SAME_OLD_MULTIPLIERS.length, timesEatenBefore) - 1];
 }
 
-/** 플레이어(FOODGROUP.OMNI)가 먹을 수 있는 음식 유형 — 소 먹이(roughage)·비식품은 먹지 못한다 */
-const PLAYER_EDIBLE = new Set<string>(["meat", "veggie", "generic", "goodies"]);
+/** 플레이어(FOODGROUP.OMNI = MEAT·VEGGIE·INSECT·SEEDS·GENERIC·GOODIES, constants.lua)가 먹을 수 있는 음식 유형 — 소 먹이(roughage)·비식품은 먹지 못한다 */
+const PLAYER_EDIBLE = new Set<string>(["meat", "veggie", "seeds", "generic", "goodies"]);
 
 export function isPlayerEdible(r: CookingRecipe): boolean {
   return PLAYER_EDIBLE.has(r.foodType);

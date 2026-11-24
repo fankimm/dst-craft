@@ -32,6 +32,12 @@
 
 ## 기록
 
+### 2026-11-24 · #173 · v0.52.6 · bugfix
+요리탭 음식 유형을 게임 소스대로 — 알·알 부침 egg → 육류(`egg.lua` FOODTYPE.MEAT), 버터 dairy·꿀 goodies → 일반(`edible.lua` 기본값 GENERIC), 모닥불 구운 알 generic → 육류, 구운 씨앗 generic → 씨앗류. `extract-raw-foods.py` 기본값 수정·재생성. 음식 유형 라벨·아이콘을 `src/lib/food-type-meta.ts`로 공통화하고 일반·씨앗류·괴물 라벨 추가. 수치 128개는 scrapbookdata와 일치. 주소 변화 없음.
+- 피드백: 없음
+- git 밖 변경: 없음
+- DB 변경: 없음
+
 ### 2026-11-24 · #172 · v0.52.5 · bugfix
 제작법 재료·제작대 오류 3건 — `items.ts` 919개를 `recipes.lua`(buildid 26474873)와 일괄 대조. 틸위드 연고 재료 4/4/1 → 1/1/1·제작대 연금술 엔진 → 과학 기계, 밤의 등불 금 8 → 4, 악몽의 아뮬렛 보라 보석 2 → 1. 주소 변화 없음.
 - 피드백: 없음

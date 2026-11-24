@@ -19,6 +19,7 @@ const foodTypeDescriptions: Record<string, string> = {
   goodies: "a sweet treat",
   roughage: "a roughage dish",
   generic: "a versatile dish",
+  seeds: "a seed snack",
   nonfood: "a non-food item",
 };
 
@@ -593,6 +594,7 @@ const foodTypeDescriptionsKo: Record<string, string> = {
   goodies: "달콤한 디저트",
   roughage: "거친 음식",
   generic: "일반 요리",
+  seeds: "씨앗 간식",
   nonfood: "비식품 아이템",
 };
 

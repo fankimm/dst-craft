@@ -20,6 +20,7 @@ const foodTypeKey = {
   roughage: "ftRoughage",
   nonfood: "ftNonfood",
   generic: "ftGeneric",
+  seeds: "ftSeeds",
 } as const;
 
 const foodTypeColors: Record<string, string> = {

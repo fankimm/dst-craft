@@ -412,6 +412,10 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 - **용도**: 체력/허기/정신력 등 스탯 값의 색상 클래스 및 +/- 포맷
 - **사용처**: CookingApp, CookpotApp
 
+### FOOD_TYPE_META / foodTypeLabel / foodTypeIcon (`src/lib/food-type-meta.ts`)
+- **용도**: 음식 유형(게임 FOODTYPE 소문자) → 라벨 키·아이콘 한 곳 (#173). 새 유형이 데이터에 생기면 여기와 `i18n.ts`의 `foodtype_*`에 추가 — 없으면 칩에 영문 id가 그대로 나온다
+- **사용처**: CookingApp(음식 유형 칩·태그 클릭), use-cooking-search(서제스천)
+
 ---
 
 ## 스타일 규칙
