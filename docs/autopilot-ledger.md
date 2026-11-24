@@ -32,6 +32,12 @@
 
 ## 기록
 
+### 2026-11-25 · #174 · v0.52.7 · data-sync
+게임 데이터 동기화 — DST buildid 26474873 → 26797476(2026-11-25 패치). 스킨 1종 추가(`firepit_baker` Homestyle Hearth, 한글모드 미번역이라 영문 fallback), 근청석 부적 스킨 영문명 Lolite → Iolite Amulet(Klei 오타 수정). 그 밖의 게임 소스 변경(UI 위젯·달 균열 변이)은 앱 데이터에 영향 없음. 릴리즈 번호(`release`)는 manifest에 없어 그대로 둠. 주소 변화 없음.
+- 피드백: 없음
+- git 밖 변경: 없음
+- DB 변경: 없음
+
 ### 2026-11-24 · #173 · v0.52.6 · bugfix
 요리탭 음식 유형을 게임 소스대로 — 알·알 부침 egg → 육류(`egg.lua` FOODTYPE.MEAT), 버터 dairy·꿀 goodies → 일반(`edible.lua` 기본값 GENERIC), 모닥불 구운 알 generic → 육류, 구운 씨앗 generic → 씨앗류. `extract-raw-foods.py` 기본값 수정·재생성. 음식 유형 라벨·아이콘을 `src/lib/food-type-meta.ts`로 공통화하고 일반·씨앗류·괴물 라벨 추가. 수치 128개는 scrapbookdata와 일치. 주소 변화 없음.
 - 피드백: 없음
