@@ -14,6 +14,7 @@ import { useFavorites } from "@/hooks/use-favorites";
 import { useCookingSearch } from "@/hooks/use-cooking-search";
 import { useCookingState, type CookingCategoryId } from "@/hooks/use-cooking-state";
 import { t, foodName, type Locale, type TranslationKey } from "@/lib/i18n";
+import { foodTypeIcon, foodTypeLabel } from "@/lib/food-type-meta";
 import { cn } from "@/lib/utils";
 import { assetPath } from "@/lib/asset-path";
 import { Footer } from "../crafting/Footer";
@@ -205,11 +206,9 @@ export function CookingApp({
   const handleFoodTypeClick = useCallback((foodType: string) => {
     selectRecipe(null);
     selectCategory("all");
-    const ftIcons: Record<string, string> = { meat: "game-items/meat.png", veggie: "game-items/carrot.png", goodies: "game-items/honey.png", roughage: "game-items/cutlichen.png" };
-    const ftLabelKeys: Record<string, TranslationKey> = { meat: "foodtype_meat", veggie: "foodtype_veggie", goodies: "foodtype_goodies", roughage: "foodtype_roughage" };
-    const label = ftLabelKeys[foodType] ? t(resolvedLocale, ftLabelKeys[foodType]) : foodType;
+    const label = foodTypeLabel(foodType, resolvedLocale);
     clearSearch();
-    addTag({ text: label, type: "foodType", image: ftIcons[foodType], engName: foodType });
+    addTag({ text: label, type: "foodType", image: foodTypeIcon(foodType), engName: foodType });
   }, [resolvedLocale, selectRecipe, selectCategory, addTag, clearSearch]);
 
   const handleStationClick = useCallback((station: string, label: string) => {
@@ -813,10 +812,8 @@ function RawFoodDetail({
   clicks?: number;
 }) {
   const localName = rawFoodLocaleName(food, locale);
-  const ftLabelKey = foodTypeLabelKeys[food.foodType];
-  const ftLabel = ftLabelKey ? t(locale, ftLabelKey) : food.foodType;
-  const secondaryFtLabelKey = food.secondaryFoodType ? foodTypeLabelKeys[food.secondaryFoodType] : undefined;
-  const secondaryFtLabel = secondaryFtLabelKey ? t(locale, secondaryFtLabelKey) : food.secondaryFoodType;
+  const ftLabel = foodTypeLabel(food.foodType, locale);
+  const secondaryFtLabel = food.secondaryFoodType ? foodTypeLabel(food.secondaryFoodType, locale) : undefined;
 
   return (
     <div className="flex flex-col h-full overflow-y-auto px-4 py-3 sm:px-5 sm:py-4">
@@ -850,13 +847,13 @@ function RawFoodDetail({
           <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
             <TagChip
               label={ftLabel}
-              icon={foodTypeIcons[food.foodType]}
+              icon={foodTypeIcon(food.foodType)}
               onClick={onFoodTypeClick ? () => onFoodTypeClick(food.foodType) : undefined}
             />
             {secondaryFtLabel && food.secondaryFoodType && (
               <TagChip
                 label={secondaryFtLabel}
-                icon={foodTypeIcons[food.secondaryFoodType]}
+                icon={foodTypeIcon(food.secondaryFoodType)}
                 onClick={onFoodTypeClick ? () => onFoodTypeClick(food.secondaryFoodType!) : undefined}
               />
             )}
@@ -999,8 +996,8 @@ function RecipeDetail({
           </div>
           <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
             <TagChip
-              label={foodTypeLabelKeys[recipe.foodType] ? t(locale, foodTypeLabelKeys[recipe.foodType]) : recipe.foodType}
-              icon={foodTypeIcons[recipe.foodType]}
+              label={foodTypeLabel(recipe.foodType, locale)}
+              icon={foodTypeIcon(recipe.foodType)}
               onClick={onFoodTypeClick ? () => onFoodTypeClick(recipe.foodType) : undefined}
             />
             {recipe.station === "cookpot" && (
@@ -1442,18 +1439,3 @@ function TeashopLevelTable({ levels, locale }: { levels: [number, number, number
 // Tag helpers
 // ---------------------------------------------------------------------------
 
-const foodTypeIcons: Record<string, string> = {
-  meat: "game-items/meat.png",
-  veggie: "game-items/carrot.png",
-  goodies: "game-items/honey.png",
-  roughage: "game-items/cutlichen.png",
-  nonfood: "game-items/batnosehat.png",
-};
-
-const foodTypeLabelKeys: Record<string, TranslationKey> = {
-  meat: "foodtype_meat",
-  veggie: "foodtype_veggie",
-  goodies: "foodtype_goodies",
-  roughage: "foodtype_roughage",
-  nonfood: "foodtype_nonfood",
-};

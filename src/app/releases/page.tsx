@@ -15,6 +15,21 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.52.6",
+    date: "2026-11-24",
+    dev: [
+      "fix(cooking) (#173): 음식 유형을 게임 소스대로 — extract-raw-foods.py SPECIAL_FILES 기본값 수정(egg.lua → meat: commonfn에서 FOODTYPE.MEAT, butter/honey → generic: edible.lua 기본값 GENERIC, butter 'dairy' override 제거 — DAIRY는 요리솥 태그지 FOODTYPE이 아님) 후 raw-foods.ts 재생성. recipes.ts bird_egg_cooked generic → meat, seeds_cooked generic → seeds(FoodType에 seeds 추가). 트레이너 PLAYER_EDIBLE에 seeds(FOODGROUP.OMNI). 음식 유형 라벨·아이콘 3벌(CookingApp 2곳·use-cooking-search)을 src/lib/food-type-meta.ts로 공통화하고 generic/seeds/monster 라벨 추가 — 상세 칩에 'egg'·'generic'·'monster'가 영문 그대로 나오던 것 해소. 수치(체력·허기·정신력·유통기한) 128개는 scrapbookdata와 대조해 차이 없음",
+    ],
+    changes: {
+      ko: [
+        "요리 탭에서 알·알 부침·버터·꿀·구운 씨앗의 음식 유형을 게임과 같게 바로잡았어요 — 알은 육류, 버터·꿀은 일반, 구운 씨앗은 씨앗류예요. 영어로 나오던 음식 유형 표시(일반·씨앗류·괴물)도 우리말로 보여요",
+      ],
+      en: [
+        "Fixed the food type of Eggs, Cooked Eggs, Butter, Honey and Toasted Seeds in the Cooking tab to match the game — eggs are Meat, butter and honey are Generic, toasted seeds are Seeds. Food type chips that showed raw ids (generic, seeds, monster) now have proper labels",
+      ],
+    },
+  },
+  {
     version: "0.52.5",
     date: "2026-11-24",
     dev: [
