@@ -3244,10 +3244,10 @@ export const allItems: CraftingItem[] = [
     description: "Slowly weed out aches and pains.",
     image: "tillweedsalve.png",
     category: ["healing"],
-    station: "science_2",
+    station: "science_1",
     materials: [
-      { materialId: "tillweed", quantity: 4 },
-      { materialId: "petals", quantity: 4 },
+      { materialId: "tillweed", quantity: 1 },
+      { materialId: "petals", quantity: 1 },
       { materialId: "charcoal", quantity: 1 },
     ],
     sortOrder: 8,
@@ -3448,7 +3448,7 @@ export const allItems: CraftingItem[] = [
     category: ["light", "structures", "magic"],
     station: "magic_1",
     materials: [
-      { materialId: "goldnugget", quantity: 8 },
+      { materialId: "goldnugget", quantity: 4 },
       { materialId: "nightmarefuel", quantity: 2 },
       { materialId: "redgem", quantity: 1 },
     ],
@@ -6238,7 +6238,7 @@ export const allItems: CraftingItem[] = [
     materials: [
       { materialId: "goldnugget", quantity: 6 },
       { materialId: "nightmarefuel", quantity: 4 },
-      { materialId: "purplegem", quantity: 2 },
+      { materialId: "purplegem", quantity: 1 },
     ],
     sortOrder: 25,
   },
