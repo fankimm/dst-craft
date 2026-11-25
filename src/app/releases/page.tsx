@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.53.0",
+    date: "2026-11-25",
+    dev: [
+      "feature (#175, #145 3단계): scripts/extract-creature-loot.py → src/data/creature-loot.ts — prefabs/*.lua의 SetSharedLootTable 중 생물 id(또는 TABLE_ALIASES)와 같은 이름이고 그 prefab 파일이 SetChanceLootTable로 부르는 표만(47종·아이템 56개). 같은 파일에 다른 전리품 경로(SetLootSetupFn·AddChanceLoot·AddRandomLoot·SetLoot·SetChanceLootTable(nil))가 있으면 제외(코드 확인분은 VERIFIED). 확률 비숫자·이름 없음은 exit 1. sync-game-data.sh에 포함",
+      "CreaturePageContent에 전리품 섹션(LootCard + 안내 문구: lootdropper.lua 기준 — 줄마다 따로 굴림, 행운 보정, 불타며 죽으면 익힌 것), 메타 제목 facet·description에 전리품 이름",
+      "BossPageContent 전리품·보관함 카드 중복을 src/components/seo/LootCard.tsx로 추출. 확률 표기 chancePercent(소수 한 자리, 예: 12.5%)",
+    ],
+    changes: {
+      ko: [
+        "생물 상세 페이지에 '전리품'이 생겼어요 — 비팔로·사냥개·텐타클 등 47종을 처치했을 때 떨어지는 아이템과 확률·개수를 게임 코드 기준으로 보여 줘요",
+      ],
+      en: [
+        "Creature pages now show Drops — for 47 creatures (Beefalo, Hounds, Tentacles and more), see what they drop when killed, with chances and counts from the game code",
+      ],
+    },
+  },
+  {
     version: "0.52.7",
     date: "2026-11-25",
     dev: [
