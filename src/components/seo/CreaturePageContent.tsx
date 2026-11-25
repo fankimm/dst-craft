@@ -45,7 +45,7 @@ function load(slug: string, lang: SeoLang) {
   };
 }
 
-/** 처치 전리품 (#175) — 게임 코드의 공유 전리품 표가 있는 생물만. 이름은 [현재 언어, 다른 언어] */
+/** 처치 전리품 (#175, #176) — 게임 코드의 공유 전리품 표·무작위 뽑기·고정 전리품이 있는 생물만. 이름은 [현재 언어, 다른 언어] */
 function lootRows(id: string, lang: SeoLang) {
   const idx = lang === "ko" ? 1 : 0;
   return (creatureLoot[id] ?? []).map((r) => ({
@@ -78,6 +78,8 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
   const related = buildRelated(c.stats.deps, lang, routePrefix);
   const siblings = sameCategory(c.id, c.subcat, lang);
   const loot = lootRows(c.id, lang);
+  // 무작위 뽑기 묶음(#176) — AddRandomLoot 줄들 가운데 pick 개만 나온다
+  const lootPick = loot.find((r) => r.pick != null)?.pick;
 
   const breadcrumbLd = {
     "@context": "https://schema.org",
@@ -150,7 +152,10 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
             <h2 className="text-base font-semibold text-foreground mb-1">
               {c.name} {L.creatureLoot[lang]}
             </h2>
-            <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{L.creatureLootNote[lang]}</p>
+            <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+              {L.creatureLootNote[lang]}
+              {lootPick != null && <> {L.creatureLootPickNote[lang].replaceAll("{n}", String(lootPick))}</>}
+            </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {loot.map((row) => (
                 <LootCard
@@ -160,7 +165,11 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
                   image={imageOf(row.item)}
                   href={materialHref(row.item, routePrefix)}
                   count={row.count}
-                  chanceLabel={chancePercent(row.chance)}
+                  chanceLabel={
+                    row.pick != null
+                      ? `${chancePercent(row.chance)} · ${L.creatureLootPick[lang].replace("{n}", String(row.pick))}`
+                      : chancePercent(row.chance)
+                  }
                 />
               ))}
             </div>
