@@ -13,6 +13,9 @@ import { JsonLd } from "./JsonLd";
 import { DataSourceNote, fillTemplate as fill } from "./list-schema";
 import { hasGameItemImage } from "./ItemsCatalogContent";
 import { buildRelated, RelatedChip } from "./CreaturesCatalogContent";
+import { LootCard, chancePercent } from "./LootCard";
+import { creatureLoot, creatureLootNames } from "@/data/creature-loot";
+import { materialHref } from "@/lib/catalog-slug";
 
 /**
  * 스크랩북 생물 상세 페이지 (/creature/<slug>, /ko/creature/<slug>) — #160, #145 2단계.
@@ -42,6 +45,16 @@ function load(slug: string, lang: SeoLang) {
   };
 }
 
+/** 처치 전리품 (#175) — 게임 코드의 공유 전리품 표가 있는 생물만. 이름은 [현재 언어, 다른 언어] */
+function lootRows(id: string, lang: SeoLang) {
+  const idx = lang === "ko" ? 1 : 0;
+  return (creatureLoot[id] ?? []).map((r) => ({
+    ...r,
+    name: creatureLootNames[r.item][idx],
+    sub: lang === "ko" ? creatureLootNames[r.item][0] : null,
+  }));
+}
+
 /** 같은 스크랩북 분류의 다른 생물 (상세 페이지가 있는 것만) */
 function sameCategory(id: string, subcat: string | undefined, lang: SeoLang) {
   if (!subcat) return [];
@@ -64,6 +77,7 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
   const introName = lang === "ko" ? pp(c.name, "은", "는") : c.name;
   const related = buildRelated(c.stats.deps, lang, routePrefix);
   const siblings = sameCategory(c.id, c.subcat, lang);
+  const loot = lootRows(c.id, lang);
 
   const breadcrumbLd = {
     "@context": "https://schema.org",
@@ -131,6 +145,28 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
           </div>
         </section>
 
+        {loot.length > 0 && (
+          <section>
+            <h2 className="text-base font-semibold text-foreground mb-1">
+              {c.name} {L.creatureLoot[lang]}
+            </h2>
+            <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{L.creatureLootNote[lang]}</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {loot.map((row) => (
+                <LootCard
+                  key={`${row.item}-${row.chance}`}
+                  name={row.name}
+                  sub={row.sub}
+                  image={imageOf(row.item)}
+                  href={materialHref(row.item, routePrefix)}
+                  count={row.count}
+                  chanceLabel={chancePercent(row.chance)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
         {related.length > 0 && (
           <section>
             <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
@@ -190,18 +226,29 @@ export function buildCreatureMetadata(slug: string, lang: SeoLang) {
   const facets = [
     c.stats.health != null ? (lang === "ko" ? "체력" : "Health") : undefined,
     c.stats.damage != null ? (lang === "ko" ? "공격력" : "Damage") : undefined,
+    creatureLoot[c.id] ? (lang === "ko" ? "전리품" : "Drops") : undefined,
   ].filter(Boolean);
-  const facetText = facets.length > 0 ? ` (${facets.join(lang === "ko" ? "·" : " & ")})` : "";
+  const facetJoined =
+    lang === "ko" || facets.length < 2 ? facets.join("·") : `${facets.slice(0, -1).join(", ")} & ${facets.at(-1)}`;
+  const facetText = facets.length > 0 ? ` (${facetJoined})` : "";
   const title =
     lang === "ko"
       ? `${c.name} — 굶지마 투게더 생물 정보${facetText}`
       : `${c.name} — Don't Starve Together Creature Stats${facetText}`;
   const firstLine = c.special.split("\n").find(Boolean) ?? "";
+  // 전리품이 있는 생물은 확정 전리품 이름을 설명에 넣는다 (검색 "○○ 드롭" 의도)
+  const lootNames = [...new Set(lootRows(c.id, lang).map((r) => r.name))].slice(0, 4);
+  const lootText =
+    lootNames.length > 0
+      ? lang === "ko"
+        ? ` 전리품: ${lootNames.join(", ")}.`
+        : ` Drops: ${lootNames.join(", ")}.`
+      : "";
   const lead =
     lang === "ko"
       ? `굶지마 투게더 ${c.name}${c.subcatLabel ? ` (${c.subcatLabel})` : ""}의 인게임 스크랩북 수치와 설명.`
       : `In-game Scrapbook stats and notes for ${c.name}${c.subcatLabel ? ` (${c.subcatLabel})` : ""} in Don't Starve Together.`;
-  const description = `${lead} ${firstLine}`.trim().slice(0, 300);
+  const description = `${lead}${lootText} ${firstLine}`.trim().slice(0, 300);
 
   const enUrl = `${SITE_URL}/creature/${slug}`;
   const koUrl = `${SITE_URL}/ko/creature/${slug}`;
