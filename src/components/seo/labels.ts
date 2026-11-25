@@ -51,6 +51,11 @@ export const L = {
     en: "Dropped when killed, from the game code's loot table. Each line is rolled separately — the badge is how many times. Chances below 100% are base values (luck can change them). If it dies while burning, meats and other cookable drops come out cooked.",
     ko: "처치했을 때 떨어지는 전리품이에요 (게임 코드의 전리품 표 기준). 줄마다 따로 굴리고, 배지 숫자는 그 횟수예요. 100% 미만 확률은 기본값이라 행운 효과로 달라질 수 있고, 불에 타면서 죽으면 고기처럼 익힐 수 있는 전리품은 익힌 것으로 나와요.",
   },
+  creatureLootPick: { en: "{n} of these", ko: "이 중 {n}개" },
+  creatureLootPickNote: {
+    en: "Lines marked “{n} of these” are not rolled separately: exactly {n} of them drops, picked by the game's weights (the percentage).",
+    ko: "'이 중 {n}개'로 표시된 줄은 따로 굴리지 않고, 그 가운데 {n}개만 게임의 가중치(표시된 확률)대로 뽑혀요.",
+  },
   creatureSameCategory: { en: "More in “{cat}”", ko: "'{cat}' 분류의 다른 생물" },
   creatureOpenCatalog: { en: "Open Creature Catalog →", ko: "생물 도감 열기 →" },
   creatureCatalogDetail: { en: "Details →", ko: "상세 보기 →" },

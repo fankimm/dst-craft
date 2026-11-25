@@ -125,6 +125,77 @@ def main() -> None:
             grouped[(item, chance)] = grouped.get((item, chance), 0) + 1
         loot[cid] = [(item, chance, n) for (item, chance), n in grouped.items()]
 
+    shared_ids = set(loot)
+    # 2) 공유 표가 없는 생물 (#176) — prefab 파일 하나에 lootdropper 가 하나뿐이고 그 전리품 경로가 아래 둘 중 하나뿐일 때
+    #    a. AddRandomLoot(아이템, 가중치) 여러 줄 + numrandomloot = N  → 가중치 비율로 N번 뽑기 (lootdropper.lua PickRandomLoot)
+    #    b. SetLoot({ "아이템", ... }) 리터럴 (또는 그 파일에서 딱 한 번 쓰이는 local 표) → 항상 떨어짐
+    #    AddRandomHauntedLoot 는 유령이 홀렸을 때만이라 무시한다
+    picks: dict[str, int] = {}
+    for cid in creatures:
+        if cid in loot:
+            continue
+        # 생성 함수까지 적힌 정의(Prefab("id", fn, ...))가 있는 파일 하나만 — 다른 파일의 Prefab("id") 는 의존성 목록이다
+        defs = [(f, m.group(1)) for f in prefab_files.get(cid, []) for m in [re.search(r"Prefab\(\s*['\"]%s['\"]\s*,\s*(\w+)\s*[,)]" % re.escape(cid), sources[f])] if m]
+        if len(defs) != 1:
+            continue
+        files = [defs[0][0]]
+        text = re.sub(r"--[^\n]*", "", sources[files[0]])
+        if text.count('AddComponent("lootdropper")') != 1:
+            continue
+        # 그 lootdropper 가 이 생물의 생성 함수 안, 또는 생성 함수가 직접 부르는 함수 안에 있어야 한다
+        # (한 파일에 다른 prefab 이 같이 있을 때 남의 전리품을 붙이지 않게)
+        funcs: dict[str, tuple[int, int]] = {}
+        starts = [(m.start(), m.group(1)) for m in re.finditer(r"^(?:local )?function ([\w.:]+)\(", text, re.M)]
+        ends = [m.start() for m in re.finditer(r"^(?:local function|function|return)\b", text, re.M)] + [len(text)]
+        for st, name in starts:
+            funcs[name] = (st, min(e for e in ends if e > st))
+        ctor = defs[0][1]
+        if ctor not in funcs:
+            continue
+        ld = text.index('AddComponent("lootdropper")')
+        cst, cen = funcs[ctor]
+        owner = next((n for n, (a, b) in funcs.items() if a <= ld < b), None)
+        if owner is None or not (owner == ctor or re.search(r"\b%s\(" % re.escape(owner), text[cst:cen])):
+            continue
+        others = [k for k in [r for r in RISKY if r != "AddRandomLoot"] + ["SetChanceLootTable(", "chancerandomloot", "AddIfNotChanceLoot", "droprecipeloot"] if k in text]
+        rand = re.findall(r"lootdropper:AddRandomLoot\(([^)]*)\)", text)
+        nrand = re.findall(r"lootdropper\.numrandomloot\s*=\s*([^\s]+)", text)
+        if rand and not others:
+            if len(nrand) != 1 or not nrand[0].isdigit():
+                raise SystemExit(f"ERROR: {files[0]} numrandomloot 이 숫자 하나가 아님: {nrand}")
+            rows = []
+            for arg in rand:
+                m = re.fullmatch(r"\s*['\"](\w+)['\"]\s*,\s*([\d.]+)\s*", arg)
+                if not m or not NUM.match(m.group(2)):
+                    raise SystemExit(f"ERROR: {files[0]} AddRandomLoot 인자가 리터럴이 아님: {arg!r}")
+                rows.append((m.group(1), float(m.group(2))))
+            total = sum(w for _, w in rows)
+            loot[cid] = [(item, w / total, 1) for item, w in rows]
+            picks[cid] = int(nrand[0])
+            continue
+        if others == ["SetLoot("] and not rand and not nrand and text.count("SetLoot(") == 1:
+            arg = re.search(r"lootdropper:SetLoot\(\s*(\{[^}]*\}|\w+)\s*\)", text)
+            if not arg:
+                continue
+            body = arg.group(1)
+            if not body.startswith("{"):
+                # local 표 — 정의 1번 + SetLoot 1번 외에 쓰이면(table.insert 등) 믿지 않는다
+                if len(re.findall(r"\b%s\b" % re.escape(body), text)) != 2:
+                    continue
+                d = re.search(r"local\s+%s\s*=\s*(\{[^}]*\})" % re.escape(body), text)
+                if not d:
+                    continue
+                body = d.group(1)
+            items = re.findall(r"['\"](\w+)['\"]", body)
+            if not items:
+                continue  # SetLoot({}) — 전리품 없음
+            if re.sub(r"['\"]\w+['\"]|[\s,{}]", "", body):
+                raise SystemExit(f"ERROR: {files[0]} SetLoot 표가 문자열 리터럴만이 아님: {body!r}")
+            grouped: "OrderedDict[str, int]" = OrderedDict()
+            for i in items:
+                grouped[i] = grouped.get(i, 0) + 1
+            loot[cid] = [(i, 1.0, n) for i, n in grouped.items()]
+
     stale = sorted(set(VERIFIED) - set(loot))
     if stale:
         raise SystemExit(f"ERROR: VERIFIED 에 있는데 실리지 않은 생물 {stale} — 게임 코드가 바뀌었다. 다시 확인할 것")
@@ -149,15 +220,17 @@ def main() -> None:
 
     lines = [
         "// 자동 생성 — scripts/extract-creature-loot.py. 수동 편집 금지 (#175)",
-        "// Source: prefabs/*.lua 의 SetSharedLootTable + SetChanceLootTable (공유 전리품 표만), 이름은 ko.po STRINGS.NAMES",
+        "// Source: prefabs/*.lua 의 SetSharedLootTable + SetChanceLootTable, AddRandomLoot + numrandomloot, SetLoot 리터럴 (#176), 이름은 ko.po STRINGS.NAMES",
         "",
-        "/** 처치 전리품 한 줄: 아이템·확률(0~1)·그 확률로 떨어지는 개수(각각 따로 굴린다) */",
-        "export type CreatureLootRow = { item: string; chance: number; count: number };",
+        "/** 처치 전리품 한 줄: 아이템·확률(0~1)·그 확률로 떨어지는 개수(각각 따로 굴린다).",
+        " *  pick 이 있으면 따로 굴리지 않고, pick 이 붙은 줄들 가운데 pick 개를 뽑는다 (chance = 가중치/합, AddRandomLoot) */",
+        "export type CreatureLootRow = { item: string; chance: number; count: number; pick?: number };",
         "",
         "export const creatureLoot: Record<string, CreatureLootRow[]> = {",
     ]
     for cid, rows in loot.items():
-        body = ", ".join(f"{{ item: {q(i)}, chance: {num(c)}, count: {n} }}" for i, c, n in rows)
+        pk = f", pick: {picks[cid]}" if cid in picks else ""
+        body = ", ".join(f"{{ item: {q(i)}, chance: {num(round(c, 4))}, count: {n}{pk} }}" for i, c, n in rows)
         lines.append(f"  {cid}: [{body}],")
     lines += ["};", "", "/** 전리품 아이템 이름 [en, ko] */", "export const creatureLootNames: Record<string, [string, string]> = {"]
     for i in items:
@@ -166,6 +239,7 @@ def main() -> None:
     lines += ["};", ""]
     OUT.write_text("\n".join(lines), encoding="utf-8")
 
+    print(f"  공유 표 밖(#176): 무작위 뽑기 {sorted(picks)} · 고정 {sorted(c for c in loot if c not in picks and all(ch == 1.0 for _, ch, _ in loot[c]) and c not in shared_ids)}")
     print(f"creature-loot: 생물 {len(loot)}종 · 아이템 {len(items)}개 → {OUT.relative_to(ROOT)}")
     if skipped:
         print(f"  다른 전리품 경로가 섞여 뺀 생물 {len(skipped)}종 (확인 후 VERIFIED 에 추가):")

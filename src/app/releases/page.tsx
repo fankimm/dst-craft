@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.53.1",
+    date: "2026-11-26",
+    dev: [
+      "feature (#176, #145 4단계): extract-creature-loot.py가 공유 표 밖 생물도 추출 — 생성 함수 정의(Prefab(id, fn))가 있는 파일 하나, lootdropper 1개, 그 lootdropper가 생성 함수 또는 생성 함수가 직접 부르는 함수 안일 때만. (a) AddRandomLoot + numrandomloot만 → pick 행(chance=가중치/합) (b) SetLoot 리터럴(또는 한 번만 쓰이는 local 표)만 → 확률 1. 47종 → 67종(거미 8종·벌 2종·나비·자작나무 드레이크·빛게·키다리새·두더지·식인꽃·생강빵 돼지·머맨 왕·달 기생 식물·그림자 거머리). 기존 47종 데이터 변화 없음",
+      "CreaturePageContent: pick 행은 확률 옆에 '이 중 N개', 안내 문구에 뽑기 설명(labels creatureLootPick/creatureLootPickNote)",
+    ],
+    changes: {
+      ko: [
+        "생물 전리품이 67종으로 늘었어요 — 거미 8종·벌·나비·키다리새·두더지 등. 거미처럼 여러 전리품 중 하나만 떨어지는 생물은 '이 중 1개'와 그 확률로 보여 줘요",
+      ],
+      en: [
+        "Creature drops now cover 67 creatures — all 8 spiders, bees, butterflies, Tallbirds, Moles and more. For creatures that drop just one item from a list (like spiders), it's marked “1 of these” with each item's chance",
+      ],
+    },
+  },
+  {
     version: "0.53.0",
     date: "2026-11-25",
     dev: [
