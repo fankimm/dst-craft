@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
+import { LootCard, chancePercent } from "./LootCard";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { AdBleed } from "@/components/ads/AdBleed";
 import { bossImageSrc } from "@/lib/asset-path";
@@ -160,61 +161,19 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
             {L.drops[lang]}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {boss.loot.map((loot, i) => {
-              const nameEn = lootDisplayName(loot.item, "en");
-              const nameKoVal = lootDisplayName(loot.item, "ko");
-              const lootName = lang === "ko" ? nameKoVal : nameEn;
-              const lootSub = lang === "ko" ? nameEn : null;
-              const imgSrc = lootImage(loot.item);
-              const isBlueprint = loot.blueprint;
-              const chanceLabel =
-                loot.chance >= 1 ? "100%" : `${Math.round(loot.chance * 100)}%`;
-              const lootHref = materialHref(loot.item, routePrefix);
-
-              const inner = (
-                <>
-                  <div className="relative shrink-0">
-                    <img src={imgSrc} alt={lootName} className="size-10 object-contain" loading="lazy" />
-                    {loot.count && loot.count > 1 && (
-                      <span className="absolute -bottom-1 -right-1 bg-foreground text-background text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center leading-none">
-                        {loot.count}
-                      </span>
-                    )}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-medium text-foreground leading-tight truncate">{lootName}</p>
-                    {lootSub && lootSub !== lootName && (
-                      <p className="text-[10px] text-muted-foreground truncate">{lootSub}</p>
-                    )}
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="text-[10px] text-muted-foreground">{chanceLabel}</span>
-                      {isBlueprint && (
-                        <span className="text-[10px] font-medium text-amber-600 dark:text-amber-400">
-                          {L.blueprint[lang]}
-                        </span>
-                      )}
-                    </div>
-                    {loot.label && (
-                      <p className="text-[10px] text-muted-foreground truncate">
-                        {lang === "ko" ? loot.label : (loot.labelEn ?? loot.label)}
-                      </p>
-                    )}
-                  </div>
-                </>
-              );
-              const cls = "flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2";
-              return lootHref ? (
-                <Link
-                  key={`${loot.item}-${i}`}
-                  href={lootHref}
-                  className={`${cls} hover:border-ring transition-colors`}
-                >
-                  {inner}
-                </Link>
-              ) : (
-                <div key={`${loot.item}-${i}`} className={cls}>{inner}</div>
-              );
-            })}
+            {boss.loot.map((loot, i) => (
+              <LootCard
+                key={`${loot.item}-${i}`}
+                name={lootDisplayName(loot.item, lang)}
+                sub={lang === "ko" ? lootDisplayName(loot.item, "en") : null}
+                image={lootImage(loot.item)}
+                href={materialHref(loot.item, routePrefix)}
+                count={loot.count}
+                chanceLabel={chancePercent(loot.chance)}
+                badge={loot.blueprint ? L.blueprint[lang] : undefined}
+                note={loot.label ? (lang === "ko" ? loot.label : (loot.labelEn ?? loot.label)) : undefined}
+              />
+            ))}
           </div>
         </section>
 
@@ -227,63 +186,19 @@ export function BossPageContent({ slug, lang }: { slug: string; lang: SeoLang })
               {lang === "ko" ? boss.stashLoot.note : boss.stashLoot.noteEn}
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {(boss.stashLoot.items ?? boss.stashLoot.bundles?.flatMap((b) => b.items) ?? []).map((loot, i) => {
-                const nameEn = lootDisplayName(loot.item, "en");
-                const nameKoVal = lootDisplayName(loot.item, "ko");
-                const lootName = lang === "ko" ? nameKoVal : nameEn;
-                const lootSub = lang === "ko" ? nameEn : null;
-                const imgSrc = lootImage(loot.item);
-                const isBlueprint = loot.blueprint;
-                const chanceLabel = loot.pool
-                  ? L.pickOne[lang]
-                  : loot.chance >= 1
-                    ? "100%"
-                    : `${Math.round(loot.chance * 100)}%`;
-                const lootHref = materialHref(loot.item, routePrefix);
-
-                const inner = (
-                  <>
-                    <div className="relative shrink-0">
-                      <img src={imgSrc} alt={lootName} className="size-10 object-contain" loading="lazy" />
-                      {loot.count && loot.count > 1 && (
-                        <span className="absolute -bottom-1 -right-1 bg-foreground text-background text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center leading-none">
-                          {loot.count}
-                        </span>
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs font-medium text-foreground leading-tight truncate">{lootName}</p>
-                      {lootSub && lootSub !== lootName && (
-                        <p className="text-[10px] text-muted-foreground truncate">{lootSub}</p>
-                      )}
-                      <div className="flex items-center gap-1.5 mt-0.5">
-                        <span
-                          className={`text-[10px] ${loot.pool ? "font-medium text-amber-600 dark:text-amber-400" : "text-muted-foreground"}`}
-                        >
-                          {chanceLabel}
-                        </span>
-                        {isBlueprint && (
-                          <span className="text-[10px] font-medium text-amber-600 dark:text-amber-400">
-                            {L.blueprint[lang]}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </>
-                );
-                const cls = "flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2";
-                return lootHref ? (
-                  <Link
-                    key={`stash-${loot.item}-${i}`}
-                    href={lootHref}
-                    className={`${cls} hover:border-ring transition-colors`}
-                  >
-                    {inner}
-                  </Link>
-                ) : (
-                  <div key={`stash-${loot.item}-${i}`} className={cls}>{inner}</div>
-                );
-              })}
+              {(boss.stashLoot.items ?? boss.stashLoot.bundles?.flatMap((b) => b.items) ?? []).map((loot, i) => (
+                <LootCard
+                  key={`stash-${loot.item}-${i}`}
+                  name={lootDisplayName(loot.item, lang)}
+                  sub={lang === "ko" ? lootDisplayName(loot.item, "en") : null}
+                  image={lootImage(loot.item)}
+                  href={materialHref(loot.item, routePrefix)}
+                  count={loot.count}
+                  chanceLabel={loot.pool ? L.pickOne[lang] : chancePercent(loot.chance)}
+                  chanceHighlight={!!loot.pool}
+                  badge={loot.blueprint ? L.blueprint[lang] : undefined}
+                />
+              ))}
             </div>
           </section>
         )}

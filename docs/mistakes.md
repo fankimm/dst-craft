@@ -367,6 +367,10 @@
 
 ## 배포 / 인프라
 
+### 한 줄 파이썬 치환이 version.ts를 빈 파일로 만들어 커밋됨 (2026-11-25, #175)
+- **문제**: 릴리즈노트 작성 때 `open(p,'w').write(open(p).read().replace(...))`로 버전을 바꿨다. 인자보다 `open(p,'w')`가 먼저 평가돼 파일이 먼저 비워지고, 빈 내용을 읽어 그대로 썼다. `tsc`가 "is not a module"로 잡았지만 그 전에 커밋·feat 푸시까지 나갔다 (main 머지 전이라 사용자 영향 없음)
+- **교훈**: 파일 치환은 `s = open(p).read()` → 수정 → `open(p,'w').write(s)` 두 단계로. 그리고 커밋은 `tsc`·빌드가 **성공한 뒤에** — `&&` 사슬의 앞에 둘 것
+
 ### `gh workflow run deploy-beta.yml` 재실행 시 `target` 기본값이 beta — main 재배포는 `-f target=main` 필수 (2026-09-16, #108)
 - **문제**: v0.35.3 main 푸시 배포가 실패해서(아래 폰트 타임아웃) `gh workflow run deploy-beta.yml --ref main -f force_frontend=true` 로 재실행했는데, `--ref` 는 워크플로우 파일을 읽을 브랜치일 뿐이고 **배포 대상은 `inputs.target`(기본 `beta`)** 이라 beta 가 다시 빌드됐다. run 은 success 인데 prod 는 옛 버전 그대로 — `readlink ~/dstcraft/prod` 로 확인하기 전까지 몰랐다
 - **해결**: `gh workflow run deploy-beta.yml --ref main -f target=main -f force_frontend=true`. 성공 판정은 conclusion 이 아니라 `gh run view <id> --json jobs` 에서 **`Frontend rebuild — main → ~/dstcraft/prod → success`** 가 있는지 + `ssh fankimm@100.85.118.4 'readlink ~/dstcraft/prod'` 의 릴리즈 디렉터리 시각으로
