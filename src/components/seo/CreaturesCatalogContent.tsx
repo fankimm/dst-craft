@@ -6,7 +6,8 @@ import {
   creatureSubcatNames,
 } from "@/data/creature-names";
 import { itemNames } from "@/data/item-names";
-import { itemHref } from "@/lib/catalog-slug";
+import { creatureLoot, creatureLootNames } from "@/data/creature-loot";
+import { itemHref, materialHref } from "@/lib/catalog-slug";
 import { creatureHref, creatureSlugs } from "@/lib/creature-slug";
 import { assetPath } from "@/lib/asset-path";
 import { ItemStatsPanel } from "@/components/crafting/ItemStatsPanel";
@@ -14,6 +15,7 @@ import { AdSlot } from "@/components/ads/AdSlot";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
 import { DataSourceNote, fillTemplate as fill, itemListLd } from "./list-schema";
+import { chancePercent } from "./LootCard";
 import { CatalogIconBox, hasGameItemImage, type CatalogEntry } from "./ItemsCatalogContent";
 
 /**
@@ -50,6 +52,16 @@ export function buildRelated(deps: string[] | undefined, lang: SeoLang, routePre
   return out;
 }
 
+/** 처치 전리품 (#175, #176) — 게임 코드의 공유 전리품 표·무작위 뽑기·고정 전리품이 있는 생물만. 이름은 [현재 언어, 다른 언어] */
+export function lootRows(id: string, lang: SeoLang) {
+  const idx = lang === "ko" ? 1 : 0;
+  return (creatureLoot[id] ?? []).map((r) => ({
+    ...r,
+    name: creatureLootNames[r.item][idx],
+    sub: lang === "ko" ? creatureLootNames[r.item][0] : null,
+  }));
+}
+
 function buildCatalog(lang: SeoLang) {
   const idx = lang === "ko" ? 1 : 0;
   const groups = new Map<string, CatalogEntry[]>();
@@ -79,13 +91,14 @@ function buildCatalog(lang: SeoLang) {
   }));
 }
 
-export function RelatedChip({ entry }: { entry: RelatedEntry }) {
+export function RelatedChip({ entry, detail }: { entry: RelatedEntry; detail?: string }) {
   const body = (
     <>
       {entry.image && (
         <img src={assetPath(entry.image)} alt="" className="size-3.5 object-contain" loading="lazy" />
       )}
       <span>{entry.name}</span>
+      {detail && <span className="text-muted-foreground tabular-nums">{detail}</span>}
     </>
   );
   const cls = "inline-flex items-center gap-1 rounded border border-border px-1.5 py-0.5 text-[11px]";
@@ -156,6 +169,8 @@ export function CreaturesCatalogContent({ lang }: { lang: SeoLang }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {g.items.map((e) => {
                 const related = buildRelated(scrapbookStats[e.id].deps, lang, routePrefix);
+                const loot = lootRows(e.id, lang);
+                const lootPick = loot.find((r) => r.pick != null)?.pick;
                 return (
                   <article
                     key={e.id}
@@ -188,6 +203,33 @@ export function CreaturesCatalogContent({ lang }: { lang: SeoLang }) {
                       >
                         {L.creatureCatalogDetail[lang]}
                       </Link>
+                    )}
+                    {loot.length > 0 && (
+                      <div>
+                        <p className="text-[11px] text-muted-foreground mb-1">{L.creatureLoot[lang]}</p>
+                        <div className="flex flex-wrap gap-1">
+                          {loot.map((r) => (
+                            <RelatedChip
+                              key={`${r.item}-${r.chance}-${r.count}`}
+                              entry={{
+                                id: r.item,
+                                name: r.name,
+                                href: materialHref(r.item, routePrefix),
+                                image: hasGameItemImage(r.item) ? `/images/game-items/${r.item}.png` : undefined,
+                              }}
+                              detail={
+                                `${chancePercent(r.chance)}${r.count > 1 ? ` ×${r.count}` : ""}` +
+                                (r.pick != null ? ` · ${L.creatureLootPick[lang].replace("{n}", String(r.pick))}` : "")
+                              }
+                            />
+                          ))}
+                        </div>
+                        {lootPick != null && (
+                          <p className="text-[10px] text-muted-foreground mt-1">
+                            {L.creatureLootPickNote[lang].replaceAll("{n}", String(lootPick))}
+                          </p>
+                        )}
+                      </div>
                     )}
                     {related.length > 0 && (
                       <div>
