@@ -86,6 +86,11 @@ export const L = {
   },
   catalogItemScrapbook: { en: "Stats and Description", ko: "수치 · 설명" },
   catalogItemUsedIn: { en: "Crafting recipes that use this", ko: "이 아이템을 재료로 쓰는 제작법" },
+  droppedBy: { en: "Dropped by", ko: "떨어뜨리는 생물" },
+  droppedByNote: {
+    en: "Creatures and bosses that drop this when killed, from the game code's loot tables. Each chance is rolled separately (×n = rolled n times) and is the base value. Only creatures whose loot table we could read directly are listed.",
+    ko: "처치하면 이 아이템을 떨어뜨리는 생물·보스예요 (게임 코드의 전리품 표 기준). 확률은 줄마다 따로 굴리는 기본값이고 ×n은 굴리는 횟수예요. 전리품 표를 직접 확인한 생물만 실었어요.",
+  },
   catalogItemUsedInCount: {
     en: "It is an ingredient in {n} crafting recipes, listed below.",
     ko: "제작법 {n}개의 재료로 쓰이며, 목록은 아래에 있습니다.",
