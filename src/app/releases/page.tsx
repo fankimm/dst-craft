@@ -15,6 +15,23 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.54.0",
+    date: "2026-11-26",
+    dev: [
+      "feature (#177, #145 5단계): src/components/seo/DroppedBy.tsx — dropSourcesOf(id | id[])가 creature-loot.ts(생물 67종)와 bosses.ts 전리품을 아이템 기준으로 뒤집고 DroppedBySection이 LootCard로 그린다. 보스 전리품의 설계도·pool·label 줄은 제외. 무작위 뽑기(pick=1)는 표시 확률 그대로",
+      "CatalogItemPageContent·ItemPageContent(materialIdsOf로 같은 이름 재료 포함)·IngredientPageContent에 구역 추가, 도감 아이템 메타 설명에 떨어뜨리는 생물 이름",
+      "scripts/add-img-lazy.mjs EAGER_KEEP 줄번호 갱신(6곳 — main에서 이미 어긋나 있던 것 포함)",
+    ],
+    changes: {
+      ko: [
+        "아이템 페이지에 '떨어뜨리는 생물'이 생겼어요 — 거미줄·사냥개 이빨·고기 같은 아이템을 어떤 생물·보스가 몇 % 확률로 떨어뜨리는지 한눈에 보고, 눌러서 그 생물 페이지로 갈 수 있어요",
+      ],
+      en: [
+        "Item pages now have a “Dropped by” section — see which creatures and bosses drop items like Silk, Hound's Tooth or Meat, with the chance for each, and tap through to the creature's page",
+      ],
+    },
+  },
+  {
     version: "0.53.1",
     date: "2026-11-26",
     dev: [
