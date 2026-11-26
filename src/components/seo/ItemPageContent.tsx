@@ -18,6 +18,7 @@ import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { AdBleed } from "@/components/ads/AdBleed";
+import { DroppedBySection, dropSourcesOf } from "./DroppedBy";
 
 const SITE_URL = "https://www.dstcraft.com";
 
@@ -407,6 +408,8 @@ export function ItemPageContent({ slug, lang }: { slug: string; lang: SeoLang })
             </ul>
           </section>
         )}
+
+        <DroppedBySection sources={dropSourcesOf(materialIdsOf(item.id), lang, routePrefix)} lang={lang} />
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">

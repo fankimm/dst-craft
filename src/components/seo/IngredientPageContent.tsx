@@ -11,6 +11,7 @@ import { itemHref } from "@/lib/catalog-slug";
 import { ingredientSlugs, resolveIngredientSlug } from "@/lib/ingredient-slug";
 import { pp } from "@/lib/seo-text";
 import { AdSlot } from "@/components/ads/AdSlot";
+import { DroppedBySection, dropSourcesOf } from "./DroppedBy";
 import { AdBleed } from "@/components/ads/AdBleed";
 import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
@@ -364,6 +365,8 @@ export function IngredientPageContent({ slug, lang }: { slug: string; lang: SeoL
             <RecipeGrid recipes={d.warlyOnly} lang={lang} routePrefix={routePrefix} />
           </section>
         )}
+
+        <DroppedBySection sources={dropSourcesOf(d.ing.id, lang, routePrefix)} lang={lang} />
 
         {(d.usedIn.length > 0 || hasItemPage) && (
           <section>

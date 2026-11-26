@@ -16,6 +16,7 @@ import { JsonLd } from "./JsonLd";
 import { DataSourceNote, fillTemplate as fill } from "./list-schema";
 import { hasGameItemImage } from "./ItemsCatalogContent";
 import { buildRelated, RelatedChip } from "./CreaturesCatalogContent";
+import { DroppedBySection, dropSourcesOf } from "./DroppedBy";
 
 /**
  * 제작 탭에 없는 스크랩북 아이템의 상세 페이지 (/item/<slug>, /ko/item/<slug>) — #159, #144 2단계.
@@ -59,6 +60,7 @@ export function CatalogItemPageContent({ slug, lang }: { slug: string; lang: Seo
   // 한국어 문장은 이름에 주제 조사를 붙여 넣는다 (템플릿의 {name} 뒤에 조사 없음)
   const introName = lang === "ko" ? pp(item.name, "은", "는") : item.name;
   const related = buildRelated(item.stats.deps, lang, routePrefix);
+  const dropSources = dropSourcesOf(item.id, lang, routePrefix);
 
   const breadcrumbLd = {
     "@context": "https://schema.org",
@@ -126,6 +128,8 @@ export function CatalogItemPageContent({ slug, lang }: { slug: string; lang: Seo
             <ItemStatsPanel itemId={item.id} stats={item.stats} locale={lang} />
           </div>
         </section>
+
+        <DroppedBySection sources={dropSources} lang={lang} />
 
         {usedIn.length > 0 && (
           <section>
@@ -207,7 +211,11 @@ export function buildCatalogItemMetadata(slug: string, lang: SeoLang) {
       : lang === "ko"
         ? `제작법 ${usedIn.length}개의 재료: ${usedNames.join(", ")}${usedIn.length > usedNames.length ? " 등" : ""}.`
         : `Used in ${usedIn.length} crafting recipe${usedIn.length > 1 ? "s" : ""}: ${usedNames.join(", ")}${usedIn.length > usedNames.length ? " and more" : ""}.`;
-  const description = `${lead} ${usedLine} ${firstLine}`.replace(/\s+/g, " ").trim().slice(0, 300);
+  // 검색 "○○ 얻는 법" 의도 — 떨어뜨리는 생물 이름을 설명에 넣는다 (#177)
+  const dropNames = dropSourcesOf(item.id, lang, "").slice(0, 4).map((d) => d.name);
+  const dropLine =
+    dropNames.length === 0 ? "" : lang === "ko" ? `떨어뜨리는 생물: ${dropNames.join(", ")}.` : `Dropped by ${dropNames.join(", ")}.`;
+  const description = `${lead} ${dropLine} ${usedLine} ${firstLine}`.replace(/\s+/g, " ").trim().slice(0, 300);
 
   const enUrl = `${SITE_URL}/item/${canonicalSlug}`;
   const koUrl = `${SITE_URL}/ko/item/${canonicalSlug}`;
