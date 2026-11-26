@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.54.2",
+    date: "2026-11-27",
+    dev: [
+      "feature (#179, #145 7단계): CreaturesCatalogContent 카드에 전리품 칩 줄 — lootRows를 CreaturePageContent에서 옮겨 허브·상세 공용으로, RelatedChip에 detail(확률·개수) prop, 무작위 뽑기 줄은 creatureLootPick/creatureLootPickNote 재사용",
+      "새 데이터 없음(creature-loot.ts 71종 그대로), 주소 변화 없음. add-img-lazy.mjs EAGER_KEEP의 CreaturePageContent 히어로 줄번호 갱신",
+    ],
+    changes: {
+      ko: [
+        "생물 도감 목록에서 바로 처치 전리품을 볼 수 있어요 — 전리품 정보가 있는 생물 71종의 카드에 아이템과 확률이 나와요",
+      ],
+      en: [
+        "The Creature Catalog now shows drops right on the list — cards for the 71 creatures with loot data list each item and its chance",
+      ],
+    },
+  },
+  {
     version: "0.54.1",
     date: "2026-11-26",
     dev: [

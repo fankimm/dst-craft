@@ -12,9 +12,9 @@ import { L, type SeoLang } from "./labels";
 import { JsonLd } from "./JsonLd";
 import { DataSourceNote, fillTemplate as fill } from "./list-schema";
 import { hasGameItemImage } from "./ItemsCatalogContent";
-import { buildRelated, RelatedChip } from "./CreaturesCatalogContent";
+import { buildRelated, lootRows, RelatedChip } from "./CreaturesCatalogContent";
 import { LootCard, chancePercent } from "./LootCard";
-import { creatureLoot, creatureLootNames } from "@/data/creature-loot";
+import { creatureLoot } from "@/data/creature-loot";
 import { materialHref } from "@/lib/catalog-slug";
 
 /**
@@ -43,16 +43,6 @@ function load(slug: string, lang: SeoLang) {
     image: imageOf(id),
     special: (lang === "ko" ? stats.specialinfo_ko : stats.specialinfo_en) ?? stats.specialinfo_en ?? "",
   };
-}
-
-/** 처치 전리품 (#175, #176) — 게임 코드의 공유 전리품 표·무작위 뽑기·고정 전리품이 있는 생물만. 이름은 [현재 언어, 다른 언어] */
-function lootRows(id: string, lang: SeoLang) {
-  const idx = lang === "ko" ? 1 : 0;
-  return (creatureLoot[id] ?? []).map((r) => ({
-    ...r,
-    name: creatureLootNames[r.item][idx],
-    sub: lang === "ko" ? creatureLootNames[r.item][0] : null,
-  }));
 }
 
 /** 같은 스크랩북 분류의 다른 생물 (상세 페이지가 있는 것만) */
