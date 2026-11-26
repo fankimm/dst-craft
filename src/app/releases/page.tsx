@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.54.1",
+    date: "2026-11-26",
+    dev: [
+      "feature (#178, #145 6단계): extract-creature-loot.py — VERIFIED에 shadowthrall_hands·horns·wings(SetLoot(nil)은 OnShroudenSummon 안), MIXED_RANDOM 신설(molebat: 공유 표 + AddRandomLoot/numrandomloot — 경로가 바뀌면 exit 1), AddRandomLoot 파싱을 parse_random으로 공통화, pick을 행 단위로",
+      "creature-loot.ts 67종 → 71종 (기존 67종 변화 없음), 아이템 이름 2개 추가(batnose·voidcloth)",
+    ],
+    changes: {
+      ko: [
+        "벌거숭이두더박쥐 페이지에 처치 전리품이 생겼어요 — 구아노 15%에 더해 괴물고기와 벌거숭이 콧구멍 중 하나가 나와요",
+        "어둠의 넝마·순수한 공포 같은 아이템 페이지의 '떨어뜨리는 생물'에 먹빛 그림자 3종이 추가됐어요",
+      ],
+      en: [
+        "The Naked Mole Bat page now lists its drops — Guano at 15%, plus one of Monster Meat or Naked Nostrils",
+        "The three Ink Blights now appear under “Dropped by” on item pages such as Dark Tatters and Pure Horror",
+      ],
+    },
+  },
+  {
     version: "0.54.0",
     date: "2026-11-26",
     dev: [
