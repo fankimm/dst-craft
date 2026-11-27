@@ -77,6 +77,8 @@ export const creatureLoot: Record<string, CreatureLootRow[]> = {
   spider_warrior: [{ item: "monstermeat", chance: 0.5, count: 1, pick: 1 }, { item: "silk", chance: 0.25, count: 1, pick: 1 }, { item: "spidergland", chance: 0.25, count: 1, pick: 1 }],
   spider_water: [{ item: "monstermeat", chance: 0.5, count: 1, pick: 1 }, { item: "silk", chance: 0.25, count: 1, pick: 1 }, { item: "spidergland", chance: 0.25, count: 1, pick: 1 }],
   tallbird: [{ item: "meat", chance: 1, count: 2 }],
+  koalefant_summer: [{ item: "meat", chance: 1, count: 8 }, { item: "trunk_summer", chance: 1, count: 1 }],
+  koalefant_winter: [{ item: "meat", chance: 1, count: 8 }, { item: "trunk_winter", chance: 1, count: 1 }],
 };
 
 /** 전리품 아이템 이름 [en, ko] */
@@ -149,6 +151,8 @@ export const creatureLootNames: Record<string, [string, string]> = {
   tentaclespike: ["Tentacle Spike", "촉수 가시"],
   tentaclespots: ["Tentacle Spots", "촉수 반점"],
   thulecite_pieces: ["Thulecite Fragments", "툴레사이트 파편"],
+  trunk_summer: ["Koalefant Trunk", "코알라판트 코"],
+  trunk_winter: ["Winter Koalefant Trunk", "겨울 코알라판트 코"],
   turf_marsh: ["Marsh Turf", "늪지 바닥"],
   twigs: ["Twigs", "잔가지"],
   voidcloth: ["Dark Tatters", "어둠의 넝마"],
