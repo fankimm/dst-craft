@@ -1,7 +1,7 @@
 import { creatureLoot } from "@/data/creature-loot";
 import { creatureNames } from "@/data/creature-names";
 import { bosses } from "@/data/bosses";
-import { creatureHref } from "@/lib/creature-slug";
+import { creatureDisplayNames, creatureHref } from "@/lib/creature-slug";
 import { canonicalForBoss } from "@/lib/slug";
 import { bossThumbPath } from "@/lib/asset-path";
 import { L, type SeoLang } from "./labels";
@@ -59,8 +59,8 @@ export function dropSourcesOf(item: string | string[], lang: SeoLang, routePrefi
 
   const fromCreatures: DropSource[] = [];
   for (const [creatureId, loot] of Object.entries(creatureLoot)) {
-    const names = creatureNames[creatureId];
-    if (!names) continue;
+    if (!creatureNames[creatureId]) continue;
+    const names = creatureDisplayNames(creatureId);
     const rows = loot.filter((r) => itemIds.includes(r.item)).map(({ chance, count, pick }) => ({ chance, count, pick }));
     if (rows.length === 0) continue;
     fromCreatures.push({
