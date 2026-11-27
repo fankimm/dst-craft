@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.55.0",
+    date: "2026-11-27",
+    dev: [
+      "feature (#180, #145 8단계): creature-slug.ts에 CREATURE_VARIANTS — 영문 이름(슬러그)이 겹쳐 빠지던 생물 8종에 구분 슬러그·라벨(koalefant-summer/-winter, ink-blight-jitters/rasp/shriek/rictus, bernie/bernie-big). 상세 154 → 162개, 기존 주소 변화 없음",
+      "creatureDisplayNames(변종 라벨이 붙은 표시 이름)를 상세·허브 카드·DroppedBy·catalog-search.json에 적용, creatureVariantNote로 라벨 출처 한 줄. 먹빛 그림자 라벨은 STRINGS.NAMES.SHADOWTHRALL_*_ALLEGIANCE(ko.po), 코알라판트는 prefab id 기준 구분용 표기",
+    ],
+    changes: {
+      ko: [
+        "코알라판트(여름·겨울), 먹빛 그림자 4종, 버니에도 생물 상세 페이지가 생겼어요 — 이름이 같아 구분이 안 되던 변종을 '먹빛 그림자 (초조)'처럼 나눠서 보여 줘요",
+      ],
+      en: [
+        "Koalefant (summer and winter), the four Ink Blights and Bernie now have their own creature pages — look-alike variants are told apart, e.g. “Ink Blight (Jitters)”",
+      ],
+    },
+  },
+  {
     version: "0.54.2",
     date: "2026-11-27",
     dev: [
