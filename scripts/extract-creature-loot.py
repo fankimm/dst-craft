@@ -61,6 +61,16 @@ MIXED_RANDOM: dict[str, str] = {
     "molebat": "molebat.lua fn(): SetChanceLootTable('molebat') + AddRandomLoot 2줄 + numrandomloot = 1",
 }
 
+# 생성 함수마다 다른 local 표를 SetLoot 하는 생물 (#181): id → (파일, 생성 함수, local 표, 확인한 전리품 경로 지문)
+# koalefant.lua (buildid 26797476): create_summer/create_winter 가 SetLoot(loot_summer|loot_winter),
+# create_base 의 SetLootSetupFn(lootsetfn) 은 불타는 중이거나 탄 상태일 때만 SetLoot(loot_fire) —
+# 코가 더미 prefab "trunk"(구운 코알라판트 코로 바뀜)로 바뀔 뿐이라 평소 처치 전리품은 계절 표 그대로다
+_KOALEFANT_PATHS = (["SetLoot(", "SetLootSetupFn"], ["loot_fire", "loot_summer", "loot_winter"])
+CTOR_SETLOOT: dict[str, tuple[str, str, str, tuple[list[str], list[str]]]] = {
+    "koalefant_summer": ("koalefant.lua", "create_summer", "loot_summer", _KOALEFANT_PATHS),
+    "koalefant_winter": ("koalefant.lua", "create_winter", "loot_winter", _KOALEFANT_PATHS),
+}
+
 
 def parse_random(fname: str, text: str) -> list[tuple[str, float, int, int]]:
     """AddRandomLoot(아이템, 가중치) 줄들 + numrandomloot = N → (아이템, 가중치/합, 1, N)"""
@@ -217,6 +227,29 @@ def main() -> None:
             for i in items:
                 grouped[i] = grouped.get(i, 0) + 1
             loot[cid] = [(i, 1.0, n, None) for i, n in grouped.items()]
+
+    # 3) 생성 함수마다 다른 local 표를 SetLoot 하는 생물 (#181) — CTOR_SETLOOT 에 적은 것만.
+    #    파일의 전리품 경로가 확인했던 모양(지문)과 다르면 exit 1
+    for cid, (fname, ctor, var, fingerprint) in CTOR_SETLOOT.items():
+        if cid not in creatures or cid in loot:
+            raise SystemExit(f"ERROR: CTOR_SETLOOT 의 {cid} 가 스크랩북 생물이 아니거나 이미 다른 경로로 실렸다")
+        text = re.sub(r"--[^\n]*", "", sources[fname])
+        risky = sorted(k for k in RISKY + ["SetChanceLootTable(", "numrandomloot", "chancerandomloot", "AddIfNotChanceLoot"] if k in text)
+        setloots = sorted(re.findall(r"lootdropper:SetLoot\(\s*([^)]*?)\s*\)", text))
+        if (risky, setloots) != fingerprint or text.count('AddComponent("lootdropper")') != 1:
+            raise SystemExit(f"ERROR: {fname} 전리품 경로가 바뀌었다 ({risky}, {setloots}) — 게임 코드를 다시 확인할 것")
+        if not re.search(r"Prefab\(\s*['\"]%s['\"]\s*,\s*%s\s*," % (re.escape(cid), re.escape(ctor)), text):
+            raise SystemExit(f"ERROR: {fname} 에서 {cid} 의 생성 함수가 {ctor} 가 아니다")
+        fm = re.search(r"^local function %s\(.*?^end\b" % re.escape(ctor), text, re.M | re.S)
+        if not fm or re.findall(r"lootdropper:SetLoot\(\s*(\w+)\s*\)", fm.group(0)) != [var]:
+            raise SystemExit(f"ERROR: {fname} {ctor} 가 SetLoot({var}) 하나만 부르지 않는다")
+        d = re.search(r"^local\s+%s\s*=\s*(\{[^}]*\})" % re.escape(var), text, re.M)
+        if not d or re.sub(r"['\"]\w+['\"]|[\s,{}]", "", d.group(1)):
+            raise SystemExit(f"ERROR: {fname} local {var} 가 문자열 리터럴 표가 아니다")
+        grouped3: "OrderedDict[str, int]" = OrderedDict()
+        for i in re.findall(r"['\"](\w+)['\"]", d.group(1)):
+            grouped3[i] = grouped3.get(i, 0) + 1
+        loot[cid] = [(i, 1.0, n, None) for i, n in grouped3.items()]
 
     stale = sorted((set(VERIFIED) | set(MIXED_RANDOM)) - set(loot))
     if stale:
