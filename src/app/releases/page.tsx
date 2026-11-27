@@ -15,6 +15,24 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.55.2",
+    date: "2026-11-28",
+    dev: [
+      "feature (#182, #145 10단계): DroppedBy.tsx — 보스 전리품의 소제목(label) 줄을 빼지 않고 (보스, 소제목)별 카드로 묶는다(bossRowGroups). 카드에 소제목을 note로 표기",
+      "bosses.ts 공포의 쌍둥이 소제목에 labelEn(Retinazor·Spazmatism, ko.po msgid) — 영문 보스 페이지·보스 탭에 한글이 나오던 것 수정",
+      "CatalogItemPageContent 메타 설명의 생물 이름 중복 제거. 새 데이터·주소 변화 없음",
+    ],
+    changes: {
+      ko: [
+        "아이템 페이지의 '떨어뜨리는 생물'에 공포의 쌍둥이(레티나이저·스파즈마티즘)와 장수돌가재의 초석이 나와요 — 노란 보석·초록 보석·톱니바퀴 등",
+      ],
+      en: [
+        "Item pages' \"Dropped by\" now lists the Twins of Terror (Retinazor and Spazmatism) and the Rock Master's nitre — Yellow Gem, Green Gem, Gears and more",
+        "The Twins of Terror boss page now shows the twins' names in English",
+      ],
+    },
+  },
+  {
     version: "0.55.1",
     date: "2026-11-27",
     dev: [

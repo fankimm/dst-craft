@@ -22,14 +22,27 @@ export type DropSource = {
   image?: string;
   href?: string;
   rows: Row[];
+  /** 보스 전리품의 소제목 — 쌍둥이 중 어느 쪽인지, 어떤 조건에서인지 (#182) */
+  note?: string;
 };
 
-/** 보스 전리품 가운데 그대로 뒤집을 수 있는 줄만 — 설계도·묶음 뽑기(pool)는 확률의 뜻이 달라 빼고,
- *  소제목(label)이 붙은 줄은 조건부이거나 여러 개체의 몫이라 뺀다 (자세한 표는 보스 페이지에 있다) */
-const bossRows = (bossId: string, itemIds: string[]): Row[] =>
-  (bosses.find((b) => b.id === bossId)?.loot ?? [])
-    .filter((l) => itemIds.includes(l.item) && !l.blueprint && !l.pool && !l.label)
-    .map((l) => ({ chance: l.chance, count: l.count ?? 1 }));
+/** 보스 전리품 가운데 그대로 뒤집을 수 있는 줄만 — 설계도·묶음 뽑기(pool)는 확률의 뜻이 달라 뺀다.
+ *  소제목(label)이 붙은 줄은 조건부이거나 여러 개체 중 하나의 몫이라, 소제목별로 묶어 카드를 따로 만든다 (#182).
+ *  키 ""는 소제목 없는 줄 */
+function bossRowGroups(boss: (typeof bosses)[number], itemIds: string[], lang: SeoLang): { note?: string; rows: Row[] }[] {
+  const groups = new Map<string, { note?: string; rows: Row[] }>();
+  for (const l of boss.loot) {
+    if (!itemIds.includes(l.item) || l.blueprint || l.pool) continue;
+    const key = l.label ?? "";
+    let group = groups.get(key);
+    if (!group) {
+      group = { note: l.label ? (lang === "ko" ? l.label : (l.labelEn ?? l.label)) : undefined, rows: [] };
+      groups.set(key, group);
+    }
+    group.rows.push({ chance: l.chance, count: l.count ?? 1 });
+  }
+  return [...groups.values()];
+}
 
 /**
  * 이 아이템을 처치 전리품으로 주는 보스·생물. 확률 높은 순 → 이름순, 보스가 먼저.
@@ -44,16 +57,17 @@ export function dropSourcesOf(item: string | string[], lang: SeoLang, routePrefi
 
   const fromBosses: DropSource[] = [];
   for (const boss of bosses) {
-    const rows = bossRows(boss.id, itemIds);
-    if (rows.length === 0) continue;
     const img = Array.isArray(boss.image) ? boss.image[0] : boss.image;
-    fromBosses.push({
-      key: `boss-${boss.id}`,
-      name: lang === "ko" ? boss.nameKo : boss.name,
-      sub: lang === "ko" ? boss.name : null,
-      image: bossThumbPath(`/images/bosses/${img}`),
-      href: `${routePrefix}/boss/${canonicalForBoss(boss.id)}`,
-      rows,
+    bossRowGroups(boss, itemIds, lang).forEach(({ note, rows }, i) => {
+      fromBosses.push({
+        key: `boss-${boss.id}-${i}`,
+        name: lang === "ko" ? boss.nameKo : boss.name,
+        sub: lang === "ko" ? boss.name : null,
+        image: bossThumbPath(`/images/bosses/${img}`),
+        href: `${routePrefix}/boss/${canonicalForBoss(boss.id)}`,
+        rows,
+        note,
+      });
     });
   }
 
@@ -103,6 +117,7 @@ export function DroppedBySection({ sources, lang }: { sources: DropSource[]; lan
             image={s.image}
             href={s.href}
             chanceLabel={rowsLabel(s.rows, lang)}
+            note={s.note}
           />
         ))}
       </div>
