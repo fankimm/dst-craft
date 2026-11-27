@@ -212,7 +212,7 @@ export function buildCatalogItemMetadata(slug: string, lang: SeoLang) {
         ? `제작법 ${usedIn.length}개의 재료: ${usedNames.join(", ")}${usedIn.length > usedNames.length ? " 등" : ""}.`
         : `Used in ${usedIn.length} crafting recipe${usedIn.length > 1 ? "s" : ""}: ${usedNames.join(", ")}${usedIn.length > usedNames.length ? " and more" : ""}.`;
   // 검색 "○○ 얻는 법" 의도 — 떨어뜨리는 생물 이름을 설명에 넣는다 (#177)
-  const dropNames = dropSourcesOf(item.id, lang, "").slice(0, 4).map((d) => d.name);
+  const dropNames = [...new Set(dropSourcesOf(item.id, lang, "").map((d) => d.name))].slice(0, 4);
   const dropLine =
     dropNames.length === 0 ? "" : lang === "ko" ? `떨어뜨리는 생물: ${dropNames.join(", ")}.` : `Dropped by ${dropNames.join(", ")}.`;
   const description = `${lead} ${dropLine} ${usedLine} ${firstLine}`.replace(/\s+/g, " ").trim().slice(0, 300);
