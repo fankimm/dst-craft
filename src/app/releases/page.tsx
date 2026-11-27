@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.55.1",
+    date: "2026-11-27",
+    dev: [
+      "feature (#181, #145 9단계): extract-creature-loot.py에 CTOR_SETLOOT — 생성 함수마다 다른 local 표를 SetLoot 하는 생물(koalefant_summer·koalefant_winter)을 파일·생성 함수·표·전리품 경로 지문으로 싣는다(지문이 달라지면 exit 1). SetLootSetupFn은 불탈 때만 코를 바꾸는 것을 확인",
+      "creature-loot.ts 71종 → 73종(기존 71종 변화 없음), 주소 변화 없음",
+    ],
+    changes: {
+      ko: [
+        "코알라판트(여름·겨울) 페이지와 생물 도감에 처치 전리품이 나와요 — 고기 8개와 계절별 코알라판트 코",
+      ],
+      en: [
+        "Koalefant pages (summer and winter) and the creature index now show their loot — 8 Meat plus the seasonal Koalefant Trunk",
+      ],
+    },
+  },
+  {
     version: "0.55.0",
     date: "2026-11-27",
     dev: [
