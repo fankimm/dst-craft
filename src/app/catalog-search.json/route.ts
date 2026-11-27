@@ -1,8 +1,7 @@
 import { itemNames } from "@/data/item-names";
-import { creatureNames } from "@/data/creature-names";
 import { cookpotIngredients, ingredientImage } from "@/data/cookpot-ingredients";
 import { catalogItemSlugs } from "@/lib/catalog-slug";
-import { creatureSlugs } from "@/lib/creature-slug";
+import { creatureDisplayNames, creatureSlugs } from "@/lib/creature-slug";
 import { ingredientSlugs } from "@/lib/ingredient-slug";
 import { hasGameItemImage } from "@/components/seo/ItemsCatalogContent";
 import type { CatalogSearchEntry } from "@/lib/catalog-search";
@@ -21,7 +20,7 @@ export function GET() {
     entries.push({ k: "item", en, ko, p: `/item/${slug}`, ...(hasGameItemImage(id) ? { i: `${id}.png` } : {}) });
   }
   for (const [id, slug] of creatureSlugs.idToSlug) {
-    const [en, ko] = creatureNames[id];
+    const [en, ko] = creatureDisplayNames(id);
     entries.push({ k: "creature", en, ko, p: `/creature/${slug}`, ...(hasGameItemImage(id) ? { i: `${id}.png` } : {}) });
   }
   for (const ing of cookpotIngredients) {

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { scrapbookStats } from "@/data/scrapbook-stats";
-import { creatureNames, creatureSubcatNames } from "@/data/creature-names";
-import { creatureSlugs, resolveCreatureSlug } from "@/lib/creature-slug";
+import { creatureSubcatNames } from "@/data/creature-names";
+import { creatureDisplayNames, creatureSlugs, creatureVariantNote, resolveCreatureSlug } from "@/lib/creature-slug";
 import { pp } from "@/lib/seo-text";
 import { assetPath } from "@/lib/asset-path";
 import { ItemStatsPanel } from "@/components/crafting/ItemStatsPanel";
@@ -30,7 +30,7 @@ function load(slug: string, lang: SeoLang) {
   const id = resolveCreatureSlug(slug);
   if (!id) return undefined;
   const idx = lang === "ko" ? 1 : 0;
-  const names = creatureNames[id];
+  const names = creatureDisplayNames(id);
   const stats = scrapbookStats[id];
   const subcat = stats.subcat && creatureSubcatNames[stats.subcat] ? stats.subcat : undefined;
   return {
@@ -38,6 +38,7 @@ function load(slug: string, lang: SeoLang) {
     stats,
     name: names[idx],
     altName: names[1 - idx],
+    variantNote: creatureVariantNote(id, lang),
     subcat,
     subcatLabel: subcat ? creatureSubcatNames[subcat][idx] : undefined,
     image: imageOf(id),
@@ -52,7 +53,7 @@ function sameCategory(id: string, subcat: string | undefined, lang: SeoLang) {
   const collator = new Intl.Collator(lang === "ko" ? "ko" : "en");
   return [...creatureSlugs.idToSlug.entries()]
     .filter(([other]) => other !== id && scrapbookStats[other].subcat === subcat)
-    .map(([other, slug]) => ({ id: other, slug, name: creatureNames[other][idx], image: imageOf(other) }))
+    .map(([other, slug]) => ({ id: other, slug, name: creatureDisplayNames(other)[idx], image: imageOf(other) }))
     .sort((a, b) => collator.compare(a.name, b.name))
     .slice(0, 12);
 }
@@ -64,7 +65,9 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
   const catalogPath = `${routePrefix}/creatures`;
 
   // 한국어 문장은 이름에 주제 조사를 붙여 넣는다 (템플릿의 {name} 뒤에 조사 없음)
-  const introName = lang === "ko" ? pp(c.name, "은", "는") : c.name;
+  // 변종 라벨이 붙은 이름("코알라판트 (겨울)")은 닫는 괄호 앞 글자의 받침으로 조사를 고른다
+  const bare = c.name.replace(/\)$/, "");
+  const introName = lang === "ko" ? c.name + pp(bare, "은", "는").slice(bare.length) : c.name;
   const related = buildRelated(c.stats.deps, lang, routePrefix);
   const siblings = sameCategory(c.id, c.subcat, lang);
   const loot = lootRows(c.id, lang);
@@ -108,6 +111,7 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
               {c.name} | {L.creatureTitleSuffix[lang]}
             </h1>
             {c.altName !== c.name && <p className="text-base text-muted-foreground mt-0.5">{c.altName}</p>}
+            {c.variantNote && <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{c.variantNote}</p>}
             <p className="text-sm text-foreground/80 mt-2 leading-relaxed">
               {c.subcatLabel
                 ? fill(L.creatureIntro[lang], { name: introName, cat: c.subcatLabel })

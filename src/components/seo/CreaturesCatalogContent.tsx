@@ -8,7 +8,7 @@ import {
 import { itemNames } from "@/data/item-names";
 import { creatureLoot, creatureLootNames } from "@/data/creature-loot";
 import { itemHref, materialHref } from "@/lib/catalog-slug";
-import { creatureHref, creatureSlugs } from "@/lib/creature-slug";
+import { creatureDisplayNames, creatureHref, creatureSlugs } from "@/lib/creature-slug";
 import { assetPath } from "@/lib/asset-path";
 import { ItemStatsPanel } from "@/components/crafting/ItemStatsPanel";
 import { AdSlot } from "@/components/ads/AdSlot";
@@ -67,7 +67,7 @@ function buildCatalog(lang: SeoLang) {
   const groups = new Map<string, CatalogEntry[]>();
   for (const [id, stats] of Object.entries(scrapbookStats)) {
     if (stats.type !== "creature") continue;
-    const names = creatureNames[id];
+    const names = creatureNames[id] && creatureDisplayNames(id);
     if (!names) continue; // 생성 스크립트가 누락을 exit 1로 막는다 — 여기 오면 데이터 불일치
     const key = stats.subcat && creatureSubcatNames[stats.subcat] ? stats.subcat : OTHER;
     const list = groups.get(key) ?? [];
