@@ -16,6 +16,7 @@
 - **수익 수치는 Claude in Chrome으로 광고 콘솔을 읽기 전용으로 조회**해 비공개 레포 `fankimm/dst-craft-ops`(로컬 `../dst-craft-ops`)의 `revenue-log.md`에 적는다 (2026-11-16 사용자 지정, #152 #153). **이 레포는 공개라 수익 수치를 여기에는 적지 않는다.** 읽기를 넘는 콘솔 조작은 여전히 사용자 몫 — `docs/autopilot.md` 0.1절
 - **#134 AdSense 전환 릴리즈도 자동 운영이 한다** (2026-11-16 사용자 지정, #154). 단 Ezoic 계약 때문에 **2026-11-20 17:00 KST 전에는 하지 않는다** — 조건·순서는 `docs/autopilot.md` 1.1절. Ad Manager **MCM 위임 해제 한 가지도 위임됐다**(#156) — 그 밖의 콘솔 설정 변경은 사용자 몫
 - 실행은 운영 기기 Claude 앱의 예약 작업 `dstcraft-autopilot-daily` (하루 3회, 횟수 조정 가능) — **한 기기에서만** 돌린다. 프롬프트 원본은 `docs/autopilot-daily-prompt.md`
+- **총괄·분기 보고·예산** (2026-11-28 사용자 지정, #185): Claude가 총괄하고 분기마다 보고(예약 작업 `dstcraft-quarterly-report`, 원본 `docs/autopilot-quarterly-prompt.md`, 보고서는 비공개 레포 `quarterly/`). 예산은 **주간 사용량의 절반** — 매 회차가 `get_usage`로 읽고 50%/70%에서 축소. 상세 `docs/autopilot.md` 0.3절
 - 운영 기기를 옮기거나 멈추거나 다시 켤 때는 **`docs/autopilot-handover.md`** (레포 밖에만 있는 것, 재개 절차, 알려진 공백)
 
 ## Code Quality Rules
