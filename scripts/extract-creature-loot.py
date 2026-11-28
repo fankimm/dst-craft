@@ -53,6 +53,11 @@ VERIFIED: dict[str, str] = {
     "shadowthrall_hands": "shadowthrall_hands.lua: SetLoot(nil) 은 OnShroudenSummon 안",
     "shadowthrall_horns": "shadowthrall_horns.lua: SetLoot(nil) 은 OnShroudenSummon 안",
     "shadowthrall_wings": "shadowthrall_wings.lua: SetLoot(nil) 은 OnShroudenSummon 안",
+    # 이벤트 전용 경로만 섞인 것 (#186, buildid 26797476)
+    "knight": "knight.lua: SetLootSetupFn·AddChanceLoot 는 YOTH_master_postinit/YOTH_LootSetupFn(이벤트 prefab knight_yoth) 안",
+    "knight_nightmare": "knight.lua: SetLootSetupFn·AddChanceLoot 는 YOTH_master_postinit/YOTH_LootSetupFn(knight_yoth) 안",
+    # 평소엔 공유 표 그대로 — 이벤트 중에만 행운의 금덩이 3개가 더해진다 (raw-foods 와 같이 비이벤트 값을 싣는다)
+    "worm": "worm.lua: SetLootSetupFn(lootsetfn) 은 IsSpecialEventActive(SPECIAL_EVENTS.YOTS) 일 때만",
 }
 
 # 공유 표에 AddRandomLoot + numrandomloot 가 더해지는 생물 (#178) — lootdropper.lua GenerateLoot 는 둘을 모두 굴린다.
