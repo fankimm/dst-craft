@@ -32,6 +32,15 @@
 
 ## 기록
 
+### 2026-11-28 · #183 · v— · infra
+Ad Manager MCM 상위 게시자 계약 종료 — 사용자 지시("그냥 끊어버리고 애드센스만 가자"). 네트워크 `23368262432`의 상위 게시자가 문서에 적힌 `Ezoic NA 8`이 아니라 `rocketsloth.ai`(네트워크 코드 23202726502, 수락함, 인벤토리 관리)였고, 사용자는 처음 보는 업체라고 했다. 1.1절 위임 범위(Ezoic NA 8) 밖이라 자동 운영은 멈추고 보고했고, 종료는 사용자의 직접 지시로 했다.
+- 확인 대화상자 문구: "상위 계정에 위임된 모든 인벤토리에서 게재를 중단합니다. 계정에서 위임되지 않은 인벤토리의 광고는 계속 게재됩니다. 동의한 이용약관에 따라서만 확인해 주세요." — 미지급 수익·계정 정지 경고 없음
+- 결과: 상세 화면 초대 상태 "자녀가 거부함", "계약 종료" 버튼 사라짐. 목록 화면은 바로 갱신되지 않고 "수락함"으로 남아 있었다
+- 같이 본 것(읽기만): AdSense 사용자 관리·Ad Manager 사용자 목록 모두 본인 계정 1개뿐
+- git 밖 변경: Ad Manager MCM 계약 종료 — 되돌리기: 불가(상위 게시자의 재초대가 필요). 되돌릴 이유도 없다
+- 피드백: 없음
+- DB 변경: 없음
+
 ### 2026-11-28 · #182 · v0.55.2 · feature
 아이템 상세 "떨어뜨리는 생물"에 보스 전리품의 소제목 줄 포함 — 공포의 쌍둥이(레티나이저·스파즈마티즘별 카드: 노란 보석·초록 보석·톱니바퀴·전자 부품·악몽 연료·잡동사니), 장수돌가재의 초석(산성비 조건 표기). 전에는 소제목 붙은 줄을 통째로 뺐다. 쌍둥이 소제목 영문을 인게임 이름(Retinazor·Spazmatism)으로 — 영문 보스 페이지에 한글이 나오던 것도 고쳐짐. 새 데이터 없음(`bosses.ts` 그대로, 게임 소스 `eyeofterror.lua`·`rocky_boss.lua`와 대조). 도감 아이템 메타 설명의 생물 이름 중복 제거. #145 10단계. 주소 변화 없음.
 - 피드백: 없음 (`1786706814363-hl9jum`은 v0.53.0 답변 그대로)
@@ -138,7 +147,7 @@ AdSense 전환 마무리 기록 — `check-deadlines.sh`의 11/19 줄 `done:` �
 광고를 Ezoic → Google AdSense 단독으로 전환(Ezoic 계약 종료 2026-11-19 이후, 11/20 17:00 KST 뒤 첫 회차). Ezoic 스크립트·CMP·placeholder 제거, 기존 3자리(top·rail-left·rail-right)에 AdSense 광고 단위, `public/ads.txt`를 AdSense 게시자 한 줄로, 개인정보처리방침 갱신.
 - 피드백: 없음
 - git 밖 변경: 맥미니 nginx `/usr/local/etc/nginx/snippets/dstcraft-common.conf`에서 `ads.txt` → adstxtmanager 301 제거(레포 conf 복사, 기존은 `dstcraft-common.conf.bak-134`) — 되돌리기: `.bak-134`를 원래 이름으로 복사 → `/usr/local/bin/nginx -t && /usr/local/bin/nginx -s reload`. 단 Ezoic 복귀는 선택지가 아니라(`docs/ezoic-decision.md`) 되돌릴 일은 사실상 없다 — 4.3절 기본값도 "유지"
-- git 밖 변경(미완): Ad Manager MCM 위임 해제(상위 게시자 `Ezoic NA 8`) — 이 회차엔 크롬 확장이 페이지를 읽지 못해(document_idle 시간 초과) 하지 못했다. 다음 회차에서 1.1절대로
+- git 밖 변경(미완 → 2026-11-28 #183에서 종료, 상위 게시자는 실제로 `rocketsloth.ai`였다): Ad Manager MCM 위임 해제(상위 게시자 `Ezoic NA 8`) — 이 회차엔 크롬 확장이 페이지를 읽지 못해(document_idle 시간 초과) 하지 못했다. 다음 회차에서 1.1절대로
 - 채움 확인: 2026-11-21 `check-adsense-beta.mjs https://www.dstcraft.com --expect-fill` — top·rail-left·rail-right 전부 filled, 콘솔 오류 0, CLS 0. 11/21 08시 회차도 크롬 확장이 example.com까지 어떤 페이지에도 스크립트를 주입하지 못해 MCM 해제 미완 (#166)
 - DB 변경: 없음
 
