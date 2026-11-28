@@ -370,6 +370,15 @@ export const L = {
   },
 } as const;
 
+// 상태별 전리품 (#187) — 게임에 없는 문구. 원숭이의 nightmare 태그 상태를 가리킨다
+export const creatureLootWhen = { nightmare: { en: "Nightmare state", ko: "악몽 상태" } } as const;
+export const creatureLootWhenNote = {
+    nightmare: {
+      en: "Lines marked “Nightmare state” apply when it is killed while turned into its nightmare form by the Ruins' nightmare cycle — they drop instead of the unmarked lines, not on top of them.",
+      ko: "'악몽 상태'로 표시된 줄은 유적의 악몽 주기로 악몽 상태가 된 개체를 처치했을 때의 전리품이에요. 표시 없는 줄에 더해지는 게 아니라 그 대신 떨어져요.",
+    },
+} as const;
+
 export function t(key: keyof typeof L, lang: SeoLang): string {
   return L[key][lang];
 }

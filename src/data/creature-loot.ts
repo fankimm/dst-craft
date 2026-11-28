@@ -2,8 +2,9 @@
 // Source: prefabs/*.lua 의 SetSharedLootTable + SetChanceLootTable, AddRandomLoot + numrandomloot, SetLoot 리터럴 (#176), 이름은 ko.po STRINGS.NAMES
 
 /** 처치 전리품 한 줄: 아이템·확률(0~1)·그 확률로 떨어지는 개수(각각 따로 굴린다).
- *  pick 이 있으면 따로 굴리지 않고, pick 이 붙은 줄들 가운데 pick 개를 뽑는다 (chance = 가중치/합, AddRandomLoot) */
-export type CreatureLootRow = { item: string; chance: number; count: number; pick?: number };
+ *  pick 이 있으면 따로 굴리지 않고, pick 이 붙은 줄들 가운데 pick 개를 뽑는다 (chance = 가중치/합, AddRandomLoot)
+ *  when 이 있으면 그 상태일 때만의 줄 — 그 상태에서는 when 없는 줄 대신 when 줄만 떨어진다 (#187) */
+export type CreatureLootRow = { item: string; chance: number; count: number; pick?: number; when?: "nightmare" };
 
 export const creatureLoot: Record<string, CreatureLootRow[]> = {
   bat: [{ item: "batwing", chance: 0.25, count: 1 }, { item: "guano", chance: 0.15, count: 1 }, { item: "monstermeat", chance: 0.1, count: 1 }],
@@ -82,6 +83,7 @@ export const creatureLoot: Record<string, CreatureLootRow[]> = {
   tallbird: [{ item: "meat", chance: 1, count: 2 }],
   koalefant_summer: [{ item: "meat", chance: 1, count: 8 }, { item: "trunk_summer", chance: 1, count: 1 }],
   koalefant_winter: [{ item: "meat", chance: 1, count: 8 }, { item: "trunk_winter", chance: 1, count: 1 }],
+  monkey: [{ item: "smallmeat", chance: 1, count: 1 }, { item: "cave_banana", chance: 1, count: 1 }, { item: "smallmeat", chance: 1, count: 1, when: "nightmare" }, { item: "cave_banana", chance: 1, count: 1, when: "nightmare" }, { item: "beardhair", chance: 1, count: 1, when: "nightmare" }, { item: "nightmarefuel", chance: 0.5, count: 1, when: "nightmare" }],
 };
 
 /** 전리품 아이템 이름 [en, ko] */
@@ -91,12 +93,14 @@ export const creatureLootNames: Record<string, [string, string]> = {
   barnacle: ["Barnacles", "거북순"],
   batnose: ["Naked Nostrils", "벌거숭이 콧구멍"],
   batwing: ["Batilisk Wing", "바틸리스크 날개"],
+  beardhair: ["Beard Hair", "수염"],
   beefalowool: ["Beefalo Wool", "비팔로 털"],
   blowdart_pipe: ["Blow Dart", "다트"],
   bluegem: ["Blue Gem", "푸른 보석"],
   butter: ["Butter", "버터"],
   butterflywings: ["Butterfly Wings", "나비 날개"],
   carrot_seeds: ["Oblong Seeds", "길쭉 씨앗"],
+  cave_banana: ["Banana", "바나나"],
   charcoal: ["Charcoal", "숯"],
   cookiecuttershell: ["Cookie Cutter Shell", "과자틀소라 조가비"],
   coontail: ["Cat Tail", "고양이 꼬리"],

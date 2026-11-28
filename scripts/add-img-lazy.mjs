@@ -31,7 +31,7 @@ const EAGER_KEEP = new Set([
   "src/components/seo/IngredientPageContent.tsx:277",
   "src/components/seo/QuestPageContent.tsx:110",
   "src/components/seo/CatalogItemPageContent.tsx:94",
-  "src/components/seo/CreaturePageContent.tsx:106",
+  "src/components/seo/CreaturePageContent.tsx:108",
   "src/components/seo/FarmingContent.tsx:115",
   "src/components/seo/FarmingContent.tsx:116",
 ]);

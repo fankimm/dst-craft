@@ -238,7 +238,7 @@ DevMenu에서 접근하는 단일 화면 dev 페이지. `BackToHome` 헤더 + �
 ## 공유 컴포넌트
 
 ### DroppedBySection (`src/components/seo/DroppedBy.tsx`)
-아이템 쪽에서 보는 "떨어뜨리는 생물" 구역 (#177). `dropSourcesOf(id | id[], lang, routePrefix)`가 생물 전리품(`creature-loot.ts`)과 보스 전리품(`bosses.ts`)을 아이템 기준으로 뒤집고, `LootCard`로 그린다(확률 줄은 "100% ×4 + 33%"). 도감 아이템 상세·제작 아이템 상세·요리 재료 상세가 같이 쓴다. 보스 전리품의 설계도·묶음 뽑기(pool)·소제목(label) 줄은 뺀다. 서버 컴포넌트 전용.
+아이템 쪽에서 보는 "떨어뜨리는 생물" 구역 (#177). `dropSourcesOf(id | id[], lang, routePrefix)`가 생물 전리품(`creature-loot.ts`)과 보스 전리품(`bosses.ts`)을 아이템 기준으로 뒤집고, `LootCard`로 그린다(확률 줄은 "100% ×4 + 33%", 상태별 전리품은 "100% / 100% (악몽 상태)" — #187). 도감 아이템 상세·제작 아이템 상세·요리 재료 상세가 같이 쓴다. 보스 전리품의 설계도·묶음 뽑기(pool)·소제목(label) 줄은 뺀다. 서버 컴포넌트 전용.
 
 ### LootCard (`src/components/seo/LootCard.tsx`)
 - **용도**: SEO 페이지의 전리품 한 칸 — 아이콘 + 개수 배지, 이름(+ 다른 언어 이름), 확률 줄(`chancePercent`), 선택 배지(설계도)·메모. `href`가 있으면 링크(`materialHref`)

@@ -12,7 +12,7 @@ import { creatureDisplayNames, creatureHref, creatureSlugs } from "@/lib/creatur
 import { assetPath } from "@/lib/asset-path";
 import { ItemStatsPanel } from "@/components/crafting/ItemStatsPanel";
 import { AdSlot } from "@/components/ads/AdSlot";
-import { L, type SeoLang } from "./labels";
+import { L, type SeoLang, creatureLootWhen } from "./labels";
 import { JsonLd } from "./JsonLd";
 import { DataSourceNote, fillTemplate as fill, itemListLd } from "./list-schema";
 import { chancePercent } from "./LootCard";
@@ -210,7 +210,7 @@ export function CreaturesCatalogContent({ lang }: { lang: SeoLang }) {
                         <div className="flex flex-wrap gap-1">
                           {loot.map((r) => (
                             <RelatedChip
-                              key={`${r.item}-${r.chance}-${r.count}`}
+                              key={`${r.item}-${r.chance}-${r.count}-${r.when ?? ""}`}
                               entry={{
                                 id: r.item,
                                 name: r.name,
@@ -219,7 +219,8 @@ export function CreaturesCatalogContent({ lang }: { lang: SeoLang }) {
                               }}
                               detail={
                                 `${chancePercent(r.chance)}${r.count > 1 ? ` ×${r.count}` : ""}` +
-                                (r.pick != null ? ` · ${L.creatureLootPick[lang].replace("{n}", String(r.pick))}` : "")
+                                (r.pick != null ? ` · ${L.creatureLootPick[lang].replace("{n}", String(r.pick))}` : "") +
+                                (r.when != null ? ` · ${creatureLootWhen[r.when][lang]}` : "")
                               }
                             />
                           ))}
