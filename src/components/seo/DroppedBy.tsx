@@ -4,7 +4,7 @@ import { bosses } from "@/data/bosses";
 import { creatureDisplayNames, creatureHref } from "@/lib/creature-slug";
 import { canonicalForBoss } from "@/lib/slug";
 import { bossThumbPath } from "@/lib/asset-path";
-import { L, type SeoLang } from "./labels";
+import { L, type SeoLang, creatureLootWhen } from "./labels";
 import { LootCard, chancePercent } from "./LootCard";
 import { hasGameItemImage } from "./ItemsCatalogContent";
 
@@ -14,7 +14,7 @@ import { hasGameItemImage } from "./ItemsCatalogContent";
  * 새로 만든 수치는 없다. creature-slug 가 scrapbook-stats 를 끌어오므로 서버 컴포넌트에서만 쓸 것.
  */
 
-type Row = { chance: number; count: number; pick?: number };
+type Row = { chance: number; count: number; pick?: number; when?: "nightmare" };
 export type DropSource = {
   key: string;
   name: string;
@@ -75,7 +75,7 @@ export function dropSourcesOf(item: string | string[], lang: SeoLang, routePrefi
   for (const [creatureId, loot] of Object.entries(creatureLoot)) {
     if (!creatureNames[creatureId]) continue;
     const names = creatureDisplayNames(creatureId);
-    const rows = loot.filter((r) => itemIds.includes(r.item)).map(({ chance, count, pick }) => ({ chance, count, pick }));
+    const rows = loot.filter((r) => itemIds.includes(r.item)).map(({ chance, count, pick, when }) => ({ chance, count, pick, when }));
     if (rows.length === 0) continue;
     fromCreatures.push({
       key: creatureId,
@@ -95,9 +95,11 @@ function rowsLabel(rows: Row[], lang: SeoLang): string {
   return rows
     .map((r) => {
       const base = `${chancePercent(r.chance)}${r.count > 1 ? ` ×${r.count}` : ""}`;
-      return r.pick != null && r.pick > 1 ? `${base} · ${L.creatureLootPick[lang].replace("{n}", String(r.pick))}` : base;
+      const picked = r.pick != null && r.pick > 1 ? `${base} · ${L.creatureLootPick[lang].replace("{n}", String(r.pick))}` : base;
+      // 상태 줄(#187)은 표시 없는 줄 대신 떨어진다 — 더하는 게 아니라서 괄호로 구분해 적는다
+      return r.when != null ? `${picked} (${creatureLootWhen[r.when][lang]})` : picked;
     })
-    .join(" + ");
+    .reduce((acc, cur, i) => (i === 0 ? cur : `${acc}${rows[i].when != null && rows[i - 1].when == null ? " / " : " + "}${cur}`), "");
 }
 
 export function DroppedBySection({ sources, lang }: { sources: DropSource[]; lang: SeoLang }) {

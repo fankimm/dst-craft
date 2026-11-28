@@ -8,7 +8,7 @@ import { assetPath } from "@/lib/asset-path";
 import { ItemStatsPanel } from "@/components/crafting/ItemStatsPanel";
 import { AdSlot } from "@/components/ads/AdSlot";
 import { AdBleed } from "@/components/ads/AdBleed";
-import { L, type SeoLang } from "./labels";
+import { L, type SeoLang, creatureLootWhen, creatureLootWhenNote } from "./labels";
 import { JsonLd } from "./JsonLd";
 import { DataSourceNote, fillTemplate as fill } from "./list-schema";
 import { hasGameItemImage } from "./ItemsCatalogContent";
@@ -73,6 +73,8 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
   const loot = lootRows(c.id, lang);
   // 무작위 뽑기 묶음(#176) — AddRandomLoot 줄들 가운데 pick 개만 나온다
   const lootPick = loot.find((r) => r.pick != null)?.pick;
+  // 상태별 전리품(#187) — 그 상태에서는 표시 없는 줄 대신 이 줄들이 떨어진다
+  const lootWhen = loot.find((r) => r.when != null)?.when;
 
   const breadcrumbLd = {
     "@context": "https://schema.org",
@@ -149,11 +151,12 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
             <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
               {L.creatureLootNote[lang]}
               {lootPick != null && <> {L.creatureLootPickNote[lang].replaceAll("{n}", String(lootPick))}</>}
+              {lootWhen != null && <> {creatureLootWhenNote[lootWhen][lang]}</>}
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {loot.map((row) => (
                 <LootCard
-                  key={`${row.item}-${row.chance}`}
+                  key={`${row.item}-${row.chance}-${row.when ?? ""}`}
                   name={row.name}
                   sub={row.sub}
                   image={imageOf(row.item)}
@@ -164,6 +167,7 @@ export function CreaturePageContent({ slug, lang }: { slug: string; lang: SeoLan
                       ? `${chancePercent(row.chance)} · ${L.creatureLootPick[lang].replace("{n}", String(row.pick))}`
                       : chancePercent(row.chance)
                   }
+                  note={row.when != null ? creatureLootWhen[row.when][lang] : undefined}
                 />
               ))}
             </div>

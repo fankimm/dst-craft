@@ -77,6 +77,22 @@ CTOR_SETLOOT: dict[str, tuple[str, str, str, tuple[list[str], list[str]]]] = {
 }
 
 
+# 상태에 따라 전리품이 통째로 바뀌는 생물 (#187): id → (파일, 평소 local 표, 상태 키, 상태일 때의 공유 표)
+# monkey.lua (buildid 26797476): fn() 과 SetNormalMonkey 가 SetLoot(LOOT) + SetChanceLootTable(nil),
+# 악몽 상태(유적의 악몽 주기 wild·dawn 에 Nightmare 구역 안 — TestNightmarePhase)에서는 SetNightmareMonkeyLoot(inst, false) 가
+# SetLoot(nil) + SetChanceLootTable("monkey") — 평소 전리품 대신 공유 표만 굴린다.
+# forcenightmarestate 이벤트로 강제된 악몽 상태(SetNightmareMonkeyLoot(inst, true))는 여기에 악몽 연료 1개(FORCED_NIGHTMARE_LOOT)가
+# 더해지는데, 그 조건을 부를 인게임 이름이 ko.po 에 없어 싣지 않는다
+STATE_LOOT: dict[str, tuple[str, str, str, str]] = {
+    "monkey": ("monkey.lua", "LOOT", "nightmare", "monkey"),
+}
+_MONKEY_FINGERPRINT = (
+    ["SetChanceLootTable(nil", "SetLoot("],
+    ["FORCED_NIGHTMARE_LOOT", "LOOT", "LOOT", "nil"],
+    ['"monkey"', "nil"],
+)
+
+
 def parse_random(fname: str, text: str) -> list[tuple[str, float, int, int]]:
     """AddRandomLoot(아이템, 가중치) 줄들 + numrandomloot = N → (아이템, 가중치/합, 1, N)"""
     rand = re.findall(r"lootdropper:AddRandomLoot\(([^)]*)\)", text)
@@ -164,6 +180,8 @@ def main() -> None:
             if len(set(callers)) != 1 or risky != ["AddRandomLoot"] or text.count('AddComponent("lootdropper")') != 1 or "chancerandomloot" in text:
                 raise SystemExit(f"ERROR: MIXED_RANDOM 의 {cid} 전리품 경로가 바뀌었다 ({callers}: {risky}) — 게임 코드를 다시 확인할 것")
             mixed = parse_random(callers[0], text)
+        elif cid in STATE_LOOT:
+            continue  # 아래 4) 에서 상태별로 싣는다
         elif risky and cid not in VERIFIED:
             skipped.append(f"{cid} ({', '.join(callers)}: {', '.join(risky)})")
             continue
@@ -256,6 +274,33 @@ def main() -> None:
             grouped3[i] = grouped3.get(i, 0) + 1
         loot[cid] = [(i, 1.0, n, None) for i, n in grouped3.items()]
 
+    # 4) 상태에 따라 전리품이 통째로 바뀌는 생물 (#187) — STATE_LOOT 에 적은 것만. 평소 줄은 loot 에,
+    #    상태 줄은 state_rows 에 (출력 때 when 필드를 붙인다). 경로가 확인했던 모양과 다르면 exit 1
+    state_rows: dict[str, list[tuple[str, float, int, str]]] = {}
+    for cid, (fname, var, when, table) in STATE_LOOT.items():
+        if cid not in creatures or cid in loot:
+            raise SystemExit(f"ERROR: STATE_LOOT 의 {cid} 가 스크랩북 생물이 아니거나 이미 다른 경로로 실렸다")
+        text = re.sub(r"--[^\n]*", "", sources[fname])
+        risky = sorted(k for k in RISKY + ["numrandomloot", "chancerandomloot", "AddIfNotChanceLoot"] if k in text)
+        setloots = sorted(re.findall(r"lootdropper:SetLoot\(\s*([^)]*?)\s*\)", text))
+        chancetables = sorted(re.findall(r"lootdropper:SetChanceLootTable\(\s*([^)]*?)\s*\)", text))
+        if (risky, setloots, chancetables) != _MONKEY_FINGERPRINT or text.count('AddComponent("lootdropper")') != 1:
+            raise SystemExit(f"ERROR: {fname} 전리품 경로가 바뀌었다 ({risky}, {setloots}, {chancetables}) — 게임 코드를 다시 확인할 것")
+        nm = re.search(r"^local function SetNightmareMonkeyLoot\(inst, forced\)(.*?)^end\b", text, re.M | re.S)
+        if not nm or not re.search(r"else\s+inst\.components\.lootdropper:SetLoot\(nil\)\s+end\s+inst\.components\.lootdropper:SetChanceLootTable\(\"%s\"\)" % table, nm.group(1)):
+            raise SystemExit(f"ERROR: {fname} SetNightmareMonkeyLoot 의 모양이 바뀌었다 — 게임 코드를 다시 확인할 것")
+        d = re.search(r"^local\s+%s\s*=\s*(\{[^}]*\})" % re.escape(var), text, re.M)
+        if not d or re.sub(r"['\"]\w+['\"]|[\s,{}]", "", d.group(1)) or table not in tables:
+            raise SystemExit(f"ERROR: {fname} local {var} 가 문자열 리터럴 표가 아니거나 공유 표 {table} 가 없다")
+        grouped4: "OrderedDict[str, int]" = OrderedDict()
+        for i in re.findall(r"['\"](\w+)['\"]", d.group(1)):
+            grouped4[i] = grouped4.get(i, 0) + 1
+        loot[cid] = [(i, 1.0, n, None) for i, n in grouped4.items()]
+        grouped5: "OrderedDict[tuple[str, float], int]" = OrderedDict()
+        for item, chance in tables[table]:
+            grouped5[(item, chance)] = grouped5.get((item, chance), 0) + 1
+        state_rows[cid] = [(item, chance, n, when) for (item, chance), n in grouped5.items()]
+
     stale = sorted((set(VERIFIED) | set(MIXED_RANDOM)) - set(loot))
     if stale:
         raise SystemExit(f"ERROR: VERIFIED 에 있는데 실리지 않은 생물 {stale} — 게임 코드가 바뀌었다. 다시 확인할 것")
@@ -264,7 +309,7 @@ def main() -> None:
     names = item_names.parse_po(item_names.KO_PO.read_text(encoding="utf-8"))
     po_keys = set(names)
     names = item_names.with_en_fallback(names)
-    items = sorted({item for rows in loot.values() for item, _, _, _ in rows})
+    items = sorted({item for rows in list(loot.values()) + list(state_rows.values()) for item, _, _, _ in rows})
     missing = [i for i in items if i.upper() not in names or not names[i.upper()][0]]
     if missing:
         raise SystemExit(f"ERROR: 이름 없는 전리품 아이템 {missing}")
@@ -283,8 +328,9 @@ def main() -> None:
         "// Source: prefabs/*.lua 의 SetSharedLootTable + SetChanceLootTable, AddRandomLoot + numrandomloot, SetLoot 리터럴 (#176), 이름은 ko.po STRINGS.NAMES",
         "",
         "/** 처치 전리품 한 줄: 아이템·확률(0~1)·그 확률로 떨어지는 개수(각각 따로 굴린다).",
-        " *  pick 이 있으면 따로 굴리지 않고, pick 이 붙은 줄들 가운데 pick 개를 뽑는다 (chance = 가중치/합, AddRandomLoot) */",
-        "export type CreatureLootRow = { item: string; chance: number; count: number; pick?: number };",
+        " *  pick 이 있으면 따로 굴리지 않고, pick 이 붙은 줄들 가운데 pick 개를 뽑는다 (chance = 가중치/합, AddRandomLoot)",
+        " *  when 이 있으면 그 상태일 때만의 줄 — 그 상태에서는 when 없는 줄 대신 when 줄만 떨어진다 (#187) */",
+        "export type CreatureLootRow = { item: string; chance: number; count: number; pick?: number; when?: \"nightmare\" };",
         "",
         "export const creatureLoot: Record<string, CreatureLootRow[]> = {",
     ]
@@ -292,6 +338,8 @@ def main() -> None:
         body = ", ".join(
             f"{{ item: {q(i)}, chance: {num(round(c, 4))}, count: {n}{'' if pk is None else f', pick: {pk}'} }}" for i, c, n, pk in rows
         )
+        for i, c, n, when in state_rows.get(cid, []):
+            body += f", {{ item: {q(i)}, chance: {num(round(c, 4))}, count: {n}, when: {q(when)} }}"
         lines.append(f"  {cid}: [{body}],")
     lines += ["};", "", "/** 전리품 아이템 이름 [en, ko] */", "export const creatureLootNames: Record<string, [string, string]> = {"]
     for i in items:
