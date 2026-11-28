@@ -50,6 +50,7 @@
 | 무엇 | 위치 | 없으면 | 옮기는 법 |
 |---|---|---|---|
 | 예약 작업 `dstcraft-autopilot-daily` | Claude 앱 (`~/.claude/scheduled-tasks/`) | 매일 실행이 안 됨 | 새 기기에서 `autopilot-daily-prompt.md`로 다시 등록 (4장) |
+| 예약 작업 `dstcraft-quarterly-report` (#185) | Claude 앱 (`~/.claude/scheduled-tasks/`) | 분기 보고가 안 나옴 | 새 기기에서 `autopilot-quarterly-prompt.md`로 다시 등록 — cron `0 10 1 1,4,7,10 *` |
 | GitHub 로그인 (`gh auth`) | 기기 키체인 | 푸시·이슈·답변 등록 전부 불가 | 새 기기에서 `gh auth login` — 사용자 몫 |
 | 게임 스냅샷 `~/dst-game-snapshot` | 로컬 전용 git 레포 (342MB, 원격 없음 — Klei 자산이라 푸시 금지) | 게임 소스를 읽는 추출 스크립트·사실 확인 불가 | 폴더째 복사하거나, DST가 설치된 기기에서 `bash scripts/sync-game-data.sh`로 새로 생성 |
 | DST 게임 설치 (Steam) | `~/Library/Application Support/Steam/steamapps/` | 게임 업데이트 감지·동기화 불가 | Steam에서 DST 설치 — 사용자 몫 (3장) |
