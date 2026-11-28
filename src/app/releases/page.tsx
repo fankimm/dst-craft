@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.55.3",
+    date: "2026-11-28",
+    dev: [
+      "feature (#186, #145 11단계): extract-creature-loot.py VERIFIED에 knight·knight_nightmare·worm — 섞여 있던 전리품 경로가 이벤트 전용임을 확인(knight.lua YOTH_master_postinit은 knight_yoth 전용, worm.lua lootsetfn은 YOTS 이벤트 중에만)",
+      "creature-loot.ts 재생성: 생물 73 → 76종, 아이템 77 → 78개(발광 베리). 주소 변화 없음",
+    ],
+    changes: {
+      ko: [
+        "시계태엽 나이트·망가진 나이트·동굴지렁이 페이지에 처치 전리품이 나와요 — 톱니바퀴, 툴레사이트 파편, 발광 베리 등",
+      ],
+      en: [
+        "Clockwork Knight, Damaged Knight and Depths Worm pages now list their loot — Gears, Thulecite Fragments, Glow Berry and more",
+      ],
+    },
+  },
+  {
     version: "0.55.2",
     date: "2026-11-28",
     dev: [

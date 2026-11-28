@@ -28,6 +28,8 @@ export const creatureLoot: Record<string, CreatureLootRow[]> = {
   grassgekko: [{ item: "plantmeat", chance: 1, count: 1 }, { item: "cutgrass", chance: 0.75, count: 2 }],
   hound: [{ item: "monstermeat", chance: 1, count: 1 }, { item: "houndstooth", chance: 0.125, count: 1 }],
   icehound: [{ item: "monstermeat", chance: 1, count: 1 }, { item: "houndstooth", chance: 1, count: 2 }, { item: "bluegem", chance: 0.2, count: 1 }],
+  knight: [{ item: "gears", chance: 1, count: 2 }],
+  knight_nightmare: [{ item: "gears", chance: 1, count: 1 }, { item: "nightmarefuel", chance: 0.6, count: 1 }, { item: "thulecite_pieces", chance: 0.5, count: 1 }],
   krampus: [{ item: "monstermeat", chance: 1, count: 1 }, { item: "charcoal", chance: 1, count: 2 }, { item: "krampus_sack", chance: 0.01, count: 1 }],
   lightflier: [{ item: "lightbulb", chance: 1, count: 1 }],
   lightninggoat: [{ item: "meat", chance: 1, count: 2 }, { item: "lightninggoathorn", chance: 0.25, count: 1 }],
@@ -57,6 +59,7 @@ export const creatureLoot: Record<string, CreatureLootRow[]> = {
   walrus: [{ item: "meat", chance: 1, count: 1 }, { item: "blowdart_pipe", chance: 1, count: 1 }, { item: "walrushat", chance: 0.25, count: 1 }, { item: "walrus_tusk", chance: 0.5, count: 1 }],
   warglet: [{ item: "monstermeat", chance: 1, count: 3 }, { item: "monstermeat", chance: 0.5, count: 1 }, { item: "houndstooth", chance: 1, count: 1 }, { item: "houndstooth", chance: 0.33, count: 1 }],
   waterplant: [{ item: "waterplant_bomb", chance: 1, count: 2 }, { item: "waterplant_bomb", chance: 0.5, count: 1 }],
+  worm: [{ item: "monstermeat", chance: 1, count: 4 }, { item: "wormlight", chance: 1, count: 1 }],
   bee: [{ item: "honey", chance: 0.1667, count: 1, pick: 1 }, { item: "stinger", chance: 0.8333, count: 1, pick: 1 }],
   birchnutdrake: [{ item: "acorn", chance: 0.4, count: 1, pick: 1 }, { item: "twigs", chance: 0.6, count: 1, pick: 1 }],
   butterfly: [{ item: "butter", chance: 0.0196, count: 1, pick: 1 }, { item: "butterflywings", chance: 0.9804, count: 1, pick: 1 }],
@@ -160,4 +163,5 @@ export const creatureLootNames: Record<string, [string, string]> = {
   walrushat: ["Tam o' Shanter", "태머섄터"],
   waterplant_bomb: ["Seedshell", "씨조개"],
   wintersfeastfuel: ["Holiday Cheer", "명절의 기운"],
+  wormlight: ["Glow Berry", "발광 베리"],
 };
