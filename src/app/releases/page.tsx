@@ -15,6 +15,22 @@ interface Release {
 
 const releases: Release[] = [
   {
+    version: "0.55.4",
+    date: "2026-11-28",
+    dev: [
+      "feature (#187, #145 12단계): extract-creature-loot.py에 STATE_LOOT — 상태에 따라 전리품이 통째로 바뀌는 생물. monkey.lua는 평소 SetLoot(LOOT), 악몽 상태에서 SetLoot(nil)+공유 표 'monkey'. 경로 지문(SetLoot·SetChanceLootTable 호출 목록, SetNightmareMonkeyLoot 모양)이 달라지면 exit 1. 전리품 76 → 77종",
+      "CreatureLootRow에 when?: 'nightmare' — 상세(LootCard note)·허브 칩·DroppedBy 확률 줄에 상태 라벨(creatureLootWhen), 상세에 설명 한 줄(creatureLootWhenNote). 강제 악몽 상태의 악몽 연료 1개는 조건을 부를 인게임 이름이 없어 싣지 않음",
+    ],
+    changes: {
+      ko: [
+        "동굴 원숭이 상세 페이지에 처치 전리품이 생겼어요 — 평소(고깃조각·바나나)와 유적의 악몽 주기로 악몽 상태가 됐을 때(수염, 악몽 연료 50% 추가)를 나눠서 보여 줘요",
+      ],
+      en: [
+        "Splumonkey pages now list kill drops — both the normal ones (Morsel, Banana) and the nightmare-state ones during the Ruins' nightmare cycle (adds Beard Hair and a 50% Nightmare Fuel)",
+      ],
+    },
+  },
+  {
     version: "0.55.3",
     date: "2026-11-28",
     dev: [
